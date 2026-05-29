@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Master - Class 1 to 5</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+  }
+  .container {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    max-width: 700px;
+    width: 100%;
+  }
+  h1 { color: #333; margin-bottom: 10px; font-size: 26px; text-align: center; }
+  h2 { color: #333; margin-bottom: 15px; font-size: 20px; text-align: center; }
+  .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; text-align: center; }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 15px 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 5px;
+  }
+  .menu-card {
+    padding: 14px 8px;
+    background: #f7f7fb;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .menu-card:hover {
+    border-color: #667eea;
+    background: #f0f0ff;
+    transform: translateY(-2px);
+  }
+  .menu-card .icon { font-size: 28px; margin-bottom: 5px; }
+  .menu-card .title { font-weight: bold; color: #333; font-size: 13px; line-height: 1.2; }
+
+  .level-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .level-btn {
+    padding: 18px 8px;
+    background: #f7f7fb;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #333;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .level-btn:hover { border-color: #667eea; background: #f0f0ff; transform: translateY(-2px); }
+  .level-btn .num { font-size: 20px; display: block; margin-bottom: 3px; }
+  .level-btn .label { font-size: 11px; color: #666; }
+
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #f7f7fb;
+    border-radius: 12px;
+  }
+  .summary-item { text-align: center; }
+  .stat-label {
+    font-size: 10px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .stat-value { font-size: 20px; font-weight: bold; color: #333; }
+  #timer.warning { color: #e74c3c; }
+
+  .question {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 20px 0;
+    padding: 22px;
+    background: #f7f7fb;
+    border-radius: 15px;
+    text-align: center;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.4;
+  }
+  .question.large { font-size: 40px; }
+  .question.small { font-size: 18px; }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .option-btn {
+    padding: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #e0e0e8;
+    background: white;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    color: #333;
+    min-height: 55px;
+  }
+  .option-btn:hover:not(:disabled) { border-color: #667eea; background: #f0f0ff; transform: translateY(-2px); }
+  .option-btn.correct { background: #2ecc71; border-color: #2ecc71; color: white; }
+  .option-btn.wrong { background: #e74c3c; border-color: #e74c3c; color: white; }
+  .option-btn:disabled { cursor: not-allowed; }
+
+  .feedback {
+    height: 26px;
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center;
+  }
+  .feedback.correct { color: #2ecc71; }
+  .feedback.wrong { color: #e74c3c; }
+
+  .btn {
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: bold;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: #5568d3; transform: translateY(-2px); }
+  .btn-secondary { background: #95a5a6; }
+  .btn-secondary:hover { background: #7f8c8d; }
+  .center { text-align: center; }
+  .button-row { display: flex; gap: 10px; justify-content: center; margin-top: 15px; flex-wrap: wrap; }
+
+  .final-score { font-size: 56px; font-weight: bold; color: #667eea; margin: 12px 0; text-align: center; }
+  .summary {
+    display: flex;
+    justify-content: space-around;
+    margin: 18px 0;
+    padding: 18px;
+    background: #f7f7fb;
+    border-radius: 12px;
+  }
+  .summary-item .value { font-size: 20px; font-weight: bold; color: #333; }
+  .summary-item .label { font-size: 11px; color: #888; margin-top: 3px; }
+
+  .info-box {
+    background: #f7f7fb;
+    padding: 15px;
+    border-radius: 12px;
+    margin: 15px 0;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.7;
+  }
+
+  .hidden { display: none; }
+  .breadcrumb {
+    font-size: 12px;
+    color: #888;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 18px; }
+    .menu-grid { grid-template-columns: repeat(2, 1fr); }
+    .level-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .level-btn { padding: 12px 4px; }
+    .level-btn .num { font-size: 16px; }
+    .level-btn .label { font-size: 9px; }
+    .question { font-size: 18px; padding: 16px; min-height: 75px; }
+    .question.large { font-size: 32px; }
+    .option-btn { font-size: 14px; padding: 12px; min-height: 48px; }
+    h1 { font-size: 20px; }
+    .menu-card .icon { font-size: 24px; }
+    .menu-card .title { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- MAIN MENU -->
+  <div id="menuScreen">
+    <h1>🎯 Quiz Master</h1>
+    <p class="subtitle">20 categories • Class 1 to 5 • 3-minute challenge</p>
+    <div class="menu-grid" id="categoryGrid"></div>
+  </div>
+
+  <!-- LEVEL SELECTION -->
+  <div id="levelScreen" class="hidden">
+    <div class="breadcrumb" id="levelBreadcrumb"></div>
+    <h2 id="levelTitle">Select Class Level</h2>
+    <p class="subtitle">Pick the class level for difficulty</p>
+    <div class="level-grid">
+      <button class="level-btn" onclick="startQuiz(1)"><span class="num">1</span><span class="label">Class 1</span></button>
+      <button class="level-btn" onclick="startQuiz(2)"><span class="num">2</span><span class="label">Class 2</span></button>
+      <button class="level-btn" onclick="startQuiz(3)"><span class="num">3</span><span class="label">Class 3</span></button>
+      <button class="level-btn" onclick="startQuiz(4)"><span class="num">4</span><span class="label">Class 4</span></button>
+      <button class="level-btn" onclick="startQuiz(5)"><span class="num">5</span><span class="label">Class 5</span></button>
+    </div>
+    <div class="info-box">
+      <strong>Rules:</strong> 3-minute timer • +1 for correct • −1 for wrong • 4 options per question • Random questions every time
+    </div>
+    <div class="center">
+      <button class="btn btn-secondary" onclick="goToMenu()">← Back to Categories</button>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quizScreen" class="hidden">
+    <div class="breadcrumb" id="quizBreadcrumb"></div>
+    <div class="stats">
+      <div class="summary-item">
+        <div class="stat-label">Time Left</div>
+        <div class="stat-value" id="timer">3:00</div>
+      </div>
+      <div class="summary-item">
+        <div class="stat-label">Score</div>
+        <div class="stat-value" id="score">0</div>
+      </div>
+      <div class="summary-item">
+        <div class="stat-label">Question</div>
+        <div class="stat-value" id="qCount">1</div>
+      </div>
+    </div>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="center" style="margin-top:12px;">
+      <button class="btn btn-secondary" onclick="quitQuiz()" style="font-size:12px; padding:7px 18px;">Quit Quiz</button>
+    </div>
+  </div>
+
+  <!-- END SCREEN -->
+  <div id="endScreen" class="hidden">
+    <h1>⏰ Time's Up!</h1>
+    <p class="subtitle" id="endSubtitle">Here's how you did:</p>
+    <div class="final-score" id="finalScore">0</div>
+    <div class="summary">
+      <div class="summary-item">
+        <div class="value" id="correctCount">0</div>
+        <div class="label">Correct</div>
+      </div>
+      <div class="summary-item">
+        <div class="value" id="wrongCount">0</div>
+        <div class="label">Wrong</div>
+      </div>
+      <div class="summary-item">
+        <div class="value" id="totalCount">0</div>
+        <div class="label">Attempted</div>
+      </div>
+    </div>
+    <div class="button-row">
+      <button class="btn btn-secondary" onclick="goToMenu()">Main Menu</button>
+      <button class="btn" onclick="showLevelScreen()">Change Level</button>
+      <button class="btn" onclick="restartQuiz()">Play Again</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================
+   CATEGORIES & STATE
+   ============================================ */
+const CATEGORIES = [
+  { id: 'addsub',    icon: '➕', title: 'Add & Subtract' },
+  { id: 'multiply',  icon: '✖️', title: 'Multiplication' },
+  { id: 'divide',    icon: '➗', title: 'Division' },
+  { id: 'mixedmath', icon: '🔢', title: 'Mixed Math' },
+  { id: 'hindi',     icon: '🇮🇳', title: 'Hindi' },
+  { id: 'english',   icon: '🔤', title: 'English' },
+  { id: 'gk',        icon: '🌍', title: 'GK' },
+  { id: 'science',   icon: '🔬', title: 'Science' },
+  { id: 'history',   icon: '📜', title: 'History' },
+  { id: 'geography', icon: '🗺️', title: 'Geography' },
+  { id: 'sports',    icon: '⚽', title: 'Sports' },
+  { id: 'computers', icon: '💻', title: 'Computers' },
+  { id: 'animals',   icon: '🐾', title: 'Animals' },
+  { id: 'plants',    icon: '🌱', title: 'Plants' },
+  { id: 'humanbody', icon: '🫀', title: 'Human Body' },
+  { id: 'space',     icon: '🚀', title: 'Space' },
+  { id: 'capitals',  icon: '🏛️', title: 'Capitals' },
+  { id: 'riddles',   icon: '🧩', title: 'Riddles' },
+  { id: 'patterns',  icon: '🔁', title: 'Patterns' },
+  { id: 'reasoning', icon: '🧠', title: 'Reasoning' }
+];
+
+let currentCategory = '';
+let currentLevel = 0;
+let timeLeft = 180;
+let score = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let questionCount = 0;
+let currentAnswer = null;
+let timerInterval = null;
+let acceptingAnswers = false;
+let recentQuestions = [];
+
+/* ============================================
+   HELPERS
+   ============================================ */
+function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function buildNumericOptions(correct, range) {
+  const options = new Set();
+  options.add(correct);
+  let attempts = 0;
+  while (options.size < 4 && attempts < 60) {
+    let delta = rand(-range, range);
+    if (delta === 0) delta = rand(1, range);
+    const distractor = correct + delta;
+    if (distractor >= 0) options.add(distractor);
+    attempts++;
+  }
+  let fb = correct + 1;
+  while (options.size < 4) { options.add(fb); fb++; }
+  return shuffle(Array.from(options));
+}
+function pickFromPoolNoRepeat(pool) {
+  // avoid recent repeats within a session
+  if (pool.length <= 4) return pickRandom(pool);
+  let q;
+  let tries = 0;
+  do {
+    q = pickRandom(pool);
+    tries++;
+  } while (recentQuestions.includes(q.question) && tries < 20);
+  recentQuestions.push(q.question);
+  if (recentQuestions.length > Math.min(15, Math.floor(pool.length / 2))) recentQuestions.shift();
+  // clone and reshuffle options
+  return { question: q.question, answer: q.answer, options: shuffle(q.options.slice()), size: q.size || 'small' };
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+function buildMenu() {
+  const grid = document.getElementById('categoryGrid');
+  grid.innerHTML = '';
+  CATEGORIES.forEach(cat => {
+    const card = document.createElement('div');
+    card.className = 'menu-card';
+    card.onclick = () => selectCategory(cat.id);
+    card.innerHTML = '<div class="icon">' + cat.icon + '</div><div class="title">' + cat.title + '</div>';
+    grid.appendChild(card);
+  });
+}
+
+function showScreen(id) {
+  ['menuScreen','levelScreen','quizScreen','endScreen']
+    .forEach(s => document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function goToMenu() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  document.getElementById('timer').classList.remove('warning');
+  recentQuestions = [];
+  showScreen('menuScreen');
+}
+
+function getCatInfo(id) { return CATEGORIES.find(c => c.id === id); }
+
+function selectCategory(catId) {
+  currentCategory = catId;
+  showLevelScreen();
+}
+
+function showLevelScreen() {
+  const cat = getCatInfo(currentCategory);
+  document.getElementById('levelBreadcrumb').textContent = cat.icon + ' ' + cat.title;
+  document.getElementById('levelTitle').textContent = 'Select Class Level';
+  showScreen('levelScreen');
+}
+
+/* ============================================
+   QUIZ FLOW
+   ============================================ */
+function startQuiz(level) {
+  currentLevel = level;
+  timeLeft = 180;
+  score = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  questionCount = 0;
+  recentQuestions = [];
+  document.getElementById('score').textContent = '0';
+  document.getElementById('timer').textContent = '3:00';
+  document.getElementById('timer').classList.remove('warning');
+
+  const cat = getCatInfo(currentCategory);
+  document.getElementById('quizBreadcrumb').textContent = cat.icon + ' ' + cat.title + ' • Class ' + level;
+
+  showScreen('quizScreen');
+  nextQuestion();
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  timeLeft--;
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  const t = document.getElementById('timer');
+  t.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  if (timeLeft <= 30) t.classList.add('warning');
+  if (timeLeft <= 0) endQuiz();
+}
+
+function quitQuiz() {
+  if (confirm('Are you sure you want to quit this quiz?')) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    goToMenu();
+  }
+}
+
+function nextQuestion() {
+  questionCount++;
+  document.getElementById('qCount').textContent = questionCount;
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback';
+
+  const q = generateQuestion(currentCategory, currentLevel);
+  currentAnswer = q.answer;
+
+  const qEl = document.getElementById('question');
+  qEl.textContent = q.question;
+  qEl.className = 'question';
+  if (q.size === 'large') qEl.classList.add('large');
+  if (q.size === 'small') qEl.classList.add('small');
+
+  const optionsEl = document.getElementById('options');
+  optionsEl.innerHTML = '';
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(opt, btn);
+    optionsEl.appendChild(btn);
+  });
+  acceptingAnswers = true;
+}
+
+function checkAnswer(selected, btn) {
+  if (!acceptingAnswers) return;
+  acceptingAnswers = false;
+  const buttons = document.querySelectorAll('.option-btn');
+  buttons.forEach(b => b.disabled = true);
+  const feedback = document.getElementById('feedback');
+
+  if (String(selected) === String(currentAnswer)) {
+    btn.classList.add('correct');
+    score++;
+    correctCount++;
+    feedback.textContent = '✓ Correct!';
+    feedback.className = 'feedback correct';
+  } else {
+    btn.classList.add('wrong');
+    score--;
+    wrongCount++;
+    feedback.textContent = '✗ Wrong! Answer: ' + currentAnswer;
+    feedback.className = 'feedback wrong';
+    buttons.forEach(b => {
+      if (String(b.textContent) === String(currentAnswer)) b.classList.add('correct');
+    });
+  }
+  document.getElementById('score').textContent = score;
+  setTimeout(() => { if (timeLeft > 0) nextQuestion(); }, 850);
+}
+
+function endQuiz() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('correctCount').textContent = correctCount;
+  document.getElementById('wrongCount').textContent = wrongCount;
+  document.getElementById('totalCount').textContent = correctCount + wrongCount;
+  let msg = "Here's how you did:";
+  if (score >= 30) msg = "Outstanding! 🏆";
+  else if (score >= 20) msg = "Great job! ⭐";
+  else if (score >= 10) msg = "Good effort! 👍";
+  else if (score >= 0) msg = "Keep practicing! 💪";
+  else msg = "Try again to improve! 🎯";
+  document.getElementById('endSubtitle').textContent = msg;
+  showScreen('endScreen');
+}
+
+function restartQuiz() { startQuiz(currentLevel); }
+
+/* ============================================
+   QUESTION ROUTER
+   ============================================ */
+function generateQuestion(cat, level) {
+  switch(cat) {
+    case 'addsub':    return genAddSub(level);
+    case 'multiply':  return genMultiply(level);
+    case 'divide':    return genDivide(level);
+    case 'mixedmath': return genMixedMath(level);
+    case 'patterns':  return genPatterns(level);
+    case 'reasoning': return genReasoning(level);
+    case 'riddles':   return pickFromPoolNoRepeat(POOLS.riddles[level-1]);
+    case 'hindi':     return pickFromPoolNoRepeat(POOLS.hindi[level-1]);
+    case 'english':   return pickFromPoolNoRepeat(POOLS.english[level-1]);
+    case 'gk':        return pickFromPoolNoRepeat(POOLS.gk[level-1]);
+    case 'science':   return pickFromPoolNoRepeat(POOLS.science[level-1]);
+    case 'history':   return pickFromPoolNoRepeat(POOLS.history[level-1]);
+    case 'geography': return pickFromPoolNoRepeat(POOLS.geography[level-1]);
+    case 'sports':    return pickFromPoolNoRepeat(POOLS.sports[level-1]);
+    case 'computers': return pickFromPoolNoRepeat(POOLS.computers[level-1]);
+    case 'animals':   return pickFromPoolNoRepeat(POOLS.animals[level-1]);
+    case 'plants':    return pickFromPoolNoRepeat(POOLS.plants[level-1]);
+    case 'humanbody': return pickFromPoolNoRepeat(POOLS.humanbody[level-1]);
+    case 'space':     return pickFromPoolNoRepeat(POOLS.space[level-1]);
+    case 'capitals':  return pickFromPoolNoRepeat(POOLS.capitals[level-1]);
+  }
+}
+
+/* ============================================
+   MATH GENERATORS - PROCEDURAL (infinite questions)
+   ============================================ */
+function genAddSub(level) {
+  let a, b, op, answer, qText, size = 'large';
+  if (level === 1) { a = rand(0, 9); b = rand(0, 9); }
+  else if (level === 2) { a = rand(5, 30); b = rand(1, 20); }
+  else if (level === 3) { a = rand(20, 99); b = rand(10, 70); }
+  else if (level === 4) { a = rand(100, 500); b = rand(50, 300); size='medium'; }
+  else { a = rand(200, 999); b = rand(100, 800); size='medium'; }
+  op = Math.random() < 0.5 ? '+' : '−';
+  if (op === '+') { answer = a + b; qText = a + ' + ' + b; }
+  else {
+    if (b > a) [a, b] = [b, a];
+    answer = a - b; qText = a + ' − ' + b;
+  }
+  const range = Math.max(3, Math.floor(answer * 0.15) + 2);
+  return { question: qText, answer: answer, options: buildNumericOptions(answer, range), size: size };
+}
+
+function genMultiply(level) {
+  let a, b;
+  if (level === 1) { a = rand(1, 5); b = rand(1, 5); }
+  else if (level === 2) { a = rand(2, 10); b = rand(1, 10); }
+  else if (level === 3) { a = rand(2, 12); b = rand(2, 10); }
+  else if (level === 4) { a = rand(10, 25); b = rand(2, 9); }
+  else { a = rand(11, 25); b = rand(11, 20); }
+  const answer = a * b;
+  const qText = a + ' × ' + b;
+  const range = Math.max(5, Math.floor(answer * 0.2) + 3);
+  return { question: qText, answer: answer, options: buildNumericOptions(answer, range), size: 'large' };
+}
+
+function genDivide(level) {
+  // Generate by multiplying so division is exact
+  let divisor, quotient;
+  if (level === 1) { divisor = rand(1, 5); quotient = rand(1, 5); }
+  else if (level === 2) { divisor = rand(2, 5); quotient = rand(2, 10); }
+  else if (level === 3) { divisor = rand(2, 9); quotient = rand(2, 10); }
+  else if (level === 4) { divisor = rand(2, 10); quotient = rand(5, 15); }
+  else { divisor = rand(3, 12); quotient = rand(5, 25); }
+  const dividend = divisor * quotient;
+  const qText = dividend + ' ÷ ' + divisor;
+  const range = Math.max(3, Math.floor(quotient * 0.3) + 2);
+  return { question: qText, answer: quotient, options: buildNumericOptions(quotient, range), size: 'large' };
+}
+
+function genMixedMath(level) {
+  // Mix add/sub/multiply/divide based on level
+  const ops = level <= 2 ? ['+', '−'] : level <= 3 ? ['+', '−', '×'] : ['+', '−', '×', '÷'];
+  const op = pickRandom(ops);
+  if (op === '+' || op === '−') return genAddSub(level);
+  if (op === '×') return genMultiply(Math.max(1, level - 1));
+  return genDivide(Math.max(1, level - 1));
+}
+
+function genPatterns(level) {
+  // Number sequence: find next term
+  const types = level <= 2 ? ['arith'] : level <= 3 ? ['arith', 'arith2'] : ['arith', 'arith2', 'mult'];
+  const type = pickRandom(types);
+  let seq, next, qText;
+  if (type === 'arith') {
+    const start = rand(1, level <= 2 ? 10 : 30);
+    const step = rand(1, level <= 2 ? 3 : 6);
+    seq = [start, start + step, start + 2*step, start + 3*step];
+    next = start + 4*step;
+  } else if (type === 'arith2') {
+    const start = rand(2, 20);
+    const step = rand(2, 8);
+    seq = [start, start + step, start + 2*step, start + 3*step];
+    next = start + 4*step;
+  } else {
+    const start = rand(2, 5);
+    const factor = rand(2, 3);
+    seq = [start, start * factor, start * factor * factor];
+    next = start * factor * factor * factor;
+  }
+  qText = 'Next number? ' + seq.join(', ') + ', __';
+  const range = Math.max(3, Math.floor(next * 0.2) + 2);
+  return { question: qText, answer: next, options: buildNumericOptions(next, range), size: 'small' };
+}
+
+function genReasoning(level) {
+  // Mix of comparisons, missing numbers, simple word problems
+  const types = ['compare', 'missing', 'word'];
+  const type = pickRandom(types);
+  if (type === 'compare') {
+    const a = rand(1, level * 20);
+    const b = rand(1, level * 20);
+    if (a === b) return genReasoning(level);
+    const correct = a > b ? 'Greater' : 'Smaller';
+    return {
+      question: 'Is ' + a + ' greater or smaller than ' + b + '?',
+      answer: correct,
+      options: shuffle(['Greater', 'Smaller', 'Equal', 'Cannot say']),
+      size: 'small'
+    };
+  } else if (type === 'missing') {
+    const a = rand(2, level * 10);
+    const b = rand(2, level * 10);
+    const sum = a + b;
+    return {
+      question: a + ' + __ = ' + sum,
+      answer: b,
+      options: buildNumericOptions(b, Math.max(3, Math.floor(b*0.3)+2)),
+      size: 'large'
+    };
+  } else {
+    // simple word problem
+    const items = level <= 2 ? rand(2, 8) : rand(5, 30);
+    const more = level <= 2 ? rand(1, 5) : rand(2, 20);
+    const total = items + more;
+    return {
+      question: 'Ravi has ' + items + ' apples. He gets ' + more + ' more. How many now?',
+      answer: total,
+      options: buildNumericOptions(total, 4),
+      size: 'small'
+    };
+  }
+}
+
+const POOLS = {
+  "hindi": [
+    [
+      {question:"What does 'पानी' mean?",answer:"Water",options:["Water","Fire","Air","Milk"],size:"small"},
+      {question:"What does 'दूध' mean?",answer:"Milk",options:["Milk","Water","Juice","Tea"],size:"small"},
+      {question:"What does 'घर' mean?",answer:"House",options:["House","School","Shop","Park"],size:"small"},
+      {question:"What does 'माँ' mean?",answer:"Mother",options:["Mother","Father","Sister","Aunt"],size:"small"},
+      {question:"What does 'पिता' mean?",answer:"Father",options:["Father","Mother","Brother","Uncle"],size:"small"},
+      {question:"What does 'कुत्ता' mean?",answer:"Dog",options:["Dog","Cat","Cow","Horse"],size:"small"},
+      {question:"What does 'बिल्ली' mean?",answer:"Cat",options:["Cat","Dog","Mouse","Rabbit"],size:"small"},
+      {question:"What does 'गाय' mean?",answer:"Cow",options:["Cow","Horse","Goat","Buffalo"],size:"small"},
+      {question:"What does 'सूरज' mean?",answer:"Sun",options:["Sun","Moon","Star","Sky"],size:"small"},
+      {question:"What does 'चाँद' mean?",answer:"Moon",options:["Moon","Sun","Star","Cloud"],size:"small"},
+      {question:"Hindi for 'One'?",answer:"एक",options:["एक","दो","तीन","चार"],size:"small"},
+      {question:"Hindi for 'Two'?",answer:"दो",options:["दो","एक","तीन","चार"],size:"small"},
+      {question:"Hindi for 'Three'?",answer:"तीन",options:["तीन","दो","एक","चार"],size:"small"},
+      {question:"Hindi for 'Four'?",answer:"चार",options:["चार","पाँच","तीन","दो"],size:"small"},
+      {question:"Hindi for 'Five'?",answer:"पाँच",options:["पाँच","चार","छह","तीन"],size:"small"},
+      {question:"Hindi for 'Red'?",answer:"लाल",options:["लाल","नीला","हरा","पीला"],size:"small"},
+      {question:"Hindi for 'Apple'?",answer:"सेब",options:["सेब","केला","आम","अंगूर"],size:"small"},
+      {question:"Hindi for 'Banana'?",answer:"केला",options:["केला","सेब","आम","नारंगी"],size:"small"},
+      {question:"What does 'फूल' mean?",answer:"Flower",options:["Flower","Fruit","Leaf","Tree"],size:"small"},
+      {question:"What does 'पेड़' mean?",answer:"Tree",options:["Tree","Bush","Plant","Grass"],size:"small"},
+    ],
+    [
+      {question:"What does 'विद्यालय' mean?",answer:"School",options:["School","Hospital","Temple","Office"],size:"small"},
+      {question:"What does 'मित्र' mean?",answer:"Friend",options:["Friend","Enemy","Brother","Teacher"],size:"small"},
+      {question:"What does 'किताब' mean?",answer:"Book",options:["Book","Pen","Paper","Bag"],size:"small"},
+      {question:"What does 'कलम' mean?",answer:"Pen",options:["Pen","Pencil","Eraser","Book"],size:"small"},
+      {question:"What does 'अध्यापक' mean?",answer:"Teacher",options:["Teacher","Student","Doctor","Farmer"],size:"small"},
+      {question:"What does 'छात्र' mean?",answer:"Student",options:["Student","Teacher","Worker","Player"],size:"small"},
+      {question:"What does 'भाई' mean?",answer:"Brother",options:["Brother","Sister","Friend","Cousin"],size:"small"},
+      {question:"What does 'बहन' mean?",answer:"Sister",options:["Sister","Brother","Mother","Daughter"],size:"small"},
+      {question:"Hindi for 'Ten'?",answer:"दस",options:["दस","नौ","ग्यारह","बारह"],size:"small"},
+      {question:"Hindi for 'Twenty'?",answer:"बीस",options:["बीस","तीस","दस","पच्चीस"],size:"small"},
+      {question:"Opposite of 'बड़ा'?",answer:"छोटा",options:["छोटा","लंबा","मोटा","ऊँचा"],size:"small"},
+      {question:"Opposite of 'अच्छा'?",answer:"बुरा",options:["बुरा","खराब","ठीक","अच्छा"],size:"small"},
+      {question:"Opposite of 'दिन'?",answer:"रात",options:["रात","शाम","सुबह","दोपहर"],size:"small"},
+      {question:"Opposite of 'गरम'?",answer:"ठंडा",options:["ठंडा","गर्म","उष्ण","तप्त"],size:"small"},
+      {question:"What does 'बादल' mean?",answer:"Cloud",options:["Cloud","Rain","Wind","Storm"],size:"small"},
+      {question:"What does 'आकाश' mean?",answer:"Sky",options:["Sky","Earth","Sea","Mountain"],size:"small"},
+      {question:"What does 'पक्षी' mean?",answer:"Bird",options:["Bird","Fish","Snake","Insect"],size:"small"},
+      {question:"What does 'मछली' mean?",answer:"Fish",options:["Fish","Bird","Frog","Snake"],size:"small"},
+      {question:"Hindi for 'Sunday'?",answer:"रविवार",options:["रविवार","सोमवार","मंगलवार","शनिवार"],size:"small"},
+      {question:"Hindi for 'Monday'?",answer:"सोमवार",options:["सोमवार","रविवार","मंगलवार","बुधवार"],size:"small"},
+    ],
+    [
+      {question:"'मैं' is which pronoun?",answer:"I",options:["I","You","He","We"],size:"small"},
+      {question:"'तुम' means?",answer:"You",options:["You","I","We","They"],size:"small"},
+      {question:"'वह' means?",answer:"He/She",options:["He/She","I","You","We"],size:"small"},
+      {question:"'हम' means?",answer:"We",options:["We","They","You","I"],size:"small"},
+      {question:"What does 'खुश' mean?",answer:"Happy",options:["Happy","Sad","Angry","Tired"],size:"small"},
+      {question:"What does 'दुखी' mean?",answer:"Sad",options:["Sad","Happy","Excited","Calm"],size:"small"},
+      {question:"Hindi for 'Hello'?",answer:"नमस्ते",options:["नमस्ते","अलविदा","धन्यवाद","क्षमा"],size:"small"},
+      {question:"Hindi for 'Thank you'?",answer:"धन्यवाद",options:["धन्यवाद","नमस्ते","क्षमा","कृपया"],size:"small"},
+      {question:"Hindi for 'Please'?",answer:"कृपया",options:["कृपया","धन्यवाद","क्षमा","नमस्ते"],size:"small"},
+      {question:"Hindi for 'Sorry'?",answer:"क्षमा",options:["क्षमा","धन्यवाद","नमस्ते","कृपया"],size:"small"},
+      {question:"What does 'समुद्र' mean?",answer:"Sea",options:["Sea","River","Lake","Pond"],size:"small"},
+      {question:"What does 'नदी' mean?",answer:"River",options:["River","Sea","Stream","Waterfall"],size:"small"},
+      {question:"What does 'पर्वत' mean?",answer:"Mountain",options:["Mountain","Hill","Valley","Plain"],size:"small"},
+      {question:"What does 'जंगल' mean?",answer:"Forest",options:["Forest","Garden","Park","Field"],size:"small"},
+      {question:"What is the plural of 'लड़का'?",answer:"लड़के",options:["लड़के","लड़काएँ","लड़कों","लड़कीं"],size:"small"},
+      {question:"What is the plural of 'किताब'?",answer:"किताबें",options:["किताबें","किताबों","किताबे","किताबी"],size:"small"},
+      {question:"Gender of 'राजा'?",answer:"Masculine",options:["Masculine","Feminine","Neuter","Common"],size:"small"},
+      {question:"Gender of 'रानी'?",answer:"Feminine",options:["Feminine","Masculine","Neuter","Common"],size:"small"},
+      {question:"Hindi for 'Yes'?",answer:"हाँ",options:["हाँ","नहीं","शायद","कभी"],size:"small"},
+      {question:"Hindi for 'No'?",answer:"नहीं",options:["नहीं","हाँ","शायद","कभी"],size:"small"},
+    ],
+    [
+      {question:"'खाना' means?",answer:"To eat / food",options:["To eat / food","To drink","To sleep","To run"],size:"small"},
+      {question:"'पीना' means?",answer:"To drink",options:["To drink","To eat","To sing","To play"],size:"small"},
+      {question:"'सोना' means?",answer:"To sleep",options:["To sleep","To wake","To run","To eat"],size:"small"},
+      {question:"'दौड़ना' means?",answer:"To run",options:["To run","To walk","To jump","To sit"],size:"small"},
+      {question:"'पढ़ना' means?",answer:"To read",options:["To read","To write","To speak","To listen"],size:"small"},
+      {question:"'लिखना' means?",answer:"To write",options:["To write","To read","To draw","To paint"],size:"small"},
+      {question:"What is 'संज्ञा'?",answer:"Noun",options:["Noun","Verb","Adjective","Pronoun"],size:"small"},
+      {question:"What is 'क्रिया'?",answer:"Verb",options:["Verb","Noun","Adjective","Adverb"],size:"small"},
+      {question:"What is 'सर्वनाम'?",answer:"Pronoun",options:["Pronoun","Noun","Verb","Adverb"],size:"small"},
+      {question:"What is 'विशेषण'?",answer:"Adjective",options:["Adjective","Adverb","Verb","Noun"],size:"small"},
+      {question:"Synonym of 'सूर्य'?",answer:"रवि",options:["रवि","चाँद","तारा","बादल"],size:"small"},
+      {question:"Synonym of 'जल'?",answer:"पानी",options:["पानी","आग","हवा","मिट्टी"],size:"small"},
+      {question:"Synonym of 'राजा'?",answer:"नृप",options:["नृप","रानी","मंत्री","सेवक"],size:"small"},
+      {question:"Antonym of 'सुख'?",answer:"दुख",options:["दुख","आनंद","खुशी","हर्ष"],size:"small"},
+      {question:"Antonym of 'अमीर'?",answer:"गरीब",options:["गरीब","धनी","संपन्न","धनवान"],size:"small"},
+      {question:"Antonym of 'जीवन'?",answer:"मृत्यु",options:["मृत्यु","जीना","जन्म","साँस"],size:"small"},
+      {question:"'पुस्तक' is which gender?",answer:"Feminine",options:["Feminine","Masculine","Neuter","Both"],size:"small"},
+      {question:"'घोड़ा' is which gender?",answer:"Masculine",options:["Masculine","Feminine","Neuter","Both"],size:"small"},
+      {question:"'घर' means?",answer:"House",options:["House","Office","Shop","Garden"],size:"small"},
+      {question:"'कमरा' means?",answer:"Room",options:["Room","Door","Window","Wall"],size:"small"},
+    ],
+    [
+      {question:"'राष्ट्रीय' means?",answer:"National",options:["National","International","Local","Regional"],size:"small"},
+      {question:"'स्वतंत्रता' means?",answer:"Independence",options:["Independence","Republic","Democracy","Freedom"],size:"small"},
+      {question:"'गणतंत्र' means?",answer:"Republic",options:["Republic","Democracy","Monarchy","Empire"],size:"small"},
+      {question:"'प्रधानमंत्री' means?",answer:"Prime Minister",options:["Prime Minister","President","Governor","Minister"],size:"small"},
+      {question:"'राष्ट्रपति' means?",answer:"President",options:["President","PM","Governor","Minister"],size:"small"},
+      {question:"'पर्यावरण' means?",answer:"Environment",options:["Environment","Climate","Weather","Nature"],size:"small"},
+      {question:"'प्रदूषण' means?",answer:"Pollution",options:["Pollution","Pollination","Production","Protection"],size:"small"},
+      {question:"'विज्ञान' means?",answer:"Science",options:["Science","Math","Art","History"],size:"small"},
+      {question:"'गणित' means?",answer:"Math",options:["Math","Science","English","Hindi"],size:"small"},
+      {question:"'इतिहास' means?",answer:"History",options:["History","Geography","Civics","Science"],size:"small"},
+      {question:"'भूगोल' means?",answer:"Geography",options:["Geography","History","Civics","Math"],size:"small"},
+      {question:"Idiom 'अंगूर खट्टे हैं' means?",answer:"Sour grapes",options:["Sour grapes","Sweet talk","Lazy person","Big mouth"],size:"small"},
+      {question:"Idiom 'नौ दो ग्यारह होना' means?",answer:"To run away",options:["To run away","To fight","To eat","To sleep"],size:"small"},
+      {question:"Plural of 'कविता'?",answer:"कविताएँ",options:["कविताएँ","कविताओं","कविते","कवितें"],size:"small"},
+      {question:"Plural of 'नदी'?",answer:"नदियाँ",options:["नदियाँ","नदियों","नदी","नदें"],size:"small"},
+      {question:"Verb form of 'गाना'?",answer:"गाता है",options:["गाता है","गाया","गाएगा","गाओ"],size:"small"},
+      {question:"'समाचार' means?",answer:"News",options:["News","Story","Letter","Report"],size:"small"},
+      {question:"'अखबार' means?",answer:"Newspaper",options:["Newspaper","Magazine","Book","Journal"],size:"small"},
+      {question:"'दूरदर्शन' means?",answer:"Television",options:["Television","Radio","Phone","Computer"],size:"small"},
+      {question:"Synonym of 'पुष्प'?",answer:"फूल",options:["फूल","पत्ता","जड़","तना"],size:"small"},
+    ],
+  ],
+  "english": [
+    [
+      {question:"Which letter comes after A?",answer:"B",options:["B","C","D","Z"],size:"small"},
+      {question:"Which letter comes after M?",answer:"N",options:["N","L","O","K"],size:"small"},
+      {question:"First letter of alphabet?",answer:"A",options:["A","B","Z","M"],size:"small"},
+      {question:"Last letter of alphabet?",answer:"Z",options:["Z","Y","A","X"],size:"small"},
+      {question:"How many letters in 'CAT'?",answer:"3",options:["3","2","4","5"],size:"small"},
+      {question:"How many letters in 'DOG'?",answer:"3",options:["3","2","4","5"],size:"small"},
+      {question:"Spell: c-a-t",answer:"CAT",options:["CAT","BAT","RAT","HAT"],size:"small"},
+      {question:"Spell: d-o-g",answer:"DOG",options:["DOG","LOG","FOG","BOG"],size:"small"},
+      {question:"Spell: s-u-n",answer:"SUN",options:["SUN","FUN","RUN","BUN"],size:"small"},
+      {question:"Color of grass?",answer:"Green",options:["Green","Red","Blue","Yellow"],size:"small"},
+      {question:"Color of sky?",answer:"Blue",options:["Blue","Green","Red","Black"],size:"small"},
+      {question:"Color of milk?",answer:"White",options:["White","Black","Red","Brown"],size:"small"},
+      {question:"Animal that says 'meow'?",answer:"Cat",options:["Cat","Dog","Cow","Pig"],size:"small"},
+      {question:"Animal that says 'bark'?",answer:"Dog",options:["Dog","Cat","Cow","Sheep"],size:"small"},
+      {question:"Animal that says 'moo'?",answer:"Cow",options:["Cow","Dog","Cat","Pig"],size:"small"},
+      {question:"Which is a fruit?",answer:"Apple",options:["Apple","Carrot","Potato","Onion"],size:"small"},
+      {question:"Which is a vegetable?",answer:"Carrot",options:["Carrot","Apple","Mango","Banana"],size:"small"},
+      {question:"What do birds use to fly?",answer:"Wings",options:["Wings","Legs","Fins","Tail"],size:"small"},
+      {question:"What do fish use to swim?",answer:"Fins",options:["Fins","Wings","Legs","Arms"],size:"small"},
+      {question:"Which is a vowel?",answer:"A",options:["A","B","C","D"],size:"small"},
+    ],
+    [
+      {question:"Correct spelling?",answer:"Apple",options:["Apple","Aple","Appel","Apel"],size:"small"},
+      {question:"Correct spelling?",answer:"Mother",options:["Mother","Mothar","Mothar","Muther"],size:"small"},
+      {question:"Correct spelling?",answer:"Father",options:["Father","Fathar","Fader","Fathur"],size:"small"},
+      {question:"Correct spelling?",answer:"School",options:["School","Skool","Scool","Shool"],size:"small"},
+      {question:"Correct spelling?",answer:"Friend",options:["Friend","Frend","Freind","Frien"],size:"small"},
+      {question:"Correct spelling?",answer:"Water",options:["Water","Watar","Watter","Wter"],size:"small"},
+      {question:"Plural of 'cat'?",answer:"cats",options:["cats","cates","caties","cat"],size:"small"},
+      {question:"Plural of 'box'?",answer:"boxes",options:["boxes","boxs","boxies","box"],size:"small"},
+      {question:"Plural of 'baby'?",answer:"babies",options:["babies","babys","babes","baby"],size:"small"},
+      {question:"Opposite of 'big'?",answer:"small",options:["small","large","huge","tall"],size:"small"},
+      {question:"Opposite of 'hot'?",answer:"cold",options:["cold","warm","cool","mild"],size:"small"},
+      {question:"Opposite of 'day'?",answer:"night",options:["night","morning","noon","evening"],size:"small"},
+      {question:"Opposite of 'happy'?",answer:"sad",options:["sad","glad","joyful","merry"],size:"small"},
+      {question:"Color word starting with 'R'?",answer:"Red",options:["Red","Blue","Green","Yellow"],size:"small"},
+      {question:"Number word for 5?",answer:"Five",options:["Five","Four","Six","Seven"],size:"small"},
+      {question:"Number word for 10?",answer:"Ten",options:["Ten","Nine","Eleven","Twelve"],size:"small"},
+      {question:"A young dog is called?",answer:"Puppy",options:["Puppy","Kitten","Cub","Calf"],size:"small"},
+      {question:"A young cat is called?",answer:"Kitten",options:["Kitten","Puppy","Cub","Foal"],size:"small"},
+      {question:"How many vowels in English?",answer:"5",options:["5","4","6","10"],size:"small"},
+      {question:"A,E,I,O,_? Fill blank.",answer:"U",options:["U","Y","B","X"],size:"small"},
+    ],
+    [
+      {question:"Article before 'apple'?",answer:"an",options:["an","a","the","no article"],size:"small"},
+      {question:"Article before 'orange'?",answer:"an",options:["an","a","the","no article"],size:"small"},
+      {question:"Article before 'book'?",answer:"a",options:["a","an","the","no article"],size:"small"},
+      {question:"Article before 'hour'?",answer:"an",options:["an","a","the","no article"],size:"small"},
+      {question:"Past tense of 'go'?",answer:"went",options:["went","goed","gone","going"],size:"small"},
+      {question:"Past tense of 'eat'?",answer:"ate",options:["ate","eated","eaten","eating"],size:"small"},
+      {question:"Past tense of 'run'?",answer:"ran",options:["ran","runned","running","run"],size:"small"},
+      {question:"Past tense of 'see'?",answer:"saw",options:["saw","seed","seen","seeing"],size:"small"},
+      {question:"Past tense of 'come'?",answer:"came",options:["came","comed","coming","come"],size:"small"},
+      {question:"She ___ to school daily.",answer:"goes",options:["goes","go","going","gone"],size:"small"},
+      {question:"They ___ playing now.",answer:"are",options:["are","is","am","be"],size:"small"},
+      {question:"I ___ a student.",answer:"am",options:["am","is","are","be"],size:"small"},
+      {question:"He ___ very tall.",answer:"is",options:["is","am","are","be"],size:"small"},
+      {question:"Plural of 'child'?",answer:"children",options:["children","childs","childes","childies"],size:"small"},
+      {question:"Plural of 'foot'?",answer:"feet",options:["feet","foots","footes","feets"],size:"small"},
+      {question:"Plural of 'mouse'?",answer:"mice",options:["mice","mouses","mouse","mices"],size:"small"},
+      {question:"Plural of 'man'?",answer:"men",options:["men","mans","mens","manes"],size:"small"},
+      {question:"Synonym of 'big'?",answer:"large",options:["large","small","tiny","little"],size:"small"},
+      {question:"Synonym of 'fast'?",answer:"quick",options:["quick","slow","lazy","late"],size:"small"},
+      {question:"Antonym of 'rich'?",answer:"poor",options:["poor","wealthy","lucky","good"],size:"small"},
+    ],
+    [
+      {question:"Correct spelling?",answer:"Necessary",options:["Necessary","Neccessary","Necesary","Neccesary"],size:"small"},
+      {question:"Correct spelling?",answer:"Receive",options:["Receive","Recieve","Receeve","Receve"],size:"small"},
+      {question:"Correct spelling?",answer:"Believe",options:["Believe","Beleive","Belive","Believ"],size:"small"},
+      {question:"Correct spelling?",answer:"Tomorrow",options:["Tomorrow","Tommorow","Tommorrow","Tomorow"],size:"small"},
+      {question:"Correct spelling?",answer:"Beautiful",options:["Beautiful","Beutiful","Beautifull","Beautyful"],size:"small"},
+      {question:"Correct spelling?",answer:"Wednesday",options:["Wednesday","Wensday","Wednsday","Wedesday"],size:"small"},
+      {question:"Correct spelling?",answer:"February",options:["February","Febuary","Februery","Febrary"],size:"small"},
+      {question:"Synonym of 'happy'?",answer:"Joyful",options:["Joyful","Sad","Angry","Tired"],size:"small"},
+      {question:"Synonym of 'brave'?",answer:"Courageous",options:["Courageous","Scared","Weak","Timid"],size:"small"},
+      {question:"Synonym of 'beautiful'?",answer:"Pretty",options:["Pretty","Ugly","Bad","Plain"],size:"small"},
+      {question:"Antonym of 'strong'?",answer:"Weak",options:["Weak","Tough","Hard","Firm"],size:"small"},
+      {question:"Antonym of 'win'?",answer:"Lose",options:["Lose","Gain","Earn","Get"],size:"small"},
+      {question:"Antonym of 'open'?",answer:"Close",options:["Close","Begin","Show","Start"],size:"small"},
+      {question:"Past tense of 'buy'?",answer:"bought",options:["bought","buyed","buying","buys"],size:"small"},
+      {question:"Past tense of 'write'?",answer:"wrote",options:["wrote","writed","written","writing"],size:"small"},
+      {question:"Past tense of 'teach'?",answer:"taught",options:["taught","teached","teaching","teached"],size:"small"},
+      {question:"Past tense of 'bring'?",answer:"brought",options:["brought","bringed","brung","bringing"],size:"small"},
+      {question:"Question word for place?",answer:"Where",options:["Where","When","Why","Who"],size:"small"},
+      {question:"Question word for time?",answer:"When",options:["When","Where","What","How"],size:"small"},
+      {question:"Question word for reason?",answer:"Why",options:["Why","How","What","Who"],size:"small"},
+    ],
+    [
+      {question:"Correct spelling?",answer:"Definitely",options:["Definitely","Definately","Definatly","Defenitely"],size:"small"},
+      {question:"Correct spelling?",answer:"Separate",options:["Separate","Seperate","Saparate","Seprate"],size:"small"},
+      {question:"Correct spelling?",answer:"Restaurant",options:["Restaurant","Restraunt","Resturant","Restaraunt"],size:"small"},
+      {question:"Correct spelling?",answer:"Knowledge",options:["Knowledge","Knowlege","Knoledge","Knowladge"],size:"small"},
+      {question:"Correct spelling?",answer:"Government",options:["Government","Goverment","Govenment","Governement"],size:"small"},
+      {question:"Meaning of 'enormous'?",answer:"Very large",options:["Very large","Very small","Very fast","Very slow"],size:"small"},
+      {question:"Meaning of 'ancient'?",answer:"Very old",options:["Very old","Very new","Very rare","Very common"],size:"small"},
+      {question:"Meaning of 'generous'?",answer:"Giving",options:["Giving","Selfish","Greedy","Stingy"],size:"small"},
+      {question:"Meaning of 'honest'?",answer:"Truthful",options:["Truthful","Lying","Fake","Cheating"],size:"small"},
+      {question:"Meaning of 'brilliant'?",answer:"Very clever",options:["Very clever","Very dull","Very weak","Very lazy"],size:"small"},
+      {question:"Synonym of 'difficult'?",answer:"hard",options:["hard","easy","simple","plain"],size:"small"},
+      {question:"Synonym of 'huge'?",answer:"enormous",options:["enormous","tiny","small","little"],size:"small"},
+      {question:"Antonym of 'ancient'?",answer:"modern",options:["modern","old","aged","ancient"],size:"small"},
+      {question:"Antonym of 'permit'?",answer:"forbid",options:["forbid","allow","let","accept"],size:"small"},
+      {question:"Idiom 'piece of cake' means?",answer:"very easy",options:["very easy","very hard","delicious","expensive"],size:"small"},
+      {question:"Idiom 'break a leg' means?",answer:"good luck",options:["good luck","get hurt","run fast","be careful"],size:"small"},
+      {question:"Comparative of 'good'?",answer:"better",options:["better","gooder","best","more good"],size:"small"},
+      {question:"Superlative of 'bad'?",answer:"worst",options:["worst","badder","baddest","more bad"],size:"small"},
+      {question:"A noun is a?",answer:"Person, place, thing",options:["Person, place, thing","Action word","Describing word","Joining word"],size:"small"},
+      {question:"A verb is a?",answer:"Action word",options:["Action word","Naming word","Describing word","Joining word"],size:"small"},
+    ],
+  ],
+  "gk": [
+    [
+      {question:"How many days in a week?",answer:"7",options:["7","5","6","8"],size:"small"},
+      {question:"How many months in a year?",answer:"12",options:["12","10","11","13"],size:"small"},
+      {question:"How many seasons in a year?",answer:"4",options:["4","3","5","2"],size:"small"},
+      {question:"First month of year?",answer:"January",options:["January","February","March","December"],size:"small"},
+      {question:"Last month of year?",answer:"December",options:["December","November","January","October"],size:"small"},
+      {question:"Day after Sunday?",answer:"Monday",options:["Monday","Tuesday","Saturday","Friday"],size:"small"},
+      {question:"Day before Sunday?",answer:"Saturday",options:["Saturday","Monday","Friday","Sunday"],size:"small"},
+      {question:"How many fingers on one hand?",answer:"5",options:["5","4","6","10"],size:"small"},
+      {question:"How many eyes do we have?",answer:"2",options:["2","1","3","4"],size:"small"},
+      {question:"How many ears do we have?",answer:"2",options:["2","1","3","4"],size:"small"},
+      {question:"Color of sun?",answer:"Yellow",options:["Yellow","Blue","Green","Black"],size:"small"},
+      {question:"Color of leaf?",answer:"Green",options:["Green","Blue","Red","Yellow"],size:"small"},
+      {question:"Where do fish live?",answer:"Water",options:["Water","Tree","Land","Sky"],size:"small"},
+      {question:"Where do birds live?",answer:"Nest",options:["Nest","Hole","Den","Cave"],size:"small"},
+      {question:"What gives us light?",answer:"Sun",options:["Sun","Moon","Star","Cloud"],size:"small"},
+      {question:"Capital of India?",answer:"New Delhi",options:["New Delhi","Mumbai","Kolkata","Chennai"],size:"small"},
+      {question:"National animal of India?",answer:"Tiger",options:["Tiger","Lion","Elephant","Peacock"],size:"small"},
+      {question:"National bird of India?",answer:"Peacock",options:["Peacock","Sparrow","Parrot","Eagle"],size:"small"},
+      {question:"Currency of India?",answer:"Rupee",options:["Rupee","Dollar","Euro","Yen"],size:"small"},
+      {question:"Color of Indian flag bottom stripe?",answer:"Green",options:["Green","Orange","White","Blue"],size:"small"},
+    ],
+    [
+      {question:"National flower of India?",answer:"Lotus",options:["Lotus","Rose","Sunflower","Jasmine"],size:"small"},
+      {question:"National fruit of India?",answer:"Mango",options:["Mango","Apple","Banana","Orange"],size:"small"},
+      {question:"National tree of India?",answer:"Banyan",options:["Banyan","Neem","Peepal","Mango"],size:"small"},
+      {question:"Father of Nation in India?",answer:"Mahatma Gandhi",options:["Mahatma Gandhi","Nehru","Patel","Bose"],size:"small"},
+      {question:"First PM of India?",answer:"Jawaharlal Nehru",options:["Jawaharlal Nehru","Indira Gandhi","Rajiv Gandhi","Shastri"],size:"small"},
+      {question:"India got independence in?",answer:"1947",options:["1947","1950","1945","1948"],size:"small"},
+      {question:"Republic Day?",answer:"26 January",options:["26 January","15 August","2 October","14 November"],size:"small"},
+      {question:"Independence Day?",answer:"15 August",options:["15 August","26 January","2 October","5 September"],size:"small"},
+      {question:"Children's Day?",answer:"14 November",options:["14 November","26 January","15 August","5 September"],size:"small"},
+      {question:"Teacher's Day?",answer:"5 September",options:["5 September","14 November","15 August","26 January"],size:"small"},
+      {question:"How many states in India (28 / 29)?",answer:"28",options:["28","29","30","27"],size:"small"},
+      {question:"Largest state by area?",answer:"Rajasthan",options:["Rajasthan","Maharashtra","MP","UP"],size:"small"},
+      {question:"Pink City of India?",answer:"Jaipur",options:["Jaipur","Udaipur","Jodhpur","Bikaner"],size:"small"},
+      {question:"Taj Mahal is in?",answer:"Agra",options:["Agra","Delhi","Jaipur","Lucknow"],size:"small"},
+      {question:"How many planets in solar system?",answer:"8",options:["8","9","7","10"],size:"small"},
+      {question:"Largest planet?",answer:"Jupiter",options:["Jupiter","Saturn","Earth","Mars"],size:"small"},
+      {question:"Red planet?",answer:"Mars",options:["Mars","Venus","Jupiter","Saturn"],size:"small"},
+      {question:"How many continents?",answer:"7",options:["7","5","6","8"],size:"small"},
+      {question:"Largest ocean?",answer:"Pacific",options:["Pacific","Atlantic","Indian","Arctic"],size:"small"},
+      {question:"How many colors in rainbow?",answer:"7",options:["7","5","6","8"],size:"small"},
+    ],
+    [
+      {question:"Capital of Rajasthan?",answer:"Jaipur",options:["Jaipur","Jodhpur","Udaipur","Kota"],size:"small"},
+      {question:"Capital of Maharashtra?",answer:"Mumbai",options:["Mumbai","Pune","Nagpur","Nashik"],size:"small"},
+      {question:"Capital of UP?",answer:"Lucknow",options:["Lucknow","Kanpur","Agra","Varanasi"],size:"small"},
+      {question:"Capital of West Bengal?",answer:"Kolkata",options:["Kolkata","Howrah","Darjeeling","Siliguri"],size:"small"},
+      {question:"Capital of Karnataka?",answer:"Bengaluru",options:["Bengaluru","Mysuru","Mangaluru","Hubli"],size:"small"},
+      {question:"Capital of Tamil Nadu?",answer:"Chennai",options:["Chennai","Madurai","Coimbatore","Salem"],size:"small"},
+      {question:"IT capital of India?",answer:"Bengaluru",options:["Bengaluru","Hyderabad","Chennai","Pune"],size:"small"},
+      {question:"Financial capital of India?",answer:"Mumbai",options:["Mumbai","Delhi","Kolkata","Chennai"],size:"small"},
+      {question:"Longest river in India?",answer:"Ganga",options:["Ganga","Yamuna","Brahmaputra","Godavari"],size:"small"},
+      {question:"Highest peak in India?",answer:"Kanchenjunga",options:["Kanchenjunga","Mt Everest","K2","Nanda Devi"],size:"small"},
+      {question:"Who built Taj Mahal?",answer:"Shah Jahan",options:["Shah Jahan","Akbar","Aurangzeb","Babur"],size:"small"},
+      {question:"Smallest planet?",answer:"Mercury",options:["Mercury","Venus","Mars","Pluto"],size:"small"},
+      {question:"Closest planet to Sun?",answer:"Mercury",options:["Mercury","Venus","Earth","Mars"],size:"small"},
+      {question:"Earth's natural satellite?",answer:"Moon",options:["Moon","Sun","Mars","Venus"],size:"small"},
+      {question:"Largest continent?",answer:"Asia",options:["Asia","Africa","Europe","Antarctica"],size:"small"},
+      {question:"Largest desert?",answer:"Sahara",options:["Sahara","Thar","Gobi","Arabian"],size:"small"},
+      {question:"Tallest mountain in world?",answer:"Mt Everest",options:["Mt Everest","K2","Kanchenjunga","Lhotse"],size:"small"},
+      {question:"Longest river in world?",answer:"Nile",options:["Nile","Amazon","Ganga","Mississippi"],size:"small"},
+      {question:"Boiling point of water?",answer:"100°C",options:["100°C","90°C","110°C","120°C"],size:"small"},
+      {question:"Freezing point of water?",answer:"0°C",options:["0°C","-10°C","10°C","5°C"],size:"small"},
+    ],
+    [
+      {question:"Largest country by area?",answer:"Russia",options:["Russia","Canada","USA","China"],size:"small"},
+      {question:"Most populated country?",answer:"India",options:["India","China","USA","Indonesia"],size:"small"},
+      {question:"Country of Eiffel Tower?",answer:"France",options:["France","Italy","UK","Germany"],size:"small"},
+      {question:"Country of Great Wall?",answer:"China",options:["China","Japan","Korea","Vietnam"],size:"small"},
+      {question:"Country of Statue of Liberty?",answer:"USA",options:["USA","UK","France","Canada"],size:"small"},
+      {question:"Currency of USA?",answer:"Dollar",options:["Dollar","Pound","Euro","Yen"],size:"small"},
+      {question:"Currency of UK?",answer:"Pound",options:["Pound","Dollar","Euro","Franc"],size:"small"},
+      {question:"Currency of Japan?",answer:"Yen",options:["Yen","Won","Yuan","Rupee"],size:"small"},
+      {question:"Who invented telephone?",answer:"Graham Bell",options:["Graham Bell","Edison","Newton","Einstein"],size:"small"},
+      {question:"Who invented bulb?",answer:"Edison",options:["Edison","Bell","Tesla","Newton"],size:"small"},
+      {question:"Who discovered gravity?",answer:"Newton",options:["Newton","Einstein","Galileo","Edison"],size:"small"},
+      {question:"Space agency of India?",answer:"ISRO",options:["ISRO","NASA","ESA","DRDO"],size:"small"},
+      {question:"Space agency of USA?",answer:"NASA",options:["NASA","ISRO","ESA","JAXA"],size:"small"},
+      {question:"First man on Moon?",answer:"Neil Armstrong",options:["Neil Armstrong","Yuri Gagarin","Buzz Aldrin","Rakesh Sharma"],size:"small"},
+      {question:"First Indian in space?",answer:"Rakesh Sharma",options:["Rakesh Sharma","Kalpana Chawla","Sunita Williams","APJ Kalam"],size:"small"},
+      {question:"Missile Man of India?",answer:"APJ Abdul Kalam",options:["APJ Abdul Kalam","Vikram Sarabhai","Homi Bhabha","CV Raman"],size:"small"},
+      {question:"God of cricket?",answer:"Sachin Tendulkar",options:["Sachin Tendulkar","Virat Kohli","MS Dhoni","Sourav Ganguly"],size:"small"},
+      {question:"Cricket players per team?",answer:"11",options:["11","10","12","9"],size:"small"},
+      {question:"Olympics held every?",answer:"4 years",options:["4 years","2 years","5 years","3 years"],size:"small"},
+      {question:"How many bones in adult human?",answer:"206",options:["206","201","210","220"],size:"small"},
+    ],
+    [
+      {question:"First President of India?",answer:"Rajendra Prasad",options:["Rajendra Prasad","Nehru","Radhakrishnan","APJ Kalam"],size:"small"},
+      {question:"Author of Indian National Anthem?",answer:"Tagore",options:["Tagore","Bankim Chandra","Iqbal","Nehru"],size:"small"},
+      {question:"Author of Vande Mataram?",answer:"Bankim Chandra",options:["Bankim Chandra","Tagore","Iqbal","Nehru"],size:"small"},
+      {question:"National anthem first sung in?",answer:"1911",options:["1911","1947","1950","1905"],size:"small"},
+      {question:"Author of Ramayana?",answer:"Valmiki",options:["Valmiki","Vyasa","Tulsidas","Kalidas"],size:"small"},
+      {question:"Author of Mahabharata?",answer:"Vyasa",options:["Vyasa","Valmiki","Tulsidas","Kalidas"],size:"small"},
+      {question:"Founder of Mauryan empire?",answer:"Chandragupta Maurya",options:["Chandragupta Maurya","Ashoka","Bindusara","Chanakya"],size:"small"},
+      {question:"Greatest Mauryan emperor?",answer:"Ashoka",options:["Ashoka","Chandragupta","Bindusara","Bimbisara"],size:"small"},
+      {question:"Founder of Mughal empire?",answer:"Babur",options:["Babur","Akbar","Aurangzeb","Humayun"],size:"small"},
+      {question:"Greatest Mughal emperor?",answer:"Akbar",options:["Akbar","Babur","Aurangzeb","Shah Jahan"],size:"small"},
+      {question:"Light travels fastest in?",answer:"Vacuum",options:["Vacuum","Air","Water","Glass"],size:"small"},
+      {question:"Sound travels fastest in?",answer:"Solid",options:["Solid","Liquid","Gas","Vacuum"],size:"small"},
+      {question:"Chemical symbol of water?",answer:"H2O",options:["H2O","CO2","O2","H2"],size:"small"},
+      {question:"Chemical symbol of gold?",answer:"Au",options:["Au","Ag","Go","Gd"],size:"small"},
+      {question:"Chemical symbol of silver?",answer:"Ag",options:["Ag","Au","Si","Sl"],size:"small"},
+      {question:"Largest organ of human body?",answer:"Skin",options:["Skin","Liver","Heart","Brain"],size:"small"},
+      {question:"Pumps blood in body?",answer:"Heart",options:["Heart","Lungs","Liver","Kidney"],size:"small"},
+      {question:"Days in a leap year?",answer:"366",options:["366","365","364","367"],size:"small"},
+      {question:"E=mc² was given by?",answer:"Einstein",options:["Einstein","Newton","Bohr","Curie"],size:"small"},
+      {question:"Who wrote 'Discovery of India'?",answer:"Nehru",options:["Nehru","Gandhi","Tagore","Bose"],size:"small"},
+    ],
+  ],
+  "science": [
+    [
+      {question:"Which gives us light during day?",answer:"Sun",options:["Sun","Moon","Star","Lamp"],size:"small"},
+      {question:"Which gives us light at night (in sky)?",answer:"Moon",options:["Moon","Sun","Cloud","Tree"],size:"small"},
+      {question:"What do we breathe?",answer:"Air",options:["Air","Water","Fire","Sand"],size:"small"},
+      {question:"What do we drink?",answer:"Water",options:["Water","Air","Sand","Mud"],size:"small"},
+      {question:"Ice is cold or hot?",answer:"Cold",options:["Cold","Hot","Warm","Boiling"],size:"small"},
+      {question:"Fire is cold or hot?",answer:"Hot",options:["Hot","Cold","Cool","Frozen"],size:"small"},
+      {question:"Which floats on water?",answer:"Wood",options:["Wood","Stone","Iron","Coin"],size:"small"},
+      {question:"Which sinks in water?",answer:"Stone",options:["Stone","Wood","Leaf","Paper"],size:"small"},
+      {question:"Sun rises in?",answer:"East",options:["East","West","North","South"],size:"small"},
+      {question:"Sun sets in?",answer:"West",options:["West","East","North","South"],size:"small"},
+      {question:"Which is hot?",answer:"Tea",options:["Tea","Ice","Snow","Cold milk"],size:"small"},
+      {question:"Which is sweet?",answer:"Sugar",options:["Sugar","Salt","Lemon","Chilli"],size:"small"},
+      {question:"Which is sour?",answer:"Lemon",options:["Lemon","Sugar","Honey","Banana"],size:"small"},
+      {question:"Plants need ___ to grow.",answer:"Water",options:["Water","Oil","Milk","Juice"],size:"small"},
+      {question:"Where does rain come from?",answer:"Clouds",options:["Clouds","Sun","Trees","Ground"],size:"small"},
+      {question:"What do plants give us?",answer:"Oxygen",options:["Oxygen","Smoke","Dust","Heat"],size:"small"},
+      {question:"A magnet attracts?",answer:"Iron",options:["Iron","Wood","Plastic","Paper"],size:"small"},
+      {question:"Which is a liquid?",answer:"Milk",options:["Milk","Stone","Wood","Iron"],size:"small"},
+      {question:"Which is a solid?",answer:"Stone",options:["Stone","Water","Milk","Juice"],size:"small"},
+      {question:"Which is a gas?",answer:"Air",options:["Air","Water","Stone","Wood"],size:"small"},
+    ],
+    [
+      {question:"States of matter?",answer:"Solid, Liquid, Gas",options:["Solid, Liquid, Gas","Hot, Cold, Warm","Big, Small, Medium","Hard, Soft, Wet"],size:"small"},
+      {question:"Water becomes ___ when heated.",answer:"Steam",options:["Steam","Ice","Snow","Mud"],size:"small"},
+      {question:"Water becomes ___ when frozen.",answer:"Ice",options:["Ice","Steam","Vapor","Mist"],size:"small"},
+      {question:"Plants make food using?",answer:"Sunlight",options:["Sunlight","Moonlight","Wind","Soil"],size:"small"},
+      {question:"What part of plant makes food?",answer:"Leaves",options:["Leaves","Roots","Stem","Flower"],size:"small"},
+      {question:"What part of plant absorbs water?",answer:"Roots",options:["Roots","Leaves","Flower","Stem"],size:"small"},
+      {question:"Which is a flowering plant?",answer:"Rose",options:["Rose","Pine","Fern","Algae"],size:"small"},
+      {question:"Which animal lays eggs?",answer:"Hen",options:["Hen","Cow","Dog","Goat"],size:"small"},
+      {question:"Which animal gives us milk?",answer:"Cow",options:["Cow","Hen","Snake","Lion"],size:"small"},
+      {question:"Which animal gives us wool?",answer:"Sheep",options:["Sheep","Pig","Dog","Cat"],size:"small"},
+      {question:"Honey is made by?",answer:"Bees",options:["Bees","Ants","Flies","Spiders"],size:"small"},
+      {question:"Silk is made by?",answer:"Silkworm",options:["Silkworm","Bees","Ants","Spiders"],size:"small"},
+      {question:"A young plant is called?",answer:"Seedling",options:["Seedling","Sapling","Sprout","Shoot"],size:"small"},
+      {question:"Seed grows into a?",answer:"Plant",options:["Plant","Stone","Star","Cloud"],size:"small"},
+      {question:"Air is a mixture of?",answer:"Gases",options:["Gases","Liquids","Solids","Metals"],size:"small"},
+      {question:"Which animal lives in water?",answer:"Fish",options:["Fish","Tiger","Cow","Goat"],size:"small"},
+      {question:"Which bird cannot fly?",answer:"Penguin",options:["Penguin","Sparrow","Eagle","Pigeon"],size:"small"},
+      {question:"Sense organ for sight?",answer:"Eyes",options:["Eyes","Ears","Nose","Skin"],size:"small"},
+      {question:"Sense organ for smell?",answer:"Nose",options:["Nose","Eyes","Ears","Tongue"],size:"small"},
+      {question:"Sense organ for taste?",answer:"Tongue",options:["Tongue","Nose","Ears","Skin"],size:"small"},
+    ],
+    [
+      {question:"Boiling point of water?",answer:"100°C",options:["100°C","90°C","110°C","120°C"],size:"small"},
+      {question:"Freezing point of water?",answer:"0°C",options:["0°C","-10°C","10°C","5°C"],size:"small"},
+      {question:"Force pulling things to Earth?",answer:"Gravity",options:["Gravity","Magnetism","Friction","Pressure"],size:"small"},
+      {question:"Process of plant making food?",answer:"Photosynthesis",options:["Photosynthesis","Respiration","Digestion","Excretion"],size:"small"},
+      {question:"Animal that eats only plants?",answer:"Herbivore",options:["Herbivore","Carnivore","Omnivore","Insectivore"],size:"small"},
+      {question:"Animal that eats only meat?",answer:"Carnivore",options:["Carnivore","Herbivore","Omnivore","Insectivore"],size:"small"},
+      {question:"Animal that eats both?",answer:"Omnivore",options:["Omnivore","Herbivore","Carnivore","Insectivore"],size:"small"},
+      {question:"Which gas do plants take in?",answer:"Carbon dioxide",options:["Carbon dioxide","Oxygen","Nitrogen","Hydrogen"],size:"small"},
+      {question:"Which gas do plants give out?",answer:"Oxygen",options:["Oxygen","Carbon dioxide","Nitrogen","Helium"],size:"small"},
+      {question:"Source of energy for Earth?",answer:"Sun",options:["Sun","Moon","Stars","Wind"],size:"small"},
+      {question:"Which animal is amphibian?",answer:"Frog",options:["Frog","Snake","Lizard","Turtle"],size:"small"},
+      {question:"Which animal is reptile?",answer:"Snake",options:["Snake","Frog","Fish","Bird"],size:"small"},
+      {question:"Backbone animal is called?",answer:"Vertebrate",options:["Vertebrate","Invertebrate","Mammal","Insect"],size:"small"},
+      {question:"Animal without backbone?",answer:"Invertebrate",options:["Invertebrate","Vertebrate","Mammal","Reptile"],size:"small"},
+      {question:"Which is non-living?",answer:"Stone",options:["Stone","Plant","Animal","Bird"],size:"small"},
+      {question:"Which is living?",answer:"Tree",options:["Tree","Stone","Iron","Brick"],size:"small"},
+      {question:"Magnet has ___ poles.",answer:"Two",options:["Two","One","Three","Four"],size:"small"},
+      {question:"Like poles of magnet?",answer:"Repel",options:["Repel","Attract","Stick","Stop"],size:"small"},
+      {question:"Unlike poles of magnet?",answer:"Attract",options:["Attract","Repel","Stop","Break"],size:"small"},
+      {question:"Sun is a?",answer:"Star",options:["Star","Planet","Moon","Comet"],size:"small"},
+    ],
+    [
+      {question:"How many planets in solar system?",answer:"8",options:["8","9","7","10"],size:"small"},
+      {question:"Solid water is called?",answer:"Ice",options:["Ice","Steam","Vapor","Mist"],size:"small"},
+      {question:"Gaseous water is called?",answer:"Steam/Vapor",options:["Steam/Vapor","Ice","Frost","Snow"],size:"small"},
+      {question:"Process of water becoming vapor?",answer:"Evaporation",options:["Evaporation","Condensation","Freezing","Melting"],size:"small"},
+      {question:"Process of vapor becoming water?",answer:"Condensation",options:["Condensation","Evaporation","Freezing","Melting"],size:"small"},
+      {question:"Acid turns blue litmus to?",answer:"Red",options:["Red","Blue","Green","Yellow"],size:"small"},
+      {question:"Base turns red litmus to?",answer:"Blue",options:["Blue","Red","Green","Yellow"],size:"small"},
+      {question:"Sound is produced by?",answer:"Vibration",options:["Vibration","Heat","Light","Pressure"],size:"small"},
+      {question:"Echo is reflected?",answer:"Sound",options:["Sound","Light","Heat","Air"],size:"small"},
+      {question:"Unit of force?",answer:"Newton",options:["Newton","Joule","Watt","Volt"],size:"small"},
+      {question:"Unit of electricity (potential)?",answer:"Volt",options:["Volt","Watt","Newton","Ohm"],size:"small"},
+      {question:"Energy in food?",answer:"Chemical",options:["Chemical","Light","Sound","Heat"],size:"small"},
+      {question:"Skeleton has ___ bones (adult).",answer:"206",options:["206","201","210","220"],size:"small"},
+      {question:"Smallest unit of life?",answer:"Cell",options:["Cell","Atom","Tissue","Organ"],size:"small"},
+      {question:"Brain is in?",answer:"Skull",options:["Skull","Chest","Stomach","Back"],size:"small"},
+      {question:"Heart is in?",answer:"Chest",options:["Chest","Skull","Stomach","Leg"],size:"small"},
+      {question:"Kidneys filter?",answer:"Blood",options:["Blood","Air","Food","Bones"],size:"small"},
+      {question:"Lungs help in?",answer:"Breathing",options:["Breathing","Digestion","Walking","Seeing"],size:"small"},
+      {question:"Vitamin from sunlight?",answer:"Vitamin D",options:["Vitamin D","Vitamin A","Vitamin C","Vitamin B"],size:"small"},
+      {question:"Vitamin in citrus fruits?",answer:"Vitamin C",options:["Vitamin C","Vitamin A","Vitamin D","Vitamin K"],size:"small"},
+    ],
+    [
+      {question:"Speed of light is approx?",answer:"3×10⁸ m/s",options:["3×10⁸ m/s","3×10⁶ m/s","3×10⁵ m/s","3×10⁷ m/s"],size:"small"},
+      {question:"Earth's age (approx)?",answer:"4.5 billion years",options:["4.5 billion years","1 billion","100 million","10 billion"],size:"small"},
+      {question:"Closest star to Earth?",answer:"Sun",options:["Sun","Proxima Centauri","Sirius","Polaris"],size:"small"},
+      {question:"Hardest natural substance?",answer:"Diamond",options:["Diamond","Iron","Gold","Quartz"],size:"small"},
+      {question:"Lightest gas?",answer:"Hydrogen",options:["Hydrogen","Helium","Oxygen","Nitrogen"],size:"small"},
+      {question:"Most abundant gas in air?",answer:"Nitrogen",options:["Nitrogen","Oxygen","CO2","Argon"],size:"small"},
+      {question:"Symbol of Iron?",answer:"Fe",options:["Fe","Ir","I","In"],size:"small"},
+      {question:"Symbol of Sodium?",answer:"Na",options:["Na","So","S","Sd"],size:"small"},
+      {question:"Symbol of Potassium?",answer:"K",options:["K","P","Po","Pt"],size:"small"},
+      {question:"pH of pure water?",answer:"7",options:["7","6","8","0"],size:"small"},
+      {question:"pH less than 7 is?",answer:"Acidic",options:["Acidic","Basic","Neutral","Alkaline"],size:"small"},
+      {question:"pH greater than 7 is?",answer:"Basic",options:["Basic","Acidic","Neutral","Salt"],size:"small"},
+      {question:"Branch of science about living things?",answer:"Biology",options:["Biology","Physics","Chemistry","Geology"],size:"small"},
+      {question:"Branch of science about matter?",answer:"Chemistry",options:["Chemistry","Biology","Physics","Astronomy"],size:"small"},
+      {question:"Branch of science about forces?",answer:"Physics",options:["Physics","Biology","Chemistry","Botany"],size:"small"},
+      {question:"Three Rs of environment?",answer:"Reduce, Reuse, Recycle",options:["Reduce, Reuse, Recycle","Run, Read, Rest","Right, Real, Ready","Rich, Rare, Rough"],size:"small"},
+      {question:"Ozone layer protects from?",answer:"UV rays",options:["UV rays","Wind","Rain","Heat"],size:"small"},
+      {question:"Which is not a fossil fuel?",answer:"Wood",options:["Wood","Coal","Petroleum","Natural gas"],size:"small"},
+      {question:"Bee colony lives in?",answer:"Hive",options:["Hive","Nest","Web","Burrow"],size:"small"},
+      {question:"Spider makes a?",answer:"Web",options:["Web","Hive","Nest","Burrow"],size:"small"},
+    ],
+  ],
+  "history": [
+    [
+      {question:"Father of Nation in India?",answer:"Mahatma Gandhi",options:["Mahatma Gandhi","Nehru","Patel","Bose"],size:"small"},
+      {question:"First PM of India?",answer:"Nehru",options:["Nehru","Gandhi","Patel","Shastri"],size:"small"},
+      {question:"India got independence in?",answer:"1947",options:["1947","1950","1945","1948"],size:"small"},
+      {question:"Republic Day?",answer:"26 January",options:["26 January","15 August","2 October","14 November"],size:"small"},
+      {question:"Independence Day?",answer:"15 August",options:["15 August","26 January","2 October","5 September"],size:"small"},
+      {question:"Gandhi's birthday?",answer:"2 October",options:["2 October","14 November","26 January","15 August"],size:"small"},
+      {question:"Children's Day in India?",answer:"14 November",options:["14 November","5 September","26 January","15 August"],size:"small"},
+      {question:"Teacher's Day in India?",answer:"5 September",options:["5 September","14 November","15 August","26 January"],size:"small"},
+      {question:"Gandhi ji is also called?",answer:"Bapu",options:["Bapu","Chacha","Netaji","Sardar"],size:"small"},
+      {question:"Nehru ji is also called?",answer:"Chacha Nehru",options:["Chacha Nehru","Bapu","Netaji","Sardar"],size:"small"},
+      {question:"Indian National Flag has ___ colors.",answer:"3",options:["3","2","4","5"],size:"small"},
+      {question:"Top stripe color of flag?",answer:"Saffron",options:["Saffron","Green","White","Blue"],size:"small"},
+      {question:"Middle stripe color?",answer:"White",options:["White","Saffron","Green","Blue"],size:"small"},
+      {question:"Bottom stripe color?",answer:"Green",options:["Green","White","Saffron","Blue"],size:"small"},
+      {question:"Wheel in middle of flag is?",answer:"Ashoka Chakra",options:["Ashoka Chakra","Sun","Moon","Star"],size:"small"},
+      {question:"Color of Ashoka Chakra?",answer:"Navy Blue",options:["Navy Blue","Black","Green","Red"],size:"small"},
+      {question:"Spokes in Ashoka Chakra?",answer:"24",options:["24","12","16","20"],size:"small"},
+      {question:"National emblem of India?",answer:"Lion Capital",options:["Lion Capital","Tiger","Eagle","Wheel"],size:"small"},
+      {question:"First President of India?",answer:"Rajendra Prasad",options:["Rajendra Prasad","Nehru","Radhakrishnan","APJ Kalam"],size:"small"},
+      {question:"Author of National Anthem?",answer:"Tagore",options:["Tagore","Gandhi","Nehru","Bose"],size:"small"},
+    ],
+    [
+      {question:"Taj Mahal built by?",answer:"Shah Jahan",options:["Shah Jahan","Akbar","Babur","Aurangzeb"],size:"small"},
+      {question:"Taj Mahal is in?",answer:"Agra",options:["Agra","Delhi","Jaipur","Lucknow"],size:"small"},
+      {question:"Red Fort is in?",answer:"Delhi",options:["Delhi","Agra","Mumbai","Jaipur"],size:"small"},
+      {question:"Qutub Minar is in?",answer:"Delhi",options:["Delhi","Agra","Lucknow","Jaipur"],size:"small"},
+      {question:"Charminar is in?",answer:"Hyderabad",options:["Hyderabad","Delhi","Mumbai","Chennai"],size:"small"},
+      {question:"Gateway of India is in?",answer:"Mumbai",options:["Mumbai","Delhi","Chennai","Kolkata"],size:"small"},
+      {question:"Hawa Mahal is in?",answer:"Jaipur",options:["Jaipur","Udaipur","Jodhpur","Bikaner"],size:"small"},
+      {question:"Mysore Palace is in?",answer:"Karnataka",options:["Karnataka","Tamil Nadu","Kerala","Andhra"],size:"small"},
+      {question:"Iron Man of India?",answer:"Sardar Patel",options:["Sardar Patel","Gandhi","Nehru","Bose"],size:"small"},
+      {question:"Netaji is the title of?",answer:"Subhash Chandra Bose",options:["Subhash Chandra Bose","Gandhi","Nehru","Patel"],size:"small"},
+      {question:"'Jai Hind' slogan by?",answer:"Subhash Bose",options:["Subhash Bose","Gandhi","Nehru","Tilak"],size:"small"},
+      {question:"'Quit India' slogan by?",answer:"Mahatma Gandhi",options:["Mahatma Gandhi","Nehru","Bose","Patel"],size:"small"},
+      {question:"'Swaraj' slogan by?",answer:"Bal Gangadhar Tilak",options:["Bal Gangadhar Tilak","Gandhi","Nehru","Bose"],size:"small"},
+      {question:"Rani of Jhansi name?",answer:"Lakshmibai",options:["Lakshmibai","Padmavati","Roopmati","Mumtaz"],size:"small"},
+      {question:"Mughal who built Red Fort?",answer:"Shah Jahan",options:["Shah Jahan","Akbar","Babur","Aurangzeb"],size:"small"},
+      {question:"First woman PM of India?",answer:"Indira Gandhi",options:["Indira Gandhi","Sonia Gandhi","Pratibha Patil","Sushma Swaraj"],size:"small"},
+      {question:"First woman President?",answer:"Pratibha Patil",options:["Pratibha Patil","Indira Gandhi","Sonia Gandhi","Sushma"],size:"small"},
+      {question:"Mughal empire founded by?",answer:"Babur",options:["Babur","Akbar","Humayun","Shah Jahan"],size:"small"},
+      {question:"Battle of Plassey year?",answer:"1757",options:["1757","1857","1707","1657"],size:"small"},
+      {question:"First War of Independence?",answer:"1857",options:["1857","1757","1947","1942"],size:"small"},
+    ],
+    [
+      {question:"Mauryan empire founded by?",answer:"Chandragupta Maurya",options:["Chandragupta Maurya","Ashoka","Bindusara","Chanakya"],size:"small"},
+      {question:"Greatest Mauryan king?",answer:"Ashoka",options:["Ashoka","Chandragupta","Bindusara","Bimbisara"],size:"small"},
+      {question:"Ashoka adopted which religion?",answer:"Buddhism",options:["Buddhism","Hinduism","Jainism","Sikhism"],size:"small"},
+      {question:"Battle that changed Ashoka?",answer:"Kalinga",options:["Kalinga","Plassey","Panipat","Haldighati"],size:"small"},
+      {question:"Akbar's nine gems called?",answer:"Navratnas",options:["Navratnas","Pancharatnas","Saptarishis","Trinetras"],size:"small"},
+      {question:"Birbal was minister of?",answer:"Akbar",options:["Akbar","Babur","Aurangzeb","Shah Jahan"],size:"small"},
+      {question:"Tansen was musician of?",answer:"Akbar",options:["Akbar","Shah Jahan","Babur","Aurangzeb"],size:"small"},
+      {question:"Mughal capital city?",answer:"Delhi",options:["Delhi","Agra","Lahore","Multan"],size:"small"},
+      {question:"Akbar's tomb is at?",answer:"Sikandra",options:["Sikandra","Agra Fort","Red Fort","Fatehpur Sikri"],size:"small"},
+      {question:"Founder of Sikhism?",answer:"Guru Nanak",options:["Guru Nanak","Guru Gobind","Guru Arjan","Guru Tegh"],size:"small"},
+      {question:"Last Sikh Guru?",answer:"Guru Gobind Singh",options:["Guru Gobind Singh","Guru Nanak","Guru Arjan","Guru Ram Das"],size:"small"},
+      {question:"Founder of Maratha empire?",answer:"Shivaji",options:["Shivaji","Sambhaji","Shahu","Bajirao"],size:"small"},
+      {question:"Shivaji's mother?",answer:"Jijabai",options:["Jijabai","Saibai","Soyrabai","Yesubai"],size:"small"},
+      {question:"Shivaji's capital?",answer:"Raigad",options:["Raigad","Pune","Satara","Kolhapur"],size:"small"},
+      {question:"Vijayanagar founded by?",answer:"Harihara & Bukka",options:["Harihara & Bukka","Krishnadeva","Tipu","Hyder Ali"],size:"small"},
+      {question:"Tipu Sultan from?",answer:"Mysore",options:["Mysore","Hyderabad","Bengal","Punjab"],size:"small"},
+      {question:"Capital of Tipu Sultan?",answer:"Srirangapatna",options:["Srirangapatna","Mysore","Bangalore","Madras"],size:"small"},
+      {question:"First Battle of Panipat year?",answer:"1526",options:["1526","1556","1761","1657"],size:"small"},
+      {question:"Babur won at?",answer:"Panipat",options:["Panipat","Plassey","Haldighati","Talikota"],size:"small"},
+      {question:"Maharana Pratap from?",answer:"Mewar",options:["Mewar","Marwar","Amber","Bikaner"],size:"small"},
+    ],
+    [
+      {question:"Indus Valley capital city?",answer:"Harappa & Mohenjo-daro",options:["Harappa & Mohenjo-daro","Pataliputra","Ujjain","Taxila"],size:"small"},
+      {question:"Indus Valley discovered in?",answer:"1920s",options:["1920s","1850s","1900s","1950s"],size:"small"},
+      {question:"Harappa is in present?",answer:"Pakistan",options:["Pakistan","India","Afghanistan","Iran"],size:"small"},
+      {question:"Mohenjo-daro is in?",answer:"Pakistan",options:["Pakistan","India","Afghanistan","Iran"],size:"small"},
+      {question:"Vedas were written in?",answer:"Sanskrit",options:["Sanskrit","Pali","Prakrit","Tamil"],size:"small"},
+      {question:"Number of Vedas?",answer:"4",options:["4","3","5","6"],size:"small"},
+      {question:"Oldest Veda?",answer:"Rigveda",options:["Rigveda","Yajurveda","Samaveda","Atharvaveda"],size:"small"},
+      {question:"Buddhism founded by?",answer:"Buddha",options:["Buddha","Mahavira","Nanak","Adi Shankara"],size:"small"},
+      {question:"Real name of Buddha?",answer:"Siddhartha",options:["Siddhartha","Vardhamana","Kabir","Tulsi"],size:"small"},
+      {question:"Buddha attained enlightenment at?",answer:"Bodh Gaya",options:["Bodh Gaya","Sarnath","Kushinagar","Lumbini"],size:"small"},
+      {question:"Buddha was born at?",answer:"Lumbini",options:["Lumbini","Bodh Gaya","Sarnath","Kushinagar"],size:"small"},
+      {question:"Jainism founded by?",answer:"Mahavira",options:["Mahavira","Buddha","Nanak","Adi Shankara"],size:"small"},
+      {question:"Last Jain Tirthankara?",answer:"Mahavira",options:["Mahavira","Parsvanatha","Rishabha","Neminatha"],size:"small"},
+      {question:"Alexander invaded India in?",answer:"326 BCE",options:["326 BCE","526 BCE","126 BCE","26 BCE"],size:"small"},
+      {question:"Chanakya wrote?",answer:"Arthashastra",options:["Arthashastra","Ramayana","Mahabharata","Vedas"],size:"small"},
+      {question:"Court language of Mughals?",answer:"Persian",options:["Persian","Arabic","Urdu","Hindi"],size:"small"},
+      {question:"Akbar's religion (founded)?",answer:"Din-i-Ilahi",options:["Din-i-Ilahi","Sufism","Sikhism","Bhakti"],size:"small"},
+      {question:"Aurangzeb died in?",answer:"1707",options:["1707","1605","1627","1757"],size:"small"},
+      {question:"First Indian newspaper?",answer:"Bengal Gazette",options:["Bengal Gazette","Times of India","The Hindu","Statesman"],size:"small"},
+      {question:"Bengal Gazette started in?",answer:"1780",options:["1780","1857","1947","1900"],size:"small"},
+    ],
+    [
+      {question:"INC founded in?",answer:"1885",options:["1885","1857","1905","1920"],size:"small"},
+      {question:"First INC President?",answer:"WC Bonnerjee",options:["WC Bonnerjee","Tilak","Gandhi","Nehru"],size:"small"},
+      {question:"Partition of Bengal year?",answer:"1905",options:["1905","1857","1885","1947"],size:"small"},
+      {question:"Jallianwala Bagh massacre year?",answer:"1919",options:["1919","1909","1929","1939"],size:"small"},
+      {question:"Jallianwala Bagh is in?",answer:"Amritsar",options:["Amritsar","Lahore","Delhi","Calcutta"],size:"small"},
+      {question:"General who ordered firing?",answer:"Dyer",options:["Dyer","Curzon","Mountbatten","Hastings"],size:"small"},
+      {question:"Dandi March year?",answer:"1930",options:["1930","1920","1942","1947"],size:"small"},
+      {question:"Dandi March was for?",answer:"Salt",options:["Salt","Sugar","Cotton","Tea"],size:"small"},
+      {question:"Quit India Movement year?",answer:"1942",options:["1942","1930","1920","1947"],size:"small"},
+      {question:"Bhagat Singh hanged in?",answer:"1931",options:["1931","1921","1941","1947"],size:"small"},
+      {question:"Subhash Bose's army?",answer:"Azad Hind Fauj / INA",options:["Azad Hind Fauj / INA","Hindustan Republican","Khudai Khidmatgar","Forward Bloc"],size:"small"},
+      {question:"Last Viceroy of India?",answer:"Mountbatten",options:["Mountbatten","Wavell","Linlithgow","Curzon"],size:"small"},
+      {question:"Partition of India year?",answer:"1947",options:["1947","1945","1950","1948"],size:"small"},
+      {question:"Indian Constitution adopted on?",answer:"26 Nov 1949",options:["26 Nov 1949","15 Aug 1947","26 Jan 1950","26 Jan 1947"],size:"small"},
+      {question:"Indian Constitution effective from?",answer:"26 Jan 1950",options:["26 Jan 1950","15 Aug 1947","26 Nov 1949","26 Jan 1947"],size:"small"},
+      {question:"Drafting committee chairman?",answer:"BR Ambedkar",options:["BR Ambedkar","Nehru","Patel","Rajendra Prasad"],size:"small"},
+      {question:"First Indo-Pak war?",answer:"1947-48",options:["1947-48","1965","1971","1999"],size:"small"},
+      {question:"Bangladesh war year?",answer:"1971",options:["1971","1965","1947","1999"],size:"small"},
+      {question:"Kargil war year?",answer:"1999",options:["1999","1971","1965","2001"],size:"small"},
+      {question:"Pokhran nuclear test year?",answer:"1974/1998",options:["1974/1998","1965","1947","2000"],size:"small"},
+    ],
+  ],
+  "geography": [
+    [
+      {question:"What lights up the sky in day?",answer:"Sun",options:["Sun","Moon","Star","Cloud"],size:"small"},
+      {question:"What lights up at night?",answer:"Moon",options:["Moon","Sun","Cloud","Wind"],size:"small"},
+      {question:"Where do we live?",answer:"Earth",options:["Earth","Moon","Mars","Sun"],size:"small"},
+      {question:"Earth is round or flat?",answer:"Round",options:["Round","Flat","Square","Triangle"],size:"small"},
+      {question:"What covers most of Earth?",answer:"Water",options:["Water","Land","Sand","Forest"],size:"small"},
+      {question:"Mountain is high or low?",answer:"High",options:["High","Low","Flat","Deep"],size:"small"},
+      {question:"Sea has salty or sweet water?",answer:"Salty",options:["Salty","Sweet","Sour","Bitter"],size:"small"},
+      {question:"River has salty or sweet water?",answer:"Sweet",options:["Sweet","Salty","Sour","Bitter"],size:"small"},
+      {question:"Where does rain come from?",answer:"Cloud",options:["Cloud","Sun","Tree","Mountain"],size:"small"},
+      {question:"What is hot - Sun or Ice?",answer:"Sun",options:["Sun","Ice","Snow","River"],size:"small"},
+      {question:"What is cold - Ice or Fire?",answer:"Ice",options:["Ice","Fire","Sun","Lava"],size:"small"},
+      {question:"Sun rises in?",answer:"East",options:["East","West","North","South"],size:"small"},
+      {question:"Sun sets in?",answer:"West",options:["West","East","North","South"],size:"small"},
+      {question:"Capital of India?",answer:"New Delhi",options:["New Delhi","Mumbai","Kolkata","Chennai"],size:"small"},
+      {question:"Country we live in?",answer:"India",options:["India","China","Japan","Nepal"],size:"small"},
+      {question:"Big water body is called?",answer:"Ocean",options:["Ocean","Pond","Pool","Tank"],size:"small"},
+      {question:"Hot dry place?",answer:"Desert",options:["Desert","Forest","Mountain","River"],size:"small"},
+      {question:"Place with many trees?",answer:"Forest",options:["Forest","Desert","Sea","Mountain"],size:"small"},
+      {question:"Hot place is?",answer:"Tropical",options:["Tropical","Polar","Cold","Frozen"],size:"small"},
+      {question:"Where is North Pole?",answer:"Top of Earth",options:["Top of Earth","Bottom","Middle","Side"],size:"small"},
+    ],
+    [
+      {question:"How many directions?",answer:"4",options:["4","3","5","6"],size:"small"},
+      {question:"Direction opposite to East?",answer:"West",options:["West","North","South","Up"],size:"small"},
+      {question:"Direction opposite to North?",answer:"South",options:["South","East","West","Up"],size:"small"},
+      {question:"How many continents?",answer:"7",options:["7","5","6","8"],size:"small"},
+      {question:"How many oceans?",answer:"5",options:["5","4","6","7"],size:"small"},
+      {question:"Largest continent?",answer:"Asia",options:["Asia","Africa","Europe","Antarctica"],size:"small"},
+      {question:"Smallest continent?",answer:"Australia",options:["Australia","Europe","Asia","Antarctica"],size:"small"},
+      {question:"Largest ocean?",answer:"Pacific",options:["Pacific","Atlantic","Indian","Arctic"],size:"small"},
+      {question:"Smallest ocean?",answer:"Arctic",options:["Arctic","Atlantic","Indian","Pacific"],size:"small"},
+      {question:"India is in which continent?",answer:"Asia",options:["Asia","Africa","Europe","Australia"],size:"small"},
+      {question:"Egypt is in which continent?",answer:"Africa",options:["Africa","Asia","Europe","America"],size:"small"},
+      {question:"France is in which continent?",answer:"Europe",options:["Europe","Asia","Africa","America"],size:"small"},
+      {question:"USA is in which continent?",answer:"North America",options:["North America","South America","Europe","Asia"],size:"small"},
+      {question:"Brazil is in which continent?",answer:"South America",options:["South America","North America","Africa","Asia"],size:"small"},
+      {question:"Coldest continent?",answer:"Antarctica",options:["Antarctica","Africa","Asia","Australia"],size:"small"},
+      {question:"Hottest continent?",answer:"Africa",options:["Africa","Asia","Antarctica","Europe"],size:"small"},
+      {question:"Country with Eiffel Tower?",answer:"France",options:["France","Italy","UK","Germany"],size:"small"},
+      {question:"Country with Great Wall?",answer:"China",options:["China","Japan","India","Korea"],size:"small"},
+      {question:"Country with Statue of Liberty?",answer:"USA",options:["USA","UK","France","Russia"],size:"small"},
+      {question:"Country with Pyramids?",answer:"Egypt",options:["Egypt","India","Mexico","Greece"],size:"small"},
+    ],
+    [
+      {question:"Capital of Maharashtra?",answer:"Mumbai",options:["Mumbai","Pune","Nagpur","Nashik"],size:"small"},
+      {question:"Capital of Rajasthan?",answer:"Jaipur",options:["Jaipur","Jodhpur","Udaipur","Kota"],size:"small"},
+      {question:"Capital of UP?",answer:"Lucknow",options:["Lucknow","Kanpur","Agra","Varanasi"],size:"small"},
+      {question:"Capital of West Bengal?",answer:"Kolkata",options:["Kolkata","Howrah","Darjeeling","Asansol"],size:"small"},
+      {question:"Capital of Karnataka?",answer:"Bengaluru",options:["Bengaluru","Mysuru","Mangaluru","Hubli"],size:"small"},
+      {question:"Capital of Tamil Nadu?",answer:"Chennai",options:["Chennai","Madurai","Coimbatore","Salem"],size:"small"},
+      {question:"Capital of Gujarat?",answer:"Gandhinagar",options:["Gandhinagar","Ahmedabad","Surat","Vadodara"],size:"small"},
+      {question:"Capital of Punjab?",answer:"Chandigarh",options:["Chandigarh","Amritsar","Ludhiana","Patiala"],size:"small"},
+      {question:"Capital of Haryana?",answer:"Chandigarh",options:["Chandigarh","Faridabad","Gurgaon","Hisar"],size:"small"},
+      {question:"Capital of Bihar?",answer:"Patna",options:["Patna","Gaya","Bhagalpur","Muzaffarpur"],size:"small"},
+      {question:"Capital of MP?",answer:"Bhopal",options:["Bhopal","Indore","Gwalior","Jabalpur"],size:"small"},
+      {question:"Capital of Kerala?",answer:"Thiruvananthapuram",options:["Thiruvananthapuram","Kochi","Kozhikode","Thrissur"],size:"small"},
+      {question:"Capital of Odisha?",answer:"Bhubaneswar",options:["Bhubaneswar","Cuttack","Puri","Rourkela"],size:"small"},
+      {question:"Capital of Assam?",answer:"Dispur",options:["Dispur","Guwahati","Silchar","Jorhat"],size:"small"},
+      {question:"Capital of Telangana?",answer:"Hyderabad",options:["Hyderabad","Warangal","Karimnagar","Nizamabad"],size:"small"},
+      {question:"Capital of Andhra Pradesh?",answer:"Amaravati",options:["Amaravati","Hyderabad","Vijayawada","Tirupati"],size:"small"},
+      {question:"Capital of Goa?",answer:"Panaji",options:["Panaji","Margao","Vasco","Mapusa"],size:"small"},
+      {question:"Capital of HP?",answer:"Shimla",options:["Shimla","Manali","Dharamshala","Solan"],size:"small"},
+      {question:"Capital of Uttarakhand?",answer:"Dehradun",options:["Dehradun","Haridwar","Nainital","Mussoorie"],size:"small"},
+      {question:"Capital of Jammu & Kashmir?",answer:"Srinagar (summer)",options:["Srinagar (summer)","Jammu","Leh","Anantnag"],size:"small"},
+    ],
+    [
+      {question:"Longest river in world?",answer:"Nile",options:["Nile","Amazon","Ganga","Mississippi"],size:"small"},
+      {question:"Longest river in India?",answer:"Ganga",options:["Ganga","Yamuna","Brahmaputra","Godavari"],size:"small"},
+      {question:"Largest lake in world?",answer:"Caspian Sea",options:["Caspian Sea","Lake Superior","Victoria","Baikal"],size:"small"},
+      {question:"Deepest lake in world?",answer:"Lake Baikal",options:["Lake Baikal","Caspian","Tanganyika","Superior"],size:"small"},
+      {question:"Tallest mountain in world?",answer:"Mt Everest",options:["Mt Everest","K2","Kanchenjunga","Lhotse"],size:"small"},
+      {question:"Highest mountain in India?",answer:"Kanchenjunga",options:["Kanchenjunga","Mt Everest","Nanda Devi","K2"],size:"small"},
+      {question:"Largest desert in world?",answer:"Sahara",options:["Sahara","Thar","Gobi","Arabian"],size:"small"},
+      {question:"Largest desert in India?",answer:"Thar",options:["Thar","Sahara","Gobi","Kalahari"],size:"small"},
+      {question:"Largest country by area?",answer:"Russia",options:["Russia","Canada","USA","China"],size:"small"},
+      {question:"Smallest country in world?",answer:"Vatican City",options:["Vatican City","Monaco","Nauru","Tuvalu"],size:"small"},
+      {question:"Most populated country?",answer:"India",options:["India","China","USA","Indonesia"],size:"small"},
+      {question:"Country with most languages?",answer:"Papua New Guinea",options:["Papua New Guinea","India","China","Russia"],size:"small"},
+      {question:"Land of rising sun?",answer:"Japan",options:["Japan","China","Korea","Thailand"],size:"small"},
+      {question:"Land of midnight sun?",answer:"Norway",options:["Norway","Russia","Canada","Iceland"],size:"small"},
+      {question:"River that flows through Egypt?",answer:"Nile",options:["Nile","Amazon","Tigris","Euphrates"],size:"small"},
+      {question:"River that flows through Brazil?",answer:"Amazon",options:["Amazon","Nile","Mississippi","Yangtze"],size:"small"},
+      {question:"River that flows through China?",answer:"Yangtze",options:["Yangtze","Ganga","Mekong","Amur"],size:"small"},
+      {question:"River where Delhi is?",answer:"Yamuna",options:["Yamuna","Ganga","Saraswati","Krishna"],size:"small"},
+      {question:"River where Varanasi is?",answer:"Ganga",options:["Ganga","Yamuna","Saraswati","Krishna"],size:"small"},
+      {question:"River where Kolkata is?",answer:"Hooghly",options:["Hooghly","Ganga","Yamuna","Brahmaputra"],size:"small"},
+    ],
+    [
+      {question:"Earth rotates around?",answer:"Its axis",options:["Its axis","Sun","Moon","Stars"],size:"small"},
+      {question:"Earth revolves around?",answer:"Sun",options:["Sun","Moon","Stars","Mars"],size:"small"},
+      {question:"Time taken for rotation?",answer:"24 hours",options:["24 hours","12 hours","365 days","1 month"],size:"small"},
+      {question:"Time taken for revolution?",answer:"365 days",options:["365 days","24 hours","30 days","1 year"],size:"small"},
+      {question:"Imaginary line through middle?",answer:"Equator",options:["Equator","Prime Meridian","Tropic","Pole"],size:"small"},
+      {question:"Tropic in northern hemisphere?",answer:"Cancer",options:["Cancer","Capricorn","Equator","Arctic"],size:"small"},
+      {question:"Tropic in southern hemisphere?",answer:"Capricorn",options:["Capricorn","Cancer","Equator","Antarctic"],size:"small"},
+      {question:"0° longitude is called?",answer:"Prime Meridian",options:["Prime Meridian","Equator","Tropic","Pole"],size:"small"},
+      {question:"Greenwich is in?",answer:"UK",options:["UK","USA","France","Germany"],size:"small"},
+      {question:"Day & night are equal at?",answer:"Equator",options:["Equator","Poles","Tropics","Hemisphere"],size:"small"},
+      {question:"Land between two oceans?",answer:"Isthmus",options:["Isthmus","Peninsula","Island","Strait"],size:"small"},
+      {question:"Land surrounded by water?",answer:"Island",options:["Island","Peninsula","Isthmus","Cape"],size:"small"},
+      {question:"Land with water on 3 sides?",answer:"Peninsula",options:["Peninsula","Island","Isthmus","Cape"],size:"small"},
+      {question:"India is a?",answer:"Peninsula",options:["Peninsula","Island","Isthmus","Continent"],size:"small"},
+      {question:"Highest plateau in world?",answer:"Tibet",options:["Tibet","Deccan","Anatolian","Iranian"],size:"small"},
+      {question:"Strait between India & Sri Lanka?",answer:"Palk Strait",options:["Palk Strait","Bering","Bass","Bering"],size:"small"},
+      {question:"Tropic of Cancer passes through how many Indian states?",answer:"8",options:["8","5","10","12"],size:"small"},
+      {question:"Largest river basin in world?",answer:"Amazon",options:["Amazon","Nile","Congo","Ganga"],size:"small"},
+      {question:"Most volcanoes in?",answer:"Pacific Ring of Fire",options:["Pacific Ring of Fire","Atlantic","Indian","Arctic"],size:"small"},
+      {question:"Highest waterfall in world?",answer:"Angel Falls",options:["Angel Falls","Niagara","Victoria","Iguazu"],size:"small"},
+    ],
+  ],
+  "sports": [
+    [
+      {question:"How many players in cricket team?",answer:"11",options:["11","10","12","9"],size:"small"},
+      {question:"How many players in football team?",answer:"11",options:["11","10","12","9"],size:"small"},
+      {question:"Cricket bat is made of?",answer:"Wood",options:["Wood","Iron","Plastic","Glass"],size:"small"},
+      {question:"Football is round or square?",answer:"Round",options:["Round","Square","Triangle","Oval"],size:"small"},
+      {question:"Sport played with racket and ball?",answer:"Tennis",options:["Tennis","Football","Cricket","Hockey"],size:"small"},
+      {question:"Sport with hoops and ball?",answer:"Basketball",options:["Basketball","Football","Cricket","Tennis"],size:"small"},
+      {question:"Game with chess pieces?",answer:"Chess",options:["Chess","Carrom","Ludo","Snakes & Ladders"],size:"small"},
+      {question:"Indoor game with cards?",answer:"Cards",options:["Cards","Football","Cricket","Hockey"],size:"small"},
+      {question:"Sport in water?",answer:"Swimming",options:["Swimming","Running","Cycling","Climbing"],size:"small"},
+      {question:"Sport on ice?",answer:"Ice Skating",options:["Ice Skating","Football","Cricket","Tennis"],size:"small"},
+      {question:"Where do we play cricket?",answer:"Field",options:["Field","Court","Ring","Pool"],size:"small"},
+      {question:"Where do we play tennis?",answer:"Court",options:["Court","Field","Pool","Ring"],size:"small"},
+      {question:"Where do we swim?",answer:"Pool",options:["Pool","Field","Court","Ring"],size:"small"},
+      {question:"Where do we box?",answer:"Ring",options:["Ring","Field","Court","Pool"],size:"small"},
+      {question:"Olympic rings: how many?",answer:"5",options:["5","3","4","6"],size:"small"},
+      {question:"Olympics held every?",answer:"4 years",options:["4 years","2 years","3 years","5 years"],size:"small"},
+      {question:"Cricket ball color (red ball)?",answer:"Red",options:["Red","Blue","Green","Yellow"],size:"small"},
+      {question:"Tennis ball color?",answer:"Yellow/Green",options:["Yellow/Green","Red","Blue","Black"],size:"small"},
+      {question:"What do we wear on hands in cricket?",answer:"Gloves",options:["Gloves","Socks","Caps","Shoes"],size:"small"},
+      {question:"What do we wear on feet?",answer:"Shoes",options:["Shoes","Caps","Gloves","Belts"],size:"small"},
+    ],
+    [
+      {question:"Cricket invented in?",answer:"England",options:["England","India","Australia","USA"],size:"small"},
+      {question:"Football invented in?",answer:"England",options:["England","Brazil","Italy","France"],size:"small"},
+      {question:"Hockey players per team?",answer:"11",options:["11","10","12","9"],size:"small"},
+      {question:"Volleyball players per team?",answer:"6",options:["6","5","7","11"],size:"small"},
+      {question:"Basketball players per team?",answer:"5",options:["5","6","11","7"],size:"small"},
+      {question:"Hockey is national sport of?",answer:"India (informally)",options:["India (informally)","England","Pakistan","Brazil"],size:"small"},
+      {question:"FIFA is for which sport?",answer:"Football",options:["Football","Cricket","Hockey","Tennis"],size:"small"},
+      {question:"ICC is for which sport?",answer:"Cricket",options:["Cricket","Football","Hockey","Tennis"],size:"small"},
+      {question:"Wimbledon is for?",answer:"Tennis",options:["Tennis","Cricket","Football","Golf"],size:"small"},
+      {question:"IPL stands for?",answer:"Indian Premier League",options:["Indian Premier League","International Premier League","India Pro League","Indian Player League"],size:"small"},
+      {question:"Country of FIFA HQ?",answer:"Switzerland",options:["Switzerland","England","France","Germany"],size:"small"},
+      {question:"Bat used in baseball is?",answer:"Wooden",options:["Wooden","Iron","Plastic","Steel"],size:"small"},
+      {question:"Game with knight, bishop?",answer:"Chess",options:["Chess","Carrom","Ludo","Cards"],size:"small"},
+      {question:"Olympics first held in?",answer:"Greece",options:["Greece","England","France","USA"],size:"small"},
+      {question:"Modern Olympics started in?",answer:"1896",options:["1896","1900","1920","1950"],size:"small"},
+      {question:"Marathon distance (km)?",answer:"42.195",options:["42.195","10","21","50"],size:"small"},
+      {question:"Sport with disc?",answer:"Discus",options:["Discus","Javelin","Shot Put","Hammer"],size:"small"},
+      {question:"Sport with spear-like rod?",answer:"Javelin",options:["Javelin","Discus","Hammer","Shot Put"],size:"small"},
+      {question:"Sport with heavy ball thrown?",answer:"Shot Put",options:["Shot Put","Discus","Javelin","Hammer"],size:"small"},
+      {question:"Pole used to jump?",answer:"Pole vault",options:["Pole vault","High jump","Long jump","Triple jump"],size:"small"},
+    ],
+    [
+      {question:"God of cricket?",answer:"Sachin Tendulkar",options:["Sachin Tendulkar","Virat Kohli","Dhoni","Ganguly"],size:"small"},
+      {question:"Master Blaster?",answer:"Sachin Tendulkar",options:["Sachin Tendulkar","Lara","Ponting","Kohli"],size:"small"},
+      {question:"Captain Cool?",answer:"MS Dhoni",options:["MS Dhoni","Kohli","Sachin","Ganguly"],size:"small"},
+      {question:"Wall of Indian cricket?",answer:"Rahul Dravid",options:["Rahul Dravid","Sachin","Sehwag","Laxman"],size:"small"},
+      {question:"First T20 World Cup winner?",answer:"India (2007)",options:["India (2007)","Australia","Pakistan","England"],size:"small"},
+      {question:"First ODI World Cup winner (India)?",answer:"1983",options:["1983","1987","1996","2003"],size:"small"},
+      {question:"1983 Cup-winning captain?",answer:"Kapil Dev",options:["Kapil Dev","Gavaskar","Wadekar","Shastri"],size:"small"},
+      {question:"2011 Cup-winning captain?",answer:"Dhoni",options:["Dhoni","Kohli","Ganguly","Sehwag"],size:"small"},
+      {question:"Maximum runs in ODI by Sachin?",answer:"200 (first)",options:["200 (first)","150","175","264"],size:"small"},
+      {question:"Highest T20 international team total record holder?",answer:"Varies (Nepal record)",options:["Varies (Nepal record)","India","WI","Eng"],size:"small"},
+      {question:"Pele played?",answer:"Football",options:["Football","Cricket","Hockey","Tennis"],size:"small"},
+      {question:"Maradona was from?",answer:"Argentina",options:["Argentina","Brazil","Italy","France"],size:"small"},
+      {question:"Messi is from?",answer:"Argentina",options:["Argentina","Brazil","Spain","Portugal"],size:"small"},
+      {question:"Ronaldo (CR7) is from?",answer:"Portugal",options:["Portugal","Brazil","Spain","Argentina"],size:"small"},
+      {question:"Federer plays?",answer:"Tennis",options:["Tennis","Football","Cricket","Golf"],size:"small"},
+      {question:"Nadal plays?",answer:"Tennis",options:["Tennis","Football","Cricket","Golf"],size:"small"},
+      {question:"Tiger Woods plays?",answer:"Golf",options:["Golf","Tennis","Cricket","Football"],size:"small"},
+      {question:"Bolt is famous for?",answer:"Sprinting",options:["Sprinting","Marathon","Jumping","Boxing"],size:"small"},
+      {question:"Phelps is famous for?",answer:"Swimming",options:["Swimming","Running","Cycling","Boxing"],size:"small"},
+      {question:"Ali was famous for?",answer:"Boxing",options:["Boxing","Wrestling","Karate","Judo"],size:"small"},
+    ],
+    [
+      {question:"Hockey legend Major Dhyan Chand was?",answer:"Indian",options:["Indian","Pakistani","Australian","English"],size:"small"},
+      {question:"Birthday of Dhyan Chand?",answer:"29 August",options:["29 August","15 August","26 January","2 October"],size:"small"},
+      {question:"National Sports Day in India?",answer:"29 August",options:["29 August","15 August","26 January","5 September"],size:"small"},
+      {question:"First Indian Olympic gold (individual)?",answer:"Abhinav Bindra",options:["Abhinav Bindra","Karnam Malleswari","Rajyavardhan Rathore","Vijender Singh"],size:"small"},
+      {question:"Bindra won gold in?",answer:"Shooting",options:["Shooting","Boxing","Wrestling","Archery"],size:"small"},
+      {question:"First Indian woman Olympic medal?",answer:"Karnam Malleswari",options:["Karnam Malleswari","Mary Kom","PV Sindhu","Sania Mirza"],size:"small"},
+      {question:"Mary Kom is famous in?",answer:"Boxing",options:["Boxing","Wrestling","Shooting","Archery"],size:"small"},
+      {question:"PV Sindhu plays?",answer:"Badminton",options:["Badminton","Tennis","Squash","Table Tennis"],size:"small"},
+      {question:"Saina Nehwal plays?",answer:"Badminton",options:["Badminton","Tennis","Squash","Hockey"],size:"small"},
+      {question:"Sania Mirza plays?",answer:"Tennis",options:["Tennis","Badminton","Squash","Hockey"],size:"small"},
+      {question:"Vishwanathan Anand plays?",answer:"Chess",options:["Chess","Carrom","Ludo","Cards"],size:"small"},
+      {question:"Anand world champion in?",answer:"2000 (first)",options:["2000 (first)","1990","2010","2020"],size:"small"},
+      {question:"Kabaddi is from?",answer:"India",options:["India","Pakistan","Bangladesh","Sri Lanka"],size:"small"},
+      {question:"PKL stands for?",answer:"Pro Kabaddi League",options:["Pro Kabaddi League","Premier Kabaddi League","Pro Kabaddi Lineup","Players Kabaddi League"],size:"small"},
+      {question:"Sushil Kumar is from?",answer:"Wrestling",options:["Wrestling","Boxing","Shooting","Archery"],size:"small"},
+      {question:"Neeraj Chopra plays?",answer:"Javelin",options:["Javelin","Discus","Shot Put","Hammer"],size:"small"},
+      {question:"Neeraj's Olympic gold year?",answer:"2020 (held 2021)",options:["2020 (held 2021)","2016","2012","2008"],size:"small"},
+      {question:"Tokyo Olympics held in?",answer:"2021",options:["2021","2020","2022","2019"],size:"small"},
+      {question:"Next Olympics (Summer) after 2024?",answer:"2028",options:["2028","2026","2030","2032"],size:"small"},
+      {question:"2024 Summer Olympics city?",answer:"Paris",options:["Paris","LA","Tokyo","London"],size:"small"},
+    ],
+    [
+      {question:"IPL first season?",answer:"2008",options:["2008","2007","2009","2010"],size:"small"},
+      {question:"First IPL winner?",answer:"Rajasthan Royals",options:["Rajasthan Royals","CSK","MI","RCB"],size:"small"},
+      {question:"Most IPL titles (team)?",answer:"Mumbai Indians / CSK",options:["Mumbai Indians / CSK","KKR","RCB","DC"],size:"small"},
+      {question:"BCCI HQ city?",answer:"Mumbai",options:["Mumbai","Delhi","Chennai","Kolkata"],size:"small"},
+      {question:"FIFA WC most won country?",answer:"Brazil",options:["Brazil","Germany","Italy","Argentina"],size:"small"},
+      {question:"First FIFA WC year?",answer:"1930",options:["1930","1900","1920","1950"],size:"small"},
+      {question:"First FIFA WC winner?",answer:"Uruguay",options:["Uruguay","Brazil","Argentina","Italy"],size:"small"},
+      {question:"UEFA Champions League is for?",answer:"Football",options:["Football","Cricket","Hockey","Tennis"],size:"small"},
+      {question:"NBA stands for?",answer:"National Basketball Association",options:["National Basketball Association","National Baseball","North Basketball","New Basketball"],size:"small"},
+      {question:"Most Wimbledon titles (men)?",answer:"Federer/Djokovic (8/7)",options:["Federer/Djokovic (8/7)","Nadal","Sampras","Borg"],size:"small"},
+      {question:"Olympic motto?",answer:"Faster Higher Stronger",options:["Faster Higher Stronger","Win Win Win","Run Jump Throw","Strong Brave Wise"],size:"small"},
+      {question:"Country with most Olympic medals (all-time)?",answer:"USA",options:["USA","Russia","China","Germany"],size:"small"},
+      {question:"Cricket: how many balls in over?",answer:"6",options:["6","5","7","8"],size:"small"},
+      {question:"Cricket: max overs in T20 innings?",answer:"20",options:["20","10","15","25"],size:"small"},
+      {question:"Cricket: max overs in ODI innings?",answer:"50",options:["50","40","60","20"],size:"small"},
+      {question:"LBW stands for?",answer:"Leg Before Wicket",options:["Leg Before Wicket","Last Ball Won","Long Boundary Wicket","Leg Bat Wicket"],size:"small"},
+      {question:"Number of Grand Slams in tennis?",answer:"4",options:["4","3","5","6"],size:"small"},
+      {question:"Tennis Grand Slam on grass?",answer:"Wimbledon",options:["Wimbledon","French Open","US Open","Aus Open"],size:"small"},
+      {question:"Tennis Grand Slam on clay?",answer:"French Open",options:["French Open","Wimbledon","US Open","Aus Open"],size:"small"},
+      {question:"Chess grandmaster from India (current top)?",answer:"Gukesh / Pragg",options:["Gukesh / Pragg","Anand only","Carlsen","Karpov"],size:"small"},
+    ],
+  ],
+  "computers": [
+    [
+      {question:"What do we use to type?",answer:"Keyboard",options:["Keyboard","Mouse","Screen","Speaker"],size:"small"},
+      {question:"What do we click with?",answer:"Mouse",options:["Mouse","Keyboard","Screen","Speaker"],size:"small"},
+      {question:"Where do we see images?",answer:"Screen/Monitor",options:["Screen/Monitor","Mouse","Keyboard","CPU"],size:"small"},
+      {question:"Where do we hear sound?",answer:"Speaker",options:["Speaker","Mouse","Keyboard","Screen"],size:"small"},
+      {question:"A computer is a?",answer:"Machine",options:["Machine","Animal","Plant","Human"],size:"small"},
+      {question:"Brain of computer?",answer:"CPU",options:["CPU","Mouse","Keyboard","Speaker"],size:"small"},
+      {question:"Letters on keyboard are called?",answer:"Keys",options:["Keys","Buttons","Tiles","Cards"],size:"small"},
+      {question:"A long key on keyboard?",answer:"Spacebar",options:["Spacebar","Enter","Shift","Tab"],size:"small"},
+      {question:"Big screen of computer is?",answer:"Monitor",options:["Monitor","Mouse","Speaker","Printer"],size:"small"},
+      {question:"Tiny computer in your hand?",answer:"Mobile/Phone",options:["Mobile/Phone","TV","Radio","Camera"],size:"small"},
+      {question:"Computer needs ___ to work.",answer:"Electricity",options:["Electricity","Water","Food","Air"],size:"small"},
+      {question:"What do we play on computer?",answer:"Games",options:["Games","Sports","Music only","Movies only"],size:"small"},
+      {question:"Smiley keyboard symbols?",answer:"Emojis",options:["Emojis","Numbers","Letters","Words"],size:"small"},
+      {question:"What do you press to make space?",answer:"Spacebar",options:["Spacebar","Enter","Shift","Ctrl"],size:"small"},
+      {question:"What do you press to go to next line?",answer:"Enter",options:["Enter","Spacebar","Shift","Tab"],size:"small"},
+      {question:"A computer can also be?",answer:"Laptop",options:["Laptop","Bag","Pen","Book"],size:"small"},
+      {question:"What is a tablet?",answer:"Small computer",options:["Small computer","Medicine","Notebook","Pencil box"],size:"small"},
+      {question:"TV remote uses?",answer:"Buttons",options:["Buttons","Mouse","Keyboard","Pen"],size:"small"},
+      {question:"Internet helps us to?",answer:"Connect",options:["Connect","Eat","Sleep","Walk"],size:"small"},
+      {question:"Where is the cursor?",answer:"On screen",options:["On screen","On keyboard","On mouse","On wall"],size:"small"},
+    ],
+    [
+      {question:"Full form of CPU?",answer:"Central Processing Unit",options:["Central Processing Unit","Computer Power Unit","Central Power Unit","Computer Processing Unit"],size:"small"},
+      {question:"Output device for sound?",answer:"Speaker",options:["Speaker","Monitor","Printer","Keyboard"],size:"small"},
+      {question:"Output device for paper?",answer:"Printer",options:["Printer","Speaker","Monitor","Keyboard"],size:"small"},
+      {question:"Input device with keys?",answer:"Keyboard",options:["Keyboard","Monitor","Printer","Speaker"],size:"small"},
+      {question:"Input device with click?",answer:"Mouse",options:["Mouse","Speaker","Printer","Monitor"],size:"small"},
+      {question:"Storage device (small portable)?",answer:"Pen drive",options:["Pen drive","Mouse","Keyboard","Speaker"],size:"small"},
+      {question:"File extension for image?",answer:".jpg or .png",options:[".jpg or .png",".doc",".mp3",".txt"],size:"small"},
+      {question:"File extension for music?",answer:".mp3",options:[".mp3",".jpg",".doc",".txt"],size:"small"},
+      {question:"File extension for text?",answer:".txt",options:[".txt",".jpg",".mp3",".exe"],size:"small"},
+      {question:"What is a folder?",answer:"Container for files",options:["Container for files","A type of file","A keyboard key","A mouse button"],size:"small"},
+      {question:"What is a file?",answer:"Stored data",options:["Stored data","A folder","A drive","A button"],size:"small"},
+      {question:"Which is software?",answer:"MS Word",options:["MS Word","Mouse","Keyboard","Speaker"],size:"small"},
+      {question:"Which is hardware?",answer:"Monitor",options:["Monitor","Word","Excel","Browser"],size:"small"},
+      {question:"A computer game uses?",answer:"Software",options:["Software","Battery only","Lights","Wires"],size:"small"},
+      {question:"MS Paint is used for?",answer:"Drawing",options:["Drawing","Typing letters","Playing music","Calculations"],size:"small"},
+      {question:"MS Word is for?",answer:"Documents",options:["Documents","Drawing","Music","Games"],size:"small"},
+      {question:"MS Excel is for?",answer:"Spreadsheets",options:["Spreadsheets","Drawing","Music","Letters"],size:"small"},
+      {question:"A robot is?",answer:"A machine",options:["A machine","An animal","A human","A plant"],size:"small"},
+      {question:"Smart device worn on wrist?",answer:"Smart watch",options:["Smart watch","Smart shoe","Smart belt","Smart cap"],size:"small"},
+      {question:"What turns on computer?",answer:"Power button",options:["Power button","Reset button","Mouse","Keyboard"],size:"small"},
+    ],
+    [
+      {question:"Internet stands for?",answer:"International Network",options:["International Network","Internal Net","Inter Net Service","Internet Network"],size:"small"},
+      {question:"WWW stands for?",answer:"World Wide Web",options:["World Wide Web","World Wireless Web","World Web Wide","Web World Wide"],size:"small"},
+      {question:"Email stands for?",answer:"Electronic Mail",options:["Electronic Mail","Easy Mail","Express Mail","Electric Mail"],size:"small"},
+      {question:"Most popular search engine?",answer:"Google",options:["Google","Bing","Yahoo","DuckDuckGo"],size:"small"},
+      {question:"Web pages open in?",answer:"Browser",options:["Browser","File","Folder","Word"],size:"small"},
+      {question:"Example of browser?",answer:"Chrome",options:["Chrome","Word","Excel","Paint"],size:"small"},
+      {question:"@ symbol is used in?",answer:"Email",options:["Email","Phone","Number","Date"],size:"small"},
+      {question:"URL is?",answer:"Web address",options:["Web address","Email address","File name","User ID"],size:"small"},
+      {question:"Wi-Fi is for?",answer:"Wireless internet",options:["Wireless internet","Wired phone","Battery","Loud speaker"],size:"small"},
+      {question:"Computer virus is?",answer:"Harmful program",options:["Harmful program","Useful program","A device","A folder"],size:"small"},
+      {question:"Antivirus protects from?",answer:"Virus",options:["Virus","Dust","Heat","Water"],size:"small"},
+      {question:"Save shortcut?",answer:"Ctrl+S",options:["Ctrl+S","Ctrl+P","Ctrl+C","Ctrl+X"],size:"small"},
+      {question:"Copy shortcut?",answer:"Ctrl+C",options:["Ctrl+C","Ctrl+V","Ctrl+S","Ctrl+P"],size:"small"},
+      {question:"Paste shortcut?",answer:"Ctrl+V",options:["Ctrl+V","Ctrl+C","Ctrl+S","Ctrl+P"],size:"small"},
+      {question:"Cut shortcut?",answer:"Ctrl+X",options:["Ctrl+X","Ctrl+C","Ctrl+V","Ctrl+S"],size:"small"},
+      {question:"Undo shortcut?",answer:"Ctrl+Z",options:["Ctrl+Z","Ctrl+Y","Ctrl+S","Ctrl+P"],size:"small"},
+      {question:"Print shortcut?",answer:"Ctrl+P",options:["Ctrl+P","Ctrl+S","Ctrl+C","Ctrl+V"],size:"small"},
+      {question:"Select all shortcut?",answer:"Ctrl+A",options:["Ctrl+A","Ctrl+S","Ctrl+C","Ctrl+P"],size:"small"},
+      {question:"What is RAM?",answer:"Memory",options:["Memory","Hard disk","Mouse","Speaker"],size:"small"},
+      {question:"What is ROM?",answer:"Read Only Memory",options:["Read Only Memory","Random Open Memory","Read Only Mode","Random Only Memory"],size:"small"},
+    ],
+    [
+      {question:"First computer was?",answer:"ENIAC",options:["ENIAC","IBM PC","Apple I","Mac"],size:"small"},
+      {question:"Father of computer?",answer:"Charles Babbage",options:["Charles Babbage","Newton","Edison","Tesla"],size:"small"},
+      {question:"He designed Analytical Engine?",answer:"Charles Babbage",options:["Charles Babbage","Newton","Tesla","Fleming"],size:"small"},
+      {question:"First programmer?",answer:"Ada Lovelace",options:["Ada Lovelace","Marie Curie","Hopper","Lamarr"],size:"small"},
+      {question:"Microsoft founded by?",answer:"Bill Gates",options:["Bill Gates","Steve Jobs","Elon Musk","Larry Page"],size:"small"},
+      {question:"Apple founded by?",answer:"Steve Jobs",options:["Steve Jobs","Bill Gates","Bezos","Page"],size:"small"},
+      {question:"Google founded by?",answer:"Larry Page & Sergey Brin",options:["Larry Page & Sergey Brin","Bill Gates","Steve Jobs","Bezos"],size:"small"},
+      {question:"Facebook founded by?",answer:"Mark Zuckerberg",options:["Mark Zuckerberg","Bill Gates","Steve Jobs","Bezos"],size:"small"},
+      {question:"Amazon founded by?",answer:"Jeff Bezos",options:["Jeff Bezos","Mark Zuckerberg","Steve Jobs","Bill Gates"],size:"small"},
+      {question:"1 KB = ___ Bytes?",answer:"1024",options:["1024","100","1000","512"],size:"small"},
+      {question:"1 MB = ___ KB?",answer:"1024",options:["1024","100","1000","512"],size:"small"},
+      {question:"1 GB = ___ MB?",answer:"1024",options:["1024","100","1000","512"],size:"small"},
+      {question:"Smallest unit of data?",answer:"Bit",options:["Bit","Byte","KB","MB"],size:"small"},
+      {question:"8 bits = ?",answer:"1 byte",options:["1 byte","1 KB","1 MB","1 word"],size:"small"},
+      {question:"Binary digits are?",answer:"0 and 1",options:["0 and 1","1 to 9","A to Z","0 to 9"],size:"small"},
+      {question:"Operating system example?",answer:"Windows",options:["Windows","Word","Excel","Chrome"],size:"small"},
+      {question:"Mac OS is by?",answer:"Apple",options:["Apple","Microsoft","Google","IBM"],size:"small"},
+      {question:"Android is by?",answer:"Google",options:["Google","Apple","Microsoft","Samsung"],size:"small"},
+      {question:"iOS is by?",answer:"Apple",options:["Apple","Google","Microsoft","Samsung"],size:"small"},
+      {question:"Linux is?",answer:"Open source OS",options:["Open source OS","Browser","App","Game"],size:"small"},
+    ],
+    [
+      {question:"First Indian supercomputer?",answer:"PARAM",options:["PARAM","AGNI","TEJAS","ARJUN"],size:"small"},
+      {question:"PARAM developed by?",answer:"C-DAC",options:["C-DAC","ISRO","DRDO","BARC"],size:"small"},
+      {question:"High level language example?",answer:"Python",options:["Python","Machine code","Binary","Assembly"],size:"small"},
+      {question:"Python created by?",answer:"Guido van Rossum",options:["Guido van Rossum","Dennis Ritchie","James Gosling","Bjarne Stroustrup"],size:"small"},
+      {question:"C language created by?",answer:"Dennis Ritchie",options:["Dennis Ritchie","Guido","Gosling","Stroustrup"],size:"small"},
+      {question:"C++ created by?",answer:"Bjarne Stroustrup",options:["Bjarne Stroustrup","Ritchie","Guido","Gosling"],size:"small"},
+      {question:"Java created by?",answer:"James Gosling",options:["James Gosling","Ritchie","Guido","Stroustrup"],size:"small"},
+      {question:"HTML stands for?",answer:"HyperText Markup Language",options:["HyperText Markup Language","High Text Mark Lang","Home Tool Mark Lang","Hyper Tool Mark Lang"],size:"small"},
+      {question:"CSS stands for?",answer:"Cascading Style Sheets",options:["Cascading Style Sheets","Computer Style Sheets","Color Style Sheets","Cascade Sheet Style"],size:"small"},
+      {question:"JS stands for?",answer:"JavaScript",options:["JavaScript","Java Source","Just Script","Java Style"],size:"small"},
+      {question:"IP stands for?",answer:"Internet Protocol",options:["Internet Protocol","Internal Process","Inter Program","Internet Process"],size:"small"},
+      {question:"URL example starts with?",answer:"https://",options:["https://","www.com","@gmail","ftp.com"],size:"small"},
+      {question:"DNS stands for?",answer:"Domain Name System",options:["Domain Name System","Data Name System","Digital Name Service","Direct Net Service"],size:"small"},
+      {question:"GPU stands for?",answer:"Graphics Processing Unit",options:["Graphics Processing Unit","General Process Unit","Game Process Unit","Group Process Unit"],size:"small"},
+      {question:"SSD stands for?",answer:"Solid State Drive",options:["Solid State Drive","Single Storage Disk","System Storage Disk","Super Storage Drive"],size:"small"},
+      {question:"HDD stands for?",answer:"Hard Disk Drive",options:["Hard Disk Drive","High Disk Drive","Hard Data Drive","Heavy Disk Drive"],size:"small"},
+      {question:"AI stands for?",answer:"Artificial Intelligence",options:["Artificial Intelligence","Auto Intelligence","Active Intelligence","Aided Info"],size:"small"},
+      {question:"ML stands for?",answer:"Machine Learning",options:["Machine Learning","Manual Learning","Mac Library","Machine Logic"],size:"small"},
+      {question:"VPN stands for?",answer:"Virtual Private Network",options:["Virtual Private Network","Very Personal Net","Virtual Public Net","Visible Private Net"],size:"small"},
+      {question:"Bug in computer means?",answer:"Error",options:["Error","Insect","File","Folder"],size:"small"},
+    ],
+  ],
+  "animals": [
+    [
+      {question:"Animal that says 'meow'?",answer:"Cat",options:["Cat","Dog","Cow","Pig"],size:"small"},
+      {question:"Animal that says 'bark'?",answer:"Dog",options:["Dog","Cat","Cow","Sheep"],size:"small"},
+      {question:"Animal that says 'moo'?",answer:"Cow",options:["Cow","Dog","Cat","Pig"],size:"small"},
+      {question:"Animal that says 'baa'?",answer:"Sheep",options:["Sheep","Cow","Pig","Goat"],size:"small"},
+      {question:"Animal with long ears that hops?",answer:"Rabbit",options:["Rabbit","Cat","Dog","Mouse"],size:"small"},
+      {question:"Animal with stripes (orange/black)?",answer:"Tiger",options:["Tiger","Lion","Leopard","Zebra"],size:"small"},
+      {question:"Animal with golden mane (king)?",answer:"Lion",options:["Lion","Tiger","Leopard","Cheetah"],size:"small"},
+      {question:"Animal with a long trunk?",answer:"Elephant",options:["Elephant","Horse","Camel","Hippo"],size:"small"},
+      {question:"Animal with a hump?",answer:"Camel",options:["Camel","Horse","Donkey","Cow"],size:"small"},
+      {question:"Animal with black and white stripes?",answer:"Zebra",options:["Zebra","Horse","Tiger","Cow"],size:"small"},
+      {question:"Tallest animal?",answer:"Giraffe",options:["Giraffe","Elephant","Camel","Horse"],size:"small"},
+      {question:"Largest animal on land?",answer:"Elephant",options:["Elephant","Giraffe","Hippo","Rhino"],size:"small"},
+      {question:"Animal that gives wool?",answer:"Sheep",options:["Sheep","Cow","Goat","Pig"],size:"small"},
+      {question:"Animal that lays eggs (farm bird)?",answer:"Hen",options:["Hen","Cow","Goat","Sheep"],size:"small"},
+      {question:"Animal that gives milk?",answer:"Cow",options:["Cow","Hen","Pig","Snake"],size:"small"},
+      {question:"Pet that catches mice?",answer:"Cat",options:["Cat","Dog","Cow","Hen"],size:"small"},
+      {question:"Animal that lives in water (pet)?",answer:"Fish",options:["Fish","Cat","Dog","Bird"],size:"small"},
+      {question:"Bird that talks?",answer:"Parrot",options:["Parrot","Crow","Sparrow","Pigeon"],size:"small"},
+      {question:"Bird that hoots at night?",answer:"Owl",options:["Owl","Eagle","Sparrow","Pigeon"],size:"small"},
+      {question:"Bird with long colorful tail?",answer:"Peacock",options:["Peacock","Crow","Sparrow","Pigeon"],size:"small"},
+    ],
+    [
+      {question:"Young of cow?",answer:"Calf",options:["Calf","Foal","Lamb","Kid"],size:"small"},
+      {question:"Young of horse?",answer:"Foal",options:["Foal","Calf","Lamb","Kid"],size:"small"},
+      {question:"Young of sheep?",answer:"Lamb",options:["Lamb","Calf","Foal","Kid"],size:"small"},
+      {question:"Young of goat?",answer:"Kid",options:["Kid","Lamb","Calf","Foal"],size:"small"},
+      {question:"Young of dog?",answer:"Puppy",options:["Puppy","Kitten","Cub","Calf"],size:"small"},
+      {question:"Young of cat?",answer:"Kitten",options:["Kitten","Puppy","Cub","Foal"],size:"small"},
+      {question:"Young of lion/tiger?",answer:"Cub",options:["Cub","Puppy","Kitten","Calf"],size:"small"},
+      {question:"Young of frog?",answer:"Tadpole",options:["Tadpole","Calf","Lamb","Cub"],size:"small"},
+      {question:"Home of bird?",answer:"Nest",options:["Nest","Den","Hole","Cave"],size:"small"},
+      {question:"Home of bee?",answer:"Hive",options:["Hive","Nest","Web","Cocoon"],size:"small"},
+      {question:"Home of spider?",answer:"Web",options:["Web","Nest","Hive","Burrow"],size:"small"},
+      {question:"Home of lion?",answer:"Den",options:["Den","Nest","Hive","Pen"],size:"small"},
+      {question:"Home of horse?",answer:"Stable",options:["Stable","Nest","Den","Cave"],size:"small"},
+      {question:"Home of cow?",answer:"Shed/Barn",options:["Shed/Barn","Den","Nest","Cave"],size:"small"},
+      {question:"Home of rabbit?",answer:"Burrow",options:["Burrow","Nest","Hive","Web"],size:"small"},
+      {question:"Home of fish?",answer:"Water",options:["Water","Tree","Cave","Hill"],size:"small"},
+      {question:"Animals with feathers?",answer:"Birds",options:["Birds","Reptiles","Fish","Insects"],size:"small"},
+      {question:"Animals with scales?",answer:"Fish/Reptiles",options:["Fish/Reptiles","Birds","Mammals","Insects"],size:"small"},
+      {question:"Animals with fur?",answer:"Mammals",options:["Mammals","Birds","Fish","Insects"],size:"small"},
+      {question:"Insect with 6 legs?",answer:"Ant",options:["Ant","Spider","Crab","Snail"],size:"small"},
+    ],
+    [
+      {question:"Group of fish is?",answer:"School",options:["School","Herd","Flock","Pack"],size:"small"},
+      {question:"Group of cows is?",answer:"Herd",options:["Herd","School","Flock","Pack"],size:"small"},
+      {question:"Group of birds is?",answer:"Flock",options:["Flock","Herd","School","Pack"],size:"small"},
+      {question:"Group of wolves is?",answer:"Pack",options:["Pack","Flock","Herd","School"],size:"small"},
+      {question:"Group of lions is?",answer:"Pride",options:["Pride","Pack","Flock","Herd"],size:"small"},
+      {question:"Group of bees is?",answer:"Swarm/Hive",options:["Swarm/Hive","Flock","Herd","School"],size:"small"},
+      {question:"Animal that hibernates?",answer:"Bear",options:["Bear","Lion","Tiger","Cat"],size:"small"},
+      {question:"Fastest land animal?",answer:"Cheetah",options:["Cheetah","Lion","Tiger","Horse"],size:"small"},
+      {question:"Largest mammal?",answer:"Blue Whale",options:["Blue Whale","Elephant","Giraffe","Hippo"],size:"small"},
+      {question:"Largest bird?",answer:"Ostrich",options:["Ostrich","Eagle","Peacock","Penguin"],size:"small"},
+      {question:"Bird that cannot fly (cold)?",answer:"Penguin",options:["Penguin","Sparrow","Eagle","Pigeon"],size:"small"},
+      {question:"Animal that changes color?",answer:"Chameleon",options:["Chameleon","Frog","Snake","Lizard"],size:"small"},
+      {question:"Animal that sleeps upside down?",answer:"Bat",options:["Bat","Owl","Sloth","Monkey"],size:"small"},
+      {question:"Cold-blooded animal?",answer:"Snake",options:["Snake","Cow","Dog","Lion"],size:"small"},
+      {question:"Warm-blooded animal?",answer:"Dog",options:["Dog","Snake","Frog","Fish"],size:"small"},
+      {question:"Animal that lays eggs (mammal)?",answer:"Platypus",options:["Platypus","Cow","Dog","Cat"],size:"small"},
+      {question:"Largest reptile?",answer:"Saltwater Crocodile",options:["Saltwater Crocodile","Komodo Dragon","Anaconda","Iguana"],size:"small"},
+      {question:"Smallest bird?",answer:"Hummingbird",options:["Hummingbird","Sparrow","Wren","Robin"],size:"small"},
+      {question:"Animal with longest neck?",answer:"Giraffe",options:["Giraffe","Camel","Elephant","Ostrich"],size:"small"},
+      {question:"Heaviest land animal?",answer:"African Elephant",options:["African Elephant","Hippo","Rhino","Giraffe"],size:"small"},
+    ],
+    [
+      {question:"Cow eats?",answer:"Grass",options:["Grass","Meat","Fish","Bones"],size:"small"},
+      {question:"Lion eats?",answer:"Meat",options:["Meat","Grass","Leaves","Fruits"],size:"small"},
+      {question:"Cow is what type?",answer:"Herbivore",options:["Herbivore","Carnivore","Omnivore","Insectivore"],size:"small"},
+      {question:"Lion is what type?",answer:"Carnivore",options:["Carnivore","Herbivore","Omnivore","Insectivore"],size:"small"},
+      {question:"Bear is what type?",answer:"Omnivore",options:["Omnivore","Carnivore","Herbivore","Insectivore"],size:"small"},
+      {question:"Frog is what type (mostly)?",answer:"Insectivore/Carnivore",options:["Insectivore/Carnivore","Herbivore","Omnivore","Granivore"],size:"small"},
+      {question:"Animal that lives in water (mammal)?",answer:"Whale/Dolphin",options:["Whale/Dolphin","Fish","Crab","Octopus"],size:"small"},
+      {question:"Snake is what?",answer:"Reptile",options:["Reptile","Amphibian","Mammal","Insect"],size:"small"},
+      {question:"Frog is what?",answer:"Amphibian",options:["Amphibian","Reptile","Mammal","Insect"],size:"small"},
+      {question:"Bat is what?",answer:"Mammal",options:["Mammal","Bird","Reptile","Insect"],size:"small"},
+      {question:"Whale is what?",answer:"Mammal",options:["Mammal","Fish","Reptile","Amphibian"],size:"small"},
+      {question:"Dolphin is what?",answer:"Mammal",options:["Mammal","Fish","Reptile","Amphibian"],size:"small"},
+      {question:"Spider has how many legs?",answer:"8",options:["8","6","4","10"],size:"small"},
+      {question:"Insects have how many legs?",answer:"6",options:["6","4","8","10"],size:"small"},
+      {question:"Octopus has how many arms?",answer:"8",options:["8","6","4","10"],size:"small"},
+      {question:"Crab has how many legs?",answer:"10",options:["10","8","6","4"],size:"small"},
+      {question:"Animal with sharpest sight?",answer:"Eagle",options:["Eagle","Cat","Dog","Owl"],size:"small"},
+      {question:"Animal with sharpest hearing?",answer:"Bat (echo)",options:["Bat (echo)","Dog","Cat","Owl"],size:"small"},
+      {question:"Animal with strongest smell?",answer:"Bear/Dog",options:["Bear/Dog","Cat","Lion","Tiger"],size:"small"},
+      {question:"Most poisonous snake?",answer:"Inland Taipan",options:["Inland Taipan","Cobra","Python","Viper"],size:"small"},
+    ],
+    [
+      {question:"National animal of India?",answer:"Tiger",options:["Tiger","Lion","Elephant","Peacock"],size:"small"},
+      {question:"National bird of India?",answer:"Peacock",options:["Peacock","Sparrow","Parrot","Eagle"],size:"small"},
+      {question:"National aquatic animal of India?",answer:"River Dolphin",options:["River Dolphin","Whale","Shark","Tortoise"],size:"small"},
+      {question:"National heritage animal?",answer:"Elephant",options:["Elephant","Tiger","Lion","Cow"],size:"small"},
+      {question:"Bengal tiger found in?",answer:"Sundarbans",options:["Sundarbans","Sahara","Amazon","Alps"],size:"small"},
+      {question:"Asiatic Lion found in?",answer:"Gir Forest",options:["Gir Forest","Sundarbans","Kaziranga","Periyar"],size:"small"},
+      {question:"One-horned rhino found in?",answer:"Kaziranga",options:["Kaziranga","Gir","Sundarbans","Bandhavgarh"],size:"small"},
+      {question:"Gharial is a type of?",answer:"Crocodile",options:["Crocodile","Snake","Turtle","Frog"],size:"small"},
+      {question:"Project Tiger started?",answer:"1973",options:["1973","1980","1990","2000"],size:"small"},
+      {question:"IUCN Red List shows?",answer:"Endangered species",options:["Endangered species","Domestic species","Common species","All animals"],size:"small"},
+      {question:"Cheetah was extinct in India until?",answer:"Reintroduced 2022",options:["Reintroduced 2022","Reintroduced 2010","Reintroduced 2000","Never reintroduced"],size:"small"},
+      {question:"Animal symbol of Australia?",answer:"Kangaroo",options:["Kangaroo","Koala","Emu","Wombat"],size:"small"},
+      {question:"National animal of USA?",answer:"Bald Eagle",options:["Bald Eagle","Bear","Bison","Wolf"],size:"small"},
+      {question:"National animal of China?",answer:"Giant Panda",options:["Giant Panda","Dragon","Tiger","Bear"],size:"small"},
+      {question:"National animal of UK?",answer:"Lion",options:["Lion","Bull","Eagle","Bear"],size:"small"},
+      {question:"Largest fish?",answer:"Whale Shark",options:["Whale Shark","Blue Whale","Great White","Tuna"],size:"small"},
+      {question:"Most intelligent animal (after humans)?",answer:"Chimpanzee/Dolphin",options:["Chimpanzee/Dolphin","Cat","Dog","Cow"],size:"small"},
+      {question:"Animal that builds dams?",answer:"Beaver",options:["Beaver","Otter","Muskrat","Platypus"],size:"small"},
+      {question:"Black panther is a type of?",answer:"Leopard/Jaguar",options:["Leopard/Jaguar","Lion","Tiger","Cheetah"],size:"small"},
+      {question:"Migratory bird example?",answer:"Siberian Crane",options:["Siberian Crane","Peacock","Sparrow","Pigeon"],size:"small"},
+    ],
+  ],
+  "plants": [
+    [
+      {question:"Plants need ___ to grow.",answer:"Water",options:["Water","Oil","Milk","Juice"],size:"small"},
+      {question:"Plants need sunlight or moonlight?",answer:"Sunlight",options:["Sunlight","Moonlight","Lamp","Darkness"],size:"small"},
+      {question:"Color of most leaves?",answer:"Green",options:["Green","Red","Blue","Yellow"],size:"small"},
+      {question:"Where do trees grow?",answer:"Soil",options:["Soil","Water","Sky","Stone"],size:"small"},
+      {question:"What gives us oxygen?",answer:"Plants",options:["Plants","Stones","Iron","Water"],size:"small"},
+      {question:"Apple grows on?",answer:"Tree",options:["Tree","Bush","Vine","Underground"],size:"small"},
+      {question:"Mango grows on?",answer:"Tree",options:["Tree","Bush","Vine","Underground"],size:"small"},
+      {question:"Where do potatoes grow?",answer:"Underground",options:["Underground","On tree","On vine","On bush"],size:"small"},
+      {question:"Where do carrots grow?",answer:"Underground",options:["Underground","On tree","On bush","On vine"],size:"small"},
+      {question:"Smallest plant we eat?",answer:"Herbs",options:["Herbs","Tree","Shrub","Big bush"],size:"small"},
+      {question:"Sunflower color?",answer:"Yellow",options:["Yellow","Red","Blue","Green"],size:"small"},
+      {question:"Rose is a?",answer:"Flower",options:["Flower","Fruit","Vegetable","Leaf"],size:"small"},
+      {question:"Lotus grows in?",answer:"Water",options:["Water","Soil only","Sand","Snow"],size:"small"},
+      {question:"Cactus grows in?",answer:"Desert",options:["Desert","Water","Forest","Mountain"],size:"small"},
+      {question:"Banyan is a?",answer:"Tree",options:["Tree","Bush","Herb","Climber"],size:"small"},
+      {question:"Tomato is a?",answer:"Fruit (used as veg)",options:["Fruit (used as veg)","Animal","Bird","Fish"],size:"small"},
+      {question:"Mango is the king of?",answer:"Fruits",options:["Fruits","Vegetables","Trees","Flowers"],size:"small"},
+      {question:"Lotus is the national flower of?",answer:"India",options:["India","China","Japan","Nepal"],size:"small"},
+      {question:"Trees are taller than?",answer:"Bushes",options:["Bushes","Sky","Mountains","Clouds"],size:"small"},
+      {question:"Fruits taste mostly?",answer:"Sweet",options:["Sweet","Bitter","Spicy","Salty"],size:"small"},
+    ],
+    [
+      {question:"Part of plant that absorbs water?",answer:"Root",options:["Root","Leaf","Stem","Flower"],size:"small"},
+      {question:"Part that holds the plant up?",answer:"Stem",options:["Stem","Root","Leaf","Flower"],size:"small"},
+      {question:"Part where food is made?",answer:"Leaves",options:["Leaves","Roots","Stem","Flower"],size:"small"},
+      {question:"Part that becomes a fruit?",answer:"Flower",options:["Flower","Root","Leaf","Stem"],size:"small"},
+      {question:"Seeds become?",answer:"New plant",options:["New plant","Fruit only","Flower only","Root only"],size:"small"},
+      {question:"A young plant is called?",answer:"Seedling",options:["Seedling","Sapling","Sprout","Shoot"],size:"small"},
+      {question:"Carrot is a ___ plant.",answer:"Root",options:["Root","Stem","Leaf","Flower"],size:"small"},
+      {question:"Potato is a ___ plant (modified stem).",answer:"Stem",options:["Stem","Root","Leaf","Fruit"],size:"small"},
+      {question:"Cabbage is mostly ___ part.",answer:"Leaves",options:["Leaves","Roots","Stem","Flower"],size:"small"},
+      {question:"Cauliflower is mostly ___ part.",answer:"Flower",options:["Flower","Root","Stem","Leaf"],size:"small"},
+      {question:"Sugarcane is a ___ plant.",answer:"Stem",options:["Stem","Root","Leaf","Flower"],size:"small"},
+      {question:"Spinach is mostly ___ part.",answer:"Leaves",options:["Leaves","Root","Stem","Flower"],size:"small"},
+      {question:"Onion is a ___ part (modified stem/bulb).",answer:"Bulb (modified stem)",options:["Bulb (modified stem)","Root","Leaf","Flower"],size:"small"},
+      {question:"Coconut is a ___ part.",answer:"Fruit",options:["Fruit","Root","Stem","Leaf"],size:"small"},
+      {question:"Plants that climb need?",answer:"Support",options:["Support","Water only","Soil only","Light only"],size:"small"},
+      {question:"Trees, shrubs, herbs are types of?",answer:"Plants",options:["Plants","Animals","Birds","Insects"],size:"small"},
+      {question:"Tallest plants are?",answer:"Trees",options:["Trees","Shrubs","Herbs","Vines"],size:"small"},
+      {question:"Medium plants with woody stem?",answer:"Shrubs",options:["Shrubs","Trees","Herbs","Climbers"],size:"small"},
+      {question:"Small soft-stemmed plants?",answer:"Herbs",options:["Herbs","Trees","Shrubs","Climbers"],size:"small"},
+      {question:"Plants that need other support?",answer:"Climbers",options:["Climbers","Trees","Herbs","Shrubs"],size:"small"},
+    ],
+    [
+      {question:"Process of making food in plants?",answer:"Photosynthesis",options:["Photosynthesis","Respiration","Digestion","Excretion"],size:"small"},
+      {question:"Photosynthesis happens in?",answer:"Leaves",options:["Leaves","Roots","Stem","Flower"],size:"small"},
+      {question:"Plants take in which gas?",answer:"Carbon Dioxide",options:["Carbon Dioxide","Oxygen","Nitrogen","Hydrogen"],size:"small"},
+      {question:"Plants give out which gas?",answer:"Oxygen",options:["Oxygen","Carbon Dioxide","Nitrogen","Helium"],size:"small"},
+      {question:"Green pigment in leaves?",answer:"Chlorophyll",options:["Chlorophyll","Hemoglobin","Melanin","Carotene"],size:"small"},
+      {question:"Plants need ___ from soil.",answer:"Minerals",options:["Minerals","Sugar","Salt","Oil"],size:"small"},
+      {question:"Water transport tubes?",answer:"Xylem",options:["Xylem","Phloem","Stomata","Cuticle"],size:"small"},
+      {question:"Food transport tubes?",answer:"Phloem",options:["Phloem","Xylem","Stomata","Cuticle"],size:"small"},
+      {question:"Tiny holes on leaves?",answer:"Stomata",options:["Stomata","Pores","Veins","Cells"],size:"small"},
+      {question:"Plants that live one season?",answer:"Annuals",options:["Annuals","Biennials","Perennials","Evergreens"],size:"small"},
+      {question:"Plants that live many years?",answer:"Perennials",options:["Perennials","Annuals","Biennials","Seasonal"],size:"small"},
+      {question:"Plants that shed leaves?",answer:"Deciduous",options:["Deciduous","Evergreen","Perennial","Annual"],size:"small"},
+      {question:"Plants that stay green all year?",answer:"Evergreen",options:["Evergreen","Deciduous","Annual","Biennial"],size:"small"},
+      {question:"Pollen is in?",answer:"Flower",options:["Flower","Root","Stem","Leaf"],size:"small"},
+      {question:"Seed-making part of flower?",answer:"Pistil/Stigma",options:["Pistil/Stigma","Petal","Sepal","Stem"],size:"small"},
+      {question:"Pollen-making part of flower?",answer:"Stamen",options:["Stamen","Pistil","Sepal","Petal"],size:"small"},
+      {question:"Bees help in?",answer:"Pollination",options:["Pollination","Photosynthesis","Germination","Respiration"],size:"small"},
+      {question:"Seed sprouting is called?",answer:"Germination",options:["Germination","Pollination","Photosynthesis","Respiration"],size:"small"},
+      {question:"Trees in cold mountains?",answer:"Conifers/Pine",options:["Conifers/Pine","Mango","Banana","Coconut"],size:"small"},
+      {question:"Plants in desert (e.g.)?",answer:"Cactus",options:["Cactus","Mango","Coconut","Pine"],size:"small"},
+    ],
+    [
+      {question:"Roots types?",answer:"Tap and fibrous",options:["Tap and fibrous","Long and short","Wet and dry","Hot and cold"],size:"small"},
+      {question:"Carrot has which root?",answer:"Tap root",options:["Tap root","Fibrous","Aerial","Adventitious"],size:"small"},
+      {question:"Grass has which root?",answer:"Fibrous",options:["Fibrous","Tap root","Aerial","Tuber"],size:"small"},
+      {question:"Banyan has special roots called?",answer:"Aerial roots",options:["Aerial roots","Tap roots","Fibrous roots","Tuber"],size:"small"},
+      {question:"Mangrove roots called?",answer:"Breathing roots",options:["Breathing roots","Tap roots","Aerial","Tuber"],size:"small"},
+      {question:"Cactus stem stores?",answer:"Water",options:["Water","Air","Sugar","Salt"],size:"small"},
+      {question:"Onion is a modified?",answer:"Stem",options:["Stem","Root","Leaf","Flower"],size:"small"},
+      {question:"Ginger is a modified?",answer:"Stem",options:["Stem","Root","Leaf","Flower"],size:"small"},
+      {question:"Sweet potato is a modified?",answer:"Root",options:["Root","Stem","Leaf","Flower"],size:"small"},
+      {question:"Tendrils help plant to?",answer:"Climb",options:["Climb","Eat","Drink","Breathe"],size:"small"},
+      {question:"Thorns protect from?",answer:"Animals",options:["Animals","Sun","Rain","Wind"],size:"small"},
+      {question:"Pitcher plant catches?",answer:"Insects",options:["Insects","Water","Sunlight","Birds"],size:"small"},
+      {question:"Venus flytrap eats?",answer:"Insects",options:["Insects","Plants","Water","Soil"],size:"small"},
+      {question:"Mosses grow in?",answer:"Damp places",options:["Damp places","Desert","Snow","Sea"],size:"small"},
+      {question:"Algae grow in?",answer:"Water",options:["Water","Desert","Mountain","Air"],size:"small"},
+      {question:"Largest flower in world?",answer:"Rafflesia",options:["Rafflesia","Lotus","Sunflower","Rose"],size:"small"},
+      {question:"Tallest tree species?",answer:"Redwood/Sequoia",options:["Redwood/Sequoia","Banyan","Pine","Oak"],size:"small"},
+      {question:"Oldest tree species?",answer:"Bristlecone Pine",options:["Bristlecone Pine","Banyan","Oak","Redwood"],size:"small"},
+      {question:"Tree giving rubber?",answer:"Rubber tree",options:["Rubber tree","Pine","Oak","Mango"],size:"small"},
+      {question:"Tree giving paper (mostly)?",answer:"Pine/Eucalyptus",options:["Pine/Eucalyptus","Mango","Banyan","Coconut"],size:"small"},
+    ],
+    [
+      {question:"Plants without seeds reproduce by?",answer:"Spores",options:["Spores","Eggs","Buds","Roots"],size:"small"},
+      {question:"Ferns reproduce by?",answer:"Spores",options:["Spores","Seeds","Eggs","Buds"],size:"small"},
+      {question:"Plants with seeds in fruit?",answer:"Angiosperms",options:["Angiosperms","Gymnosperms","Algae","Fungi"],size:"small"},
+      {question:"Plants with naked seeds?",answer:"Gymnosperms",options:["Gymnosperms","Angiosperms","Algae","Fungi"],size:"small"},
+      {question:"Pine, Cycad are?",answer:"Gymnosperms",options:["Gymnosperms","Angiosperms","Algae","Fungi"],size:"small"},
+      {question:"Mosses, ferns lack?",answer:"Flowers",options:["Flowers","Roots","Leaves","Stems"],size:"small"},
+      {question:"Process of seed dispersal by wind?",answer:"Anemochory",options:["Anemochory","Hydrochory","Zoochory","Autochory"],size:"small"},
+      {question:"Coconut disperses by?",answer:"Water",options:["Water","Wind","Animals","Self"],size:"small"},
+      {question:"Dandelion seeds disperse by?",answer:"Wind",options:["Wind","Water","Animals","Birds"],size:"small"},
+      {question:"Burdock seeds disperse by?",answer:"Animals",options:["Animals","Wind","Water","Self"],size:"small"},
+      {question:"Plant tissue for support?",answer:"Sclerenchyma",options:["Sclerenchyma","Parenchyma","Collenchyma","Xylem"],size:"small"},
+      {question:"Photoperiodism is response to?",answer:"Light/Day length",options:["Light/Day length","Heat","Water","Touch"],size:"small"},
+      {question:"Phototropism is movement toward?",answer:"Light",options:["Light","Water","Gravity","Touch"],size:"small"},
+      {question:"Geotropism is response to?",answer:"Gravity",options:["Gravity","Light","Water","Touch"],size:"small"},
+      {question:"Hydrotropism is response to?",answer:"Water",options:["Water","Light","Gravity","Heat"],size:"small"},
+      {question:"Bryophyllum reproduces by?",answer:"Leaf buds",options:["Leaf buds","Seeds","Spores","Roots"],size:"small"},
+      {question:"Potato grows from?",answer:"Tuber (eyes)",options:["Tuber (eyes)","Seed only","Spore","Leaf"],size:"small"},
+      {question:"Strawberry spreads by?",answer:"Runners",options:["Runners","Seeds only","Spores","Roots"],size:"small"},
+      {question:"Yeast is a?",answer:"Fungus",options:["Fungus","Plant","Animal","Bacteria"],size:"small"},
+      {question:"Mushroom is a?",answer:"Fungus",options:["Fungus","Plant","Animal","Algae"],size:"small"},
+    ],
+  ],
+  "humanbody": [
+    [
+      {question:"How many eyes do we have?",answer:"2",options:["2","1","3","4"],size:"small"},
+      {question:"How many ears?",answer:"2",options:["2","1","3","4"],size:"small"},
+      {question:"How many fingers on one hand?",answer:"5",options:["5","4","6","10"],size:"small"},
+      {question:"How many toes on one foot?",answer:"5",options:["5","4","6","10"],size:"small"},
+      {question:"How many hands?",answer:"2",options:["2","1","3","4"],size:"small"},
+      {question:"How many legs?",answer:"2",options:["2","1","3","4"],size:"small"},
+      {question:"What do we use to see?",answer:"Eyes",options:["Eyes","Ears","Nose","Mouth"],size:"small"},
+      {question:"What do we use to hear?",answer:"Ears",options:["Ears","Eyes","Nose","Mouth"],size:"small"},
+      {question:"What do we use to smell?",answer:"Nose",options:["Nose","Eyes","Ears","Mouth"],size:"small"},
+      {question:"What do we use to taste?",answer:"Tongue",options:["Tongue","Nose","Eyes","Ears"],size:"small"},
+      {question:"What do we use to feel?",answer:"Skin",options:["Skin","Hair","Bones","Teeth"],size:"small"},
+      {question:"Which part chews food?",answer:"Teeth",options:["Teeth","Tongue","Lips","Cheeks"],size:"small"},
+      {question:"Where is your hair?",answer:"Head",options:["Head","Hand","Leg","Foot"],size:"small"},
+      {question:"What do we walk with?",answer:"Legs",options:["Legs","Hands","Eyes","Ears"],size:"small"},
+      {question:"What do we hold things with?",answer:"Hands",options:["Hands","Legs","Eyes","Ears"],size:"small"},
+      {question:"Body part above neck?",answer:"Head",options:["Head","Chest","Stomach","Leg"],size:"small"},
+      {question:"Body part for breathing?",answer:"Nose",options:["Nose","Eyes","Ears","Mouth"],size:"small"},
+      {question:"Inside head is?",answer:"Brain",options:["Brain","Heart","Liver","Lungs"],size:"small"},
+      {question:"What helps us think?",answer:"Brain",options:["Brain","Heart","Stomach","Lungs"],size:"small"},
+      {question:"What pumps blood?",answer:"Heart",options:["Heart","Brain","Liver","Stomach"],size:"small"},
+    ],
+    [
+      {question:"How many sense organs?",answer:"5",options:["5","3","4","6"],size:"small"},
+      {question:"Five senses are?",answer:"Sight, Hearing, Smell, Taste, Touch",options:["Sight, Hearing, Smell, Taste, Touch","Walk, Talk, Run, Jump, Sleep","See, Eat, Sleep, Walk, Run","Read, Write, Speak, Hear, See"],size:"small"},
+      {question:"Hardest part of body?",answer:"Teeth (enamel)",options:["Teeth (enamel)","Skin","Hair","Nails"],size:"small"},
+      {question:"How many milk teeth (children)?",answer:"20",options:["20","28","32","16"],size:"small"},
+      {question:"How many adult teeth?",answer:"32",options:["32","28","20","30"],size:"small"},
+      {question:"What grows on head?",answer:"Hair",options:["Hair","Nails","Teeth","Skin"],size:"small"},
+      {question:"What grows on fingers?",answer:"Nails",options:["Nails","Hair","Teeth","Skin"],size:"small"},
+      {question:"What covers our body?",answer:"Skin",options:["Skin","Hair","Nails","Bones"],size:"small"},
+      {question:"How do we breathe air in?",answer:"Through nose",options:["Through nose","Through ears","Through eyes","Through skin"],size:"small"},
+      {question:"Air goes from nose to?",answer:"Lungs",options:["Lungs","Heart","Brain","Stomach"],size:"small"},
+      {question:"Where does food go?",answer:"Stomach",options:["Stomach","Heart","Brain","Lungs"],size:"small"},
+      {question:"Liquid food helper organ?",answer:"Liver",options:["Liver","Heart","Lungs","Brain"],size:"small"},
+      {question:"Filter for blood?",answer:"Kidney",options:["Kidney","Liver","Lungs","Heart"],size:"small"},
+      {question:"Largest organ?",answer:"Skin",options:["Skin","Heart","Liver","Brain"],size:"small"},
+      {question:"Smallest bone?",answer:"Stapes (ear)",options:["Stapes (ear)","Femur","Skull","Rib"],size:"small"},
+      {question:"Largest bone?",answer:"Femur (thigh)",options:["Femur (thigh)","Skull","Rib","Hip"],size:"small"},
+      {question:"Strong cage protecting heart/lungs?",answer:"Rib cage",options:["Rib cage","Skull","Spine","Pelvis"],size:"small"},
+      {question:"Bone protecting brain?",answer:"Skull",options:["Skull","Rib","Spine","Hip"],size:"small"},
+      {question:"Bone in back?",answer:"Spine/Backbone",options:["Spine/Backbone","Skull","Rib","Hip"],size:"small"},
+      {question:"What flows in body (red liquid)?",answer:"Blood",options:["Blood","Water only","Air","Oil"],size:"small"},
+    ],
+    [
+      {question:"How many bones in adult human?",answer:"206",options:["206","201","210","220"],size:"small"},
+      {question:"How many bones in baby?",answer:"300+",options:["300+","206","100","400"],size:"small"},
+      {question:"How many muscles?",answer:"600+",options:["600+","100","200","1000"],size:"small"},
+      {question:"How many chambers in heart?",answer:"4",options:["4","2","3","5"],size:"small"},
+      {question:"Heart pumps how many times a day (approx)?",answer:"100,000",options:["100,000","10,000","1,000","1 million"],size:"small"},
+      {question:"Lungs help us in?",answer:"Breathing",options:["Breathing","Digestion","Walking","Seeing"],size:"small"},
+      {question:"How many lungs?",answer:"2",options:["2","1","3","4"],size:"small"},
+      {question:"Liver is on which side?",answer:"Right",options:["Right","Left","Center","Back"],size:"small"},
+      {question:"Stomach is on which side?",answer:"Left/Center",options:["Left/Center","Right","Back","Front only"],size:"small"},
+      {question:"Acid in stomach?",answer:"Hydrochloric acid",options:["Hydrochloric acid","Sulfuric acid","Lactic acid","Citric acid"],size:"small"},
+      {question:"Saliva is made in?",answer:"Mouth",options:["Mouth","Stomach","Throat","Nose"],size:"small"},
+      {question:"Long tube for food?",answer:"Esophagus",options:["Esophagus","Trachea","Larynx","Stomach"],size:"small"},
+      {question:"Long tube for air?",answer:"Trachea/Windpipe",options:["Trachea/Windpipe","Esophagus","Vein","Artery"],size:"small"},
+      {question:"Vocal cords are in?",answer:"Larynx (voice box)",options:["Larynx (voice box)","Stomach","Heart","Brain"],size:"small"},
+      {question:"Eye part for color?",answer:"Iris",options:["Iris","Pupil","Lens","Retina"],size:"small"},
+      {question:"Black part of eye?",answer:"Pupil",options:["Pupil","Iris","Lens","Retina"],size:"small"},
+      {question:"Eye part that focuses?",answer:"Lens",options:["Lens","Iris","Pupil","Retina"],size:"small"},
+      {question:"Eye part for image?",answer:"Retina",options:["Retina","Iris","Pupil","Lens"],size:"small"},
+      {question:"Tongue tastes how many basic tastes?",answer:"5 (incl umami)",options:["5 (incl umami)","4","6","3"],size:"small"},
+      {question:"Bitter taste is at?",answer:"Back of tongue",options:["Back of tongue","Front","Sides","Middle"],size:"small"},
+    ],
+    [
+      {question:"Skeletal system is made of?",answer:"Bones",options:["Bones","Muscles","Skin","Hair"],size:"small"},
+      {question:"Muscle attached to bone?",answer:"Skeletal muscle",options:["Skeletal muscle","Smooth","Cardiac","Voluntary"],size:"small"},
+      {question:"Heart muscle is?",answer:"Cardiac",options:["Cardiac","Skeletal","Smooth","Voluntary"],size:"small"},
+      {question:"Tube carrying blood from heart?",answer:"Artery",options:["Artery","Vein","Capillary","Nerve"],size:"small"},
+      {question:"Tube carrying blood to heart?",answer:"Vein",options:["Vein","Artery","Capillary","Nerve"],size:"small"},
+      {question:"Smallest blood vessel?",answer:"Capillary",options:["Capillary","Artery","Vein","Aorta"],size:"small"},
+      {question:"Largest artery?",answer:"Aorta",options:["Aorta","Pulmonary","Carotid","Femoral"],size:"small"},
+      {question:"Red blood cells carry?",answer:"Oxygen",options:["Oxygen","Food","Water","Hormones"],size:"small"},
+      {question:"White blood cells fight?",answer:"Germs",options:["Germs","Hunger","Cold","Sleep"],size:"small"},
+      {question:"Blood clotting cells?",answer:"Platelets",options:["Platelets","RBC","WBC","Plasma"],size:"small"},
+      {question:"Liquid part of blood?",answer:"Plasma",options:["Plasma","RBC","WBC","Platelets"],size:"small"},
+      {question:"Iron in blood is in?",answer:"Hemoglobin",options:["Hemoglobin","Plasma","WBC","Bone"],size:"small"},
+      {question:"Hemoglobin gives blood ___ color.",answer:"Red",options:["Red","Blue","Green","Yellow"],size:"small"},
+      {question:"Heart rate (beats per min, adult)?",answer:"60-100",options:["60-100","20-40","150-200","200-300"],size:"small"},
+      {question:"Body temperature normal (°C)?",answer:"37",options:["37","98","30","40"],size:"small"},
+      {question:"Body temperature normal (°F)?",answer:"98.6",options:["98.6","37","100","108"],size:"small"},
+      {question:"Spinal cord is part of?",answer:"Nervous system",options:["Nervous system","Skeletal","Muscular","Digestive"],size:"small"},
+      {question:"Brain has how many parts (main)?",answer:"3 (cerebrum, cerebellum, brainstem)",options:["3 (cerebrum, cerebellum, brainstem)","2","4","5"],size:"small"},
+      {question:"Largest part of brain?",answer:"Cerebrum",options:["Cerebrum","Cerebellum","Brainstem","Medulla"],size:"small"},
+      {question:"Balance is controlled by?",answer:"Cerebellum",options:["Cerebellum","Cerebrum","Brainstem","Spine"],size:"small"},
+    ],
+    [
+      {question:"Vitamin from sunlight?",answer:"Vitamin D",options:["Vitamin D","A","C","B"],size:"small"},
+      {question:"Vitamin in citrus fruits?",answer:"Vitamin C",options:["Vitamin C","A","D","K"],size:"small"},
+      {question:"Vitamin for eyesight?",answer:"Vitamin A",options:["Vitamin A","C","D","K"],size:"small"},
+      {question:"Vitamin for blood clotting?",answer:"Vitamin K",options:["Vitamin K","A","C","D"],size:"small"},
+      {question:"Lack of Vitamin C causes?",answer:"Scurvy",options:["Scurvy","Rickets","Beriberi","Anemia"],size:"small"},
+      {question:"Lack of Vitamin D causes?",answer:"Rickets",options:["Rickets","Scurvy","Beriberi","Anemia"],size:"small"},
+      {question:"Lack of iron causes?",answer:"Anemia",options:["Anemia","Scurvy","Rickets","Goiter"],size:"small"},
+      {question:"Lack of iodine causes?",answer:"Goiter",options:["Goiter","Anemia","Scurvy","Rickets"],size:"small"},
+      {question:"Lack of insulin causes?",answer:"Diabetes",options:["Diabetes","Goiter","Anemia","Asthma"],size:"small"},
+      {question:"Insulin made by?",answer:"Pancreas",options:["Pancreas","Liver","Kidney","Spleen"],size:"small"},
+      {question:"Bile is made by?",answer:"Liver",options:["Liver","Pancreas","Kidney","Stomach"],size:"small"},
+      {question:"Urine is made by?",answer:"Kidney",options:["Kidney","Liver","Pancreas","Spleen"],size:"small"},
+      {question:"Nephron is in?",answer:"Kidney",options:["Kidney","Liver","Lungs","Heart"],size:"small"},
+      {question:"Alveoli are in?",answer:"Lungs",options:["Lungs","Heart","Liver","Stomach"],size:"small"},
+      {question:"Neurons are cells of?",answer:"Nervous system",options:["Nervous system","Muscular","Skeletal","Digestive"],size:"small"},
+      {question:"DNA is in?",answer:"Cell nucleus",options:["Cell nucleus","Skin only","Hair only","Bones only"],size:"small"},
+      {question:"Reproductive cells in females?",answer:"Eggs/Ova",options:["Eggs/Ova","Sperm","Cells","Tissues"],size:"small"},
+      {question:"Reproductive cells in males?",answer:"Sperm",options:["Sperm","Eggs","Cells","Tissues"],size:"small"},
+      {question:"Adam's apple is in?",answer:"Throat (men)",options:["Throat (men)","Stomach","Chest","Nose"],size:"small"},
+      {question:"Sweat is produced by?",answer:"Sweat glands",options:["Sweat glands","Liver","Kidney","Heart"],size:"small"},
+    ],
+  ],
+  "space": [
+    [
+      {question:"What is in the sky during day?",answer:"Sun",options:["Sun","Moon","Star","Cloud"],size:"small"},
+      {question:"What is in the sky at night?",answer:"Moon",options:["Moon","Sun","Cloud","Wind"],size:"small"},
+      {question:"Tiny lights in night sky?",answer:"Stars",options:["Stars","Suns","Moons","Lamps"],size:"small"},
+      {question:"Color of sun?",answer:"Yellow",options:["Yellow","Blue","Green","Black"],size:"small"},
+      {question:"Sun is hot or cold?",answer:"Hot",options:["Hot","Cold","Cool","Frozen"],size:"small"},
+      {question:"Earth is round or flat?",answer:"Round",options:["Round","Flat","Square","Triangle"],size:"small"},
+      {question:"Where do we live?",answer:"Earth",options:["Earth","Moon","Mars","Sun"],size:"small"},
+      {question:"Earth's natural light at night?",answer:"Moon",options:["Moon","Sun","Lamp","Bulb"],size:"small"},
+      {question:"Sky is what color in day?",answer:"Blue",options:["Blue","Black","Red","Green"],size:"small"},
+      {question:"Sky is what color at night?",answer:"Black",options:["Black","Blue","Red","Green"],size:"small"},
+      {question:"Sun rises in?",answer:"East",options:["East","West","North","South"],size:"small"},
+      {question:"Sun sets in?",answer:"West",options:["West","East","North","South"],size:"small"},
+      {question:"Moon shines because of?",answer:"Sun's light",options:["Sun's light","Its own light","Stars","Earth"],size:"small"},
+      {question:"Earth gets light from?",answer:"Sun",options:["Sun","Moon","Stars","Mars"],size:"small"},
+      {question:"Closest star to Earth?",answer:"Sun",options:["Sun","Moon","Mars","Venus"],size:"small"},
+      {question:"Sun is a?",answer:"Star",options:["Star","Planet","Moon","Comet"],size:"small"},
+      {question:"Earth is a?",answer:"Planet",options:["Planet","Star","Moon","Comet"],size:"small"},
+      {question:"Moon is a ___ of Earth.",answer:"Satellite",options:["Satellite","Star","Planet","Sun"],size:"small"},
+      {question:"Day is when ___ is up.",answer:"Sun",options:["Sun","Moon","Star","Cloud"],size:"small"},
+      {question:"Night is when ___ is up.",answer:"Moon",options:["Moon","Sun","Cloud","Wind"],size:"small"},
+    ],
+    [
+      {question:"How many planets in solar system?",answer:"8",options:["8","9","7","10"],size:"small"},
+      {question:"Closest planet to Sun?",answer:"Mercury",options:["Mercury","Venus","Earth","Mars"],size:"small"},
+      {question:"Hottest planet?",answer:"Venus",options:["Venus","Mercury","Mars","Jupiter"],size:"small"},
+      {question:"Red planet?",answer:"Mars",options:["Mars","Venus","Jupiter","Saturn"],size:"small"},
+      {question:"Largest planet?",answer:"Jupiter",options:["Jupiter","Saturn","Earth","Mars"],size:"small"},
+      {question:"Planet with rings?",answer:"Saturn",options:["Saturn","Jupiter","Earth","Mars"],size:"small"},
+      {question:"Smallest planet?",answer:"Mercury",options:["Mercury","Venus","Mars","Pluto"],size:"small"},
+      {question:"Earth is ___ planet from Sun?",answer:"3rd",options:["3rd","1st","2nd","4th"],size:"small"},
+      {question:"Mars is ___ planet from Sun?",answer:"4th",options:["4th","3rd","5th","2nd"],size:"small"},
+      {question:"Planet next after Earth?",answer:"Mars",options:["Mars","Venus","Jupiter","Mercury"],size:"small"},
+      {question:"Planet before Earth?",answer:"Venus",options:["Venus","Mars","Mercury","Jupiter"],size:"small"},
+      {question:"Pluto is now called?",answer:"Dwarf planet",options:["Dwarf planet","Star","Moon","Asteroid"],size:"small"},
+      {question:"Coldest planet (typical)?",answer:"Neptune/Uranus",options:["Neptune/Uranus","Mars","Mercury","Earth"],size:"small"},
+      {question:"Earth has ___ moon(s).",answer:"1",options:["1","2","0","3"],size:"small"},
+      {question:"Mars has ___ moons.",answer:"2",options:["2","1","0","3"],size:"small"},
+      {question:"Planet with most moons?",answer:"Saturn (or Jupiter)",options:["Saturn (or Jupiter)","Earth","Mars","Neptune"],size:"small"},
+      {question:"Time Earth takes to rotate?",answer:"24 hours",options:["24 hours","12 hours","1 month","1 year"],size:"small"},
+      {question:"Time Earth takes to revolve?",answer:"365 days",options:["365 days","24 hours","30 days","100 days"],size:"small"},
+      {question:"Sun moves around galaxy or stays?",answer:"Moves",options:["Moves","Stays still","Falls","Disappears"],size:"small"},
+      {question:"Group of stars forming pattern?",answer:"Constellation",options:["Constellation","Galaxy","Universe","Cluster"],size:"small"},
+    ],
+    [
+      {question:"Galaxy we live in?",answer:"Milky Way",options:["Milky Way","Andromeda","Whirlpool","Sombrero"],size:"small"},
+      {question:"What we orbit?",answer:"Sun",options:["Sun","Moon","Mars","Stars"],size:"small"},
+      {question:"Moon orbits?",answer:"Earth",options:["Earth","Sun","Mars","Jupiter"],size:"small"},
+      {question:"Eclipse when Moon blocks Sun?",answer:"Solar eclipse",options:["Solar eclipse","Lunar eclipse","Star eclipse","Earth eclipse"],size:"small"},
+      {question:"Eclipse when Earth blocks Moon?",answer:"Lunar eclipse",options:["Lunar eclipse","Solar eclipse","Star eclipse","Earth eclipse"],size:"small"},
+      {question:"Tail of light in sky (rare)?",answer:"Comet",options:["Comet","Star","Meteor","Planet"],size:"small"},
+      {question:"Falling star is actually?",answer:"Meteor",options:["Meteor","Star","Comet","Planet"],size:"small"},
+      {question:"Rocks between Mars and Jupiter?",answer:"Asteroid belt",options:["Asteroid belt","Comet belt","Star belt","Sun belt"],size:"small"},
+      {question:"Day on Mercury (length)?",answer:"Very long",options:["Very long","Same as Earth","1 hour","12 hours"],size:"small"},
+      {question:"Sun is mostly made of?",answer:"Hydrogen & Helium",options:["Hydrogen & Helium","Iron","Water","Rock"],size:"small"},
+      {question:"First man on Moon?",answer:"Neil Armstrong",options:["Neil Armstrong","Yuri Gagarin","Buzz Aldrin","Rakesh Sharma"],size:"small"},
+      {question:"First in space?",answer:"Yuri Gagarin",options:["Yuri Gagarin","Armstrong","Aldrin","Glenn"],size:"small"},
+      {question:"First woman in space?",answer:"Valentina Tereshkova",options:["Valentina Tereshkova","Sally Ride","Kalpana Chawla","Sunita Williams"],size:"small"},
+      {question:"First Indian in space?",answer:"Rakesh Sharma",options:["Rakesh Sharma","Kalpana","Sunita","Kalam"],size:"small"},
+      {question:"Indian space agency?",answer:"ISRO",options:["ISRO","NASA","ESA","DRDO"],size:"small"},
+      {question:"US space agency?",answer:"NASA",options:["NASA","ISRO","ESA","JAXA"],size:"small"},
+      {question:"Russian space agency?",answer:"Roscosmos",options:["Roscosmos","NASA","ESA","ISRO"],size:"small"},
+      {question:"European space agency?",answer:"ESA",options:["ESA","NASA","ISRO","JAXA"],size:"small"},
+      {question:"Japanese space agency?",answer:"JAXA",options:["JAXA","NASA","ISRO","ESA"],size:"small"},
+      {question:"Mission to Moon by India?",answer:"Chandrayaan",options:["Chandrayaan","Mangalyaan","Aditya","Gaganyaan"],size:"small"},
+    ],
+    [
+      {question:"Chandrayaan-1 launched in?",answer:"2008",options:["2008","2010","2014","2019"],size:"small"},
+      {question:"Chandrayaan-3 landed Moon in?",answer:"2023",options:["2023","2019","2021","2024"],size:"small"},
+      {question:"First Indian Mars mission?",answer:"Mangalyaan",options:["Mangalyaan","Chandrayaan","Aditya","Gaganyaan"],size:"small"},
+      {question:"Mangalyaan launched in?",answer:"2013",options:["2013","2010","2008","2015"],size:"small"},
+      {question:"India's solar mission?",answer:"Aditya-L1",options:["Aditya-L1","Chandrayaan","Mangalyaan","Gaganyaan"],size:"small"},
+      {question:"India's planned manned mission?",answer:"Gaganyaan",options:["Gaganyaan","Chandrayaan","Mangalyaan","Aditya"],size:"small"},
+      {question:"First satellite (world)?",answer:"Sputnik 1",options:["Sputnik 1","Apollo 11","Vostok 1","Aryabhata"],size:"small"},
+      {question:"First Indian satellite?",answer:"Aryabhata",options:["Aryabhata","INSAT","Chandrayaan","Bhaskara"],size:"small"},
+      {question:"Aryabhata launched in?",answer:"1975",options:["1975","1947","1980","1990"],size:"small"},
+      {question:"First spacecraft to Moon (landing)?",answer:"Luna 2",options:["Luna 2","Apollo 11","Sputnik","Mangalyaan"],size:"small"},
+      {question:"Apollo 11 went to?",answer:"Moon",options:["Moon","Mars","Venus","Jupiter"],size:"small"},
+      {question:"Apollo 11 landed in?",answer:"1969",options:["1969","1957","1972","1980"],size:"small"},
+      {question:"Buzz Aldrin walked on?",answer:"Moon",options:["Moon","Mars","Venus","Jupiter"],size:"small"},
+      {question:"First American in orbit?",answer:"John Glenn",options:["John Glenn","Armstrong","Aldrin","Shepard"],size:"small"},
+      {question:"Hubble is a?",answer:"Space telescope",options:["Space telescope","Rocket","Satellite (comm)","Probe"],size:"small"},
+      {question:"James Webb is a?",answer:"Space telescope",options:["Space telescope","Rocket","Probe","Lander"],size:"small"},
+      {question:"ISS stands for?",answer:"International Space Station",options:["International Space Station","Indian Space Station","Inter Space System","Internet Space Service"],size:"small"},
+      {question:"Voyager 1 went to study?",answer:"Outer planets",options:["Outer planets","Sun","Moon","Earth"],size:"small"},
+      {question:"Mars rover by NASA (recent)?",answer:"Perseverance",options:["Perseverance","Curiosity (also)","Sojourner","All of these"],size:"small"},
+      {question:"Saturn's largest moon?",answer:"Titan",options:["Titan","Europa","Ganymede","Io"],size:"small"},
+    ],
+    [
+      {question:"Earth's age (approx)?",answer:"4.5 billion years",options:["4.5 billion years","1 billion","100 million","10 billion"],size:"small"},
+      {question:"Sun's age (approx)?",answer:"4.6 billion years",options:["4.6 billion years","1 billion","100 million","10 billion"],size:"small"},
+      {question:"Universe's age (approx)?",answer:"13.8 billion years",options:["13.8 billion years","4.5 billion","100 billion","1 trillion"],size:"small"},
+      {question:"Galaxies in observable universe (approx)?",answer:"Trillions/Hundreds of billions",options:["Trillions/Hundreds of billions","Hundreds","Thousands","Millions"],size:"small"},
+      {question:"Big Bang theory says universe is?",answer:"Expanding",options:["Expanding","Shrinking","Static","Stopped"],size:"small"},
+      {question:"Black hole is?",answer:"Region with strong gravity",options:["Region with strong gravity","A planet","A star","A galaxy"],size:"small"},
+      {question:"First black hole image (M87)?",answer:"2019",options:["2019","2010","2015","2020"],size:"small"},
+      {question:"Andromeda galaxy is?",answer:"Closest large galaxy",options:["Closest large galaxy","Smallest","Farthest","Inside Milky Way"],size:"small"},
+      {question:"Light year measures?",answer:"Distance",options:["Distance","Time","Mass","Speed"],size:"small"},
+      {question:"1 light year is approx?",answer:"9.46 trillion km",options:["9.46 trillion km","1 million km","1 billion km","1 thousand km"],size:"small"},
+      {question:"Sun's surface temperature?",answer:"~5,500°C",options:["~5,500°C","100°C","1,000°C","1 million°C"],size:"small"},
+      {question:"Sun's core temperature?",answer:"~15 million°C",options:["~15 million°C","5,500°C","100,000°C","1 billion°C"],size:"small"},
+      {question:"Heaviest element formed in?",answer:"Stars (supernovae)",options:["Stars (supernovae)","Earth","Sun","Moon"],size:"small"},
+      {question:"Pluto reclassified in?",answer:"2006",options:["2006","1996","2010","2020"],size:"small"},
+      {question:"Largest moon in solar system?",answer:"Ganymede",options:["Ganymede","Titan","Europa","Earth's Moon"],size:"small"},
+      {question:"Closest galaxy to Milky Way?",answer:"Andromeda",options:["Andromeda","Triangulum","Sombrero","Whirlpool"],size:"small"},
+      {question:"Pole star is also called?",answer:"Polaris",options:["Polaris","Sirius","Vega","Betelgeuse"],size:"small"},
+      {question:"Brightest star in sky?",answer:"Sirius",options:["Sirius","Polaris","Vega","Sun (excluded)"],size:"small"},
+      {question:"Constellation 'Orion' has?",answer:"A belt of 3 stars",options:["A belt of 3 stars","A square","A triangle","A circle"],size:"small"},
+      {question:"Planet with biggest storm (Great Red Spot)?",answer:"Jupiter",options:["Jupiter","Saturn","Mars","Neptune"],size:"small"},
+    ],
+  ],
+  "capitals": [
+    [
+      {question:"Capital of India?",answer:"New Delhi",options:["New Delhi","Mumbai","Kolkata","Chennai"],size:"small"},
+      {question:"Capital of Maharashtra?",answer:"Mumbai",options:["Mumbai","Pune","Nagpur","Nashik"],size:"small"},
+      {question:"Capital of Tamil Nadu?",answer:"Chennai",options:["Chennai","Madurai","Salem","Coimbatore"],size:"small"},
+      {question:"Capital of West Bengal?",answer:"Kolkata",options:["Kolkata","Howrah","Asansol","Siliguri"],size:"small"},
+      {question:"Capital of Karnataka?",answer:"Bengaluru",options:["Bengaluru","Mysuru","Mangaluru","Hubli"],size:"small"},
+      {question:"Capital of Rajasthan?",answer:"Jaipur",options:["Jaipur","Jodhpur","Udaipur","Kota"],size:"small"},
+      {question:"Capital of UP?",answer:"Lucknow",options:["Lucknow","Kanpur","Agra","Varanasi"],size:"small"},
+      {question:"Capital of Bihar?",answer:"Patna",options:["Patna","Gaya","Bhagalpur","Muzaffarpur"],size:"small"},
+      {question:"Capital of Gujarat?",answer:"Gandhinagar",options:["Gandhinagar","Ahmedabad","Surat","Vadodara"],size:"small"},
+      {question:"Capital of Punjab?",answer:"Chandigarh",options:["Chandigarh","Amritsar","Ludhiana","Patiala"],size:"small"},
+      {question:"Capital of MP?",answer:"Bhopal",options:["Bhopal","Indore","Gwalior","Jabalpur"],size:"small"},
+      {question:"Capital of Kerala?",answer:"Thiruvananthapuram",options:["Thiruvananthapuram","Kochi","Kozhikode","Thrissur"],size:"small"},
+      {question:"Capital of Andhra Pradesh?",answer:"Amaravati",options:["Amaravati","Hyderabad","Vijayawada","Tirupati"],size:"small"},
+      {question:"Capital of Telangana?",answer:"Hyderabad",options:["Hyderabad","Warangal","Karimnagar","Nizamabad"],size:"small"},
+      {question:"Capital of Odisha?",answer:"Bhubaneswar",options:["Bhubaneswar","Cuttack","Puri","Rourkela"],size:"small"},
+      {question:"Capital of Assam?",answer:"Dispur",options:["Dispur","Guwahati","Silchar","Jorhat"],size:"small"},
+      {question:"Capital of Haryana?",answer:"Chandigarh",options:["Chandigarh","Faridabad","Gurgaon","Hisar"],size:"small"},
+      {question:"Capital of Goa?",answer:"Panaji",options:["Panaji","Margao","Vasco","Mapusa"],size:"small"},
+      {question:"Capital of Uttarakhand?",answer:"Dehradun",options:["Dehradun","Haridwar","Nainital","Mussoorie"],size:"small"},
+      {question:"Capital of HP?",answer:"Shimla",options:["Shimla","Manali","Dharamshala","Solan"],size:"small"},
+    ],
+    [
+      {question:"Capital of Jharkhand?",answer:"Ranchi",options:["Ranchi","Jamshedpur","Dhanbad","Bokaro"],size:"small"},
+      {question:"Capital of Chhattisgarh?",answer:"Raipur",options:["Raipur","Bilaspur","Korba","Durg"],size:"small"},
+      {question:"Capital of Tripura?",answer:"Agartala",options:["Agartala","Udaipur","Kailashahar","Dharmanagar"],size:"small"},
+      {question:"Capital of Manipur?",answer:"Imphal",options:["Imphal","Thoubal","Bishnupur","Senapati"],size:"small"},
+      {question:"Capital of Meghalaya?",answer:"Shillong",options:["Shillong","Tura","Jowai","Nongstoin"],size:"small"},
+      {question:"Capital of Mizoram?",answer:"Aizawl",options:["Aizawl","Lunglei","Champhai","Kolasib"],size:"small"},
+      {question:"Capital of Nagaland?",answer:"Kohima",options:["Kohima","Dimapur","Mokokchung","Wokha"],size:"small"},
+      {question:"Capital of Sikkim?",answer:"Gangtok",options:["Gangtok","Pelling","Namchi","Mangan"],size:"small"},
+      {question:"Capital of Arunachal Pradesh?",answer:"Itanagar",options:["Itanagar","Tawang","Pasighat","Naharlagun"],size:"small"},
+      {question:"Capital of USA?",answer:"Washington DC",options:["Washington DC","New York","LA","Chicago"],size:"small"},
+      {question:"Capital of UK?",answer:"London",options:["London","Manchester","Liverpool","Birmingham"],size:"small"},
+      {question:"Capital of France?",answer:"Paris",options:["Paris","Lyon","Marseille","Nice"],size:"small"},
+      {question:"Capital of Japan?",answer:"Tokyo",options:["Tokyo","Osaka","Kyoto","Nagoya"],size:"small"},
+      {question:"Capital of China?",answer:"Beijing",options:["Beijing","Shanghai","Guangzhou","Shenzhen"],size:"small"},
+      {question:"Capital of Russia?",answer:"Moscow",options:["Moscow","St Petersburg","Kazan","Sochi"],size:"small"},
+      {question:"Capital of Germany?",answer:"Berlin",options:["Berlin","Munich","Frankfurt","Hamburg"],size:"small"},
+      {question:"Capital of Italy?",answer:"Rome",options:["Rome","Milan","Naples","Turin"],size:"small"},
+      {question:"Capital of Spain?",answer:"Madrid",options:["Madrid","Barcelona","Valencia","Seville"],size:"small"},
+      {question:"Capital of Australia?",answer:"Canberra",options:["Canberra","Sydney","Melbourne","Perth"],size:"small"},
+      {question:"Capital of Canada?",answer:"Ottawa",options:["Ottawa","Toronto","Vancouver","Montreal"],size:"small"},
+    ],
+    [
+      {question:"Capital of Pakistan?",answer:"Islamabad",options:["Islamabad","Karachi","Lahore","Peshawar"],size:"small"},
+      {question:"Capital of Bangladesh?",answer:"Dhaka",options:["Dhaka","Chittagong","Khulna","Sylhet"],size:"small"},
+      {question:"Capital of Sri Lanka?",answer:"Colombo (commercial) / Sri Jayawardenepura Kotte (admin)",options:["Colombo (commercial) / Sri Jayawardenepura Kotte (admin)","Kandy","Galle","Jaffna"],size:"small"},
+      {question:"Capital of Nepal?",answer:"Kathmandu",options:["Kathmandu","Pokhara","Lalitpur","Bhaktapur"],size:"small"},
+      {question:"Capital of Bhutan?",answer:"Thimphu",options:["Thimphu","Paro","Punakha","Phuentsholing"],size:"small"},
+      {question:"Capital of Myanmar?",answer:"Naypyidaw",options:["Naypyidaw","Yangon","Mandalay","Bagan"],size:"small"},
+      {question:"Capital of Afghanistan?",answer:"Kabul",options:["Kabul","Kandahar","Herat","Mazar"],size:"small"},
+      {question:"Capital of Iran?",answer:"Tehran",options:["Tehran","Isfahan","Mashhad","Shiraz"],size:"small"},
+      {question:"Capital of Iraq?",answer:"Baghdad",options:["Baghdad","Basra","Mosul","Erbil"],size:"small"},
+      {question:"Capital of Saudi Arabia?",answer:"Riyadh",options:["Riyadh","Jeddah","Mecca","Medina"],size:"small"},
+      {question:"Capital of UAE?",answer:"Abu Dhabi",options:["Abu Dhabi","Dubai","Sharjah","Ajman"],size:"small"},
+      {question:"Capital of Turkey?",answer:"Ankara",options:["Ankara","Istanbul","Izmir","Bursa"],size:"small"},
+      {question:"Capital of Indonesia?",answer:"Jakarta (also Nusantara new)",options:["Jakarta (also Nusantara new)","Bali","Surabaya","Medan"],size:"small"},
+      {question:"Capital of Malaysia?",answer:"Kuala Lumpur",options:["Kuala Lumpur","Penang","Johor Bahru","Kuching"],size:"small"},
+      {question:"Capital of Thailand?",answer:"Bangkok",options:["Bangkok","Chiang Mai","Phuket","Pattaya"],size:"small"},
+      {question:"Capital of Vietnam?",answer:"Hanoi",options:["Hanoi","Ho Chi Minh","Da Nang","Hue"],size:"small"},
+      {question:"Capital of South Korea?",answer:"Seoul",options:["Seoul","Busan","Incheon","Daegu"],size:"small"},
+      {question:"Capital of North Korea?",answer:"Pyongyang",options:["Pyongyang","Hamhung","Chongjin","Kaesong"],size:"small"},
+      {question:"Capital of Singapore?",answer:"Singapore",options:["Singapore","Kuala Lumpur","Manila","Bangkok"],size:"small"},
+      {question:"Capital of Philippines?",answer:"Manila",options:["Manila","Cebu","Davao","Quezon"],size:"small"},
+    ],
+    [
+      {question:"Capital of Brazil?",answer:"Brasilia",options:["Brasilia","Rio de Janeiro","Sao Paulo","Salvador"],size:"small"},
+      {question:"Capital of Argentina?",answer:"Buenos Aires",options:["Buenos Aires","Cordoba","Rosario","Mendoza"],size:"small"},
+      {question:"Capital of Mexico?",answer:"Mexico City",options:["Mexico City","Cancun","Guadalajara","Monterrey"],size:"small"},
+      {question:"Capital of Egypt?",answer:"Cairo",options:["Cairo","Alexandria","Giza","Luxor"],size:"small"},
+      {question:"Capital of South Africa?",answer:"Pretoria (admin)",options:["Pretoria (admin)","Cape Town","Johannesburg","Durban"],size:"small"},
+      {question:"Capital of Kenya?",answer:"Nairobi",options:["Nairobi","Mombasa","Kisumu","Nakuru"],size:"small"},
+      {question:"Capital of Nigeria?",answer:"Abuja",options:["Abuja","Lagos","Kano","Ibadan"],size:"small"},
+      {question:"Capital of Ethiopia?",answer:"Addis Ababa",options:["Addis Ababa","Dire Dawa","Mekelle","Gondar"],size:"small"},
+      {question:"Capital of Greece?",answer:"Athens",options:["Athens","Thessaloniki","Patras","Larissa"],size:"small"},
+      {question:"Capital of Portugal?",answer:"Lisbon",options:["Lisbon","Porto","Coimbra","Braga"],size:"small"},
+      {question:"Capital of Netherlands?",answer:"Amsterdam",options:["Amsterdam","Rotterdam","The Hague","Utrecht"],size:"small"},
+      {question:"Capital of Belgium?",answer:"Brussels",options:["Brussels","Antwerp","Ghent","Bruges"],size:"small"},
+      {question:"Capital of Switzerland?",answer:"Bern",options:["Bern","Zurich","Geneva","Basel"],size:"small"},
+      {question:"Capital of Sweden?",answer:"Stockholm",options:["Stockholm","Gothenburg","Malmo","Uppsala"],size:"small"},
+      {question:"Capital of Norway?",answer:"Oslo",options:["Oslo","Bergen","Trondheim","Stavanger"],size:"small"},
+      {question:"Capital of Denmark?",answer:"Copenhagen",options:["Copenhagen","Aarhus","Odense","Aalborg"],size:"small"},
+      {question:"Capital of Finland?",answer:"Helsinki",options:["Helsinki","Tampere","Turku","Espoo"],size:"small"},
+      {question:"Capital of Poland?",answer:"Warsaw",options:["Warsaw","Krakow","Lodz","Wroclaw"],size:"small"},
+      {question:"Capital of Austria?",answer:"Vienna",options:["Vienna","Salzburg","Graz","Linz"],size:"small"},
+      {question:"Capital of Ireland?",answer:"Dublin",options:["Dublin","Cork","Galway","Limerick"],size:"small"},
+    ],
+    [
+      {question:"Capital of Kazakhstan?",answer:"Astana",options:["Astana","Almaty","Shymkent","Karaganda"],size:"small"},
+      {question:"Capital of Uzbekistan?",answer:"Tashkent",options:["Tashkent","Samarkand","Bukhara","Khiva"],size:"small"},
+      {question:"Capital of Mongolia?",answer:"Ulaanbaatar",options:["Ulaanbaatar","Erdenet","Darkhan","Khovd"],size:"small"},
+      {question:"Capital of New Zealand?",answer:"Wellington",options:["Wellington","Auckland","Christchurch","Dunedin"],size:"small"},
+      {question:"Capital of Israel (recognized by some)?",answer:"Jerusalem",options:["Jerusalem","Tel Aviv","Haifa","Eilat"],size:"small"},
+      {question:"Capital of Jordan?",answer:"Amman",options:["Amman","Petra","Aqaba","Irbid"],size:"small"},
+      {question:"Capital of Lebanon?",answer:"Beirut",options:["Beirut","Tripoli","Sidon","Tyre"],size:"small"},
+      {question:"Capital of Syria?",answer:"Damascus",options:["Damascus","Aleppo","Homs","Latakia"],size:"small"},
+      {question:"Capital of Cuba?",answer:"Havana",options:["Havana","Santiago","Camaguey","Holguin"],size:"small"},
+      {question:"Capital of Chile?",answer:"Santiago",options:["Santiago","Valparaiso","Concepcion","La Serena"],size:"small"},
+      {question:"Capital of Peru?",answer:"Lima",options:["Lima","Cusco","Arequipa","Trujillo"],size:"small"},
+      {question:"Capital of Colombia?",answer:"Bogota",options:["Bogota","Medellin","Cali","Cartagena"],size:"small"},
+      {question:"Capital of Venezuela?",answer:"Caracas",options:["Caracas","Maracaibo","Valencia","Barquisimeto"],size:"small"},
+      {question:"Capital of Morocco?",answer:"Rabat",options:["Rabat","Casablanca","Marrakech","Fez"],size:"small"},
+      {question:"Capital of Algeria?",answer:"Algiers",options:["Algiers","Oran","Constantine","Annaba"],size:"small"},
+      {question:"Capital of Tunisia?",answer:"Tunis",options:["Tunis","Sfax","Sousse","Kairouan"],size:"small"},
+      {question:"Capital of Czech Republic?",answer:"Prague",options:["Prague","Brno","Ostrava","Plzen"],size:"small"},
+      {question:"Capital of Hungary?",answer:"Budapest",options:["Budapest","Debrecen","Szeged","Miskolc"],size:"small"},
+      {question:"Capital of Romania?",answer:"Bucharest",options:["Bucharest","Cluj","Iasi","Timisoara"],size:"small"},
+      {question:"Capital of Vatican City?",answer:"Vatican City",options:["Vatican City","Rome","Florence","Milan"],size:"small"},
+    ],
+  ],
+  "riddles": [
+    [
+      {question:"I have hands but no fingers. I tell time. What am I?",answer:"Clock",options:["Clock","Watch tower","Calendar","Sun"],size:"small"},
+      {question:"I am yellow, hot, and far away. What am I?",answer:"Sun",options:["Sun","Moon","Star","Lamp"],size:"small"},
+      {question:"I quack and swim. What am I?",answer:"Duck",options:["Duck","Fish","Frog","Swan"],size:"small"},
+      {question:"I have stripes and roar. What am I?",answer:"Tiger",options:["Tiger","Lion","Zebra","Cat"],size:"small"},
+      {question:"I bring rain. What am I?",answer:"Cloud",options:["Cloud","Sun","Wind","Tree"],size:"small"},
+      {question:"I am sweet and grow on trees. I'm the king. What am I?",answer:"Mango",options:["Mango","Apple","Orange","Banana"],size:"small"},
+      {question:"I grow up but have no legs. What am I?",answer:"Tree",options:["Tree","Stone","Cloud","Wind"],size:"small"},
+      {question:"I am cold, white and fall in winter. What am I?",answer:"Snow",options:["Snow","Rain","Ice","Fog"],size:"small"},
+      {question:"I shine at night and change shape. What am I?",answer:"Moon",options:["Moon","Sun","Star","Lamp"],size:"small"},
+      {question:"I have wings and can fly. I'm not a plane. What am I?",answer:"Bird",options:["Bird","Fish","Frog","Cat"],size:"small"},
+      {question:"I am red and you wear me on cold days. What am I?",answer:"Sweater",options:["Sweater","Pen","Book","Cup"],size:"small"},
+      {question:"I help you write. What am I?",answer:"Pen/Pencil",options:["Pen/Pencil","Spoon","Cup","Plate"],size:"small"},
+      {question:"I have leaves but I am not a plant. What am I?",answer:"Book",options:["Book","Tree","Pencil","Bag"],size:"small"},
+      {question:"I have eyes but cannot see. What am I?",answer:"Potato",options:["Potato","Cat","Dog","Fish"],size:"small"},
+      {question:"You can hold me without touching me. What am I?",answer:"Breath",options:["Breath","Water","Sun","Wind"],size:"small"},
+      {question:"I get bigger when I eat but smaller when I drink. What am I?",answer:"Fire",options:["Fire","Ice","Cloud","Tree"],size:"small"},
+      {question:"I'm full of holes but hold water. What am I?",answer:"Sponge",options:["Sponge","Cup","Bottle","Jar"],size:"small"},
+      {question:"I have a face but no eyes. I tell time. What am I?",answer:"Clock",options:["Clock","Watch","Phone","TV"],size:"small"},
+      {question:"I am orange, long, and rabbits love me. What am I?",answer:"Carrot",options:["Carrot","Apple","Banana","Tomato"],size:"small"},
+      {question:"I have keys but no locks. What am I?",answer:"Keyboard/Piano",options:["Keyboard/Piano","Door","Box","Bag"],size:"small"},
+    ],
+    [
+      {question:"I have teeth but cannot bite. What am I?",answer:"Comb (or zipper)",options:["Comb (or zipper)","Lion","Cat","Snake"],size:"small"},
+      {question:"I have a head and tail but no body. What am I?",answer:"Coin",options:["Coin","Snake","Fish","Dog"],size:"small"},
+      {question:"What goes up but never comes down?",answer:"Age",options:["Age","Rain","Ball","Plane"],size:"small"},
+      {question:"I'm tall when young, short when old. What am I?",answer:"Candle",options:["Candle","Tree","Person","Building"],size:"small"},
+      {question:"The more you take, the more you leave behind. What am I?",answer:"Footsteps",options:["Footsteps","Time","Money","Words"],size:"small"},
+      {question:"I run but have no legs. What am I?",answer:"River/Water",options:["River/Water","Cat","Dog","Car"],size:"small"},
+      {question:"I have many keys but cannot open a door. What am I?",answer:"Piano/Keyboard",options:["Piano/Keyboard","Bunch of keys","Lock","Door"],size:"small"},
+      {question:"What has a neck but no head?",answer:"Bottle",options:["Bottle","Snake","Tree","River"],size:"small"},
+      {question:"What has hands but cannot clap?",answer:"Clock",options:["Clock","Doll","Statue","Tree"],size:"small"},
+      {question:"What can travel around the world while staying in a corner?",answer:"Stamp",options:["Stamp","Letter","Plane","Wind"],size:"small"},
+      {question:"What has one eye but cannot see?",answer:"Needle",options:["Needle","Storm","Cyclops","Camera"],size:"small"},
+      {question:"I have a tail and head but no body. What am I?",answer:"Coin",options:["Coin","Fish","Snake","Cat"],size:"small"},
+      {question:"What is full of holes but still holds water?",answer:"Sponge",options:["Sponge","Strainer","Net","Sieve"],size:"small"},
+      {question:"I have legs but cannot walk. What am I?",answer:"Table/Chair",options:["Table/Chair","Doll","Statue","Stone"],size:"small"},
+      {question:"What goes up when rain comes down?",answer:"Umbrella",options:["Umbrella","Sun","Cloud","Wind"],size:"small"},
+      {question:"What month has 28 days?",answer:"All months",options:["All months","February only","April only","March only"],size:"small"},
+      {question:"What can you catch but not throw?",answer:"Cold/Cough",options:["Cold/Cough","Ball","Stone","Stick"],size:"small"},
+      {question:"I have cities but no houses. What am I?",answer:"Map",options:["Map","Globe","Book","Picture"],size:"small"},
+      {question:"What has roots that nobody sees?",answer:"Mountain (or tree)",options:["Mountain (or tree)","River","Sea","Cloud"],size:"small"},
+      {question:"What runs but never walks?",answer:"Water/River",options:["Water/River","Time","Race","Sun"],size:"small"},
+    ],
+    [
+      {question:"The more you have of me, the less you see. What am I?",answer:"Darkness",options:["Darkness","Light","Sun","Stars"],size:"small"},
+      {question:"What gets wetter the more it dries?",answer:"Towel",options:["Towel","Sponge","Cloth","Paper"],size:"small"},
+      {question:"What has many keys but cannot open any door?",answer:"Piano",options:["Piano","Locksmith","Map","Code"],size:"small"},
+      {question:"I speak without a mouth and hear without ears. What am I?",answer:"Echo",options:["Echo","Wind","Ghost","Phone"],size:"small"},
+      {question:"What has a heart that doesn't beat?",answer:"Artichoke (or deck of cards)",options:["Artichoke (or deck of cards)","Stone","Tree","Robot"],size:"small"},
+      {question:"What flies without wings?",answer:"Time",options:["Time","Plane","Bird","Kite"],size:"small"},
+      {question:"What can fill a room but takes no space?",answer:"Light",options:["Light","Air","Sound","Smoke"],size:"small"},
+      {question:"What has a thumb and four fingers but isn't alive?",answer:"Glove",options:["Glove","Hand","Robot","Statue"],size:"small"},
+      {question:"What gets bigger when more is taken away?",answer:"A hole",options:["A hole","Mountain","Lake","Building"],size:"small"},
+      {question:"I'm light as a feather, yet strongest can't hold me long.",answer:"Breath",options:["Breath","Wind","Smoke","Cloud"],size:"small"},
+      {question:"What has hands but no body?",answer:"Clock",options:["Clock","Doll","Tree","Robot"],size:"small"},
+      {question:"What can be cracked, made, told, and played?",answer:"A joke",options:["A joke","Egg","Game","Story"],size:"small"},
+      {question:"What has words but never speaks?",answer:"Book",options:["Book","TV","Radio","Phone"],size:"small"},
+      {question:"What has a bed but never sleeps?",answer:"River",options:["River","Hotel","Hospital","House"],size:"small"},
+      {question:"What gets sharper the more you use it?",answer:"Brain/Mind",options:["Brain/Mind","Knife","Pencil","Sword"],size:"small"},
+      {question:"What can you keep after giving to someone?",answer:"Your word",options:["Your word","Money","Gift","Letter"],size:"small"},
+      {question:"What has a ring but no finger?",answer:"Telephone (or planet Saturn)",options:["Telephone (or planet Saturn)","Hand","Door","Box"],size:"small"},
+      {question:"What goes through cities and fields but never moves?",answer:"Road",options:["Road","River","Bridge","Train"],size:"small"},
+      {question:"The more you cut me, the bigger I get. What am I?",answer:"Hole",options:["Hole","Cake","Tree","Cloth"],size:"small"},
+      {question:"What has a face and two hands but no arms or legs?",answer:"Clock",options:["Clock","Doll","Statue","Robot"],size:"small"},
+    ],
+    [
+      {question:"I am tall when I am young, and short when I'm old. What am I?",answer:"Candle",options:["Candle","Person","Tree","Building"],size:"small"},
+      {question:"What is so fragile that saying its name breaks it?",answer:"Silence",options:["Silence","Glass","Ice","Egg"],size:"small"},
+      {question:"What has many teeth but cannot eat?",answer:"Comb/Saw",options:["Comb/Saw","Lion","Shark","Crocodile"],size:"small"},
+      {question:"What can run but never walks, has a mouth but never talks?",answer:"River",options:["River","Time","Sun","Wind"],size:"small"},
+      {question:"I have branches but no fruit, trunk, or leaves. What am I?",answer:"Bank",options:["Bank","Tree","Library","School"],size:"small"},
+      {question:"What can you break without touching it?",answer:"Promise/Silence",options:["Promise/Silence","Glass","Ice","Chalk"],size:"small"},
+      {question:"I have a spine but no bones. What am I?",answer:"Book",options:["Book","Snake","Person","Robot"],size:"small"},
+      {question:"What has a bottom at the top?",answer:"Legs",options:["Legs","Cup","Table","Tree"],size:"small"},
+      {question:"What word becomes shorter when you add two letters?",answer:"Short (becomes shorter)",options:["Short (becomes shorter)","Tall","Big","Long"],size:"small"},
+      {question:"What has 4 fingers and a thumb but is not alive?",answer:"Glove",options:["Glove","Hand","Mannequin","Doll"],size:"small"},
+      {question:"What can travel the world while staying in a corner?",answer:"Stamp",options:["Stamp","Wind","Plane","Letter"],size:"small"},
+      {question:"What is at the end of a rainbow?",answer:"The letter W",options:["The letter W","Pot of gold","Sky","Cloud"],size:"small"},
+      {question:"What's black when bought, red when used, gray when thrown out?",answer:"Charcoal",options:["Charcoal","Coal","Wood","Iron"],size:"small"},
+      {question:"I belong to you, but other people use me more than you do. What am I?",answer:"Your name",options:["Your name","Phone","Address","Photo"],size:"small"},
+      {question:"What has 13 hearts but no other organs?",answer:"Deck of cards",options:["Deck of cards","Body","Octopus","Doll"],size:"small"},
+      {question:"I follow you all day but disappear at night. What am I?",answer:"Shadow",options:["Shadow","Wind","Cloud","Echo"],size:"small"},
+      {question:"What occurs once in a minute, twice in a moment, never in a thousand years?",answer:"Letter M",options:["Letter M","Letter A","Letter T","Letter E"],size:"small"},
+      {question:"What has hands but cannot hold anything?",answer:"Clock",options:["Clock","Statue","Doll","Robot"],size:"small"},
+      {question:"What has many rings but no fingers?",answer:"Telephone (or tree)",options:["Telephone (or tree)","Box","Door","Hand"],size:"small"},
+      {question:"What can you hold in your right hand but not your left?",answer:"Your left hand/elbow",options:["Your left hand/elbow","Phone","Pen","Book"],size:"small"},
+    ],
+    [
+      {question:"What disappears as soon as you say its name?",answer:"Silence",options:["Silence","Wind","Echo","Ghost"],size:"small"},
+      {question:"What has cities but no houses, mountains but no trees, water but no fish?",answer:"Map",options:["Map","Globe","Painting","Book"],size:"small"},
+      {question:"I'm not alive, but I can grow. I don't have lungs, but I need air. What am I?",answer:"Fire",options:["Fire","Plant","Cloud","Steam"],size:"small"},
+      {question:"A man rode in on Friday. He stayed three days, and left on Friday. How?",answer:"Horse named Friday",options:["Horse named Friday","Time travel","Different week","Calendar trick"],size:"small"},
+      {question:"What goes up and down but never moves?",answer:"Stairs",options:["Stairs","Elevator (moves)","Hill","Ladder"],size:"small"},
+      {question:"I'm always in front of you but cannot be seen. What am I?",answer:"Future",options:["Future","Past","Ghost","Wind"],size:"small"},
+      {question:"What can you keep after giving to someone?",answer:"Your word",options:["Your word","Money","Gift","Letter"],size:"small"},
+      {question:"The more you take, the more you leave behind. What are they?",answer:"Footsteps",options:["Footsteps","Memories","Words","Years"],size:"small"},
+      {question:"What two things can you never eat for breakfast?",answer:"Lunch and dinner",options:["Lunch and dinner","Eggs and bread","Meat and milk","Tea and coffee"],size:"small"},
+      {question:"A boy was at his father's funeral. The dead man was the boy's father, but the boy was not his son. How?",answer:"Boy is the daughter",options:["Boy is the daughter","Adopted","Mistake","Step-son"],size:"small"},
+      {question:"I have a head, a tail, but no legs. What am I?",answer:"Coin",options:["Coin","Snake","Fish","Reptile"],size:"small"},
+      {question:"What 5-letter word becomes shorter when you add 2 letters?",answer:"Short",options:["Short","Quick","Small","Brief"],size:"small"},
+      {question:"What is always coming but never arrives?",answer:"Tomorrow",options:["Tomorrow","Yesterday","Today","Now"],size:"small"},
+      {question:"What gets wet while drying?",answer:"A towel",options:["A towel","Sponge","Cloth","Hair"],size:"small"},
+      {question:"I'm tall when I'm young, and I'm short when I'm old. What am I?",answer:"Candle",options:["Candle","Tree","Person","Building"],size:"small"},
+      {question:"What has 88 keys but cannot open a door?",answer:"Piano",options:["Piano","Computer","Locksmith","Code"],size:"small"},
+      {question:"What invention lets you look right through a wall?",answer:"Window",options:["Window","X-ray","Camera","Mirror"],size:"small"},
+      {question:"What has one head, one foot, and four legs?",answer:"Bed",options:["Bed","Table","Chair","Robot"],size:"small"},
+      {question:"What's always in front of you but can't be seen?",answer:"Future",options:["Future","Truth","Wind","Sound"],size:"small"},
+      {question:"What 4-letter word can be written forward, backward, or upside down, and still read the same?",answer:"NOON",options:["NOON","LEVEL","RACECAR","MOM"],size:"small"},
+    ],
+  ],
+};
+
+/* ============================================
+   INIT
+   ============================================ */
+buildMenu();
+
+</script>
+</body>
+</html>

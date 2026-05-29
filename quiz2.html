@@ -634,6 +634,12 @@ function showLevelScreen() {
    QUIZ FLOW
    ============================================ */
 function startQuiz(level) {
+
+  // Check if Android interface exists
+    if (typeof Android !== "undefined" && Android.showAd) {
+      Android.showAd("interstitial");
+    }
+ 
   currentLevel = level;
   timeLeft = 60;
   score = 0;
@@ -670,7 +676,7 @@ function quitQuiz() {
 
     // Check if Android interface exists
     if (typeof Android !== "undefined" && Android.showAd) {
-      Android.showAd("interstitial");
+      Android.showAd("reward");
     }
 
     goToMenu();
@@ -763,7 +769,7 @@ function endQuiz() {
   showScreen('endScreen');
   // Check if Android interface exists
     if (typeof Android !== "undefined" && Android.showAd) {
-      Android.showAd("interstitial");
+      Android.showAd("reward_interstitial");
     }
 }
 
@@ -2804,6 +2810,14 @@ document.getElementById('nameInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') submitName();
 });
 
+function onRewardEarned(type, amount) {
+    console.log(type, amount);
+}
+
+function onAdClosed(type) {
+    console.log(type + " closed");
+}
+ 
 </script>
 </body>
 </html>

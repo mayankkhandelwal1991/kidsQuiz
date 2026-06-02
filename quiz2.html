@@ -535,7 +535,7 @@ const CATEGORIES = [
 
 let currentCategory = '';
 let currentLevel = 0;
-let timeLeft = 60;
+let timeLeft = 180;
 let score = 0;
 let correctCount = 0;
 let wrongCount = 0;
@@ -641,7 +641,7 @@ function startQuiz(level) {
     }
  
   currentLevel = level;
-  timeLeft = 60;
+  timeLeft = 180;
   score = 0;
   correctCount = 0;
   wrongCount = 0;
@@ -676,7 +676,7 @@ function quitQuiz() {
 
     // Check if Android interface exists
     if (typeof Android !== "undefined" && Android.showAd) {
-      Android.showAd("reward");
+      Android.showAd("interstitial");
     }
 
     goToMenu();
@@ -769,7 +769,7 @@ function endQuiz() {
   showScreen('endScreen');
   // Check if Android interface exists
     if (typeof Android !== "undefined" && Android.showAd) {
-      Android.showAd("reward_interstitial");
+      Android.showAd("interstitial");
     }
 }
 

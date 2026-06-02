@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz Master - Class 1 to 5</title>
+<title>Kids Quiz - Class 1 to 5</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -380,6 +380,100 @@
     .menu-card .icon { font-size: 24px; }
     .menu-card .title { font-size: 11px; }
   }
+
+/* ===== KIDS THEME OVERRIDE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap');
+
+body{
+  font-family:'Baloo 2',cursive !important;
+  background:linear-gradient(135deg,#6ee7ff,#8b5cf6,#ff7ac6,#ffd166) !important;
+  background-size:400% 400%;
+  animation:bgMove 12s ease infinite;
+}
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.container{
+  border-radius:32px !important;
+  border:6px solid #fff !important;
+  box-shadow:0 15px 40px rgba(0,0,0,.18) !important;
+  background:linear-gradient(180deg,#ffffff,#fef6ff) !important;
+}
+h1,h2{
+  color:#ff5a8a !important;
+  font-weight:800 !important;
+}
+.subtitle{color:#6b7280 !important;}
+
+.menu-card,.level-btn,.mini-stat,.history-item,.best-item,.info-box{
+  border-radius:22px !important;
+  border:3px solid rgba(255,255,255,.7) !important;
+  background:linear-gradient(180deg,#ffffff,#f7fbff) !important;
+}
+
+.menu-card:hover,.level-btn:hover{
+  transform:translateY(-5px) scale(1.03) !important;
+}
+
+.menu-card:nth-child(4n+1){background:linear-gradient(135deg,#ffe082,#fff8e1)!important;}
+.menu-card:nth-child(4n+2){background:linear-gradient(135deg,#80deea,#e0f7fa)!important;}
+.menu-card:nth-child(4n+3){background:linear-gradient(135deg,#c5e1a5,#f1f8e9)!important;}
+.menu-card:nth-child(4n+4){background:linear-gradient(135deg,#f8bbd0,#fce4ec)!important;}
+
+.menu-card .icon{
+  font-size:40px !important;
+  margin-bottom:10px !important;
+}
+
+.btn{
+  background:linear-gradient(135deg,#ff7a59,#ff4fa3) !important;
+  border-radius:18px !important;
+  box-shadow:0 8px 18px rgba(255,79,163,.3);
+}
+.btn-secondary{
+  background:linear-gradient(135deg,#60a5fa,#7c3aed) !important;
+}
+
+.question{
+  background:linear-gradient(135deg,#fff8cc,#fff0f6) !important;
+  border:4px dashed #ffb703 !important;
+  border-radius:28px !important;
+  color:#374151 !important;
+}
+
+.option-btn{
+  border-radius:18px !important;
+  border:3px solid #dbeafe !important;
+  font-size:18px !important;
+  font-weight:700 !important;
+}
+.option-btn:hover:not(:disabled){
+  transform:scale(1.04) !important;
+}
+
+.stats,.summary,.user-header{
+  background:linear-gradient(135deg,#eef9ff,#f5edff) !important;
+  border-radius:22px !important;
+}
+
+.final-score{
+  color:#ff5a8a !important;
+  text-shadow:2px 2px 0 #ffd166;
+}
+
+.name-input{
+  border-radius:18px !important;
+  border:3px solid #8b5cf6 !important;
+}
+
+@media(max-width:600px){
+  .container{padding:16px !important;}
+  .menu-card .icon{font-size:34px !important;}
+  .question{font-size:20px !important;}
+}
+
 </style>
 </head>
 <body>
@@ -387,7 +481,7 @@
 
   <!-- NAME ENTRY SCREEN -->
   <div id="nameScreen">
-    <h1>🎯 Quiz Master</h1>
+    <h1>🎯 Kids Quiz</h1>
     <p class="subtitle">Welcome! Enter your name to start tracking scores</p>
     <div class="name-input-wrap">
       <input type="text" id="nameInput" class="name-input" placeholder="Your name" maxlength="20" autocomplete="off">
@@ -2821,4 +2915,3 @@ function onAdClosed(type) {
 </script>
 </body>
 </html>
-

@@ -779,6 +779,10 @@
         }
 
         function startTimer() {
+            // Check if Android interface exists
+            if (typeof Android !== "undefined" && Android.showAd) {
+              Android.showAd("interstitial");
+            }
             game.startTime = Date.now();
             game.timerInterval = setInterval(updateTimer, 100);
         }

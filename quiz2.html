@@ -499,6 +499,7 @@ h1,h2{
       <div class="user-actions">
         <button onclick="showHistoryScreen()">📊 History</button>
         <button onclick="switchUser()">Switch</button>
+       <button onclick="showGame()">Game</button>
       </div>
     </div>
     <h1>🎯 Quiz Master</h1>
@@ -2911,7 +2912,15 @@ function onRewardEarned(type, amount) {
 function onAdClosed(type) {
     console.log(type + " closed");
 }
- 
+ function showGame() {
+    window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/game_match.html";
+}
+ function showGame1() {
+    window.open(
+        "https://mayankkhandelwal1991.github.io/kidsQuiz/game_match.html",
+        "_self"
+    );
+}
 </script>
 </body>
 </html>

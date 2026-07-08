@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Number Rush</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#34d399,#8b5cf6);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;touch-action:manipulation}
+.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:16px;max-width:420px;width:100%;text-align:center}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.bar .sc{font-weight:800;color:#ff5a8a;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.n{aspect-ratio:1;border-radius:12px;background:linear-gradient(135deg,#eef9ff,#f5edff);border:2px solid #dbeafe;font-size:20px;font-weight:800;color:#374151;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:.1s}
+.n.done{background:linear-gradient(135deg,#34d399,#06b6d4);color:#fff;border-color:transparent}
+.n.err{background:#ffd6d6}
+.msg{color:#ff5a8a;font-weight:800;font-size:17px;min-height:24px;margin-top:10px}
+.start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 34px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px}
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <div class="sc">Next: <span id="next">1</span> &nbsp; ⏱ <span id="time">0.0</span>s &nbsp; 🏆 <span id="best">—</span></div>
+    <button onclick="start()">↻</button>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="msg" id="msg">Tap 1 → 25 in order, fast!</div>
+  <button class="start" id="sb" onclick="start()">▶ Start</button>
+</div>
+<script>
+let next,startT,timer,playing=false,best=localStorage.getItem('rushBest');
+document.getElementById('best').textContent=best?best+'s':'—';
+function start(){
+  next=1;playing=true;
+  document.getElementById('next').textContent=1;
+  document.getElementById('msg').textContent='Go go go!';
+  document.getElementById('sb').style.display='none';
+  const nums=[...Array(25)].map((_,i)=>i+1).sort(()=>Math.random()-.5);
+  const grid=document.getElementById('grid');grid.innerHTML='';
+  nums.forEach(v=>{
+    const d=document.createElement('div');d.className='n';d.textContent=v;
+    d.onclick=()=>tap(d,v);grid.appendChild(d);
+  });
+  startT=performance.now();
+  clearInterval(timer);
+  timer=setInterval(()=>{
+    document.getElementById('time').textContent=((performance.now()-startT)/1000).toFixed(1);
+  },100);
+}
+function tap(el,v){
+  if(!playing)return;
+  if(v===next){
+    el.classList.add('done');
+    next++;document.getElementById('next').textContent=next<=25?next:'✓';
+    if(next>25){
+      playing=false;clearInterval(timer);
+      const t=((performance.now()-startT)/1000).toFixed(1);
+      document.getElementById('time').textContent=t;
+      if(!best||+t<+best){best=t;localStorage.setItem('rushBest',best);document.getElementById('best').textContent=best+'s';}
+      document.getElementById('msg').textContent='🎉 Finished in '+t+' seconds!';
+      const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';
+    }
+  }else{
+    el.classList.add('err');setTimeout(()=>el.classList.remove('err'),250);
+  }
+}
+</script></body></html>

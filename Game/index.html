@@ -1,1 +1,96 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Game Zone - Kids Quiz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#8b5cf6,#ff7ac6,#ffd166);background-size:400% 400%;animation:bg 12s ease infinite;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px}
+@keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.container{background:linear-gradient(180deg,#fff,#fef6ff);border:6px solid #fff;border-radius:32px;box-shadow:0 15px 40px rgba(0,0,0,.18);max-width:720px;width:100%;padding:22px}
+h1{color:#ff5a8a;text-align:center;font-size:26px;font-weight:800}
+.subtitle{color:#6b7280;text-align:center;font-size:13px;margin-bottom:14px}
+.topbar{display:flex;justify-content:flex-start;margin-bottom:8px}
+.back-btn{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:14px;padding:8px 16px;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-height:58vh;overflow-y:auto;padding:4px}
+.card{padding:12px 6px;border-radius:20px;border:3px solid rgba(255,255,255,.8);cursor:pointer;text-align:center;transition:.15s;background:#fff}
+.card:nth-child(4n+1){background:linear-gradient(135deg,#ffe082,#fff8e1)}
+.card:nth-child(4n+2){background:linear-gradient(135deg,#80deea,#e0f7fa)}
+.card:nth-child(4n+3){background:linear-gradient(135deg,#c5e1a5,#f1f8e9)}
+.card:nth-child(4n+4){background:linear-gradient(135deg,#f8bbd0,#fce4ec)}
+.card:hover,.card.sel{transform:translateY(-4px) scale(1.04);border-color:#8b5cf6}
+.card .ic{font-size:34px}
+.card .nm{font-size:12px;font-weight:700;color:#374151;line-height:1.2;margin-top:4px}
+.detail{display:none;margin-top:14px;background:linear-gradient(135deg,#fff8cc,#fff0f6);border:4px dashed #ffb703;border-radius:24px;padding:16px;text-align:center}
+.detail.show{display:block}
+.detail .big{font-size:48px}
+.detail h2{color:#ff5a8a;font-size:20px}
+.detail p{color:#555;font-size:13px;margin:6px 0 12px;line-height:1.5}
+.start-btn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:18px;padding:13px 42px;font-family:inherit;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 8px 18px rgba(255,79,163,.35);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@media(max-width:520px){.grid{grid-template-columns:repeat(3,1fr)}.card .ic{font-size:28px}.card .nm{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topbar"><button class="back-btn" onclick="goBack()">← Quiz Home</button></div>
+  <h1>🎮 Game Zone</h1>
+  <p class="subtitle">Pick a game, then press Start to play!</p>
+  <div class="grid" id="grid"></div>
+  <div class="detail" id="detail">
+    <div class="big" id="dIcon"></div>
+    <h2 id="dName"></h2>
+    <p id="dHow"></p>
+    <button class="start-btn" onclick="startGame()">▶ Start</button>
+  </div>
+</div>
+<script>
+const GAMES=[
+ {f:'egg_jump.html',ic:'🥚',nm:'Egg Jump',how:'Tap or press Space to make the egg jump over rocks and cacti. How far can you run?'},
+ {f:'car_race.html',ic:'🏎️',nm:'Car Race',how:'Use arrows or tap left/right to change lanes and dodge the traffic. Survive as long as you can!'},
+ {f:'memory_match.html',ic:'🃏',nm:'Memory Match',how:'Flip cards and find all the matching emoji pairs in the fewest moves.'},
+ {f:'snake.html',ic:'🐍',nm:'Snake',how:'Swipe or use arrows to steer the snake. Eat apples to grow, but don\u2019t hit the walls or yourself!'},
+ {f:'whack_mole.html',ic:'🐹',nm:'Whack-a-Mole',how:'Tap the moles as fast as you can before they hide. 30 seconds on the clock!'},
+ {f:'tic_tac_toe.html',ic:'⭕',nm:'Tic Tac Toe',how:'Play X against the computer. Get 3 in a row to win!'},
+ {f:'balloon_pop.html',ic:'🎈',nm:'Balloon Pop',how:'Pop the balloons before they fly away! Watch out for the bombs.'},
+ {f:'fruit_catch.html',ic:'🍎',nm:'Fruit Catch',how:'Move the basket to catch falling fruit. Missing fruit or catching bombs costs a life!'},
+ {f:'simon_says.html',ic:'🎨',nm:'Simon Says',how:'Watch the colors light up, then repeat the pattern. It gets longer every round!'},
+ {f:'quick_math.html',ic:'➕',nm:'Quick Math',how:'Solve as many sums as you can in 60 seconds. Fast fingers, fast brain!'},
+ {f:'flappy_bee.html',ic:'🐝',nm:'Flappy Bee',how:'Tap to flap the bee through the gaps in the pipes. Don\u2019t crash!'},
+ {f:'brick_breaker.html',ic:'🧱',nm:'Brick Breaker',how:'Slide the paddle to bounce the ball and smash all the bricks.'},
+ {f:'ping_pong.html',ic:'🏓',nm:'Ping Pong',how:'Slide your paddle to hit the ball past the computer. First to 5 points wins!'},
+ {f:'maze_run.html',ic:'🌀',nm:'Maze Run',how:'Guide the mouse through the maze to reach the cheese. New maze every time!'},
+ {f:'slide_puzzle.html',ic:'🔢',nm:'Slide Puzzle',how:'Slide the tiles to put the numbers 1-8 back in order.'},
+ {f:'word_scramble.html',ic:'🔤',nm:'Word Scramble',how:'Tap the jumbled letters to spell the word shown by the emoji hint.'},
+ {f:'rock_paper.html',ic:'✊',nm:'Rock Paper Scissors',how:'Pick rock, paper, or scissors. First to beat the computer 5 times wins!'},
+ {f:'odd_one_out.html',ic:'👀',nm:'Odd One Out',how:'One emoji is different from the rest. Find and tap it fast!'},
+ {f:'color_tap.html',ic:'🌈',nm:'Color Tap',how:'Tap the button matching the COLOR of the word, not the word itself. Tricky!'},
+ {f:'number_order.html',ic:'🔟',nm:'Number Rush',how:'Tap the numbers 1 to 25 in order as fast as you can. Beat your best time!'}
+];
+let sel=-1;
+const grid=document.getElementById('grid');
+GAMES.forEach((g,i)=>{
+  const d=document.createElement('div');
+  d.className='card';
+  d.innerHTML='<div class="ic">'+g.ic+'</div><div class="nm">'+g.nm+'</div>';
+  d.onclick=()=>select(i,d);
+  grid.appendChild(d);
+});
+function select(i,card){
+  sel=i;
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('sel'));
+  card.classList.add('sel');
+  const g=GAMES[i];
+  document.getElementById('dIcon').textContent=g.ic;
+  document.getElementById('dName').textContent=g.nm;
+  document.getElementById('dHow').textContent=g.how;
+  document.getElementById('detail').classList.add('show');
+  document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function startGame(){ if(sel>=0) window.location.href=GAMES[sel].f; }
+function goBack(){ window.location.href='../index.html'; }
+</script>
+</body>
+</html>

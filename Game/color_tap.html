@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Color Tap</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#ff7ac6,#06b6d4);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;touch-action:manipulation}
+.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:400px;width:100%;text-align:center}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.bar .sc{font-weight:800;color:#ff5a8a;font-size:14px}
+.word{font-size:52px;font-weight:800;background:linear-gradient(135deg,#fff8cc,#fff0f6);border:4px dashed #ffb703;border-radius:22px;padding:26px;margin-bottom:8px;min-height:120px;display:flex;align-items:center;justify-content:center}
+.tip{color:#888;font-size:12px;font-weight:700;margin-bottom:10px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btns button{padding:16px;font-size:17px;font-weight:800;border:none;border-radius:16px;cursor:pointer;color:#fff;font-family:inherit}
+.msg{color:#ff5a8a;font-weight:800;font-size:17px;min-height:24px;margin-top:12px}
+.start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 34px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px}
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <div class="sc">⏱ <span id="time">30</span>s &nbsp; ⭐ <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
+    <button onclick="start()">↻</button>
+  </div>
+  <div class="word" id="word">READY?</div>
+  <div class="tip">Tap the button matching the COLOR of the word, not the word!</div>
+  <div class="btns" id="btns"></div>
+  <div class="msg" id="msg"></div>
+  <button class="start" id="sb" onclick="start()">▶ Start (30s)</button>
+</div>
+<script>
+const COLORS=[['RED','#ff4d4d'],['BLUE','#3b82f6'],['GREEN','#22a55b'],['YELLOW','#eab308']];
+let ans,score,time,timer,playing=false,best=+(localStorage.getItem('colorBest')||0);
+document.getElementById('best').textContent=best;
+const btns=document.getElementById('btns');
+COLORS.forEach((c,i)=>{
+  const b=document.createElement('button');
+  b.textContent=c[0];b.style.background=c[1];
+  b.onclick=()=>pick(i);btns.appendChild(b);
+});
+function round(){
+  const word=Math.floor(Math.random()*4);
+  let ink=Math.floor(Math.random()*4);
+  if(Math.random()<0.7)while(ink===word)ink=Math.floor(Math.random()*4);
+  ans=ink;
+  const w=document.getElementById('word');
+  w.textContent=COLORS[word][0];
+  w.style.color=COLORS[ink][1];
+}
+function pick(i){
+  if(!playing)return;
+  if(i===ans){score++;document.getElementById('score').textContent=score;round();}
+  else{score=Math.max(0,score-1);document.getElementById('score').textContent=score;
+    document.getElementById('msg').textContent='❌ Oops!';
+    setTimeout(()=>document.getElementById('msg').textContent='',400);round();}
+}
+function start(){
+  clearInterval(timer);score=0;time=30;playing=true;
+  document.getElementById('score').textContent=0;
+  document.getElementById('time').textContent=30;
+  document.getElementById('msg').textContent='';
+  document.getElementById('sb').style.display='none';
+  round();
+  timer=setInterval(()=>{
+    time--;document.getElementById('time').textContent=time;
+    if(time<=0){
+      clearInterval(timer);playing=false;
+      if(score>best){best=score;localStorage.setItem('colorBest',best);document.getElementById('best').textContent=best;}
+      const w=document.getElementById('word');w.textContent='⏰ '+score+' points!';w.style.color='#ff5a8a';
+      const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';
+    }
+  },1000);
+}
+</script></body></html>

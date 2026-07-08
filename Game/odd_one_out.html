@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Odd One Out</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#ffd166);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;touch-action:manipulation}
+.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:16px;max-width:420px;width:100%;text-align:center}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.bar .sc{font-weight:800;color:#ff5a8a;font-size:14px}
+.grid{display:grid;gap:6px}
+.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:12px;background:#f5f8ff;user-select:none;transition:.1s}
+.cell:active{transform:scale(.9)}
+.msg{color:#ff5a8a;font-weight:800;font-size:17px;min-height:24px;margin-top:10px}
+.start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 34px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px}
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <div class="sc">⏱ <span id="time">30</span>s &nbsp; ⭐ <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
+    <button onclick="start()">↻</button>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="msg" id="msg">Find the different emoji!</div>
+  <button class="start" id="sb" onclick="start()">▶ Start (30s)</button>
+</div>
+<script>
+const PAIRS=[['🐶','🐺'],['🍎','🍅'],['😀','😃'],['🌝','🌚'],['🐱','🦁'],['🟢','🟩'],['⭐','🌟'],['🐤','🐥'],['🍩','🍪'],['⚽','🏐'],['🐸','🐢'],['💛','⭐'],['🌸','🌺'],['🦆','🐧']];
+let score,time,timer,playing=false,best=+(localStorage.getItem('oddBest')||0);
+document.getElementById('best').textContent=best;
+function round(){
+  const size=Math.min(7,3+Math.floor(score/3));
+  const [a,b]=PAIRS[Math.floor(Math.random()*PAIRS.length)];
+  const odd=Math.floor(Math.random()*size*size);
+  const grid=document.getElementById('grid');
+  grid.style.gridTemplateColumns='repeat('+size+',1fr)';
+  grid.innerHTML='';
+  const fs=Math.max(20,44-size*3);
+  for(let i=0;i<size*size;i++){
+    const c=document.createElement('div');c.className='cell';
+    c.style.fontSize=fs+'px';
+    c.textContent=i===odd?b:a;
+    c.onclick=()=>{
+      if(!playing)return;
+      if(i===odd){score++;document.getElementById('score').textContent=score;round();}
+      else{c.style.background='#ffd6d6';setTimeout(()=>c.style.background='',300);}
+    };
+    grid.appendChild(c);
+  }
+}
+function start(){
+  clearInterval(timer);score=0;time=30;playing=true;
+  document.getElementById('score').textContent=0;
+  document.getElementById('time').textContent=30;
+  document.getElementById('msg').textContent='Find the different emoji!';
+  document.getElementById('sb').style.display='none';
+  round();
+  timer=setInterval(()=>{
+    time--;document.getElementById('time').textContent=time;
+    if(time<=0){
+      clearInterval(timer);playing=false;
+      if(score>best){best=score;localStorage.setItem('oddBest',best);document.getElementById('best').textContent=best;}
+      document.getElementById('grid').innerHTML='';
+      document.getElementById('msg').textContent='⏰ Time up! You found '+score+'!';
+      const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';
+    }
+  },1000);
+}
+round();playing=false;
+</script></body></html>

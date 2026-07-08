@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Quick Math</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#06b6d4,#8b5cf6);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;touch-action:manipulation}
+.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:420px;width:100%;text-align:center}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
+.q{font-size:44px;font-weight:800;color:#374151;background:linear-gradient(135deg,#fff8cc,#fff0f6);border:4px dashed #ffb703;border-radius:22px;padding:22px;margin-bottom:14px;min-height:100px;display:flex;align-items:center;justify-content:center}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts button{padding:16px;font-size:22px;font-weight:800;border:3px solid #dbeafe;background:#fff;border-radius:16px;cursor:pointer;font-family:inherit;color:#374151;transition:.1s}
+.opts button.ok{background:#2ecc71;color:#fff;border-color:#2ecc71}
+.opts button.no{background:#e74c3c;color:#fff;border-color:#e74c3c}
+.msg{color:#ff5a8a;font-weight:800;font-size:18px;min-height:26px;margin-top:12px}
+.start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:12px 36px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;margin-top:10px}
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <div class="sc">⏱ <span id="time">60</span>s &nbsp; ⭐ <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
+    <button onclick="start()">↻</button>
+  </div>
+  <div class="q" id="q">Ready?</div>
+  <div class="opts" id="opts"></div>
+  <div class="msg" id="msg"></div>
+  <button class="start" id="sb" onclick="start()">▶ Start (60s)</button>
+</div>
+<script>
+let score,time,timer,ans,lock=false,playing=false,best=+(localStorage.getItem('mathBest')||0);
+document.getElementById('best').textContent=best;
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function gen(){
+  const lvl=Math.min(4,Math.floor(score/6));
+  let a,b,op=['+','−','×'][rnd(0,Math.min(2,1+Math.floor(lvl/2)))];
+  if(op==='×'){a=rnd(2,4+lvl*2);b=rnd(2,6+lvl);}
+  else{a=rnd(1,10+lvl*15);b=rnd(1,10+lvl*10);}
+  if(op==='−'&&b>a)[a,b]=[b,a];
+  ans=op==='+'?a+b:op==='−'?a-b:a*b;
+  document.getElementById('q').textContent=a+' '+op+' '+b+' = ?';
+  const set=new Set([ans]);
+  while(set.size<4){let d=ans+rnd(-8,8);if(d!==ans&&d>=0)set.add(d);}
+  const opts=[...set].sort(()=>Math.random()-.5);
+  const box=document.getElementById('opts');box.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');b.textContent=o;
+    b.onclick=()=>pick(b,o);box.appendChild(b);
+  });
+  lock=false;
+}
+function pick(btn,val){
+  if(lock||!playing)return;lock=true;
+  if(val===ans){btn.classList.add('ok');score++;}
+  else{btn.classList.add('no');
+    [...document.querySelectorAll('.opts button')].find(b=>+b.textContent===ans).classList.add('ok');}
+  document.getElementById('score').textContent=score;
+  setTimeout(gen,val===ans?250:700);
+}
+function start(){
+  clearInterval(timer);score=0;time=60;playing=true;
+  document.getElementById('score').textContent=0;
+  document.getElementById('time').textContent=60;
+  document.getElementById('msg').textContent='';
+  document.getElementById('sb').style.display='none';
+  gen();
+  timer=setInterval(()=>{
+    time--;document.getElementById('time').textContent=time;
+    if(time<=0){
+      clearInterval(timer);playing=false;
+      if(score>best){best=score;localStorage.setItem('mathBest',best);document.getElementById('best').textContent=best;}
+      document.getElementById('q').textContent='⏰ Time up!';
+      document.getElementById('opts').innerHTML='';
+      document.getElementById('msg').textContent='You solved '+score+' sums!';
+      const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';
+    }
+  },1000);
+}
+</script></body></html>

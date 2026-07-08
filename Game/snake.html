@@ -3,7 +3,7 @@
 <title>Snake</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#34d399,#ffd166);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;touch-action:none}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#34d399,#ffd166);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none}
 .wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:420px;width:100%}
 .bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
@@ -12,6 +12,12 @@ canvas{width:100%;border-radius:16px;display:block;background:#eafbe7}
 .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:190px;margin:10px auto 0}
 .pad button{font-size:20px;padding:10px;border:none;border-radius:12px;background:linear-gradient(135deg,#34d399,#06b6d4);color:#fff;cursor:pointer}
 .pad .e{visibility:hidden}
+
+/* mobile fit */
+.wrap{display:flex;flex-direction:column;height:100%;max-height:820px}
+.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0}
+canvas{max-height:100%}
+
 </style></head><body>
 <div class="wrap">
   <div class="bar">
@@ -19,7 +25,7 @@ canvas{width:100%;border-radius:16px;display:block;background:#eafbe7}
     <div class="sc">🍎 <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
     <button onclick="reset()">↻</button>
   </div>
-  <canvas id="cv" width="380" height="380"></canvas>
+  <div class="stage"><canvas id="cv" width="380" height="380"></canvas></div>
   <div class="pad">
     <button class="e"></button><button onclick="dir(0,-1)">⬆️</button><button class="e"></button>
     <button onclick="dir(-1,0)">⬅️</button><button onclick="dir(0,1)">⬇️</button><button onclick="dir(1,0)">➡️</button>

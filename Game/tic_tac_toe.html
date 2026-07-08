@@ -3,7 +3,7 @@
 <title>Tic Tac Toe</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#8b5cf6,#6ee7ff);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;touch-action:manipulation}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#8b5cf6,#6ee7ff);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
 .wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:380px;width:100%;text-align:center}
 .bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
@@ -13,6 +13,10 @@ body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135de
 .cell.x{color:#ff4fa3}.cell.o{color:#06b6d4}
 .cell.win{background:#fff3b0;border-color:#ffb703}
 .msg{color:#ff5a8a;font-weight:800;font-size:18px;min-height:28px;margin-top:12px}
+
+/* mobile fit */
+.wrap{display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
+
 </style></head><body>
 <div class="wrap">
   <div class="bar">

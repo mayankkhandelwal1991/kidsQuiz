@@ -3,13 +3,19 @@
 <title>Egg Jump</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#8b5cf6);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;touch-action:manipulation}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#8b5cf6);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
 .wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:520px;width:100%}
 .bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
 .bar .sc{font-weight:800;color:#ff5a8a;font-size:16px}
 canvas{width:100%;border-radius:18px;display:block;background:linear-gradient(180deg,#bfefff 0%,#e8fbff 70%,#c8f7c5 70%);touch-action:manipulation}
 .hint{text-align:center;color:#888;font-size:12px;margin-top:6px;font-weight:600}
+
+/* mobile fit */
+.wrap{display:flex;flex-direction:column;height:100%;max-height:820px}
+.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0}
+canvas{max-height:100%}
+
 </style></head><body>
 <div class="wrap">
   <div class="bar">
@@ -17,12 +23,12 @@ canvas{width:100%;border-radius:18px;display:block;background:linear-gradient(18
     <div class="sc">🥚 <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
     <button onclick="reset()">↻ Restart</button>
   </div>
-  <canvas id="cv" width="480" height="300"></canvas>
+  <div class="stage"><canvas id="cv" width="400" height="480"></canvas></div>
   <div class="hint">Tap screen or press SPACE to jump</div>
 </div>
 <script>
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-const G=0.55,JUMP=-10.5,GROUND=240;
+const G=0.55,JUMP=-10.5,GROUND=400;
 let egg,obs,speed,score,playing,dead,frame,best=+(localStorage.getItem('eggBest')||0);
 document.getElementById('best').textContent=best;
 function reset(){egg={x:70,y:GROUND,vy:0,r:20,onG:true};obs=[];speed=4;score=0;playing=false;dead=false;frame=0;draw();}
@@ -67,8 +73,8 @@ function draw(){
   cx.font='36px serif';
   cx.fillText('🥚',egg.x-18,egg.y+12);
   cx.textAlign='center';cx.fillStyle='#ff5a8a';cx.font='bold 22px sans-serif';
-  if(!playing&&!dead)cx.fillText('Tap to start!',cv.width/2,120);
-  if(dead){cx.fillText('💥 Oops! Score: '+score,cv.width/2,110);cx.font='bold 15px sans-serif';cx.fillText('Tap to play again',cv.width/2,140);}
+  if(!playing&&!dead)cx.fillText('Tap to start!',cv.width/2,220);
+  if(dead){cx.fillText('💥 Oops! Score: '+score,cv.width/2,210);cx.font='bold 15px sans-serif';cx.fillText('Tap to play again',cv.width/2,240);}
   cx.textAlign='left';
 }
 reset();update();

@@ -31,6 +31,7 @@ canvas{max-height:100%}
     <button onclick="dir(-1,0)">⬅️</button><button onclick="dir(0,1)">⬇️</button><button onclick="dir(1,0)">➡️</button>
   </div>
 </div>
+<script src="ads.js"></script>
 <script>
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');
 const N=19,S=20;
@@ -66,7 +67,7 @@ function tick(){
   d=nd;
   const h={x:snake[0].x+d.x,y:snake[0].y+d.y};
   if(h.x<0||h.y<0||h.x>=N||h.y>=N||snake.some(s=>s.x===h.x&&s.y===h.y)){
-    dead=true;
+    dead=true;onGameComplete();
     if(score>best){best=score;localStorage.setItem('snakeBest',best);document.getElementById('best').textContent=best;}
     draw();return;
   }

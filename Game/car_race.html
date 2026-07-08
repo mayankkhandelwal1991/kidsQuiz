@@ -27,6 +27,7 @@ canvas{max-height:100%}
   <div class="stage"><canvas id="cv" width="360" height="560"></canvas></div>
   <div class="ctrl"><button onclick="move(-1)">⬅️</button><button onclick="move(1)">➡️</button></div>
 </div>
+<script src="ads.js"></script>
 <script>
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');
 const LANES=[60,180,300];
@@ -58,7 +59,7 @@ function update(){
     if(cars.length&&cars[0].y>cv.height+40){cars.shift();score++;document.getElementById('score').textContent=score;}
     for(const c of cars){
       if(c.lane===lane&&c.y>cv.height-120&&c.y<cv.height-40){
-        dead=true;
+        dead=true;onGameComplete();
         if(score>best){best=score;localStorage.setItem('raceBest',best);document.getElementById('best').textContent=best;}
       }
     }

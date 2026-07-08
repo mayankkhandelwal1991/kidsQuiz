@@ -31,6 +31,7 @@ body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135de
   <div class="msg" id="msg"></div>
   <button class="start" id="sb" onclick="start()">▶ Start (30s)</button>
 </div>
+<script src="ads.js"></script>
 <script>
 const COLORS=[['RED','#ff4d4d'],['BLUE','#3b82f6'],['GREEN','#22a55b'],['YELLOW','#eab308']];
 let ans,score,time,timer,playing=false,best=+(localStorage.getItem('colorBest')||0);
@@ -67,7 +68,7 @@ function start(){
   timer=setInterval(()=>{
     time--;document.getElementById('time').textContent=time;
     if(time<=0){
-      clearInterval(timer);playing=false;
+      clearInterval(timer);playing=false;onGameComplete();
       if(score>best){best=score;localStorage.setItem('colorBest',best);document.getElementById('best').textContent=best;}
       const w=document.getElementById('word');w.textContent='⏰ '+score+' points!';w.style.color='#ff5a8a';
       const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';

@@ -38,6 +38,7 @@ body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135de
   </div>
   <div class="msg" id="msg"></div>
 </div>
+<script src="ads.js"></script>
 <script>
 const WORDS=[
 ['CAT','🐱'],['DOG','🐶'],['SUN','☀️'],['FISH','🐟'],['BIRD','🐦'],['FROG','🐸'],
@@ -86,7 +87,7 @@ function checkWord(){
   total++;document.getElementById('total').textContent=total;
   const guess=picked.map(p=>p.ch).join('');
   if(guess===cur[0]){
-    score++;document.getElementById('score').textContent=score;
+    score++;document.getElementById('score').textContent=score;if(score%10===0)onGameComplete();
     document.getElementById('msg').textContent='🎉 Correct! '+cur[0];
     setTimeout(next,900);
   }else{

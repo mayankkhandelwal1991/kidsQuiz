@@ -31,6 +31,7 @@ body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135de
   <div class="msg" id="msg"></div>
   <button class="start" id="sb" onclick="start()">▶ Start (60s)</button>
 </div>
+<script src="ads.js"></script>
 <script>
 let score,time,timer,ans,lock=false,playing=false,best=+(localStorage.getItem('mathBest')||0);
 document.getElementById('best').textContent=best;
@@ -71,7 +72,7 @@ function start(){
   timer=setInterval(()=>{
     time--;document.getElementById('time').textContent=time;
     if(time<=0){
-      clearInterval(timer);playing=false;
+      clearInterval(timer);playing=false;onGameComplete();
       if(score>best){best=score;localStorage.setItem('mathBest',best);document.getElementById('best').textContent=best;}
       document.getElementById('q').textContent='⏰ Time up!';
       document.getElementById('opts').innerHTML='';

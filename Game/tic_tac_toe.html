@@ -9,7 +9,8 @@ body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135de
 .bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
 .bar .sc{font-weight:800;color:#ff5a8a;font-size:14px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.cell{aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#eef9ff,#f5edff);border:3px solid #dbeafe;font-size:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;font-weight:800}
+.cell{position:relative;height:0;padding-bottom:calc(100% - 6px);border-radius:16px;background:linear-gradient(135deg,#eef9ff,#f5edff);border:3px solid #dbeafe;font-size:44px;cursor:pointer;user-select:none;font-weight:800}
+.cell span{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
 .cell.x{color:#ff4fa3}.cell.o{color:#06b6d4}
 .cell.win{background:#fff3b0;border-color:#ffb703}
 .msg{color:#ff5a8a;font-weight:800;font-size:18px;min-height:28px;margin-top:12px}
@@ -27,6 +28,7 @@ body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135de
   <div class="grid" id="grid"></div>
   <div class="msg" id="msg">You are ❌ — tap a square!</div>
 </div>
+<script src="ads.js"></script>
 <script>
 const WINS=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 let board,over,pw=0,cw=0,dw=0;
@@ -53,7 +55,7 @@ function play(i){
 }
 function mark(i,p){
   board[i]=p;
-  cells[i].textContent=p==='X'?'❌':'⭕';
+  cells[i].innerHTML='<span>'+(p==='X'?'❌':'⭕')+'</span>';
   cells[i].classList.add(p.toLowerCase());
 }
 function aiMove(){
@@ -85,7 +87,7 @@ function check(){
   document.getElementById('pw').textContent=pw;
   document.getElementById('cw').textContent=cw;
   document.getElementById('dw').textContent=dw;
-  if(over)setTimeout(reset,1800);
+  if(over){onGameComplete();setTimeout(reset,1800);}
   return over;
 }
 reset();

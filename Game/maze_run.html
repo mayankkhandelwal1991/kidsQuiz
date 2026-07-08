@@ -33,6 +33,7 @@ canvas{max-height:100%}
   </div>
   <div class="msg" id="msg"></div>
 </div>
+<script src="ads.js"></script>
 <script>
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');
 let N=9,cells,player,moves,level=1,won=false;
@@ -72,7 +73,7 @@ function mv(dx,dy){
   player.x+=dx;player.y+=dy;moves++;
   document.getElementById('mv').textContent=moves;
   if(player.x===N-1&&player.y===N-1){
-    won=true;
+    won=true;onGameComplete();
     document.getElementById('msg').textContent='🎉 You got the cheese in '+moves+' moves! Press any arrow for level '+(level+1);
   }
   draw();

@@ -34,6 +34,7 @@ body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135de
     </div>
   </div>
 </div>
+<script src="ads.js"></script>
 <script>
 const area=document.getElementById('area'),overlay=document.getElementById('overlay');
 const COLORS=['🎈','🟠','🟣','🔵'].map(()=>'🎈');
@@ -84,7 +85,7 @@ function loseLife(){
   if(lives<=0)end();
 }
 function end(){
-  playing=false;clearInterval(spawnT);
+  playing=false;clearInterval(spawnT);onGameComplete();
   if(score>best){best=score;localStorage.setItem('balloonBest',best);document.getElementById('best').textContent=best;}
   document.getElementById('oTitle').textContent='🎈 Score: '+score;
   document.getElementById('oText').textContent='Great popping! Try again?';

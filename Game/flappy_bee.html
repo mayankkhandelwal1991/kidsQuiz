@@ -26,6 +26,7 @@ canvas{max-height:100%}
   <div class="stage"><canvas id="cv" width="380" height="560"></canvas></div>
   <div class="hint">Tap or press SPACE to flap</div>
 </div>
+<script src="ads.js"></script>
 <script>
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');
 const GAP=150,PW=56,G=0.42,FLAP=-7.2;
@@ -58,7 +59,7 @@ function update(){
   draw();requestAnimationFrame(update);
 }
 function die(){
-  if(dead)return;dead=true;
+  if(dead)return;dead=true;onGameComplete();
   if(score>best){best=score;localStorage.setItem('beeBest',best);document.getElementById('best').textContent=best;}
 }
 function draw(){

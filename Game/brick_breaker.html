@@ -26,6 +26,7 @@ canvas{max-height:100%}
   <div class="stage"><canvas id="cv" width="400" height="560"></canvas></div>
   <div class="hint">Drag finger / move mouse / use ← → to move paddle</div>
 </div>
+<script src="ads.js"></script>
 <script>
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');
 const COLS=8,ROWS=5,BW=46,BH=20,PAD=3;
@@ -63,7 +64,7 @@ function update(){
     }
     if(ball.y>cv.height+10){
       lives--;document.getElementById('lives').textContent=lives;
-      if(lives<=0)dead=true;
+      if(lives<=0){dead=true;onGameComplete();}
       else{ball={x:px,y:cv.height-120,vx:3,vy:-3.4};}
     }
     for(const b of bricks){
@@ -74,7 +75,7 @@ function update(){
         break;
       }
     }
-    if(bricks.every(b=>!b.alive))won=true;
+    if(bricks.every(b=>!b.alive)){won=true;onGameComplete();}
   }
   draw();requestAnimationFrame(update);
 }

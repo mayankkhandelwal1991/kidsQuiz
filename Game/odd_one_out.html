@@ -9,7 +9,8 @@ body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135de
 .bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
 .bar .sc{font-weight:800;color:#ff5a8a;font-size:14px}
 .grid{display:grid;gap:6px}
-.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:12px;background:#f5f8ff;user-select:none;transition:.1s}
+.cell{position:relative;height:0;padding-bottom:100%;cursor:pointer;border-radius:12px;background:#f5f8ff;user-select:none;transition:.1s}
+.cell span{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
 .cell:active{transform:scale(.9)}
 .msg{color:#ff5a8a;font-weight:800;font-size:17px;min-height:24px;margin-top:10px}
 .start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 34px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px}
@@ -28,6 +29,7 @@ body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135de
   <div class="msg" id="msg">Find the different emoji!</div>
   <button class="start" id="sb" onclick="start()">▶ Start (30s)</button>
 </div>
+<script src="ads.js"></script>
 <script>
 const PAIRS=[['🐶','🐺'],['🍎','🍅'],['😀','😃'],['🌝','🌚'],['🐱','🦁'],['🟢','🟩'],['⭐','🌟'],['🐤','🐥'],['🍩','🍪'],['⚽','🏐'],['🐸','🐢'],['💛','⭐'],['🌸','🌺'],['🦆','🐧']];
 let score,time,timer,playing=false,best=+(localStorage.getItem('oddBest')||0);
@@ -43,7 +45,7 @@ function round(){
   for(let i=0;i<size*size;i++){
     const c=document.createElement('div');c.className='cell';
     c.style.fontSize=fs+'px';
-    c.textContent=i===odd?b:a;
+    c.innerHTML='<span>'+(i===odd?b:a)+'</span>';
     c.onclick=()=>{
       if(!playing)return;
       if(i===odd){score++;document.getElementById('score').textContent=score;round();}
@@ -62,7 +64,7 @@ function start(){
   timer=setInterval(()=>{
     time--;document.getElementById('time').textContent=time;
     if(time<=0){
-      clearInterval(timer);playing=false;
+      clearInterval(timer);playing=false;onGameComplete();
       if(score>best){best=score;localStorage.setItem('oddBest',best);document.getElementById('best').textContent=best;}
       document.getElementById('grid').innerHTML='';
       document.getElementById('msg').textContent='⏰ Time up! You found '+score+'!';

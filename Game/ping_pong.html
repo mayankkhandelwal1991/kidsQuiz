@@ -26,6 +26,7 @@ canvas{max-height:100%}
   <div class="stage"><canvas id="cv" width="400" height="560"></canvas></div>
   <div class="hint">Drag / move mouse / ← → to move your paddle (bottom)</div>
 </div>
+<script src="ads.js"></script>
 <script>
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');
 let px,ax,ball,ps,cs,playing,over,msg='',keys={};
@@ -67,8 +68,8 @@ function update(){
 function point(){
   document.getElementById('ps').textContent=ps;
   document.getElementById('cs').textContent=cs;
-  if(ps>=5){over=true;msg='🎉 You win '+ps+'-'+cs+'!';}
-  else if(cs>=5){over=true;msg='🤖 Computer wins '+cs+'-'+ps+'!';}
+  if(ps>=5){over=true;msg='🎉 You win '+ps+'-'+cs+'!';onGameComplete();}
+  else if(cs>=5){over=true;msg='🤖 Computer wins '+cs+'-'+ps+'!';onGameComplete();}
   else newBall(ps+cs%2?1:-1);
 }
 function draw(){

@@ -26,6 +26,7 @@ canvas{max-height:100%}
   <div class="stage"><canvas id="cv" width="400" height="480"></canvas></div>
   <div class="hint">Tap screen or press SPACE to jump</div>
 </div>
+<script src="ads.js"></script>
 <script>
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');
 const G=0.55,JUMP=-10.5,GROUND=400;
@@ -53,7 +54,7 @@ function update(){
     obs.forEach(o=>o.x-=speed);
     if(obs.length&&obs[0].x<-40){obs.shift();score++;document.getElementById('score').textContent=score;}
     for(const o of obs){
-      if(Math.abs(o.x-egg.x)<o.w&&Math.abs((GROUND)-egg.y)<1e9&&egg.y>GROUND-30&&Math.abs(o.x-egg.x)<26){dead=true;
+      if(Math.abs(o.x-egg.x)<o.w&&Math.abs((GROUND)-egg.y)<1e9&&egg.y>GROUND-30&&Math.abs(o.x-egg.x)<26){dead=true;onGameComplete();
         if(score>best){best=score;localStorage.setItem('eggBest',best);document.getElementById('best').textContent=best;}
       }
     }

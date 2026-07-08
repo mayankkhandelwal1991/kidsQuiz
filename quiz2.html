@@ -389,6 +389,8 @@ body{
   background:linear-gradient(135deg,#6ee7ff,#8b5cf6,#ff7ac6,#ffd166) !important;
   background-size:400% 400%;
   animation:bgMove 12s ease infinite;
+  position: relative;
+  overflow-x: hidden;
 }
 @keyframes bgMove{
   0%{background-position:0% 50%}
@@ -400,6 +402,8 @@ body{
   border:6px solid #fff !important;
   box-shadow:0 15px 40px rgba(0,0,0,.18) !important;
   background:linear-gradient(180deg,#ffffff,#fef6ff) !important;
+  position: relative;
+  z-index: 2;
 }
 h1,h2{
   color:#ff5a8a !important;
@@ -474,9 +478,86 @@ h1,h2{
   .question{font-size:20px !important;}
 }
 
+/* ===== FLOATING BACKGROUND DECORATION ===== */
+.bg-decor {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.bg-decor span {
+  position: absolute;
+  font-size: 28px;
+  opacity: 0.35;
+  animation: floatUp linear infinite;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.08));
+}
+@keyframes floatUp {
+  0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.35; }
+  90% { opacity: 0.35; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* ===== SHARE & RATE SECTION ===== */
+.promo-bar {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0 6px;
+}
+.promo-btn {
+  flex: 1;
+  border: none;
+  border-radius: 18px;
+  padding: 14px 8px;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.promo-btn .emoji { font-size: 22px; }
+.promo-btn:active { transform: scale(0.95); }
+.promo-btn.rate-btn {
+  background: linear-gradient(135deg, #ffb703, #ff7a59);
+  box-shadow: 0 8px 16px rgba(255,122,89,.35);
+  animation: pulseGlow 2.4s ease-in-out infinite;
+}
+.promo-btn.share-btn {
+  background: linear-gradient(135deg, #34d399, #06b6d4);
+  box-shadow: 0 8px 16px rgba(6,182,212,.35);
+}
+.promo-btn:hover { transform: translateY(-3px); }
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 8px 16px rgba(255,122,89,.35); }
+  50% { box-shadow: 0 8px 26px rgba(255,183,3,.55); }
+}
+
+.header-icon-btn {
+  background: white !important;
+  border: 1px solid #d0d0e0 !important;
+  border-radius: 50% !important;
+  width: 30px;
+  height: 30px;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px !important;
+}
+
 </style>
 </head>
 <body>
+
+<div class="bg-decor" id="bgDecor"></div>
+
 <div class="container">
 
   <!-- NAME ENTRY SCREEN -->
@@ -505,6 +586,17 @@ h1,h2{
     <h1>🎯 Quiz Master</h1>
     <p class="subtitle">20 categories • Class 1 to 5 • 3-minute challenge</p>
     <div class="menu-grid" id="categoryGrid"></div>
+
+    <div class="promo-bar">
+      <button class="promo-btn rate-btn" onclick="rateApp()">
+        <span class="emoji">⭐</span>
+        <span>Rate Us</span>
+      </button>
+      <button class="promo-btn share-btn" onclick="shareApp()">
+        <span class="emoji">📤</span>
+        <span>Share with Friends</span>
+      </button>
+    </div>
   </div>
 
   <!-- HISTORY SCREEN -->
@@ -596,6 +688,16 @@ h1,h2{
       <button class="btn btn-secondary" onclick="showHistoryScreen()">📊 History</button>
       <button class="btn btn-secondary" onclick="showLevelScreen()">Change Level</button>
       <button class="btn" onclick="restartQuiz()">Play Again</button>
+    </div>
+    <div class="promo-bar">
+      <button class="promo-btn rate-btn" onclick="rateApp()">
+        <span class="emoji">⭐</span>
+        <span>Rate Us</span>
+      </button>
+      <button class="promo-btn share-btn" onclick="shareApp()">
+        <span class="emoji">📤</span>
+        <span>Share with Friends</span>
+      </button>
     </div>
   </div>
 
@@ -708,6 +810,7 @@ function goToMenu() {
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   document.getElementById('timer').classList.remove('warning');
   recentQuestions = [];
+  returnToRoot();
   showScreen('menuScreen');
 }
 
@@ -719,6 +822,7 @@ function selectCategory(catId) {
 }
 
 function showLevelScreen() {
+  enterSubScreen('levelScreen');
   const cat = getCatInfo(currentCategory);
   document.getElementById('levelBreadcrumb').textContent = cat.icon + ' ' + cat.title;
   document.getElementById('levelTitle').textContent = 'Select Class Level';
@@ -734,7 +838,9 @@ function startQuiz(level) {
     if (typeof Android !== "undefined" && Android.showAd) {
       Android.showAd("interstitial");
     }
- 
+
+  enterSubScreen('quizScreen');
+
   currentLevel = level;
   timeLeft = 180;
   score = 0;
@@ -835,6 +941,7 @@ function checkAnswer(selected, btn) {
 function endQuiz() {
   clearInterval(timerInterval);
   timerInterval = null;
+  enterSubScreen('endScreen');
   document.getElementById('finalScore').textContent = score;
   document.getElementById('correctCount').textContent = correctCount;
   document.getElementById('wrongCount').textContent = wrongCount;
@@ -2591,6 +2698,108 @@ const POOLS = {
 };
 
 /* ============================================
+   BACK BUTTON HANDLING
+   (Works together with the Android WebView's
+   webView.canGoBack()/goBack() logic. We push a
+   single history entry whenever the user leaves
+   the main menu, so the hardware/back-button can
+   pop back to the menu. Once back at the menu
+   there is nothing left in this history, so the
+   native Android back button takes over and shows
+   the "Quit App?" dialog.)
+   ============================================ */
+let atRootScreen = true;
+let suppressNextPopstate = false;
+
+function enterSubScreen(screenId) {
+  if (atRootScreen) {
+    history.pushState({ screen: screenId }, '', '#' + screenId);
+    atRootScreen = false;
+  } else {
+    history.replaceState({ screen: screenId }, '', '#' + screenId);
+  }
+}
+
+function returnToRoot() {
+  if (!atRootScreen) {
+    suppressNextPopstate = true;
+    history.back();
+  }
+  atRootScreen = true;
+}
+
+window.addEventListener('popstate', function () {
+  if (suppressNextPopstate) {
+    suppressNextPopstate = false;
+    return;
+  }
+  if (!atRootScreen) {
+    const quizVisible = !document.getElementById('quizScreen').classList.contains('hidden');
+    if (quizVisible && timerInterval) {
+      const wantQuit = confirm('Are you sure you want to quit this quiz?');
+      if (!wantQuit) {
+        // Cancel: push the state forward again so WebView history stays in sync
+        history.pushState({ screen: 'quizScreen' }, '', '#quizScreen');
+        return;
+      }
+      clearInterval(timerInterval);
+      timerInterval = null;
+      if (typeof Android !== "undefined" && Android.showAd) {
+        Android.showAd("interstitial");
+      }
+    }
+    atRootScreen = true;
+    goToMenu();
+  }
+});
+
+/* ============================================
+   SHARE & RATE
+   ============================================ */
+function shareApp() {
+  if (typeof Android !== "undefined" && Android.shareApp) {
+    Android.shareApp();
+    return;
+  }
+  if (navigator.share) {
+    navigator.share({
+      title: 'Kids Quiz',
+      text: 'Check out this fun Kids Quiz app!',
+      url: window.location.href
+    }).catch(function(){});
+    return;
+  }
+  alert('Sharing is available inside the Kids Quiz app.');
+}
+
+function rateApp() {
+  if (typeof Android !== "undefined" && Android.rateApp) {
+    Android.rateApp();
+    return;
+  }
+  alert('Rating is available inside the Kids Quiz app.');
+}
+
+/* ============================================
+   DECORATIVE FLOATING BACKGROUND
+   ============================================ */
+function initBackgroundDecor() {
+  const emojis = ['⭐','🎈','🎉','🌟','🎨','🚀','🍎','🦋'];
+  const holder = document.getElementById('bgDecor');
+  if (!holder) return;
+  const count = window.innerWidth < 600 ? 8 : 14;
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.textContent = emojis[i % emojis.length];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (14 + Math.random() * 12) + 's';
+    el.style.animationDelay = (Math.random() * 12) + 's';
+    el.style.fontSize = (18 + Math.random() * 20) + 'px';
+    holder.appendChild(el);
+  }
+}
+
+/* ============================================
    USER & HISTORY SYSTEM (localStorage)
    ============================================ */
 const STORAGE_KEY = 'quizMaster_v1';
@@ -2724,12 +2933,14 @@ function selectUser(name) {
   getOrCreateUser(name);
   document.getElementById('currentUserDisplay').textContent = name;
   document.getElementById('historyUserDisplay').textContent = name;
+  atRootScreen = true;
   showScreen('menuScreen');
 }
 
 function switchUser() {
   currentUser = null;
   renderNameScreen();
+  atRootScreen = true;
   showScreen('nameScreen');
 }
 
@@ -2747,6 +2958,7 @@ let activeHistoryTab = 'recent';
 
 function showHistoryScreen() {
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  enterSubScreen('historyScreen');
   switchHistoryTab(activeHistoryTab);
   showScreen('historyScreen');
 }
@@ -2892,12 +3104,14 @@ function confirmClearHistory() {
    INIT
    ============================================ */
 buildMenu();
+initBackgroundDecor();
 // Auto-load last user if exists, else show name screen
 const initData = loadStorage();
 if (initData.lastUser && initData.users[initData.lastUser]) {
   selectUser(initData.lastUser);
 } else {
   renderNameScreen();
+  atRootScreen = true;
   showScreen('nameScreen');
 }
 // Allow Enter key to submit name

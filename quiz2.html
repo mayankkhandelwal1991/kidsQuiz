@@ -551,7 +551,7 @@ h1,h2{
   justify-content: center;
   font-size: 14px !important;
 }
-
+#gameModeModal.hidden { display: none !important; }
 </style>
 </head>
 <body>
@@ -580,7 +580,7 @@ h1,h2{
       <div class="user-actions">
         <button onclick="showHistoryScreen()">📊 History</button>
         <button onclick="switchUser()">Switch</button>
-       <button onclick="showGame()">Game</button>
+        <button onclick="showGameOptions()">Game</button>
       </div>
     </div>
     <h1>🎯 Quiz Master</h1>
@@ -700,7 +700,18 @@ h1,h2{
       </button>
     </div>
   </div>
-
+  <!-- GAME MODE POPUP -->
+<div id="gameModeModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:linear-gradient(180deg,#ffffff,#fef6ff); border:6px solid #fff; border-radius:28px; padding:25px; max-width:340px; width:100%; text-align:center; box-shadow:0 15px 40px rgba(0,0,0,.25);">
+    <h2 style="margin-bottom:6px;">🎮 Choose Game Mode</h2>
+    <p class="subtitle" style="margin-bottom:18px;">Which game do you want to play?</p>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <button class="btn" onclick="openSinglePlayer()">👤 Single Player</button>
+      <button class="btn btn-secondary" onclick="openMultiPlayer()">👥 Multi Player</button>
+      <button onclick="closeGameModal()" style="background:none; border:none; color:#888; font-size:13px; cursor:pointer; margin-top:6px; font-family:'Baloo 2',cursive;">Cancel</button>
+    </div>
+  </div>
+</div> 
 </div>
 
 <script>
@@ -3126,14 +3137,23 @@ function onRewardEarned(type, amount) {
 function onAdClosed(type) {
     console.log(type + " closed");
 }
- function showGame() {
+
+function showGameOptions() {
+    document.getElementById('gameModeModal').classList.remove('hidden');
+}
+
+function closeGameModal() {
+    document.getElementById('gameModeModal').classList.add('hidden');
+}
+
+function openSinglePlayer() {
+    closeGameModal();
     window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/Game/index.html";
 }
- function showGame1() {
-    window.open(
-        "https://mayankkhandelwal1991.github.io/kidsQuiz/game_match.html",
-        "_self"
-    );
+
+function openMultiPlayer() {
+    closeGameModal();
+    window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/MultiPlayerGame/index.html";
 }
 </script>
 </body>

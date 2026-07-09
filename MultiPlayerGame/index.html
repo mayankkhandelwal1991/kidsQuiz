@@ -1,1 +1,77 @@
-multi player game coming soon
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Game Zone - Kids Quiz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#8b5cf6,#ff7ac6,#ffd166);background-size:400% 400%;animation:bg 12s ease infinite;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none}
+@keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.container{background:linear-gradient(180deg,#fff,#fef6ff);border:6px solid #fff;border-radius:32px;box-shadow:0 15px 40px rgba(0,0,0,.18);max-width:720px;width:100%;padding:18px;display:flex;flex-direction:column;max-height:100%}
+h1{color:#ff5a8a;text-align:center;font-size:26px;font-weight:800}
+.subtitle{color:#6b7280;text-align:center;font-size:13px;margin-bottom:14px}
+.topbar{display:flex;justify-content:flex-start;margin-bottom:8px}
+.back-btn{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:14px;padding:8px 16px;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:1;min-height:0;overflow-y:auto;padding:4px}
+.card{padding:12px 6px;border-radius:20px;border:3px solid rgba(255,255,255,.8);cursor:pointer;text-align:center;transition:.15s;background:#fff}
+.card:nth-child(4n+1){background:linear-gradient(135deg,#ffe082,#fff8e1)}
+.card:nth-child(4n+2){background:linear-gradient(135deg,#80deea,#e0f7fa)}
+.card:nth-child(4n+3){background:linear-gradient(135deg,#c5e1a5,#f1f8e9)}
+.card:nth-child(4n+4){background:linear-gradient(135deg,#f8bbd0,#fce4ec)}
+.card:hover,.card.sel{transform:translateY(-4px) scale(1.04);border-color:#8b5cf6}
+.card .ic{font-size:34px}
+.card .nm{font-size:12px;font-weight:700;color:#374151;line-height:1.2;margin-top:4px}
+.detail{display:none;margin-top:14px;background:linear-gradient(135deg,#fff8cc,#fff0f6);border:4px dashed #ffb703;border-radius:24px;padding:16px;text-align:center}
+.detail.show{display:block}
+.detail .big{font-size:48px}
+.detail h2{color:#ff5a8a;font-size:20px}
+.detail p{color:#555;font-size:13px;margin:6px 0 12px;line-height:1.5}
+.start-btn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:18px;padding:13px 42px;font-family:inherit;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 8px 18px rgba(255,79,163,.35);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@media(max-width:520px){.grid{grid-template-columns:repeat(3,1fr)}.card .ic{font-size:28px}.card .nm{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topbar"><button class="back-btn" onclick="goBack()">← Quiz Home</button></div>
+  <h1>🎮 Game Zone</h1>
+  <p class="subtitle">Pick a game, then press Start to play!</p>
+  <div class="grid" id="grid"></div>
+  <div class="detail" id="detail">
+    <div class="big" id="dIcon"></div>
+    <h2 id="dName"></h2>
+    <p id="dHow"></p>
+    <button class="start-btn" onclick="startGame()">▶ Start</button>
+  </div>
+</div>
+<script>
+const GAMES=[
+ {f:'tick_tac_toe.html',ic:'🥚',nm:'Tick Tac Toe',how:'Join Room And '},
+];
+let sel=-1;
+const grid=document.getElementById('grid');
+GAMES.forEach((g,i)=>{
+  const d=document.createElement('div');
+  d.className='card';
+  d.innerHTML='<div class="ic">'+g.ic+'</div><div class="nm">'+g.nm+'</div>';
+  d.onclick=()=>select(i,d);
+  grid.appendChild(d);
+});
+function select(i,card){
+  sel=i;
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('sel'));
+  card.classList.add('sel');
+  const g=GAMES[i];
+  document.getElementById('dIcon').textContent=g.ic;
+  document.getElementById('dName').textContent=g.nm;
+  document.getElementById('dHow').textContent=g.how;
+  document.getElementById('detail').classList.add('show');
+  document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function startGame(){ if(sel>=0) window.location.href=GAMES[sel].f; }
+function goBack(){ window.location.href='../quiz2.html'; }
+</script>
+</body>
+</html>

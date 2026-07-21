@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Ball Maze 3D</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#8b5cf6);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
+.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:420px;width:100%;display:flex;flex-direction:column;height:100%;max-height:820px}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
+.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0;position:relative}
+#stage3d{width:100%;height:100%;border-radius:18px;overflow:hidden;background:#cfe8ff}
+canvas{display:block}
+.ctrl{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:8px;margin-top:8px;height:110px}
+.ctrl button{font-size:22px;border:none;border-radius:14px;background:linear-gradient(135deg,#34d399,#06b6d4);color:#fff;cursor:pointer;font-weight:800}
+.ctrl .up{grid-column:2;grid-row:1}
+.ctrl .left{grid-column:1;grid-row:2}
+.ctrl .down{grid-column:2;grid-row:2}
+.ctrl .right{grid-column:3;grid-row:2}
+.msg{position:absolute;top:10px;left:0;right:0;text-align:center;color:#333;font-weight:800;font-size:15px;text-shadow:0 1px 2px rgba(255,255,255,.6);pointer-events:none}
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <div class="sc">🧩 <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
+    <button onclick="newMaze(true)">↻</button>
+  </div>
+  <div class="stage"><div id="stage3d"></div><div class="msg" id="msg">Roll the ball to the ⭐!</div></div>
+  <div class="ctrl">
+    <button class="up" onpointerdown="press('u',1)" onpointerup="press('u',0)" onpointerleave="press('u',0)">⬆️</button>
+    <button class="left" onpointerdown="press('l',1)" onpointerup="press('l',0)" onpointerleave="press('l',0)">⬅️</button>
+    <button class="down" onpointerdown="press('d',1)" onpointerup="press('d',0)" onpointerleave="press('d',0)">⬇️</button>
+    <button class="right" onpointerdown="press('r',1)" onpointerup="press('r',0)" onpointerleave="press('r',0)">➡️</button>
+  </div>
+</div>
+<script src="ads.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/128/three.min.js"></script>
+<script>
+const container=document.getElementById('stage3d');
+const msg=document.getElementById('msg');
+let W=container.clientWidth,H=container.clientHeight;
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0xcfe8ff);
+const camera=new THREE.PerspectiveCamera(50,W/H,0.1,100);
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(W,H);
+container.appendChild(renderer.domElement);
+scene.add(new THREE.AmbientLight(0xffffff,0.8));
+const sun=new THREE.DirectionalLight(0xffffff,0.7);
+sun.position.set(6,12,6); scene.add(sun);
+
+const CS=2, WALL_H=0.7, WALL_T=0.14, BALL_R=0.35;
+let N=5, floorMesh, wallMeshes=[], wallBoxes=[], goalMesh, ball, ballVel={x:0,z:0};
+let score=0, best=+(localStorage.getItem('maze3dBest')||0), won=false, startTime=0;
+document.getElementById('best').textContent=best;
+const keys={u:0,d:0,l:0,r:0};
+
+const ballGroup=new THREE.Group(); scene.add(ballGroup);
+const wallGroup=new THREE.Group(); scene.add(wallGroup);
+
+function genMaze(n){
+  const cells=[];
+  for(let r=0;r<n;r++){ const row=[]; for(let c=0;c<n;c++) row.push({N:true,E:true,S:true,W:true,v:false}); cells.push(row); }
+  const stack=[[0,0]]; cells[0][0].v=true;
+  while(stack.length){
+    const [r,c]=stack[stack.length-1];
+    const dirs=[];
+    if(r>0&&!cells[r-1][c].v) dirs.push('N');
+    if(c<n-1&&!cells[r][c+1].v) dirs.push('E');
+    if(r<n-1&&!cells[r+1][c].v) dirs.push('S');
+    if(c>0&&!cells[r][c-1].v) dirs.push('W');
+    if(!dirs.length){ stack.pop(); continue; }
+    const dir=dirs[Math.floor(Math.random()*dirs.length)];
+    if(dir==='N'){ cells[r][c].N=false; cells[r-1][c].S=false; cells[r-1][c].v=true; stack.push([r-1,c]); }
+    if(dir==='E'){ cells[r][c].E=false; cells[r][c+1].W=false; cells[r][c+1].v=true; stack.push([r,c+1]); }
+    if(dir==='S'){ cells[r][c].S=false; cells[r+1][c].N=false; cells[r+1][c].v=true; stack.push([r+1,c]); }
+    if(dir==='W'){ cells[r][c].W=false; cells[r][c-1].E=false; cells[r][c-1].v=true; stack.push([r,c-1]); }
+  }
+  return cells;
+}
+
+const wallMat=new THREE.MeshStandardMaterial({color:0x7c3aed});
+function buildMaze(){
+  wallGroup.clear(); wallBoxes=[];
+  const cells=genMaze(N);
+  function addWall(x,z,sx,sz){
+    const m=new THREE.Mesh(new THREE.BoxGeometry(sx,WALL_H,sz),wallMat);
+    m.position.set(x,WALL_H/2,z); wallGroup.add(m);
+    wallBoxes.push({minX:x-sx/2,maxX:x+sx/2,minZ:z-sz/2,maxZ:z+sz/2});
+  }
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+    const cell=cells[r][c], x=c*CS, z=-r*CS;
+    if(r===0&&cell.N) addWall(x,z+CS/2,CS+WALL_T,WALL_T);
+    if(c===0&&cell.W) addWall(x-CS/2,z,WALL_T,CS+WALL_T);
+    if(cell.E) addWall(x+CS/2,z,WALL_T,CS+WALL_T);
+    if(cell.S) addWall(x,z-CS/2,CS+WALL_T,WALL_T);
+  }
+  // floor
+  if(floorMesh) scene.remove(floorMesh);
+  floorMesh=new THREE.Mesh(new THREE.PlaneGeometry(N*CS+1,N*CS+1),new THREE.MeshStandardMaterial({color:0xfef6ff}));
+  floorMesh.rotation.x=-Math.PI/2;
+  floorMesh.position.set((N-1)*CS/2,0,-(N-1)*CS/2);
+  scene.add(floorMesh);
+  // goal
+  if(goalMesh) scene.remove(goalMesh);
+  goalMesh=new THREE.Mesh(new THREE.ConeGeometry(0.35,0.7,5),new THREE.MeshStandardMaterial({color:0xffd166,emissive:0x996600}));
+  goalMesh.position.set((N-1)*CS,0.6,-(N-1)*CS);
+  scene.add(goalMesh);
+  // ball
+  if(ball) ballGroup.remove(ball);
+  ball=new THREE.Mesh(new THREE.SphereGeometry(BALL_R,20,20),new THREE.MeshStandardMaterial({color:0xff5a8a}));
+  ball.position.set(0,BALL_R,0);
+  ballGroup.add(ball);
+  ballVel={x:0,z:0};
+  // camera showing whole maze
+  const cx=(N-1)*CS/2, cz=-(N-1)*CS/2;
+  camera.position.set(cx,N*1.9,cz+N*1.4);
+  camera.lookAt(cx,0,cz);
+  won=false; startTime=performance.now();
+  msg.textContent='Roll the ball to the ⭐!'; msg.style.display='block';
+  setTimeout(()=>{ if(!won) msg.style.display='none'; },1800);
+}
+function newMaze(manual){
+  if(manual){ N=5; score=0; document.getElementById('score').textContent=0; }
+  buildMaze();
+}
+newMaze(true);
+
+function press(k,v){ keys[k]=v; }
+window.addEventListener('keydown',e=>{
+  if(e.key==='ArrowUp')keys.u=1; if(e.key==='ArrowDown')keys.d=1;
+  if(e.key==='ArrowLeft')keys.l=1; if(e.key==='ArrowRight')keys.r=1;
+});
+window.addEventListener('keyup',e=>{
+  if(e.key==='ArrowUp')keys.u=0; if(e.key==='ArrowDown')keys.d=0;
+  if(e.key==='ArrowLeft')keys.l=0; if(e.key==='ArrowRight')keys.r=0;
+});
+
+function resolveCollisions(){
+  for(const b of wallBoxes){
+    const cx=Math.max(b.minX,Math.min(ball.position.x,b.maxX));
+    const cz=Math.max(b.minZ,Math.min(ball.position.z,b.maxZ));
+    const dx=ball.position.x-cx, dz=ball.position.z-cz;
+    const dist=Math.sqrt(dx*dx+dz*dz);
+    if(dist<BALL_R && dist>0.0001){
+      const nx=dx/dist, nz=dz/dist, push=BALL_R-dist;
+      ball.position.x+=nx*push; ball.position.z+=nz*push;
+      const vn=ballVel.x*nx+ballVel.z*nz;
+      if(vn<0){ ballVel.x-=vn*nx; ballVel.z-=vn*nz; }
+    } else if(dist<=0.0001){
+      // ball center inside box edge exactly - push along smallest axis
+      ball.position.x+=BALL_R; ballVel.x=0;
+    }
+  }
+}
+
+function update(){
+  if(!won){
+    const acc=0.018;
+    ballVel.x+=(keys.r-keys.l)*acc;
+    ballVel.z+=(keys.d-keys.u)*acc;
+    ballVel.x*=0.90; ballVel.z*=0.90;
+    const sp=Math.hypot(ballVel.x,ballVel.z), maxSp=0.13;
+    if(sp>maxSp){ ballVel.x=ballVel.x/sp*maxSp; ballVel.z=ballVel.z/sp*maxSp; }
+    ball.position.x+=ballVel.x; ball.position.z+=ballVel.z;
+    resolveCollisions();
+    ball.rotation.z-=ballVel.x*1.6; ball.rotation.x+=ballVel.z*1.6;
+    goalMesh.rotation.y+=0.04;
+    const gx=(N-1)*CS, gz=-(N-1)*CS;
+    const dg=Math.hypot(ball.position.x-gx,ball.position.z-gz);
+    if(dg<0.5){
+      won=true; score++; document.getElementById('score').textContent=score;
+      if(score>best){ best=score; localStorage.setItem('maze3dBest',best); document.getElementById('best').textContent=best; }
+      onGameComplete();
+      const secs=((performance.now()-startTime)/1000).toFixed(1);
+      msg.textContent='🎉 Solved in '+secs+'s! Next maze coming...';
+      msg.style.display='block';
+      setTimeout(()=>{ N=Math.min(8,N+1); buildMaze(); },1400);
+    }
+  }
+  renderer.render(scene,camera);
+  requestAnimationFrame(update);
+}
+function onResize(){
+  W=container.clientWidth;H=container.clientHeight;
+  camera.aspect=W/H; camera.updateProjectionMatrix();
+  renderer.setSize(W,H);
+}
+window.addEventListener('resize',onResize);
+onResize(); update();
+</script></body></html>

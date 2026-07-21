@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Basketball 3D</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#ff7ac6,#ffd166);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
+.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:420px;width:100%;display:flex;flex-direction:column;height:100%;max-height:820px}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
+.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0;position:relative}
+#stage3d{width:100%;height:100%;border-radius:18px;overflow:hidden;background:#a5d8ff}
+canvas{display:block}
+.msg{position:absolute;top:10px;left:0;right:0;text-align:center;color:#333;font-weight:800;font-size:15px;text-shadow:0 1px 2px rgba(255,255,255,.7);pointer-events:none}
+.timer{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);border-radius:10px;padding:2px 10px;font-weight:800;font-size:13px}
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <div class="sc">🏀 <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
+    <button onclick="startGame()">↻</button>
+  </div>
+  <div class="stage">
+    <div id="stage3d"></div>
+    <div class="msg" id="msg">Swipe up on the ball to shoot!</div>
+    <div class="timer">⏱ <span id="time">30</span>s</div>
+  </div>
+</div>
+<script src="ads.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/128/three.min.js"></script>
+<script>
+const container=document.getElementById('stage3d');
+const msg=document.getElementById('msg');
+let W=container.clientWidth,H=container.clientHeight;
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0xa5d8ff);
+const camera=new THREE.PerspectiveCamera(55,W/H,0.1,100);
+camera.position.set(0,3.4,6.5);
+camera.lookAt(0,2.6,-5);
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(W,H);
+container.appendChild(renderer.domElement);
+scene.add(new THREE.AmbientLight(0xffffff,0.85));
+const sun=new THREE.DirectionalLight(0xffffff,0.7);
+sun.position.set(4,10,6); scene.add(sun);
+
+// court
+const court=new THREE.Mesh(new THREE.PlaneGeometry(10,20),new THREE.MeshStandardMaterial({color:0xd8a15e}));
+court.rotation.x=-Math.PI/2; court.position.set(0,0,-7); scene.add(court);
+// backboard + hoop
+const HOOP_Z=-8.6, HOOP_Y=3.05, RIM_R=0.45;
+const backboard=new THREE.Mesh(new THREE.BoxGeometry(1.8,1.1,0.08),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:0.85}));
+backboard.position.set(0,3.6,HOOP_Z-0.5); scene.add(backboard);
+const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,3.6,10),new THREE.MeshStandardMaterial({color:0x555555}));
+pole.position.set(0,1.8,HOOP_Z-0.9); scene.add(pole);
+const rim=new THREE.Mesh(new THREE.TorusGeometry(RIM_R,0.04,10,24),new THREE.MeshStandardMaterial({color:0xff5722}));
+rim.rotation.x=Math.PI/2; rim.position.set(0,HOOP_Y,HOOP_Z); scene.add(rim);
+const netMat=new THREE.LineBasicMaterial({color:0xffffff});
+for(let i=0;i<10;i++){
+  const a=(i/10)*Math.PI*2;
+  const pts=[new THREE.Vector3(Math.cos(a)*RIM_R,HOOP_Y,HOOP_Z+Math.sin(a)*RIM_R),new THREE.Vector3(Math.cos(a)*RIM_R*0.4,HOOP_Y-0.55,HOOP_Z+Math.sin(a)*RIM_R*0.4)];
+  scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),netMat));
+}
+
+const START_POS={x:0,y:1.1,z:2};
+const ball=new THREE.Mesh(new THREE.SphereGeometry(0.28,20,20),new THREE.MeshStandardMaterial({color:0xff8c1a}));
+scene.add(ball);
+let vel={x:0,y:0,z:0}, flying=false, scoredThisShot=false;
+function placeBall(){ ball.position.set(START_POS.x,START_POS.y,START_POS.z); vel={x:0,y:0,z:0}; flying=false; scoredThisShot=false; }
+placeBall();
+
+let score=0,best=+(localStorage.getItem('bball3dBest')||0),timeLeft=30,playing=false,timerId=null;
+document.getElementById('best').textContent=best;
+
+function startGame(){
+  score=0; timeLeft=30; playing=true;
+  document.getElementById('score').textContent=0;
+  document.getElementById('time').textContent=timeLeft;
+  placeBall();
+  msg.textContent='Swipe up on the ball to shoot!'; msg.style.display='block';
+  if(timerId) clearInterval(timerId);
+  timerId=setInterval(()=>{
+    if(!playing) return;
+    timeLeft--; document.getElementById('time').textContent=timeLeft;
+    if(timeLeft<=0){
+      playing=false; clearInterval(timerId);
+      onGameComplete();
+      if(score>best){ best=score; localStorage.setItem('bball3dBest',best); document.getElementById('best').textContent=best; }
+      msg.textContent='⏰ Time up! Score: '+score+' — Tap ↻ to play again';
+      msg.style.display='block';
+    }
+  },1000);
+}
+
+// drag to shoot
+let dragStart=null, dragging=false;
+const dom=renderer.domElement;
+function toXY(e){ const r=dom.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}; }
+dom.addEventListener('pointerdown',e=>{
+  if(flying||!playing) return;
+  dragStart=toXY(e); dragging=true;
+});
+dom.addEventListener('pointermove',e=>{
+  if(!dragging) return;
+});
+dom.addEventListener('pointerup',e=>{
+  if(!dragging){ return; }
+  dragging=false;
+  if(flying||!playing||!dragStart) return;
+  const end=toXY(e);
+  const dx=end.x-dragStart.x, dy=end.y-dragStart.y;
+  if(-dy<20) return; // must swipe upward with some force
+  const power=Math.min(1.4,(-dy)/H*2.2);
+  vel.z=-0.19-power*0.16;
+  vel.y=0.15+power*0.20;
+  vel.x=(dx/W)*0.16;
+  flying=true; scoredThisShot=false;
+  msg.style.display='none';
+});
+
+const GRAV=-0.012;
+function update(){
+  if(flying){
+    vel.y+=GRAV;
+    ball.position.x+=vel.x; ball.position.y+=vel.y; ball.position.z+=vel.z;
+    // score check: passing downward through rim plane
+    if(!scoredThisShot && vel.y<0){
+      const dz=ball.position.z-HOOP_Z;
+      if(Math.abs(ball.position.y-HOOP_Y)<0.16){
+        const dist=Math.hypot(ball.position.x,dz);
+        if(dist<RIM_R*0.65){
+          scoredThisShot=true; score++; document.getElementById('score').textContent=score;
+        }
+      }
+    }
+    // backboard bounce (simple)
+    if(ball.position.z<HOOP_Z-0.42 && ball.position.z>HOOP_Z-0.58 && Math.abs(ball.position.x)<0.9 && ball.position.y>3.0 && ball.position.y<4.2 && vel.z<0){
+      vel.z*=-0.5;
+    }
+    if(ball.position.y<0.28){ // hit ground
+      flying=false;
+      if(playing) setTimeout(placeBall,500); else placeBall();
+    }
+    if(ball.position.z<HOOP_Z-4||Math.abs(ball.position.x)>6){
+      flying=false;
+      if(playing) setTimeout(placeBall,300); else placeBall();
+    }
+  } else {
+    ball.rotation.x+=0.01;
+  }
+  renderer.render(scene,camera);
+  requestAnimationFrame(update);
+}
+function onResize(){
+  W=container.clientWidth;H=container.clientHeight;
+  camera.aspect=W/H; camera.updateProjectionMatrix();
+  renderer.setSize(W,H);
+}
+window.addEventListener('resize',onResize);
+onResize();
+document.getElementById('time').textContent=timeLeft;
+update();
+</script></body></html>

@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz Master - Class 1 to 5</title>
+<title>Kids Quiz - Class 1 to 5</title>
 <style>
+ @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;*/
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     display: flex;
@@ -191,6 +192,181 @@
     margin-bottom: 8px;
   }
 
+  /* User header */
+  .user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    background: #f0f0ff;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+  .user-header .user-name { color: #333; font-weight: 600; }
+  .user-header .user-actions { display: flex; gap: 8px; }
+  .user-header button {
+    background: white;
+    border: 1px solid #d0d0e0;
+    color: #555;
+    padding: 5px 12px;
+    border-radius: 7px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .user-header button:hover { background: #667eea; color: white; border-color: #667eea; }
+
+  /* Name input */
+  .name-input-wrap {
+    margin: 25px 0;
+    text-align: center;
+  }
+  .name-input {
+    padding: 14px 18px;
+    font-size: 16px;
+    border: 2px solid #e0e0e8;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    transition: border 0.2s;
+  }
+  .name-input:focus { outline: none; border-color: #667eea; }
+
+  .saved-users {
+    margin: 15px 0;
+    text-align: center;
+  }
+  .saved-users .label { font-size: 12px; color: #888; margin-bottom: 8px; }
+  .user-chip {
+    display: inline-block;
+    margin: 4px;
+    padding: 7px 14px;
+    background: #f7f7fb;
+    border: 1px solid #e0e0e8;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #444;
+    transition: all 0.15s;
+  }
+  .user-chip:hover { background: #667eea; color: white; border-color: #667eea; }
+  .user-chip .del {
+    margin-left: 6px;
+    color: #c0392b;
+    font-weight: bold;
+    opacity: 0.5;
+  }
+  .user-chip:hover .del { color: white; opacity: 1; }
+
+  /* History screen */
+  .stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    text-align: center;
+  }
+  .stat-card .big-num { font-size: 32px; font-weight: bold; margin-bottom: 4px; }
+  .stat-card .big-label { font-size: 13px; opacity: 0.9; }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .mini-stat {
+    background: #f7f7fb;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .mini-stat .num { font-size: 22px; font-weight: bold; color: #333; }
+  .mini-stat .lbl { font-size: 11px; color: #888; margin-top: 4px; }
+
+  .history-list {
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e8;
+    border-radius: 10px;
+    padding: 5px;
+  }
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    margin: 4px 0;
+    background: #f7f7fb;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+  .history-item .info { color: #333; }
+  .history-item .info .cat { font-weight: 600; }
+  .history-item .info .date { color: #888; font-size: 11px; margin-top: 2px; }
+  .history-item .score-badge {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+    min-width: 40px;
+    text-align: center;
+  }
+  .score-badge.good { background: #2ecc71; }
+  .score-badge.ok { background: #f39c12; }
+  .score-badge.bad { background: #e74c3c; }
+
+  .best-list {
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  .best-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 12px;
+    margin: 4px 0;
+    background: #f7f7fb;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+  .best-item .lvl { font-size: 11px; color: #888; }
+  .best-item .best-score { font-weight: bold; color: #667eea; font-size: 16px; }
+
+  .empty-msg {
+    text-align: center;
+    color: #888;
+    padding: 30px 15px;
+    font-size: 14px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e0e0e8;
+  }
+  .tab {
+    flex: 1;
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: #888;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+  .tab.active { color: #667eea; border-bottom-color: #667eea; }
+  .tab:hover:not(.active) { color: #555; }
+
   @media (max-width: 600px) {
     .container { padding: 18px; }
     .menu-grid { grid-template-columns: repeat(2, 1fr); }
@@ -205,16 +381,242 @@
     .menu-card .icon { font-size: 24px; }
     .menu-card .title { font-size: 11px; }
   }
+
+/* ===== KIDS THEME OVERRIDE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap');
+
+body{
+  font-family:'Baloo 2',cursive !important;
+  background:linear-gradient(135deg,#6ee7ff,#8b5cf6,#ff7ac6,#ffd166) !important;
+  background-size:400% 400%;
+  animation:bgMove 12s ease infinite;
+  position: relative;
+  overflow-x: hidden;
+}
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.container{
+  border-radius:32px !important;
+  border:6px solid #fff !important;
+  box-shadow:0 15px 40px rgba(0,0,0,.18) !important;
+  background:linear-gradient(180deg,#ffffff,#fef6ff) !important;
+  position: relative;
+  z-index: 2;
+}
+h1,h2{
+  color:#ff5a8a !important;
+  font-weight:800 !important;
+}
+.subtitle{color:#6b7280 !important;}
+
+.menu-card,.level-btn,.mini-stat,.history-item,.best-item,.info-box{
+  border-radius:22px !important;
+  border:3px solid rgba(255,255,255,.7) !important;
+  background:linear-gradient(180deg,#ffffff,#f7fbff) !important;
+}
+
+.menu-card:hover,.level-btn:hover{
+  transform:translateY(-5px) scale(1.03) !important;
+}
+
+.menu-card:nth-child(4n+1){background:linear-gradient(135deg,#ffe082,#fff8e1)!important;}
+.menu-card:nth-child(4n+2){background:linear-gradient(135deg,#80deea,#e0f7fa)!important;}
+.menu-card:nth-child(4n+3){background:linear-gradient(135deg,#c5e1a5,#f1f8e9)!important;}
+.menu-card:nth-child(4n+4){background:linear-gradient(135deg,#f8bbd0,#fce4ec)!important;}
+
+.menu-card .icon{
+  font-size:40px !important;
+  margin-bottom:10px !important;
+}
+
+.btn{
+  background:linear-gradient(135deg,#ff7a59,#ff4fa3) !important;
+  border-radius:18px !important;
+  box-shadow:0 8px 18px rgba(255,79,163,.3);
+}
+.btn-secondary{
+  background:linear-gradient(135deg,#60a5fa,#7c3aed) !important;
+}
+
+.question{
+  background:linear-gradient(135deg,#fff8cc,#fff0f6) !important;
+  border:4px dashed #ffb703 !important;
+  border-radius:28px !important;
+  color:#374151 !important;
+}
+
+.option-btn{
+  border-radius:18px !important;
+  border:3px solid #dbeafe !important;
+  font-size:18px !important;
+  font-weight:700 !important;
+}
+.option-btn:hover:not(:disabled){
+  transform:scale(1.04) !important;
+}
+
+.stats,.summary,.user-header{
+  background:linear-gradient(135deg,#eef9ff,#f5edff) !important;
+  border-radius:22px !important;
+}
+
+.final-score{
+  color:#ff5a8a !important;
+  text-shadow:2px 2px 0 #ffd166;
+}
+
+.name-input{
+  border-radius:18px !important;
+  border:3px solid #8b5cf6 !important;
+}
+
+@media(max-width:600px){
+  .container{padding:16px !important;}
+  .menu-card .icon{font-size:34px !important;}
+  .question{font-size:20px !important;}
+}
+
+/* ===== FLOATING BACKGROUND DECORATION ===== */
+.bg-decor {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.bg-decor span {
+  position: absolute;
+  font-size: 28px;
+  opacity: 0.35;
+  animation: floatUp linear infinite;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.08));
+}
+@keyframes floatUp {
+  0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.35; }
+  90% { opacity: 0.35; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* ===== SHARE & RATE SECTION ===== */
+.promo-bar {
+  display: flex;
+  gap: 10px;
+  margin: 18px 0 6px;
+}
+.promo-btn {
+  flex: 1;
+  border: none;
+  border-radius: 18px;
+  padding: 14px 8px;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.promo-btn .emoji { font-size: 22px; }
+.promo-btn:active { transform: scale(0.95); }
+.promo-btn.rate-btn {
+  background: linear-gradient(135deg, #ffb703, #ff7a59);
+  box-shadow: 0 8px 16px rgba(255,122,89,.35);
+  animation: pulseGlow 2.4s ease-in-out infinite;
+}
+.promo-btn.share-btn {
+  background: linear-gradient(135deg, #34d399, #06b6d4);
+  box-shadow: 0 8px 16px rgba(6,182,212,.35);
+}
+.promo-btn:hover { transform: translateY(-3px); }
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 8px 16px rgba(255,122,89,.35); }
+  50% { box-shadow: 0 8px 26px rgba(255,183,3,.55); }
+}
+
+.header-icon-btn {
+  background: white !important;
+  border: 1px solid #d0d0e0 !important;
+  border-radius: 50% !important;
+  width: 30px;
+  height: 30px;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px !important;
+}
+#gameModeModal.hidden { display: none !important; }
 </style>
 </head>
 <body>
+
+<div class="bg-decor" id="bgDecor"></div>
+
 <div class="container">
 
+  <!-- NAME ENTRY SCREEN -->
+  <div id="nameScreen">
+    <h1>🎯 Kids Quiz</h1>
+    <p class="subtitle">Welcome! Enter your name to start tracking scores</p>
+    <div class="name-input-wrap">
+      <input type="text" id="nameInput" class="name-input" placeholder="Your name" maxlength="20" autocomplete="off">
+    </div>
+    <div class="center">
+      <button class="btn" onclick="submitName()">Continue →</button>
+    </div>
+    <div class="saved-users" id="savedUsersWrap"></div>
+  </div>
+
   <!-- MAIN MENU -->
-  <div id="menuScreen">
+  <div id="menuScreen" class="hidden">
+    <div class="user-header">
+      <div class="user-name">👋 <span id="currentUserDisplay">Guest</span></div>
+      <div class="user-actions">
+        <button onclick="showHistoryScreen()">📊 History</button>
+        <button onclick="switchUser()">Switch</button>
+        <button onclick="showGameOptions()">Game</button>
+      </div>
+    </div>
     <h1>🎯 Quiz Master</h1>
     <p class="subtitle">20 categories • Class 1 to 5 • 3-minute challenge</p>
     <div class="menu-grid" id="categoryGrid"></div>
+
+    <div class="promo-bar">
+      <button class="promo-btn rate-btn" onclick="rateApp()">
+        <span class="emoji">⭐</span>
+        <span>Rate Us</span>
+      </button>
+      <button class="promo-btn share-btn" onclick="shareApp()">
+        <span class="emoji">📤</span>
+        <span>Share with Friends</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- HISTORY SCREEN -->
+  <div id="historyScreen" class="hidden">
+    <div class="user-header">
+      <div class="user-name">📊 <span id="historyUserDisplay">Guest</span>'s Stats</div>
+      <div class="user-actions">
+        <button onclick="goToMenu()">← Menu</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="tabRecent" onclick="switchHistoryTab('recent')">Recent Games</button>
+      <button class="tab" id="tabBest" onclick="switchHistoryTab('best')">Best Scores</button>
+      <button class="tab" id="tabStats" onclick="switchHistoryTab('stats')">Overall Stats</button>
+    </div>
+    <div id="historyContent"></div>
+    <div class="center" style="margin-top:20px;">
+      <button class="btn btn-secondary" onclick="confirmClearHistory()" style="font-size:12px;">🗑️ Clear My History</button>
+    </div>
   </div>
 
   <!-- LEVEL SELECTION -->
@@ -243,7 +645,7 @@
     <div class="stats">
       <div class="summary-item">
         <div class="stat-label">Time Left</div>
-        <div class="stat-value" id="timer">3:00</div>
+        <div class="stat-value" id="timer">1:00</div>
       </div>
       <div class="summary-item">
         <div class="stat-label">Score</div>
@@ -267,6 +669,7 @@
     <h1>⏰ Time's Up!</h1>
     <p class="subtitle" id="endSubtitle">Here's how you did:</p>
     <div class="final-score" id="finalScore">0</div>
+    <div class="center" id="bestComparison" style="font-size:13px; color:#666; margin-bottom:10px;"></div>
     <div class="summary">
       <div class="summary-item">
         <div class="value" id="correctCount">0</div>
@@ -283,11 +686,33 @@
     </div>
     <div class="button-row">
       <button class="btn btn-secondary" onclick="goToMenu()">Main Menu</button>
-      <button class="btn" onclick="showLevelScreen()">Change Level</button>
+      <button class="btn btn-secondary" onclick="showHistoryScreen()">📊 History</button>
+      <button class="btn btn-secondary" onclick="showLevelScreen()">Change Level</button>
       <button class="btn" onclick="restartQuiz()">Play Again</button>
     </div>
+    <div class="promo-bar">
+      <button class="promo-btn rate-btn" onclick="rateApp()">
+        <span class="emoji">⭐</span>
+        <span>Rate Us</span>
+      </button>
+      <button class="promo-btn share-btn" onclick="shareApp()">
+        <span class="emoji">📤</span>
+        <span>Share with Friends</span>
+      </button>
+    </div>
   </div>
-
+  <!-- GAME MODE POPUP -->
+<div id="gameModeModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:linear-gradient(180deg,#ffffff,#fef6ff); border:6px solid #fff; border-radius:28px; padding:25px; max-width:340px; width:100%; text-align:center; box-shadow:0 15px 40px rgba(0,0,0,.25);">
+    <h2 style="margin-bottom:6px;">🎮 Choose Game Mode</h2>
+    <p class="subtitle" style="margin-bottom:18px;">Which game do you want to play?</p>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <button class="btn" onclick="openSinglePlayer()">👤 Single Player</button>
+      <button class="btn btn-secondary" onclick="openMultiPlayer()">👥 Multi Player</button>
+      <button onclick="closeGameModal()" style="background:none; border:none; color:#888; font-size:13px; cursor:pointer; margin-top:6px; font-family:'Baloo 2',cursive;">Cancel</button>
+    </div>
+  </div>
+</div> 
 </div>
 
 <script>
@@ -388,7 +813,7 @@ function buildMenu() {
 }
 
 function showScreen(id) {
-  ['menuScreen','levelScreen','quizScreen','endScreen']
+  ['nameScreen','menuScreen','levelScreen','quizScreen','endScreen','historyScreen']
     .forEach(s => document.getElementById(s).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
@@ -397,6 +822,7 @@ function goToMenu() {
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
   document.getElementById('timer').classList.remove('warning');
   recentQuestions = [];
+  returnToRoot();
   showScreen('menuScreen');
 }
 
@@ -408,6 +834,7 @@ function selectCategory(catId) {
 }
 
 function showLevelScreen() {
+  enterSubScreen('levelScreen');
   const cat = getCatInfo(currentCategory);
   document.getElementById('levelBreadcrumb').textContent = cat.icon + ' ' + cat.title;
   document.getElementById('levelTitle').textContent = 'Select Class Level';
@@ -418,6 +845,14 @@ function showLevelScreen() {
    QUIZ FLOW
    ============================================ */
 function startQuiz(level) {
+
+  // Check if Android interface exists
+    if (typeof Android !== "undefined" && Android.showAd) {
+      //Android.showAd("interstitial");
+    }
+
+  enterSubScreen('quizScreen');
+
   currentLevel = level;
   timeLeft = 180;
   score = 0;
@@ -451,6 +886,12 @@ function quitQuiz() {
   if (confirm('Are you sure you want to quit this quiz?')) {
     clearInterval(timerInterval);
     timerInterval = null;
+
+    // Check if Android interface exists
+    if (typeof Android !== "undefined" && Android.showAd) {
+      Android.showAd("interstitial");
+    }
+
     goToMenu();
   }
 }
@@ -512,6 +953,7 @@ function checkAnswer(selected, btn) {
 function endQuiz() {
   clearInterval(timerInterval);
   timerInterval = null;
+  enterSubScreen('endScreen');
   document.getElementById('finalScore').textContent = score;
   document.getElementById('correctCount').textContent = correctCount;
   document.getElementById('wrongCount').textContent = wrongCount;
@@ -523,7 +965,26 @@ function endQuiz() {
   else if (score >= 0) msg = "Keep practicing! 💪";
   else msg = "Try again to improve! 🎯";
   document.getElementById('endSubtitle').textContent = msg;
+
+  // Save to history & show personal best comparison
+  const prevBest = getBestScore(currentCategory, currentLevel);
+  saveScoreToHistory(currentCategory, currentLevel, score, correctCount, wrongCount);
+  const bestEl = document.getElementById('bestComparison');
+  if (prevBest === null) {
+    bestEl.innerHTML = '🌟 First attempt at this level — saved as your best!';
+  } else if (score > prevBest) {
+    bestEl.innerHTML = '🎉 New personal best! Previous: ' + prevBest;
+  } else if (score === prevBest) {
+    bestEl.innerHTML = '🤝 Tied your personal best of ' + prevBest;
+  } else {
+    bestEl.innerHTML = '📊 Your personal best at this level: ' + prevBest;
+  }
+
   showScreen('endScreen');
+  // Check if Android interface exists
+    if (typeof Android !== "undefined" && Android.showAd) {
+      Android.showAd("interstitial");
+    }
 }
 
 function restartQuiz() { startQuiz(currentLevel); }
@@ -2249,10 +2710,452 @@ const POOLS = {
 };
 
 /* ============================================
+   BACK BUTTON HANDLING
+   (Works together with the Android WebView's
+   webView.canGoBack()/goBack() logic. We push a
+   single history entry whenever the user leaves
+   the main menu, so the hardware/back-button can
+   pop back to the menu. Once back at the menu
+   there is nothing left in this history, so the
+   native Android back button takes over and shows
+   the "Quit App?" dialog.)
+   ============================================ */
+let atRootScreen = true;
+let suppressNextPopstate = false;
+
+function enterSubScreen(screenId) {
+  if (atRootScreen) {
+    history.pushState({ screen: screenId }, '', '#' + screenId);
+    atRootScreen = false;
+  } else {
+    history.replaceState({ screen: screenId }, '', '#' + screenId);
+  }
+}
+
+function returnToRoot() {
+  if (!atRootScreen) {
+    suppressNextPopstate = true;
+    history.back();
+  }
+  atRootScreen = true;
+}
+
+window.addEventListener('popstate', function () {
+  if (suppressNextPopstate) {
+    suppressNextPopstate = false;
+    return;
+  }
+  if (!atRootScreen) {
+    const quizVisible = !document.getElementById('quizScreen').classList.contains('hidden');
+    if (quizVisible && timerInterval) {
+      const wantQuit = confirm('Are you sure you want to quit this quiz?');
+      if (!wantQuit) {
+        // Cancel: push the state forward again so WebView history stays in sync
+        history.pushState({ screen: 'quizScreen' }, '', '#quizScreen');
+        return;
+      }
+      clearInterval(timerInterval);
+      timerInterval = null;
+      if (typeof Android !== "undefined" && Android.showAd) {
+        Android.showAd("interstitial");
+      }
+    }
+    atRootScreen = true;
+    goToMenu();
+  }
+});
+
+/* ============================================
+   SHARE & RATE
+   ============================================ */
+function shareApp() {
+  if (typeof Android !== "undefined" && Android.shareApp) {
+    Android.shareApp();
+    return;
+  }
+  if (navigator.share) {
+    navigator.share({
+      title: 'Kids Quiz',
+      text: 'Check out this fun Kids Quiz app!',
+      url: window.location.href
+    }).catch(function(){});
+    return;
+  }
+  alert('Sharing is available inside the Kids Quiz app.');
+}
+
+function rateApp() {
+  if (typeof Android !== "undefined" && Android.rateApp) {
+    Android.rateApp();
+    return;
+  }
+  alert('Rating is available inside the Kids Quiz app.');
+}
+
+/* ============================================
+   DECORATIVE FLOATING BACKGROUND
+   ============================================ */
+function initBackgroundDecor() {
+  const emojis = ['⭐','🎈','🎉','🌟','🎨','🚀','🍎','🦋'];
+  const holder = document.getElementById('bgDecor');
+  if (!holder) return;
+  const count = window.innerWidth < 600 ? 8 : 14;
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('span');
+    el.textContent = emojis[i % emojis.length];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (14 + Math.random() * 12) + 's';
+    el.style.animationDelay = (Math.random() * 12) + 's';
+    el.style.fontSize = (18 + Math.random() * 20) + 'px';
+    holder.appendChild(el);
+  }
+}
+
+/* ============================================
+   USER & HISTORY SYSTEM (localStorage)
+   ============================================ */
+const STORAGE_KEY = 'quizMaster_v1';
+let currentUser = null;
+
+function loadStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { users: {}, lastUser: null };
+    const parsed = JSON.parse(raw);
+    if (!parsed.users) parsed.users = {};
+    return parsed;
+  } catch (e) {
+    return { users: {}, lastUser: null };
+  }
+}
+
+function saveStorage(data) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn('Could not save:', e);
+  }
+}
+
+function getOrCreateUser(name) {
+  const data = loadStorage();
+  if (!data.users[name]) {
+    data.users[name] = { history: [], best: {}, created: Date.now() };
+  }
+  data.lastUser = name;
+  saveStorage(data);
+  return data.users[name];
+}
+
+function saveScoreToHistory(cat, level, score, correct, wrong) {
+  if (!currentUser) return;
+  const data = loadStorage();
+  if (!data.users[currentUser]) data.users[currentUser] = { history: [], best: {}, created: Date.now() };
+  const user = data.users[currentUser];
+  // append to history
+  user.history.push({
+    cat: cat,
+    level: level,
+    score: score,
+    correct: correct,
+    wrong: wrong,
+    date: Date.now()
+  });
+  // keep only last 50 entries
+  if (user.history.length > 50) user.history = user.history.slice(-50);
+  // track best per cat-level
+  const key = cat + '_' + level;
+  if (user.best[key] === undefined || score > user.best[key]) {
+    user.best[key] = score;
+  }
+  saveStorage(data);
+}
+
+function getBestScore(cat, level) {
+  if (!currentUser) return null;
+  const data = loadStorage();
+  if (!data.users[currentUser]) return null;
+  const key = cat + '_' + level;
+  const v = data.users[currentUser].best[key];
+  return v === undefined ? null : v;
+}
+
+function clearUserHistory() {
+  if (!currentUser) return;
+  const data = loadStorage();
+  if (data.users[currentUser]) {
+    data.users[currentUser].history = [];
+    data.users[currentUser].best = {};
+    saveStorage(data);
+  }
+}
+
+function deleteUser(name) {
+  const data = loadStorage();
+  delete data.users[name];
+  if (data.lastUser === name) data.lastUser = null;
+  saveStorage(data);
+}
+
+function getAllUsers() {
+  const data = loadStorage();
+  return Object.keys(data.users).sort();
+}
+
+/* ============================================
+   NAME SCREEN UI
+   ============================================ */
+function renderNameScreen() {
+  const data = loadStorage();
+  const users = getAllUsers();
+  const wrap = document.getElementById('savedUsersWrap');
+  if (users.length === 0) {
+    wrap.innerHTML = '';
+  } else {
+    let html = '<div class="label">Or pick a saved profile:</div>';
+    users.forEach(u => {
+      const safe = u.replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g,'&lt;');
+      html += '<span class="user-chip" onclick="selectUser(\'' + u.replace(/'/g, "\\'") + '\')">' +
+              safe + '<span class="del" onclick="event.stopPropagation(); confirmDeleteUser(\'' + u.replace(/'/g, "\\'") + '\')">✕</span></span>';
+    });
+    wrap.innerHTML = html;
+  }
+  document.getElementById('nameInput').value = '';
+  setTimeout(() => document.getElementById('nameInput').focus(), 50);
+}
+
+function submitName() {
+  const input = document.getElementById('nameInput');
+  const name = input.value.trim();
+  if (!name) {
+    input.focus();
+    input.style.borderColor = '#e74c3c';
+    setTimeout(() => input.style.borderColor = '', 1500);
+    return;
+  }
+  if (name.length > 20) {
+    alert('Name should be 20 characters or less');
+    return;
+  }
+  selectUser(name);
+}
+
+function selectUser(name) {
+  currentUser = name;
+  getOrCreateUser(name);
+  document.getElementById('currentUserDisplay').textContent = name;
+  document.getElementById('historyUserDisplay').textContent = name;
+  atRootScreen = true;
+  showScreen('menuScreen');
+}
+
+function switchUser() {
+  currentUser = null;
+  renderNameScreen();
+  atRootScreen = true;
+  showScreen('nameScreen');
+}
+
+function confirmDeleteUser(name) {
+  if (confirm('Delete profile "' + name + '" and all its history? This cannot be undone.')) {
+    deleteUser(name);
+    renderNameScreen();
+  }
+}
+
+/* ============================================
+   HISTORY SCREEN
+   ============================================ */
+let activeHistoryTab = 'recent';
+
+function showHistoryScreen() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  enterSubScreen('historyScreen');
+  switchHistoryTab(activeHistoryTab);
+  showScreen('historyScreen');
+}
+
+function switchHistoryTab(tab) {
+  activeHistoryTab = tab;
+  ['Recent','Best','Stats'].forEach(t => {
+    const el = document.getElementById('tab' + t);
+    if (el) el.classList.toggle('active', t.toLowerCase() === tab);
+  });
+  const content = document.getElementById('historyContent');
+  if (tab === 'recent') content.innerHTML = renderRecentHistory();
+  else if (tab === 'best') content.innerHTML = renderBestScores();
+  else content.innerHTML = renderOverallStats();
+}
+
+function formatDate(ts) {
+  const d = new Date(ts);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const sameDay = d.toDateString() === today.toDateString();
+  const isYesterday = d.toDateString() === yesterday.toDateString();
+  const time = d.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+  if (sameDay) return 'Today ' + time;
+  if (isYesterday) return 'Yesterday ' + time;
+  return d.toLocaleDateString([], {day:'numeric', month:'short'}) + ' ' + time;
+}
+
+function scoreClass(s) {
+  if (s >= 20) return 'good';
+  if (s >= 5) return 'ok';
+  return 'bad';
+}
+
+function renderRecentHistory() {
+  const data = loadStorage();
+  const user = data.users[currentUser];
+  if (!user || !user.history || user.history.length === 0) {
+    return '<div class="empty-msg">No games played yet.<br>Start a quiz to build your history!</div>';
+  }
+  const items = user.history.slice().reverse(); // newest first
+  let html = '<div class="history-list">';
+  items.forEach(h => {
+    const cat = getCatInfo(h.cat);
+    const icon = cat ? cat.icon : '🎯';
+    const title = cat ? cat.title : h.cat;
+    html += '<div class="history-item">' +
+      '<div class="info">' +
+        '<div class="cat">' + icon + ' ' + title + ' • Class ' + h.level + '</div>' +
+        '<div class="date">' + formatDate(h.date) + ' • ' + h.correct + ' right, ' + h.wrong + ' wrong</div>' +
+      '</div>' +
+      '<div class="score-badge ' + scoreClass(h.score) + '">' + h.score + '</div>' +
+    '</div>';
+  });
+  html += '</div>';
+  html += '<div style="font-size:11px; color:#888; text-align:center; margin-top:8px;">Showing last ' + items.length + ' games (max 50 stored)</div>';
+  return html;
+}
+
+function renderBestScores() {
+  const data = loadStorage();
+  const user = data.users[currentUser];
+  if (!user || !user.best || Object.keys(user.best).length === 0) {
+    return '<div class="empty-msg">No best scores yet.<br>Play any quiz to start tracking!</div>';
+  }
+  // Group by category
+  const grouped = {};
+  Object.keys(user.best).forEach(key => {
+    const [cat, lvl] = key.split('_');
+    if (!grouped[cat]) grouped[cat] = {};
+    grouped[cat][lvl] = user.best[key];
+  });
+  let html = '<div class="best-list">';
+  CATEGORIES.forEach(cat => {
+    if (!grouped[cat.id]) return;
+    html += '<div style="margin-top:10px; font-weight:600; color:#555; font-size:13px;">' + cat.icon + ' ' + cat.title + '</div>';
+    [1,2,3,4,5].forEach(lvl => {
+      if (grouped[cat.id][lvl] === undefined) return;
+      html += '<div class="best-item">' +
+        '<div>Class ' + lvl + '</div>' +
+        '<div class="lvl"></div>' +
+        '<div class="best-score">' + grouped[cat.id][lvl] + '</div>' +
+      '</div>';
+    });
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderOverallStats() {
+  const data = loadStorage();
+  const user = data.users[currentUser];
+  if (!user || !user.history || user.history.length === 0) {
+    return '<div class="empty-msg">No stats yet. Play some quizzes!</div>';
+  }
+  const h = user.history;
+  const totalGames = h.length;
+  const totalCorrect = h.reduce((s, x) => s + x.correct, 0);
+  const totalWrong = h.reduce((s, x) => s + x.wrong, 0);
+  const totalAttempted = totalCorrect + totalWrong;
+  const avgScore = (h.reduce((s, x) => s + x.score, 0) / totalGames).toFixed(1);
+  const accuracy = totalAttempted > 0 ? Math.round(totalCorrect / totalAttempted * 100) : 0;
+  // Best single game
+  const bestGame = h.reduce((b, x) => x.score > b.score ? x : b, h[0]);
+  // Favorite category
+  const catCount = {};
+  h.forEach(x => { catCount[x.cat] = (catCount[x.cat] || 0) + 1; });
+  const favCatId = Object.keys(catCount).reduce((a, b) => catCount[a] > catCount[b] ? a : b);
+  const favCat = getCatInfo(favCatId);
+  // Created date
+  const since = formatDate(user.created || h[0].date);
+
+  let html = '<div class="stat-card">' +
+    '<div class="big-num">' + totalGames + '</div>' +
+    '<div class="big-label">Games Played</div>' +
+  '</div>';
+  html += '<div class="stat-row">' +
+    '<div class="mini-stat"><div class="num">' + avgScore + '</div><div class="lbl">Avg Score</div></div>' +
+    '<div class="mini-stat"><div class="num">' + accuracy + '%</div><div class="lbl">Accuracy</div></div>' +
+    '<div class="mini-stat"><div class="num">' + totalAttempted + '</div><div class="lbl">Questions</div></div>' +
+  '</div>';
+  html += '<div style="background:#f7f7fb; padding:14px; border-radius:10px; font-size:13px; line-height:1.9;">' +
+    '<div><strong>🏆 Best Game:</strong> ' + bestGame.score + ' points in ' +
+      (getCatInfo(bestGame.cat) ? getCatInfo(bestGame.cat).title : bestGame.cat) +
+      ' (Class ' + bestGame.level + ')</div>' +
+    '<div><strong>❤️ Favorite Category:</strong> ' + (favCat ? favCat.icon + ' ' + favCat.title : favCatId) + ' (' + catCount[favCatId] + ' games)</div>' +
+    '<div><strong>✓ Total Correct:</strong> ' + totalCorrect + '</div>' +
+    '<div><strong>✗ Total Wrong:</strong> ' + totalWrong + '</div>' +
+    '<div><strong>📅 Playing since:</strong> ' + since + '</div>' +
+  '</div>';
+  return html;
+}
+
+function confirmClearHistory() {
+  if (confirm('Clear all history and best scores for "' + currentUser + '"? This cannot be undone.')) {
+    clearUserHistory();
+    switchHistoryTab(activeHistoryTab);
+  }
+}
+
+/* ============================================
    INIT
    ============================================ */
 buildMenu();
+initBackgroundDecor();
+// Auto-load last user if exists, else show name screen
+const initData = loadStorage();
+if (initData.lastUser && initData.users[initData.lastUser]) {
+  selectUser(initData.lastUser);
+} else {
+  renderNameScreen();
+  atRootScreen = true;
+  showScreen('nameScreen');
+}
+// Allow Enter key to submit name
+document.getElementById('nameInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') submitName();
+});
 
+function onRewardEarned(type, amount) {
+    console.log(type, amount);
+}
+
+function onAdClosed(type) {
+    console.log(type + " closed");
+}
+
+function showGameOptions() {
+    document.getElementById('gameModeModal').classList.remove('hidden');
+}
+
+function closeGameModal() {
+    document.getElementById('gameModeModal').classList.add('hidden');
+}
+
+function openSinglePlayer() {
+    closeGameModal();
+    window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/Game/index.html";
+}
+
+function openMultiPlayer() {
+    closeGameModal();
+    window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/MultiPlayerGame/index.html";
+}
 </script>
 </body>
 </html>

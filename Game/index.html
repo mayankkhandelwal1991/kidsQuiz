@@ -5,33 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Game Zone - Kids Quiz</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#8b5cf6,#ff7ac6,#ffd166);background-size:400% 400%;animation:bg 12s ease infinite;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none}
+body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#1a1a3d);background-size:400% 400%;animation:bg 14s ease infinite;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;color:#fff}
 @keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-.container{background:linear-gradient(180deg,#fff,#fef6ff);border:6px solid #fff;border-radius:32px;box-shadow:0 15px 40px rgba(0,0,0,.18);max-width:720px;width:100%;padding:18px;display:flex;flex-direction:column;max-height:100%}
-h1{color:#ff5a8a;text-align:center;font-size:26px;font-weight:800}
-.subtitle{color:#6b7280;text-align:center;font-size:13px;margin-bottom:14px}
+.container{background:rgba(255,255,255,.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:32px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-width:760px;width:100%;padding:18px;display:flex;flex-direction:column;max-height:100%}
+h1{background:linear-gradient(135deg,#00f5ff,#ff00e5,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center;font-size:26px;font-weight:800}
+.subtitle{color:#9d9dc9;text-align:center;font-size:13px;margin-bottom:14px}
 .topbar{display:flex;justify-content:flex-start;margin-bottom:8px}
-.back-btn{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:14px;padding:8px 16px;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer}
+.back-btn{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:14px;padding:8px 16px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:1;min-height:0;overflow-y:auto;padding:4px}
-.card{padding:12px 6px;border-radius:20px;border:3px solid rgba(255,255,255,.8);cursor:pointer;text-align:center;transition:.15s;background:#fff}
-.card:nth-child(4n+1){background:linear-gradient(135deg,#ffe082,#fff8e1)}
-.card:nth-child(4n+2){background:linear-gradient(135deg,#80deea,#e0f7fa)}
-.card:nth-child(4n+3){background:linear-gradient(135deg,#c5e1a5,#f1f8e9)}
-.card:nth-child(4n+4){background:linear-gradient(135deg,#f8bbd0,#fce4ec)}
-.card:hover,.card.sel{transform:translateY(-4px) scale(1.04);border-color:#8b5cf6}
-.card .ic{font-size:34px}
-.card .nm{font-size:12px;font-weight:700;color:#374151;line-height:1.2;margin-top:4px}
-.detail{display:none;margin-top:14px;background:linear-gradient(135deg,#fff8cc,#fff0f6);border:4px dashed #ffb703;border-radius:24px;padding:16px;text-align:center}
+.card{padding:12px 6px;border-radius:18px;border:1px solid rgba(255,255,255,.12);cursor:pointer;text-align:center;transition:.15s;background:rgba(255,255,255,.04);position:relative}
+.card.threed::after{content:'3D';position:absolute;top:6px;right:8px;font-size:9px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);color:#0b0b1e;padding:2px 5px;border-radius:6px}
+.card:hover,.card.sel{transform:translateY(-4px) scale(1.04);border-color:#00f5ff;box-shadow:0 8px 22px rgba(0,245,255,.15)}
+.card .ic{font-size:32px}
+.card .nm{font-size:11px;font-weight:700;color:#e5e5f7;line-height:1.2;margin-top:4px}
+.detail{display:none;margin-top:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:22px;padding:16px;text-align:center}
 .detail.show{display:block}
-.detail .big{font-size:48px}
-.detail h2{color:#ff5a8a;font-size:20px}
-.detail p{color:#555;font-size:13px;margin:6px 0 12px;line-height:1.5}
-.start-btn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:18px;padding:13px 42px;font-family:inherit;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 8px 18px rgba(255,79,163,.35);animation:pulse 2s infinite}
+.detail .big{font-size:44px}
+.detail h2{background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:19px}
+.detail p{color:#c7c7de;font-size:13px;margin:6px 0 12px;line-height:1.5}
+.start-btn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:18px;padding:13px 42px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 8px 20px rgba(255,79,163,.35);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-@media(max-width:520px){.grid{grid-template-columns:repeat(3,1fr)}.card .ic{font-size:28px}.card .nm{font-size:10px}}
+@media(max-width:520px){.grid{grid-template-columns:repeat(3,1fr)}.card .ic{font-size:26px}.card .nm{font-size:9.5px}}
 </style>
+<link rel="stylesheet" href="game-theme.css">
 </head>
 <body>
 <div class="container">
@@ -69,14 +67,45 @@ const GAMES=[
  {f:'color_tap.html',ic:'🌈',nm:'Color Tap',how:'Tap the button matching the COLOR of the word, not the word itself. Tricky!'},
  {f:'number_order.html',ic:'🔟',nm:'Number Rush',how:'Tap the numbers 1 to 25 in order as fast as you can. Beat your best time!'},
  {f:'car_race_3d.html',ic:'🏁',nm:'Car Race 3D',how:'Steer your 3D car left and right to dodge traffic. A real 3D road that speeds up the longer you survive!'},
- {f:'ball_maze_3d.html',ic:'🌟',nm:'Ball Maze 3D',how:'Roll the 3D ball through the maze to reach the golden star. Each maze you solve gets a little bigger!'},
- {f:'basketball_3d.html',ic:'🏀',nm:'Basketball 3D',how:'Swipe up on the ball to shoot hoops in 3D. Score as many baskets as you can in 30 seconds!'}
+ {f:'game_2048.html',ic:'🔢',nm:'2048',how:'Swipe to slide tiles. Merge matching numbers to reach the legendary 2048 tile.'},
+ {f:'tetris.html',ic:'🧩',nm:'Tetris',how:'Rotate and drop falling blocks to clear full lines. Speeds up as you level up!'},
+ {f:'piano_tiles.html',ic:'🎹',nm:'Piano Tiles',how:'Tap the black tiles as they fall before they pass the line. Don\u2019t miss a beat!'},
+ {f:'stack_tower.html',ic:'🏗️',nm:'Stack Tower',how:'Tap to drop each moving block. Line it up perfectly to build the tallest tower.'},
+ {f:'bubble_shooter.html',ic:'🔮',nm:'Bubble Shooter',how:'Aim and shoot bubbles to match 3+ colors and clear the board before it fills up.'},
+ {f:'space_shooter.html',ic:'🚀',nm:'Space Shooter',how:'Drag to move your ship, tap to fire, and blast the alien fleet before they reach you.'},
+ {f:'doodle_jump.html',ic:'🪐',nm:'Sky Hopper',how:'Drag left and right to steer as you auto-bounce up platforms. Don\u2019t fall behind!'},
+ {f:'water_sort.html',ic:'🧪',nm:'Water Sort',how:'Tap tubes to pour colors. Sort every liquid into its own tube to solve the puzzle.'},
+ {f:'slingshot.html',ic:'🎯',nm:'Sling Blast',how:'Drag back the slingshot and let go to launch your ball into the stack of blocks.'},
+ {f:'connect_four.html',ic:'🔴',nm:'Connect Four',how:'Drop discs to get 4 in a row before the computer does. Classic strategy showdown.'},
+ {f:'sudoku_mini.html',ic:'🧠',nm:'Sudoku Mini',how:'Fill the 6x6 grid so every row, column, and box has numbers 1 through 6, no repeats.'},
+ {f:'reaction_test.html',ic:'⚡',nm:'Reaction Test',how:'Wait for green, then tap as fast as you can. Track your reflexes over time!'},
+ {f:'typing_speed.html',ic:'⌨️',nm:'Typing Speed',how:'Type the sentence as fast and accurately as you can. Beat your best words-per-minute.'},
+ {f:'endless_runner_3d.html',ic:'🏃',nm:'Neon Runner 3D',how:'Swipe to switch lanes and jump barriers in a glowing 3D tunnel. How far can you run?'},
+ {f:'crossy_road_3d.html',ic:'🐔',nm:'Lane Hopper 3D',how:'Hop across lanes of 3D traffic without getting flattened. Every hop counts!'},
+ {f:'basketball_3d.html',ic:'🏀',nm:'Hoops 3D',how:'Swipe up on the ball to shoot hoops in 3D. Score as many baskets as you can in 30 seconds.'},
+ {f:'ball_maze_3d.html',ic:'🌀',nm:'Gravity Maze 3D',how:'Drag to tilt the 3D maze and roll the glowing ball to the golden goal.'},
+ {f:'drift_racer_3d.html',ic:'🏎️',nm:'Neon Drift 3D',how:'Steer your car down a neon 3D highway, dodging oncoming traffic at rising speed.'},
+ {f:'platform_runner.html',ic:'🤸',nm:'Platform Runner',how:'Jump and duck through obstacles while collecting coins in this fast side-scroller.'},
+ {f:'neon_lane_dash.html',ic:'💠',nm:'Neon Lane Dash',how:'Switch between 3 lanes to dodge blocks racing toward you. Pure reflex, pure speed.'},
+ {f:'word_search.html',ic:'🔎',nm:'Word Search',how:'Drag across letters to find hidden words in the grid. Find all 8 words to win!'},
+ {f:'spelling_bee.html',ic:'🐝',nm:'Spelling Bee',how:'Look at the picture and tap the letters in order to spell each of the 10 words correctly!'},
+ {f:'hangman.html',ic:'🟣',nm:'Hangman',how:'Guess the letters before you run out of tries! Solve 10 mystery words.'},
+ {f:'missing_letter.html',ic:'🌱',nm:'Missing Letter',how:'A letter is missing from the word — pick the right one from 4 choices!'},
+ {f:'word_match.html',ic:'🃏',nm:'Word Match',how:'Flip cards to match each word with its matching picture. Find all 6 pairs!'},
+ {f:'rhyme_time.html',ic:'🎵',nm:'Rhyme Time',how:'Pick the word that rhymes with the one shown. Ten rounds of rhyming fun!'},
+ {f:'first_letter_find.html',ic:'🔠',nm:'First Letter Find',how:'A letter is shown — tap the word from the options that starts with it!'},
+ {f:'category_sort.html',ic:'🗂️',nm:'Category Sort',how:'Sort each word into the right bucket: Animals, Fruits, or Things!'},
+ {f:'word_ladder.html',ic:'🪜',nm:'Word Ladder',how:'Change one letter at a time to climb the word ladder to the target word!'},
+ {f:'synonym_match.html',ic:'🧠',nm:'Synonym Match',how:'Pick the word that means the same thing. Ten rounds of vocabulary fun!'},
+ {f:'word_builder.html',ic:'🧩',nm:'Word Builder',how:'Tap letters from the pool to build all the hidden words inside them!'},
+ {f:'speed_spell.html',ic:'⚡',nm:'Speed Spell',how:'Spell each word before the timer runs out. Fast fingers win the round!'}
 ];
+const THREED=['car_race_3d.html','endless_runner_3d.html','crossy_road_3d.html','basketball_3d.html','ball_maze_3d.html','drift_racer_3d.html'];
 let sel=-1;
 const grid=document.getElementById('grid');
 GAMES.forEach((g,i)=>{
   const d=document.createElement('div');
-  d.className='card';
+  d.className='card'+(THREED.includes(g.f)?' threed':'');
   d.innerHTML='<div class="ic">'+g.ic+'</div><div class="nm">'+g.nm+'</div>';
   d.onclick=()=>select(i,d);
   grid.appendChild(d);

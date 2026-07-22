@@ -74,8 +74,9 @@ function draw(){
   cx.setLineDash([]);
   cx.fillStyle='#7cc576';cx.fillRect(0,0,14,cv.height);cx.fillRect(cv.width-14,0,14,cv.height);
   cx.font='40px serif';cx.textAlign='center';
-  cars.forEach(c=>cx.fillText(c.e,LANES[c.lane],c.y));
-  cx.fillText('🏎️',LANES[lane],cv.height-60);
+  // Cars travel along the road, so rotate the artwork to face the direction of travel.
+  cars.forEach(c=>{cx.save();cx.translate(LANES[c.lane],c.y);cx.rotate(Math.PI/2);cx.fillText(c.e,0,0);cx.restore();});
+  cx.save();cx.translate(LANES[lane],cv.height-60);cx.rotate(-Math.PI/2);cx.fillText('🏎️',0,0);cx.restore();
   cx.fillStyle='#fff';cx.font='bold 20px sans-serif';
   if(!playing&&!dead)cx.fillText('Tap left/right to start!',cv.width/2,200);
   if(dead){cx.fillText('💥 Crash! Score: '+score,cv.width/2,200);cx.font='bold 14px sans-serif';cx.fillText('Tap to play again',cv.width/2,230);}

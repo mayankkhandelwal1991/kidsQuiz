@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>First Letter Find</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#96fbc4,#f9f586);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
+.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.bar .sc{font-weight:800;color:#15803d;font-size:15px}
+.progwrap{background:#dcfce7;border-radius:20px;height:10px;overflow:hidden;margin-bottom:10px}
+.progbar{height:100%;background:linear-gradient(135deg,#22c55e,#84cc16);width:0%;transition:width .4s ease}
+.sub{font-size:13px;color:#64748b;margin-bottom:6px}
+.letterbox{width:76px;height:76px;border-radius:20px;background:linear-gradient(135deg,#22c55e,#84cc16);color:#fff;font-size:40px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:6px auto 12px;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.opt{padding:14px 6px;border-radius:16px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:#fff;font-size:16px;font-weight:800;cursor:pointer;transition:transform .1s}
+.opt:active{transform:scale(.92)}
+.opt .oe{font-size:26px;display:block;margin-bottom:2px}
+.opt.correct{background:linear-gradient(135deg,#34d399,#06b6d4);animation:pop .4s ease}
+.opt.wrong{background:linear-gradient(135deg,#f87171,#fb923c);animation:shake .35s}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.msg{color:#15803d;font-weight:800;font-size:15px;min-height:22px}
+.end{display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);align-items:center;justify-content:center;z-index:20}
+.end.show{display:flex}
+.end .card{background:#fff;border-radius:24px;padding:26px 22px;text-align:center;max-width:300px;animation:winpop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes winpop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.end .big{font-size:50px}
+.end h2{color:#15803d;margin:8px 0}
+.end button{margin-top:10px;background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 26px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+.confetti{position:fixed;top:-10px;width:8px;height:14px;border-radius:2px;z-index:30;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <div class="sc">🔠 <span id="score">0</span>/<span id="totalW">10</span></div>
+    <button onclick="restart()">↻</button>
+  </div>
+  <div class="progwrap"><div class="progbar" id="prog"></div></div>
+  <div class="sub">Find the word that starts with:</div>
+  <div class="letterbox" id="letterbox"></div>
+  <div class="options" id="options"></div>
+  <div class="msg" id="msg"></div>
+</div>
+<div class="end" id="end">
+  <div class="card">
+    <div class="big">🏆</div>
+    <h2>Round Complete!</h2>
+    <p id="endMsg">Great job!</p>
+    <button onclick="restart()">Play Again</button>
+  </div>
+</div>
+<script src="ads.js"></script>
+<script>
+const POOL=[
+['CAT','🐱'],['DOG','🐶'],['SUN','☀️'],['FISH','🐟'],['BIRD','🐦'],['FROG','🐸'],
+['APPLE','🍎'],['MANGO','🥭'],['GRAPE','🍇'],['LEMON','🍋'],['TIGER','🐯'],['ZEBRA','🦓'],
+['HOUSE','🏠'],['TRAIN','🚂'],['PLANE','✈️'],['CLOCK','⏰'],['STAR','⭐'],['MOON','🌙'],
+['FLOWER','🌸'],['MONKEY','🐵'],['RABBIT','🐰'],['ROCKET','🚀'],['GUITAR','🎸'],['CAMERA','📷'],
+['BANANA','🍌'],['ORANGE','🍊'],['SCHOOL','🏫'],['PENCIL','✏️'],['BUTTER','🧈'],['CHEESE','🧀'],
+['SHARK','🦈'],['WHALE','🐳'],['MOUSE','🐭'],['PANDA','🐼'],['SNAKE','🐍'],['HORSE','🐴']
+];
+const ROUND_LEN=10;
+let round=[],idx=0,score=0,cur=null;
+
+function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function restart(){
+  round=shuffleArr([...POOL]).slice(0,ROUND_LEN);
+  idx=0;score=0;
+  document.getElementById('score').textContent=0;
+  document.getElementById('totalW').textContent=round.length;
+  document.getElementById('end').classList.remove('show');
+  loadRound();
+}
+
+function loadRound(){
+  if(idx>=round.length){finish();return;}
+  cur=round[idx];
+  document.getElementById('letterbox').textContent=cur[0][0];
+  document.getElementById('prog').style.width=Math.round(idx/round.length*100)+'%';
+  document.getElementById('msg').textContent='Round '+(idx+1)+' of '+round.length;
+  const decoys=shuffleArr(POOL.filter(w=>w[0][0]!==cur[0][0] && w[0]!==cur[0])).slice(0,3);
+  const opts=shuffleArr([cur,...decoys]);
+  const box=document.getElementById('options');box.innerHTML='';
+  opts.forEach(w=>{
+    const d=document.createElement('div');d.className='opt';
+    d.innerHTML='<span class="oe">'+w[1]+'</span>'+w[0];
+    d.onclick=()=>pick(w,d);
+    box.appendChild(d);
+  });
+}
+
+function pick(w,el){
+  document.querySelectorAll('.opt').forEach(o=>o.style.pointerEvents='none');
+  if(w[0]===cur[0]){
+    el.classList.add('correct');
+    score++;document.getElementById('score').textContent=score;
+    document.getElementById('msg').textContent='🎉 '+cur[0]+' starts with '+cur[0][0]+'!';
+    burstConfetti();
+  }else{
+    el.classList.add('wrong');
+    document.getElementById('msg').textContent='❌ It was '+cur[0]+'!';
+  }
+  idx++;
+  setTimeout(loadRound,1000);
+}
+
+function finish(){
+  document.getElementById('prog').style.width='100%';
+  document.getElementById('endMsg').textContent='You found '+score+' out of '+round.length+' words!';
+  document.getElementById('end').classList.add('show');
+  onGameComplete();
+}
+
+function burstConfetti(){
+  const colors=['#ff5a8a','#ffd166','#34d399','#60a5fa','#c084fc'];
+  for(let i=0;i<20;i++){
+    const d=document.createElement('div');
+    d.className='confetti';
+    d.style.left=(Math.random()*100)+'vw';
+    d.style.background=colors[Math.floor(Math.random()*colors.length)];
+    d.style.animationDuration=(1+Math.random()*0.8)+'s';
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(),2000);
+  }
+}
+
+restart();
+</script></body></html>

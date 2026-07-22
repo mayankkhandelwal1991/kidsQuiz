@@ -1,163 +1,184 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Basketball 3D</title>
+<title>Hoops 3D</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#ff7ac6,#ffd166);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:420px;width:100%;display:flex;flex-direction:column;height:100%;max-height:820px}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
-.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0;position:relative}
-#stage3d{width:100%;height:100%;border-radius:18px;overflow:hidden;background:#a5d8ff}
-canvas{display:block}
-.msg{position:absolute;top:10px;left:0;right:0;text-align:center;color:#333;font-weight:800;font-size:15px;text-shadow:0 1px 2px rgba(255,255,255,.7);pointer-events:none}
-.timer{position:absolute;top:10px;right:12px;color:#fff;background:rgba(0,0,0,.35);border-radius:10px;padding:2px 10px;font-weight:800;font-size:13px}
-</style></head><body>
+body{font-family:'Poppins',system-ui,sans-serif;background:#05050f;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
+.wrap{width:100%;height:100%;max-width:480px;max-height:900px;position:relative;background:#05050f;margin:auto}
+.bar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px;z-index:5}
+.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
+h1{font-size:16px;font-weight:800;background:linear-gradient(135deg,#ff9f43,#ff5a8a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sc{font-size:13px;font-weight:800;color:#ff9f43;text-align:right}
+#scene{position:absolute;inset:0}
+.overlay{position:absolute;inset:0;background:rgba(5,5,20,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;z-index:10}
+.overlay.show{display:flex}
+.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+.hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.5);z-index:5}
+.startCard{position:absolute;inset:0;background:rgba(5,5,20,.7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:8;text-align:center;padding:20px}
+</style><link rel="stylesheet" href="game-theme.css"></head><body>
 <div class="wrap">
+  <div id="scene"></div>
   <div class="bar">
     <button onclick="location.href='index.html'">← Games</button>
-    <div class="sc">🏀 <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
-    <button onclick="startGame()">↻</button>
+    <h1>Hoops 3D</h1>
+    <div class="sc">SCORE <span id="score">0</span><br>TIME <span id="time">30</span>s</div>
   </div>
-  <div class="stage">
-    <div id="stage3d"></div>
-    <div class="msg" id="msg">Swipe up on the ball to shoot!</div>
-    <div class="timer">⏱ <span id="time">30</span>s</div>
+  <div class="hint">Swipe up on the ball to shoot — aim for the hoop!</div>
+  <div class="startCard" id="startCard">
+    <h2 style="font-size:22px;background:linear-gradient(135deg,#ff9f43,#ff5a8a);-webkit-background-clip:text;background-clip:text;color:transparent">Hoops 3D</h2>
+    <p style="font-size:13px;color:#ccc;max-width:260px">Swipe up on the ball to shoot it toward the hoop. Score as many baskets as you can in 30 seconds!</p>
+    <button class="newbtn" onclick="startGame()">▶ Start</button>
   </div>
+  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#ff9f43,#ff5a8a);-webkit-background-clip:text;background-clip:text;color:transparent">Time's Up!</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="startGame()">Shoot Again</button></div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="assets/GLTFLoader-r128.js"></script>
 <script src="ads.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/128/three.min.js"></script>
 <script>
-const container=document.getElementById('stage3d');
-const msg=document.getElementById('msg');
-let W=container.clientWidth,H=container.clientHeight;
-const scene=new THREE.Scene();
-scene.background=new THREE.Color(0xa5d8ff);
-const camera=new THREE.PerspectiveCamera(55,W/H,0.1,100);
-camera.position.set(0,3.4,6.5);
-camera.lookAt(0,2.6,-5);
-const renderer=new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(W,H);
-container.appendChild(renderer.domElement);
-scene.add(new THREE.AmbientLight(0xffffff,0.85));
-const sun=new THREE.DirectionalLight(0xffffff,0.7);
-sun.position.set(4,10,6); scene.add(sun);
+const container=document.getElementById('scene');
+let scene,camera,renderer,ball,hoopRing,ballState,score,timeLeft,over,timerId,best=+(localStorage.getItem('hoopsBest')||0),started=false;
+const GRAV=-0.014, HOOP_POS={x:0,y:3.2,z:-6};
+function initScene(){
+  scene=new THREE.Scene();
+  scene.fog=new THREE.Fog(0x05050f,10,30);
+  camera=new THREE.PerspectiveCamera(55,container.clientWidth/container.clientHeight,0.1,100);
+  camera.position.set(0,1.6,3.2);
+  camera.lookAt(0,2.2,-6);
+  renderer=new THREE.WebGLRenderer({antialias:true});
+  renderer.setSize(container.clientWidth,container.clientHeight);
+  renderer.setClearColor(0x05050f);
+  container.innerHTML=''; container.appendChild(renderer.domElement);
+  scene.add(new THREE.AmbientLight(0xffffff,0.7));
+  const dir=new THREE.DirectionalLight(0xffffff,0.7); dir.position.set(2,6,2); scene.add(dir);
 
-// court
-const court=new THREE.Mesh(new THREE.PlaneGeometry(10,20),new THREE.MeshStandardMaterial({color:0xd8a15e}));
-court.rotation.x=-Math.PI/2; court.position.set(0,0,-7); scene.add(court);
-// backboard + hoop
-const HOOP_Z=-8.6, HOOP_Y=3.05, RIM_R=0.45;
-const backboard=new THREE.Mesh(new THREE.BoxGeometry(1.8,1.1,0.08),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:0.85}));
-backboard.position.set(0,3.6,HOOP_Z-0.5); scene.add(backboard);
-const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,3.6,10),new THREE.MeshStandardMaterial({color:0x555555}));
-pole.position.set(0,1.8,HOOP_Z-0.9); scene.add(pole);
-const rim=new THREE.Mesh(new THREE.TorusGeometry(RIM_R,0.04,10,24),new THREE.MeshStandardMaterial({color:0xff5722}));
-rim.rotation.x=Math.PI/2; rim.position.set(0,HOOP_Y,HOOP_Z); scene.add(rim);
-const netMat=new THREE.LineBasicMaterial({color:0xffffff});
-for(let i=0;i<10;i++){
-  const a=(i/10)*Math.PI*2;
-  const pts=[new THREE.Vector3(Math.cos(a)*RIM_R,HOOP_Y,HOOP_Z+Math.sin(a)*RIM_R),new THREE.Vector3(Math.cos(a)*RIM_R*0.4,HOOP_Y-0.55,HOOP_Z+Math.sin(a)*RIM_R*0.4)];
-  scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),netMat));
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,20),new THREE.MeshStandardMaterial({color:0x1a1a3d}));
+  floor.rotation.x=-Math.PI/2; floor.position.z=-6;
+  scene.add(floor);
+
+  const boardGeo=new THREE.BoxGeometry(2.4,1.6,0.1);
+  const board=new THREE.Mesh(boardGeo,new THREE.MeshStandardMaterial({color:0xffffff,opacity:0.85,transparent:true}));
+  board.position.set(0,3.7,-7.1);
+  scene.add(board);
+
+  const poleGeo=new THREE.CylinderGeometry(0.08,0.08,3.6,8);
+  const pole=new THREE.Mesh(poleGeo,new THREE.MeshStandardMaterial({color:0x555555}));
+  pole.position.set(0,1.8,-7.3);
+  scene.add(pole);
+
+  const ringGeo=new THREE.TorusGeometry(0.5,0.05,8,24);
+  hoopRing=new THREE.Mesh(ringGeo,new THREE.MeshStandardMaterial({color:0xff5a8a,emissive:0xff5a8a,emissiveIntensity:0.4}));
+  hoopRing.rotation.x=Math.PI/2;
+  hoopRing.position.set(HOOP_POS.x,HOOP_POS.y,HOOP_POS.z);
+  scene.add(hoopRing);
+
+  const netMat=new THREE.LineBasicMaterial({color:0xffffff});
+  for(let i=0;i<8;i++){
+    const ang=(i/8)*Math.PI*2;
+    const x1=HOOP_POS.x+Math.cos(ang)*0.5, z1=HOOP_POS.z+Math.sin(ang)*0.5;
+    const geo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x1,HOOP_POS.y,z1), new THREE.Vector3(HOOP_POS.x+Math.cos(ang)*0.2,HOOP_POS.y-0.5,HOOP_POS.z+Math.sin(ang)*0.2)]);
+    scene.add(new THREE.Line(geo,netMat));
+  }
+
+  const ballGeo=new THREE.SphereGeometry(0.28,16,16);
+  ball=new THREE.Mesh(ballGeo,new THREE.MeshStandardMaterial({color:0xff9f43}));
+  scene.add(ball);
+  const shooter=new THREE.Group(); shooter.position.set(-1.25,0,2.35); scene.add(shooter);
+  const jersey=new THREE.Mesh(new THREE.CylinderGeometry(.28,.36,.9,10),new THREE.MeshStandardMaterial({color:0x60a5fa}));jersey.position.y=.9;shooter.add(jersey);
+  const face=new THREE.Mesh(new THREE.SphereGeometry(.25,12,12),new THREE.MeshStandardMaterial({color:0xffd2b8}));face.position.y=1.55;shooter.add(face);
+  [-.18,.18].forEach(x=>{const leg=new THREE.Mesh(new THREE.CylinderGeometry(.09,.11,.7,8),new THREE.MeshStandardMaterial({color:0x334155}));leg.position.set(x,.3,0);shooter.add(leg);});
+  const arm=new THREE.Mesh(new THREE.CylinderGeometry(.07,.09,.85,8),new THREE.MeshStandardMaterial({color:0xffd2b8}));arm.rotation.z=-.8;arm.position.set(.38,1.15,-.1);shooter.add(arm);
+  if(THREE.GLTFLoader){
+    new THREE.GLTFLoader().load('assets/cesium-man.glb',gltf=>{
+      const athlete=gltf.scene; athlete.scale.setScalar(.72); athlete.position.set(-1.25,0,2.35); athlete.rotation.y=Math.PI;
+      shooter.visible=false; scene.add(athlete);
+      const clip=gltf.animations&&gltf.animations[0];
+      if(clip){ const mixer=new THREE.AnimationMixer(athlete); mixer.clipAction(clip).play(); const clock=new THREE.Clock(); (function animateModel(){ requestAnimationFrame(animateModel); mixer.update(clock.getDelta()); })(); }
+    });
+  }
 }
-
-const START_POS={x:0,y:1.1,z:2};
-const ball=new THREE.Mesh(new THREE.SphereGeometry(0.28,20,20),new THREE.MeshStandardMaterial({color:0xff8c1a}));
-scene.add(ball);
-let vel={x:0,y:0,z:0}, flying=false, scoredThisShot=false;
-function placeBall(){ ball.position.set(START_POS.x,START_POS.y,START_POS.z); vel={x:0,y:0,z:0}; flying=false; scoredThisShot=false; }
-placeBall();
-
-let score=0,best=+(localStorage.getItem('bball3dBest')||0),timeLeft=30,playing=false,timerId=null;
-document.getElementById('best').textContent=best;
-
-function startGame(){
-  score=0; timeLeft=30; playing=true;
+function resetBall(){
+  ball.position.set(0,1.3,2.2);
+  ballState={x:0,y:1.3,z:2.2,vx:0,vy:0,vz:0,flying:false,scored:false};
+}
+function resetGame(){
+  score=0; timeLeft=30; over=false;
   document.getElementById('score').textContent=0;
-  document.getElementById('time').textContent=timeLeft;
-  placeBall();
-  msg.textContent='Swipe up on the ball to shoot!'; msg.style.display='block';
-  if(timerId) clearInterval(timerId);
+  document.getElementById('time').textContent=30;
+  document.getElementById('overlay').classList.remove('show');
+  resetBall();
+  clearInterval(timerId);
   timerId=setInterval(()=>{
-    if(!playing) return;
     timeLeft--; document.getElementById('time').textContent=timeLeft;
-    if(timeLeft<=0){
-      playing=false; clearInterval(timerId);
-      onGameComplete();
-      if(score>best){ best=score; localStorage.setItem('bball3dBest',best); document.getElementById('best').textContent=best; }
-      msg.textContent='⏰ Time up! Score: '+score+' — Tap ↻ to play again';
-      msg.style.display='block';
-    }
+    if(timeLeft<=0) endGame();
   },1000);
 }
-
-// drag to shoot
-let dragStart=null, dragging=false;
-const dom=renderer.domElement;
-function toXY(e){ const r=dom.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top}; }
-dom.addEventListener('pointerdown',e=>{
-  if(flying||!playing) return;
-  dragStart=toXY(e); dragging=true;
+function startGame(){
+  document.getElementById('startCard').style.display='none';
+  if(!scene) initScene();
+  resetGame();
+  if(!started){ started=true; requestAnimationFrame(loop); }
+}
+let dragStart=null;
+container.addEventListener('touchstart',e=>{ if(ballState.flying)return; dragStart={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()}; },{passive:true});
+container.addEventListener('touchend',e=>{
+  if(!dragStart||ballState.flying)return;
+  const dx=e.changedTouches[0].clientX-dragStart.x, dy=e.changedTouches[0].clientY-dragStart.y;
+  const dt=Math.max(Date.now()-dragStart.t,50);
+  shoot(dx,dy,dt);
+  dragStart=null;
+},{passive:true});
+container.addEventListener('mousedown',e=>{ if(ballState.flying)return; dragStart={x:e.clientX,y:e.clientY,t:Date.now()}; });
+container.addEventListener('mouseup',e=>{
+  if(!dragStart||ballState.flying)return;
+  const dx=e.clientX-dragStart.x, dy=e.clientY-dragStart.y;
+  const dt=Math.max(Date.now()-dragStart.t,50);
+  shoot(dx,dy,dt);
+  dragStart=null;
 });
-dom.addEventListener('pointermove',e=>{
-  if(!dragging) return;
-});
-dom.addEventListener('pointerup',e=>{
-  if(!dragging){ return; }
-  dragging=false;
-  if(flying||!playing||!dragStart) return;
-  const end=toXY(e);
-  const dx=end.x-dragStart.x, dy=end.y-dragStart.y;
-  if(-dy<20) return; // must swipe upward with some force
-  const power=Math.min(1.4,(-dy)/H*2.2);
-  vel.z=-0.19-power*0.16;
-  vel.y=0.15+power*0.20;
-  vel.x=(dx/W)*0.16;
-  flying=true; scoredThisShot=false;
-  msg.style.display='none';
-});
-
-const GRAV=-0.012;
-function update(){
-  if(flying){
-    vel.y+=GRAV;
-    ball.position.x+=vel.x; ball.position.y+=vel.y; ball.position.z+=vel.z;
-    // score check: passing downward through rim plane
-    if(!scoredThisShot && vel.y<0){
-      const dz=ball.position.z-HOOP_Z;
-      if(Math.abs(ball.position.y-HOOP_Y)<0.16){
-        const dist=Math.hypot(ball.position.x,dz);
-        if(dist<RIM_R*0.65){
-          scoredThisShot=true; score++; document.getElementById('score').textContent=score;
-        }
-      }
-    }
-    // backboard bounce (simple)
-    if(ball.position.z<HOOP_Z-0.42 && ball.position.z>HOOP_Z-0.58 && Math.abs(ball.position.x)<0.9 && ball.position.y>3.0 && ball.position.y<4.2 && vel.z<0){
-      vel.z*=-0.5;
-    }
-    if(ball.position.y<0.28){ // hit ground
-      flying=false;
-      if(playing) setTimeout(placeBall,500); else placeBall();
-    }
-    if(ball.position.z<HOOP_Z-4||Math.abs(ball.position.x)>6){
-      flying=false;
-      if(playing) setTimeout(placeBall,300); else placeBall();
-    }
-  } else {
-    ball.rotation.x+=0.01;
-  }
+function shoot(dx,dy,dt){
+  if(dy>-40)return; // must swipe upward
+  const power=Math.min(Math.abs(dy)/dt*10,1.4);
+  ballState.vy=0.28+power*0.15;
+  ballState.vz=-0.22-power*0.08;
+  ballState.vx=(dx/200)*0.12;
+  ballState.flying=true;
+  ballState.scored=false;
+}
+function loop(){
+  if(!over) update();
   renderer.render(scene,camera);
-  requestAnimationFrame(update);
+  requestAnimationFrame(loop);
 }
-function onResize(){
-  W=container.clientWidth;H=container.clientHeight;
-  camera.aspect=W/H; camera.updateProjectionMatrix();
-  renderer.setSize(W,H);
+function update(){
+  if(ballState.flying){
+    ballState.vy+=GRAV;
+    ballState.x+=ballState.vx; ballState.y+=ballState.vy; ballState.z+=ballState.vz;
+    ball.position.set(ballState.x,ballState.y,ballState.z);
+    const dx=ballState.x-HOOP_POS.x, dy=ballState.y-HOOP_POS.y, dz=ballState.z-HOOP_POS.z;
+    if(!ballState.scored && Math.abs(dy)<0.28 && Math.sqrt(dx*dx+dz*dz)<0.62 && ballState.vy<0){
+      ballState.scored=true;
+      score++; document.getElementById('score').textContent=score;
+      hoopRing.material.emissiveIntensity=1;
+      setTimeout(()=>{ hoopRing.material.emissiveIntensity=0.4; },200);
+    }
+    if(ballState.y<0.3 || ballState.z<-9){
+      setTimeout(resetBall,250);
+      ballState.flying=false;
+    }
+  }
 }
-window.addEventListener('resize',onResize);
-onResize();
-document.getElementById('time').textContent=timeLeft;
-update();
+function endGame(){
+  over=true; clearInterval(timerId);
+  if(score>best){ best=score; localStorage.setItem('hoopsBest',best); }
+  document.getElementById('finalScore').textContent='Score: '+score+'  •  Best: '+best;
+  document.getElementById('overlay').classList.add('show');
+  onGameComplete();
+}
+window.addEventListener('resize',()=>{
+  if(!camera||!renderer)return;
+  camera.aspect=container.clientWidth/container.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(container.clientWidth,container.clientHeight);
+});
 </script></body></html>

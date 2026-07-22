@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Neon Drift 3D</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',system-ui,sans-serif;background:#05050f;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
+.wrap{width:100%;height:100%;max-width:480px;max-height:900px;position:relative;background:#05050f;margin:auto}
+.bar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px;z-index:5}
+.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
+h1{font-size:16px;font-weight:800;background:linear-gradient(135deg,#ff5a8a,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sc{font-size:14px;font-weight:800;color:#ff5a8a}
+#scene{position:absolute;inset:0}
+.overlay{position:absolute;inset:0;background:rgba(5,5,20,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;z-index:10}
+.overlay.show{display:flex}
+.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+.dpad{position:absolute;bottom:16px;left:0;right:0;display:flex;justify-content:space-between;padding:0 24px;z-index:6}
+.dpad button{width:64px;height:64px;border-radius:20px;border:none;background:rgba(255,255,255,.12);color:#fff;font-size:26px;backdrop-filter:blur(4px)}
+.startCard{position:absolute;inset:0;background:rgba(5,5,20,.7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:8;text-align:center;padding:20px}
+</style><link rel="stylesheet" href="game-theme.css"></head><body>
+<div class="wrap">
+  <div id="scene"></div>
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <h1>Neon Drift 3D</h1>
+    <div class="sc" id="score">0</div>
+  </div>
+  <div class="dpad">
+    <button ontouchstart="steer(-1)" ontouchend="steer(0)" onmousedown="steer(-1)" onmouseup="steer(0)">⬅️</button>
+    <button ontouchstart="steer(1)" ontouchend="steer(0)" onmousedown="steer(1)" onmouseup="steer(0)">➡️</button>
+  </div>
+  <div class="startCard" id="startCard">
+    <h2 style="font-size:22px;background:linear-gradient(135deg,#ff5a8a,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent">Neon Drift 3D</h2>
+    <p style="font-size:13px;color:#ccc;max-width:260px">Steer left and right to dodge oncoming traffic on the neon highway. Speed increases the longer you survive!</p>
+    <button class="newbtn" onclick="startGame()">▶ Start Driving</button>
+  </div>
+  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#ff5a8a,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent">Crashed!</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="startGame()">Drive Again</button></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="ads.js"></script>
+<script>
+const container=document.getElementById('scene');
+let scene,camera,renderer,car,traffic=[],score,over,speed,carX=0,steerDir=0,best=+(localStorage.getItem('driftBest')||0),started=false;
+const LANES=[-2.4,0,2.4];
+function initScene(){
+  scene=new THREE.Scene();
+  scene.fog=new THREE.Fog(0x05050f,8,42);
+  camera=new THREE.PerspectiveCamera(62,container.clientWidth/container.clientHeight,0.1,100);
+  renderer=new THREE.WebGLRenderer({antialias:true});
+  renderer.setSize(container.clientWidth,container.clientHeight);
+  renderer.setClearColor(0x05050f);
+  container.innerHTML=''; container.appendChild(renderer.domElement);
+  scene.add(new THREE.AmbientLight(0xffffff,0.65));
+  const dir=new THREE.DirectionalLight(0x99aaff,0.7); dir.position.set(2,8,3); scene.add(dir);
+
+  const road=new THREE.Mesh(new THREE.PlaneGeometry(8,300),new THREE.MeshStandardMaterial({color:0x14142e}));
+  road.rotation.x=-Math.PI/2; road.position.z=-140;
+  scene.add(road);
+  for(let s=-1;s<=1;s+=2){
+    const edge=new THREE.Mesh(new THREE.PlaneGeometry(0.15,300),new THREE.MeshBasicMaterial({color:0xff00e5}));
+    edge.rotation.x=-Math.PI/2; edge.position.set(s*4,0.01,-140);
+    scene.add(edge);
+  }
+  for(let i=-1;i<=1;i+=2){
+    const line=new THREE.Mesh(new THREE.PlaneGeometry(0.08,300),new THREE.MeshBasicMaterial({color:0x00f5ff}));
+    line.rotation.x=-Math.PI/2; line.position.set(i*1.2,0.01,-140);
+    scene.add(line);
+  }
+  car=new THREE.Group();
+  const carBody=new THREE.Mesh(new THREE.BoxGeometry(1,0.5,1.8),new THREE.MeshStandardMaterial({color:0x00f5ff,emissive:0x003a3a,emissiveIntensity:0.4})); car.add(carBody);
+  car.position.set(0,0.35,3);
+  scene.add(car);
+  const cabin=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.35,0.9),new THREE.MeshStandardMaterial({color:0x222244}));
+  cabin.position.set(0,0.4,-0.1);
+  car.add(cabin); [-.43,.43].forEach(x=>[-.55,.55].forEach(z=>{const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.16,.16,.12,10),new THREE.MeshStandardMaterial({color:0x151528}));wheel.rotation.z=Math.PI/2;wheel.position.set(x,-.08,z);car.add(wheel);}));
+}
+function spawnTraffic(z){
+  const lane=Math.floor(Math.random()*3);
+  const color=[0xff5a8a,0xffe066,0x38f9a1,0xff9f43][Math.floor(Math.random()*4)];
+  const mesh=new THREE.Mesh(new THREE.BoxGeometry(1,0.5,1.8),new THREE.MeshStandardMaterial({color,emissive:color,emissiveIntensity:0.3}));
+  mesh.position.set(LANES[lane],0.35,z);
+  scene.add(mesh);
+  traffic.push({mesh,lane});
+}
+function resetGame(){
+  traffic.forEach(t=>scene.remove(t.mesh)); traffic=[];
+  score=0; over=false; speed=0.28; carX=0; steerDir=0;
+  document.getElementById('score').textContent=0;
+  document.getElementById('overlay').classList.remove('show');
+  car.position.set(0,0.35,3);
+  for(let i=0;i<10;i++) spawnTraffic(-14-i*9);
+}
+function startGame(){
+  document.getElementById('startCard').style.display='none';
+  if(!scene) initScene();
+  resetGame();
+  if(!started){ started=true; requestAnimationFrame(loop); }
+}
+function steer(d){ steerDir=d; }
+document.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft')steer(-1); if(e.key==='ArrowRight')steer(1); });
+document.addEventListener('keyup',e=>{ if(e.key==='ArrowLeft'||e.key==='ArrowRight')steer(0); });
+let touchStartX=null;
+container.addEventListener('touchstart',e=>{ touchStartX=e.touches[0].clientX; },{passive:true});
+container.addEventListener('touchmove',e=>{
+  if(touchStartX===null)return;
+  const dx=e.touches[0].clientX-touchStartX;
+  steerDir = dx>10?1:(dx<-10?-1:0);
+},{passive:true});
+container.addEventListener('touchend',()=>{ touchStartX=null; steerDir=0; });
+function loop(){
+  if(!over) update();
+  renderer.render(scene,camera);
+  requestAnimationFrame(loop);
+}
+function update(){
+  speed=Math.min(0.65,speed+0.00015);
+  score++;
+  document.getElementById('score').textContent=Math.floor(score/6);
+  carX += steerDir*0.09;
+  carX=Math.max(-3.4,Math.min(3.4,carX));
+  car.position.x += (carX-car.position.x)*0.4;
+  car.rotation.z = (carX-car.position.x)*0.15 - steerDir*0.08;
+  camera.position.set(car.position.x*0.5,3.4,car.position.z+6.5);
+  camera.lookAt(car.position.x*0.3,1,car.position.z-8);
+  traffic.forEach(t=>{
+    t.mesh.position.z += speed;
+    if(Math.abs(t.mesh.position.z-car.position.z)<1.1 && Math.abs(t.mesh.position.x-car.position.x)<0.85){
+      endGame();
+    }
+  });
+  traffic=traffic.filter(t=>{
+    if(t.mesh.position.z>10){ scene.remove(t.mesh); return false; }
+    return true;
+  });
+  while(traffic.length<10){
+    const minZ=Math.min(...traffic.map(t=>t.mesh.position.z),-14);
+    spawnTraffic(minZ-9-Math.random()*4);
+  }
+}
+function endGame(){
+  over=true;
+  const finalScore=Math.floor(score/6);
+  if(finalScore>best){ best=finalScore; localStorage.setItem('driftBest',best); }
+  document.getElementById('finalScore').textContent='Distance: '+finalScore+'  •  Best: '+best;
+  document.getElementById('overlay').classList.add('show');
+  onGameComplete();
+}
+window.addEventListener('resize',()=>{
+  if(!camera||!renderer)return;
+  camera.aspect=container.clientWidth/container.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(container.clientWidth,container.clientHeight);
+});
+</script></body></html>

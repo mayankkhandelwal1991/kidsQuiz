@@ -553,6 +553,118 @@ h1,h2{
   font-size: 14px !important;
 }
 #gameModeModal.hidden { display: none !important; }
+#quizCategoryModal.hidden { display: none !important; }
+
+/* ===== PLAY HERO (Quiz / Game shown first) ===== */
+.play-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0 20px;
+}
+.play-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 18px 16px 22px;
+  border-radius: 20px;
+  cursor: pointer;
+  color: white;
+  border: 3px solid rgba(255,255,255,.6);
+  transition: transform .15s ease, box-shadow .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.play-card:active { transform: scale(.96); }
+.play-card:hover { transform: translateY(-3px); }
+.play-card.play-quiz { background: linear-gradient(135deg,#667eea,#764ba2); box-shadow: 0 10px 22px rgba(102,126,234,.4); }
+.play-card.play-game { background: linear-gradient(135deg,#ff7a59,#ff4fa3); box-shadow: 0 10px 22px rgba(255,79,163,.4); }
+.play-card .play-icon { font-size: 30px; }
+.play-card .play-title { font-weight: 800; font-size: 16px; }
+.play-card .play-sub { font-size: 11px; opacity: .9; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+.play-card .play-arrow { position: absolute; right: 14px; bottom: 12px; font-size: 20px; opacity: .85; }
+.play-card .play-badge {
+  position: absolute; top: 10px; right: 12px;
+  background: rgba(255,255,255,.25);
+  border-radius: 20px;
+  font-size: 9px;
+  padding: 3px 8px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.section-label {
+  font-size: 15px !important;
+  text-align: left !important;
+  margin: 6px 2px 10px !important;
+  color: #555 !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 600px) {
+  .play-hero { gap: 8px; }
+  .play-card { padding: 14px 12px 18px; }
+  .play-card .play-icon { font-size: 24px; }
+  .play-card .play-title { font-size: 13px; }
+  .play-card .play-sub { font-size: 9.5px; }
+}
+
+/* ===== ANDROID-STYLE ACTION LIST (Rate Us / Share) ===== */
+.android-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 18px 0 6px;
+}
+.android-action-btn {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Baloo 2', cursive;
+  transition: transform .12s ease, box-shadow .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.android-action-btn:active { transform: scale(.97); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+.android-action-btn .aa-icon {
+  flex-shrink: 0;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px;
+  color: white;
+}
+.android-action-btn.rate-btn .aa-icon { background: linear-gradient(135deg,#ffb703,#ff7a59); }
+.android-action-btn.share-btn .aa-icon { background: linear-gradient(135deg,#34d399,#06b6d4); }
+.android-action-btn .aa-text { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.android-action-btn .aa-title { font-weight: 800; font-size: 14.5px; color: #333; }
+.android-action-btn .aa-sub { font-size: 11px; color: #888; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+.android-action-btn .aa-chevron { font-size: 22px; color: #c7c7d1; flex-shrink: 0; }
+.android-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(102,126,234,.35);
+  transform: scale(0);
+  animation: androidRippleAnim .55s ease-out;
+  pointer-events: none;
+}
+@keyframes androidRippleAnim {
+  to { transform: scale(2.8); opacity: 0; }
+}
 </style>
 </head>
 <body>
@@ -586,16 +698,40 @@ h1,h2{
     </div>
     <h1>🎯 Quiz Master</h1>
     <p class="subtitle">20 categories • Class 1 to 5 • 3-minute challenge</p>
-    <div class="menu-grid" id="categoryGrid"></div>
 
-    <div class="promo-bar">
-      <button class="promo-btn rate-btn" onclick="rateApp()">
-        <span class="emoji">⭐</span>
-        <span>Rate Us</span>
+    <div class="play-hero">
+      <div class="play-card play-quiz" onclick="showQuizCategoryModal()">
+        <span class="play-badge">20 topics</span>
+        <div class="play-icon">🎯</div>
+        <div class="play-title">Start Quiz</div>
+        <div class="play-sub">Choose a category</div>
+        <div class="play-arrow">›</div>
+      </div>
+      <div class="play-card play-game" onclick="showGameOptions()">
+        <span class="play-badge">1 or 2 player</span>
+        <div class="play-icon">🎮</div>
+        <div class="play-title">Play Game</div>
+        <div class="play-sub">Solo or with a friend</div>
+        <div class="play-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="android-actions">
+      <button class="android-action-btn rate-btn" onclick="rateApp()">
+        <span class="aa-icon">⭐</span>
+        <span class="aa-text">
+          <span class="aa-title">Rate Us</span>
+          <span class="aa-sub">Enjoying the app? Let us know!</span>
+        </span>
+        <span class="aa-chevron">›</span>
       </button>
-      <button class="promo-btn share-btn" onclick="shareApp()">
-        <span class="emoji">📤</span>
-        <span>Share with Friends</span>
+      <button class="android-action-btn share-btn" onclick="shareApp()">
+        <span class="aa-icon">📤</span>
+        <span class="aa-text">
+          <span class="aa-title">Share with Friends</span>
+          <span class="aa-sub">Spread the fun to others</span>
+        </span>
+        <span class="aa-chevron">›</span>
       </button>
     </div>
   </div>
@@ -690,14 +826,22 @@ h1,h2{
       <button class="btn btn-secondary" onclick="showLevelScreen()">Change Level</button>
       <button class="btn" onclick="restartQuiz()">Play Again</button>
     </div>
-    <div class="promo-bar">
-      <button class="promo-btn rate-btn" onclick="rateApp()">
-        <span class="emoji">⭐</span>
-        <span>Rate Us</span>
+    <div class="android-actions">
+      <button class="android-action-btn rate-btn" onclick="rateApp()">
+        <span class="aa-icon">⭐</span>
+        <span class="aa-text">
+          <span class="aa-title">Rate Us</span>
+          <span class="aa-sub">Enjoying the app? Let us know!</span>
+        </span>
+        <span class="aa-chevron">›</span>
       </button>
-      <button class="promo-btn share-btn" onclick="shareApp()">
-        <span class="emoji">📤</span>
-        <span>Share with Friends</span>
+      <button class="android-action-btn share-btn" onclick="shareApp()">
+        <span class="aa-icon">📤</span>
+        <span class="aa-text">
+          <span class="aa-title">Share with Friends</span>
+          <span class="aa-sub">Spread the fun to others</span>
+        </span>
+        <span class="aa-chevron">›</span>
       </button>
     </div>
   </div>
@@ -712,7 +856,17 @@ h1,h2{
       <button onclick="closeGameModal()" style="background:none; border:none; color:#888; font-size:13px; cursor:pointer; margin-top:6px; font-family:'Baloo 2',cursive;">Cancel</button>
     </div>
   </div>
-</div> 
+</div>
+
+  <!-- QUIZ CATEGORY PICKER POPUP -->
+<div id="quizCategoryModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:linear-gradient(180deg,#ffffff,#fef6ff); border:6px solid #fff; border-radius:28px; padding:22px; max-width:420px; width:100%; box-shadow:0 15px 40px rgba(0,0,0,.25); max-height:85vh; display:flex; flex-direction:column;">
+    <h2 style="margin-bottom:2px; text-align:center;">🎯 Choose a Category</h2>
+    <p class="subtitle" style="margin-bottom:14px; text-align:center;">What do you want to be quizzed on?</p>
+    <div class="menu-grid" id="quizCategoryGrid" style="max-height:52vh;"></div>
+    <button onclick="closeQuizCategoryModal()" style="background:none; border:none; color:#888; font-size:13px; cursor:pointer; margin-top:10px; font-family:'Baloo 2',cursive;">Cancel</button>
+  </div>
+</div>
 </div>
 
 <script>
@@ -734,7 +888,7 @@ const CATEGORIES = [
   { id: 'computers', icon: '💻', title: 'Computers' },
   { id: 'animals',   icon: '🐾', title: 'Animals' },
   { id: 'plants',    icon: '🌱', title: 'Plants' },
-  { id: 'humanbody', icon: '🫀', title: 'Human Body' },
+  { id: 'humanbody', icon: '👤', title: 'Human Body' },
   { id: 'space',     icon: '🚀', title: 'Space' },
   { id: 'capitals',  icon: '🏛️', title: 'Capitals' },
   { id: 'riddles',   icon: '🧩', title: 'Riddles' },
@@ -802,6 +956,7 @@ function pickFromPoolNoRepeat(pool) {
    ============================================ */
 function buildMenu() {
   const grid = document.getElementById('categoryGrid');
+  if (!grid) return;
   grid.innerHTML = '';
   CATEGORIES.forEach(cat => {
     const card = document.createElement('div');
@@ -2792,6 +2947,53 @@ function rateApp() {
   alert('Rating is available inside the Kids Quiz app.');
 }
 
+function showQuizCategoryModal() {
+  const grid = document.getElementById('quizCategoryGrid');
+  if (grid && !grid.dataset.built) {
+    grid.innerHTML = '';
+    CATEGORIES.forEach(cat => {
+      const card = document.createElement('div');
+      card.className = 'menu-card';
+      card.onclick = () => { closeQuizCategoryModal(); selectCategory(cat.id); };
+      card.innerHTML = '<div class="icon">' + cat.icon + '</div><div class="title">' + cat.title + '</div>';
+      grid.appendChild(card);
+    });
+    grid.dataset.built = '1';
+  }
+  document.getElementById('quizCategoryModal').classList.remove('hidden');
+}
+
+function closeQuizCategoryModal() {
+  document.getElementById('quizCategoryModal').classList.add('hidden');
+}
+
+/* ============================================
+   ANDROID-STYLE TOUCH RIPPLE
+   ============================================ */
+function attachRipple(selector) {
+  document.querySelectorAll(selector).forEach(el => {
+    if (el.dataset.rippleBound) return;
+    el.dataset.rippleBound = '1';
+    el.addEventListener('click', function(e) {
+      const rect = el.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height) * 1.4;
+      const ripple = document.createElement('span');
+      ripple.className = 'android-ripple';
+      ripple.style.width = ripple.style.height = size + 'px';
+      const x = (e.clientX || rect.left + rect.width / 2) - rect.left - size / 2;
+      const y = (e.clientY || rect.top + rect.height / 2) - rect.top - size / 2;
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      el.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+}
+function initRipples() {
+  attachRipple('.android-action-btn');
+  attachRipple('.play-card');
+}
+
 /* ============================================
    DECORATIVE FLOATING BACKGROUND
    ============================================ */
@@ -3117,6 +3319,7 @@ function confirmClearHistory() {
    ============================================ */
 buildMenu();
 initBackgroundDecor();
+initRipples();
 // Auto-load last user if exists, else show name screen
 const initData = loadStorage();
 if (initData.lastUser && initData.users[initData.lastUser]) {

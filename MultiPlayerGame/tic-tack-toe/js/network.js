@@ -92,6 +92,7 @@ export class NetworkManager {
       mode: 'human',
       status: 'waiting',
       turn: 'X',
+      startingSymbol: 'X', // who goes first this round; alternates on each playAgain()
       winner: null,
       winningLine: null,
       cells: EMPTY_CELLS,
@@ -318,12 +319,19 @@ export class NetworkManager {
     return txResult.committed;
   }
 
-  /** Reset the board for another round, keeping the running score. */
+  /**
+   * Reset the board for another round, keeping the running score. The
+   * player who goes first alternates each round (X, then O, then X, ...)
+   * so joining the room first only determines who starts round 1 — after
+   * that it's "once me, once the opponent."
+   */
   async playAgain() {
     await this.roomRef.transaction((room) => {
       if (!room) return room;
+      const nextStarter = room.startingSymbol === 'O' ? 'X' : 'O';
       room.cells = EMPTY_CELLS;
-      room.turn = 'X';
+      room.turn = nextStarter;
+      room.startingSymbol = nextStarter;
       room.status = 'playing';
       room.winner = null;
       room.winningLine = null;
@@ -341,6 +349,7 @@ export class NetworkManager {
       if (!room) return room;
       room.cells = EMPTY_CELLS;
       room.turn = 'X';
+      room.startingSymbol = 'X';
       room.status = 'waiting';
       room.winner = null;
       room.winningLine = null;

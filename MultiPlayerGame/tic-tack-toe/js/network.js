@@ -53,6 +53,7 @@ export class NetworkManager {
     this.onPlayerAdded = () => {};
     this.onPlayerRemoved = () => {};
     this.onConnectionStateChanged = () => {};
+    this.onSymbolChanged = () => {}; // fired when playAgain() swaps our seat (X <-> O)
   }
 
   watchConnectionState() {
@@ -91,8 +92,7 @@ export class NetworkManager {
       createdAt: firebase.database.ServerValue.TIMESTAMP,
       mode: 'human',
       status: 'waiting',
-      turn: 'X',
-      startingSymbol: 'X', // who goes first this round; alternates on each playAgain()
+      turn: 'X', // standard tic-tac-toe rule: X always moves first
       winner: null,
       winningLine: null,
       cells: EMPTY_CELLS,
@@ -233,7 +233,19 @@ export class NetworkManager {
     // trivially consistent.
     this.roomRef.on('value', (snap) => {
       const room = snap.val();
-      if (room) this.onRoomUpdate(room);
+      if (!room) return;
+
+      // Rematches can swap which seat (X/O) we occupy so the first move
+      // alternates fairly; pick up that change here so mySymbol never
+      // goes stale (it drives turn checks and click permissions in the UI).
+      const myEntry = room.players && room.players[this.playerId];
+      if (myEntry && myEntry.symbol && myEntry.symbol !== this.mySymbol) {
+        const previous = this.mySymbol;
+        this.mySymbol = myEntry.symbol;
+        this.onSymbolChanged(this.mySymbol, previous);
+      }
+
+      this.onRoomUpdate(room);
     });
 
     this.playersRef.on('child_added', (snap) => {
@@ -320,21 +332,33 @@ export class NetworkManager {
   }
 
   /**
-   * Reset the board for another round, keeping the running score. The
-   * player who goes first alternates each round (X, then O, then X, ...)
-   * so joining the room first only determines who starts round 1 — after
-   * that it's "once me, once the opponent."
+   * Reset the board for another round, keeping the running score.
+   *
+   * Two rules enforced here:
+   *  1. Standard tic-tac-toe rule: X always moves first (room.turn is
+   *     always reset to 'X', never 'O').
+   *  2. Fairness: the player who was O last round becomes X this round
+   *     (and vice versa), so who gets to move first alternates —
+   *     "once me, once the opponent" — instead of always favoring
+   *     whoever joined the room first. Bot matches are exempt: the human
+   *     is always X and the computer is always O.
    */
   async playAgain() {
     await this.roomRef.transaction((room) => {
       if (!room) return room;
-      const nextStarter = room.startingSymbol === 'O' ? 'X' : 'O';
       room.cells = EMPTY_CELLS;
-      room.turn = nextStarter;
-      room.startingSymbol = nextStarter;
+      room.turn = 'X';
       room.status = 'playing';
       room.winner = null;
       room.winningLine = null;
+
+      if (room.mode === 'human' && room.players) {
+        for (const id of Object.keys(room.players)) {
+          const p = room.players[id];
+          if (p.symbol === 'X') p.symbol = 'O';
+          else if (p.symbol === 'O') p.symbol = 'X';
+        }
+      }
       return room;
     });
   }
@@ -349,7 +373,6 @@ export class NetworkManager {
       if (!room) return room;
       room.cells = EMPTY_CELLS;
       room.turn = 'X';
-      room.startingSymbol = 'X';
       room.status = 'waiting';
       room.winner = null;
       room.winningLine = null;

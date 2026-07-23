@@ -120,10 +120,21 @@ export class Game {
 
   _wireNetworkCallbacks() {
     this.network.onRoomUpdate = (room) => {
+      if (room.players) {
+        // Source of truth for seats: a rematch can swap X/O between the
+        // two seated players, which only shows up here (child_added/
+        // child_removed below don't fire for a symbol-only change).
+        this.playersMap = room.players;
+        this.ui.renderPlayers(this.playersMap, this.network.mySymbol, this.network.playerId);
+      }
       this._handleStatusTransition(room);
       this.ui.renderRoom(room, this.network.mySymbol);
       this._handleMatchmakingCountdown(room);
       this._maybeTriggerBotMove(room);
+    };
+
+    this.network.onSymbolChanged = (newSymbol) => {
+      this.ui.toast(`New round — you're now playing as ${newSymbol}`, 'info');
     };
 
     this.network.onPlayerAdded = (id, data) => {

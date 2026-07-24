@@ -75,6 +75,7 @@
     missing_letter:"Missing Letter", word_match:"Word Match", rhyme_time:"Rhyme Time",
     first_letter_find:"First Letter Find", category_sort:"Category Sort", word_ladder:"Word Ladder",
     synonym_match:"Synonym Match", word_builder:"Word Builder", speed_spell:"Speed Spell",
+    train_the_robot:"Train the Robot", ai_quiz_master:"AI Quiz Master",
     "tic-tac-toe":"Tic Tac Toe"
   };
 

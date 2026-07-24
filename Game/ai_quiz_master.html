@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>AI Quiz Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Poppins:wght@500;600;700;800&display=swap');
+:root{
+  --bg:#070b1e; --cyan:#22e3ff; --pink:#ff3ea5; --violet:#8b5cf6;
+  --green:#2dff9e; --amber:#ffc04a; --ink:#eaf0ff; --muted:#8b93c9;
+  --panel:rgba(15,20,46,.72); --line:rgba(120,140,255,.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Poppins',system-ui,sans-serif;color:var(--ink);
+  background:radial-gradient(120% 90% at 80% -10%,#2a1a63 0%,#0a1030 40%,var(--bg) 100%);
+  height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;
+  padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;position:relative
+}
+.stars,.stars2,.neb{position:fixed;inset:0;pointer-events:none;z-index:0}
+.stars{background-image:radial-gradient(1.5px 1.5px at 25% 30%,#fff,transparent),radial-gradient(1.5px 1.5px at 70% 60%,#cfe6ff,transparent),radial-gradient(1px 1px at 45% 80%,#fff,transparent),radial-gradient(1.5px 1.5px at 85% 25%,#bfe,transparent);background-repeat:repeat;opacity:.7;animation:twinkle 4s ease-in-out infinite alternate}
+.stars2{background-image:radial-gradient(1px 1px at 15% 50%,#9fd,transparent),radial-gradient(1px 1px at 60% 35%,#fff,transparent),radial-gradient(1px 1px at 88% 78%,#ade,transparent);opacity:.5;animation:drift 70s linear infinite}
+.neb{background:radial-gradient(40% 30% at 15% 10%,rgba(255,62,165,.2),transparent 70%),radial-gradient(45% 35% at 90% 85%,rgba(34,227,255,.16),transparent 70%)}
+@keyframes twinkle{to{opacity:.35}}
+@keyframes drift{to{transform:translateY(-40px)}}
+
+.wrap{position:relative;z-index:2;width:100%;max-width:440px;max-height:100%;display:flex;flex-direction:column;
+  background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:26px;box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.06);
+  padding:14px;overflow:hidden}
+
+.bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.ic-btn{background:linear-gradient(135deg,#1b2456,#2a1e5c);color:var(--cyan);border:1px solid var(--line);
+  border-radius:12px;padding:8px 12px;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer}
+.ic-btn:active{transform:scale(.94)}
+.stats{display:flex;gap:6px;align-items:center}
+.stat{display:flex;align-items:center;gap:4px;background:rgba(10,14,38,.6);border:1px solid var(--line);
+  border-radius:999px;padding:5px 10px;font-size:11px;font-weight:700;line-height:1}
+.stat b{font-family:'Orbitron',sans-serif;color:var(--cyan);font-size:12px}
+
+/* progress */
+.prog{height:8px;border-radius:999px;background:rgba(10,14,38,.7);border:1px solid var(--line);overflow:hidden;margin-bottom:12px}
+.prog .fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--pink));transition:width .4s ease}
+
+/* AI host */
+.host{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+.orb{width:56px;flex:0 0 56px;filter:drop-shadow(0 0 14px rgba(34,227,255,.4))}
+.orb svg{display:block;width:100%}
+#oCore{transition:opacity .3s}
+.mouth2{transition:d .2s}
+.speech{position:relative;flex:1;min-height:58px;background:linear-gradient(135deg,rgba(34,227,255,.12),rgba(255,62,165,.1));
+  border:1px solid var(--line);border-radius:16px;padding:9px 12px;font-size:13px;font-weight:600;line-height:1.35;color:#dfe6ff}
+.speech:before{content:"";position:absolute;left:-9px;top:20px;width:0;height:0;border:7px solid transparent;border-right-color:rgba(34,227,255,.2)}
+.who{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;color:var(--cyan);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.who .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.3}}
+.caret{display:inline-block;width:7px;height:14px;vertical-align:-2px;background:var(--cyan);margin-left:1px;animation:caret .8s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
+
+.q{font-size:19px;font-weight:700;line-height:1.3;min-height:52px;display:flex;align-items:center}
+.opts{display:grid;grid-template-columns:1fr;gap:9px;margin-top:10px}
+.opts button{font-family:inherit;font-weight:700;font-size:15px;color:var(--ink);cursor:pointer;text-align:left;
+  background:linear-gradient(135deg,rgba(30,40,90,.85),rgba(40,28,80,.85));border:1px solid var(--line);
+  border-radius:14px;padding:13px 14px;transition:.12s;display:flex;align-items:center;gap:10px}
+.opts button .k{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--cyan);flex:0 0 auto;
+  width:22px;height:22px;border-radius:6px;background:rgba(34,227,255,.12);display:grid;place-items:center}
+.opts button:hover{border-color:var(--cyan);transform:translateX(3px)}
+.opts button:active{transform:scale(.98)}
+.opts button.ok{background:linear-gradient(135deg,#0f8f5c,#2dff9e);color:#04231a;border-color:var(--green)}
+.opts button.ok .k{background:rgba(0,0,0,.15);color:#04231a}
+.opts button.no{background:linear-gradient(135deg,#8f1f3a,#ff3e6a);color:#fff;border-color:#ff3e6a}
+.opts button.no .k{background:rgba(0,0,0,.2);color:#fff}
+.opts button:disabled{cursor:default}
+
+.next{width:100%;margin-top:12px;font-family:inherit;font-weight:800;font-size:15px;color:#04121f;cursor:pointer;
+  background:linear-gradient(135deg,var(--cyan),var(--green));border:none;border-radius:14px;padding:12px;display:none;
+  box-shadow:0 8px 20px rgba(34,227,255,.3)}
+.next.show{display:block}
+.next:active{transform:scale(.98)}
+
+.overlay{position:absolute;inset:0;z-index:5;background:rgba(6,10,28,.88);backdrop-filter:blur(6px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;gap:6px}
+.overlay.hide{display:none}
+.overlay h2{font-family:'Orbitron',sans-serif;font-size:24px;line-height:1.15;
+  background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.overlay p{color:var(--muted);font-size:13px;max-width:320px;line-height:1.5;margin:2px 0 6px}
+.dash{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:300px;margin:6px 0 4px}
+.dash .d{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;padding:10px}
+.dash .d .n{font-family:'Orbitron',sans-serif;font-size:20px;color:var(--cyan)}
+.dash .d .l{font-size:10px;color:var(--muted);letter-spacing:.5px;margin-top:2px}
+.cta{font-family:inherit;font-weight:800;font-size:16px;color:#04121f;cursor:pointer;margin-top:8px;
+  background:linear-gradient(135deg,var(--cyan),var(--green));border:none;border-radius:16px;padding:14px 40px;
+  box-shadow:0 10px 26px rgba(34,227,255,.35)}
+.cta:active{transform:scale(.96)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--amber);
+  background:rgba(255,192,74,.12);border:1px solid rgba(255,192,74,.4);border-radius:999px;padding:6px 12px;margin:2px}
+
+@media(max-height:640px){.q{font-size:17px;min-height:44px}.overlay h2{font-size:20px}}
+</style></head>
+<body>
+<div class="stars"></div><div class="stars2"></div><div class="neb"></div>
+
+<div class="wrap">
+  <div class="bar">
+    <button class="ic-btn" onclick="location.href='index.html'">← Home</button>
+    <div class="stats">
+      <span class="stat">Q <b><span id="qNum">1</span>/<span id="qTot">10</span></b></span>
+      <span class="stat">🪙 <b id="coins">0</b></span>
+      <span class="stat">✅ <b id="scoreVal">0</b></span>
+    </div>
+  </div>
+
+  <div class="prog"><div class="fill" id="prog"></div></div>
+
+  <div class="host">
+    <div class="orb">
+      <svg viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="35" cy="35" r="30" fill="#141c44" stroke="#3b57c9" stroke-width="2.5"/>
+        <circle id="oCore" cx="35" cy="35" r="26" fill="url(#g)" opacity=".22"/>
+        <defs><radialGradient id="g"><stop offset="0" stop-color="#22e3ff"/><stop offset="1" stop-color="#8b5cf6"/></radialGradient></defs>
+        <circle cx="26" cy="32" r="5.5" fill="#22e3ff"/><circle cx="26" cy="32" r="2.4" fill="#eafcff"/>
+        <circle cx="44" cy="32" r="5.5" fill="#22e3ff"/><circle cx="44" cy="32" r="2.4" fill="#eafcff"/>
+        <path class="mouth2" id="oMouth" d="M27 45 Q35 51 43 45" fill="none" stroke="#22e3ff" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="speech">
+      <div class="who"><span class="dot"></span>QUIZ MASTER</div>
+      <div id="say">Loading questions...</div>
+    </div>
+  </div>
+
+  <div class="q" id="q">—</div>
+  <div class="opts" id="opts"></div>
+  <button class="next" id="nextBtn" onclick="nextQuestion()">Next →</button>
+
+  <!-- start -->
+  <div class="overlay" id="startOv">
+    <div style="font-size:40px">🤖</div>
+    <h2>AI Quiz Master</h2>
+    <p>10 general-knowledge questions. Pick an answer and I'll tell you why it's right — with a little explanation every time. Fast correct answers and streaks earn bonus coins!</p>
+    <button class="cta" onclick="startQuiz()">▶ Start Quiz</button>
+    <button class="ic-btn" id="voiceBtn" style="margin-top:4px" onclick="toggleVoice()">🔊 Voice: Off</button>
+  </div>
+
+  <!-- end -->
+  <div class="overlay hide" id="endOv">
+    <div style="font-size:40px" id="endEmoji">🏆</div>
+    <h2 id="endTitle">Quiz Complete!</h2>
+    <div id="badges"></div>
+    <div class="dash">
+      <div class="d"><div class="n" id="dScore">0/10</div><div class="l">SCORE</div></div>
+      <div class="d"><div class="n" id="dAcc">0%</div><div class="l">ACCURACY</div></div>
+      <div class="d"><div class="n" id="dCoins">0</div><div class="l">COINS</div></div>
+      <div class="d"><div class="n" id="dStreak">0</div><div class="l">BEST STREAK</div></div>
+    </div>
+    <p id="endBest">Best score: 0/10</p>
+    <button class="cta" onclick="startQuiz()">▶ Play Again</button>
+  </div>
+</div>
+
+<script src="ads.js"></script>
+<script>
+/* This is a QUIZ, so its scores go to the shared "quiz" leaderboard,
+   not the single-game board. Override the context ads.js set. */
+window.KQ_CONTEXT = { category:'quiz', gameId:'ai_quiz_master', title:'AI Quiz Master' };
+
+/* ---------- question bank (general knowledge, classes 3-7) ---------- */
+const POOL=[
+  {q:"Which planet is closest to the Sun?",o:["Venus","Mercury","Earth","Mars"],a:1,e:"Mercury is the first planet from the Sun and also the smallest."},
+  {q:"How many sides does a hexagon have?",o:["5","6","7","8"],a:1,e:"'Hexa' means six, so a hexagon has 6 sides."},
+  {q:"What is the largest mammal on Earth?",o:["Elephant","Blue whale","Giraffe","Hippo"],a:1,e:"The blue whale is the biggest animal ever — bigger than any dinosaur!"},
+  {q:"Which gas do plants release that we breathe?",o:["Carbon dioxide","Oxygen","Nitrogen","Hydrogen"],a:1,e:"Plants make oxygen during photosynthesis — the gas we need to live."},
+  {q:"How many continents are there on Earth?",o:["5","6","7","8"],a:2,e:"There are 7 continents, from Asia to Antarctica."},
+  {q:"What is the boiling point of water in Celsius?",o:["50°C","90°C","100°C","120°C"],a:2,e:"Water boils at 100°C at sea level."},
+  {q:"Which is the tallest animal in the world?",o:["Elephant","Giraffe","Camel","Horse"],a:1,e:"The giraffe's long neck makes it the tallest land animal."},
+  {q:"Who painted the Mona Lisa?",o:["Van Gogh","Picasso","Leonardo da Vinci","Michelangelo"],a:2,e:"Leonardo da Vinci painted the famous Mona Lisa over 500 years ago."},
+  {q:"Which ocean is the largest?",o:["Atlantic","Indian","Arctic","Pacific"],a:3,e:"The Pacific Ocean is the largest and deepest on the planet."},
+  {q:"How many colours are in a rainbow?",o:["5","6","7","9"],a:2,e:"A rainbow has 7 colours — remember VIBGYOR."},
+  {q:"What do bees make?",o:["Milk","Honey","Silk","Wax only"],a:1,e:"Bees collect nectar from flowers and turn it into honey."},
+  {q:"Which planet is famous for its rings?",o:["Mars","Saturn","Venus","Mercury"],a:1,e:"Saturn's bright rings are made of ice and rock."},
+  {q:"What is H2O commonly known as?",o:["Salt","Water","Air","Oil"],a:1,e:"H2O is the chemical formula for water — 2 hydrogen and 1 oxygen."},
+  {q:"How many legs does a spider have?",o:["6","8","10","12"],a:1,e:"Spiders have 8 legs, which is why they aren't insects (insects have 6)."},
+  {q:"Which country is home to the kangaroo?",o:["Brazil","India","Australia","Canada"],a:2,e:"Kangaroos are native to Australia."},
+  {q:"What is the fastest land animal?",o:["Lion","Cheetah","Leopard","Horse"],a:1,e:"The cheetah can run over 100 km/h in short bursts."},
+  {q:"How many minutes are in one hour?",o:["30","45","60","100"],a:2,e:"There are 60 minutes in an hour."},
+  {q:"Which shape has three sides?",o:["Square","Triangle","Circle","Pentagon"],a:1,e:"A triangle has 3 sides and 3 corners."},
+  {q:"The Sun is a…",o:["Planet","Star","Moon","Comet"],a:1,e:"The Sun is a star — a giant ball of burning gas."},
+  {q:"Which organ helps you think?",o:["Heart","Brain","Lungs","Stomach"],a:1,e:"The brain controls thinking, memory and your whole body."},
+  {q:"What is frozen water called?",o:["Steam","Ice","Cloud","Rain"],a:1,e:"When water freezes below 0°C it becomes solid ice."},
+  {q:"How many days are in a week?",o:["5","6","7","8"],a:2,e:"There are 7 days in a week."},
+  {q:"Which bird cannot fly?",o:["Sparrow","Penguin","Eagle","Parrot"],a:1,e:"Penguins can't fly, but they're excellent swimmers."},
+  {q:"What is the capital of France?",o:["Rome","Paris","Madrid","Berlin"],a:1,e:"Paris, home of the Eiffel Tower, is the capital of France."},
+  {q:"Which metal is attracted to a magnet?",o:["Gold","Iron","Silver","Copper"],a:1,e:"Iron is magnetic — magnets stick to it."},
+  {q:"A group of lions is called a…",o:["Herd","Pack","Pride","Flock"],a:2,e:"A group of lions is called a pride."},
+  {q:"Which is the smallest prime number?",o:["0","1","2","3"],a:2,e:"2 is the smallest prime number — and the only even one."},
+  {q:"What powers a solar panel?",o:["Wind","Sunlight","Water","Coal"],a:1,e:"Solar panels turn sunlight into electricity."},
+  {q:"How many teeth does an adult human usually have?",o:["20","28","32","40"],a:2,e:"Most adults have 32 teeth, including wisdom teeth."},
+  {q:"Which season comes after winter?",o:["Autumn","Summer","Spring","Monsoon"],a:2,e:"Spring follows winter, when plants start to bloom."}
+];
+const N=10; // questions per run
+
+/* ---------- state ---------- */
+const $=id=>document.getElementById(id);
+let quiz,idx,score,coins,streak,bestStreak,answered;
+let best=+(localStorage.getItem('aiQuizMasterBestScore')||0);
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ---------- voice + typing ---------- */
+let voiceOn=localStorage.getItem('aiVoiceOn')==='1';
+function updVoiceBtn(){const b=$('voiceBtn');if(b)b.textContent='🔊 Voice: '+(voiceOn?'On':'Off');}
+updVoiceBtn();
+function toggleVoice(){voiceOn=!voiceOn;localStorage.setItem('aiVoiceOn',voiceOn?'1':'0');updVoiceBtn();if(voiceOn)speak("Voice online!");else if(window.speechSynthesis)speechSynthesis.cancel();}
+function speak(t){if(!voiceOn||!window.speechSynthesis)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.rate=1.02;u.pitch=1.15;speechSynthesis.speak(u);}catch(e){}}
+function setFace(happy){$('oMouth').setAttribute('d',happy?'M26 44 Q35 53 44 44':'M27 47 L43 47');$('oCore').setAttribute('opacity',happy?'.5':'.22');}
+
+let typeTimer=null;
+function type(text,doSpeak){
+  clearInterval(typeTimer);const el=$('say');let i=0;el.innerHTML='';
+  if(doSpeak)speak(text);
+  typeTimer=setInterval(()=>{
+    i++;el.innerHTML=text.slice(0,i)+(i<text.length?'<span class="caret"></span>':'');
+    if(window.KQFX&&i%3===0)KQFX.play&&KQFX.play('tap');
+    if(i>=text.length)clearInterval(typeTimer);
+  },20);
+}
+
+/* ---------- flow ---------- */
+const KEYS=['A','B','C','D'];
+function render(){
+  const item=quiz[idx];
+  $('qNum').textContent=idx+1;$('scoreVal').textContent=score;$('coins').textContent=coins;
+  $('prog').style.width=((idx)/N*100)+'%';
+  $('q').textContent=item.q;
+  const box=$('opts');box.innerHTML='';
+  item.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.innerHTML='<span class="k">'+KEYS[i]+'</span><span>'+o+'</span>';
+    b.onclick=()=>choose(b,i);box.appendChild(b);
+  });
+  $('nextBtn').classList.remove('show');
+  $('nextBtn').textContent=(idx===N-1)?'See Results →':'Next →';
+  answered=false;
+  type("Question "+(idx+1)+" of "+N+". Take your time!",false);
+  setFace(false);
+}
+
+function choose(btn,i){
+  if(answered)return;answered=true;
+  const item=quiz[idx];
+  [...document.querySelectorAll('.opts button')].forEach((b,j)=>{b.disabled=true;if(j===item.aIdx)b.classList.add('ok');});
+  if(i===item.aIdx){
+    score++;streak++;bestStreak=Math.max(bestStreak,streak);
+    const bonus=streak>=3?3:0;coins+=5+bonus;
+    if(window.KQFX)KQFX.play('success');
+    setFace(true);
+    type("Correct! "+item.e+(bonus?"  🔥 "+streak+" in a row — bonus coins!":""),true);
+  }else{
+    btn.classList.add('no');streak=0;
+    if(window.KQFX)KQFX.play('wrong');
+    setFace(false);
+    type("Good try! The answer is "+item.opts[item.aIdx]+". "+item.e,true);
+  }
+  $('scoreVal').textContent=score;$('coins').textContent=coins;
+  $('prog').style.width=((idx+1)/N*100)+'%';
+  $('nextBtn').classList.add('show');
+}
+
+function nextQuestion(){
+  if(!answered)return;
+  idx++;
+  if(idx>=N)return finish();
+  render();
+}
+
+function startQuiz(){
+  quiz=shuffle(POOL).slice(0,N).map(item=>{
+    // shuffle the options while tracking the correct one
+    const order=shuffle([0,1,2,3]);
+    return {q:item.q,e:item.e,opts:order.map(k=>item.o[k]),aIdx:order.indexOf(item.a)};
+  });
+  idx=0;score=0;coins=0;streak=0;bestStreak=0;
+  $('qTot').textContent=N;
+  $('startOv').classList.add('hide');$('endOv').classList.add('hide');
+  render();
+  type("Welcome! I'm your AI Quiz Master. Let's test what you know — I'll explain every answer.",true);
+}
+
+function finish(){
+  const acc=Math.round(score/N*100);
+  $('dScore').textContent=score+'/'+N;$('dAcc').textContent=acc+'%';
+  $('dCoins').textContent=coins;$('dStreak').textContent=bestStreak;
+  const badges=[];
+  if(score===N)badges.push('🏆 Perfect Score');
+  if(bestStreak>=5)badges.push('🔥 On Fire');
+  if(score>=7)badges.push('🧠 Brainiac');
+  if(acc>=50&&score<7)badges.push('👍 Good Effort');
+  if(!badges.length)badges.push('🌱 Keep Learning');
+  $('badges').innerHTML=badges.map(b=>'<span class="badge">'+b+'</span>').join('');
+  if(score>=8){$('endTitle').textContent='Quiz Champion!';$('endEmoji').textContent='🤩';}
+  else if(score>=5){$('endTitle').textContent='Well Played!';$('endEmoji').textContent='😃';}
+  else{$('endTitle').textContent='Quiz Complete!';$('endEmoji').textContent='🤖';}
+
+  if(score>best){best=score;localStorage.setItem('aiQuizMasterBestScore',best);}
+  $('endBest').textContent='Best score: '+best+'/'+N;
+
+  // submit to the shared QUIZ leaderboard (higher is better)
+  try{ if(window.KQ&&KQ.submit)KQ.submit('quiz','ai_quiz_master',score,{lowerIsBetter:false,meta:{outOf:N}}); }catch(e){}
+  // ad + confetti (celebration scaled to the score)
+  try{ if(window.KQFX)KQFX.quizComplete(score,N); }catch(e){}
+  onGameComplete();
+
+  $('nextBtn').classList.remove('show');
+  $('endOv').classList.remove('hide');
+}
+</script>
+</body></html>

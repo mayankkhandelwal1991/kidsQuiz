@@ -651,6 +651,7 @@ h1,h2{
 }
 .android-action-btn.rate-btn .aa-icon { background: linear-gradient(135deg,#ffb703,#ff7a59); }
 .android-action-btn.share-btn .aa-icon { background: linear-gradient(135deg,#34d399,#06b6d4); }
+.android-action-btn.insta-btn .aa-icon { background: linear-gradient(135deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5); }
 .android-action-btn .aa-text { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .android-action-btn .aa-title { font-weight: 800; font-size: 14.5px; color: #333; }
 .android-action-btn .aa-sub { font-size: 11px; color: #888; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
@@ -752,6 +753,14 @@ h1,h2{
         </span>
         <span class="aa-chevron">›</span>
       </button>
+      <button class="android-action-btn insta-btn" onclick="openInstagram()">
+        <span class="aa-icon">📷</span>
+        <span class="aa-text">
+          <span class="aa-title">Follow us on Instagram</span>
+          <span class="aa-sub">Updates, tips &amp; fun content</span>
+        </span>
+        <span class="aa-chevron">›</span>
+      </button>
     </div>
     
   </div>
@@ -822,6 +831,14 @@ h1,h2{
         <span class="aa-text">
           <span class="aa-title">More Games</span>
           <span class="aa-sub">See all our apps on Google Play</span>
+        </span>
+        <span class="aa-chevron">›</span>
+      </button>
+      <button class="android-action-btn insta-btn" onclick="openInstagram()">
+        <span class="aa-icon">📷</span>
+        <span class="aa-text">
+          <span class="aa-title">Follow us on Instagram</span>
+          <span class="aa-sub">Updates, tips &amp; fun content</span>
         </span>
         <span class="aa-chevron">›</span>
       </button>
@@ -3059,11 +3076,31 @@ window.addEventListener('popstate', function () {
 /* ============================================
    SHARE & RATE
    ============================================ */
-function shareApp() {
+async function shareApp() {
   if (typeof Android !== "undefined" && Android.shareApp) {
     Android.shareApp();
     return;
   }
+
+  // Try sharing an image so apps like Instagram show Post/Story options
+  try {
+    const response = await fetch('icon.png'); // your app icon or promo banner
+    const blob = await response.blob();
+    const file = new File([blob], 'kidsquiz.png', { type: blob.type });
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        title: 'Kids Quiz',
+        text: 'Check out this fun Kids Quiz app!',
+        url: window.location.href,
+        files: [file]
+      });
+      return;
+    }
+  } catch (e) {
+    // fall through to text-only share
+  }
+
   if (navigator.share) {
     navigator.share({
       title: 'Kids Quiz',
@@ -3085,6 +3122,14 @@ function rateApp() {
 
 function moreGames() {
   var url = 'https://play.google.com/store/apps/developer?id=Mayank+Logic';
+  try {
+    if (typeof Android !== "undefined" && Android.openUrl) { Android.openUrl(url); return; }
+  } catch (e) {}
+  try { window.open(url, '_blank'); } catch (e) { window.location.href = url; }
+}
+
+function openInstagram() {
+  var url = 'https://www.instagram.com/kidsgames_quiz?igsh=dHVkdWVtNnFleXV1';
   try {
     if (typeof Android !== "undefined" && Android.openUrl) { Android.openUrl(url); return; }
   } catch (e) {}

@@ -3130,10 +3130,7 @@ function moreGames() {
 
 function openInstagram() {
   var url = 'https://www.instagram.com/kidsgames_quiz?igsh=dHVkdWVtNnFleXV1';
-  try {
-    if (typeof Android !== "undefined" && Android.openUrl) { Android.openUrl(url); return; }
-  } catch (e) {}
-  try { window.open(url, '_blank'); } catch (e) { window.location.href = url; }
+  window.open(url, '_blank');
 }
 
 function showQuizCategoryModal() {

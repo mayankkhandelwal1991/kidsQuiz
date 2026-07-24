@@ -260,9 +260,43 @@
   }
 
   /* ------------------------------------------------------------- auth ops  */
+  // True when we're running inside an Android WebView (Google blocks its web
+  // OAuth flow here, so we must use a native token instead).
+  function isAndroidWebView() {
+    var ua = navigator.userAgent || "";
+    return /; wv\)/.test(ua) || (/\bAndroid\b/.test(ua) && /\bVersion\/[\d.]+/.test(ua) && /\bChrome\//.test(ua));
+  }
+  // True when the native app exposes a Google sign-in method for us to call.
+  function hasNativeGoogle() {
+    try { return typeof Android !== "undefined" && Android && typeof Android.googleSignIn === "function"; }
+    catch (e) { return false; }
+  }
+
+  // Complete Firebase sign-in using a Google ID token obtained natively.
+  function signInWithIdToken(idToken) {
+    return ready.then(function () {
+      if (!auth || !idToken) return null;
+      var cred = firebase.auth.GoogleAuthProvider.credential(idToken);
+      return auth.signInWithCredential(cred).then(function (r) { return r.user; })
+        .catch(function (e) {
+          console.warn("[KQ] signInWithCredential failed:", e);
+          alert("Google sign-in failed on this device. Please try again.");
+          return null;
+        });
+    });
+  }
+  // Android calls this (via evaluateJavascript) after native Google Sign-In.
+  window.onGoogleIdToken = function (idToken) { return signInWithIdToken(idToken); };
+
   function signIn() {
     return ready.then(function () {
+      // Inside the Android app: hand off to native Google Sign-In. The app
+      // then calls window.onGoogleIdToken('<idToken>') to finish the login.
+      if (hasNativeGoogle()) {
+        try { Android.googleSignIn(); return null; } catch (e) { console.warn("[KQ] native googleSignIn() threw:", e); }
+      }
       if (!auth) { alert("Login is unavailable right now."); return null; }
+      // Real browsers: normal Google popup (with redirect fallback).
       var provider = new firebase.auth.GoogleAuthProvider();
       return auth.signInWithPopup(provider).then(function (r) {
         return r.user;
@@ -271,7 +305,11 @@
         if (e && e.code === "auth/popup-blocked") {
           try { return auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()); } catch (x) {}
         }
-        if (e && e.code !== "auth/popup-closed-by-user" && e && e.code !== "auth/cancelled-popup-request") {
+        var disallowed = e && (e.code === "auth/operation-not-supported-in-this-environment" ||
+          /disallowed_useragent/i.test(e.message || ""));
+        if (disallowed || isAndroidWebView()) {
+          alert("Google sign-in isn't allowed inside the app's browser view. Please update the app so it can sign you in.");
+        } else if (e && e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") {
           alert("Google sign-in failed. Make sure Google is enabled in Firebase Auth and this domain is authorized.");
         }
         return null;
@@ -461,6 +499,7 @@
     user: currentUser,
     onAuth: function (fn) { if (typeof fn === "function") { authCbs.push(fn); try { fn(currentUser()); } catch (e) {} } },
     signIn: signIn,
+    signInWithIdToken: signInWithIdToken,
     signOut: signOut,
     setNick: function (name) {
       name = String(name || "").trim().slice(0, 24);

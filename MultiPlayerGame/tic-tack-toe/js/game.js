@@ -239,6 +239,12 @@ export class Game {
 
     if (room.status === 'won') {
       this.sounds.playWin();
+      // Leaderboard: credit a win only to the player who actually won.
+      try {
+        if (window.KQ && KQ.addWin && room.winner && room.winner === this.network.mySymbol) {
+          KQ.addWin('multi', 'tic-tac-toe');
+        }
+      } catch (e) {}
     } else if (room.status === 'draw') {
       this.sounds.playDraw();
     }

@@ -654,6 +654,45 @@ h1,h2{
 .android-action-btn .aa-title { font-weight: 800; font-size: 14.5px; color: #333; }
 .android-action-btn .aa-sub { font-size: 11px; color: #888; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
 .android-action-btn .aa-chevron { font-size: 22px; color: #c7c7d1; flex-shrink: 0; }
+
+/* ===== Home page after login: profile, daily challenge, leaderboard ===== */
+.profile-hero{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px solid #fff;border-radius:20px;padding:12px 14px;box-shadow:0 6px 18px rgba(102,126,234,.12);margin-bottom:12px}
+.profile-hero .pf-av{width:52px;height:52px;border-radius:50%;object-fit:cover;flex:0 0 auto;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.profile-hero .pf-avph{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px;background:linear-gradient(135deg,#667eea,#f43f5e);flex:0 0 auto}
+.profile-hero .pf-mid{flex:1;min-width:0}
+.profile-hero .pf-hi{font-size:12px;color:#8a8fa3;font-weight:600}
+.profile-hero .pf-name{font-size:18px;font-weight:800;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.profile-hero .pf-out{background:#fff;border:1px solid #e3e3ee;border-radius:12px;padding:6px 10px;font-size:12px;font-weight:700;color:#667eea;cursor:pointer;font-family:inherit;flex:0 0 auto}
+.pf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.pf-stat{background:#fff;border:2px solid #f0f0f7;border-radius:16px;padding:10px 6px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.05)}
+.pf-stat b{display:block;font-size:19px;color:#5b4bd6;line-height:1}
+.pf-stat span{font-size:10.5px;color:#999;font-weight:600}
+
+.daily-card{position:relative;overflow:hidden;border-radius:22px;padding:16px 16px 18px;margin-bottom:16px;color:#fff;background:linear-gradient(135deg,#ff7a59,#ff4fa3,#a855f7);box-shadow:0 12px 26px rgba(244,79,163,.4);border:3px solid rgba(255,255,255,.55);cursor:pointer}
+.daily-card:active{transform:scale(.98)}
+.daily-card .dc-flame{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.22);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:800;display:flex;align-items:center;gap:4px}
+.daily-card .dc-tag{font-size:11px;font-weight:800;letter-spacing:.5px;opacity:.95;text-transform:uppercase}
+.daily-card .dc-title{font-size:20px;font-weight:800;margin-top:2px;display:flex;align-items:center;gap:8px}
+.daily-card .dc-sub{font-size:12px;opacity:.95;margin-top:3px;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+.daily-card .dc-btn{margin-top:12px;display:inline-flex;align-items:center;gap:6px;background:#fff;color:#e8386f;border:none;border-radius:14px;padding:9px 18px;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 5px 14px rgba(0,0,0,.18)}
+.daily-card.done{background:linear-gradient(135deg,#22c55e,#10b981,#0ea5e9);box-shadow:0 12px 26px rgba(16,185,129,.4)}
+
+.play-card.play-board{grid-column:1 / -1;flex-direction:row;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(135deg,#f59e0b,#f43f5e);box-shadow:0 10px 22px rgba(245,158,11,.4)}
+.play-card.play-board .play-icon{font-size:30px}
+.play-card.play-board .pb-txt{display:flex;flex-direction:column}
+.play-card.play-board .play-arrow{position:static;margin-left:auto;font-size:24px}
+
+/* Leaderboard hub modal picker */
+.lbhub-row{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;text-align:left}
+.lbhub-row label{font-size:12px;font-weight:700;color:#777}
+.lbhub-sel{width:100%;padding:11px 12px;border-radius:12px;border:2px solid #ece9f7;font-family:inherit;font-size:14px;font-weight:600;color:#444;background:#faf9ff}
+.lbhub-levels{display:flex;gap:6px}
+.lbhub-lv{flex:1;padding:9px 0;border-radius:12px;border:2px solid #ece9f7;background:#faf9ff;font-family:inherit;font-weight:800;color:#667eea;cursor:pointer;font-size:13px}
+.lbhub-lv.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-color:transparent}
+.lbhub-links{display:flex;gap:8px;margin-top:6px}
+.lbhub-links button{flex:1;padding:10px;border:none;border-radius:12px;font-family:inherit;font-weight:800;font-size:12.5px;color:#fff;cursor:pointer}
+.lbhub-mp{background:linear-gradient(135deg,#8b5cf6,#6366f1)}
+.lbhub-gm{background:linear-gradient(135deg,#ff7a59,#ff4fa3)}
 .android-ripple {
   position: absolute;
   border-radius: 50%;
@@ -676,26 +715,33 @@ h1,h2{
   <!-- NAME ENTRY SCREEN -->
   <div id="nameScreen">
     <h1>🎯 Kids Quiz</h1>
-    <p class="subtitle">Welcome! Enter your name to start tracking scores</p>
-    <div class="name-input-wrap">
-      <input type="text" id="nameInput" class="name-input" placeholder="Your name" maxlength="20" autocomplete="off">
+    <p class="subtitle">Please sign in with Google to continue</p>
+    <div class="center" style="margin-top:20px">
+      <button class="btn" id="googleGateBtn" onclick="gateSignIn()" style="display:inline-flex;align-items:center;gap:10px">
+        <span style="width:22px;height:22px;border-radius:50%;background:#fff;color:#4285F4;font-weight:800;display:inline-flex;align-items:center;justify-content:center">G</span>
+        Sign in with Google
+      </button>
     </div>
-    <div class="center">
-      <button class="btn" onclick="submitName()">Continue →</button>
-    </div>
-    <div class="saved-users" id="savedUsersWrap"></div>
+    <p id="gateMsg" class="subtitle" style="margin-top:14px;font-size:12px;color:#ffd1d1;min-height:16px"></p>
+    <p class="subtitle" style="margin-top:6px;font-size:11px;opacity:.75">Sign-in is required. Your scores and leaderboard rank are saved to your account.</p>
   </div>
 
   <!-- MAIN MENU -->
   <div id="menuScreen" class="hidden">
-    <div class="user-header">
-      <div class="user-name">👋 <span id="currentUserDisplay">Guest</span></div>
-      <div class="user-actions">
-        <button onclick="showHistoryScreen()">📊 History</button>
-        <button onclick="switchUser()">Switch</button>
-        <button onclick="showGameOptions()">Game</button>
+    <div class="profile-hero">
+      <div id="pfAvatar"><div class="pf-avph">🙂</div></div>
+      <div class="pf-mid">
+        <div class="pf-hi">Welcome back 👋</div>
+        <div class="pf-name" id="currentUserDisplay">Guest</div>
       </div>
+      <button class="pf-out" onclick="showHistoryScreen()" title="History">📊</button>
+      <button class="pf-out" onclick="switchUser()">Sign out</button>
     </div>
+
+    <div class="pf-stats" id="pfStats"></div>
+
+    <div class="daily-card" id="dailyCard" onclick="startDailyChallenge()"></div>
+
     <h1>🎯 Quiz Master</h1>
     <p class="subtitle">20 categories • Class 1 to 5 • 3-minute challenge</p>
 
@@ -714,6 +760,14 @@ h1,h2{
         <div class="play-sub">Solo or with a friend</div>
         <div class="play-arrow">›</div>
       </div>
+      <div class="play-card play-board" onclick="openLeaderboardHub()">
+        <div class="play-icon">🏆</div>
+        <div class="pb-txt">
+          <div class="play-title">Leaderboard</div>
+          <div class="play-sub">See top players &amp; your rank</div>
+        </div>
+        <div class="play-arrow">›</div>
+      </div>
     </div>
 
     <div class="android-actions">
@@ -730,6 +784,14 @@ h1,h2{
         <span class="aa-text">
           <span class="aa-title">Share with Friends</span>
           <span class="aa-sub">Spread the fun to others</span>
+        </span>
+        <span class="aa-chevron">›</span>
+      </button>
+      <button class="android-action-btn" onclick="moreGames()">
+        <span class="aa-icon">🎮</span>
+        <span class="aa-text">
+          <span class="aa-title">More Games</span>
+          <span class="aa-sub">See all our apps on Google Play</span>
         </span>
         <span class="aa-chevron">›</span>
       </button>
@@ -823,6 +885,7 @@ h1,h2{
     <div class="button-row">
       <button class="btn btn-secondary" onclick="goToMenu()">Main Menu</button>
       <button class="btn btn-secondary" onclick="showHistoryScreen()">📊 History</button>
+      <button class="btn btn-secondary" onclick="openQuizBoard()">🏆 Leaderboard</button>
       <button class="btn btn-secondary" onclick="showLevelScreen()">Change Level</button>
       <button class="btn" onclick="restartQuiz()">Play Again</button>
     </div>
@@ -865,6 +928,27 @@ h1,h2{
     <p class="subtitle" style="margin-bottom:14px; text-align:center;">What do you want to be quizzed on?</p>
     <div class="menu-grid" id="quizCategoryGrid" style="max-height:52vh;"></div>
     <button onclick="closeQuizCategoryModal()" style="background:none; border:none; color:#888; font-size:13px; cursor:pointer; margin-top:10px; font-family:'Baloo 2',cursive;">Cancel</button>
+  </div>
+</div>
+
+<div id="leaderboardHubModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:linear-gradient(180deg,#ffffff,#fef6ff); border:6px solid #fff; border-radius:28px; padding:22px; max-width:420px; width:100%; box-shadow:0 15px 40px rgba(0,0,0,.25); max-height:88vh; display:flex; flex-direction:column;">
+    <h2 style="margin-bottom:2px; text-align:center;">🏆 Leaderboards</h2>
+    <p class="subtitle" style="margin-bottom:16px; text-align:center;">See the top players for any level</p>
+    <div class="lbhub-row">
+      <label>Quiz subject</label>
+      <select id="lbhubCat" class="lbhub-sel"></select>
+    </div>
+    <div class="lbhub-row">
+      <label>Class level</label>
+      <div class="lbhub-levels" id="lbhubLevels"></div>
+    </div>
+    <button class="btn" style="width:100%;margin-top:4px" onclick="viewSelectedBoard()">🏆 View Leaderboard</button>
+    <div class="lbhub-links">
+      <button class="lbhub-mp" onclick="viewMultiBoard()">👥 Multiplayer</button>
+      <button class="lbhub-gm" onclick="goToGames()">🎮 Game Boards</button>
+    </div>
+    <button onclick="closeLeaderboardHub()" style="background:none; border:none; color:#888; font-size:13px; cursor:pointer; margin-top:14px; font-family:'Baloo 2',cursive;">Cancel</button>
   </div>
 </div>
 </div>
@@ -979,6 +1063,7 @@ function goToMenu() {
   recentQuestions = [];
   returnToRoot();
   showScreen('menuScreen');
+  try { renderHomeProfile(); renderDailyCard(); } catch (e) {}
 }
 
 function getCatInfo(id) { return CATEGORIES.find(c => c.id === id); }
@@ -1091,12 +1176,14 @@ function checkAnswer(selected, btn) {
     correctCount++;
     feedback.textContent = '✓ Correct!';
     feedback.className = 'feedback correct';
+    try { if (window.KQFX) KQFX.play('success'); } catch (e) {}
   } else {
     btn.classList.add('wrong');
     score--;
     wrongCount++;
     feedback.textContent = '✗ Wrong! Answer: ' + currentAnswer;
     feedback.className = 'feedback wrong';
+    try { if (window.KQFX) KQFX.play('wrong'); } catch (e) {}
     buttons.forEach(b => {
       if (String(b.textContent) === String(currentAnswer)) b.classList.add('correct');
     });
@@ -1124,6 +1211,18 @@ function endQuiz() {
   // Save to history & show personal best comparison
   const prevBest = getBestScore(currentCategory, currentLevel);
   saveScoreToHistory(currentCategory, currentLevel, score, correctCount, wrongCount);
+  // --- Firebase leaderboard: one board per category + class level ---
+  try {
+    if (window.KQ && KQ.submit) {
+      const cat = getCatInfo(currentCategory);
+      window.KQ_CONTEXT = { category: 'quiz', gameId: currentCategory + '__' + currentLevel,
+        title: (cat.icon + ' ' + cat.title + ' • Class ' + currentLevel) };
+      KQ.submit('quiz', currentCategory + '__' + currentLevel, score,
+        { meta: { correct: correctCount, wrong: wrongCount, cat: cat.title, level: currentLevel } });
+    }
+  } catch (e) {}
+  try { markDailyDoneIfMatches(); } catch (e) {}
+  try { if (window.KQFX) KQFX.quizComplete(score); } catch (e) {}
   const bestEl = document.getElementById('bestComparison');
   if (prevBest === null) {
     bestEl.innerHTML = '🌟 First attempt at this level — saved as your best!';
@@ -1143,6 +1242,13 @@ function endQuiz() {
 }
 
 function restartQuiz() { startQuiz(currentLevel); }
+
+function openQuizBoard() {
+  if (!window.KQ || !KQ.open) return;
+  const cat = getCatInfo(currentCategory);
+  KQ.open('quiz', currentCategory + '__' + currentLevel,
+    cat.icon + ' ' + cat.title + ' • Class ' + currentLevel);
+}
 
 /* ============================================
    QUESTION ROUTER
@@ -2947,6 +3053,14 @@ function rateApp() {
   alert('Rating is available inside the Kids Quiz app.');
 }
 
+function moreGames() {
+  var url = 'https://play.google.com/store/apps/developer?id=Mayank+Logic';
+  try {
+    if (typeof Android !== "undefined" && Android.openUrl) { Android.openUrl(url); return; }
+  } catch (e) {}
+  try { window.open(url, '_blank'); } catch (e) { window.location.href = url; }
+}
+
 function showQuizCategoryModal() {
   const grid = document.getElementById('quizCategoryGrid');
   if (grid && !grid.dataset.built) {
@@ -3111,6 +3225,7 @@ function renderNameScreen() {
   const data = loadStorage();
   const users = getAllUsers();
   const wrap = document.getElementById('savedUsersWrap');
+  if (!wrap) return; // name/profile UI removed in favour of Google sign-in gate
   if (users.length === 0) {
     wrap.innerHTML = '';
   } else {
@@ -3145,6 +3260,7 @@ function submitName() {
 function selectUser(name) {
   currentUser = name;
   getOrCreateUser(name);
+  try { if (window.KQ && KQ.setNick) KQ.setNick(name); } catch (e) {}
   document.getElementById('currentUserDisplay').textContent = name;
   document.getElementById('historyUserDisplay').textContent = name;
   atRootScreen = true;
@@ -3153,9 +3269,13 @@ function selectUser(name) {
 
 function switchUser() {
   currentUser = null;
-  renderNameScreen();
-  atRootScreen = true;
-  showScreen('nameScreen');
+  try {
+    if (window.KQ && KQ.signOut) {
+      KQ.signOut(); // onAuth will return us to the login gate
+      return;
+    }
+  } catch (e) {}
+  showLoginGate();
 }
 
 function confirmDeleteUser(name) {
@@ -3320,19 +3440,56 @@ function confirmClearHistory() {
 buildMenu();
 initBackgroundDecor();
 initRipples();
-// Auto-load last user if exists, else show name screen
-const initData = loadStorage();
-if (initData.lastUser && initData.users[initData.lastUser]) {
-  selectUser(initData.lastUser);
-} else {
-  renderNameScreen();
+
+// ---- Mandatory Google sign-in gate ----------------------------------------
+// The app cannot be used until the user is signed in with Google. We drive the
+// entry screen off the Firebase auth state exposed by KQ (kq-leaderboard.js).
+function gateSignIn() {
+  const msg = document.getElementById('gateMsg');
+  if (msg) msg.textContent = '';
+  if (!window.KQ || !KQ.signIn) {
+    if (msg) msg.textContent = 'Sign-in is still loading, please wait a moment…';
+    return;
+  }
+  KQ.signIn().then(function (u) {
+    // onAuth (below) moves us to the menu on success; show a hint on cancel.
+    if (!u && msg) msg.textContent = 'Sign-in was not completed. Please try again.';
+  });
+}
+
+function proceedAfterLogin(u) {
+  const name = (u && u.name) ? u.name : 'Player';
+  currentUser = name;
+  getOrCreateUser(name);
+  const cu = document.getElementById('currentUserDisplay');
+  if (cu) cu.textContent = name;
+  const hu = document.getElementById('historyUserDisplay');
+  if (hu) hu.textContent = name;
+  atRootScreen = true;
+  showScreen('menuScreen');
+  try { renderHomeProfile(); renderDailyCard(); } catch (e) {}
+}
+
+function showLoginGate() {
+  currentUser = null;
   atRootScreen = true;
   showScreen('nameScreen');
 }
-// Allow Enter key to submit name
-document.getElementById('nameInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') submitName();
-});
+
+(function initAuthGate() {
+  showLoginGate(); // default until we know the auth state
+  function start() {
+    KQ.onAuth(function (u) {
+      if (u && !u.isGuest) proceedAfterLogin(u);
+      else showLoginGate();
+    });
+  }
+  if (window.KQ) { start(); return; }
+  const t = setInterval(function () {
+    if (window.KQ) { clearInterval(t); start(); }
+  }, 50);
+  setTimeout(function () { clearInterval(t); }, 20000);
+})();
 
 function onRewardEarned(type, amount) {
     console.log(type, amount);
@@ -3359,6 +3516,129 @@ function openMultiPlayer() {
     closeGameModal();
     window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/MultiPlayerGame/index.html";
 }
+
+/* ===== Home page after login: profile, stats, daily challenge, boards ===== */
+function getQuizStats() {
+  const data = loadStorage();
+  const u = data.users[currentUser];
+  if (!u || !u.history || !u.history.length) return { games: 0, best: 0, accuracy: 0 };
+  const h = u.history;
+  const best = h.reduce((m, x) => Math.max(m, x.score || 0), 0);
+  const c = h.reduce((s, x) => s + (x.correct || 0), 0);
+  const w = h.reduce((s, x) => s + (x.wrong || 0), 0);
+  const acc = (c + w) ? Math.round(c / (c + w) * 100) : 0;
+  return { games: h.length, best: best, accuracy: acc };
+}
+
+function renderHomeProfile() {
+  const av = document.getElementById('pfAvatar');
+  if (av) {
+    let photo = '';
+    try { if (window.KQ && KQ.user) photo = KQ.user().photo || ''; } catch (e) {}
+    const nm = (currentUser || 'Player').trim();
+    const ini = nm.charAt(0).toUpperCase() || '🙂';
+    av.innerHTML = photo
+      ? '<img class="pf-av" src="' + photo + '" referrerpolicy="no-referrer" alt="">'
+      : '<div class="pf-avph">' + ini + '</div>';
+  }
+  const st = document.getElementById('pfStats');
+  if (st) {
+    const s = getQuizStats();
+    st.innerHTML =
+      '<div class="pf-stat"><b>' + s.games + '</b><span>Quizzes</span></div>' +
+      '<div class="pf-stat"><b>' + s.best + '</b><span>Best score</span></div>' +
+      '<div class="pf-stat"><b>' + s.accuracy + '%</b><span>Accuracy</span></div>';
+  }
+}
+
+/* ---- Daily challenge (same pick for everyone each day, tracks a streak) ---- */
+function todayKey() {
+  const d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+}
+function dateKeyOffset(days) {
+  const d = new Date(); d.setDate(d.getDate() + days);
+  return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+}
+function dailyHash(str) {
+  let h = 0; for (let i = 0; i < str.length; i++) { h = (h * 31 + str.charCodeAt(i)) >>> 0; } return h;
+}
+function getDailyChallenge() {
+  const seed = dailyHash(todayKey());
+  const cat = CATEGORIES[seed % CATEGORIES.length];
+  const level = (Math.floor(seed / 7) % 5) + 1;
+  return { catId: cat.id, level: level, title: cat.title, icon: cat.icon };
+}
+function loadDaily() {
+  try { return JSON.parse(localStorage.getItem('kq_daily_' + currentUser) || '{}'); } catch (e) { return {}; }
+}
+function saveDaily(o) { try { localStorage.setItem('kq_daily_' + currentUser, JSON.stringify(o)); } catch (e) {} }
+function renderDailyCard() {
+  const card = document.getElementById('dailyCard');
+  if (!card) return;
+  const dc = getDailyChallenge();
+  const st = loadDaily();
+  const doneToday = st.date === todayKey() && st.done;
+  const streak = st.streak || 0;
+  card.classList.toggle('done', !!doneToday);
+  card.innerHTML =
+    '<div class="dc-flame">🔥 ' + streak + ' day' + (streak === 1 ? '' : 's') + '</div>' +
+    '<div class="dc-tag">Daily Challenge</div>' +
+    '<div class="dc-title">' + dc.icon + ' ' + dc.title + ' • Class ' + dc.level + '</div>' +
+    '<div class="dc-sub">' + (doneToday
+      ? 'Completed today — come back tomorrow! ✅'
+      : 'A fresh quiz every day. Keep your streak alive!') + '</div>' +
+    '<button class="dc-btn">' + (doneToday ? '🔁 Play Again' : '▶ Play Now') + '</button>';
+}
+function startDailyChallenge() {
+  const dc = getDailyChallenge();
+  currentCategory = dc.catId;
+  startQuiz(dc.level);
+}
+function markDailyDoneIfMatches() {
+  const dc = getDailyChallenge();
+  if (currentCategory === dc.catId && +currentLevel === +dc.level) {
+    const st = loadDaily();
+    const tk = todayKey();
+    if (st.date !== tk || !st.done) {
+      let streak = 1;
+      if (st.lastDate === dateKeyOffset(-1)) streak = (st.streak || 0) + 1;
+      else if (st.lastDate === tk) streak = st.streak || 1;
+      saveDaily({ date: tk, done: true, streak: streak, lastDate: tk });
+    }
+  }
+}
+
+/* ---- Leaderboard hub (pick any quiz subject + class, or jump to others) ---- */
+let lbhubLevel = 1;
+function openLeaderboardHub() {
+  const sel = document.getElementById('lbhubCat');
+  if (sel) {
+    sel.innerHTML = CATEGORIES.map(c => '<option value="' + c.id + '">' + c.icon + ' ' + c.title + '</option>').join('');
+    sel.value = currentCategory || getDailyChallenge().catId;
+  }
+  lbhubLevel = 1;
+  const lv = document.getElementById('lbhubLevels');
+  if (lv) {
+    lv.innerHTML = [1, 2, 3, 4, 5].map(n =>
+      '<button class="lbhub-lv' + (n === 1 ? ' active' : '') + '" onclick="selectHubLevel(' + n + ')">' + n + '</button>').join('');
+  }
+  document.getElementById('leaderboardHubModal').classList.remove('hidden');
+}
+function selectHubLevel(n) {
+  lbhubLevel = n;
+  document.querySelectorAll('#lbhubLevels .lbhub-lv').forEach((b, i) => b.classList.toggle('active', (i + 1) === n));
+}
+function closeLeaderboardHub() { document.getElementById('leaderboardHubModal').classList.add('hidden'); }
+function viewSelectedBoard() {
+  const catId = document.getElementById('lbhubCat').value;
+  const cat = getCatInfo(catId);
+  closeLeaderboardHub();
+  if (window.KQ && KQ.open) KQ.open('quiz', catId + '__' + lbhubLevel, cat.icon + ' ' + cat.title + ' • Class ' + lbhubLevel);
+}
+function viewMultiBoard() { closeLeaderboardHub(); if (window.KQ && KQ.open) KQ.open('multi', 'tic-tac-toe', 'Tic Tac Toe'); }
+function goToGames() { openSinglePlayer(); }
 </script>
+<script src="Game/kq-leaderboard.js"></script>
 </body>
 </html>

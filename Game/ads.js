@@ -46,3 +46,86 @@ function onGameComplete() {
     }
   } catch (e) { console.log(e); }
 }
+
+/* ============================================================
+   LEADERBOARD GLUE  (added)  —  wires every single-player game
+   into Firebase leaderboards + optional Google login, WITHOUT
+   editing any individual game file. All games already include
+   this ads.js, so this code runs everywhere automatically.
+   ------------------------------------------------------------
+   How scores are captured (dynamic — new games work too):
+     1. When a game saves a personal best via
+        localStorage.setItem('<x>Best', value)  we submit it.
+     2. When a game calls onGameComplete(score) with a number,
+        we submit that. If called with no argument we try to
+        read a score from the page (#score / #finalScore / #wpm).
+   ============================================================ */
+(function () {
+  // Load the shared leaderboard module (sits next to ads.js in /Game).
+  if (!window.KQ) {
+    var s = document.createElement('script');
+    s.src = 'kq-leaderboard.js';
+    s.async = false;
+    document.head.appendChild(s);
+  }
+
+  // Derive a stable game id from the page filename, e.g. snake.html -> "snake".
+  var GAME_ID = (function () {
+    var p = (location.pathname || '').split('/').pop() || '';
+    return p.replace(/\.html?$/i, '') || 'game';
+  })();
+
+  // Tell the floating widget which board its 🏆 button opens.
+  window.KQ_CONTEXT = { category: 'single', gameId: GAME_ID };
+
+  // Games where a LOWER score is better (time / moves).
+  var LOWER_GAMES = { reaction_test: 1, number_order: 1, slide_puzzle: 1, memory_match: 1 };
+  // localStorage "*Best" keys that are lower-is-better.
+  var LOWER_KEYS = { reactBest: 1, rushBest: 1, slideBest: 1 };
+  var lowerForKey = function (k) { return !!LOWER_KEYS[k]; };
+  var lowerForGame = function () { return !!LOWER_GAMES[GAME_ID]; };
+
+  function send(score, lower) {
+    score = Number(score);
+    if (!isFinite(score)) return;
+    if (window.KQ && KQ.submit) KQ.submit('single', GAME_ID, score, { lowerIsBetter: !!lower });
+  }
+
+  /* --- 1. Auto-capture every "*Best" high-score write ------------------- */
+  try {
+    var _set = localStorage.setItem.bind(localStorage);
+    localStorage.setItem = function (key, val) {
+      var r = _set(key, val);
+      try {
+        if (/Best$/.test(key)) {
+          var n = parseFloat(val);
+          if (isFinite(n)) send(n, lowerForKey(key));
+        }
+      } catch (e) {}
+      return r;
+    };
+  } catch (e) {}
+
+  /* --- 2. Enhance onGameComplete to also submit a score ---------------- */
+  function sniffScore() {
+    var ids = ['score', 'finalScore', 'wpm'];
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (el) {
+        var m = String(el.textContent || '').match(/-?\d+(\.\d+)?/);
+        if (m) return parseFloat(m[0]);
+      }
+    }
+    return null;
+  }
+
+  var _orig = window.onGameComplete;
+  window.onGameComplete = function (score) {
+    try { if (typeof _orig === 'function') _orig.apply(this, arguments); } catch (e) {}
+    try { if (window.KQFX) KQFX.gameComplete(); } catch (e) {}
+    try {
+      var val = (typeof score === 'number' && isFinite(score)) ? score : sniffScore();
+      if (val != null) send(val, lowerForGame());
+    } catch (e) {}
+  };
+})();

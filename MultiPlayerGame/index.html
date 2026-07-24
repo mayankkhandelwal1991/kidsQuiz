@@ -44,6 +44,7 @@ h1{color:#ff5a8a;text-align:center;font-size:26px;font-weight:800}
     <h2 id="dName"></h2>
     <p id="dHow"></p>
     <button class="start-btn" onclick="startGame()">▶ Start</button>
+    <button class="start-btn" style="background:linear-gradient(135deg,#f59e0b,#f43f5e);box-shadow:0 8px 18px rgba(244,63,94,.35);margin-left:8px" onclick="openBoard()">🏆 Leaderboard</button>
   </div>
 </div>
 <script>
@@ -72,6 +73,8 @@ function select(i,card){
 }
 function startGame(){ if(sel>=0) window.location.href=GAMES[sel].f; }
 function goBack(){ window.location.href='../quiz2.html'; }
+function openBoard(){ if(window.KQ&&KQ.open) KQ.open('multi','tic-tac-toe','Tic Tac Toe'); }
 </script>
+<script src="../Game/kq-leaderboard.js"></script>
 </body>
 </html>

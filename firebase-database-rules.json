@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "lobby": {
+      ".read": true,
+      ".write": true
+    },
+    "rooms": {
+      ".read": true,
+      ".write": true
+    },
+    "leaderboards": {
+      ".read": true,
+      "$category": {
+        "$gameId": {
+          "$player": {
+            ".write": true,
+            ".validate": "newData.hasChildren(['name','score']) && newData.child('score').isNumber() && newData.child('name').isString() && newData.child('name').val().length <= 40"
+          }
+        }
+      }
+    }
+  }
+}

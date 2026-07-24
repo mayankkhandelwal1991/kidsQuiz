@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "851797718600",
+    "firebase_url": "https://kidsgames-3987c-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "kidsgames-3987c",
+    "storage_bucket": "kidsgames-3987c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851797718600:android:edbc855676def029228a7d",
+        "android_client_info": {
+          "package_name": "com.mk.kidsquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851797718600-of7s0atbpefl5eb6nbpkcevli0sl9eek.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mk.kidsquiz",
+            "certificate_hash": "bff90dda3c678d96036e73cdc28ddf7e2226681e"
+          }
+        },
+        {
+          "client_id": "851797718600-rn0qdbngmlq66gmvu624fll5eh34l9qi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzYh4aAtAt-kuCnCH97_dyuwAB72AWbXo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "851797718600-rn0qdbngmlq66gmvu624fll5eh34l9qi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

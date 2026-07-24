@@ -316,7 +316,14 @@
       });
     });
   }
-  function signOut() { return ready.then(function () { return auth ? auth.signOut() : null; }); }
+  function signOut() {
+    try {
+      if (typeof Android !== "undefined" && Android && typeof Android.googleSignOut === "function") {
+        Android.googleSignOut();
+      }
+    } catch (e) {}
+    return ready.then(function () { return auth ? auth.signOut() : null; });
+  }
 
   /* =====================================================================  UI
      Floating widget  (login button / avatar)  +  🏆 leaderboard button

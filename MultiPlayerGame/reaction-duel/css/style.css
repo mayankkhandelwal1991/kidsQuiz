@@ -1,0 +1,63 @@
+@import url('../common/theme.css');
+
+.arena-bg {
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 62, 200, 0.14), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(51, 229, 255, 0.16), transparent 45%),
+    var(--bg-void);
+}
+
+.board-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 10px 16px 26px;
+}
+
+.player-card.seat-p1.active-turn,
+.player-card.seat-p2.active-turn { color: rgba(51,229,255,0.7); }
+
+.tap-panel {
+  width: min(340px, 88vw);
+  height: 220px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.15s;
+  user-select: none;
+}
+
+.tap-panel.idle { background: rgba(255,255,255,0.05); border: 2px dashed rgba(255,255,255,0.15); color: var(--text-dim); cursor: default; }
+.tap-panel.wait { background: linear-gradient(160deg, #7a1c1c, #4a0f0f); color: #ffdada; }
+.tap-panel.go { background: linear-gradient(160deg, #1cae5a, #0f6b36); color: #d9ffe9; animation: goPulse 0.6s ease-in-out infinite; }
+.tap-panel.result { background: rgba(51,229,255,0.08); border: 2px solid var(--border-glow); color: var(--text-main); cursor: default; }
+.tap-panel.false-start { background: linear-gradient(160deg, #7a1c1c, #2a0808); color: #ffb3b3; }
+
+@keyframes goPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(77,255,160,0.4) inset; }
+  50%      { box-shadow: 0 0 40px rgba(77,255,160,0.8) inset; }
+}
+
+.reaction-times {
+  display: flex;
+  gap: 40px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 15px;
+  color: var(--text-dim);
+}
+#time-p1 { color: var(--cyan); }
+#time-p2 { color: var(--magenta); }
+
+.spectator-count { font-size: 12px; color: var(--text-dim); min-height: 16px; }
+#play-again-btn { max-width: 220px; }

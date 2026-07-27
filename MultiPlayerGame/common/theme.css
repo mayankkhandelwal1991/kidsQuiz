@@ -1,0 +1,413 @@
+/* =========================================================================
+   common/theme.css
+   Shared "signal in the dark" visual identity used by every game: a
+   near-black arena lit by electric cyan/magenta glow. Each game's own
+   style.css @imports this file and then adds only its board/gameplay-
+   specific rules on top.
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rubik:wght@400;500;700&display=swap');
+
+:root {
+  --bg-void: #05060f;
+  --bg-panel: rgba(18, 22, 42, 0.72);
+  --cyan: #33e5ff;
+  --magenta: #ff3ec8;
+  --amber: #ffcf4d;
+  --danger: #ff4d5e;
+  --success: #4dffa0;
+  --text-main: #eef1ff;
+  --text-dim: #93a0c9;
+  --border-glow: rgba(51, 229, 255, 0.35);
+  --radius-lg: 20px;
+  --radius-md: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-void);
+  color: var(--text-main);
+  font-family: 'Rubik', sans-serif;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.hidden { display: none !important; }
+button { font-family: 'Rubik', sans-serif; cursor: pointer; border: none; outline: none; }
+
+/* -------------------------------------------------------------------- */
+/* Landing screen                                                        */
+/* -------------------------------------------------------------------- */
+
+#landing-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  transition: opacity 0.5s ease;
+  overflow: hidden;
+}
+
+#landing-screen.fade-out { opacity: 0; pointer-events: none; }
+
+.landing-bg {
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(circle at 20% 25%, rgba(255, 62, 200, 0.20), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(51, 229, 255, 0.22), transparent 45%),
+    radial-gradient(circle at 50% 100%, rgba(120, 80, 255, 0.18), transparent 50%),
+    var(--bg-void);
+  animation: drift 18s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  0%   { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.08) translate(-2%, -3%); }
+}
+
+.landing-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                     linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at 50% 40%, black, transparent 75%);
+}
+
+.landing-card {
+  position: relative;
+  z-index: 2;
+  width: min(420px, 92vw);
+  padding: 36px 32px 30px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 60px rgba(51, 229, 255, 0.12), 0 20px 60px rgba(0,0,0,0.5);
+  animation: cardIn 0.7s cubic-bezier(.2,.9,.3,1.2);
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.logo-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.logo-icon { font-size: 24px; filter: drop-shadow(0 0 10px var(--cyan)); }
+
+.game-title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 1px;
+  margin: 0;
+  text-align: center;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.game-subtitle {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 13px;
+  margin: 0 0 26px;
+}
+
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+
+.field label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+}
+
+.field input {
+  background: rgba(6, 10, 26, 0.75);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  padding: 13px 14px;
+  color: var(--text-main);
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field input#roomcode-input {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+}
+
+.field input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(51, 229, 255, 0.18);
+}
+
+.button-row { display: flex; gap: 10px; margin-top: 20px; }
+
+.btn {
+  flex: 1;
+  padding: 14px 12px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s;
+}
+
+.btn:active { transform: scale(0.96); }
+.btn.busy { opacity: 0.6; pointer-events: none; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--cyan), #1b7fff);
+  color: #04101c;
+  box-shadow: 0 6px 20px rgba(51, 229, 255, 0.35);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--magenta), #a933ff);
+  color: #1a0022;
+  box-shadow: 0 6px 20px rgba(255, 62, 200, 0.3);
+}
+
+.landing-error {
+  margin-top: 16px;
+  text-align: center;
+  color: var(--danger);
+  font-size: 13px;
+  min-height: 18px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.landing-error.visible { opacity: 1; }
+
+.landing-footnote {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-dim);
+  opacity: 0.7;
+}
+
+.advanced-toggle {
+  display: block;
+  margin: 18px auto 0;
+  background: none;
+  color: var(--text-dim);
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 4px;
+}
+.advanced-toggle:hover { color: var(--cyan); }
+
+.advanced-panel {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* -------------------------------------------------------------------- */
+/* In-game chrome (shared across all games)                              */
+/* -------------------------------------------------------------------- */
+
+#game-screen {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+#game-screen.visible { opacity: 1; }
+
+.topbar {
+  position: relative;
+  padding: 14px 14px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.room-pill {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glow);
+  border-radius: 999px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(10px);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.room-pill .label {
+  font-family: 'Rubik', sans-serif;
+  letter-spacing: 0;
+  color: var(--text-dim);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.chrome-buttons { display: flex; gap: 8px; }
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glow);
+  color: var(--text-main);
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  transition: transform 0.15s, background 0.15s;
+}
+.icon-btn:hover { background: rgba(51, 229, 255, 0.18); }
+.icon-btn:active { transform: scale(0.9); }
+.icon-btn.muted { opacity: 0.5; }
+
+.waiting-bar {
+  font-size: 12px;
+  color: var(--amber);
+  text-align: center;
+  min-height: 16px;
+  padding: 4px 10px;
+}
+
+/* Toasts */
+#toast-container {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 20;
+  align-items: center;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-glow);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 13px;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast-warn { border-color: var(--danger); color: #ffd0d5; }
+.toast-success { border-color: var(--success); color: #d4ffe8; }
+
+/* Generic status bar used by most games */
+.status-bar {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 15px;
+  letter-spacing: 1px;
+  color: var(--text-main);
+  min-height: 22px;
+  text-align: center;
+}
+.status-bar.status-won { color: var(--success); text-shadow: 0 0 14px rgba(77,255,160,0.5); }
+.status-bar.status-draw { color: var(--amber); }
+.status-bar.status-lost { color: var(--danger); }
+
+/* Generic player-card scoreboard row used by several games */
+.players-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--bg-panel);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  padding: 10px 22px;
+  min-width: 110px;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.player-card.active-turn {
+  border-color: currentColor;
+  box-shadow: 0 0 22px currentColor;
+  animation: cardGlow 1.4s ease-in-out infinite;
+}
+
+@keyframes cardGlow {
+  0%, 100% { box-shadow: 0 0 14px currentColor; }
+  50%      { box-shadow: 0 0 26px currentColor; }
+}
+
+.player-name {
+  font-size: 12px;
+  color: var(--text-main);
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-score {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--amber);
+}
+
+.vs-label {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--text-dim);
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+/* -------------------------------------------------------------------- */
+/* Responsive                                                            */
+/* -------------------------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .landing-card { padding: 26px 20px 22px; }
+  .game-title { font-size: 17px; }
+  .player-card { min-width: 88px; padding: 8px 14px; }
+}

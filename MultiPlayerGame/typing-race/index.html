@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>Typing Race</title>
+<meta name="description" content="Real-time multiplayer typing speed race — same passage, first to finish wins." />
+<link rel="stylesheet" href="../common/theme.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div id="landing-screen">
+    <div class="landing-bg"></div>
+    <div class="landing-card">
+      <div class="logo-row">
+        <span class="logo-icon">⌨️</span>
+        <h1 class="game-title">TYPING RACE</h1>
+      </div>
+      <p class="game-subtitle">Real-time 1v1 &middot; same passage, fastest fingers win</p>
+
+      <div class="field">
+        <label for="nickname-input">Nickname</label>
+        <input id="nickname-input" type="text" maxlength="14" placeholder="Enter your nickname" autocomplete="off" />
+      </div>
+
+      <div class="button-row">
+        <button id="play-btn" class="btn btn-primary">Play</button>
+      </div>
+
+      <div id="landing-error" class="landing-error"></div>
+      <div class="landing-footnote">We'll pair you with anyone waiting. No one around? You'll race the Computer after 30 seconds.</div>
+
+      <button id="advanced-toggle" class="advanced-toggle">Have a friend's room code?</button>
+      <div id="advanced-panel" class="advanced-panel hidden">
+        <div class="field">
+          <label for="roomcode-input">Room code</label>
+          <input id="roomcode-input" type="text" maxlength="6" placeholder="E.G. K3F9Q2" autocomplete="off" />
+        </div>
+        <button id="join-room-btn" class="btn btn-secondary" style="width:100%">Join that room</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-screen" class="hidden">
+    <div class="arena-bg"></div>
+
+    <div class="topbar">
+      <div class="room-pill"><span class="label">Room</span><span id="hud-room-code">------</span></div>
+      <div class="chrome-buttons">
+        <button id="share-room-btn" class="icon-btn" title="Share room link">🔗</button>
+        <button id="sound-toggle-btn" class="icon-btn" title="Toggle sound">🔊</button>
+        <button id="leave-room-btn" class="icon-btn" title="Leave room">✕</button>
+      </div>
+    </div>
+
+    <div class="board-wrap">
+      <div id="status-bar" class="status-bar">Waiting for an opponent to join…</div>
+      <div id="waiting-bar" class="waiting-bar hidden"></div>
+      <div id="countdown-overlay" class="countdown-overlay hidden"></div>
+
+      <div id="passage-box" class="passage-box"></div>
+
+      <input id="typing-input" class="typing-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Start typing once the race begins…" disabled />
+
+      <div class="racers">
+        <div class="racer">
+          <div class="racer-label"><span id="name-p1">--</span><span id="wpm-p1">0 WPM</span></div>
+          <div class="racer-track"><div id="progress-p1" class="racer-fill p1"></div></div>
+        </div>
+        <div class="racer">
+          <div class="racer-label"><span id="name-p2">--</span><span id="wpm-p2">0 WPM</span></div>
+          <div class="racer-track"><div id="progress-p2" class="racer-fill p2"></div></div>
+        </div>
+      </div>
+
+      <div id="spectator-count" class="spectator-count"></div>
+      <button id="play-again-btn" class="btn btn-primary hidden">Race Again</button>
+    </div>
+
+    <div id="toast-container"></div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="../common/firebase-config.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -462,6 +462,7 @@ button { font-family: 'Rubik', sans-serif; cursor: pointer; border: none; outlin
 
 #play-again-btn {
   max-width: 220px;
+  max-height:50px;
 }
 
 /* Toasts */

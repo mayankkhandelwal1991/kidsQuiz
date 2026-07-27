@@ -401,6 +401,9 @@ button { font-family: 'Rubik', sans-serif; cursor: pointer; border: none; outlin
   font-size: 13px;
   letter-spacing: 2px;
 }
+#play-again-btn {
+	max-height:50px !important;
+}
 
 /* -------------------------------------------------------------------- */
 /* Responsive                                                            */

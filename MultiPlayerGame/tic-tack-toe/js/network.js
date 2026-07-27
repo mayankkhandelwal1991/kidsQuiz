@@ -36,6 +36,18 @@ import { checkWinner, isBoardFull } from './utils.js';
 
 const EMPTY_CELLS = { 0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '' };
 
+/** Keep the scoreboard keyed to the board symbols and credit only its winner. */
+function awardWin(room, winner) {
+  const scores = room.scores || {};
+  room.scores = {
+    X: Number.isFinite(Number(scores.X)) ? Number(scores.X) : 0,
+    O: Number.isFinite(Number(scores.O)) ? Number(scores.O) : 0,
+  };
+
+  if (winner === 'X') room.scores.X += 1;
+  else if (winner === 'O') room.scores.O += 1;
+}
+
 export class NetworkManager {
   constructor() {
     this.db = firebase.database();
@@ -283,8 +295,7 @@ export class NetworkManager {
         room.status = 'won';
         room.winner = winner;
         room.winningLine = line.join(',');
-        room.scores = room.scores || { X: 0, O: 0 };
-        room.scores[winner] = (room.scores[winner] || 0) + 1;
+        awardWin(room, winner);
       } else if (isBoardFull(cells)) {
         room.status = 'draw';
       } else {
@@ -319,8 +330,7 @@ export class NetworkManager {
         room.status = 'won';
         room.winner = winner;
         room.winningLine = line.join(',');
-        room.scores = room.scores || { X: 0, O: 0 };
-        room.scores[winner] = (room.scores[winner] || 0) + 1;
+        awardWin(room, winner);
       } else if (isBoardFull(cells)) {
         room.status = 'draw';
       } else {
@@ -334,14 +344,9 @@ export class NetworkManager {
   /**
    * Reset the board for another round, keeping the running score.
    *
-   * Two rules enforced here:
-   *  1. Standard tic-tac-toe rule: X always moves first (room.turn is
-   *     always reset to 'X', never 'O').
-   *  2. Fairness: the player who was O last round becomes X this round
-   *     (and vice versa), so who gets to move first alternates —
-   *     "once me, once the opponent" — instead of always favoring
-   *     whoever joined the room first. Bot matches are exempt: the human
-   *     is always X and the computer is always O.
+   * The score cards are keyed to X and O, so player seats stay fixed for
+   * the whole match. This prevents a rematch from moving a player's
+   * already-earned score underneath the other player's name.
    */
   async playAgain() {
     await this.roomRef.transaction((room) => {
@@ -352,13 +357,6 @@ export class NetworkManager {
       room.winner = null;
       room.winningLine = null;
 
-      if (room.mode === 'human' && room.players) {
-        for (const id of Object.keys(room.players)) {
-          const p = room.players[id];
-          if (p.symbol === 'X') p.symbol = 'O';
-          else if (p.symbol === 'O') p.symbol = 'X';
-        }
-      }
       return room;
     });
   }

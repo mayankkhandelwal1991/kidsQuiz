@@ -31,7 +31,8 @@ for project **kidsgames-3987c**.
 **c) Publish the database rules**
 - Build → **Realtime Database** → **Rules**
 - Paste the contents of `firebase-database-rules.json` and **Publish**.
-- These rules keep your multiplayer `rooms`/`lobby` open (as before) and add a
+- These rules keep Tic-tac-toe's legacy multiplayer `rooms`/`lobby` paths open,
+  allow the other multiplayer games under `games/{gameId}/…`, and add a
   public-readable, validated `leaderboards` branch.
 
 That's it — no code changes needed.

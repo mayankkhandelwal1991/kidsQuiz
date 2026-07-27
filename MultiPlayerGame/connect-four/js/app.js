@@ -378,7 +378,10 @@ function handleStatusTransition(room) {
   const prev = lastStatus;
   lastStatus = room.status;
   if (prev === null) return;
-  if (room.status === 'won') sounds.playWin();
+  if (room.status === 'won') {
+    sounds.playWin();
+    try { if (window.KQ && KQ.addWin && mySeat === room.winner) KQ.addWin('multi', GAME_ID); } catch (e) {}
+  }
   else if (room.status === 'draw') sounds.playDraw();
 }
 

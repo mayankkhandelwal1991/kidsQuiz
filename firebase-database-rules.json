@@ -8,6 +8,31 @@
       ".read": true,
       ".write": true
     },
+    "games": {
+      "$gameId": {
+        "lobby": {
+          ".read": true,
+          ".write": true,
+          "waitingRoom": {
+            ".validate": "newData.isString() || newData.val() == null"
+          }
+        },
+        "rooms": {
+          "$roomCode": {
+            ".read": true,
+            ".write": true,
+            "players": {
+              "$playerId": {
+                ".validate": "newData.hasChildren(['nickname', 'seat'])",
+                "nickname": {
+                  ".validate": "newData.isString() && newData.val().length <= 20"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "leaderboards": {
       ".read": true,
       "$category": {

@@ -14,7 +14,7 @@ collides between games.
 
 ---
 
-## The 11 games
+## The 16 games
 
 | Game | Folder | What it is |
 |---|---|---|
@@ -29,6 +29,28 @@ collides between games.
 | Dots & Boxes | `dots-and-boxes/` | Draw lines, claim boxes, most boxes wins |
 | Battleship | `battleship/` | Auto-placed fleets, sink the enemy first |
 | Pong Duel | `pong-duel/` | Real-time canvas Pong, first to 7 |
+| **Space Blaster Duel** 🆕 | `space-blaster/` | Host-synced falling asteroid field — tap the fastest to blast them, first to 15 |
+| **Blaster Arena** 🆕 | `blaster-arena/` | Top-down foam-bolt arena shooter, dodge and fire, first to 5 hits |
+| **Basketball Shootout** 🆕 | `basketball-shootout/` | Time your release on a moving power bar, most baskets in 45s |
+| **Bubble Shooter Duel** 🆕 | `bubble-shooter/` | Classic pop-3-match bubble shooter, race to 120 points |
+| **Archery Duel** 🆕 | `archery-duel/` | Time your release as a 2D crosshair drifts toward the bullseye, best of 5 |
+
+### About the 5 new games
+
+- **Space Blaster Duel** and **Blaster Arena** reuse Pong Duel's host-authoritative
+  pattern (P1 runs the real simulation, P2's actions are sent as lightweight
+  events the host resolves) — see `common/net.js` and the note at the top of
+  `pong-duel/js/app.js` for the underlying design this is based on.
+- **Basketball Shootout** and **Bubble Shooter Duel** are independent
+  per-player minigames (like Typing Race) — no physics need to be
+  synced, only a shared scoreboard (`scores/{seat}`) and a shared match
+  clock or "first to X" finish line.
+- **Archery Duel** is structurally Reaction Duel with a 2D aim-timing skill
+  test swapped in for raw reaction time; it reuses the exact same
+  shared-timestamp + transaction-guarded round resolution.
+- All five are family-friendly arcade-style games — "shooting" here means
+  cartoon foam bolts / arrows / asteroid blasts, no real weapons or gore,
+  consistent with the rest of the collection's tone.
 
 Every game follows the same flow: **enter a nickname, tap Play.** You're
 instantly paired with anyone else waiting; if nobody shows up within 30
@@ -63,7 +85,12 @@ MultiPlayerGame/
 ├── trivia-battle/
 ├── dots-and-boxes/
 ├── battleship/
-└── pong-duel/
+├── pong-duel/
+├── space-blaster/
+├── blaster-arena/
+├── basketball-shootout/
+├── bubble-shooter/
+└── archery-duel/
 ```
 
 Each game folder is small on purpose — all the repetitive plumbing

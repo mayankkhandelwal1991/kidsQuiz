@@ -379,10 +379,14 @@ function handleStatusTransition(room) {
   lastStatus = room.status;
   if (prev === null) return;
   if (room.status === 'won') {
+    try { onMultiplayerGameComplete(); } catch (e) {}
     sounds.playWin();
     try { if (window.KQ && KQ.addWin && mySeat === room.winner) KQ.addWin('multi', GAME_ID); } catch (e) {}
   }
-  else if (room.status === 'draw') sounds.playDraw();
+  else if (room.status === 'draw') {
+    try { onMultiplayerGameComplete(); } catch (e) {}
+    sounds.playDraw();
+  }
 }
 
 async function handleLeave() {

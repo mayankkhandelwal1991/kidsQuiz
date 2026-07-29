@@ -238,6 +238,7 @@ export class Game {
     if (prev === null) return; // don't fire sounds on initial load
 
     if (room.status === 'won') {
+      try { onMultiplayerGameComplete(); } catch (e) {}
       this.sounds.playWin();
       // Leaderboard: credit a win only to the player who actually won.
       try {
@@ -246,6 +247,7 @@ export class Game {
         }
       } catch (e) {}
     } else if (room.status === 'draw') {
+      try { onMultiplayerGameComplete(); } catch (e) {}
       this.sounds.playDraw();
     }
   }

@@ -453,6 +453,7 @@ function handleStatusTransition(room) {
   lastStatus = room.status;
   if (prev === null) return;
   if (room.status === 'finished') {
+    try { onMultiplayerGameComplete(); } catch (e) {}
     if (mySeat === 'spectator') { /* no personal result sound */ }
     else if (room.winner === null) sounds.playDraw();
     else if (mySeat === room.winner) sounds.playWin();

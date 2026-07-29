@@ -366,6 +366,7 @@ function handleStatusTransition(room) {
   if (prev === null) return;
   if (room.status === 'playing') myAnswerThisRound = null;
   if (room.status === 'finished') {
+    try { onMultiplayerGameComplete(); } catch (e) {}
     if (mySeat === room.winner) sounds.playWin();
     else if (mySeat !== 'spectator') sounds.playLose();
     try { if (window.KQ && KQ.addWin && mySeat === room.winner) KQ.addWin('multi', GAME_ID); } catch (e) {}

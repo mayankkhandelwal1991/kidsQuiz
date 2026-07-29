@@ -22,7 +22,7 @@ import { QuickMatch, claimSeat, setupPresence, watchConnectionState } from '../.
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager } from '../../common/utils.js';
 
 const GAME_ID = 'battleship';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const BOARD_SIZE = 8;
 const TOTAL_CELLS = BOARD_SIZE * BOARD_SIZE;

@@ -12,7 +12,7 @@ import { UIManager } from './ui.js';
 import { generateRoomCode, sanitizeNickname, SoundManager } from './utils.js';
 import { computeBotMove } from './bot.js';
 
-const MATCH_WAIT_SECONDS = 30; // how long to wait for a human before starting a bot match
+const MATCH_WAIT_SECONDS = 10; // how long to wait for a human before starting a bot match
 const BOT_MOVE_DELAY_MS = 550; // small "thinking" pause so the bot doesn't feel instant/robotic
 
 export class Game {

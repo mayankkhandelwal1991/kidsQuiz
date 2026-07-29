@@ -16,7 +16,7 @@ import { QuickMatch, claimSeat, setupPresence, watchConnectionState } from '../.
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, randInt, clamp } from '../../common/utils.js';
 
 const GAME_ID = 'basketball-shootout';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const COUNTDOWN_MS = 3000;
 const MATCH_DURATION_MS = 45000;

@@ -21,7 +21,7 @@ import { QuickMatch, claimSeat, setupPresence, watchConnectionState } from '../.
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, randInt } from '../../common/utils.js';
 
 const GAME_ID = 'whack-a-mole';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const HOLES = 9;
 const DURATION_MS = 30000;

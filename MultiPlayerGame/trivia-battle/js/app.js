@@ -13,7 +13,7 @@ import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager } fr
 import { QUESTIONS } from './questions.js';
 
 const GAME_ID = 'trivia-battle';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const WIN_SCORE = 5;
 const ROUND_SECONDS = 10;

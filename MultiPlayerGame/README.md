@@ -177,7 +177,7 @@ python3 -m http.server 8080
 
 Open the hub, pick a game, tap **Play**. To test 2-player matches, open a
 second tab (or a friend's device on the same network/deployment) and tap
-Play on the same game within 30 seconds.
+Play on the same game within 10 seconds.
 
 ### Hosting for real
 
@@ -204,7 +204,7 @@ Any static host works:
   the one waiting. Because transactions retry against the latest server
   value, two people tapping Play at the same instant can never both end
   up waiting, or both create separate rooms.
-- The waiting player runs a 30-second client-side countdown. If nobody
+- The waiting player runs a 10-second client-side countdown. If nobody
   joins in time, a transaction seats a "Computer" player and flips the
   room into bot mode — the human's own browser then computes the
   Computer's moves and submits them through the exact same game-logic
@@ -257,7 +257,7 @@ zero-backend build.
 - **Stuck on "waiting for an opponent"** — confirm the second player
   actually tapped **Play** (or used the matching room code + "Join that
   room"), and that both are pointed at the same Firebase project.
-- **Nothing happens after 30 seconds** — check the browser console; if
+- **Nothing happens after 10 seconds** — check the browser console; if
   Realtime Database rules are too restrictive, the `activateBot()`
   transaction will silently fail. Compare your rules against section 1.
 - **Sounds don't play on mobile** — browsers require a user gesture

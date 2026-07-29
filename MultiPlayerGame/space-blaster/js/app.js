@@ -21,7 +21,7 @@ import { QuickMatch, claimSeat, setupPresence, watchConnectionState } from '../.
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, clamp, lerp, throttle, randInt } from '../../common/utils.js';
 
 const GAME_ID = 'space-blaster';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 
 const W = 480;

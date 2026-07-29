@@ -17,7 +17,7 @@ import { QuickMatch, claimSeat, setupPresence, watchConnectionState } from '../.
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, randInt, clamp } from '../../common/utils.js';
 
 const GAME_ID = 'bubble-shooter';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const WIN_SCORE = 120;
 

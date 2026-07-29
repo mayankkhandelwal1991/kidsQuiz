@@ -17,7 +17,7 @@ import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager } fr
 import { generateQuestion } from './questions.js';
 
 const GAME_ID = 'math-blitz';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const WIN_SCORE = 7;
 const ROUND_SECONDS = 10;

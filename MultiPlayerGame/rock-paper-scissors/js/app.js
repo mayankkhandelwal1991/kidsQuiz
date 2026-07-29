@@ -20,7 +20,7 @@ import { QuickMatch, claimSeat, setupPresence, watchConnectionState } from '../.
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager } from '../../common/utils.js';
 
 const GAME_ID = 'rps';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const WIN_SCORE = 3;
 const REVEAL_PAUSE_MS = 1800;

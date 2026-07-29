@@ -23,7 +23,7 @@ import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, thr
 import { WORDS } from './wordbank.js';
 
 const GAME_ID = 'doodle-guess';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const TOTAL_ROUNDS = 6;
 const ROUND_DURATION_MS = 45000;

@@ -2,7 +2,7 @@
  * connect-four/js/app.js
  * -----------------------------------------------------------------------
  * Full game logic for Connect Four: quick-match pairing, seat claiming,
- * drop-move transactions with win detection, a 30s bot fallback, and
+ * drop-move transactions with win detection, a 10s bot fallback, and
  * rendering. Uses the shared common/ modules for networking + UI chrome.
  * -----------------------------------------------------------------------
  */
@@ -14,7 +14,7 @@ import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager } fr
 const GAME_ID = 'connect4';
 const COLS = 7;
 const ROWS = 6;
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const BOT_MOVE_DELAY_MS = 550;
 const SEATS = ['R', 'Y'];
 

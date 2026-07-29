@@ -20,7 +20,7 @@ import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager } fr
 import { WORDS, WORD_LENGTH, MAX_GUESSES, computeFeedback } from './wordbank.js';
 
 const GAME_ID = 'wordle-duel';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const WIN_SCORE = 2;
 const NEXT_ROUND_DELAY_MS = 2200;

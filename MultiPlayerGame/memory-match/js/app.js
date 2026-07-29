@@ -13,7 +13,7 @@ import { QuickMatch, claimSeat, setupPresence, watchConnectionState } from '../.
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, shuffle } from '../../common/utils.js';
 
 const GAME_ID = 'memory-match';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const SYMBOLS = ['🎮', '🎧', '🍕', '🚀', '🏀', '⚽', '🎸', '🔥'];
 const MISMATCH_PAUSE_MS = 900;

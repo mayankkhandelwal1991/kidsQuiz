@@ -14,7 +14,7 @@ import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, thr
 import { PASSAGES } from './passages.js';
 
 const GAME_ID = 'typing-race';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const COUNTDOWN_MS = 3000;
 const PROGRESS_SEND_INTERVAL_MS = 200;

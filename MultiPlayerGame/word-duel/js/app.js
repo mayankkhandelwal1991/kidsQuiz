@@ -14,7 +14,7 @@ import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager } fr
 import { WORD_BANK, scrambleWord } from './wordbank.js';
 
 const GAME_ID = 'word-duel';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 const WIN_SCORE = 4;
 const ROUND_SECONDS = 25;

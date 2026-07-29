@@ -33,7 +33,7 @@ import { claimSeat, setupPresence, watchConnectionState } from '../../common/net
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, randInt } from '../../common/utils.js';
 
 const GAME_ID = 'ludo-royale';
-const MATCH_WAIT_SECONDS = 30;
+const MATCH_WAIT_SECONDS = 10;
 const COLORS = ['RED', 'GREEN', 'YELLOW', 'BLUE'];
 const CNAME = { RED: 'Red', GREEN: 'Green', YELLOW: 'Yellow', BLUE: 'Blue' };
 const MIN_PLAYERS = 2;

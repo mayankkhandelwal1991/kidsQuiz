@@ -1368,7 +1368,7 @@ function endQuiz() {
   showScreen('endScreen');
   // Check if Android interface exists
     if (typeof Android !== "undefined" && Android.showAd) {
-      Android.showAd("interstitial");
+      setTimeout(function () { Android.showAd("interstitial"); }, 1500);
     }
 }
 
@@ -1596,22 +1596,35 @@ window.addEventListener('popstate', function () {
    SHARE & RATE
    ============================================ */
 async function shareApp() {
+  const playStoreLink = 'https://play.google.com/store/apps/details?id=com.mk.kidsquiz';
+  const instagramLink = 'https://www.instagram.com/kidsgames_quiz?igsh=dHVkdWVtNnFleXV1';
+  const previewUrl = new URL('share-preview.png', window.location.href).href;
+  const shareText = '🧠✨ Turn screen time into fun learning!\n\n' +
+    '🎮 Kids Quiz — Play, Learn & Grow\n' +
+    'Fun quizzes and mini-games made for curious kids.\n\n' +
+    '▶️ Get it on Google Play:\n' + playStoreLink + '\n\n' +
+    '📸 Follow us on Instagram for fun updates:\n' + instagramLink;
+
+  if (typeof Android !== "undefined" && Android.shareAppContent) {
+    Android.shareAppContent('Kids Quiz', shareText + '\n\n🖼️ App preview:\n' + previewUrl);
+    return;
+  }
   if (typeof Android !== "undefined" && Android.shareApp) {
-    Android.shareApp();
+    Android.shareApp(); // Fallback for older installed app versions.
     return;
   }
 
   // Try sharing an image so apps like Instagram show Post/Story options
   try {
-    const response = await fetch('icon.png'); // your app icon or promo banner
+    const response = await fetch(previewUrl);
     const blob = await response.blob();
-    const file = new File([blob], 'kidsquiz.png', { type: blob.type });
+    const file = new File([blob], 'kids-quiz-preview.png', { type: blob.type || 'image/png' });
 
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
         title: 'Kids Quiz',
-        text: 'Check out this fun Kids Quiz app!',
-        url: window.location.href,
+        text: shareText,
+        url: playStoreLink,
         files: [file]
       });
       return;
@@ -1623,8 +1636,8 @@ async function shareApp() {
   if (navigator.share) {
     navigator.share({
       title: 'Kids Quiz',
-      text: 'Check out this fun Kids Quiz app!',
-      url: window.location.href
+      text: shareText + '\n\n🖼️ App preview:\n' + previewUrl,
+      url: playStoreLink
     }).catch(function(){});
     return;
   }

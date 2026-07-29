@@ -237,12 +237,29 @@ class MainActivity : ComponentActivity() {
     // ==================================================
     // SHARE APP
     // ==================================================
-    private fun shareApp() {
+    private fun shareApp(
+        subject: String = "Kids Quiz",
+        message: String? = null
+    ) {
 
         val appPackageName = packageName
 
         val playStoreLink =
             "https://play.google.com/store/apps/details?id=$appPackageName"
+
+        val instagramLink =
+            "https://www.instagram.com/kidsgames_quiz?igsh=dHVkdWVtNnFleXV1"
+
+        val previewLink =
+            "https://mayankkhandelwal1991.github.io/kidsQuiz/share-preview.png"
+
+        val defaultMessage =
+            "🧠✨ Turn screen time into fun learning!\n\n" +
+                "🎮 Kids Quiz — Play, Learn & Grow\n" +
+                "Fun quizzes and mini-games made for curious kids.\n\n" +
+                "▶️ Get it on Google Play:\n$playStoreLink\n\n" +
+                "📸 Follow us on Instagram for fun updates:\n$instagramLink\n\n" +
+                "🖼️ App preview:\n$previewLink"
 
         val shareIntent =
             Intent(Intent.ACTION_SEND).apply {
@@ -251,12 +268,12 @@ class MainActivity : ComponentActivity() {
 
                 putExtra(
                     Intent.EXTRA_SUBJECT,
-                    "Kids Quiz"
+                    subject
                 )
 
                 putExtra(
                     Intent.EXTRA_TEXT,
-                    "Check out this fun Kids Quiz app!\n$playStoreLink"
+                    message?.takeIf { it.isNotBlank() } ?: defaultMessage
                 )
             }
 
@@ -300,6 +317,15 @@ class MainActivity : ComponentActivity() {
                 )
             )
         }
+    }
+
+    private fun showRatingPrompt() {
+        AlertDialog.Builder(this)
+            .setTitle("Enjoying Kids Quiz?")
+            .setMessage("Your rating helps us create more fun learning games for kids!")
+            .setPositiveButton("Rate on Google Play") { _, _ -> rateApp() }
+            .setNegativeButton("Not now", null)
+            .show()
     }
 
     // ==================================================
@@ -548,12 +574,23 @@ class MainActivity : ComponentActivity() {
         // ==================================================
         // Call this from your web JS to open the native
         // share sheet for this app.
-        // Usage in JS:  Android.shareApp();
+        // Usage in JS: Android.shareAppContent(title, message);
+        // The no-argument method remains for older pages.
         // ==================================================
         @JavascriptInterface
         fun shareApp() {
             runOnUiThread {
                 this@MainActivity.shareApp()
+            }
+        }
+
+        @JavascriptInterface
+        fun shareAppContent(title: String?, message: String?) {
+            runOnUiThread {
+                this@MainActivity.shareApp(
+                    subject = title?.takeIf { it.isNotBlank() } ?: "Kids Quiz",
+                    message = message
+                )
             }
         }
 
@@ -566,6 +603,13 @@ class MainActivity : ComponentActivity() {
         fun rateApp() {
             runOnUiThread {
                 this@MainActivity.rateApp()
+            }
+        }
+
+        @JavascriptInterface
+        fun showRatingPrompt() {
+            runOnUiThread {
+                this@MainActivity.showRatingPrompt()
             }
         }
     }

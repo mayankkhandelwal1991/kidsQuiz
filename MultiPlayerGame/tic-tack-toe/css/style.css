@@ -215,6 +215,20 @@ button { font-family: 'Rubik', sans-serif; cursor: pointer; border: none; outlin
   opacity: 0.7;
 }
 
+.multiplayer-hub-btn {
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 700;
+}
+.multiplayer-hub-btn:hover { color: var(--cyan); background: rgba(51, 229, 255, 0.1); }
+.multiplayer-hub-icon { font-weight: 800; }
+
 .advanced-toggle {
   display: block;
   margin: 18px auto 0;

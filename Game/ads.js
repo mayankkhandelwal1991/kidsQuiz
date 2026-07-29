@@ -18,8 +18,17 @@
 
 var AD_CONFIG = {
   minSecondsBetweenAds: 60,   // never show ads more often than this
-  showEveryNCompletions: 2    // show an ad on every Nth game-over (1 = every time)
+  showEveryNCompletions: 2,   // show an ad on every Nth game-over (1 = every time)
+  completionAdDelayMs: 1500   // let players see the completed-game screen first
 };
+
+// Load the shared rating helper. It is ready long before a player completes
+// the configured number of games.
+(function () {
+  var s = document.createElement('script');
+  s.src = 'rating.js';
+  document.head.appendChild(s);
+})();
 
 function showGameAd(type) {
   type = type || "interstitial";
@@ -42,9 +51,10 @@ function onGameComplete() {
     var enoughTime  = (Date.now() - last) >= AD_CONFIG.minSecondsBetweenAds * 1000;
     var enoughGames = (n % AD_CONFIG.showEveryNCompletions) === 0;
     if (enoughTime && enoughGames) {
-      showGameAd("interstitial");
+      setTimeout(function () { showGameAd("interstitial"); }, AD_CONFIG.completionAdDelayMs);
     }
   } catch (e) { console.log(e); }
+  try { if (window.KQRating) KQRating.onComplete(); } catch (e) {}
 }
 
 /* ============================================================

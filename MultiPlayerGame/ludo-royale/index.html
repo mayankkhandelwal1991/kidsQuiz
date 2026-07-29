@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>Ludo Royale</title>
+<meta name="description" content="Real-time multiplayer Ludo for 2-4 players — roll the dice, race your 4 tokens home, capture opponents along the way." />
+<link rel="stylesheet" href="../common/theme.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div id="landing-screen">
+    <div class="landing-bg"></div>
+    <div class="landing-card">
+      <div class="logo-row">
+        <span class="logo-icon">🎲</span>
+        <h1 class="game-title">LUDO ROYALE</h1>
+      </div>
+      <p class="game-subtitle">Real-time 2-4 players &middot; race all 4 tokens home first</p>
+
+      <div class="field">
+        <label for="nickname-input">Nickname</label>
+        <input id="nickname-input" type="text" maxlength="14" placeholder="Enter your nickname" autocomplete="off" />
+      </div>
+
+      <div class="button-row">
+        <button id="play-btn" class="btn btn-primary">Play</button>
+      </div>
+
+      <div id="landing-error" class="landing-error"></div>
+      <div class="landing-footnote">We'll drop you into an open room (2-4 players). Waiting alone? You'll get a Computer opponent after 30 seconds — then start whenever you're ready.</div>
+
+      <button id="advanced-toggle" class="advanced-toggle">Have a friend's room code?</button>
+      <div id="advanced-panel" class="advanced-panel hidden">
+        <div class="field">
+          <label for="roomcode-input">Room code</label>
+          <input id="roomcode-input" type="text" maxlength="6" placeholder="E.G. K3F9Q2" autocomplete="off" />
+        </div>
+        <button id="join-room-btn" class="btn btn-secondary" style="width:100%">Join that room</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-screen" class="hidden">
+    <div class="arena-bg"></div>
+
+    <div class="topbar">
+      <div class="room-pill"><span class="label">Room</span><span id="hud-room-code">------</span></div>
+      <div class="chrome-buttons">
+        <button id="share-room-btn" class="icon-btn" title="Share room link">🔗</button>
+        <button id="sound-toggle-btn" class="icon-btn" title="Toggle sound">🔊</button>
+        <button id="leave-room-btn" class="icon-btn" title="Leave room">✕</button>
+      </div>
+    </div>
+
+    <div class="board-wrap">
+
+      <!-- LOBBY: shown while status === 'waiting' -->
+      <div id="lobby-panel" class="lobby-panel">
+        <h2>Waiting for players <span id="lobby-count">(1/4)</span></h2>
+        <div id="lobby-seats" class="lobby-seats"></div>
+        <div id="lobby-hint" class="lobby-hint">Need at least 2 players to start.</div>
+        <button id="start-game-btn" class="btn btn-primary" disabled>Start Game</button>
+      </div>
+      <div id="waiting-bar" class="waiting-bar hidden"></div>
+
+      <!-- GAME: shown once status === 'playing' / 'finished' -->
+      <div id="game-area" class="game-area hidden">
+        <div class="seats-row" id="seats-row"></div>
+        <div id="status-bar" class="status-bar">Rolling to see who goes first…</div>
+
+        <div class="board-and-dice">
+          <canvas id="game-canvas" width="420" height="420"></canvas>
+          <div class="dice-panel">
+            <div id="dice-face" class="dice-face">🎲</div>
+            <button id="roll-btn" class="btn btn-primary hidden">Roll Dice</button>
+            <div id="turn-hint" class="turn-hint"></div>
+          </div>
+        </div>
+
+        <div id="spectator-count" class="spectator-count"></div>
+        <button id="play-again-btn" class="btn btn-primary hidden">Play Again</button>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="../common/firebase-config.js"></script>
+  <script>window.KQ_CONTEXT = { category: 'multi', gameId: 'ludo-royale', title: 'Ludo Royale' };</script>
+  <script src="../../Game/kq-leaderboard.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -14,7 +14,7 @@ collides between games.
 
 ---
 
-## The 16 games
+## The 17 games
 
 | Game | Folder | What it is |
 |---|---|---|
@@ -34,6 +34,7 @@ collides between games.
 | **Basketball Shootout** 🆕 | `basketball-shootout/` | Time your release on a moving power bar, most baskets in 45s |
 | **Bubble Shooter Duel** 🆕 | `bubble-shooter/` | Classic pop-3-match bubble shooter, race to 120 points |
 | **Archery Duel** 🆕 | `archery-duel/` | Time your release as a 2D crosshair drifts toward the bullseye, best of 5 |
+| **Ludo Royale** 🆕 | `ludo-royale/` | **2-4 players**, not just 2 — full Ludo with dice, capturing, and home stretches |
 
 ### About the 5 new games
 
@@ -51,6 +52,39 @@ collides between games.
 - All five are family-friendly arcade-style games — "shooting" here means
   cartoon foam bolts / arrows / asteroid blasts, no real weapons or gore,
   consistent with the rest of the collection's tone.
+
+### About Ludo Royale (2-4 players)
+
+Every other game in this collection seats exactly 2 players. Ludo Royale
+is the first to support a variable-size room (2, 3, or 4 players), which
+needed a few genuine architecture changes beyond just swapping in a
+bigger `SEATS` array:
+
+- **`claimSeat()` already generalizes** — it takes an arbitrary seat-name
+  array (`['RED','GREEN','YELLOW','BLUE']` here vs. `['X','O']`
+  elsewhere) and assigns the first open one, or `'spectator'` once all 4
+  are taken. No changes needed in `common/net.js`.
+- **Quick-match needed a custom lobby loop.** The shared `QuickMatch`
+  class clears its lobby pointer the moment a 2nd player joins — correct
+  for a 2-seat game, wrong here (a 3rd or 4th player should still be able
+  to find the same room). `ludo-royale/js/app.js` implements its own
+  `findOrCreateRoom()` that keeps the pointer alive until the room hits
+  `MAX_PLAYERS` (4) or actually starts.
+- **An explicit lobby screen with a "Start Game" button.** Nobody is
+  dropped straight into a match at 2 players — the room stays in
+  `status: 'waiting'` so more people can still join, up to
+  `MIN_PLAYERS` (2) / `MAX_PLAYERS` (4). Any seated player can start once
+  the minimum is met; the room auto-starts if it fills to 4.
+- **Turn-taking still uses the same transaction-guarded pattern** as
+  Tic-Tac-Toe/Connect Four (roll + move are both single Firebase
+  transactions that validate whose turn it is and apply the whole rule
+  set atomically) — just with a rotating `turnOrder` array instead of a
+  hardcoded 2-way alternation, so it naturally supports 2, 3, or 4
+  players without special-casing.
+
+If you want to build another >2-player game (a pool/8-ball style game,
+a card game with more seats, etc.), Ludo Royale's `findOrCreateRoom()` +
+lobby-panel pattern is the template to copy.
 
 Every game follows the same flow: **enter a nickname, tap Play.** You're
 instantly paired with anyone else waiting; if nobody shows up within 30

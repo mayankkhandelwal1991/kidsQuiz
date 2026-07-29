@@ -45,6 +45,33 @@ export class UIManager {
 
     // Toasts
     this.toastContainer = document.getElementById('toast-container');
+    this._addMultiplayerHubNavigation();
+  }
+
+  _addMultiplayerHubNavigation() {
+    const goToHub = () => { window.location.href = '../index.html'; };
+
+    const landingCard = this.landing.querySelector('.landing-card');
+    if (landingCard) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'multiplayer-hub-btn';
+      button.textContent = '← All Multiplayer Games';
+      button.addEventListener('click', goToHub);
+      landingCard.appendChild(button);
+    }
+
+    const chromeButtons = document.querySelector('.chrome-buttons');
+    if (chromeButtons) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'icon-btn multiplayer-hub-icon';
+      button.title = 'All Multiplayer Games';
+      button.setAttribute('aria-label', 'All Multiplayer Games');
+      button.textContent = '←';
+      button.addEventListener('click', goToHub);
+      chromeButtons.prepend(button);
+    }
   }
 
   bindLandingActions({ onPlay, onJoinCode }) {

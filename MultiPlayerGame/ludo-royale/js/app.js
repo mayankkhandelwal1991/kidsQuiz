@@ -171,10 +171,15 @@ const SFX = (() => {
   }
   return {
     resume() { try { ctxA(); } catch (e) {} },
+    // Peppy "pop" when the dice is tapped — bright two-note blip.
+    pop() { tone(520, 0.09, 'triangle', 0.22, 920); tone(780, 0.08, 'sine', 0.16, 1250, 0.05); },
     rattle() { for (let i = 0; i < 5; i++) noise(0.05, 0.09); },
     land() { tone(300, 0.12, 'triangle', 0.16, 180); noise(0.06, 0.11); },
-    step() { tone(660, 0.05, 'square', 0.07, 900); },
-    leave() { tone(440, 0.1, 'square', 0.12, 680); },
+    // Each cell a token hops over — clear little tick.
+    step() { tone(720, 0.07, 'square', 0.11, 1040); },
+    // Soft "plop" as a token settles on its destination cell.
+    plop() { tone(560, 0.12, 'triangle', 0.2, 300); noise(0.05, 0.08); },
+    leave() { tone(440, 0.12, 'square', 0.15, 720); },
     capture() { tone(180, 0.22, 'sawtooth', 0.2, 60); noise(0.14, 0.16); },
     home() { [660, 880, 1175].forEach((f, i) => tone(f, 0.14, 'triangle', 0.15, null, i * 0.09)); },
   };
@@ -216,6 +221,7 @@ function animateDice(val) {
   return new Promise((resolve) => {
     diceAnimating = true;
     diceBtn.classList.add('shake');
+    SFX.pop();
     SFX.rattle();
     const start = performance.now(), dur = 620;
     function frame(now) {
@@ -255,7 +261,7 @@ function animateHopPath(color, i, fromPos, toPos) {
     let prev = fromPos, idx = 0;
     if (idx === 0 && fromPos === 0) SFX.leave();
     function stepTo() {
-      if (idx >= seq.length) { v.dx = 0; v.dy = 0; v.hop = 0; resolve(); return; }
+      if (idx >= seq.length) { v.dx = 0; v.dy = 0; v.hop = 0; SFX.plop(); resolve(); return; }
       const from = coordOf(color, prev, i);
       const to = coordOf(color, seq[idx], i);
       const base = coordOf(color, seq[idx], i);   // logical anchor for offset math
@@ -1108,7 +1114,7 @@ function drawTokens(room) {
     grp.forEach((t, gi) => {
       const onTrack = t.pos >= 1 && t.pos <= 51;
       const spread = onTrack && n > 1 ? (gi - (n - 1) / 2) : 0;
-      const p = px(t.gx, t.gy);
+      const p = px(t.gy, t.gx); // gy = row, gx = col — px expects (row, col)
       const jitter = spread * CELL * 0.28;
       const R = CELL * 0.42 * (t.v.scale || 1);
       const glow = t.c === mySeat && movable.includes(t.i);
@@ -1121,3 +1127,4 @@ function drawTokens(room) {
 // Boot
 // ---------------------------------------------------------------------
 shell.bindLandingActions({ onPlay: handlePlay, onJoinCode: handleJoinCode });
+

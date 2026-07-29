@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
 <title>Ludo Royale</title>
 <meta name="description" content="Real-time multiplayer Ludo for 2-4 players — roll the dice, race your 4 tokens home, capture opponents along the way." />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../common/theme.css" />
 <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -17,10 +14,9 @@
     <div class="landing-bg"></div>
     <div class="landing-card">
       <div class="logo-row">
-        <span class="logo-icon">👑</span>
+        <span class="logo-icon">🎲</span>
         <h1 class="game-title">LUDO ROYALE</h1>
       </div>
-      <div class="color-dots"><span class="cd red"></span><span class="cd green"></span><span class="cd yellow"></span><span class="cd blue"></span></div>
       <p class="game-subtitle">Real-time 2-4 players &middot; race all 4 tokens home first</p>
 
       <div class="field">
@@ -75,12 +71,9 @@
         <div id="status-bar" class="status-bar">Rolling to see who goes first…</div>
 
         <div class="board-and-dice">
-          <div class="board-stage">
-            <canvas id="game-canvas" width="600" height="600"></canvas>
-            <canvas id="fx-canvas" width="600" height="600"></canvas>
-          </div>
+          <canvas id="game-canvas" width="420" height="420"></canvas>
           <div class="dice-panel">
-            <button id="dice-btn" class="dice-btn" title="Roll dice"><canvas id="dice-canvas" width="132" height="132"></canvas></button>
+            <div id="dice-face" class="dice-face">🎲</div>
             <button id="roll-btn" class="btn btn-primary hidden">Roll Dice</button>
             <div id="turn-hint" class="turn-hint"></div>
           </div>

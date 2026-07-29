@@ -334,6 +334,9 @@
   ===================================================================== */
   var STYLE = "\
 .kqlb-fab{position:fixed;top:10px;right:10px;z-index:2147483000;display:flex;gap:6px;align-items:center;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}\
+.kqlb-fab.kqlb-multi{right:60px}\
+.kqlb-fab.kqlb-multi .kqlb-trophy,.kqlb-fab.kqlb-multi .kqlb-nm{display:none}\
+.kqlb-fab.kqlb-multi .kqlb-user{padding:3px;max-width:none}\
 .kqlb-fab *{box-sizing:border-box}\
 .kqlb-btn{border:none;border-radius:999px;cursor:pointer;font-weight:800;font-size:12px;padding:7px 12px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.25);display:flex;align-items:center;gap:6px;line-height:1}\
 .kqlb-trophy{background:linear-gradient(135deg,#f59e0b,#f43f5e)}\
@@ -384,7 +387,7 @@
     document.head.appendChild(st);
 
     widgetEl = document.createElement("div");
-    widgetEl.className = "kqlb-fab";
+    widgetEl.className = "kqlb-fab" + (window.KQ_CONTEXT && window.KQ_CONTEXT.category === "multi" ? " kqlb-multi" : "");
     document.body.appendChild(widgetEl);
 
     overlayEl = document.createElement("div");

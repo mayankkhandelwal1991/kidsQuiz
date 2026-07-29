@@ -291,7 +291,7 @@ button { font-family: 'Rubik', sans-serif; cursor: pointer; border: none; outlin
   text-transform: uppercase;
 }
 
-.chrome-buttons { display: flex; gap: 8px; }
+.chrome-buttons { display: flex; gap: 8px; position: relative; }
 
 .icon-btn {
   width: 40px;
@@ -310,6 +310,18 @@ button { font-family: 'Rubik', sans-serif; cursor: pointer; border: none; outlin
 .icon-btn:hover { background: rgba(51, 229, 255, 0.18); }
 .icon-btn:active { transform: scale(0.9); }
 .icon-btn.muted { opacity: 0.5; }
+
+/* Keep the header clear for the Google profile avatar. Game actions live
+   behind one settings button and expand as a vertical menu when needed. */
+.chrome-buttons > .icon-btn:not(.settings-btn) { display: none; }
+.chrome-buttons.settings-open > .icon-btn:not(.settings-btn) {
+  display: flex;
+  position: absolute;
+  right: 0;
+  top: calc(48px + (var(--settings-index) * 48px));
+  z-index: 20;
+}
+.settings-btn { font-size: 16px; }
 
 .waiting-bar {
   font-size: 12px;

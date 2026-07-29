@@ -46,6 +46,7 @@ export class UIManager {
     // Toasts
     this.toastContainer = document.getElementById('toast-container');
     this._addMultiplayerHubNavigation();
+    this._addSettingsMenu();
   }
 
   _addMultiplayerHubNavigation() {
@@ -72,6 +73,33 @@ export class UIManager {
       button.addEventListener('click', goToHub);
       chromeButtons.prepend(button);
     }
+  }
+
+  _addSettingsMenu() {
+    const chromeButtons = document.querySelector('.chrome-buttons');
+    if (!chromeButtons) return;
+
+    const settingsButton = document.createElement('button');
+    settingsButton.type = 'button';
+    settingsButton.className = 'icon-btn settings-btn';
+    settingsButton.title = 'Game settings';
+    settingsButton.setAttribute('aria-label', 'Game settings');
+    settingsButton.textContent = '⚙️';
+    chromeButtons.prepend(settingsButton);
+
+    Array.from(chromeButtons.querySelectorAll('.icon-btn:not(.settings-btn)'))
+      .forEach((button, index) => {
+        button.style.setProperty('--settings-index', index);
+        button.addEventListener('click', () => chromeButtons.classList.remove('settings-open'));
+      });
+
+    settingsButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      chromeButtons.classList.toggle('settings-open');
+    });
+    document.addEventListener('click', (event) => {
+      if (!chromeButtons.contains(event.target)) chromeButtons.classList.remove('settings-open');
+    });
   }
 
   bindLandingActions({ onPlay, onJoinCode }) {

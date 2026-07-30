@@ -712,10 +712,21 @@ h1,h2{
 
 <div class="bg-decor" id="bgDecor"></div>
 
+<!-- FULL-PAGE AUTH-CHECK LOADER -->
+<!-- Shown immediately on load and kept up while we ask Firebase whether the
+     user already has a session. If they do, we go straight from here to the
+     menu screen (no flash of the sign-in screen). If they don't, we hide this
+     and show the normal sign-in screen exactly as before. -->
+<div id="authLoader" style="position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">
+  <div style="width:52px;height:52px;border-radius:50%;border:5px solid rgba(255,255,255,.3);border-top-color:#fff;animation:authSpin .8s linear infinite;"></div>
+  <div style="color:#fff;font-family:inherit;font-weight:700;font-size:15px;letter-spacing:.3px;">Loading…</div>
+</div>
+<style>@keyframes authSpin{to{transform:rotate(360deg)}}</style>
+
 <div class="container">
 
   <!-- NAME ENTRY SCREEN -->
-  <div id="nameScreen">
+  <div id="nameScreen" class="hidden">
     <h1>🎯 Kids Quiz</h1>
     <p class="subtitle">Sign in with Google, or continue as a guest</p>
     <div class="center" style="margin-top:20px">
@@ -2083,6 +2094,7 @@ function proceedAfterLogin(u) {
   if (hu) hu.textContent = name;
   atRootScreen = true;
   showScreen('menuScreen');
+  hideAuthLoader();
   try { renderHomeProfile(); renderDailyCard(); } catch (e) {}
 }
 
@@ -2110,21 +2122,41 @@ function showLoginGate() {
   window.isGuestUser = false;
   atRootScreen = true;
   showScreen('nameScreen');
+  hideAuthLoader();
+}
+
+// The full-page loader stays up (covering the sign-in screen underneath)
+// until we know the Firebase auth state. This avoids ever flashing the
+// sign-in screen for a user who turns out to already be logged in.
+function hideAuthLoader() {
+  const el = document.getElementById('authLoader');
+  if (el) el.style.display = 'none';
 }
 
 (function initAuthGate() {
-  showLoginGate(); // default until we know the auth state
+  // Don't show the login gate yet — keep the full-page loader up instead,
+  // so an already-logged-in user never sees the sign-in screen flash by.
+  let authChecked = false;
   function start() {
     KQ.onAuth(function (u) {
+      authChecked = true;
       if (u && !u.isGuest) proceedAfterLogin(u);
       else if (!window.isGuestUser) showLoginGate();
     });
   }
-  if (window.KQ) { start(); return; }
-  const t = setInterval(function () {
-    if (window.KQ) { clearInterval(t); start(); }
-  }, 50);
-  setTimeout(function () { clearInterval(t); }, 20000);
+  if (window.KQ) { start(); }
+  else {
+    const t = setInterval(function () {
+      if (window.KQ) { clearInterval(t); start(); }
+    }, 50);
+    setTimeout(function () { clearInterval(t); }, 20000);
+  }
+  // Safety net: if auth state hasn't resolved after a few seconds (e.g. KQ
+  // failed to load), fall back to the normal sign-in screen instead of
+  // leaving the user stuck on the loader forever.
+  setTimeout(function () {
+    if (!authChecked) showLoginGate();
+  }, 8000);
 })();
 
 function onRewardEarned(type, amount) {

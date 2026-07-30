@@ -5,37 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Game Zone - Kids Quiz</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Baloo+2:wght@600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#1a1a3d);background-size:400% 400%;animation:bg 14s ease infinite;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;color:#fff}
+body{font-family:'Fredoka','Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#1a1440,#2d2470,#472e7a,#1a1440);background-size:400% 400%;animation:bg 14s ease infinite;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;color:#fff}
 @keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-.container{background:rgba(255,255,255,.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:32px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-width:760px;width:100%;padding:18px;display:flex;flex-direction:column;max-height:100%}
-h1{background:linear-gradient(135deg,#00f5ff,#ff00e5,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center;font-size:26px;font-weight:800}
-.subtitle{color:#9d9dc9;text-align:center;font-size:13px;margin-bottom:14px}
+.container{background:rgba(255,255,255,.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.16);border-radius:32px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-width:760px;width:100%;padding:18px;display:flex;flex-direction:column;max-height:100%;position:relative;overflow:hidden}
+h1{font-family:'Baloo 2',sans-serif;background:linear-gradient(135deg,#00f5ff,#ff00e5,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center;font-size:30px;font-weight:800;letter-spacing:.5px}
+h1 .wiggle{display:inline-block;animation:wiggle 2.2s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-10deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
+.subtitle{color:#c9c3ff;text-align:center;font-size:14px;font-weight:600;margin-bottom:14px}
 .topbar{display:flex;justify-content:flex-start;align-items:center;gap:10px;margin-bottom:8px}
-.back-btn{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:14px;padding:8px 16px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer}
-.crumb{color:#9d9dc9;font-size:12px;font-weight:600}
+.back-btn{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:14px;padding:9px 18px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.25);transition:.1s}
+.back-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.crumb{color:#fff;font-size:12px;font-weight:700;background:rgba(255,255,255,.12);padding:5px 12px;border-radius:20px}
+
+/* Floating decoration */
+.floaty{position:absolute;pointer-events:none;opacity:.25;font-size:26px;animation:floaty 6s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(12deg)}}
 
 /* Category grid */
-.catgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;flex:1;min-height:0;overflow-y:auto;padding:4px}
-.catcard{padding:20px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.14);cursor:pointer;text-align:center;transition:.15s;background:rgba(255,255,255,.05);position:relative;display:flex;flex-direction:column;align-items:center;gap:6px}
-.catcard:hover,.catcard:active{transform:translateY(-4px) scale(1.03);border-color:#00f5ff;box-shadow:0 10px 26px rgba(0,245,255,.18)}
-.catcard .cic{font-size:38px}
-.catcard .cnm{font-size:14px;font-weight:800;color:#fff}
-.catcard .ccount{font-size:11px;color:#9d9dc9;font-weight:600}
+.catgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;flex:1;min-height:0;overflow-y:auto;padding:6px 4px 10px}
+.catcard{padding:22px 10px 16px;border-radius:24px;border:none;cursor:pointer;text-align:center;position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;color:#fff;transform:translateY(0);transition:transform .12s,box-shadow .12s;opacity:0;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes popIn{0%{opacity:0;transform:scale(.6) translateY(14px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.catcard:hover{transform:translateY(-3px)}
+.catcard:active{transform:translateY(4px) !important;box-shadow:0 0 0 rgba(0,0,0,0) !important}
+.catcard .cbadge{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:inset 0 2px 4px rgba(255,255,255,.4)}
+.catcard .cnm{font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.15)}
+.catcard .ccount{font-size:11px;color:rgba(255,255,255,.9);font-weight:700;background:rgba(0,0,0,.15);padding:2px 10px;border-radius:20px}
 
 /* Game grid */
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:1;min-height:0;overflow-y:auto;padding:4px}
-.card{padding:12px 6px;border-radius:18px;border:1px solid rgba(255,255,255,.12);cursor:pointer;text-align:center;transition:.15s;background:rgba(255,255,255,.04);position:relative}
+.card{padding:12px 6px;border-radius:18px;border:1px solid rgba(255,255,255,.12);cursor:pointer;text-align:center;transition:.15s;background:rgba(255,255,255,.05);position:relative;opacity:0;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) forwards}
 .card.threed::after{content:'3D';position:absolute;top:6px;right:8px;font-size:9px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);color:#0b0b1e;padding:2px 5px;border-radius:6px}
-.card:hover,.card.sel{transform:translateY(-4px) scale(1.04);border-color:#00f5ff;box-shadow:0 8px 22px rgba(0,245,255,.15)}
+.card:hover,.card.sel{transform:translateY(-4px) scale(1.04);border-color:var(--accent,#00f5ff);box-shadow:0 8px 22px rgba(0,245,255,.15)}
 .card .ic{font-size:32px}
-.card .nm{font-size:11px;font-weight:700;color:#e5e5f7;line-height:1.2;margin-top:4px}
+.card .nm{font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:700;color:#e5e5f7;line-height:1.2;margin-top:4px}
 
 .detail{display:none;margin-top:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:22px;padding:16px;text-align:center}
 .detail.show{display:block}
 .detail .big{font-size:44px}
-.detail h2{background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:19px}
+.detail h2{font-family:'Baloo 2',sans-serif;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:19px}
 .detail p{color:#c7c7de;font-size:13px;margin:6px 0 12px;line-height:1.5}
 .start-btn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:18px;padding:13px 42px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 8px 20px rgba(255,79,163,.35);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
@@ -48,7 +57,8 @@ h1{background:linear-gradient(135deg,#00f5ff,#ff00e5,#7c3aed);-webkit-background
   .card .ic{font-size:26px}
   .card .nm{font-size:9.5px}
   .catgrid{grid-template-columns:repeat(2,1fr)}
-  .catcard .cic{font-size:32px}
+  .catcard .cbadge{width:48px;height:48px;font-size:26px}
+  .catcard .cnm{font-size:13px}
 }
 </style>
 <link rel="stylesheet" href="game-theme.css">
@@ -59,10 +69,14 @@ h1{background:linear-gradient(135deg,#00f5ff,#ff00e5,#7c3aed);-webkit-background
     <button class="back-btn" id="backBtn" onclick="handleBack()">← Quiz Home</button>
     <span class="crumb" id="crumb"></span>
   </div>
-  <h1>🎮 Game Zone</h1>
-  <p class="subtitle" id="subtitle">Pick a category to get started!</p>
+  <h1><span class="wiggle">🎮</span> Game Zone</h1>
+  <p class="subtitle" id="subtitle">Choose a category and let's play!</p>
 
   <div class="view show" id="viewCats">
+    <span class="floaty" style="top:2%;left:4%;animation-delay:.2s">⭐</span>
+    <span class="floaty" style="top:8%;right:6%;animation-delay:1.4s">✨</span>
+    <span class="floaty" style="bottom:6%;left:8%;animation-delay:2.2s">🎈</span>
+    <span class="floaty" style="bottom:2%;right:4%;animation-delay:.8s">🌟</span>
     <div class="catgrid" id="catGrid"></div>
   </div>
 
@@ -139,13 +153,13 @@ const GAMES=[
 const THREED=['car_race_3d.html','endless_runner_3d.html','crossy_road_3d.html','basketball_3d.html','ball_maze_3d.html','drift_racer_3d.html'];
 
 const CATEGORIES=[
- {id:'action',ic:'🏃',nm:'Action & Arcade'},
- {id:'threed',ic:'🕶️',nm:'3D Games'},
- {id:'puzzle',ic:'🧩',nm:'Puzzle & Logic'},
- {id:'strategy',ic:'♟️',nm:'Classic & Strategy'},
- {id:'word',ic:'🔤',nm:'Word & Vocabulary'},
- {id:'brain',ic:'⚡',nm:'Brain & Speed'},
- {id:'ai',ic:'🤖',nm:'AI Games'}
+ {id:'action',ic:'🏃',nm:'Action & Arcade',bg:'#FF6B57',shadow:'#D6432F',text:'#fff'},
+ {id:'threed',ic:'🕶️',nm:'3D Games',bg:'#7C5CFC',shadow:'#5A3FD1',text:'#fff'},
+ {id:'puzzle',ic:'🧩',nm:'Puzzle & Logic',bg:'#22C55E',shadow:'#158A3E',text:'#fff'},
+ {id:'strategy',ic:'♟️',nm:'Classic & Strategy',bg:'#3B82F6',shadow:'#1D4ED8',text:'#fff'},
+ {id:'word',ic:'🔤',nm:'Word & Vocabulary',bg:'#FFC93C',shadow:'#E0A800',text:'#3a2a00'},
+ {id:'brain',ic:'⚡',nm:'Brain & Speed',bg:'#FF4FA3',shadow:'#D6337F',text:'#fff'},
+ {id:'ai',ic:'🤖',nm:'AI Games',bg:'#16C2C2',shadow:'#0E8F8F',text:'#fff'}
 ];
 
 let sel=-1;
@@ -159,32 +173,43 @@ const detail=document.getElementById('detail');
 const subtitle=document.getElementById('subtitle');
 const crumb=document.getElementById('crumb');
 
-CATEGORIES.forEach(c=>{
+CATEGORIES.forEach((c,i)=>{
   const count=GAMES.filter(g=>g.cat===c.id).length;
   const d=document.createElement('div');
   d.className='catcard';
-  d.innerHTML='<div class="cic">'+c.ic+'</div><div class="cnm">'+c.nm+'</div><div class="ccount">'+count+' games</div>';
-  d.onclick=()=>openCategory(c.id,c.nm);
+  d.style.background=c.bg;
+  d.style.color=c.text;
+  d.style.boxShadow='0 6px 0 '+c.shadow+', 0 10px 18px rgba(0,0,0,.25)';
+  d.style.animationDelay=(i*0.06)+'s';
+  d.innerHTML='<div class="cbadge">'+c.ic+'</div><div class="cnm">'+c.nm+'</div><div class="ccount">'+count+' games</div>';
+  d.onclick=()=>openCategory(c);
   catGrid.appendChild(d);
 });
 
-function openCategory(id,nm){
+function openCategory(c){
+  const id=c.id, nm=c.nm;
   currentCat=id;
   sel=-1;
   detail.classList.remove('show');
   grid.innerHTML='';
-  GAMES.forEach((g,i)=>{
+  document.documentElement.style.setProperty('--accent', c.bg);
+  let i=0;
+  GAMES.forEach((g,gi)=>{
     if(g.cat!==id) return;
     const d=document.createElement('div');
     d.className='card'+(THREED.includes(g.f)?' threed':'');
+    d.style.animationDelay=(i*0.04)+'s';
+    i++;
     d.innerHTML='<div class="ic">'+g.ic+'</div><div class="nm">'+g.nm+'</div>';
-    d.onclick=()=>select(i,d);
+    d.onclick=()=>select(gi,d);
     grid.appendChild(d);
   });
   viewCats.classList.remove('show');
   viewGames.classList.add('show');
   subtitle.textContent='Pick a game, then press Start to play!';
-  crumb.textContent='› '+nm;
+  crumb.style.background=c.bg;
+  crumb.style.color=c.text;
+  crumb.textContent=c.ic+' '+nm;
 }
 
 function select(i,card){
@@ -206,8 +231,10 @@ function handleBack(){
     // back to categories
     viewGames.classList.remove('show');
     viewCats.classList.add('show');
-    subtitle.textContent='Pick a category to get started!';
+    subtitle.textContent="Choose a category and let's play!";
     crumb.textContent='';
+    crumb.style.background='';
+    crumb.style.color='';
     sel=-1;
     currentCat=null;
     detail.classList.remove('show');

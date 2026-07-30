@@ -31,28 +31,43 @@
   .menu-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 12px;
     margin: 15px 0;
     max-height: 60vh;
     overflow-y: auto;
-    padding: 5px;
+    padding: 6px 4px 10px;
   }
   .menu-card {
-    padding: 14px 8px;
-    background: #f7f7fb;
-    border: 2px solid transparent;
-    border-radius: 12px;
+    padding: 16px 8px 12px;
+    border: none;
+    border-radius: 20px;
     cursor: pointer;
     text-align: center;
-    transition: all 0.2s;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    animation: cardPop .45s cubic-bezier(.34,1.56,.64,1) forwards;
+    transition: transform .12s, box-shadow .12s;
   }
-  .menu-card:hover {
-    border-color: #667eea;
-    background: #f0f0ff;
-    transform: translateY(-2px);
+  @keyframes cardPop {
+    0% { opacity: 0; transform: scale(.6) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
   }
-  .menu-card .icon { font-size: 28px; margin-bottom: 5px; }
-  .menu-card .title { font-weight: bold; color: #333; font-size: 13px; line-height: 1.2; }
+  .menu-card:hover { transform: translateY(-3px); }
+  .menu-card:active { transform: translateY(4px) !important; box-shadow: none !important; }
+  .menu-card .icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,.4);
+    margin: 0 auto;
+  }
+  .menu-card .title { font-weight: 800; color: #fff; font-size: 12.5px; line-height: 1.2; text-shadow: 0 1px 2px rgba(0,0,0,.15); }
 
   .level-grid {
     display: grid;
@@ -61,19 +76,33 @@
     margin: 20px 0;
   }
   .level-btn {
-    padding: 18px 8px;
-    background: #f7f7fb;
-    border: 2px solid transparent;
-    border-radius: 10px;
+    padding: 16px 6px 12px;
+    border: none;
+    border-radius: 18px;
     cursor: pointer;
-    font-weight: bold;
-    color: #333;
-    transition: all 0.2s;
+    font-family: inherit;
+    color: #fff;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    animation: cardPop .45s cubic-bezier(.34,1.56,.64,1) forwards;
+    transition: transform .12s, box-shadow .12s;
   }
-  .level-btn:hover { border-color: #667eea; background: #f0f0ff; transform: translateY(-2px); }
-  .level-btn .num { font-size: 20px; display: block; margin-bottom: 3px; }
-  .level-btn .label { font-size: 11px; color: #666; }
+  .level-btn:hover { transform: translateY(-3px); }
+  .level-btn:active { transform: translateY(4px) !important; box-shadow: none !important; }
+  .level-btn .num {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+    margin: 0 auto 2px;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,.4);
+  }
+  .level-btn .label { font-size: 11px; font-weight: 700; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.15); }
 
   .stats {
     display: flex;
@@ -378,7 +407,7 @@
     .question.large { font-size: 32px; }
     .option-btn { font-size: 14px; padding: 12px; min-height: 48px; }
     h1 { font-size: 20px; }
-    .menu-card .icon { font-size: 24px; }
+    .menu-card .icon { width: 36px; height: 36px; font-size: 19px; }
     .menu-card .title { font-size: 11px; }
   }
 
@@ -412,25 +441,41 @@ h1,h2{
 }
 .subtitle{color:#6b7280 !important;}
 
-.menu-card,.level-btn,.mini-stat,.history-item,.best-item,.info-box{
+.mini-stat,.history-item,.best-item,.info-box{
   border-radius:22px !important;
   border:3px solid rgba(255,255,255,.7) !important;
   background:linear-gradient(180deg,#ffffff,#f7fbff) !important;
 }
+.menu-card,.level-btn{ border-radius:20px !important; }
 
-.menu-card:hover,.level-btn:hover{
-  transform:translateY(-5px) scale(1.03) !important;
+.mode-grid{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.mode-card{
+  padding:16px 16px;
+  border-radius:20px;
+  cursor:pointer;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  text-align:left;
+  opacity:0;
+  animation:cardPop .45s cubic-bezier(.34,1.56,.64,1) forwards;
+  transition:transform .12s, box-shadow .12s;
 }
-
-.menu-card:nth-child(4n+1){background:linear-gradient(135deg,#ffe082,#fff8e1)!important;}
-.menu-card:nth-child(4n+2){background:linear-gradient(135deg,#80deea,#e0f7fa)!important;}
-.menu-card:nth-child(4n+3){background:linear-gradient(135deg,#c5e1a5,#f1f8e9)!important;}
-.menu-card:nth-child(4n+4){background:linear-gradient(135deg,#f8bbd0,#fce4ec)!important;}
-
-.menu-card .icon{
-  font-size:40px !important;
-  margin-bottom:10px !important;
+.mode-card:hover{transform:translateY(-3px)}
+.mode-card:active{transform:translateY(4px) !important;box-shadow:none !important}
+.mode-icon{
+  width:48px;height:48px;flex:0 0 auto;
+  border-radius:50%;
+  background:rgba(255,255,255,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.4);
 }
+.mode-txt{flex:1;min-width:0}
+.mode-title{font-weight:800;font-size:15px;text-shadow:0 1px 2px rgba(0,0,0,.15)}
+.mode-sub{font-size:11.5px;opacity:.95;font-family:-apple-system,BlinkMacSystemFont,sans-serif;margin-top:2px}
+.mode-arrow{font-size:22px;opacity:.85;flex:0 0 auto}
 
 .btn{
   background:linear-gradient(135deg,#ff7a59,#ff4fa3) !important;
@@ -475,7 +520,7 @@ h1,h2{
 
 @media(max-width:600px){
   .container{padding:16px !important;}
-  .menu-card .icon{font-size:34px !important;}
+  .menu-card .icon{width:36px !important;height:36px !important;font-size:19px !important;}
   .question{font-size:20px !important;}
 }
 
@@ -886,11 +931,11 @@ h1,h2{
     <h2 id="levelTitle">Select Class Level</h2>
     <p class="subtitle">Pick the class level for difficulty</p>
     <div class="level-grid">
-      <button class="level-btn" onclick="startQuiz(1)"><span class="num">1</span><span class="label">Class 1</span></button>
-      <button class="level-btn" onclick="startQuiz(2)"><span class="num">2</span><span class="label">Class 2</span></button>
-      <button class="level-btn" onclick="startQuiz(3)"><span class="num">3</span><span class="label">Class 3</span></button>
-      <button class="level-btn" onclick="startQuiz(4)"><span class="num">4</span><span class="label">Class 4</span></button>
-      <button class="level-btn" onclick="startQuiz(5)"><span class="num">5</span><span class="label">Class 5</span></button>
+      <button class="level-btn" style="background:#FF6B57;box-shadow:0 6px 0 #D6432F, 0 10px 16px rgba(0,0,0,.18);animation-delay:.02s" onclick="startQuiz(1)"><span class="num">1</span><span class="label">Class 1</span></button>
+      <button class="level-btn" style="background:#7C5CFC;box-shadow:0 6px 0 #5A3FD1, 0 10px 16px rgba(0,0,0,.18);animation-delay:.08s" onclick="startQuiz(2)"><span class="num">2</span><span class="label">Class 2</span></button>
+      <button class="level-btn" style="background:#22C55E;box-shadow:0 6px 0 #158A3E, 0 10px 16px rgba(0,0,0,.18);animation-delay:.14s" onclick="startQuiz(3)"><span class="num">3</span><span class="label">Class 3</span></button>
+      <button class="level-btn" style="background:#3B82F6;box-shadow:0 6px 0 #1D4ED8, 0 10px 16px rgba(0,0,0,.18);animation-delay:.20s" onclick="startQuiz(4)"><span class="num">4</span><span class="label">Class 4</span></button>
+      <button class="level-btn" style="background:#FF4FA3;box-shadow:0 6px 0 #D6337F, 0 10px 16px rgba(0,0,0,.18);animation-delay:.26s" onclick="startQuiz(5)"><span class="num">5</span><span class="label">Class 5</span></button>
     </div>
     <div class="info-box">
       <strong>Rules:</strong> 3-minute timer • +1 for correct • −1 for wrong • 4 options per question • Random questions every time
@@ -975,12 +1020,26 @@ h1,h2{
 <div id="gameModeModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px;">
   <div style="background:linear-gradient(180deg,#ffffff,#fef6ff); border:6px solid #fff; border-radius:28px; padding:25px; max-width:340px; width:100%; text-align:center; box-shadow:0 15px 40px rgba(0,0,0,.25);">
     <h2 style="margin-bottom:6px;">🎮 Choose Game Mode</h2>
-    <p class="subtitle" style="margin-bottom:18px;">Which game do you want to play?</p>
-    <div style="display:flex; flex-direction:column; gap:10px;">
-      <button class="btn" onclick="openSinglePlayer()">👤 Single Player</button>
-      <button class="btn btn-secondary" onclick="openMultiPlayer()">👥 Multi Player</button>
-      <button onclick="closeGameModal()" style="background:none; border:none; color:#888; font-size:13px; cursor:pointer; margin-top:6px; font-family:'Baloo 2',cursive;">Cancel</button>
+    <p class="subtitle" style="margin-bottom:16px;">Which game do you want to play?</p>
+    <div class="mode-grid">
+      <div class="mode-card" style="background:#16C2C2;box-shadow:0 6px 0 #0E8F8F, 0 10px 16px rgba(0,0,0,.18);animation-delay:.05s" onclick="openSinglePlayer()">
+        <div class="mode-icon">👤</div>
+        <div class="mode-txt">
+          <div class="mode-title">Single Player</div>
+          <div class="mode-sub">Play solo &amp; beat your best score</div>
+        </div>
+        <div class="mode-arrow">›</div>
+      </div>
+      <div class="mode-card" style="background:#F97316;box-shadow:0 6px 0 #C2410C, 0 10px 16px rgba(0,0,0,.18);animation-delay:.12s" onclick="openMultiPlayer()">
+        <div class="mode-icon">👥</div>
+        <div class="mode-txt">
+          <div class="mode-title">Multi Player</div>
+          <div class="mode-sub">Challenge a friend, same device</div>
+        </div>
+        <div class="mode-arrow">›</div>
+      </div>
     </div>
+    <button onclick="closeGameModal()" style="background:none; border:none; color:#888; font-size:13px; cursor:pointer; margin-top:14px; font-family:'Baloo 2',cursive;">Cancel</button>
   </div>
 </div>
 
@@ -1127,6 +1186,28 @@ const CATEGORIES = [
   { id: 'reasoning', icon: '🧠', title: 'Reasoning' }
 ];
 
+// Bright, high-contrast, kid-friendly palette reused for quiz categories,
+// class-level buttons, and the single/multiplayer mode cards so the whole
+// app feels like one consistent, playful design.
+const KID_COLORS = [
+  {bg:'#FF6B57',shadow:'#D6432F'},
+  {bg:'#7C5CFC',shadow:'#5A3FD1'},
+  {bg:'#22C55E',shadow:'#158A3E'},
+  {bg:'#3B82F6',shadow:'#1D4ED8'},
+  {bg:'#FFC93C',shadow:'#E0A800'},
+  {bg:'#FF4FA3',shadow:'#D6337F'},
+  {bg:'#16C2C2',shadow:'#0E8F8F'},
+  {bg:'#F97316',shadow:'#C2410C'},
+  {bg:'#A855F7',shadow:'#7E22CE'},
+  {bg:'#06B6D4',shadow:'#0891B2'}
+];
+function kidColor(i) { return KID_COLORS[i % KID_COLORS.length]; }
+function styleKidCard(el, color, delayIndex) {
+  el.style.background = color.bg;
+  el.style.boxShadow = '0 6px 0 ' + color.shadow + ', 0 10px 16px rgba(0,0,0,.18)';
+  el.style.animationDelay = (delayIndex * 0.05) + 's';
+}
+
 let currentCategory = '';
 let currentLevel = 0;
 let timeLeft = 180;
@@ -1189,9 +1270,10 @@ function buildMenu() {
   const grid = document.getElementById('categoryGrid');
   if (!grid) return;
   grid.innerHTML = '';
-  CATEGORIES.forEach(cat => {
+  CATEGORIES.forEach((cat, i) => {
     const card = document.createElement('div');
     card.className = 'menu-card';
+    styleKidCard(card, kidColor(i), i);
     card.onclick = () => selectCategory(cat.id);
     card.innerHTML = '<div class="icon">' + cat.icon + '</div><div class="title">' + cat.title + '</div>';
     grid.appendChild(card);
@@ -1685,9 +1767,10 @@ function showQuizCategoryModal() {
   const grid = document.getElementById('quizCategoryGrid');
   if (grid && !grid.dataset.built) {
     grid.innerHTML = '';
-    CATEGORIES.forEach(cat => {
+    CATEGORIES.forEach((cat, i) => {
       const card = document.createElement('div');
       card.className = 'menu-card';
+      styleKidCard(card, kidColor(i), i);
       card.onclick = () => { closeQuizCategoryModal(); selectCategory(cat.id); };
       card.innerHTML = '<div class="icon">' + cat.icon + '</div><div class="title">' + cat.title + '</div>';
       grid.appendChild(card);

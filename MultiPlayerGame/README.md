@@ -35,6 +35,8 @@ collides between games.
 | **Bubble Shooter Duel** 🆕 | `bubble-shooter/` | Classic pop-3-match bubble shooter, race to 120 points |
 | **Archery Duel** 🆕 | `archery-duel/` | Time your release as a 2D crosshair drifts toward the bullseye, best of 5 |
 | **Ludo Royale** 🆕 | `ludo-royale/` | **2-4 players**, not just 2 — full Ludo with dice, capturing, and home stretches |
+| **Trivia Party** 🆕 | `trivia-party/` | **2-8 players** — same question for everyone every round, fastest correct answer scores most, 8-round leaderboard |
+| **Red Light, Green Light** 🆕 | `red-light-green-light/` | **2-8 players** — tap to race forward on green, freeze on red or you're eliminated, first to the finish (or last one standing) wins |
 
 ### About the 5 new games
 
@@ -85,6 +87,34 @@ bigger `SEATS` array:
 If you want to build another >2-player game (a pool/8-ball style game,
 a card game with more seats, etc.), Ludo Royale's `findOrCreateRoom()` +
 lobby-panel pattern is the template to copy.
+
+### About Trivia Party and Red Light, Green Light (2-8 players)
+
+Both reuse Ludo Royale's lobby/`findOrCreateRoom()` pattern verbatim
+(same `MIN_PLAYERS`/`MAX_PLAYERS` gating, same "anyone can Start, room
+auto-starts at capacity" flow), scaled up to an 8-seat party size
+(`SEATS = ['P1', ..., 'P8']`) since neither game has Ludo's board-size
+constraint. The two differ from Ludo — and from each other — in how they
+avoid needing turn-locking for >2 players:
+
+- **Trivia Party** has no turns at all: every seated player answers the
+  same question independently and simultaneously. Each answer is
+  written to `answers/{seat}`, which only that seat ever touches, so
+  there's zero write contention between players — the only thing
+  transaction-guarded is the shared "is this round over yet?"
+  check (`phase: 'question' → 'reveal' → next round`), which any client
+  may call on a timer; the transaction's precondition ensures only one
+  of those calls actually advances the round.
+- **Red Light, Green Light** has a single shared piece of authoritative
+  state — the light color — driven by one "referee" client (P1, the
+  always-present first joiner), the same host-authority convention
+  Blaster Arena and Pong Duel use for physics, just applied to a simple
+  red/green timer instead. Each player's own forward progress is
+  tracked and written entirely by their own client (contention-free),
+  and getting "caught" on red is self-reported by comparing your own tap
+  time to the shared light state — consistent with this project's
+  existing zero-backend, honor-system fairness model (see the note
+  above).
 
 Every game follows the same flow: **enter a nickname, tap Play.** You're
 instantly paired with anyone else waiting; if nobody shows up within 30

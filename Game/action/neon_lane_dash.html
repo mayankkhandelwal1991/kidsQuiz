@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Neon Lane Dash</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#1a1a3d);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
+.wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.4);padding:12px;max-width:420px;width:100%;display:flex;flex-direction:column;height:100%;max-height:800px;position:relative}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
+h1{font-size:18px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sc{font-size:14px;font-weight:800;color:#00f5ff}
+.stage{flex:1;min-height:0;border-radius:14px;overflow:hidden}
+canvas{width:100%;height:100%;display:block}
+.lanes{display:flex;justify-content:space-between;gap:8px;margin-top:8px}
+.lanes button{flex:1;padding:14px 0;border:none;border-radius:14px;background:linear-gradient(135deg,#7c3aed,#00d4ff);color:#fff;font-size:20px}
+.overlay{position:absolute;inset:0;background:rgba(15,12,41,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;border-radius:26px;z-index:10}
+.overlay.show{display:flex}
+.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+</style><link rel="stylesheet" href="../game-theme.css"></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <h1>Neon Lane Dash</h1>
+    <div class="sc" id="score">0</div>
+  </div>
+  <div class="stage"><canvas id="cv"></canvas></div>
+  <div class="lanes">
+    <button ontouchstart="setLane(0)" onmousedown="setLane(0)">⬅️</button>
+    <button ontouchstart="setLane(1)" onmousedown="setLane(1)">⬆️</button>
+    <button ontouchstart="setLane(2)" onmousedown="setLane(2)">➡️</button>
+  </div>
+  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">Crashed!</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="init()">Play Again</button></div>
+</div>
+<script src="../ads.js"></script>
+<script>
+const cv=document.getElementById('cv'),cx=cv.getContext('2d');
+function fit(){ cv.width=cv.clientWidth*devicePixelRatio; cv.height=cv.clientHeight*devicePixelRatio; cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
+window.addEventListener('resize',fit);
+let W,H,laneW,curLane,player,obstacles,score,over,speed,frame,best=+(localStorage.getItem('laneDashBest')||0);
+function init(){
+  fit(); W=cv.clientWidth; H=cv.clientHeight; laneW=W/3;
+  curLane=1;
+  player={x:laneW*1.5,y:H-70,w:34,h:50};
+  obstacles=[]; score=0; over=false; speed=6; frame=0;
+  document.getElementById('score').textContent=0;
+  document.getElementById('overlay').classList.remove('show');
+  requestAnimationFrame(loop);
+}
+function setLane(l){
+  if(over){ init(); return; }
+  curLane=l;
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft')setLane(Math.max(0,curLane-1));
+  if(e.key==='ArrowRight')setLane(Math.min(2,curLane+1));
+});
+let tsx;
+cv.addEventListener('touchstart',e=>{ tsx=e.touches[0].clientX; },{passive:true});
+cv.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tsx;
+  if(Math.abs(dx)>25) setLane(dx>0?Math.min(2,curLane+1):Math.max(0,curLane-1));
+},{passive:true});
+function spawnObstacle(){
+  const lane=Math.floor(Math.random()*3);
+  const color=['#ff5a8a','#ffe066','#c77dff','#38f9a1'][Math.floor(Math.random()*4)];
+  obstacles.push({lane,y:-60,w:36,h:36,color});
+}
+function loop(){
+  if(!over) update();
+  draw();
+  requestAnimationFrame(loop);
+}
+function update(){
+  frame++;
+  speed=Math.min(14,6+score*0.02);
+  player.x += (laneW*(curLane+0.5)-player.x)*0.3;
+  if(frame%Math.max(22,55-Math.floor(score/8))===0) spawnObstacle();
+  obstacles.forEach(o=>o.y+=speed);
+  obstacles=obstacles.filter(o=>{
+    if(o.y>H+50) { score+=1; if(window.KQFX)KQFX.play('whoosh'); return false; }
+    return true;
+  });
+  document.getElementById('score').textContent=score;
+  obstacles.forEach(o=>{
+    const ox=laneW*(o.lane+0.5);
+    if(Math.abs(ox-player.x)<(o.w+player.w)/2*0.75 && Math.abs(o.y-player.y)<(o.h+player.h)/2*0.75){
+      endGame();
+    }
+  });
+}
+function draw(){
+  const grad=cx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'#1a1a3d');grad.addColorStop(1,'#0b0b1e');
+  cx.fillStyle=grad; cx.fillRect(0,0,W,H);
+  cx.strokeStyle='rgba(0,245,255,.25)'; cx.setLineDash([14,14]);
+  for(let i=1;i<3;i++){ cx.beginPath(); cx.moveTo(laneW*i,0); cx.lineTo(laneW*i,H); cx.stroke(); }
+  cx.setLineDash([]);
+  obstacles.forEach(o=>{
+    const ox=laneW*(o.lane+0.5);
+    cx.fillStyle=o.color;
+    cx.fillRect(ox-o.w/2,o.y-o.h/2,o.w,o.h);
+  });
+  cx.fillStyle='#00f5ff';
+  cx.beginPath(); cx.roundRect(player.x-player.w/2,player.y-player.h/2,player.w,player.h,8); cx.fill();
+}
+function endGame(){
+  over=true;
+  if(window.KQFX)KQFX.play('blast');
+  if(score>best){ best=score; localStorage.setItem('laneDashBest',best); }
+  document.getElementById('finalScore').textContent='Score: '+score+'  •  Best: '+best;
+  document.getElementById('overlay').classList.add('show');
+  onGameComplete();
+}
+init();
+</script></body></html>

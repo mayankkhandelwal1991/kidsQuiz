@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Sudoku Mini</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#1a1a3d);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
+.wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.4);padding:14px;max-width:420px;width:100%;display:flex;flex-direction:column;height:100%;max-height:800px;position:relative}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
+h1{font-size:18px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.timer{font-size:14px;font-weight:800;color:#00f5ff}
+.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+#grid{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);width:100%;max-width:340px;aspect-ratio:1/1;background:#0b0b1e;border-radius:10px;padding:4px;gap:2px}
+.g-cell{display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;border-radius:4px;background:rgba(255,255,255,.05);cursor:pointer;color:#00f5ff}
+.g-cell.fixed{color:#fff;background:rgba(255,255,255,.1);cursor:default}
+.g-cell.sel{outline:2px solid #ff00e5}
+.g-cell.err{color:#ff5a8a}
+.g-cell.b-right{border-right:2px solid #444}
+.g-cell.b-bottom{border-bottom:2px solid #444}
+.numpad{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px}
+.numpad button{padding:10px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#00d4ff);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+.overlay{position:absolute;inset:0;background:rgba(15,12,41,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;border-radius:26px;z-index:10}
+.overlay.show{display:flex}
+.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+</style><link rel="stylesheet" href="../game-theme.css"></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <h1>Sudoku Mini</h1>
+    <div class="timer" id="timer">0:00</div>
+  </div>
+  <div class="stage"><div id="grid"></div></div>
+  <div class="numpad" id="numpad"></div>
+  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">🎉 Solved!</h2><p id="finalTime" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="init()">New Puzzle</button></div>
+</div>
+<script src="../ads.js"></script>
+<script>
+const N=6, BR=2, BC=3;
+let solution,puzzle,fixed,sel,seconds,timerId,over;
+function makeSolved(){
+  // base pattern generator for 6x6 (2 rows x 3 cols boxes)
+  const base=[];
+  for(let r=0;r<N;r++){
+    base.push([]);
+    for(let c=0;c<N;c++){
+      base[r].push(((c + r*BC + Math.floor(r/BR)) % N) + 1);
+    }
+  }
+  return base;
+}
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
+function randomize(base){
+  let grid=base.map(r=>r.slice());
+  // permute digit labels
+  const perm=shuffle([1,2,3,4,5,6]);
+  grid=grid.map(row=>row.map(v=>perm[v-1]));
+  // swap rows within band, bands
+  for(let band=0;band<N/BR;band++){
+    const rows=shuffle([0,1].map(i=>band*BR+i));
+    // no-op simplification: just shuffle row order within band by swapping
+    if(Math.random()<0.5){ const tmp=grid[band*BR]; grid[band*BR]=grid[band*BR+1]; grid[band*BR+1]=tmp; }
+  }
+  for(let stack=0;stack<N/BC;stack++){
+    if(Math.random()<0.5){
+      for(let r=0;r<N;r++){ const tmp=grid[r][stack*BC]; grid[r][stack*BC]=grid[r][stack*BC+1]; grid[r][stack*BC+1]=grid[r][stack*BC+2]; grid[r][stack*BC+2]=tmp; }
+    }
+  }
+  return grid;
+}
+function init(){
+  solution=randomize(makeSolved());
+  puzzle=solution.map(r=>r.slice());
+  fixed=solution.map(r=>r.map(()=>true));
+  let toRemove=18;
+  while(toRemove>0){
+    const r=Math.floor(Math.random()*N), c=Math.floor(Math.random()*N);
+    if(fixed[r][c]){ fixed[r][c]=false; puzzle[r][c]=0; toRemove--; }
+  }
+  sel=null; over=false; seconds=0;
+  document.getElementById('overlay').classList.remove('show');
+  clearInterval(timerId);
+  timerId=setInterval(()=>{ seconds++; document.getElementById('timer').textContent=fmt(seconds); },1000);
+  renderNumpad();
+  render();
+}
+function fmt(s){ const m=Math.floor(s/60), ss=s%60; return m+':'+(ss<10?'0':'')+ss; }
+function render(){
+  const g=document.getElementById('grid');
+  g.innerHTML='';
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+    const cell=document.createElement('div');
+    cell.className='g-cell'+(fixed[r][c]?' fixed':'')+(sel&&sel[0]===r&&sel[1]===c?' sel':'');
+    if((c+1)%BC===0 && c!==N-1) cell.classList.add('b-right');
+    if((r+1)%BR===0 && r!==N-1) cell.classList.add('b-bottom');
+    const v=puzzle[r][c];
+    cell.textContent=v||'';
+    if(v && !fixed[r][c] && v!==solution[r][c]) cell.classList.add('err');
+    cell.onclick=()=>{ if(!fixed[r][c]){ sel=[r,c]; render(); } };
+    g.appendChild(cell);
+  }
+}
+function renderNumpad(){
+  const np=document.getElementById('numpad');
+  np.innerHTML='';
+  for(let n=1;n<=6;n++){
+    const b=document.createElement('button'); b.textContent=n;
+    b.onclick=()=>setNum(n);
+    np.appendChild(b);
+  }
+  const clr=document.createElement('button'); clr.textContent='✕'; clr.style.gridColumn='span 6';
+  clr.onclick=()=>setNum(0);
+  np.appendChild(clr);
+}
+function setNum(n){
+  if(!sel||over)return;
+  const [r,c]=sel;
+  if(fixed[r][c])return;
+  puzzle[r][c]=n;
+  render();
+  checkWin();
+}
+function checkWin(){
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(puzzle[r][c]!==solution[r][c]) return;
+  over=true; clearInterval(timerId);
+  if(window.KQFX)KQFX.win();
+  document.getElementById('finalTime').textContent='Time: '+fmt(seconds);
+  document.getElementById('overlay').classList.add('show');
+  onGameComplete();
+}
+init();
+</script></body></html>

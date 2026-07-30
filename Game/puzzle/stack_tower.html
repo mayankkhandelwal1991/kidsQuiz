@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Stack Tower</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(180deg,#1a1a3d,#0f0c29);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
+.wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.4);padding:12px;max-width:400px;width:100%;display:flex;flex-direction:column;height:100%;max-height:800px;position:relative}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
+h1{font-size:19px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sc{font-size:14px;font-weight:800;color:#00f5ff}
+.stage{flex:1;min-height:0;border-radius:14px;overflow:hidden}
+canvas{width:100%;height:100%;display:block;background:linear-gradient(180deg,#2d2b55,#0b0b1e)}
+.overlay{position:absolute;inset:0;background:rgba(15,12,41,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;border-radius:26px;z-index:10}
+.overlay.show{display:flex}
+.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+</style><link rel="stylesheet" href="../game-theme.css"></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <h1>Stack Tower</h1>
+    <div class="sc" id="score">0</div>
+  </div>
+  <div class="stage"><canvas id="cv"></canvas></div>
+  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">Tower Collapsed!</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="init()">Play Again</button></div>
+</div>
+<script src="../ads.js"></script>
+<script>
+const cv=document.getElementById('cv'),cx=cv.getContext('2d');
+function fit(){ cv.width=cv.clientWidth*devicePixelRatio; cv.height=cv.clientHeight*devicePixelRatio; cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
+window.addEventListener('resize',()=>{fit();});
+let stack,current,dir,speed,score,over,best=+(localStorage.getItem('stackBest')||0),camY,blockH,W;
+const HUES=['#00f5ff','#7c3aed','#ff00e5','#38f9a1','#ff9f43','#ff5a8a','#5390f6'];
+function init(){
+  fit();
+  document.getElementById('overlay').classList.remove('show');
+  W=cv.clientWidth;
+  blockH=Math.min(38, cv.clientHeight/14);
+  const baseW=W*0.55;
+  stack=[{x:(W-baseW)/2,w:baseW,y:cv.clientHeight-blockH,color:'#444'}];
+  score=0;over=false;camY=0;
+  document.getElementById('score').textContent=0;
+  newBlock();
+  requestAnimationFrame(loop);
+}
+function newBlock(){
+  const last=stack[stack.length-1];
+  dir=Math.random()<0.5?-1:1;
+  speed=2.6+score*0.12;
+  current={x: dir>0 ? -last.w*0.6 : W+last.w*0.6*0-0, w:last.w, y:last.y-blockH, color:HUES[stack.length%HUES.length]};
+  current.x = dir>0 ? -current.w : W;
+}
+function drop(){
+  if(over)return;
+  const last=stack[stack.length-1];
+  const left=Math.max(current.x,last.x);
+  const right=Math.min(current.x+current.w,last.x+last.w);
+  const overlap=right-left;
+  if(overlap<=4){ if(window.KQFX)KQFX.play('blast'); endGame(); return; }
+  const newBlockObj={x:left,w:overlap,y:current.y,color:current.color};
+  stack.push(newBlockObj);
+  if(window.KQFX)KQFX.play('drop');
+  score++;
+  document.getElementById('score').textContent=score;
+  if(stack.length>6) camY += blockH;
+  newBlock();
+}
+function loop(){
+  if(!over){
+    current.x += dir*speed;
+    const last=stack[stack.length-1];
+    if(dir>0 && current.x>last.x+last.w+80) dir=-1;
+    if(dir<0 && current.x+current.w < last.x-80) dir=1;
+  }
+  draw();
+  requestAnimationFrame(loop);
+}
+function draw(){
+  const H=cv.clientHeight;
+  cx.clearRect(0,0,W,H);
+  const grad=cx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'#2d2b55');grad.addColorStop(1,'#0b0b1e');
+  cx.fillStyle=grad; cx.fillRect(0,0,W,H);
+  stack.forEach(b=>{
+    cx.fillStyle=b.color;
+    cx.fillRect(b.x, b.y-camY, b.w, blockH-2);
+  });
+  if(!over){
+    cx.fillStyle=current.color;
+    cx.globalAlpha=0.9;
+    cx.fillRect(current.x, current.y-camY, current.w, blockH-2);
+    cx.globalAlpha=1;
+  }
+}
+function endGame(){
+  over=true;
+  if(score>best){best=score;localStorage.setItem('stackBest',best);}
+  document.getElementById('finalScore').textContent='Blocks stacked: '+score+'  •  Best: '+best;
+  document.getElementById('overlay').classList.add('show');
+  onGameComplete();
+}
+cv.addEventListener('touchstart',e=>{e.preventDefault();drop();},{passive:false});
+cv.addEventListener('mousedown',()=>drop());
+document.addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();drop();}});
+init();
+</script></body></html>

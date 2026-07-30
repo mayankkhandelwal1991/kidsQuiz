@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Word Builder</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#5ee7df,#b490ca);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
+.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:16px;max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.bar .sc{font-weight:800;color:#0e7490;font-size:15px}
+.answer{min-height:52px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0;padding:8px;background:linear-gradient(135deg,#e0fbfa,#f2e8ff);border:3px dashed #22d3ee;border-radius:16px}
+.letters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+.lt{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#06b6d4,#8b5cf6);color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none}
+.lt.used{opacity:.25;pointer-events:none}
+.answer .lt{background:linear-gradient(135deg,#34d399,#06b6d4)}
+.words{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+.chip{background:linear-gradient(135deg,#eef4ff,#f4fbff);border:2px solid #cfe9ff;border-radius:10px;padding:5px 10px;font-size:12px;font-weight:800;color:#0e7490;transition:.3s}
+.chip.done{background:linear-gradient(135deg,#34d399,#06b6d4);color:#fff;border-color:transparent;transform:scale(.95)}
+.chip.pending{color:transparent;background:#e2e8f0;border-color:#e2e8f0}
+.msg{color:#0e7490;font-weight:800;font-size:15px;min-height:22px}
+.row{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.row button{border:none;border-radius:14px;padding:10px 20px;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;color:#fff}
+.row .cl{background:#95a5a6}.row .ck{background:linear-gradient(135deg,#34d399,#06b6d4)}
+.end{display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);align-items:center;justify-content:center;z-index:20}
+.end.show{display:flex}
+.end .card{background:#fff;border-radius:24px;padding:26px 22px;text-align:center;max-width:300px;animation:winpop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes winpop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.end .big{font-size:50px}
+.end h2{color:#0e7490;margin:8px 0}
+.end button{margin-top:10px;background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 26px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+.confetti{position:fixed;top:-10px;width:8px;height:14px;border-radius:2px;z-index:30;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
+.shakebox{animation:shake .35s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <div class="sc">🧩 <span id="found">0</span>/<span id="total">0</span></div>
+    <button onclick="newLevel()">↻</button>
+  </div>
+  <div class="answer" id="answer"></div>
+  <div class="letters" id="letters"></div>
+  <div class="row">
+    <button class="cl" onclick="clearWord()">Clear</button>
+    <button class="ck" onclick="checkWord()">Check ✓</button>
+  </div>
+  <div class="words" id="words"></div>
+  <div class="msg" id="msg">Tap letters to build hidden words!</div>
+</div>
+<div class="end" id="end">
+  <div class="card">
+    <div class="big">🏆</div>
+    <h2>All Found!</h2>
+    <p id="endMsg">You built every word!</p>
+    <button onclick="newLevel()">Play Again</button>
+  </div>
+</div>
+<script src="../ads.js"></script>
+<script>
+const LEVELS=[
+ {letters:['D','R','A','G','O','N'],icon:'🐉',words:['GO','RAN','RAG','DON','NOD','ROD','DRAG','ROAD','ORGAN','GROAN']},
+ {letters:['P','L','A','N','E','T'],icon:'🪐',words:['TAP','PAN','PLAN','LANE','LATE','TALE','LEAP','NEAT','PANT','PLATE']}
+];
+let level,answer=[],found=new Set();
+
+function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function newLevel(){
+  level=LEVELS[Math.floor(Math.random()*LEVELS.length)];
+  answer=[];found=new Set();
+  document.getElementById('found').textContent=0;
+  document.getElementById('total').textContent=level.words.length;
+  document.getElementById('end').classList.remove('show');
+  document.getElementById('msg').textContent=level.icon+' Build words from these letters!';
+  renderLetters();renderAnswer();renderWords();
+}
+
+function renderLetters(){
+  const box=document.getElementById('letters');box.innerHTML='';
+  shuffleArr([...level.letters]).forEach((ch,i)=>{
+    const d=document.createElement('div');d.className='lt';d.textContent=ch;d.dataset.i=i;
+    d.onclick=()=>pickLetter(d,ch);
+    box.appendChild(d);
+  });
+}
+
+function pickLetter(el,ch){
+  if(el.classList.contains('used'))return;
+  el.classList.add('used');
+  answer.push({el,ch});
+  renderAnswer();
+}
+
+function renderAnswer(){
+  const a=document.getElementById('answer');a.innerHTML='';
+  answer.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='lt';d.textContent=p.ch;
+    d.onclick=()=>{p.el.classList.remove('used');answer.splice(i,1);renderAnswer();};
+    a.appendChild(d);
+  });
+}
+
+function clearWord(){
+  answer.forEach(p=>p.el.classList.remove('used'));
+  answer=[];renderAnswer();
+}
+
+function renderWords(){
+  const w=document.getElementById('words');w.innerHTML='';
+  const sorted=[...level.words].sort((a,b)=>a.length-b.length);
+  sorted.forEach(word=>{
+    const chip=document.createElement('div');chip.id='chip_'+word;
+    const isFound=found.has(word);
+    chip.className='chip'+(isFound?' done':' pending');
+    chip.textContent=isFound?word:'•'.repeat(word.length);
+    w.appendChild(chip);
+  });
+}
+
+function checkWord(){
+  const guess=answer.map(p=>p.ch).join('');
+  if(guess.length<2){
+    document.getElementById('msg').textContent='Pick at least 2 letters!';
+    return;
+  }
+  if(level.words.includes(guess) && !found.has(guess)){
+    found.add(guess);
+    document.getElementById('found').textContent=found.size;
+    document.getElementById('msg').textContent='🎉 Found "'+guess+'"!';
+    if(window.KQFX)KQFX.play('ding');
+    burstConfetti();
+    clearWord();renderWords();
+    if(found.size===level.words.length){
+      setTimeout(()=>{
+        document.getElementById('endMsg').textContent='You built all '+level.words.length+' words!';
+        document.getElementById('end').classList.add('show');
+        if(window.KQFX)KQFX.win();
+        onGameComplete();
+      },500);
+    }
+  }else{
+    const box=document.getElementById('answer');
+    box.classList.remove('shakebox');void box.offsetWidth;box.classList.add('shakebox');
+    if(window.KQFX)KQFX.play('wrong');
+    document.getElementById('msg').textContent=found.has(guess)?'Already found that one!':'❌ Not a hidden word — try again!';
+    setTimeout(clearWord,500);
+  }
+}
+
+newLevel();
+</script></body></html>

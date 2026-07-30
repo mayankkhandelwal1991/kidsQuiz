@@ -22,11 +22,22 @@ var AD_CONFIG = {
   completionAdDelayMs: 1500   // let players see the completed-game screen first
 };
 
+// Resolve sibling shared scripts relative to THIS file's own URL, so games
+// in category sub-folders (e.g. action/egg_jump.html) still find them.
+var ADS_BASE = (function () {
+  var scripts = document.getElementsByTagName('script');
+  for (var i = 0; i < scripts.length; i++) {
+    var src = scripts[i].src || '';
+    if (/ads\.js(\?|$)/.test(src)) return src.replace(/ads\.js(\?.*)?$/, '');
+  }
+  return '';
+})();
+
 // Load the shared rating helper. It is ready long before a player completes
 // the configured number of games.
 (function () {
   var s = document.createElement('script');
-  s.src = 'rating.js';
+  s.src = ADS_BASE + 'rating.js';
   document.head.appendChild(s);
 })();
 
@@ -74,7 +85,7 @@ function onGameComplete() {
   // Load the shared leaderboard module (sits next to ads.js in /Game).
   if (!window.KQ) {
     var s = document.createElement('script');
-    s.src = 'kq-leaderboard.js';
+    s.src = ADS_BASE + 'kq-leaderboard.js';
     s.async = false;
     document.head.appendChild(s);
   }
@@ -84,7 +95,7 @@ function onGameComplete() {
   // actually do something in every game, without editing any game file.
   if (!window.KQFX) {
     var fx = document.createElement('script');
-    fx.src = 'kq-fx.js';
+    fx.src = ADS_BASE + 'kq-fx.js';
     fx.async = false;
     document.head.appendChild(fx);
   }

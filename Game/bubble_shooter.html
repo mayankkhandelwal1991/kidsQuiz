@@ -100,6 +100,7 @@ function snapShot(){
     while(grid.length<=best2.r) grid.push(Array(COLS-(grid.length%2)).fill(null));
     grid[best2.r][best2.c]=shot.color;
     const p=cellPos(best2.r,best2.c); impact={x:p.x,y:p.y,color:shot.color,life:10}; burst(p.x,p.y,shot.color,7);
+    if(window.KQFX)KQFX.play('pop');
     checkMatches(best2.r,best2.c);
   }
   shot=null;
@@ -126,6 +127,7 @@ function checkMatches(r,c){
   }
   if(group.length>=3){
     group.forEach(([rr,cc])=>{ const p=cellPos(rr,cc); burst(p.x,p.y,color,16); grid[rr][cc]=null; });
+    if(window.KQFX)KQFX.play('blast');
     score+=group.length*10;
     document.getElementById('score').textContent=score;
     dropFloating();

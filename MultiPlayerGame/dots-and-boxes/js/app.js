@@ -342,7 +342,7 @@ async function attemptDrawLine(seat, key) {
     const room = txResult.snapshot.val();
     const gotBox = room.boxes && Object.values(room.boxes).length > 0 && room.lines[key] === seat &&
       boxesTouchingLine(key).some(([r, c]) => room.boxes[boxKey(r, c)] === seat && countSides(room.lines, r, c) === 4);
-    sounds[gotBox ? 'playSuccess' : 'playClick']();
+    sounds[gotBox ? 'playBlast' : 'playDrop']();
   }
 }
 

@@ -71,6 +71,7 @@ function hitTile(tile){
   tile.hit=true;
   tile.el.style.background='linear-gradient(135deg,#00f5ff,#7c3aed)';
   tile.el.style.opacity='0';
+  if(window.KQFX)KQFX.play('tap');
   score++;
   document.getElementById('score').textContent=score;
   speed=2.6+score*0.045;
@@ -94,6 +95,7 @@ function endGame(){
   if(over)return;
   over=true;started=false;
   running=false;
+  if(window.KQFX)KQFX.play('blast');
   clearInterval(spawnTimer);
   if(score>best){best=score;localStorage.setItem('pianoBest',best);}
   document.getElementById('finalScore').textContent='Score: '+score+'  •  Best: '+best;

@@ -86,14 +86,14 @@ function update(){
     bullets.forEach(b=>{
       if(!b.dead && !en.dead && Math.abs(b.x-en.x)<en.w/2 && Math.abs(b.y-en.y)<en.h/2){
         b.dead=true; en.hp--;
-        if(en.hp<=0){ en.dead=true; score+= en.w>30?50:10; document.getElementById('score').textContent=score; }
+        if(en.hp<=0){ en.dead=true; score+= en.w>30?50:10; document.getElementById('score').textContent=score; if(window.KQFX)KQFX.play('blast'); }
       }
     });
   });
   bullets=bullets.filter(b=>!b.dead);
   enemies.forEach(en=>{
     if(!en.dead && Math.abs(en.x-ship.x)<(en.w+ship.w)/2*0.8 && Math.abs(en.y-ship.y)<(en.h+ship.h)/2*0.8){
-      en.dead=true; hitShip();
+      en.dead=true; hitShip(); if(window.KQFX)KQFX.play('hit');
     }
     if(en.y>H+40 && !en.dead) en.dead=true;
   });

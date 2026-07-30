@@ -255,6 +255,7 @@ async function attemptGuess(seat, guessWord) {
   if (txResult.committed) {
     const room = txResult.snapshot.val();
     const secret = WORDS[room.wordIndex];
+    sounds.playFlip();
     sounds[guessWord === secret ? 'playSuccess' : 'playClick']();
     if (room.solvedBy && room.status === 'playing') {
       scheduleNextRound(room.wordIndex);

@@ -96,12 +96,12 @@ function loadRound(){
 function pick(w,el){
   document.querySelectorAll('.opt').forEach(o=>o.style.pointerEvents='none');
   if(w[0]===cur[0]){
-    el.classList.add('correct');
+    el.classList.add('correct');if(window.KQFX)KQFX.play('ding');
     score++;document.getElementById('score').textContent=score;
     document.getElementById('msg').textContent='🎉 '+cur[0]+' starts with '+cur[0][0]+'!';
     burstConfetti();
   }else{
-    el.classList.add('wrong');
+    el.classList.add('wrong');if(window.KQFX)KQFX.play('wrong');
     document.getElementById('msg').textContent='❌ It was '+cur[0]+'!';
   }
   idx++;

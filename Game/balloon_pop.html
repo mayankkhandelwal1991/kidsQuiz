@@ -72,9 +72,10 @@ function spawn(){
     e.preventDefault();
     if(!playing)return;
     clearInterval(mv);
-    if(isBomb){b.textContent='💥';setTimeout(()=>b.remove(),200);loseLife();}
+    if(isBomb){b.textContent='💥';setTimeout(()=>b.remove(),200);if(window.KQFX)KQFX.play('blast');loseLife();}
     else{
       b.textContent='✨';setTimeout(()=>b.remove(),150);
+      if(window.KQFX)KQFX.play('pop');
       score++;document.getElementById('score').textContent=score;
       if(score%10===0){clearInterval(spawnT);spawnT=setInterval(spawn,Math.max(400,900-score*20));}
     }
@@ -85,7 +86,7 @@ function loseLife(){
   if(lives<=0)end();
 }
 function end(){
-  playing=false;clearInterval(spawnT);onGameComplete();
+  playing=false;clearInterval(spawnT);if(window.KQFX)KQFX.lose();onGameComplete();
   if(score>best){best=score;localStorage.setItem('balloonBest',best);document.getElementById('best').textContent=best;}
   document.getElementById('oTitle').textContent='🎈 Score: '+score;
   document.getElementById('oText').textContent='Great popping! Try again?';

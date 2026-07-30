@@ -264,7 +264,10 @@ function animateHopPath(color, i, fromPos, toPos) {
       if (idx >= seq.length) { v.dx = 0; v.dy = 0; v.hop = 0; SFX.plop(); resolve(); return; }
       const from = coordOf(color, prev, i);
       const to = coordOf(color, seq[idx], i);
-      const base = coordOf(color, seq[idx], i);   // logical anchor for offset math
+      // The token is rendered at coordOf(fromPos) for the whole hop (viewTokens
+      // isn't advanced until the animation resolves), so all offsets must be
+      // measured from that same fixed anchor — NOT from each step's destination.
+      const base = coordOf(color, fromPos, i);
       const start = performance.now(), dur = fromPos === 0 ? 240 : 140;
       if (!(idx === 0 && fromPos === 0)) SFX.step();
       function frame(now) {
@@ -273,7 +276,9 @@ function animateHopPath(color, i, fromPos, toPos) {
         v.dy = (from.r + (to.r - from.r) * e) - base.r;
         v.hop = Math.sin(t * Math.PI) * CELL * 0.5;
         if (t < 1) requestAnimationFrame(frame);
-        else { v.dx = 0; v.dy = 0; v.hop = 0; prev = seq[idx]; idx++; stepTo(); }
+        // Don't zero dx/dy here — the next step continues seamlessly from this
+        // cell. Zeroing them mid-hop snaps the token back to fromPos each step.
+        else { v.hop = 0; prev = seq[idx]; idx++; stepTo(); }
       }
       requestAnimationFrame(frame);
     }
@@ -289,8 +294,8 @@ function animateFlyBack(color, i, fromPos) {
     const start = performance.now(), dur = 520;
     function frame(now) {
       const t = Math.min(1, (now - start) / dur), e = easeOut(t);
-      v.dx = (from.c + (to.c - from.c) * e) - to.c;
-      v.dy = (from.r + (to.r - from.r) * e) - to.r;
+      v.dx = (from.c + (to.c - from.c) * e) - from.c;
+      v.dy = (from.r + (to.r - from.r) * e) - from.r;
       v.hop = Math.sin(t * Math.PI) * CELL * 1.6;
       v.scale = 1 + Math.sin(t * Math.PI) * 0.15;
       if (t < 1) requestAnimationFrame(frame);

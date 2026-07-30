@@ -43,6 +43,7 @@ const holes=[...document.querySelectorAll('.hole')];
 function whack(i,h){
   if(!playing||i!==cur)return;
   score++;document.getElementById('score').textContent=score;
+  if(window.KQFX)KQFX.play('boing');
   h.classList.remove('up');cur=-1;
 }
 function pop(){

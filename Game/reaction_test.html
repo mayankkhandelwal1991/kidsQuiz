@@ -82,6 +82,7 @@ function handleTap(){
     bigTxt.textContent=rt+' ms';
     subTxt.textContent='Tap to go again';
     state='idle';
+    if(window.KQFX)KQFX.play(rt<300?'ding':'tap');
     onGameComplete();
   }
 }

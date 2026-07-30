@@ -253,7 +253,7 @@ async function attemptWhack(seat, moleId) {
     return room;
   });
   if (txResult.committed && txResult.snapshot.val() && txResult.snapshot.val().whackedBy === seat) {
-    sounds.playHit();
+    sounds.playBoing();
   }
 }
 

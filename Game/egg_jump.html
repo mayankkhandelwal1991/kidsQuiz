@@ -52,9 +52,9 @@ function update(){
     if(frame%Math.max(50,90-Math.floor(score/5))===0)spawn();
     speed=4+score*0.05;
     obs.forEach(o=>o.x-=speed);
-    if(obs.length&&obs[0].x<-40){obs.shift();score++;document.getElementById('score').textContent=score;}
+    if(obs.length&&obs[0].x<-40){obs.shift();score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('whoosh');}
     for(const o of obs){
-      if(Math.abs(o.x-egg.x)<o.w&&Math.abs((GROUND)-egg.y)<1e9&&egg.y>GROUND-30&&Math.abs(o.x-egg.x)<26){dead=true;onGameComplete();
+      if(Math.abs(o.x-egg.x)<o.w&&Math.abs((GROUND)-egg.y)<1e9&&egg.y>GROUND-30&&Math.abs(o.x-egg.x)<26){dead=true;if(window.KQFX)KQFX.play('blast');onGameComplete();
         if(score>best){best=score;localStorage.setItem('eggBest',best);document.getElementById('best').textContent=best;}
       }
     }

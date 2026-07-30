@@ -53,9 +53,9 @@ function round(){
 }
 function pick(i){
   if(!playing)return;
-  if(i===ans){score++;document.getElementById('score').textContent=score;round();}
+  if(i===ans){score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('ding');round();}
   else{score=Math.max(0,score-1);document.getElementById('score').textContent=score;
-    document.getElementById('msg').textContent='❌ Oops!';
+    document.getElementById('msg').textContent='❌ Oops!';if(window.KQFX)KQFX.play('wrong');
     setTimeout(()=>document.getElementById('msg').textContent='',400);round();}
 }
 function start(){

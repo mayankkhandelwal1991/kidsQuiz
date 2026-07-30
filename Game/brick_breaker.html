@@ -61,21 +61,23 @@ function update(){
     if(ball.y>cv.height-30&&ball.y<cv.height-16&&Math.abs(ball.x-px)<44&&ball.vy>0){
       ball.vy=-Math.abs(ball.vy);
       ball.vx=(ball.x-px)*0.14;
+      if(window.KQFX)KQFX.play('hit');
     }
     if(ball.y>cv.height+10){
       lives--;document.getElementById('lives').textContent=lives;
-      if(lives<=0){dead=true;onGameComplete();}
-      else{ball={x:px,y:cv.height-120,vx:3,vy:-3.4};}
+      if(lives<=0){dead=true;if(window.KQFX)KQFX.lose();onGameComplete();}
+      else{ball={x:px,y:cv.height-120,vx:3,vy:-3.4};if(window.KQFX)KQFX.play('wrong');}
     }
     for(const b of bricks){
       if(!b.alive)continue;
       if(ball.x>b.x-6&&ball.x<b.x+BW+6&&ball.y>b.y-6&&ball.y<b.y+BH+6){
         b.alive=false;ball.vy*=-1;
         score+=10;document.getElementById('score').textContent=score;
+        if(window.KQFX)KQFX.play('blast');
         break;
       }
     }
-    if(bricks.every(b=>!b.alive)){won=true;onGameComplete();}
+    if(bricks.every(b=>!b.alive)){won=true;if(window.KQFX)KQFX.win();onGameComplete();}
   }
   draw();requestAnimationFrame(update);
 }

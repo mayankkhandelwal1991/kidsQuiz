@@ -104,6 +104,7 @@ function undo(){
 function checkWin(){
   const solved=tubes.every(t=>t.length===0 || (t.length===capacity && t.every(c=>c===t[0])));
   if(solved){
+    if(window.KQFX)KQFX.win();
     document.getElementById('finalScore').textContent='Level '+level+' complete!';
     document.getElementById('overlay').classList.add('show');
     onGameComplete();

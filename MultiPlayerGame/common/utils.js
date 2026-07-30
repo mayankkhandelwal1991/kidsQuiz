@@ -109,6 +109,26 @@ export class SoundManager {
   constructor() {
     this.enabled = true;
     this.ctx = null;
+    this._pools = {};
+    // Resolve common/sounds/*.mp3 relative to THIS module's own URL so it
+    // works the same regardless of which game imported utils.js.
+    this._soundBase = new URL('./sounds/', import.meta.url).href;
+    ['click', 'join', 'leave', 'success', 'error', 'tick', 'countdown',
+     'win', 'lose', 'draw', 'hit', 'splash', 'flip', 'blast', 'whoosh',
+     'boing', 'drop', 'ding'].forEach((name) => this._makePool(name));
+  }
+
+  _makePool(name, size = 3) {
+    const items = [];
+    for (let i = 0; i < size; i++) {
+      const a = new Audio(this._soundBase + name + '.mp3');
+      a.preload = 'auto';
+      a.volume = 0.85;
+      items.push(a);
+    }
+    const pool = { items, i: 0, broken: false };
+    items[0].addEventListener('error', () => { pool.broken = true; }, { once: true });
+    this._pools[name] = pool;
   }
 
   _ensureContext() {
@@ -140,18 +160,49 @@ export class SoundManager {
     osc.stop(startTime + duration + 0.02);
   }
 
-  playClick() { this._tone({ freq: 300, slideTo: 600, duration: 0.08, type: 'square', gain: 0.1 }); }
-  playJoin() { this._tone({ freq: 440, slideTo: 660, duration: 0.18, type: 'triangle', gain: 0.15 }); }
-  playLeave() { this._tone({ freq: 440, slideTo: 220, duration: 0.2, type: 'triangle', gain: 0.12 }); }
-  playSuccess() { this._tone({ freq: 520, slideTo: 780, duration: 0.16, type: 'triangle', gain: 0.18 }); }
-  playError() { this._tone({ freq: 220, slideTo: 140, duration: 0.22, type: 'sawtooth', gain: 0.15 }); }
-  playTick() { this._tone({ freq: 900, duration: 0.05, type: 'square', gain: 0.06 }); }
-  playCountdown() { this._tone({ freq: 660, duration: 0.1, type: 'square', gain: 0.12 }); }
-  playWin() {
-    [523, 659, 784, 1046].forEach((f, i) => this._tone({ freq: f, duration: 0.2, type: 'triangle', gain: 0.18, delay: i * 0.12 }));
+  /** Plays a real mp3 sound effect; falls back to a synthesized tone if the
+   *  file failed to load (offline, blocked request, etc). */
+  _play(name, toneFallback) {
+    if (!this.enabled) return;
+    const pool = this._pools[name];
+    if (pool && !pool.broken) {
+      const el = pool.items[pool.i % pool.items.length];
+      pool.i++;
+      try {
+        el.currentTime = 0;
+        const p = el.play();
+        if (p && p.catch) p.catch(() => { if (toneFallback) toneFallback(); });
+      } catch (e) {
+        if (toneFallback) toneFallback();
+      }
+      return;
+    }
+    if (toneFallback) toneFallback();
   }
-  playLose() { this._tone({ freq: 300, slideTo: 120, duration: 0.4, type: 'sawtooth', gain: 0.16 }); }
-  playDraw() { this._tone({ freq: 300, slideTo: 260, duration: 0.4, type: 'sawtooth', gain: 0.14 }); }
-  playHit() { this._tone({ freq: 180, duration: 0.18, type: 'square', gain: 0.2 }); }
-  playSplash() { this._tone({ freq: 700, slideTo: 300, duration: 0.15, type: 'sine', gain: 0.12 }); }
+
+  playClick() { this._play('click', () => this._tone({ freq: 300, slideTo: 600, duration: 0.08, type: 'square', gain: 0.1 })); }
+  playJoin() { this._play('join', () => this._tone({ freq: 440, slideTo: 660, duration: 0.18, type: 'triangle', gain: 0.15 })); }
+  playLeave() { this._play('leave', () => this._tone({ freq: 440, slideTo: 220, duration: 0.2, type: 'triangle', gain: 0.12 })); }
+  playSuccess() { this._play('success', () => this._tone({ freq: 520, slideTo: 780, duration: 0.16, type: 'triangle', gain: 0.18 })); }
+  playError() { this._play('error', () => this._tone({ freq: 220, slideTo: 140, duration: 0.22, type: 'sawtooth', gain: 0.15 })); }
+  playTick() { this._play('tick', () => this._tone({ freq: 900, duration: 0.05, type: 'square', gain: 0.06 })); }
+  playCountdown() { this._play('countdown', () => this._tone({ freq: 660, duration: 0.1, type: 'square', gain: 0.12 })); }
+  playWin() {
+    this._play('win', () => {
+      [523, 659, 784, 1046].forEach((f, i) => this._tone({ freq: f, duration: 0.2, type: 'triangle', gain: 0.18, delay: i * 0.12 }));
+    });
+  }
+  playLose() { this._play('lose', () => this._tone({ freq: 300, slideTo: 120, duration: 0.4, type: 'sawtooth', gain: 0.16 })); }
+  playDraw() { this._play('draw', () => this._tone({ freq: 300, slideTo: 260, duration: 0.4, type: 'sawtooth', gain: 0.14 })); }
+  playHit() { this._play('hit', () => this._tone({ freq: 180, duration: 0.18, type: 'square', gain: 0.2 })); }
+  playSplash() { this._play('splash', () => this._tone({ freq: 700, slideTo: 300, duration: 0.15, type: 'sine', gain: 0.12 })); }
+
+  /** New, game-flavored sound effects (card flips, explosions/pops,
+   *  racing whooshes, springy bounces, disc drops, correct-answer dings). */
+  playFlip() { this._play('flip', () => this._tone({ freq: 1400, duration: 0.05, type: 'sine', gain: 0.12 })); }
+  playBlast() { this._play('blast', () => this._tone({ freq: 90, slideTo: 40, duration: 0.3, type: 'sawtooth', gain: 0.18 })); }
+  playWhoosh() { this._play('whoosh', () => this._tone({ freq: 500, slideTo: 900, duration: 0.3, type: 'sine', gain: 0.1 })); }
+  playBoing() { this._play('boing', () => this._tone({ freq: 500, slideTo: 180, duration: 0.28, type: 'sine', gain: 0.16 })); }
+  playDrop() { this._play('drop', () => this._tone({ freq: 220, slideTo: 140, duration: 0.08, type: 'square', gain: 0.14 })); }
+  playDing() { this._play('ding', () => this._tone({ freq: 1046, duration: 0.4, type: 'sine', gain: 0.16 })); }
 }

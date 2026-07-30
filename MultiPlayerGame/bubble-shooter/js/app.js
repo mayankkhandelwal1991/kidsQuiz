@@ -311,7 +311,7 @@ function handleAim(e) {
   dx /= len; dy /= len;
 
   flying = { x: CANVAS_W / 2, y: SHOOTER_Y - R - 2, vx: dx * BUBBLE_SPEED, vy: dy * BUBBLE_SPEED, color: shooterColor };
-  sounds.playClick();
+  sounds.playWhoosh();
 }
 
 function stepFlying(dt) {
@@ -384,7 +384,7 @@ function resolveMatches(r, c, color) {
       delete grid[key(gr, gc)];
     }
     gained += group.length * 10;
-    sounds.playSuccess();
+    sounds.playBlast();
 
     // Drop floating clusters not connected to the top row.
     const reachable = new Set();

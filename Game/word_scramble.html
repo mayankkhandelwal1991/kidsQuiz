@@ -87,11 +87,12 @@ function checkWord(){
   total++;document.getElementById('total').textContent=total;
   const guess=picked.map(p=>p.ch).join('');
   if(guess===cur[0]){
-    score++;document.getElementById('score').textContent=score;if(score%10===0)onGameComplete();
+    score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('ding');if(score%10===0)onGameComplete();
     document.getElementById('msg').textContent='🎉 Correct! '+cur[0];
     setTimeout(next,900);
   }else{
     document.getElementById('msg').textContent='❌ Not quite — try again!';
+    if(window.KQFX)KQFX.play('wrong');
     setTimeout(clearWord,700);
     total--;document.getElementById('total').textContent=total;
   }

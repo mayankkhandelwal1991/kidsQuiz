@@ -229,7 +229,7 @@ function handleShoot() {
   ballAnim = { startedAt: performance.now(), type: hit ? 'make' : 'miss' };
 
   if (hit) {
-    sounds.playSuccess();
+    sounds.playDing();
     scoreRef().transaction((cur) => (cur || 0) + MAKE_POINTS);
   } else {
     sounds.playError();

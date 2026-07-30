@@ -51,7 +51,7 @@ function update(){
     pipes.forEach(p=>p.x-=2.4);
     if(pipes.length&&pipes[0].x<-PW)pipes.shift();
     for(const p of pipes){
-      if(!p.passed&&p.x+PW<70){p.passed=true;score++;document.getElementById('score').textContent=score;}
+      if(!p.passed&&p.x+PW<70){p.passed=true;score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('whoosh');}
       if(70+16>p.x&&70-16<p.x+PW&&(by-14<p.top||by+14>p.top+GAP))die();
     }
     if(by>cv.height-46||by<10)die();
@@ -59,7 +59,7 @@ function update(){
   draw();requestAnimationFrame(update);
 }
 function die(){
-  if(dead)return;dead=true;onGameComplete();
+  if(dead)return;dead=true;if(window.KQFX)KQFX.play('blast');onGameComplete();
   if(score>best){best=score;localStorage.setItem('beeBest',best);document.getElementById('best').textContent=best;}
 }
 function draw(){

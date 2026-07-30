@@ -107,7 +107,8 @@ function update(){
         b.hit++;
         const pushDir = ball.x < b.x ? -1:1;
         ball.vx = pushDir* Math.abs(ball.vx)*0.6;
-        if(b.hit>=2){ b.alive=false; score+=100; }
+        if(b.hit>=2){ b.alive=false; score+=100; if(window.KQFX)KQFX.play('blast'); }
+        else if(window.KQFX)KQFX.play('hit');
       }
     });
     if(ball.x>W+40 || (ball.y>H-30 && Math.abs(ball.vx)<0.5 && Math.abs(ball.vy)<0.5)){
@@ -124,6 +125,7 @@ function resetBall(){
 }
 function winLevel(){
   over=true;
+  if(window.KQFX)KQFX.win();
   document.getElementById('overTitle').textContent='🎉 Level Clear!';
   document.getElementById('finalScore').textContent='Score: '+score;
   document.getElementById('overlay').classList.add('show');
@@ -132,6 +134,7 @@ function winLevel(){
 }
 function loseLevel(){
   over=true;
+  if(window.KQFX)KQFX.lose();
   document.getElementById('overTitle').textContent='Out of Shots!';
   document.getElementById('finalScore').textContent='Score: '+score+' — Try Again';
   document.getElementById('overlay').classList.add('show');

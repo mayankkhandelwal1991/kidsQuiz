@@ -81,9 +81,9 @@ function check(){
   const w=winner(board);
   if(w){
     over=true;w.forEach(i=>cells[i].classList.add('win'));
-    if(board[w[0]]==='X'){pw++;msg.textContent='🎉 You win!';}
-    else{cw++;msg.textContent='🤖 Computer wins!';}
-  }else if(!board.includes('')){over=true;dw++;msg.textContent='🤝 It\u2019s a draw!';}
+    if(board[w[0]]==='X'){pw++;msg.textContent='🎉 You win!';if(window.KQFX){KQFX.win();KQFX.bounce(msg);}}
+    else{cw++;msg.textContent='🤖 Computer wins!';if(window.KQFX){KQFX.lose();KQFX.shake(msg);}}
+  }else if(!board.includes('')){over=true;dw++;msg.textContent='🤝 It\u2019s a draw!';if(window.KQFX)KQFX.play('draw');}
   document.getElementById('pw').textContent=pw;
   document.getElementById('cw').textContent=cw;
   document.getElementById('dw').textContent=dw;

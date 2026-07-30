@@ -108,6 +108,7 @@ function updateStats(typed){
 function endGame(){
   if(over)return;
   over=true; clearInterval(timerId);
+  if(window.KQFX)KQFX.play('whoosh');
   document.getElementById('input').disabled=true;
   const wpm=+document.getElementById('wpm').textContent;
   if(wpm>best){ best=wpm; localStorage.setItem('typingBest',best); document.getElementById('best').textContent=best; }

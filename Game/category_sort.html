@@ -101,13 +101,13 @@ function loadRound(){
 function pick(catName,el){
   document.querySelectorAll('.bucket').forEach(o=>o.style.pointerEvents='none');
   if(catName===cur.cat){
-    el.classList.add('correct');
+    el.classList.add('correct');if(window.KQFX)KQFX.play('ding');
     score++;document.getElementById('score').textContent=score;
     document.getElementById('msg').textContent='🎉 '+cur.word[0]+' is a '+cur.cat.slice(0,-1)+'!';
     document.getElementById('card').classList.add('fly');
     burstConfetti();
   }else{
-    el.classList.add('wrong');
+    el.classList.add('wrong');if(window.KQFX)KQFX.play('wrong');
     document.getElementById('msg').textContent='❌ '+cur.word[0]+' belongs in '+cur.cat+'!';
   }
   idx++;

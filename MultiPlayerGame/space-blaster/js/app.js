@@ -269,7 +269,7 @@ function bindControls() {
 function spawnBeam(seat, x, y) {
   const originX = seat === 'P1' ? 60 : W - 60;
   beams.push({ x1: originX, y1: TURRET_Y, x2: x, y2: y, color: seat === 'P1' ? '#33e5ff' : '#ff3ec8', t: performance.now() });
-  sounds.playClick();
+  sounds.playWhoosh();
 }
 
 function processShotHost(seat, x, y) {
@@ -286,7 +286,7 @@ function processShotHost(seat, x, y) {
   sparks.push({ x: hit.x, y: hit.y, color: seat === 'P1' ? '#33e5ff' : '#ff3ec8', t: performance.now() });
   delete hostAsteroids[bestId];
   hostScores[seat] = (hostScores[seat] || 0) + 1;
-  sounds.playHit();
+  sounds.playBlast();
 
   if (hostScores[seat] >= WIN_SCORE) {
     hostRunning = false;

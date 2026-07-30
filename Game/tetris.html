@@ -99,6 +99,7 @@ function clearLines(){
     }
   }
   if(cleared){
+    if(window.KQFX)KQFX.play(cleared>=4?'levelup':'blast');
     score+=[0,100,300,500,800][cleared]*level;
     document.getElementById('score').textContent=score;
     level=1+Math.floor(score/1000);
@@ -154,6 +155,7 @@ function drawNext(){
 }
 function endGame(){
   over=true;clearInterval(timer);
+  if(window.KQFX)KQFX.lose();
   document.getElementById('finalScore').textContent='Final Score: '+score;
   document.getElementById('overlay').classList.add('show');
   onGameComplete();

@@ -56,8 +56,9 @@ function tap(el,v){
   if(v===next){
     el.classList.add('done');
     next++;document.getElementById('next').textContent=next<=25?next:'✓';
+    if(window.KQFX)KQFX.play('tap');
     if(next>25){
-      playing=false;clearInterval(timer);onGameComplete();
+      playing=false;clearInterval(timer);if(window.KQFX)KQFX.win();onGameComplete();
       const t=((performance.now()-startT)/1000).toFixed(1);
       document.getElementById('time').textContent=t;
       if(!best||+t<+best){best=t;localStorage.setItem('rushBest',best);document.getElementById('best').textContent=best+'s';}

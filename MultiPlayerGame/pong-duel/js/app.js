@@ -321,7 +321,7 @@ function stepHostPhysics(dt) {
     ball.vx = clamp(Math.abs(ball.vx) * 1.04, BASE_SPEED, MAX_SPEED);
     ball.vy = offset * (BASE_SPEED * 0.9);
     ball.x = P1_X + PADDLE_W + BALL_R;
-    sounds.playClick();
+    sounds.playHit();
   }
 
   // Right paddle (P2 or bot) collision.
@@ -330,7 +330,7 @@ function stepHostPhysics(dt) {
     ball.vx = -clamp(Math.abs(ball.vx) * 1.04, BASE_SPEED, MAX_SPEED);
     ball.vy = offset * (BASE_SPEED * 0.9);
     ball.x = P2_X - BALL_R;
-    sounds.playClick();
+    sounds.playHit();
   }
 
   let scored = false;
@@ -345,7 +345,7 @@ function stepHostPhysics(dt) {
   }
 
   if (scored) {
-    sounds.playSuccess();
+    sounds.playWhoosh();
     if (hostScores.P1 >= WIN_SCORE || hostScores.P2 >= WIN_SCORE) {
       hostRunning = false;
       const winner = hostScores.P1 >= WIN_SCORE ? 'P1' : 'P2';

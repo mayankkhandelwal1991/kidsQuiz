@@ -107,7 +107,7 @@ function loadRound(){
 function pick(w,el){
   document.querySelectorAll('.opt').forEach(o=>o.style.pointerEvents='none');
   if(w===cur.target[0]){
-    el.classList.add('correct');
+    el.classList.add('correct');if(window.KQFX)KQFX.play('ding');
     const ladder=document.getElementById('ladder');
     const rung=document.createElement('div');rung.className='rung';
     rung.innerHTML='<span class="em">'+cur.target[1]+'</span>'+cur.target[0];
@@ -116,7 +116,7 @@ function pick(w,el){
     document.getElementById('msg').textContent='🎉 You climbed to '+cur.target[0]+'!';
     burstConfetti();
   }else{
-    el.classList.add('wrong');
+    el.classList.add('wrong');if(window.KQFX)KQFX.play('wrong');
     document.getElementById('msg').textContent='❌ The next rung was '+cur.target[0]+'!';
   }
   idx++;

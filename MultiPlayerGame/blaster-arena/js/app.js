@@ -402,7 +402,7 @@ function stepHostPhysics(dt, now) {
       sparks.push({ x: b.x, y: b.y, color: b.owner === 'P1' ? '#33e5ff' : '#ff3ec8', t: now });
       delete hostBolts[id];
       hostScores[b.owner] = (hostScores[b.owner] || 0) + 1;
-      sounds.playHit();
+      sounds.playBlast();
       if (hostScores[b.owner] >= WIN_SCORE) {
         hostRunning = false;
         roomRef.update({ status: 'finished', winner: b.owner, scores: hostScores, bolts: hostBolts });

@@ -48,6 +48,7 @@ let currentPassage = '';
 let raceStartAt = 0;
 let countdownInterval = null;
 let hasStartedTyping = false;
+let lastCheckpoint = 0;
 
 let matchmakingInterval = null;
 let matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
@@ -220,6 +221,8 @@ function handleTypingInput() {
   renderPassageHighlight(typed, correctLen);
 
   const progress = Math.round((correctLen / currentPassage.length) * 100);
+  const checkpoint = Math.floor(progress / 25);
+  if (checkpoint > lastCheckpoint) { lastCheckpoint = checkpoint; sounds.playWhoosh(); }
   const elapsedMin = (Date.now() - Number(typingInput.dataset.startTime || Date.now())) / 60000;
   const wordsTyped = correctLen / 5; // standard WPM approximation: 5 chars = 1 "word"
   const wpm = elapsedMin > 0 ? Math.round(wordsTyped / elapsedMin) : 0;
@@ -344,6 +347,7 @@ function handleStatusTransition(room) {
   if (prev === null) return;
   if (room.status === 'playing') {
     hasStartedTyping = false;
+    lastCheckpoint = 0;
     typingInput.value = '';
     typingInput.disabled = true;
     currentPassage = PASSAGES[room.passageIndex];

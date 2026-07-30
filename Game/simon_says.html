@@ -58,9 +58,10 @@ async function tap(i){
   await flash(i,180);
   if(i===seq[pos]){
     pos++;
-    if(pos===seq.length){accepting=false;setTimeout(next,500);}
+    if(window.KQFX)KQFX.play('tap');
+    if(pos===seq.length){accepting=false;if(window.KQFX)KQFX.play('success');setTimeout(next,500);}
   }else{
-    accepting=false;onGameComplete();
+    accepting=false;if(window.KQFX)KQFX.lose();onGameComplete();
     if(round-1>best){best=round-1;localStorage.setItem('simonBest',best);document.getElementById('best').textContent=best;}
     document.getElementById('msg').textContent='❌ Wrong! You reached round '+round;
     const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';

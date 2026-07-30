@@ -111,22 +111,26 @@ function guess(ch,el){
   el.classList.add('used');
   if(cur[0].includes(ch)){
     el.classList.add('good');
+    if(window.KQFX)KQFX.play('ding');
     cur[0].split('').forEach((c,i)=>{ if(c===ch){revealed[i]=true; const wl=document.getElementById('wl_'+i); wl.textContent=c; wl.classList.add('reveal');} });
     if(revealed.every(r=>r)){
       score++;document.getElementById('score').textContent=score;
       document.getElementById('msg').textContent='🎉 You saved the day! It was '+cur[0];
+      if(window.KQFX)KQFX.win();
       burstConfetti();
       idx++;
       setTimeout(loadWord,1100);
     }
   }else{
     el.classList.add('bad');
+    if(window.KQFX)KQFX.play('wrong');
     wrong++;
     document.getElementById('stage').textContent=STAGES[Math.min(wrong,STAGES.length-1)];
     document.getElementById('stage').classList.remove('hit');void document.getElementById('stage').offsetWidth;document.getElementById('stage').classList.add('hit');
     if(wrong>=MAX_WRONG){
       revealed=revealed.map(()=>true);renderWord();
       document.getElementById('msg').textContent='😢 It was '+cur[0]+' — next word!';
+      if(window.KQFX)KQFX.lose();
       idx++;
       setTimeout(loadWord,1300);
     }

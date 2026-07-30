@@ -139,7 +139,7 @@ function pressKey(ch,el){
       wordComplete();
     }
   }else{
-    el.classList.add('wrong');
+    el.classList.add('wrong');if(window.KQFX)KQFX.play('wrong');
     setTimeout(()=>el.classList.remove('wrong'),350);
     loseLife();
   }

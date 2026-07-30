@@ -56,10 +56,10 @@ function update(){
       cars.push({lane:Math.floor(Math.random()*3),y:-40,e:ENEMIES[Math.floor(Math.random()*ENEMIES.length)]});
     }
     cars.forEach(c=>c.y+=speed);
-    if(cars.length&&cars[0].y>cv.height+40){cars.shift();score++;document.getElementById('score').textContent=score;}
+    if(cars.length&&cars[0].y>cv.height+40){cars.shift();score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('whoosh');}
     for(const c of cars){
       if(c.lane===lane&&c.y>cv.height-120&&c.y<cv.height-40){
-        dead=true;onGameComplete();
+        dead=true;if(window.KQFX)KQFX.play('blast');onGameComplete();
         if(score>best){best=score;localStorage.setItem('raceBest',best);document.getElementById('best').textContent=best;}
       }
     }

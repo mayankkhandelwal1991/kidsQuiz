@@ -112,6 +112,7 @@ function move(dir){
   if(moved){
     score+=totalGain;
     document.getElementById('score').textContent=score;
+    if(totalGain>0&&window.KQFX)KQFX.play(totalGain>=64?'coin':'pop');
     if(score>best){best=score;localStorage.setItem('g2048Best',best);document.getElementById('best').textContent=best;}
     addTile();render();
     checkOver();
@@ -124,8 +125,8 @@ function checkOver(){
     if(c<N-1&&grid[r][c]===grid[r][c+1]&&grid[r][c])canMerge=true;
     if(r<N-1&&grid[r][c]===grid[r+1][c]&&grid[r][c])canMerge=true;
   }
-  if(won){over=true;document.getElementById('overText').textContent='🎉 You reached 2048!';document.getElementById('overlay').classList.add('show');onGameComplete();return;}
-  if(!hasEmpty&&!canMerge){over=true;document.getElementById('overText').textContent='Game Over! Score: '+score;document.getElementById('overlay').classList.add('show');onGameComplete();}
+  if(won){over=true;document.getElementById('overText').textContent='🎉 You reached 2048!';document.getElementById('overlay').classList.add('show');if(window.KQFX)KQFX.win();onGameComplete();return;}
+  if(!hasEmpty&&!canMerge){over=true;document.getElementById('overText').textContent='Game Over! Score: '+score;document.getElementById('overlay').classList.add('show');if(window.KQFX)KQFX.lose();onGameComplete();}
 }
 document.addEventListener('keydown',e=>{
   const map={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'};

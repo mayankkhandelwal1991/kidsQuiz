@@ -159,6 +159,7 @@ function update(){
 }
 function endGame(){
   over=true;
+  if(window.KQFX)KQFX.play('blast');
   if(score>best){ best=score; localStorage.setItem('hopperBest3d',best); }
   document.getElementById('finalScore').textContent='Hops: '+score+'  •  Best: '+best;
   document.getElementById('overlay').classList.add('show');

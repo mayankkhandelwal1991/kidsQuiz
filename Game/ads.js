@@ -79,6 +79,16 @@ function onGameComplete() {
     document.head.appendChild(s);
   }
 
+  // Load the shared sound + animation module (sits next to ads.js in /Game).
+  // This is what makes onGameComplete()'s KQFX.gameComplete() call below
+  // actually do something in every game, without editing any game file.
+  if (!window.KQFX) {
+    var fx = document.createElement('script');
+    fx.src = 'kq-fx.js';
+    fx.async = false;
+    document.head.appendChild(fx);
+  }
+
   // Derive a stable game id from the page filename, e.g. snake.html -> "snake".
   var GAME_ID = (function () {
     var p = (location.pathname || '').split('/').pop() || '';

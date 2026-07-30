@@ -54,11 +54,11 @@ function update(){
     ax=Math.max(45,Math.min(cv.width-45,ax));
     // player paddle
     if(ball.y>cv.height-34&&ball.y<cv.height-20&&Math.abs(ball.x-px)<48&&ball.vy>0){
-      ball.vy=-Math.abs(ball.vy)*1.03;ball.vx=(ball.x-px)*0.13;
+      ball.vy=-Math.abs(ball.vy)*1.03;ball.vx=(ball.x-px)*0.13;if(window.KQFX)KQFX.play('hit');
     }
     // AI paddle
     if(ball.y<34&&ball.y>20&&Math.abs(ball.x-ax)<48&&ball.vy<0){
-      ball.vy=Math.abs(ball.vy)*1.03;ball.vx=(ball.x-ax)*0.13;
+      ball.vy=Math.abs(ball.vy)*1.03;ball.vx=(ball.x-ax)*0.13;if(window.KQFX)KQFX.play('tap');
     }
     if(ball.y>cv.height+10){cs++;point();}
     if(ball.y<-10){ps++;point();}
@@ -68,9 +68,9 @@ function update(){
 function point(){
   document.getElementById('ps').textContent=ps;
   document.getElementById('cs').textContent=cs;
-  if(ps>=5){over=true;msg='🎉 You win '+ps+'-'+cs+'!';onGameComplete();}
-  else if(cs>=5){over=true;msg='🤖 Computer wins '+cs+'-'+ps+'!';onGameComplete();}
-  else newBall(ps+cs%2?1:-1);
+  if(ps>=5){over=true;msg='🎉 You win '+ps+'-'+cs+'!';if(window.KQFX)KQFX.win();onGameComplete();}
+  else if(cs>=5){over=true;msg='🤖 Computer wins '+cs+'-'+ps+'!';if(window.KQFX)KQFX.lose();onGameComplete();}
+  else{if(window.KQFX)KQFX.play('tick');newBall(ps+cs%2?1:-1);}
 }
 function draw(){
   cx.clearRect(0,0,cv.width,cv.height);

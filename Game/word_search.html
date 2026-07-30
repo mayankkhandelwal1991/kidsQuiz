@@ -202,12 +202,14 @@ function checkSelection(){
     const chip=document.getElementById('chip_'+match.word);
     chip.classList.add('done');
     document.getElementById('msg').textContent='🎉 Found '+match.word+'!';
+    if(window.KQFX)KQFX.play('ding');
     burstConfetti();
     path=[];startCell=null;
     if(foundCount===total){
       setTimeout(()=>{
         document.getElementById('winMsg').textContent='You found all '+total+' words!';
         document.getElementById('win').classList.add('show');
+        if(window.KQFX)KQFX.win();
         onGameComplete();
       },500);
     }

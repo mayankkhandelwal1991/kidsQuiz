@@ -262,13 +262,14 @@ async function attemptFlip(seat, index) {
     if (room && room.revealed && room.revealed.length === 2) {
       const [a, b] = room.revealed;
       if (room.deck[a] === room.deck[b]) {
-        sounds.playSuccess();
+        sounds.playFlip();
+        sounds.playDing();
       } else {
-        sounds.playClick();
+        sounds.playFlip();
         scheduleMismatchClear(seat, a, b);
       }
     } else {
-      sounds.playClick();
+      sounds.playFlip();
     }
   }
 }

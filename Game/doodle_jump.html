@@ -114,6 +114,7 @@ function draw(){
 function endGame(){
   over=true;
   running=false;
+  if(window.KQFX)KQFX.play('blast');
   if(score>best){best=score;localStorage.setItem('hopperBest',best);}
   document.getElementById('finalScore').textContent='Height: '+score+'  •  Best: '+best;
   document.getElementById('overlay').classList.add('show');

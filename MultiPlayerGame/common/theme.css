@@ -370,9 +370,56 @@ button { font-family: 'Rubik', sans-serif; cursor: pointer; border: none; outlin
   min-height: 22px;
   text-align: center;
 }
-.status-bar.status-won { color: var(--success); text-shadow: 0 0 14px rgba(77,255,160,0.5); }
-.status-bar.status-draw { color: var(--amber); }
-.status-bar.status-lost { color: var(--danger); }
+.status-bar.status-won { color: var(--success); text-shadow: 0 0 14px rgba(77,255,160,0.5); animation: kqStatusBounce 0.7s ease; }
+.status-bar.status-draw { color: var(--amber); animation: kqStatusFade 0.5s ease; }
+.status-bar.status-lost { color: var(--danger); animation: kqStatusShake 0.5s ease; }
+
+@keyframes kqStatusBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-10px) scale(1.12); }
+  55% { transform: translateY(0) scale(1); }
+  75% { transform: translateY(-4px) scale(1.05); }
+}
+@keyframes kqStatusShake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-5px); }
+  40%, 60% { transform: translateX(5px); }
+}
+@keyframes kqStatusFade {
+  0% { opacity: 0.3; transform: scale(0.94); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Small reusable animation utility classes any game's JS can toggle */
+@keyframes kqBoop { 0% { transform: scale(1); } 45% { transform: scale(0.9); } 100% { transform: scale(1); } }
+.kq-boop { animation: kqBoop 0.18s ease; }
+@keyframes kqFlip3d { 0% { transform: rotateY(0deg); } 50% { transform: rotateY(90deg); } 100% { transform: rotateY(0deg); } }
+.kq-flip3d { animation: kqFlip3d 0.4s ease; }
+@keyframes kqBlastPop {
+  0% { transform: scale(1); filter: brightness(1); }
+  40% { transform: scale(1.35); filter: brightness(1.6); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+.kq-blast-pop { animation: kqBlastPop 0.3s ease; }
+@keyframes kqShake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-6px); }
+  40%, 60% { transform: translateX(6px); }
+}
+.kq-shake { animation: kqShake 0.5s ease; }
+@keyframes kqBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-14px) scale(1.08); }
+  50% { transform: translateY(0) scale(1); }
+  70% { transform: translateY(-6px) scale(1.03); }
+}
+.kq-bounce { animation: kqBounce 0.6s ease; }
+
+/* Player-card highlight when that seat wins the match */
+.player-card.card-win { animation: kqBounce 0.7s ease; box-shadow: 0 0 22px rgba(77,255,160,0.45); }
+.player-card.card-lose { animation: kqStatusShake 0.5s ease; opacity: 0.85; }
 
 /* Generic player-card scoreboard row used by several games */
 .players-row {

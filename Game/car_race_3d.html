@@ -127,10 +127,10 @@ function update(){
       const c=cars[i];
       c.mesh.position.z+=speed*4;
       if(c.mesh.position.z>10){
-        scene.remove(c.mesh); cars.splice(i,1); score++; document.getElementById('score').textContent=score; continue;
+        scene.remove(c.mesh); cars.splice(i,1); score++; document.getElementById('score').textContent=score; if(window.KQFX)KQFX.play('whoosh'); continue;
       }
       if(c.lane===lane && c.mesh.position.z>1 && c.mesh.position.z<3.2){
-        dead=true; playing=false; onGameComplete();
+        dead=true; playing=false; if(window.KQFX)KQFX.play('blast'); onGameComplete();
         if(score>best){best=score;localStorage.setItem('race3dBest',best);document.getElementById('best').textContent=best;}
         msg.textContent='💥 Crash! Score: '+score+' — Tap to retry';
         msg.style.display='block';

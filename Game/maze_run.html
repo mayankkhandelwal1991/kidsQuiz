@@ -73,7 +73,7 @@ function mv(dx,dy){
   player.x+=dx;player.y+=dy;moves++;
   document.getElementById('mv').textContent=moves;
   if(player.x===N-1&&player.y===N-1){
-    won=true;onGameComplete();
+    won=true;if(window.KQFX)KQFX.win();onGameComplete();
     document.getElementById('msg').textContent='🎉 You got the cheese in '+moves+' moves! Press any arrow for level '+(level+1);
   }
   draw();

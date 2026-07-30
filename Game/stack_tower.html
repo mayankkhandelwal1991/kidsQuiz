@@ -57,9 +57,10 @@ function drop(){
   const left=Math.max(current.x,last.x);
   const right=Math.min(current.x+current.w,last.x+last.w);
   const overlap=right-left;
-  if(overlap<=4){ endGame(); return; }
+  if(overlap<=4){ if(window.KQFX)KQFX.play('blast'); endGame(); return; }
   const newBlockObj={x:left,w:overlap,y:current.y,color:current.color};
   stack.push(newBlockObj);
+  if(window.KQFX)KQFX.play('drop');
   score++;
   document.getElementById('score').textContent=score;
   if(stack.length>6) camY += blockH;

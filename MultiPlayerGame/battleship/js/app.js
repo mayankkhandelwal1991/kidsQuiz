@@ -317,7 +317,8 @@ async function attemptShot(shooterSeat, targetIndex) {
   if (txResult.committed) {
     const room = txResult.snapshot.val();
     if (room && room.lastShot && room.lastShot.index === targetIndex) {
-      sounds[room.lastShot.hit ? 'playHit' : 'playSplash']();
+      if (room.lastShot.sunk) sounds.playBlast();
+      else sounds[room.lastShot.hit ? 'playHit' : 'playSplash']();
     }
   }
   return txResult.committed;

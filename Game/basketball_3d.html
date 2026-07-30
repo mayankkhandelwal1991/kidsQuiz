@@ -159,6 +159,7 @@ function update(){
     if(!ballState.scored && Math.abs(dy)<0.28 && Math.sqrt(dx*dx+dz*dz)<0.62 && ballState.vy<0){
       ballState.scored=true;
       score++; document.getElementById('score').textContent=score;
+      if(window.KQFX)KQFX.play('ding');
       hoopRing.material.emissiveIntensity=1;
       setTimeout(()=>{ hoopRing.material.emissiveIntensity=0.4; },200);
     }

@@ -56,8 +56,8 @@ function gen(){
 }
 function pick(btn,val){
   if(lock||!playing)return;lock=true;
-  if(val===ans){btn.classList.add('ok');score++;}
-  else{btn.classList.add('no');
+  if(val===ans){btn.classList.add('ok');score++;if(window.KQFX)KQFX.play('ding');}
+  else{btn.classList.add('no');if(window.KQFX)KQFX.play('wrong');
     [...document.querySelectorAll('.opts button')].find(b=>+b.textContent===ans).classList.add('ok');}
   document.getElementById('score').textContent=score;
   setTimeout(gen,val===ans?250:700);

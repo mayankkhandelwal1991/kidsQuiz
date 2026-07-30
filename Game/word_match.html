@@ -90,6 +90,7 @@ function renderGrid(){
 function flip(i,card){
   if(lock||card.classList.contains('flip')||card.classList.contains('matched'))return;
   card.classList.add('flip');
+  if(window.KQFX){KQFX.play('flip');KQFX.flipEl(card);}
   flipped.push({i,card});
   if(flipped.length===2){
     lock=true;
@@ -99,18 +100,21 @@ function flip(i,card){
         a.card.classList.add('matched');b.card.classList.add('matched');
         matched++;document.getElementById('pairs').textContent=matched;
         document.getElementById('msg').textContent='🎉 Match found!';
+        if(window.KQFX)KQFX.play('ding');
         burstConfetti();
         flipped=[];lock=false;
         if(matched===PAIRS){
           setTimeout(()=>{
             document.getElementById('endMsg').textContent='You matched all '+PAIRS+' pairs!';
             document.getElementById('end').classList.add('show');
+            if(window.KQFX)KQFX.win();
             onGameComplete();
           },500);
         }
       },350);
     }else{
       document.getElementById('msg').textContent='Try again!';
+      if(window.KQFX)KQFX.play('wrong');
       setTimeout(()=>{
         a.card.classList.remove('flip');b.card.classList.remove('flip');
         flipped=[];lock=false;

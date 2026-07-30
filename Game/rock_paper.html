@@ -66,12 +66,12 @@ function play(p){
 function settle(p,c){
   let m;
   if(p===c)m='🤝 Tie! Both picked '+NAMES[p];
-  else if((p===0&&c===2)||(p===1&&c===0)||(p===2&&c===1)){ps++;m='🎉 '+NAMES[p]+' beats '+NAMES[c]+' — you score!';}
-  else{cs++;m='😅 '+NAMES[c]+' beats '+NAMES[p]+' — computer scores!';}
+  else if((p===0&&c===2)||(p===1&&c===0)||(p===2&&c===1)){ps++;m='🎉 '+NAMES[p]+' beats '+NAMES[c]+' — you score!';if(window.KQFX)KQFX.play('success');}
+  else{cs++;m='😅 '+NAMES[c]+' beats '+NAMES[p]+' — computer scores!';if(window.KQFX)KQFX.play('wrong');}
   document.getElementById('ps').textContent=ps;
   document.getElementById('cs').textContent=cs;
-  if(ps>=5){m='🏆 YOU WIN THE MATCH '+ps+'-'+cs+'! Tap any hand to restart.';over=true;onGameComplete();}
-  if(cs>=5){m='🤖 Computer wins the match '+cs+'-'+ps+'. Tap any hand to restart.';over=true;onGameComplete();}
+  if(ps>=5){m='🏆 YOU WIN THE MATCH '+ps+'-'+cs+'! Tap any hand to restart.';over=true;if(window.KQFX)KQFX.win();onGameComplete();}
+  if(cs>=5){m='🤖 Computer wins the match '+cs+'-'+ps+'. Tap any hand to restart.';over=true;if(window.KQFX)KQFX.lose();onGameComplete();}
   document.getElementById('msg').textContent=m;
 }
 </script></body></html>

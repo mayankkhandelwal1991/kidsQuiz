@@ -139,6 +139,7 @@ function update(){
 }
 function endGame(){
   over=true;
+  if(window.KQFX)KQFX.play('blast');
   const finalScore=Math.floor(score/6);
   if(finalScore>best){ best=finalScore; localStorage.setItem('driftBest',best); }
   document.getElementById('finalScore').textContent='Distance: '+finalScore+'  •  Best: '+best;

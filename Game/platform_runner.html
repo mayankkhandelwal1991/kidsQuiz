@@ -119,6 +119,7 @@ function draw(){
 }
 function endGame(){
   over=true;
+  if(window.KQFX)KQFX.play('blast');
   const finalScore=Math.floor(score);
   if(finalScore>best){ best=finalScore; localStorage.setItem('platRunBest',best); }
   document.getElementById('finalScore').textContent='Score: '+finalScore+'  •  Best: '+best;

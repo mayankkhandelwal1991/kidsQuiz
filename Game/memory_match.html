@@ -47,13 +47,15 @@ function reset(){
 function flip(t){
   if(lock||t.classList.contains('open')||t.classList.contains('done'))return;
   t.classList.add('open');
+  if(window.KQFX){KQFX.play('flip');KQFX.flipEl(t);}
   if(!first){first=t;return;}
   moves++;document.getElementById('moves').textContent=moves;
   if(first.textContent===t.textContent){
     first.classList.add('done');t.classList.add('done');
     first.classList.remove('open');t.classList.remove('open');
+    if(window.KQFX)KQFX.play('ding');
     first=null;pairs++;document.getElementById('pairs').textContent=pairs;
-    if(pairs===8){document.getElementById('msg').textContent='🎉 You won in '+moves+' moves!';onGameComplete();}
+    if(pairs===8){document.getElementById('msg').textContent='🎉 You won in '+moves+' moves!';if(window.KQFX)KQFX.win();onGameComplete();}
   }else{
     lock=true;const a=first;first=null;
     setTimeout(()=>{a.classList.remove('open');t.classList.remove('open');lock=false;},700);

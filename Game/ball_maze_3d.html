@@ -165,6 +165,7 @@ function update(){
 }
 function win(){
   over=true; clearInterval(timerId);
+  if(window.KQFX)KQFX.win();
   const t=Math.floor((Date.now()-startTs)/1000);
   if(!best || t<best){ best=t; localStorage.setItem('mazeBest',best); }
   document.getElementById('finalScore').textContent='Time: '+t+'s  •  Best: '+best+'s';

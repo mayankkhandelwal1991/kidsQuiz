@@ -58,7 +58,7 @@ function update(){
       if(it.y>cv.height-58&&it.y<cv.height-20&&Math.abs(it.x-bx)<38){
         items.splice(i,1);
         if(it.bomb)loseLife();
-        else{score++;document.getElementById('score').textContent=score;}
+        else{score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('pop');}
       }else if(it.y>cv.height+20){
         items.splice(i,1);
         if(!it.bomb)loseLife();
@@ -69,7 +69,7 @@ function update(){
 }
 function loseLife(){
   lives--;document.getElementById('lives').textContent=lives;
-  if(lives<=0){dead=true;onGameComplete();
+  if(lives<=0){dead=true;if(window.KQFX)KQFX.lose();onGameComplete();
     if(score>best){best=score;localStorage.setItem('fruitBest',best);document.getElementById('best').textContent=best;}
   }
 }

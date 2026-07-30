@@ -288,7 +288,7 @@ async function resetRoomForDisconnect() {
 async function handleColumnClick(col) {
   if (mySeat !== 'R' && mySeat !== 'Y') return;
   const committed = await attemptDrop(col, mySeat);
-  if (committed) sounds.playClick();
+  if (committed) sounds.playDrop();
 }
 
 async function attemptDrop(col, symbol) {

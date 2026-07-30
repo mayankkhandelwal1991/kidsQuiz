@@ -48,8 +48,8 @@ function round(){
     c.innerHTML='<span>'+(i===odd?b:a)+'</span>';
     c.onclick=()=>{
       if(!playing)return;
-      if(i===odd){score++;document.getElementById('score').textContent=score;round();}
-      else{c.style.background='#ffd6d6';setTimeout(()=>c.style.background='',300);}
+      if(i===odd){score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('ding');round();}
+      else{c.style.background='#ffd6d6';setTimeout(()=>c.style.background='',300);if(window.KQFX)KQFX.play('wrong');}
     };
     grid.appendChild(c);
   }

@@ -426,7 +426,7 @@ function hostTick() {
     if (ateFood) {
       const occ = new Set([...host.snakes.P1, ...host.snakes.P2].map(cellKey));
       host.food = randomFood(occ);
-      sounds.playTick();
+      sounds.playDing();
     }
   }
 
@@ -436,7 +436,7 @@ function hostTick() {
     if (diedThisTick.size === 1) {
       roundWinner = [...diedThisTick][0] === 'P1' ? 'P2' : 'P1';
       host.scores[roundWinner] = (host.scores[roundWinner] || 0) + 1;
-      sounds.playHit();
+      sounds.playBlast();
     }
     host.phase = 'roundover';
     const finished = roundWinner && host.scores[roundWinner] >= WIN_SCORE;

@@ -60,8 +60,9 @@ function play(c){
   const r=lowestEmptyRow(c);
   if(r<0)return;
   grid[r][c]=1; render();
-  if(checkWin(1)){ endGame('You Win! 🎉'); return; }
-  if(isFull()){ endGame("It's a Draw!"); return; }
+  if(window.KQFX)KQFX.play('drop');
+  if(checkWin(1)){ endGame('You Win! 🎉', 'win'); return; }
+  if(isFull()){ endGame("It's a Draw!", 'draw'); return; }
   turn=2;
   document.getElementById('turn').textContent="Computer's Turn 🟡";
   setTimeout(aiMove,500);
@@ -71,9 +72,9 @@ function aiMove(){
   if(over)return;
   const c=bestMove();
   const r=lowestEmptyRow(c);
-  if(r>=0){ grid[r][c]=2; render(); }
-  if(checkWin(2)){ endGame('Computer Wins! 🤖'); return; }
-  if(isFull()){ endGame("It's a Draw!"); return; }
+  if(r>=0){ grid[r][c]=2; render(); if(window.KQFX)KQFX.play('drop'); }
+  if(checkWin(2)){ endGame('Computer Wins! 🤖', 'lose'); return; }
+  if(isFull()){ endGame("It's a Draw!", 'draw'); return; }
   turn=1;
   document.getElementById('turn').textContent='Your Turn 🔴';
 }
@@ -96,10 +97,15 @@ function checkWin(p){
   }
   return false;
 }
-function endGame(title){
+function endGame(title, outcome){
   over=true;
   document.getElementById('overTitle').textContent=title;
   document.getElementById('overlay').classList.add('show');
+  if(window.KQFX){
+    if(outcome==='win')KQFX.win();
+    else if(outcome==='lose')KQFX.lose();
+    else KQFX.play('draw');
+  }
   onGameComplete();
 }
 init();

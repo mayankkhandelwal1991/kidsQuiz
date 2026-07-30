@@ -43,9 +43,10 @@ function tap(i){
   if(Math.abs(r1-r2)+Math.abs(c1-c2)!==1)return;
   [board[i],board[b]]=[board[b],board[i]];
   moves++;document.getElementById('mv').textContent=moves;
+  if(window.KQFX)KQFX.play('tick');
   render();
   if(board.join()==='1,2,3,4,5,6,7,8,0'){
-    document.getElementById('msg').textContent='🎉 Solved in '+moves+' moves!';onGameComplete();
+    document.getElementById('msg').textContent='🎉 Solved in '+moves+' moves!';if(window.KQFX)KQFX.win();onGameComplete();
     if(!best||moves<+best){best=moves;localStorage.setItem('slideBest',best);document.getElementById('best').textContent=best;}
   }
 }

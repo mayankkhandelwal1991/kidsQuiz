@@ -252,6 +252,7 @@ async function attemptAnswer(seat, optionIndex) {
     const room = txResult.snapshot.val();
     const wasCorrect = optionIndex === QUESTIONS[room.questionIndex].correct;
     sounds[wasCorrect ? 'playSuccess' : 'playError']();
+    if (wasCorrect) sounds.playDing();
     if (room.solvedBy === seat && room.status === 'playing') {
       scheduleNextRound(room.questionIndex);
     }

@@ -128,18 +128,21 @@ function checkWord(){
     found.add(guess);
     document.getElementById('found').textContent=found.size;
     document.getElementById('msg').textContent='🎉 Found "'+guess+'"!';
+    if(window.KQFX)KQFX.play('ding');
     burstConfetti();
     clearWord();renderWords();
     if(found.size===level.words.length){
       setTimeout(()=>{
         document.getElementById('endMsg').textContent='You built all '+level.words.length+' words!';
         document.getElementById('end').classList.add('show');
+        if(window.KQFX)KQFX.win();
         onGameComplete();
       },500);
     }
   }else{
     const box=document.getElementById('answer');
     box.classList.remove('shakebox');void box.offsetWidth;box.classList.add('shakebox');
+    if(window.KQFX)KQFX.play('wrong');
     document.getElementById('msg').textContent=found.has(guess)?'Already found that one!':'❌ Not a hidden word — try again!';
     setTimeout(clearWord,500);
   }

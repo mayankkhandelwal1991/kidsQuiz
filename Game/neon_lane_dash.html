@@ -78,7 +78,7 @@ function update(){
   if(frame%Math.max(22,55-Math.floor(score/8))===0) spawnObstacle();
   obstacles.forEach(o=>o.y+=speed);
   obstacles=obstacles.filter(o=>{
-    if(o.y>H+50) { score+=1; return false; }
+    if(o.y>H+50) { score+=1; if(window.KQFX)KQFX.play('whoosh'); return false; }
     return true;
   });
   document.getElementById('score').textContent=score;
@@ -106,6 +106,7 @@ function draw(){
 }
 function endGame(){
   over=true;
+  if(window.KQFX)KQFX.play('blast');
   if(score>best){ best=score; localStorage.setItem('laneDashBest',best); }
   document.getElementById('finalScore').textContent='Score: '+score+'  •  Best: '+best;
   document.getElementById('overlay').classList.add('show');

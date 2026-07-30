@@ -284,7 +284,29 @@ Any static host works:
 
 ---
 
-## 4. A note on fairness (please read before relying on this for anything competitive)
+## 4. Sounds & animations
+
+Every game shares one `SoundManager` (`common/utils.js`) and one set of MP3
+sound effects (`common/sounds/*.mp3`) — kid-friendly, happy, chiptune-style
+clips generated for this project: `win`, `lose`, `draw`, `click`, `join`,
+`leave`, `success`, `error`, `tick`, `countdown`, `hit`, `splash`, plus
+game-flavored ones — `flip` (card reveals), `blast` (explosions/pops/box
+completions), `whoosh` (racing/shooting/finish lines), `boing` (whack-a-mole),
+`drop` (connect-four discs, dice rolls), and `ding` (correct answers, made
+shots). If an MP3 ever fails to load, each sound silently falls back to a
+synthesized Web Audio tone — so nothing ever goes silent.
+
+Winning, losing, and drawing also get a matching **animation** for free:
+`common/theme.css` binds `kqStatusBounce` / `kqStatusShake` / `kqStatusFade`
+keyframes straight to the `.status-won` / `.status-lost` / `.status-draw`
+classes every game already sets on its status bar, plus reusable utility
+classes (`.kq-flip3d`, `.kq-blast-pop`, `.kq-shake`, `.kq-bounce`) any game's
+JS can toggle on an element. Adding a new sound to a game is just
+`sounds.playX()`; the mute toggle in the top bar controls all of it.
+
+---
+
+## 5. A note on fairness (please read before relying on this for anything competitive)
 
 This project deliberately has **no Firebase Auth and no server-side
 validation** — everything lives in one open Realtime Database, exactly
@@ -310,7 +332,7 @@ zero-backend build.
 
 ---
 
-## 5. Troubleshooting
+## 6. Troubleshooting
 
 - **"Could not find or create a match. Check your Firebase configuration."**
   Double-check `common/firebase-config.js` has real values and that

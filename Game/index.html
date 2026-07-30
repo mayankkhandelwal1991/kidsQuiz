@@ -5,65 +5,74 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Game Zone - Kids Quiz</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Baloo+2:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Fredoka','Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#1a1440,#2d2470,#472e7a,#1a1440);background-size:400% 400%;animation:bg 14s ease infinite;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;color:#fff}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#8b5cf6,#ff7ac6,#ffd166);background-size:400% 400%;animation:bg 12s ease infinite;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;position:relative}
 @keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-.container{background:rgba(255,255,255,.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.16);border-radius:32px;box-shadow:0 20px 50px rgba(0,0,0,.5);max-width:760px;width:100%;padding:18px;display:flex;flex-direction:column;max-height:100%;position:relative;overflow:hidden}
-h1{font-family:'Baloo 2',sans-serif;background:linear-gradient(135deg,#00f5ff,#ff00e5,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center;font-size:30px;font-weight:800;letter-spacing:.5px}
+
+/* ===== Shared floating background decoration (same system as quiz2.html) ===== */
+.bg-decor{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;pointer-events:none;z-index:0}
+.bg-decor span{position:absolute;font-size:28px;opacity:.35;animation:floatUp linear infinite;filter:drop-shadow(0 4px 6px rgba(0,0,0,.08))}
+@keyframes floatUp{0%{transform:translateY(110vh) rotate(0deg);opacity:0}10%{opacity:.35}90%{opacity:.35}100%{transform:translateY(-10vh) rotate(360deg);opacity:0}}
+
+/* ===== Shared Android-style ripple feedback (same system as quiz2.html) ===== */
+.android-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:androidRippleAnim .55s ease-out;pointer-events:none}
+@keyframes androidRippleAnim{to{transform:scale(2.8);opacity:0}}
+
+.container{background:linear-gradient(180deg,#fff,#fef6ff);border:6px solid #fff;border-radius:32px;box-shadow:0 15px 40px rgba(0,0,0,.18);max-width:820px;width:100%;padding:18px;display:flex;flex-direction:column;max-height:100%;position:relative;overflow:hidden;z-index:1}
+h1{color:#ff5a8a;text-align:center;font-size:27px;font-weight:800}
 h1 .wiggle{display:inline-block;animation:wiggle 2.2s ease-in-out infinite}
 @keyframes wiggle{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-10deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
-.subtitle{color:#c9c3ff;text-align:center;font-size:14px;font-weight:600;margin-bottom:14px}
-.topbar{display:flex;justify-content:flex-start;align-items:center;gap:10px;margin-bottom:8px}
-.back-btn{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:14px;padding:9px 18px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.25);transition:.1s}
-.back-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
-.crumb{color:#fff;font-size:12px;font-weight:700;background:rgba(255,255,255,.12);padding:5px 12px;border-radius:20px}
+.subtitle{color:#6b7280;text-align:center;font-size:13px;margin-bottom:14px;font-weight:600}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.back-btn{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:14px;padding:9px 18px;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);transition:.1s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.back-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.crumb{color:#fff;font-size:11.5px;font-weight:800;padding:6px 14px;border-radius:20px;box-shadow:0 3px 0 rgba(0,0,0,.15);text-shadow:0 1px 2px rgba(0,0,0,.15)}
 
-/* Floating decoration */
-.floaty{position:absolute;pointer-events:none;opacity:.25;font-size:26px;animation:floaty 6s ease-in-out infinite}
-@keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(12deg)}}
-
-/* Category grid */
-.catgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;flex:1;min-height:0;overflow-y:auto;padding:6px 4px 10px}
-.catcard{padding:22px 10px 16px;border-radius:24px;border:none;cursor:pointer;text-align:center;position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;color:#fff;transform:translateY(0);transition:transform .12s,box-shadow .12s;opacity:0;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) forwards}
-@keyframes popIn{0%{opacity:0;transform:scale(.6) translateY(14px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+/* Category grid (matches menu-card pattern used across the app) */
+.catgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:1;min-height:0;overflow-y:auto;padding:6px 4px 10px;position:relative;z-index:1}
+.catcard{padding:18px 8px 14px;border-radius:22px;border:none;cursor:pointer;text-align:center;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:6px;color:#fff;transition:transform .12s,box-shadow .12s;opacity:0;animation:cardPop .45s cubic-bezier(.34,1.56,.64,1) forwards;-webkit-tap-highlight-color:transparent}
+@keyframes cardPop{0%{opacity:0;transform:scale(.6) translateY(12px)}100%{opacity:1;transform:scale(1) translateY(0)}}
 .catcard:hover{transform:translateY(-3px)}
-.catcard:active{transform:translateY(4px) !important;box-shadow:0 0 0 rgba(0,0,0,0) !important}
-.catcard .cbadge{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:inset 0 2px 4px rgba(255,255,255,.4)}
-.catcard .cnm{font-family:'Baloo 2',sans-serif;font-size:15px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.15)}
-.catcard .ccount{font-size:11px;color:rgba(255,255,255,.9);font-weight:700;background:rgba(0,0,0,.15);padding:2px 10px;border-radius:20px}
+.catcard:active{transform:translateY(4px) !important;box-shadow:none !important}
+.catcard .cbadge{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:inset 0 2px 4px rgba(255,255,255,.4)}
+.catcard .cnm{font-size:13px;font-weight:800;line-height:1.2;text-shadow:0 1px 2px rgba(0,0,0,.15)}
+.catcard .ccount{font-size:10px;font-weight:700;background:rgba(255,255,255,.25);padding:3px 10px;border-radius:20px}
 
 /* Game grid */
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:1;min-height:0;overflow-y:auto;padding:4px}
-.card{padding:12px 6px;border-radius:18px;border:1px solid rgba(255,255,255,.12);cursor:pointer;text-align:center;transition:.15s;background:rgba(255,255,255,.05);position:relative;opacity:0;animation:popIn .4s cubic-bezier(.34,1.56,.64,1) forwards}
-.card.threed::after{content:'3D';position:absolute;top:6px;right:8px;font-size:9px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);color:#0b0b1e;padding:2px 5px;border-radius:6px}
-.card:hover,.card.sel{transform:translateY(-4px) scale(1.04);border-color:var(--accent,#00f5ff);box-shadow:0 8px 22px rgba(0,245,255,.15)}
-.card .ic{font-size:32px}
-.card .nm{font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:700;color:#e5e5f7;line-height:1.2;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;min-height:0;overflow-y:auto;padding:6px 4px 10px;position:relative;z-index:1}
+.card{padding:16px 8px 12px;border-radius:22px;border:none;cursor:pointer;text-align:center;color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:5px;opacity:0;animation:cardPop .45s cubic-bezier(.34,1.56,.64,1) forwards;transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent}
+.card:hover{transform:translateY(-3px)}
+.card.sel{transform:translateY(-3px) scale(1.03)}
+.card:active{transform:translateY(4px) !important;box-shadow:none !important}
+.card .ic-badge{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:inset 0 2px 4px rgba(255,255,255,.4)}
+.card .nm{font-size:12px;font-weight:800;line-height:1.2;text-shadow:0 1px 2px rgba(0,0,0,.15)}
+.card .new-badge{position:absolute;top:-6px;right:-4px;background:#fff;color:#ff5a8a;font-size:9px;font-weight:800;padding:3px 7px;border-radius:10px;letter-spacing:.5px;box-shadow:0 2px 6px rgba(0,0,0,.25);transform:rotate(8deg)}
 
-.detail{display:none;margin-top:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:22px;padding:16px;text-align:center}
+.detail{display:none;margin-top:14px;background:linear-gradient(135deg,#fff8cc,#fff0f6);border:4px dashed #ffb703;border-radius:24px;padding:16px;text-align:center;position:relative;z-index:1}
 .detail.show{display:block}
-.detail .big{font-size:44px}
-.detail h2{font-family:'Baloo 2',sans-serif;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:19px}
-.detail p{color:#c7c7de;font-size:13px;margin:6px 0 12px;line-height:1.5}
-.start-btn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:18px;padding:13px 42px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 8px 20px rgba(255,79,163,.35);animation:pulse 2s infinite}
+.detail .big{font-size:48px}
+.detail h2{color:#ff5a8a;font-size:20px}
+.detail p{color:#555;font-size:13px;margin:6px 0 12px;line-height:1.5}
+.start-btn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:18px;padding:13px 42px;font-family:inherit;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 8px 18px rgba(255,79,163,.35);animation:pulse 2s infinite;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 
-.view{display:none;flex-direction:column;min-height:0;flex:1}
+.view{display:none;flex-direction:column;min-height:0;flex:1;position:relative}
 .view.show{display:flex}
 
-@media(max-width:520px){
-  .grid{grid-template-columns:repeat(3,1fr)}
-  .card .ic{font-size:26px}
-  .card .nm{font-size:9.5px}
+@media(max-width:600px){
   .catgrid{grid-template-columns:repeat(2,1fr)}
-  .catcard .cbadge{width:48px;height:48px;font-size:26px}
-  .catcard .cnm{font-size:13px}
+  .catcard .cbadge{width:44px;height:44px;font-size:22px}
+  .catcard .cnm{font-size:12px}
+  .grid{grid-template-columns:repeat(3,1fr)}
+  .card .ic-badge{width:40px;height:40px;font-size:20px}
+  .card .nm{font-size:10px}
+  h1{font-size:22px}
 }
 </style>
-<link rel="stylesheet" href="game-theme.css">
 </head>
 <body>
+<div class="bg-decor" id="bgDecor"></div>
 <div class="container">
   <div class="topbar">
     <button class="back-btn" id="backBtn" onclick="handleBack()">← Quiz Home</button>
@@ -73,10 +82,6 @@ h1 .wiggle{display:inline-block;animation:wiggle 2.2s ease-in-out infinite}
   <p class="subtitle" id="subtitle">Choose a category and let's play!</p>
 
   <div class="view show" id="viewCats">
-    <span class="floaty" style="top:2%;left:4%;animation-delay:.2s">⭐</span>
-    <span class="floaty" style="top:8%;right:6%;animation-delay:1.4s">✨</span>
-    <span class="floaty" style="bottom:6%;left:8%;animation-delay:2.2s">🎈</span>
-    <span class="floaty" style="bottom:2%;right:4%;animation-delay:.8s">🌟</span>
     <div class="catgrid" id="catGrid"></div>
   </div>
 
@@ -87,7 +92,7 @@ h1 .wiggle{display:inline-block;animation:wiggle 2.2s ease-in-out infinite}
       <h2 id="dName"></h2>
       <p id="dHow"></p>
       <button class="start-btn" onclick="startGame()">▶ Start</button>
-      <button class="start-btn" style="background:linear-gradient(135deg,#f59e0b,#f43f5e);box-shadow:0 8px 20px rgba(244,63,94,.35);margin-left:8px" onclick="openBoard()">🏆 Leaderboard</button>
+      <button class="start-btn" style="background:linear-gradient(135deg,#f59e0b,#f43f5e);box-shadow:0 8px 18px rgba(244,63,94,.35);margin-left:8px" onclick="openBoard()">🏆 Leaderboard</button>
     </div>
   </div>
 </div>
@@ -152,14 +157,17 @@ const GAMES=[
 
 const THREED=['car_race_3d.html','endless_runner_3d.html','crossy_road_3d.html','basketball_3d.html','ball_maze_3d.html','drift_racer_3d.html'];
 
+// Same bright, high-contrast, kid-friendly palette used for quiz categories,
+// class levels and mode cards across the rest of the app, so Game Zone
+// matches the same visual language.
 const CATEGORIES=[
- {id:'action',ic:'🏃',nm:'Action & Arcade',bg:'#FF6B57',shadow:'#D6432F',text:'#fff'},
- {id:'threed',ic:'🕶️',nm:'3D Games',bg:'#7C5CFC',shadow:'#5A3FD1',text:'#fff'},
- {id:'puzzle',ic:'🧩',nm:'Puzzle & Logic',bg:'#22C55E',shadow:'#158A3E',text:'#fff'},
- {id:'strategy',ic:'♟️',nm:'Classic & Strategy',bg:'#3B82F6',shadow:'#1D4ED8',text:'#fff'},
- {id:'word',ic:'🔤',nm:'Word & Vocabulary',bg:'#FFC93C',shadow:'#E0A800',text:'#3a2a00'},
- {id:'brain',ic:'⚡',nm:'Brain & Speed',bg:'#FF4FA3',shadow:'#D6337F',text:'#fff'},
- {id:'ai',ic:'🤖',nm:'AI Games',bg:'#16C2C2',shadow:'#0E8F8F',text:'#fff'}
+ {id:'action',ic:'🏃',nm:'Action & Arcade',bg:'#FF6B57',shadow:'#D6432F'},
+ {id:'threed',ic:'🕶️',nm:'3D Games',bg:'#7C5CFC',shadow:'#5A3FD1'},
+ {id:'puzzle',ic:'🧩',nm:'Puzzle & Logic',bg:'#22C55E',shadow:'#158A3E'},
+ {id:'strategy',ic:'♟️',nm:'Classic & Strategy',bg:'#3B82F6',shadow:'#1D4ED8'},
+ {id:'word',ic:'🔤',nm:'Word & Vocabulary',bg:'#FFC93C',shadow:'#E0A800'},
+ {id:'brain',ic:'⚡',nm:'Brain & Speed',bg:'#FF4FA3',shadow:'#D6337F'},
+ {id:'ai',ic:'🤖',nm:'AI Games',bg:'#16C2C2',shadow:'#0E8F8F'}
 ];
 
 let sel=-1;
@@ -178,9 +186,8 @@ CATEGORIES.forEach((c,i)=>{
   const d=document.createElement('div');
   d.className='catcard';
   d.style.background=c.bg;
-  d.style.color=c.text;
-  d.style.boxShadow='0 6px 0 '+c.shadow+', 0 10px 18px rgba(0,0,0,.25)';
-  d.style.animationDelay=(i*0.06)+'s';
+  d.style.boxShadow='0 6px 0 '+c.shadow+', 0 10px 16px rgba(0,0,0,.18)';
+  d.style.animationDelay=(i*0.05)+'s';
   d.innerHTML='<div class="cbadge">'+c.ic+'</div><div class="cnm">'+c.nm+'</div><div class="ccount">'+count+' games</div>';
   d.onclick=()=>openCategory(c);
   catGrid.appendChild(d);
@@ -192,23 +199,25 @@ function openCategory(c){
   sel=-1;
   detail.classList.remove('show');
   grid.innerHTML='';
-  document.documentElement.style.setProperty('--accent', c.bg);
   let i=0;
   GAMES.forEach((g,gi)=>{
     if(g.cat!==id) return;
     const d=document.createElement('div');
-    d.className='card'+(THREED.includes(g.f)?' threed':'');
-    d.style.animationDelay=(i*0.04)+'s';
+    d.className='card';
+    d.style.background=c.bg;
+    d.style.boxShadow='0 6px 0 '+c.shadow+', 0 10px 16px rgba(0,0,0,.18)';
+    d.style.animationDelay=(i*0.035)+'s';
     i++;
-    d.innerHTML='<div class="ic">'+g.ic+'</div><div class="nm">'+g.nm+'</div>';
+    const badge=THREED.includes(g.f)?'<span class="new-badge">3D</span>':'';
+    d.innerHTML=badge+'<div class="ic-badge">'+g.ic+'</div><div class="nm">'+g.nm+'</div>';
     d.onclick=()=>select(gi,d);
     grid.appendChild(d);
   });
+  attachRipple('#grid .card');
   viewCats.classList.remove('show');
   viewGames.classList.add('show');
   subtitle.textContent='Pick a game, then press Start to play!';
   crumb.style.background=c.bg;
-  crumb.style.color=c.text;
   crumb.textContent=c.ic+' '+nm;
 }
 
@@ -234,7 +243,6 @@ function handleBack(){
     subtitle.textContent="Choose a category and let's play!";
     crumb.textContent='';
     crumb.style.background='';
-    crumb.style.color='';
     sel=-1;
     currentCat=null;
     detail.classList.remove('show');
@@ -250,6 +258,52 @@ function openBoard(){
   var g=GAMES[sel], id=g.f.replace(/\.html?$/i,'');
   if(window.KQ&&KQ.open) KQ.open('single', id, g.nm);
 }
+
+/* ===== Shared Android-style ripple feedback (same as quiz2.html) ===== */
+function attachRipple(selector){
+  document.querySelectorAll(selector).forEach(el=>{
+    if(el.dataset.rippleBound) return;
+    el.dataset.rippleBound='1';
+    el.addEventListener('click',function(e){
+      const rect=el.getBoundingClientRect();
+      const size=Math.max(rect.width,rect.height)*1.4;
+      const ripple=document.createElement('span');
+      ripple.className='android-ripple';
+      ripple.style.width=ripple.style.height=size+'px';
+      const x=(e.clientX||rect.left+rect.width/2)-rect.left-size/2;
+      const y=(e.clientY||rect.top+rect.height/2)-rect.top-size/2;
+      ripple.style.left=x+'px';
+      ripple.style.top=y+'px';
+      el.appendChild(ripple);
+      setTimeout(()=>ripple.remove(),600);
+    });
+  });
+}
+function initRipples(){
+  attachRipple('.catcard');
+  attachRipple('.back-btn');
+  attachRipple('.start-btn');
+}
+
+/* ===== Shared floating background decoration (same as quiz2.html) ===== */
+function initBackgroundDecor(){
+  const emojis=['⭐','🎈','🎉','🌟','🎨','🚀','🍎','🦋'];
+  const holder=document.getElementById('bgDecor');
+  if(!holder) return;
+  const count=window.innerWidth<600?8:14;
+  for(let i=0;i<count;i++){
+    const el=document.createElement('span');
+    el.textContent=emojis[i%emojis.length];
+    el.style.left=Math.random()*100+'vw';
+    el.style.animationDuration=(14+Math.random()*12)+'s';
+    el.style.animationDelay=(Math.random()*12)+'s';
+    el.style.fontSize=(18+Math.random()*20)+'px';
+    holder.appendChild(el);
+  }
+}
+
+initBackgroundDecor();
+initRipples();
 </script>
 <script src="kq-leaderboard.js"></script>
 </body>

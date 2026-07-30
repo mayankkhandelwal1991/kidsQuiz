@@ -729,6 +729,18 @@ h1,h2{
 .play-card.play-board .pb-txt{display:flex;flex-direction:column}
 .play-card.play-board .play-arrow{position:static;margin-left:auto;font-size:24px}
 
+/* Solo Games tile — same 2-col layout as Start Quiz */
+.play-card.play-solo{background:linear-gradient(135deg,#ff7a59,#ff4fa3);box-shadow:0 10px 22px rgba(255,79,163,.4)}
+
+/* Play with Friends — full-width row, the standout entry to the 24 multiplayer games */
+.play-card.play-versus{grid-column:1 / -1;flex-direction:row;align-items:center;gap:12px;padding:15px 16px;background:linear-gradient(120deg,#06b6d4,#3b82f6,#7c3aed);box-shadow:0 12px 26px rgba(59,130,246,.45)}
+.play-card.play-versus .play-icon{font-size:32px}
+.play-card.play-versus .pb-txt{display:flex;flex-direction:column;flex:1;min-width:0}
+.play-card.play-versus .play-arrow{position:static;margin-left:auto;font-size:24px}
+.play-card.play-versus::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);animation:versusShine 3.4s ease-in-out infinite}
+@keyframes versusShine{0%,60%{left:-60%}85%,100%{left:130%}}
+@media (prefers-reduced-motion: reduce){.play-card.play-versus::after{animation:none;display:none}}
+
 /* Leaderboard hub modal picker */
 .lbhub-row{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;text-align:left}
 .lbhub-row label{font-size:12px;font-weight:700;color:#777}
@@ -843,21 +855,31 @@ h1,h2{
     <div class="daily-card" id="dailyCard" onclick="startDailyChallenge()"></div>
 
     <h1>🎯 Quiz Master</h1>
-    <p class="subtitle">20 categories • Class 1 to 5 • 3-minute challenge</p>
+    <p class="subtitle">20 quiz topics • 80+ games • Class 1 to 5</p>
 
+    <p class="section-label">🚀 Play &amp; Learn</p>
     <div class="play-hero">
       <div class="play-card play-quiz" onclick="showQuizCategoryModal()">
         <span class="play-badge">20 topics</span>
         <div class="play-icon">🎯</div>
         <div class="play-title">Start Quiz</div>
-        <div class="play-sub">Choose a category</div>
+        <div class="play-sub">Class 1–5 • 3-min challenge</div>
         <div class="play-arrow">›</div>
       </div>
-      <div class="play-card play-game" onclick="showGameOptions()">
-        <span class="play-badge">1 or 2 player</span>
+      <div class="play-card play-solo" onclick="openSinglePlayer()">
+        <span class="play-badge">56 games</span>
         <div class="play-icon">🎮</div>
-        <div class="play-title">Play Game</div>
-        <div class="play-sub">Solo or with a friend</div>
+        <div class="play-title">Solo Games</div>
+        <div class="play-sub">Arcade, puzzle &amp; brain</div>
+        <div class="play-arrow">›</div>
+      </div>
+      <div class="play-card play-versus" onclick="openMultiPlayer()">
+        <span class="play-badge">2–8 players</span>
+        <div class="play-icon">🤝</div>
+        <div class="pb-txt">
+          <div class="play-title">Play with Friends</div>
+          <div class="play-sub">24 live games — race a friend right now</div>
+        </div>
         <div class="play-arrow">›</div>
       </div>
       <div class="play-card play-board" onclick="openLeaderboardHub()">
@@ -869,6 +891,8 @@ h1,h2{
         <div class="play-arrow">›</div>
       </div>
     </div>
+
+    <p class="section-label">💛 More</p>
 
     <div class="android-actions">
       <button class="android-action-btn rate-btn" onclick="rateApp()">
@@ -2260,12 +2284,12 @@ function closeGameModal() {
 
 function openSinglePlayer() {
     closeGameModal();
-    window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/Game/index.html";
+    window.location.href = "games/index.html";
 }
 
 function openMultiPlayer() {
     closeGameModal();
-    window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/MultiPlayerGame/index.html";
+    window.location.href = "multiplayer/index.html";
 }
 
 /* ===== Home page after login: profile, stats, daily challenge, boards ===== */
@@ -2390,6 +2414,6 @@ function viewSelectedBoard() {
 function viewMultiBoard() { closeLeaderboardHub(); if (window.KQ && KQ.open) KQ.open('multi', 'tic-tac-toe', 'Tic Tac Toe'); }
 function goToGames() { openSinglePlayer(); }
 </script>
-<script src="Game/kq-leaderboard.js"></script>
+<script src="games/kq-leaderboard.js"></script>
 </body>
 </html>

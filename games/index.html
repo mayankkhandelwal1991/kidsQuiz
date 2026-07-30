@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Game Zone - Kids Quiz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#8b5cf6,#ff7ac6,#ffd166);background-size:400% 400%;animation:bg 12s ease infinite;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;position:relative}
+@keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+/* ===== Shared floating background decoration (same system as quiz2.html) ===== */
+.bg-decor{position:fixed;top:0;left:0;right:0;bottom:0;overflow:hidden;pointer-events:none;z-index:0}
+.bg-decor span{position:absolute;font-size:28px;opacity:.35;animation:floatUp linear infinite;filter:drop-shadow(0 4px 6px rgba(0,0,0,.08))}
+@keyframes floatUp{0%{transform:translateY(110vh) rotate(0deg);opacity:0}10%{opacity:.35}90%{opacity:.35}100%{transform:translateY(-10vh) rotate(360deg);opacity:0}}
+
+/* ===== Shared Android-style ripple feedback (same system as quiz2.html) ===== */
+.android-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:androidRippleAnim .55s ease-out;pointer-events:none}
+@keyframes androidRippleAnim{to{transform:scale(2.8);opacity:0}}
+
+.container{background:linear-gradient(180deg,#fff,#fef6ff);border:6px solid #fff;border-radius:32px;box-shadow:0 15px 40px rgba(0,0,0,.18);max-width:820px;width:100%;padding:18px;display:flex;flex-direction:column;max-height:100%;position:relative;overflow:hidden;z-index:1}
+h1{color:#ff5a8a;text-align:center;font-size:27px;font-weight:800}
+h1 .wiggle{display:inline-block;animation:wiggle 2.2s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(0deg)}20%{transform:rotate(-10deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
+.subtitle{color:#6b7280;text-align:center;font-size:13px;margin-bottom:14px;font-weight:600}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.back-btn{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:14px;padding:9px 18px;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);transition:.1s;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.back-btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.crumb{color:#fff;font-size:11.5px;font-weight:800;padding:6px 14px;border-radius:20px;box-shadow:0 3px 0 rgba(0,0,0,.15);text-shadow:0 1px 2px rgba(0,0,0,.15)}
+
+/* Category grid (matches menu-card pattern used across the app) */
+.catgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex:1;min-height:0;overflow-y:auto;padding:6px 4px 10px;position:relative;z-index:1}
+.catcard{padding:18px 8px 14px;border-radius:22px;border:none;cursor:pointer;text-align:center;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:6px;color:#fff;transition:transform .12s,box-shadow .12s;opacity:0;animation:cardPop .45s cubic-bezier(.34,1.56,.64,1) forwards;-webkit-tap-highlight-color:transparent}
+@keyframes cardPop{0%{opacity:0;transform:scale(.6) translateY(12px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.catcard:hover{transform:translateY(-3px)}
+.catcard:active{transform:translateY(4px) !important;box-shadow:none !important}
+.catcard .cbadge{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:inset 0 2px 4px rgba(255,255,255,.4)}
+.catcard .cnm{font-size:13px;font-weight:800;line-height:1.2;text-shadow:0 1px 2px rgba(0,0,0,.15)}
+.catcard .ccount{font-size:10px;font-weight:700;background:rgba(255,255,255,.25);padding:3px 10px;border-radius:20px}
+
+/* Game grid */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;min-height:0;overflow-y:auto;padding:6px 4px 10px;position:relative;z-index:1}
+.card{padding:16px 8px 12px;border-radius:22px;border:none;cursor:pointer;text-align:center;color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:5px;opacity:0;animation:cardPop .45s cubic-bezier(.34,1.56,.64,1) forwards;transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent}
+.card:hover{transform:translateY(-3px)}
+.card.sel{transform:translateY(-3px) scale(1.03)}
+.card:active{transform:translateY(4px) !important;box-shadow:none !important}
+.card .ic-badge{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:inset 0 2px 4px rgba(255,255,255,.4)}
+.card .nm{font-size:12px;font-weight:800;line-height:1.2;text-shadow:0 1px 2px rgba(0,0,0,.15)}
+.card .new-badge{position:absolute;top:-6px;right:-4px;background:#fff;color:#ff5a8a;font-size:9px;font-weight:800;padding:3px 7px;border-radius:10px;letter-spacing:.5px;box-shadow:0 2px 6px rgba(0,0,0,.25);transform:rotate(8deg)}
+
+.detail{display:none;margin-top:14px;background:linear-gradient(135deg,#fff8cc,#fff0f6);border:4px dashed #ffb703;border-radius:24px;padding:16px;text-align:center;position:relative;z-index:1}
+.detail.show{display:block}
+.detail .big{font-size:48px}
+.detail h2{color:#ff5a8a;font-size:20px}
+.detail p{color:#555;font-size:13px;margin:6px 0 12px;line-height:1.5}
+.start-btn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:18px;padding:13px 42px;font-family:inherit;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 8px 18px rgba(255,79,163,.35);animation:pulse 2s infinite;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+.view{display:none;flex-direction:column;min-height:0;flex:1;position:relative}
+.view.show{display:flex}
+
+@media(max-width:600px){
+  .catgrid{grid-template-columns:repeat(2,1fr)}
+  .catcard .cbadge{width:44px;height:44px;font-size:22px}
+  .catcard .cnm{font-size:12px}
+  .grid{grid-template-columns:repeat(3,1fr)}
+  .card .ic-badge{width:40px;height:40px;font-size:20px}
+  .card .nm{font-size:10px}
+  h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="bg-decor" id="bgDecor"></div>
+<div class="container">
+  <div class="topbar">
+    <button class="back-btn" id="backBtn" onclick="handleBack()">← Quiz Home</button>
+    <span class="crumb" id="crumb"></span>
+  </div>
+  <h1><span class="wiggle">🎮</span> Game Zone</h1>
+  <p class="subtitle" id="subtitle">Choose a category and let's play!</p>
+
+  <div class="view show" id="viewCats">
+    <div class="catgrid" id="catGrid"></div>
+  </div>
+
+  <div class="view" id="viewGames">
+    <div class="grid" id="grid"></div>
+    <div class="detail" id="detail">
+      <div class="big" id="dIcon"></div>
+      <h2 id="dName"></h2>
+      <p id="dHow"></p>
+      <button class="start-btn" onclick="startGame()">▶ Start</button>
+      <button class="start-btn" style="background:linear-gradient(135deg,#f59e0b,#f43f5e);box-shadow:0 8px 18px rgba(244,63,94,.35);margin-left:8px" onclick="openBoard()">🏆 Leaderboard</button>
+    </div>
+  </div>
+</div>
+<script>
+const GAMES=[
+ {f:'action/egg_jump.html',ic:'🥚',nm:'Egg Jump',how:'Tap or press Space to make the egg jump over rocks and cacti. How far can you run?',cat:'action'},
+ {f:'action/car_race.html',ic:'🏎️',nm:'Car Race',how:'Use arrows or tap left/right to change lanes and dodge the traffic. Survive as long as you can!',cat:'action'},
+ {f:'puzzle/memory_match.html',ic:'🃏',nm:'Memory Match',how:'Flip cards and find all the matching emoji pairs in the fewest moves.',cat:'puzzle'},
+ {f:'action/snake.html',ic:'🐍',nm:'Snake',how:'Swipe or use arrows to steer the snake. Eat apples to grow, but don\u2019t hit the walls or yourself!',cat:'action'},
+ {f:'action/whack_mole.html',ic:'🐹',nm:'Whack-a-Mole',how:'Tap the moles as fast as you can before they hide. 30 seconds on the clock!',cat:'action'},
+ {f:'strategy/tic_tac_toe.html',ic:'⭕',nm:'Tic Tac Toe',how:'Play X against the computer. Get 3 in a row to win!',cat:'strategy'},
+ {f:'action/balloon_pop.html',ic:'🎈',nm:'Balloon Pop',how:'Pop the balloons before they fly away! Watch out for the bombs.',cat:'action'},
+ {f:'action/fruit_catch.html',ic:'🍎',nm:'Fruit Catch',how:'Move the basket to catch falling fruit. Missing fruit or catching bombs costs a life!',cat:'action'},
+ {f:'strategy/simon_says.html',ic:'🎨',nm:'Simon Says',how:'Watch the colors light up, then repeat the pattern. It gets longer every round!',cat:'strategy'},
+ {f:'brain/quick_math.html',ic:'➕',nm:'Quick Math',how:'Solve as many sums as you can in 60 seconds. Fast fingers, fast brain!',cat:'brain'},
+ {f:'action/flappy_bee.html',ic:'🐝',nm:'Flappy Bee',how:'Tap to flap the bee through the gaps in the pipes. Don\u2019t crash!',cat:'action'},
+ {f:'action/brick_breaker.html',ic:'🧱',nm:'Brick Breaker',how:'Slide the paddle to bounce the ball and smash all the bricks.',cat:'action'},
+ {f:'action/ping_pong.html',ic:'🏓',nm:'Ping Pong',how:'Slide your paddle to hit the ball past the computer. First to 5 points wins!',cat:'action'},
+ {f:'action/maze_run.html',ic:'🌀',nm:'Maze Run',how:'Guide the mouse through the maze to reach the cheese. New maze every time!',cat:'action'},
+ {f:'puzzle/slide_puzzle.html',ic:'🔢',nm:'Slide Puzzle',how:'Slide the tiles to put the numbers 1-8 back in order.',cat:'puzzle'},
+ {f:'word/word_scramble.html',ic:'🔤',nm:'Word Scramble',how:'Tap the jumbled letters to spell the word shown by the emoji hint.',cat:'word'},
+ {f:'strategy/rock_paper.html',ic:'✊',nm:'Rock Paper Scissors',how:'Pick rock, paper, or scissors. First to beat the computer 5 times wins!',cat:'strategy'},
+ {f:'brain/odd_one_out.html',ic:'👀',nm:'Odd One Out',how:'One emoji is different from the rest. Find and tap it fast!',cat:'brain'},
+ {f:'brain/color_tap.html',ic:'🌈',nm:'Color Tap',how:'Tap the button matching the COLOR of the word, not the word itself. Tricky!',cat:'brain'},
+ {f:'brain/number_order.html',ic:'🔟',nm:'Number Rush',how:'Tap the numbers 1 to 25 in order as fast as you can. Beat your best time!',cat:'brain'},
+ {f:'threed/car_race_3d.html',ic:'🏁',nm:'Car Race 3D',how:'Steer your 3D car left and right to dodge traffic. A real 3D road that speeds up the longer you survive!',cat:'threed'},
+ {f:'puzzle/game_2048.html',ic:'🔢',nm:'2048',how:'Swipe to slide tiles. Merge matching numbers to reach the legendary 2048 tile.',cat:'puzzle'},
+ {f:'puzzle/tetris.html',ic:'🧩',nm:'Tetris',how:'Rotate and drop falling blocks to clear full lines. Speeds up as you level up!',cat:'puzzle'},
+ {f:'action/piano_tiles.html',ic:'🎹',nm:'Piano Tiles',how:'Tap the black tiles as they fall before they pass the line. Don\u2019t miss a beat!',cat:'action'},
+ {f:'puzzle/stack_tower.html',ic:'🏗️',nm:'Stack Tower',how:'Tap to drop each moving block. Line it up perfectly to build the tallest tower.',cat:'puzzle'},
+ {f:'puzzle/bubble_shooter.html',ic:'🔮',nm:'Bubble Shooter',how:'Aim and shoot bubbles to match 3+ colors and clear the board before it fills up.',cat:'puzzle'},
+ {f:'action/space_shooter.html',ic:'🚀',nm:'Space Shooter',how:'Drag to move your ship, tap to fire, and blast the alien fleet before they reach you.',cat:'action'},
+ {f:'action/doodle_jump.html',ic:'🪐',nm:'Sky Hopper',how:'Drag left and right to steer as you auto-bounce up platforms. Don\u2019t fall behind!',cat:'action'},
+ {f:'puzzle/water_sort.html',ic:'🧪',nm:'Water Sort',how:'Tap tubes to pour colors. Sort every liquid into its own tube to solve the puzzle.',cat:'puzzle'},
+ {f:'action/slingshot.html',ic:'🎯',nm:'Sling Blast',how:'Drag back the slingshot and let go to launch your ball into the stack of blocks.',cat:'action'},
+ {f:'puzzle/connect_four.html',ic:'🔴',nm:'Connect Four',how:'Drop discs to get 4 in a row before the computer does. Classic strategy showdown.',cat:'puzzle'},
+ {f:'puzzle/sudoku_mini.html',ic:'🧠',nm:'Sudoku Mini',how:'Fill the 6x6 grid so every row, column, and box has numbers 1 through 6, no repeats.',cat:'puzzle'},
+ {f:'brain/reaction_test.html',ic:'⚡',nm:'Reaction Test',how:'Wait for green, then tap as fast as you can. Track your reflexes over time!',cat:'brain'},
+ {f:'brain/typing_speed.html',ic:'⌨️',nm:'Typing Speed',how:'Type the sentence as fast and accurately as you can. Beat your best words-per-minute.',cat:'brain'},
+ {f:'threed/endless_runner_3d.html',ic:'🏃',nm:'Neon Runner 3D',how:'Swipe to switch lanes and jump barriers in a glowing 3D tunnel. How far can you run?',cat:'threed'},
+ {f:'threed/crossy_road_3d.html',ic:'🐔',nm:'Lane Hopper 3D',how:'Hop across lanes of 3D traffic without getting flattened. Every hop counts!',cat:'threed'},
+ {f:'threed/basketball_3d.html',ic:'🏀',nm:'Hoops 3D',how:'Swipe up on the ball to shoot hoops in 3D. Score as many baskets as you can in 30 seconds.',cat:'threed'},
+ {f:'threed/ball_maze_3d.html',ic:'🌀',nm:'Gravity Maze 3D',how:'Drag to tilt the 3D maze and roll the glowing ball to the golden goal.',cat:'threed'},
+ {f:'threed/drift_racer_3d.html',ic:'🏎️',nm:'Neon Drift 3D',how:'Steer your car down a neon 3D highway, dodging oncoming traffic at rising speed.',cat:'threed'},
+ {f:'action/platform_runner.html',ic:'🤸',nm:'Platform Runner',how:'Jump and duck through obstacles while collecting coins in this fast side-scroller.',cat:'action'},
+ {f:'action/neon_lane_dash.html',ic:'💠',nm:'Neon Lane Dash',how:'Switch between 3 lanes to dodge blocks racing toward you. Pure reflex, pure speed.',cat:'action'},
+ {f:'word/word_search.html',ic:'🔎',nm:'Word Search',how:'Drag across letters to find hidden words in the grid. Find all 8 words to win!',cat:'word'},
+ {f:'word/spelling_bee.html',ic:'🐝',nm:'Spelling Bee',how:'Look at the picture and tap the letters in order to spell each of the 10 words correctly!',cat:'word'},
+ {f:'word/hangman.html',ic:'🟣',nm:'Hangman',how:'Guess the letters before you run out of tries! Solve 10 mystery words.',cat:'word'},
+ {f:'word/missing_letter.html',ic:'🌱',nm:'Missing Letter',how:'A letter is missing from the word — pick the right one from 4 choices!',cat:'word'},
+ {f:'word/word_match.html',ic:'🃏',nm:'Word Match',how:'Flip cards to match each word with its matching picture. Find all 6 pairs!',cat:'word'},
+ {f:'word/rhyme_time.html',ic:'🎵',nm:'Rhyme Time',how:'Pick the word that rhymes with the one shown. Ten rounds of rhyming fun!',cat:'word'},
+ {f:'word/first_letter_find.html',ic:'🔠',nm:'First Letter Find',how:'A letter is shown — tap the word from the options that starts with it!',cat:'word'},
+ {f:'word/category_sort.html',ic:'🗂️',nm:'Category Sort',how:'Sort each word into the right bucket: Animals, Fruits, or Things!',cat:'word'},
+ {f:'word/word_ladder.html',ic:'🪜',nm:'Word Ladder',how:'Change one letter at a time to climb the word ladder to the target word!',cat:'word'},
+ {f:'word/synonym_match.html',ic:'🧠',nm:'Synonym Match',how:'Pick the word that means the same thing. Ten rounds of vocabulary fun!',cat:'word'},
+ {f:'word/word_builder.html',ic:'🧩',nm:'Word Builder',how:'Tap letters from the pool to build all the hidden words inside them!',cat:'word'},
+ {f:'word/speed_spell.html',ic:'⚡',nm:'Speed Spell',how:'Spell each word before the timer runs out. Fast fingers win the round!',cat:'word'},
+ {f:'ai/train_the_robot.html',ic:'🤖',nm:'Train the Robot',how:'Answer questions to train NOVA the AI! Raise its IQ, fill the neural core and level it up. Wrong answers drain energy — keep it alive!',cat:'ai'},
+ {f:'ai/ai_quiz_master.html',ic:'🧠',nm:'AI Quiz Master',how:'10 general-knowledge questions where the AI explains every answer. Chase streaks for bonus coins and a perfect score!',cat:'ai'},
+ {f:'puzzle/hidden_objects.html',ic:'🔍',nm:'Hidden Objects',how:'Study the cluttered desk scene and tap each object from the list where you spot it. Find them all fast — quick finds and unused hints score more!',cat:'puzzle'}
+];
+
+const THREED=['car_race_3d.html','endless_runner_3d.html','crossy_road_3d.html','basketball_3d.html','ball_maze_3d.html','drift_racer_3d.html'];
+
+// Same bright, high-contrast, kid-friendly palette used for quiz categories,
+// class levels and mode cards across the rest of the app, so Game Zone
+// matches the same visual language.
+const CATEGORIES=[
+ {id:'action',ic:'🏃',nm:'Action & Arcade',bg:'#FF6B57',shadow:'#D6432F'},
+ {id:'threed',ic:'🕶️',nm:'3D Games',bg:'#7C5CFC',shadow:'#5A3FD1'},
+ {id:'puzzle',ic:'🧩',nm:'Puzzle & Logic',bg:'#22C55E',shadow:'#158A3E'},
+ {id:'strategy',ic:'♟️',nm:'Classic & Strategy',bg:'#3B82F6',shadow:'#1D4ED8'},
+ {id:'word',ic:'🔤',nm:'Word & Vocabulary',bg:'#FFC93C',shadow:'#E0A800'},
+ {id:'brain',ic:'⚡',nm:'Brain & Speed',bg:'#FF4FA3',shadow:'#D6337F'},
+ {id:'ai',ic:'🤖',nm:'AI Games',bg:'#16C2C2',shadow:'#0E8F8F'}
+];
+
+let sel=-1;
+let currentCat=null;
+
+const catGrid=document.getElementById('catGrid');
+const grid=document.getElementById('grid');
+const viewCats=document.getElementById('viewCats');
+const viewGames=document.getElementById('viewGames');
+const detail=document.getElementById('detail');
+const subtitle=document.getElementById('subtitle');
+const crumb=document.getElementById('crumb');
+
+CATEGORIES.forEach((c,i)=>{
+  const count=GAMES.filter(g=>g.cat===c.id).length;
+  const d=document.createElement('div');
+  d.className='catcard';
+  d.style.background=c.bg;
+  d.style.boxShadow='0 6px 0 '+c.shadow+', 0 10px 16px rgba(0,0,0,.18)';
+  d.style.animationDelay=(i*0.05)+'s';
+  d.innerHTML='<div class="cbadge">'+c.ic+'</div><div class="cnm">'+c.nm+'</div><div class="ccount">'+count+' games</div>';
+  d.onclick=()=>openCategory(c);
+  catGrid.appendChild(d);
+});
+
+function openCategory(c){
+  const id=c.id, nm=c.nm;
+  currentCat=id;
+  sel=-1;
+  detail.classList.remove('show');
+  grid.innerHTML='';
+  let i=0;
+  GAMES.forEach((g,gi)=>{
+    if(g.cat!==id) return;
+    const d=document.createElement('div');
+    d.className='card';
+    d.style.background=c.bg;
+    d.style.boxShadow='0 6px 0 '+c.shadow+', 0 10px 16px rgba(0,0,0,.18)';
+    d.style.animationDelay=(i*0.035)+'s';
+    i++;
+    const badge=THREED.includes(g.f)?'<span class="new-badge">3D</span>':'';
+    d.innerHTML=badge+'<div class="ic-badge">'+g.ic+'</div><div class="nm">'+g.nm+'</div>';
+    d.onclick=()=>select(gi,d);
+    grid.appendChild(d);
+  });
+  attachRipple('#grid .card');
+  viewCats.classList.remove('show');
+  viewGames.classList.add('show');
+  subtitle.textContent='Pick a game, then press Start to play!';
+  crumb.style.background=c.bg;
+  crumb.textContent=c.ic+' '+nm;
+}
+
+function select(i,card){
+  sel=i;
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('sel'));
+  card.classList.add('sel');
+  const g=GAMES[i];
+  document.getElementById('dIcon').textContent=g.ic;
+  document.getElementById('dName').textContent=g.nm;
+  document.getElementById('dHow').textContent=g.how;
+  detail.classList.add('show');
+  detail.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function startGame(){ if(sel>=0) window.location.href=GAMES[sel].f; }
+
+function handleBack(){
+  if(viewGames.classList.contains('show')){
+    // back to categories
+    viewGames.classList.remove('show');
+    viewCats.classList.add('show');
+    subtitle.textContent="Choose a category and let's play!";
+    crumb.textContent='';
+    crumb.style.background='';
+    sel=-1;
+    currentCat=null;
+    detail.classList.remove('show');
+  } else {
+    goBack();
+  }
+}
+
+function goBack(){ window.location.href='../quiz2.html'; }
+
+function openBoard(){
+  if(sel<0) return;
+  var g=GAMES[sel], id=g.f.replace(/^.*\//,'').replace(/\.html?$/i,'');
+  if(window.KQ&&KQ.open) KQ.open('single', id, g.nm);
+}
+
+/* ===== Shared Android-style ripple feedback (same as quiz2.html) ===== */
+function attachRipple(selector){
+  document.querySelectorAll(selector).forEach(el=>{
+    if(el.dataset.rippleBound) return;
+    el.dataset.rippleBound='1';
+    el.addEventListener('click',function(e){
+      const rect=el.getBoundingClientRect();
+      const size=Math.max(rect.width,rect.height)*1.4;
+      const ripple=document.createElement('span');
+      ripple.className='android-ripple';
+      ripple.style.width=ripple.style.height=size+'px';
+      const x=(e.clientX||rect.left+rect.width/2)-rect.left-size/2;
+      const y=(e.clientY||rect.top+rect.height/2)-rect.top-size/2;
+      ripple.style.left=x+'px';
+      ripple.style.top=y+'px';
+      el.appendChild(ripple);
+      setTimeout(()=>ripple.remove(),600);
+    });
+  });
+}
+function initRipples(){
+  attachRipple('.catcard');
+  attachRipple('.back-btn');
+  attachRipple('.start-btn');
+}
+
+/* ===== Shared floating background decoration (same as quiz2.html) ===== */
+function initBackgroundDecor(){
+  const emojis=['⭐','🎈','🎉','🌟','🎨','🚀','🍎','🦋'];
+  const holder=document.getElementById('bgDecor');
+  if(!holder) return;
+  const count=window.innerWidth<600?8:14;
+  for(let i=0;i<count;i++){
+    const el=document.createElement('span');
+    el.textContent=emojis[i%emojis.length];
+    el.style.left=Math.random()*100+'vw';
+    el.style.animationDuration=(14+Math.random()*12)+'s';
+    el.style.animationDelay=(Math.random()*12)+'s';
+    el.style.fontSize=(18+Math.random()*20)+'px';
+    holder.appendChild(el);
+  }
+}
+
+initBackgroundDecor();
+initRipples();
+</script>
+<script src="kq-leaderboard.js"></script>
+</body>
+</html>

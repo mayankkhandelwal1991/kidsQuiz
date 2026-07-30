@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Simon Says</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#8b5cf6,#ff7ac6);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;touch-action:manipulation}
+.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:380px;width:100%;text-align:center}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:300px;margin:0 auto}
+.pad{aspect-ratio:1;border-radius:22px;cursor:pointer;opacity:.55;transition:opacity .1s,transform .1s;border:4px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.15)}
+.pad.lit{opacity:1;transform:scale(1.06)}
+#p0{background:#ff5a5a}#p1{background:#4caf50}#p2{background:#2196f3}#p3{background:#ffca28}
+.msg{color:#ff5a8a;font-weight:800;font-size:17px;min-height:26px;margin-top:14px}
+.start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 34px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;margin-top:10px}
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='../index.html'">← Games</button>
+    <div class="sc">Round: <span id="round">0</span> &nbsp; 🏆 <span id="best">0</span></div>
+    <button onclick="start()">↻</button>
+  </div>
+  <div class="grid">
+    <div class="pad" id="p0"></div><div class="pad" id="p1"></div>
+    <div class="pad" id="p2"></div><div class="pad" id="p3"></div>
+  </div>
+  <div class="msg" id="msg">Press Start and watch carefully!</div>
+  <button class="start" id="sb" onclick="start()">▶ Start</button>
+</div>
+<script src="../ads.js"></script>
+<script>
+const pads=[0,1,2,3].map(i=>document.getElementById('p'+i));
+let seq=[],pos=0,accepting=false,round=0,best=+(localStorage.getItem('simonBest')||0);
+document.getElementById('best').textContent=best;
+pads.forEach((p,i)=>p.onpointerdown=()=>tap(i));
+function flash(i,d=350){return new Promise(r=>{pads[i].classList.add('lit');setTimeout(()=>{pads[i].classList.remove('lit');setTimeout(r,120);},d);});}
+async function playSeq(){
+  accepting=false;
+  document.getElementById('msg').textContent='Watch... 👀';
+  await new Promise(r=>setTimeout(r,600));
+  for(const i of seq)await flash(i,Math.max(200,400-round*15));
+  document.getElementById('msg').textContent='Your turn! 🎨';
+  pos=0;accepting=true;
+}
+function start(){
+  seq=[];round=0;
+  document.getElementById('sb').style.display='none';
+  next();
+}
+function next(){
+  round++;document.getElementById('round').textContent=round;
+  seq.push(Math.floor(Math.random()*4));
+  playSeq();
+}
+async function tap(i){
+  if(!accepting)return;
+  await flash(i,180);
+  if(i===seq[pos]){
+    pos++;
+    if(window.KQFX)KQFX.play('tap');
+    if(pos===seq.length){accepting=false;if(window.KQFX)KQFX.play('success');setTimeout(next,500);}
+  }else{
+    accepting=false;if(window.KQFX)KQFX.lose();onGameComplete();
+    if(round-1>best){best=round-1;localStorage.setItem('simonBest',best);document.getElementById('best').textContent=best;}
+    document.getElementById('msg').textContent='❌ Wrong! You reached round '+round;
+    const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';
+  }
+}
+</script></body></html>

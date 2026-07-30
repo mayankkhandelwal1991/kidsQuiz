@@ -1,0 +1,43 @@
+@import url('../common/theme.css');
+
+.arena-bg {
+  position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 62, 200, 0.14), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(51, 229, 255, 0.16), transparent 45%),
+    var(--bg-void);
+}
+
+.board-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 16px 26px;
+}
+
+.player-card.seat-p1.active-turn { color: rgba(51,229,255,0.7); }
+.player-card.seat-p2.active-turn { color: rgba(255,62,200,0.7); }
+
+.pong-canvas {
+  width: min(480px, 92vw);
+  max-width: 480px;
+  aspect-ratio: 480 / 300;
+  background: #05060f;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-glow);
+  box-shadow: 0 0 50px rgba(51, 229, 255, 0.12);
+  touch-action: none;
+  cursor: pointer;
+}
+
+.pong-hint {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.spectator-count { font-size: 12px; color: var(--text-dim); min-height: 16px; }
+#play-again-btn { max-width: 220px; }

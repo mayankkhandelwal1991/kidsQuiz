@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Lane Hopper 3D</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',system-ui,sans-serif;background:#05050f;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
+.wrap{width:100%;height:100%;max-width:480px;max-height:900px;position:relative;background:#05050f;margin:auto}
+.bar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px;z-index:5}
+.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
+h1{font-size:16px;font-weight:800;background:linear-gradient(135deg,#38f9a1,#00f5ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sc{font-size:14px;font-weight:800;color:#38f9a1}
+#scene{position:absolute;inset:0}
+.overlay{position:absolute;inset:0;background:rgba(5,5,20,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;z-index:10}
+.overlay.show{display:flex}
+.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+.dpad{position:absolute;bottom:16px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:6}
+.dpad button{width:54px;height:54px;border-radius:16px;border:none;background:rgba(255,255,255,.12);color:#fff;font-size:22px;backdrop-filter:blur(4px)}
+.startCard{position:absolute;inset:0;background:rgba(5,5,20,.7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:8;text-align:center;padding:20px}
+</style><link rel="stylesheet" href="../game-theme.css"></head><body>
+<div class="wrap">
+  <div id="scene"></div>
+  <div class="bar">
+    <button onclick="location.href='../index.html'">← Games</button>
+    <h1>Lane Hopper 3D</h1>
+    <div class="sc" id="score">0</div>
+  </div>
+  <div class="dpad">
+    <button onclick="hop(-1,0)">⬅️</button>
+    <button onclick="hop(0,-1)">⬆️</button>
+    <button onclick="hop(0,1)">⬇️</button>
+    <button onclick="hop(1,0)">➡️</button>
+  </div>
+  <div class="startCard" id="startCard">
+    <h2 style="font-size:22px;background:linear-gradient(135deg,#38f9a1,#00f5ff);-webkit-background-clip:text;background-clip:text;color:transparent">Lane Hopper 3D</h2>
+    <p style="font-size:13px;color:#ccc;max-width:260px">Hop forward across lanes, dodge the traffic. Swipe or use the arrows. How far can you go?</p>
+    <button class="newbtn" onclick="startGame()">▶ Start Hopping</button>
+  </div>
+  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#38f9a1,#00f5ff);-webkit-background-clip:text;background-clip:text;color:transparent">Squashed!</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="startGame()">Hop Again</button></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../ads.js"></script>
+<script>
+const container=document.getElementById('scene');
+let scene,camera,renderer,player,playerPos={x:0,z:0},lanesData=[],cars=[],score,over,best=+(localStorage.getItem('hopperBest3d')||0),started=false,animY=0,hopping=false;
+const LANE_W=1.6;
+function initScene(){
+  scene=new THREE.Scene();
+  scene.fog=new THREE.Fog(0x05050f,8,40);
+  camera=new THREE.PerspectiveCamera(55,container.clientWidth/container.clientHeight,0.1,100);
+  renderer=new THREE.WebGLRenderer({antialias:true});
+  renderer.setSize(container.clientWidth,container.clientHeight);
+  renderer.setClearColor(0x05050f);
+  container.innerHTML=''; container.appendChild(renderer.domElement);
+  scene.add(new THREE.AmbientLight(0xffffff,0.7));
+  const dir=new THREE.DirectionalLight(0xffffff,0.6); dir.position.set(3,8,4); scene.add(dir);
+  player=new THREE.Group();
+  const body=new THREE.Mesh(new THREE.BoxGeometry(.7,.62,.7),new THREE.MeshStandardMaterial({color:0xffe066})); player.add(body);
+  const head=new THREE.Mesh(new THREE.SphereGeometry(.34,12,12),new THREE.MeshStandardMaterial({color:0xfff3a6}));head.position.y=.43;player.add(head);
+  const beak=new THREE.Mesh(new THREE.ConeGeometry(.12,.28,8),new THREE.MeshStandardMaterial({color:0xff9f43}));beak.rotation.x=Math.PI/2;beak.position.set(0,.43,-.38);player.add(beak);
+  [-.42,.42].forEach(x=>{const wing=new THREE.Mesh(new THREE.SphereGeometry(.2,10,8),new THREE.MeshStandardMaterial({color:0xffffff}));wing.scale.z=.55;wing.position.set(x,0,0);player.add(wing);});
+  scene.add(player);
+}
+function laneType(i){
+  if(i===0) return 'safe';
+  return Math.random()<0.7 ? 'road' : 'safe';
+}
+function buildLane(i){
+  const type = i<=0 ? 'safe' : laneType(i);
+  const geo=new THREE.BoxGeometry(9,0.3,LANE_W*0.96);
+  const color = type==='road' ? 0x22223a : 0x1a3d2e;
+  const mesh=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color}));
+  mesh.position.set(0,-0.15,-i*LANE_W);
+  scene.add(mesh);
+  const laneObj={i,type,mesh,cars:[],dir: Math.random()<0.5?1:-1,speed:0.03+Math.random()*0.04};
+  if(type==='road'){
+    const count=2+Math.floor(Math.random()*2);
+    for(let c=0;c<count;c++){
+      const carGeo=new THREE.BoxGeometry(1,0.5,1.1);
+      const carColor=[0xff5a8a,0x00f5ff,0xc77dff,0xff9f43][Math.floor(Math.random()*4)];
+      const carMesh=new THREE.Mesh(carGeo,new THREE.MeshStandardMaterial({color:carColor,emissive:carColor,emissiveIntensity:0.25}));
+      carMesh.position.set(-4+c*3+Math.random()*2,0.15,-i*LANE_W);
+      scene.add(carMesh);
+      laneObj.cars.push(carMesh);
+    }
+  }
+  lanesData.push(laneObj);
+}
+function resetGame(){
+  lanesData.forEach(l=>{ scene.remove(l.mesh); l.cars.forEach(c=>scene.remove(c)); });
+  lanesData=[];
+  playerPos={x:0,z:0}; score=0; over=false; hopping=false;
+  document.getElementById('score').textContent=0;
+  document.getElementById('overlay').classList.remove('show');
+  player.position.set(0,0.35,0);
+  for(let i=-1;i<20;i++) buildLane(i);
+  updateCamera();
+}
+function startGame(){
+  document.getElementById('startCard').style.display='none';
+  if(!scene) initScene();
+  resetGame();
+  if(!started){ started=true; requestAnimationFrame(loop); }
+}
+function hop(dx,dz){
+  if(over||hopping)return;
+  const newX=playerPos.x+dx, newZ=playerPos.z+dz;
+  if(newX<-2||newX>2)return;
+  if(newZ<-1)return;
+  hopping=true; animY=0;
+  playerPos.x=newX; playerPos.z=newZ;
+  if(newZ>score){ score=newZ; document.getElementById('score').textContent=score; }
+  while(lanesData.length < playerPos.z+22) buildLane(lanesData.length-1);
+}
+let tsx,tsy;
+container.addEventListener('touchstart',e=>{ tsx=e.touches[0].clientX; tsy=e.touches[0].clientY; },{passive:true});
+container.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tsx, dy=e.changedTouches[0].clientY-tsy;
+  if(Math.abs(dx)<20&&Math.abs(dy)<20)return;
+  if(Math.abs(dx)>Math.abs(dy)) hop(dx>0?1:-1,0);
+  else hop(0,dy>0?-1:1);
+},{passive:true});
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft')hop(-1,0);
+  if(e.key==='ArrowRight')hop(1,0);
+  if(e.key==='ArrowUp')hop(0,1);
+  if(e.key==='ArrowDown')hop(0,-1);
+});
+function updateCamera(){
+  camera.position.set(playerPos.x*LANE_W*0.3+2.5, 4.2, -playerPos.z*LANE_W+5.5);
+  camera.lookAt(playerPos.x*LANE_W, 0, -playerPos.z*LANE_W);
+}
+function loop(){
+  if(!over) update();
+  renderer.render(scene,camera);
+  requestAnimationFrame(loop);
+}
+function update(){
+  const targetX=playerPos.x*LANE_W, targetZ=-playerPos.z*LANE_W;
+  player.position.x += (targetX-player.position.x)*0.35;
+  player.position.z += (targetZ-player.position.z)*0.35;
+  if(hopping){
+    animY+=0.25;
+    player.position.y=0.35+Math.sin(Math.min(animY,1)*Math.PI)*0.5;
+    if(animY>=1){ hopping=false; player.position.y=0.35; }
+  }
+  updateCamera();
+  lanesData.forEach(l=>{
+    if(l.type!=='road')return;
+    l.cars.forEach(c=>{
+      c.position.x += l.dir*l.speed;
+      if(c.position.x>5) c.position.x=-5;
+      if(c.position.x<-5) c.position.x=5;
+      if(Math.abs(c.position.z-player.position.z)<0.6 && Math.abs(c.position.x-player.position.x)<0.8 && !hopping){
+        endGame();
+      }
+    });
+  });
+}
+function endGame(){
+  over=true;
+  if(window.KQFX)KQFX.play('blast');
+  if(score>best){ best=score; localStorage.setItem('hopperBest3d',best); }
+  document.getElementById('finalScore').textContent='Hops: '+score+'  •  Best: '+best;
+  document.getElementById('overlay').classList.add('show');
+  onGameComplete();
+}
+window.addEventListener('resize',()=>{
+  if(!camera||!renderer)return;
+  camera.aspect=container.clientWidth/container.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(container.clientWidth,container.clientHeight);
+});
+</script></body></html>

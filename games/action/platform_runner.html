@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Platform Runner</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#1a1a3d);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
+.wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.4);padding:12px;max-width:440px;width:100%;display:flex;flex-direction:column;height:100%;max-height:800px;position:relative}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
+h1{font-size:18px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sc{font-size:14px;font-weight:800;color:#00f5ff}
+.stage{flex:1;min-height:0;border-radius:14px;overflow:hidden}
+canvas{width:100%;height:100%;display:block}
+.pad{display:flex;justify-content:space-between;margin-top:8px}
+.pad button{width:64px;height:56px;border-radius:14px;border:none;font-size:22px;background:linear-gradient(135deg,#7c3aed,#00d4ff);color:#fff}
+.overlay{position:absolute;inset:0;background:rgba(15,12,41,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;border-radius:26px;z-index:10}
+.overlay.show{display:flex}
+.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
+</style><link rel="stylesheet" href="../game-theme.css"></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='../index.html'">← Games</button>
+    <h1>Platform Runner</h1>
+    <div class="sc" id="score">0</div>
+  </div>
+  <div class="stage"><canvas id="cv"></canvas></div>
+  <div class="pad">
+    <button ontouchstart="duck(true)" ontouchend="duck(false)" onmousedown="duck(true)" onmouseup="duck(false)">⬇️</button>
+    <button ontouchstart="jump()" onmousedown="jump()">⬆️ JUMP</button>
+  </div>
+  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">Game Over</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="init()">Play Again</button></div>
+</div>
+<script src="../ads.js"></script>
+<script>
+const cv=document.getElementById('cv'),cx=cv.getContext('2d');
+function fit(){ cv.width=cv.clientWidth*devicePixelRatio; cv.height=cv.clientHeight*devicePixelRatio; cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
+window.addEventListener('resize',fit);
+let W,H,groundY,player,obstacles,coins,score,over,speed,frame,best=+(localStorage.getItem('platRunBest')||0);
+function init(){
+  fit(); W=cv.clientWidth; H=cv.clientHeight;
+  groundY=H-50;
+  player={x:60,y:groundY-40,w:30,h:40,vy:0,onGround:true,ducking:false};
+  obstacles=[]; coins=[]; score=0; over=false; speed=5; frame=0;
+  document.getElementById('score').textContent=0;
+  document.getElementById('overlay').classList.remove('show');
+  requestAnimationFrame(loop);
+}
+function jump(){
+  if(over){ init(); return; }
+  if(player.onGround){ player.vy=-12.5; player.onGround=false; }
+}
+function duck(v){ player.ducking=v && player.onGround; }
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowUp'||e.key===' ') jump();
+  if(e.key==='ArrowDown') duck(true);
+});
+document.addEventListener('keyup',e=>{ if(e.key==='ArrowDown') duck(false); });
+cv.addEventListener('touchstart',e=>{ jump(); },{passive:true});
+function loop(){
+  if(!over) update();
+  draw();
+  requestAnimationFrame(loop);
+}
+function spawnStuff(){
+  const r=Math.random();
+  if(r<0.55){
+    obstacles.push({x:W+20,y:groundY-30,w:26,h:30,type:'ground'});
+  } else {
+    obstacles.push({x:W+20,y:groundY-90,w:34,h:24,type:'air'});
+  }
+  if(Math.random()<0.6){
+    coins.push({x:W+60+Math.random()*40,y:groundY-70-Math.random()*40,r:8,got:false});
+  }
+}
+function update(){
+  frame++;
+  speed=Math.min(11,5+score*0.01);
+  player.h = player.ducking? 24: 40;
+  player.y = player.onGround ? groundY-player.h : player.y;
+  if(!player.onGround){
+    player.vy+=0.65;
+    player.y+=player.vy;
+    if(player.y>=groundY-player.h){ player.y=groundY-player.h; player.vy=0; player.onGround=true; }
+  }
+  if(frame%Math.max(45,90-Math.floor(score/10))===0) spawnStuff();
+  obstacles.forEach(o=>o.x-=speed);
+  coins.forEach(c=>c.x-=speed);
+  obstacles=obstacles.filter(o=>o.x>-40);
+  coins=coins.filter(c=>c.x>-20 && !c.got);
+  obstacles.forEach(o=>{
+    const px=player.x, py=player.y, pw=player.w, ph=player.h;
+    if(px<o.x+o.w && px+pw>o.x && py<o.y+o.h && py+ph>o.y){ endGame(); }
+  });
+  coins.forEach(c=>{
+    if(!c.got && Math.abs(c.x-(player.x+player.w/2))<20 && Math.abs(c.y-(player.y+player.h/2))<20){
+      c.got=true; score+=5; document.getElementById('score').textContent=score;
+    }
+  });
+  score++;
+  if(frame%6===0) document.getElementById('score').textContent=Math.floor(score);
+}
+function draw(){
+  const grad=cx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'#1a1a3d');grad.addColorStop(1,'#0b0b1e');
+  cx.fillStyle=grad; cx.fillRect(0,0,W,H);
+  cx.fillStyle='#2d2b55'; cx.fillRect(0,groundY,W,H-groundY);
+  cx.fillStyle='rgba(0,245,255,.4)'; cx.fillRect(0,groundY,W,3);
+  cx.fillStyle='#ffe066';
+  coins.forEach(c=>{ if(!c.got){ cx.beginPath(); cx.arc(c.x,c.y,c.r,0,Math.PI*2); cx.fill(); } });
+  obstacles.forEach(o=>{
+    cx.fillStyle = o.type==='ground' ? '#ff5a8a' : '#c77dff';
+    cx.fillRect(o.x,o.y,o.w,o.h);
+  });
+  cx.fillStyle='#00f5ff';
+  cx.fillRect(player.x,player.y,player.w,player.h);
+  cx.fillStyle='#0b0b1e';
+  cx.beginPath(); cx.arc(player.x+player.w*0.7,player.y+player.h*0.25,3,0,Math.PI*2); cx.fill();
+}
+function endGame(){
+  over=true;
+  if(window.KQFX)KQFX.play('blast');
+  const finalScore=Math.floor(score);
+  if(finalScore>best){ best=finalScore; localStorage.setItem('platRunBest',best); }
+  document.getElementById('finalScore').textContent='Score: '+finalScore+'  •  Best: '+best;
+  document.getElementById('overlay').classList.add('show');
+  onGameComplete();
+}
+init();
+</script></body></html>

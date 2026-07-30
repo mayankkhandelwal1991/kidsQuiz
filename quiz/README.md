@@ -1,5 +1,15 @@
 # Quiz questions — how to edit
 
+> **Heads up — the app now reads questions from `data/quizzes.json`, not from
+> these files directly.** These per-subject files are kept as a friendly way to
+> edit. After changing anything here, recompile the manifest:
+> ```bash
+> node tools/build-quizzes.js
+> ```
+> Prefer editing one file? Edit `data/quizzes.json` directly instead — same
+> questions, one file. See `data/README.md` for the format and for pushing
+> updates live via Firebase.
+
 Every subject has its own folder, and every folder has one file per class:
 
 ```

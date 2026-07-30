@@ -1105,83 +1105,27 @@ h1,h2{
      Each of those files calls registerQuiz(subject, class, [...]).
      To change questions: open the matching file, edit, save, refresh.
      ============================================================ -->
+<script src="data/manifest.js"></script>
 <script>
+  /* Questions now live in ONE editable manifest: data/quizzes.json
+     (shape: { "subject": { "1":[...], "2":[...] } }), loaded via KQData
+     (Firebase first, then the bundled file). registerQuiz() is kept so any
+     old-style quiz/<subject>/class<N>.js file still works if you add one. */
   window.QUIZ_REGISTRY = {};
   function registerQuiz(subject, level, questions) {
     if (!window.QUIZ_REGISTRY[subject]) window.QUIZ_REGISTRY[subject] = {};
     window.QUIZ_REGISTRY[subject][level] = questions;
   }
+  // Kicked off now so the bank is ready long before a child taps Start.
+  window.QUIZ_READY = KQData.loadQuizzes('data/quizzes.json').then(function (res) {
+    var banks = res.data || {};
+    Object.keys(banks).forEach(function (subject) {
+      var levels = banks[subject] || {};
+      Object.keys(levels).forEach(function (lvl) { registerQuiz(subject, lvl, levels[lvl]); });
+    });
+    return window.QUIZ_REGISTRY;
+  }).catch(function (e) { console.error('Quiz bank load failed:', e); return window.QUIZ_REGISTRY; });
 </script>
-<script src="quiz/hindi/class1.js"></script>
-<script src="quiz/hindi/class2.js"></script>
-<script src="quiz/hindi/class3.js"></script>
-<script src="quiz/hindi/class4.js"></script>
-<script src="quiz/hindi/class5.js"></script>
-<script src="quiz/english/class1.js"></script>
-<script src="quiz/english/class2.js"></script>
-<script src="quiz/english/class3.js"></script>
-<script src="quiz/english/class4.js"></script>
-<script src="quiz/english/class5.js"></script>
-<script src="quiz/gk/class1.js"></script>
-<script src="quiz/gk/class2.js"></script>
-<script src="quiz/gk/class3.js"></script>
-<script src="quiz/gk/class4.js"></script>
-<script src="quiz/gk/class5.js"></script>
-<script src="quiz/science/class1.js"></script>
-<script src="quiz/science/class2.js"></script>
-<script src="quiz/science/class3.js"></script>
-<script src="quiz/science/class4.js"></script>
-<script src="quiz/science/class5.js"></script>
-<script src="quiz/history/class1.js"></script>
-<script src="quiz/history/class2.js"></script>
-<script src="quiz/history/class3.js"></script>
-<script src="quiz/history/class4.js"></script>
-<script src="quiz/history/class5.js"></script>
-<script src="quiz/geography/class1.js"></script>
-<script src="quiz/geography/class2.js"></script>
-<script src="quiz/geography/class3.js"></script>
-<script src="quiz/geography/class4.js"></script>
-<script src="quiz/geography/class5.js"></script>
-<script src="quiz/sports/class1.js"></script>
-<script src="quiz/sports/class2.js"></script>
-<script src="quiz/sports/class3.js"></script>
-<script src="quiz/sports/class4.js"></script>
-<script src="quiz/sports/class5.js"></script>
-<script src="quiz/computers/class1.js"></script>
-<script src="quiz/computers/class2.js"></script>
-<script src="quiz/computers/class3.js"></script>
-<script src="quiz/computers/class4.js"></script>
-<script src="quiz/computers/class5.js"></script>
-<script src="quiz/animals/class1.js"></script>
-<script src="quiz/animals/class2.js"></script>
-<script src="quiz/animals/class3.js"></script>
-<script src="quiz/animals/class4.js"></script>
-<script src="quiz/animals/class5.js"></script>
-<script src="quiz/plants/class1.js"></script>
-<script src="quiz/plants/class2.js"></script>
-<script src="quiz/plants/class3.js"></script>
-<script src="quiz/plants/class4.js"></script>
-<script src="quiz/plants/class5.js"></script>
-<script src="quiz/humanbody/class1.js"></script>
-<script src="quiz/humanbody/class2.js"></script>
-<script src="quiz/humanbody/class3.js"></script>
-<script src="quiz/humanbody/class4.js"></script>
-<script src="quiz/humanbody/class5.js"></script>
-<script src="quiz/space/class1.js"></script>
-<script src="quiz/space/class2.js"></script>
-<script src="quiz/space/class3.js"></script>
-<script src="quiz/space/class4.js"></script>
-<script src="quiz/space/class5.js"></script>
-<script src="quiz/capitals/class1.js"></script>
-<script src="quiz/capitals/class2.js"></script>
-<script src="quiz/capitals/class3.js"></script>
-<script src="quiz/capitals/class4.js"></script>
-<script src="quiz/capitals/class5.js"></script>
-<script src="quiz/riddles/class1.js"></script>
-<script src="quiz/riddles/class2.js"></script>
-<script src="quiz/riddles/class3.js"></script>
-<script src="quiz/riddles/class4.js"></script>
-<script src="quiz/riddles/class5.js"></script>
 
 <script>
 /* ============================================
@@ -1337,7 +1281,9 @@ function showLevelScreen() {
 /* ============================================
    QUIZ FLOW
    ============================================ */
-function startQuiz(level) {
+async function startQuiz(level) {
+  // Ensure the question bank has finished loading (almost always already done).
+  try { if (window.QUIZ_READY) await window.QUIZ_READY; } catch (e) {}
 
   // Check if Android interface exists
     if (typeof Android !== "undefined" && Android.showAd) {

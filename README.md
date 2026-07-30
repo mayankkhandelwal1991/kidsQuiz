@@ -15,7 +15,15 @@ should load `quiz2.html`. A tiny `index.html` at the root simply redirects to
 /
 ├── quiz2.html      ← START POINT — home screen + all quiz logic
 ├── index.html      ← redirect to quiz2.html (for the bare domain)
-├── quiz/           ← quiz question banks (one folder per subject, one file per class)
+├── data/           ← content manifests (the single place you edit content)
+│     games.json    ←   every game + category (add a game = one entry)
+│     quizzes.json  ←   every quiz question (subject → class → questions)
+│     manifest.js   ←   loader: Firebase → device cache → bundled file
+│     README.md     ←   manifest format + how to push remote updates
+├── tools/
+│     build-quizzes.js  ← recompiles quizzes.json from the quiz/ files
+├── quiz/           ← friendly per-subject question files (optional source;
+│                     compile to quizzes.json with tools/build-quizzes.js)
 ├── games/          ← single-player games (was "Game/")
 │                     engine files: ads.js, kq-leaderboard.js, kq-fx.js, rating.js
 │                     categories: action/ puzzle/ brain/ word/ strategy/ ai/ threed/
@@ -47,3 +55,10 @@ GitHub Pages, or bundled inside the Android app — no hardcoded site URL.
   directly from home via a **Play with Friends** card, instead of being hidden
   behind a pop-up. Games and multiplayer now open by relative path, so testing
   locally no longer jumps to the live site.
+- Moved all content into JSON manifests (`data/games.json`, `data/quizzes.json`).
+  The Games hub no longer hardcodes a games array, and the quiz no longer loads
+  70 blocking `<script>` tags — both read one manifest instead. Content can be
+  updated live from Firebase without a new app build. See `data/README.md`.
+  (Fixed a latent bug along the way: the "3D" game badges never actually
+  rendered before, because the badge list used bare filenames while the games
+  used folder-prefixed paths.)

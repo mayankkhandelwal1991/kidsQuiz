@@ -7,63 +7,69 @@
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{
+html,body{
+  height:100%;width:100%;overflow:hidden;
   font-family:'Nunito',system-ui,sans-serif;
   background:linear-gradient(135deg,#a8edea 0%,#fed6e3 50%,#d299c2 100%);
-  height:100vh;height:100dvh;
+  overscroll-behavior:none;touch-action:manipulation;
+}
+body{
   display:flex;align-items:center;justify-content:center;
-  padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;
+  padding:0;
 }
 .wrap{
   background:rgba(255,255,255,.95);
   border:6px solid #fff;
-  border-radius:32px;
-  box-shadow:0 20px 60px rgba(0,0,0,.15),0 0 0 4px rgba(255,255,255,.5);
-  padding:16px;
-  max-width:540px;width:100%;
+  border-radius:0;
+  box-shadow:0 20px 60px rgba(0,0,0,.15);
+  padding:12px 16px;
+  width:100%;height:100%;
+  max-width:none;max-height:none;
   display:flex;flex-direction:column;
-  height:100%;max-height:860px;
 }
 .bar{
   display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:10px;gap:8px;
+  margin-bottom:8px;gap:8px;flex-shrink:0;
 }
 .bar button{
   background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%);
-  color:#fff;border:none;border-radius:16px;
+  color:#fff;border:none;border-radius:14px;
   padding:10px 18px;font-family:'Fredoka One',cursive;
-  font-weight:400;cursor:pointer;font-size:14px;
+  font-weight:400;cursor:pointer;font-size:15px;
   box-shadow:0 4px 15px rgba(255,90,138,.3),0 2px 0 #ff5a8a;
   transition:transform .1s,box-shadow .1s;text-shadow:0 1px 2px rgba(0,0,0,.1);
 }
 .bar button:active{transform:translateY(2px);box-shadow:0 2px 8px rgba(255,90,138,.3),0 1px 0 #ff5a8a}
 .bar .sc{
-  font-weight:900;color:#ff5a8a;font-size:18px;
+  font-weight:900;color:#ff5a8a;font-size:20px;
   font-family:'Fredoka One',cursive;
   text-shadow:0 2px 4px rgba(255,90,138,.2);
-  background:#fff3f7;padding:8px 16px;border-radius:14px;
+  background:#fff3f7;padding:10px 20px;border-radius:14px;
   box-shadow:inset 0 2px 8px rgba(255,90,138,.1);
   white-space:nowrap;
 }
-.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:4px 0;position:relative}
+.stage{
+  flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
+  margin:4px 0;position:relative;width:100%;
+}
 canvas{
-  width:100%;border-radius:20px;display:block;
+  width:100%;height:100%;display:block;
   touch-action:manipulation;
-  max-height:100%;
   box-shadow:inset 0 4px 20px rgba(0,0,0,.08);
+  border-radius:16px;
 }
 .hint{
-  text-align:center;color:#888;font-size:13px;margin-top:8px;
-  font-weight:800;letter-spacing:.5px;
+  text-align:center;color:#666;font-size:14px;margin-top:6px;
+  font-weight:800;letter-spacing:.5px;flex-shrink:0;
   animation:float 2s ease-in-out infinite;
 }
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 .confetti{
   position:absolute;pointer-events:none;width:100%;height:100%;
-  top:0;left:0;overflow:hidden;border-radius:20px;
+  top:0;left:0;overflow:hidden;border-radius:16px;
 }
 .particle{
-  position:absolute;width:8px;height:8px;border-radius:50%;
+  position:absolute;width:10px;height:10px;border-radius:50%;
   animation:fall 1.5s ease-out forwards;
 }
 @keyframes fall{
@@ -78,6 +84,7 @@ canvas{
   40%,60%{transform:translate3d(6px,0,0)}
 }
 </style>
+<base target="_blank">
 </head>
 <body>
 <div class="wrap" id="gameWrap">
@@ -87,7 +94,7 @@ canvas{
     <button onclick="reset()">↻ Restart</button>
   </div>
   <div class="stage">
-    <canvas id="cv" width="400" height="480"></canvas>
+    <canvas id="cv"></canvas>
     <div class="confetti" id="confetti"></div>
   </div>
   <div class="hint">👆 Tap or press SPACE to jump! 🎵</div>
@@ -96,13 +103,27 @@ canvas{
 <script src="ads.js"></script>
 <script>
 const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-const G=0.55,JUMP=-11.5,GROUND=390;
+let W=400,H=480,SCALE=1,GROUND=390;
+const G=0.55,JUMP=-11.5;
 let egg,obs,speed,score,playing,dead,frame,best=+(localStorage.getItem('eggBest')||0);
 let particles=[],floatTexts=[],clouds=[],grassTufts=[];
 let screenShake=0,eggRot=0,eggScaleX=1,eggScaleY=1,idleBounce=0;
 let lastMilestone=0,bgmStarted=false;
 
 document.getElementById('best').textContent=best;
+
+function resize(){
+  const stage=cv.parentElement;
+  const rect=stage.getBoundingClientRect();
+  W=Math.floor(rect.width);
+  H=Math.floor(rect.height);
+  cv.width=W;cv.height=H;
+  SCALE=W/400;
+  GROUND=H-90;
+  if(egg) egg.y=Math.min(egg.y,GROUND);
+}
+window.addEventListener('resize',resize);
+resize();
 
 function playSound(name){
   if(window.KQFX) try{KQFX.play(name);}catch(e){}
@@ -112,8 +133,8 @@ function playBGM(){
 }
 
 function reset(){
-  egg={x:70,y:GROUND,vy:0,r:24,onG:true,rot:0};
-  obs=[];speed=3.5;score=0;playing=false;dead=false;frame=0;
+  egg={x:W*0.15,y:GROUND,vy:0,r:24*SCALE,onG:true,rot:0};
+  obs=[];speed=3.5*SCALE;score=0;playing=false;dead=false;frame=0;
   particles=[];floatTexts=[];screenShake=0;lastMilestone=0;
   eggRot=0;eggScaleX=1;eggScaleY=1;idleBounce=0;
   initBackground();
@@ -122,21 +143,21 @@ function reset(){
 
 function initBackground(){
   clouds=[];grassTufts=[];
-  for(let i=0;i<5;i++) clouds.push({x:Math.random()*cv.width,y:30+Math.random()*90,s:0.3+Math.random()*0.5,spd:0.2+Math.random()*0.3});
-  for(let i=0;i<20;i++) grassTufts.push({x:Math.random()*cv.width,h:6+Math.random()*10});
+  for(let i=0;i<6;i++) clouds.push({x:Math.random()*W,y:H*0.08+Math.random()*H*0.15,s:0.3+Math.random()*0.5,spd:0.2+Math.random()*0.3});
+  for(let i=0;i<25;i++) grassTufts.push({x:Math.random()*W,h:6+Math.random()*10});
 }
 
 function jump(){
   if(dead){reset();return;}
   if(!playing){playing=true;playBGM();}
   if(egg.onG){
-    egg.vy=JUMP;egg.onG=false;
+    egg.vy=JUMP*SCALE;egg.onG=false;
     playSound('jump');
     for(let i=0;i<8;i++){
       particles.push({
         x:egg.x,y:GROUND+5,
-        vx:(Math.random()-.5)*5,vy:-Math.random()*4-1,
-        life:1,color:`hsl(${Math.random()*60+30},100%,60%)`,size:4+Math.random()*5
+        vx:(Math.random()-.5)*5*SCALE,vy:-Math.random()*4-1,
+        life:1,color:`hsl(${Math.random()*60+30},100%,60%)`,size:(4+Math.random()*5)*SCALE
       });
     }
   }
@@ -148,22 +169,29 @@ document.addEventListener('keydown',e=>{
 });
 
 function spawn(){
-  const types=[{e:'🌵',w:28,h:36},{e:'🪨',w:30,h:24},{e:'🍄',w:26,h:30},{e:'🌲',w:32,h:40},{e:'🐌',w:32,h:22},{e:'🍂',w:28,h:26}];
+  const types=[
+    {e:'🌵',w:32,h:42,c:'#2d8a2d'},
+    {e:'🪨',w:36,h:28,c:'#888'},
+    {e:'🍄',w:30,h:34,c:'#c0392b'},
+    {e:'🌲',w:36,h:46,c:'#1e6b1e'},
+    {e:'🐌',w:34,h:26,c:'#d4a373'},
+    {e:'🍂',w:32,h:30,c:'#e67e22'}
+  ];
   const t=types[Math.floor(Math.random()*types.length)];
-  obs.push({x:cv.width+50,emoji:t.e,w:t.w,h:t.h,passed:false});
+  obs.push({x:W+60,emoji:t.e,w:t.w*SCALE,h:t.h*SCALE,color:t.c,passed:false});
 }
 
 function spawnConfetti(){
   const colors=['#ff6b6b','#4ecdc4','#ffe66d','#ff9ff3','#54a0ff','#5f27cd'];
   const box=document.getElementById('confetti');
-  for(let i=0;i<20;i++){
+  for(let i=0;i<25;i++){
     const p=document.createElement('div');
     p.className='particle';
-    p.style.left=(30+Math.random()*40)+'%';
-    p.style.top='25%';
+    p.style.left=(20+Math.random()*60)+'%';
+    p.style.top='20%';
     p.style.background=colors[Math.floor(Math.random()*colors.length)];
     p.style.animationDelay=(Math.random()*0.5)+'s';
-    p.style.width=(6+Math.random()*8)+'px';
+    p.style.width=(8+Math.random()*10)+'px';
     p.style.height=p.style.width;
     box.appendChild(p);
     setTimeout(()=>p.remove(),2000);
@@ -171,17 +199,17 @@ function spawnConfetti(){
 }
 
 function addFloatText(text,x,y,color='#ff5a8a'){
-  floatTexts.push({text,x,y,life:1,color,vy:-2});
+  floatTexts.push({text,x,y,life:1,color,vy:-2*SCALE});
 }
 
 function update(){
   frame++;
 
-  if(!playing && !dead) idleBounce=Math.sin(frame*0.06)*4;
+  if(!playing && !dead) idleBounce=Math.sin(frame*0.06)*4*SCALE;
   else idleBounce=0;
 
   if(playing && !dead){
-    egg.vy+=G;egg.y+=egg.vy;
+    egg.vy+=G*SCALE;egg.y+=egg.vy;
     eggRot=Math.max(-0.6,Math.min(0.6,egg.vy*0.05));
 
     if(!egg.onG){eggScaleX=0.88;eggScaleY=1.12;}
@@ -192,9 +220,9 @@ function update(){
         playSound('land');
         for(let i=0;i<5;i++){
           particles.push({
-            x:egg.x+(Math.random()-.5)*24,y:GROUND+8,
-            vx:(Math.random()-.5)*4,vy:-Math.random()*3,
-            life:1,color:'#ddd',size:3+Math.random()*4
+            x:egg.x+(Math.random()-.5)*24*SCALE,y:GROUND+8,
+            vx:(Math.random()-.5)*4*SCALE,vy:-Math.random()*3,
+            life:1,color:'#ddd',size:(3+Math.random()*4)*SCALE
           });
         }
       }
@@ -204,39 +232,34 @@ function update(){
     const spawnRate=Math.max(40,85-Math.floor(score/3));
     if(frame%spawnRate===0) spawn();
 
-    speed=3.5+Math.sqrt(score)*0.3;
+    speed=(3.5+Math.sqrt(score)*0.3)*SCALE;
     obs.forEach(o=>o.x-=speed);
 
-    if(obs.length && obs[0].x<-60){
+    if(obs.length && obs[0].x<-80){
       obs.shift();
       score++;
       document.getElementById('score').textContent=score;
       playSound('score');
-      addFloatText('+1',egg.x+25,egg.y-35);
+      addFloatText('+1',egg.x+25*SCALE,egg.y-35*SCALE);
 
       if(score%10===0 && score>lastMilestone){
         lastMilestone=score;
         playSound('milestone');
         spawnConfetti();
-        addFloatText('🎉 '+score+'! 🎉',cv.width/2,140,'#ff9f43');
+        addFloatText('🎉 '+score+'! 🎉',W/2,H*0.25,'#ff9f43');
       }
     }
 
-    // FAIR collision: check if egg overlaps obstacle hitbox
     for(const o of obs){
-      // Obstacle hitbox: centered at o.x, bottom at GROUND, width o.w, height o.h
       const obsLeft=o.x-o.w/2;
       const obsRight=o.x+o.w/2;
       const obsTop=GROUND-o.h;
-
-      // Egg hitbox: circle-ish, centered at egg.x, egg.y (bottom of egg is at egg.y)
-      const eggLeft=egg.x-egg.r+4;
-      const eggRight=egg.x+egg.r-4;
-      const eggTop=egg.y-egg.r*2+6; // egg is taller than wide
+      const eggLeft=egg.x-egg.r+4*SCALE;
+      const eggRight=egg.x+egg.r-4*SCALE;
+      const eggTop=egg.y-egg.r*2+6*SCALE;
       const eggBottom=egg.y;
 
-      // AABB overlap check with a little forgiveness
-      if(eggRight>obsLeft+4 && eggLeft<obsRight-4 && eggBottom>obsTop+6 && eggTop<GROUND){
+      if(eggRight>obsLeft+4*SCALE && eggLeft<obsRight-4*SCALE && eggBottom>obsTop+6*SCALE && eggTop<GROUND){
         dead=true;
         screenShake=18;
         playSound('crash');
@@ -245,9 +268,9 @@ function update(){
 
         for(let i=0;i<15;i++){
           particles.push({
-            x:egg.x,y:egg.y-10,
-            vx:(Math.random()-.5)*10,vy:(Math.random()-.5)*10,
-            life:1,color:`hsl(${Math.random()*60},100%,${50+Math.random()*30}%)`,size:5+Math.random()*6
+            x:egg.x,y:egg.y-10*SCALE,
+            vx:(Math.random()-.5)*10*SCALE,vy:(Math.random()-.5)*10*SCALE,
+            life:1,color:`hsl(${Math.random()*60},100%,${50+Math.random()*30}%)`,size:(5+Math.random()*6)*SCALE
           });
         }
 
@@ -255,7 +278,7 @@ function update(){
           best=score;
           localStorage.setItem('eggBest',best);
           document.getElementById('best').textContent=best;
-          addFloatText('🏆 New Best!',cv.width/2,170,'#ffd700');
+          addFloatText('🏆 New Best!',W/2,H*0.3,'#ffd700');
         }
         if(window.onGameComplete) onGameComplete();
         break;
@@ -263,13 +286,13 @@ function update(){
     }
   }
 
-  particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.life-=0.018;});
+  particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.12*SCALE;p.life-=0.018;});
   particles=particles.filter(p=>p.life>0);
 
   floatTexts.forEach(t=>{t.y+=t.vy;t.life-=0.015;});
   floatTexts=floatTexts.filter(t=>t.life>0);
 
-  clouds.forEach(c=>{c.x-=c.spd+speed*0.08;if(c.x<-80)c.x=cv.width+80;});
+  clouds.forEach(c=>{c.x-=c.spd+speed*0.08;if(c.x<-100)c.x=W+100;});
 
   if(screenShake>0) screenShake*=0.88;
   if(screenShake<0.5) screenShake=0;
@@ -284,54 +307,83 @@ function drawEgg(x,y,rot,sx,sy){
   cx.rotate(rot);
   cx.scale(sx,sy);
 
-  // Glow behind egg
   cx.shadowColor='rgba(255,215,0,.4)';
-  cx.shadowBlur=15;
+  cx.shadowBlur=15*SCALE;
 
-  // Egg body (drawn as shape for visibility)
   cx.fillStyle='#FFF8DC';
   cx.beginPath();
-  cx.ellipse(0,-18,22,28,0,0,Math.PI*2);
+  cx.ellipse(0,-18*SCALE,22*SCALE,28*SCALE,0,0,Math.PI*2);
   cx.fill();
   cx.shadowBlur=0;
 
-  // Egg outline
   cx.strokeStyle='#E6D5A8';
-  cx.lineWidth=2.5;
+  cx.lineWidth=2.5*SCALE;
   cx.stroke();
 
-  // Egg spots for cuteness
   cx.fillStyle='#FFE4B5';
-  cx.beginPath();cx.arc(-8,-28,4,0,Math.PI*2);cx.fill();
-  cx.beginPath();cx.arc(10,-22,3,0,Math.PI*2);cx.fill();
-  cx.beginPath();cx.arc(5,-8,3.5,0,Math.PI*2);cx.fill();
-  cx.beginPath();cx.arc(-6,-12,2.5,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.arc(-8*SCALE,-28*SCALE,4*SCALE,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.arc(10*SCALE,-22*SCALE,3*SCALE,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.arc(5*SCALE,-8*SCALE,3.5*SCALE,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.arc(-6*SCALE,-12*SCALE,2.5*SCALE,0,Math.PI*2);cx.fill();
 
-  // Shine
   cx.fillStyle='rgba(255,255,255,.7)';
-  cx.beginPath();cx.ellipse(-7,-24,5,9,-0.3,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.ellipse(-7*SCALE,-24*SCALE,5*SCALE,9*SCALE,-0.3,0,Math.PI*2);cx.fill();
 
-  // Eyes
   if(!egg.onG || !playing){
     cx.fillStyle='#333';
-    cx.beginPath();cx.arc(-7,-20,3,0,Math.PI*2);cx.fill();
-    cx.beginPath();cx.arc(7,-20,3,0,Math.PI*2);cx.fill();
-    // Eye shine
+    cx.beginPath();cx.arc(-7*SCALE,-20*SCALE,3*SCALE,0,Math.PI*2);cx.fill();
+    cx.beginPath();cx.arc(7*SCALE,-20*SCALE,3*SCALE,0,Math.PI*2);cx.fill();
     cx.fillStyle='#fff';
-    cx.beginPath();cx.arc(-6,-21,1,0,Math.PI*2);cx.fill();
-    cx.beginPath();cx.arc(8,-21,1,0,Math.PI*2);cx.fill();
+    cx.beginPath();cx.arc(-6*SCALE,-21*SCALE,1*SCALE,0,Math.PI*2);cx.fill();
+    cx.beginPath();cx.arc(8*SCALE,-21*SCALE,1*SCALE,0,Math.PI*2);cx.fill();
   } else {
-    // Happy closed eyes when running on ground
     cx.strokeStyle='#333';
-    cx.lineWidth=2;
-    cx.beginPath();cx.arc(-7,-20,3,0.1,Math.PI-0.1);cx.stroke();
-    cx.beginPath();cx.arc(7,-20,3,0.1,Math.PI-0.1);cx.stroke();
+    cx.lineWidth=2*SCALE;
+    cx.beginPath();cx.arc(-7*SCALE,-20*SCALE,3*SCALE,0.1,Math.PI-0.1);cx.stroke();
+    cx.beginPath();cx.arc(7*SCALE,-20*SCALE,3*SCALE,0.1,Math.PI-0.1);cx.stroke();
   }
 
-  // Blush
   cx.fillStyle='rgba(255,120,120,.3)';
-  cx.beginPath();cx.arc(-12,-14,4,0,Math.PI*2);cx.fill();
-  cx.beginPath();cx.arc(12,-14,4,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.arc(-12*SCALE,-14*SCALE,4*SCALE,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.arc(12*SCALE,-14*SCALE,4*SCALE,0,Math.PI*2);cx.fill();
+
+  cx.restore();
+}
+
+function drawObstacle(o){
+  const bob=Math.sin(frame*0.12+o.x)*3*SCALE;
+  const cx_=o.x;
+  const cy=GROUND+4*SCALE+bob;
+  const w=o.w;
+  const h=o.h;
+
+  cx.save();
+
+  // Strong shadow
+  cx.fillStyle='rgba(0,0,0,.25)';
+  cx.beginPath();
+  cx.ellipse(cx_,GROUND+12*SCALE,w*0.55,6*SCALE,0,0,Math.PI*2);
+  cx.fill();
+
+  // Colored backing plate so emoji pops
+  cx.fillStyle='rgba(255,255,255,.6)';
+  cx.beginPath();
+  cx.roundRect(cx_-w*0.6,GROUND-h*1.15,w*1.2,h*1.3,8*SCALE);
+  cx.fill();
+  cx.strokeStyle=o.color;
+  cx.lineWidth=3*SCALE;
+  cx.stroke();
+
+  // Emoji BIG and centered
+  cx.font=`bold ${Math.floor(38*SCALE)}px serif`;
+  cx.textAlign='center';
+  cx.textBaseline='bottom';
+  cx.fillText(o.emoji,cx_,cy);
+
+  // Little label for kids (optional visual cue)
+  // cx.fillStyle='rgba(0,0,0,.15)';
+  // cx.font=`bold ${Math.floor(10*SCALE)}px sans-serif`;
+  // cx.fillText('!',cx_,GROUND-h*1.2);
 
   cx.restore();
 }
@@ -343,28 +395,28 @@ function draw(){
   // Sky
   const skyGrad=cx.createLinearGradient(0,0,0,GROUND);
   skyGrad.addColorStop(0,'#87CEEB');skyGrad.addColorStop(1,'#E0F6FF');
-  cx.fillStyle=skyGrad;cx.fillRect(0,0,cv.width,GROUND);
+  cx.fillStyle=skyGrad;cx.fillRect(0,0,W,GROUND);
 
   // Sun
   cx.save();
-  cx.translate(340,55);
+  cx.translate(W*0.85,H*0.1);
   cx.rotate(frame*0.004);
   cx.fillStyle='#FFD93D';
-  cx.beginPath();cx.arc(0,0,26,0,Math.PI*2);cx.fill();
-  cx.strokeStyle='#F6AD55';cx.lineWidth=3;
+  cx.beginPath();cx.arc(0,0,26*SCALE,0,Math.PI*2);cx.fill();
+  cx.strokeStyle='#F6AD55';cx.lineWidth=3*SCALE;
   for(let i=0;i<8;i++){
     const ang=(i/8)*Math.PI*2;
-    cx.beginPath();cx.moveTo(Math.cos(ang)*30,Math.sin(ang)*30);
-    cx.lineTo(Math.cos(ang)*38,Math.sin(ang)*38);cx.stroke();
+    cx.beginPath();cx.moveTo(Math.cos(ang)*30*SCALE,Math.sin(ang)*30*SCALE);
+    cx.lineTo(Math.cos(ang)*38*SCALE,Math.sin(ang)*38*SCALE);cx.stroke();
   }
   cx.fillStyle='#333';
-  cx.beginPath();cx.arc(-7,-3,2.5,0,Math.PI*2);cx.fill();
-  cx.beginPath();cx.arc(7,-3,2.5,0,Math.PI*2);cx.fill();
-  cx.beginPath();cx.arc(0,6,6,0,Math.PI);cx.stroke();
+  cx.beginPath();cx.arc(-7*SCALE,-3*SCALE,2.5*SCALE,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.arc(7*SCALE,-3*SCALE,2.5*SCALE,0,Math.PI*2);cx.fill();
+  cx.beginPath();cx.arc(0,6*SCALE,6*SCALE,0,Math.PI);cx.stroke();
   cx.restore();
 
   // Clouds
-  cx.font='28px serif';
+  cx.font=`${Math.floor(28*SCALE)}px serif`;
   clouds.forEach(c=>{
     cx.globalAlpha=0.75;
     cx.fillText('☁️',c.x,c.y);
@@ -372,54 +424,34 @@ function draw(){
   cx.globalAlpha=1;
 
   // Ground
-  const groundGrad=cx.createLinearGradient(0,GROUND,0,cv.height);
+  const groundGrad=cx.createLinearGradient(0,GROUND,0,H);
   groundGrad.addColorStop(0,'#7FCD7F');groundGrad.addColorStop(1,'#228B22');
-  cx.fillStyle=groundGrad;cx.fillRect(0,GROUND,cv.width,cv.height-GROUND);
-  cx.strokeStyle='#5cb85c';cx.lineWidth=4;
-  cx.beginPath();cx.moveTo(0,GROUND);cx.lineTo(cv.width,GROUND);cx.stroke();
+  cx.fillStyle=groundGrad;cx.fillRect(0,GROUND,W,H-GROUND);
+  cx.strokeStyle='#5cb85c';cx.lineWidth=4*SCALE;
+  cx.beginPath();cx.moveTo(0,GROUND);cx.lineTo(W,GROUND);cx.stroke();
 
   // Grass
   cx.fillStyle='#32CD32';
   grassTufts.forEach(g=>{
-    const sway=Math.sin(frame*0.04+g.x)*3;
+    const sway=Math.sin(frame*0.04+g.x)*3*SCALE;
     cx.beginPath();
     cx.moveTo(g.x,GROUND);
-    cx.quadraticCurveTo(g.x+sway,GROUND-g.h,g.x+sway*2,GROUND-g.h-4);
-    cx.quadraticCurveTo(g.x+sway+5,GROUND-g.h+3,g.x+7,GROUND);
+    cx.quadraticCurveTo(g.x+sway,GROUND-g.h*SCALE,g.x+sway*2,GROUND-g.h*SCALE-4*SCALE);
+    cx.quadraticCurveTo(g.x+sway+5*SCALE,GROUND-g.h*SCALE+3*SCALE,g.x+7*SCALE,GROUND);
     cx.fill();
   });
 
-  // Draw obstacles with visible hitbox area and shadow
-  obs.forEach(o=>{
-    cx.save();
-    // Shadow
-    cx.fillStyle='rgba(0,0,0,.18)';
-    cx.beginPath();cx.ellipse(o.x,GROUND+10,o.w/2,5,0,0,Math.PI*2);cx.fill();
-
-    // Bobbing
-    const bob=Math.sin(frame*0.12+o.x)*2;
-
-    // Draw emoji large and visible
-    cx.font='bold 34px serif';
-    cx.textAlign='center';
-    cx.textBaseline='bottom';
-    cx.fillText(o.emoji,o.x,GROUND+4+bob);
-
-    // Debug/visual hitbox outline (subtle, for kids to see where obstacle is)
-    // cx.strokeStyle='rgba(255,0,0,.2)';cx.lineWidth=1;
-    // cx.strokeRect(o.x-o.w/2,GROUND-o.h,o.w,o.h);
-
-    cx.restore();
-  });
+  // Draw obstacles with backing plate for visibility
+  obs.forEach(o=>drawObstacle(o));
 
   // Egg shadow
-  const shadowScale=Math.max(0.5,1-(GROUND-egg.y)/180);
+  const shadowScale=Math.max(0.5,1-(GROUND-egg.y)/(180*SCALE));
   cx.fillStyle='rgba(0,0,0,.18)';
   cx.beginPath();
-  cx.ellipse(egg.x,GROUND+10,20*shadowScale,5*shadowScale,0,0,Math.PI*2);
+  cx.ellipse(egg.x,GROUND+10*SCALE,20*SCALE*shadowScale,5*SCALE*shadowScale,0,0,Math.PI*2);
   cx.fill();
 
-  // Draw the bright custom egg
+  // Draw egg
   drawEgg(egg.x,egg.y+idleBounce,eggRot,eggScaleX,eggScaleY);
 
   // Particles
@@ -436,9 +468,9 @@ function draw(){
   floatTexts.forEach(t=>{
     cx.globalAlpha=t.life;
     cx.fillStyle=t.color;
-    cx.font='bold 22px "Fredoka One",cursive';
+    cx.font=`bold ${Math.floor(22*SCALE)}px "Fredoka One",cursive`;
     cx.textAlign='center';
-    cx.strokeStyle='#fff';cx.lineWidth=4;
+    cx.strokeStyle='#fff';cx.lineWidth=4*SCALE;
     cx.strokeText(t.text,t.x,t.y);
     cx.fillText(t.text,t.x,t.y);
   });
@@ -447,42 +479,44 @@ function draw(){
   // UI overlays
   cx.textAlign='center';
   if(!playing && !dead){
-    cx.fillStyle='rgba(255,255,255,.9)';
+    const boxW=280*SCALE,boxH=130*SCALE;
+    cx.fillStyle='rgba(255,255,255,.92)';
     cx.beginPath();
-    cx.roundRect(55,130,290,130,18);
+    cx.roundRect(W/2-boxW/2,H*0.25,boxW,boxH,18*SCALE);
     cx.fill();
-    cx.strokeStyle='#ff5a8a';cx.lineWidth=3;
+    cx.strokeStyle='#ff5a8a';cx.lineWidth=3*SCALE;
     cx.stroke();
     cx.fillStyle='#ff5a8a';
-    cx.font='bold 28px "Fredoka One",cursive';
-    cx.fillText('🥚 Egg Jump!',cv.width/2,175);
-    cx.font='bold 15px Nunito,sans-serif';
+    cx.font=`bold ${Math.floor(28*SCALE)}px "Fredoka One",cursive`;
+    cx.fillText('🥚 Egg Jump!',W/2,H*0.25+45*SCALE);
+    cx.font=`bold ${Math.floor(15*SCALE)}px Nunito,sans-serif`;
     cx.fillStyle='#666';
-    cx.fillText('Tap or SPACE to start!',cv.width/2,210);
-    cx.fillText('Jump over the obstacles! 🌵',cv.width/2,235);
+    cx.fillText('Tap or SPACE to start!',W/2,H*0.25+85*SCALE);
+    cx.fillText('Jump over the obstacles! 🌵',W/2,H*0.25+110*SCALE);
   }
 
   if(dead){
-    cx.fillStyle='rgba(255,255,255,.92)';
+    const boxW=300*SCALE,boxH=160*SCALE;
+    cx.fillStyle='rgba(255,255,255,.93)';
     cx.beginPath();
-    cx.roundRect(45,120,310,170,18);
+    cx.roundRect(W/2-boxW/2,H*0.22,boxW,boxH,18*SCALE);
     cx.fill();
-    cx.strokeStyle='#ff5a8a';cx.lineWidth=4;
+    cx.strokeStyle='#ff5a8a';cx.lineWidth=4*SCALE;
     cx.stroke();
     cx.fillStyle='#ff5a8a';
-    cx.font='bold 26px "Fredoka One",cursive';
-    cx.fillText('💥 Oops!',cv.width/2,165);
+    cx.font=`bold ${Math.floor(26*SCALE)}px "Fredoka One",cursive`;
+    cx.fillText('💥 Oops!',W/2,H*0.22+45*SCALE);
     cx.fillStyle='#333';
-    cx.font='bold 22px Nunito,sans-serif';
-    cx.fillText('Score: '+score,cv.width/2,200);
+    cx.font=`bold ${Math.floor(22*SCALE)}px Nunito,sans-serif`;
+    cx.fillText('Score: '+score,W/2,H*0.22+85*SCALE);
     if(score>=best && score>0){
       cx.fillStyle='#e6a817';
-      cx.font='bold 20px "Fredoka One",cursive';
-      cx.fillText('🏆 NEW BEST! 🏆',cv.width/2,230);
+      cx.font=`bold ${Math.floor(20*SCALE)}px "Fredoka One",cursive`;
+      cx.fillText('🏆 NEW BEST! 🏆',W/2,H*0.22+115*SCALE);
     }
     cx.fillStyle='#888';
-    cx.font='bold 14px Nunito,sans-serif';
-    cx.fillText('Tap to play again',cv.width/2,265);
+    cx.font=`bold ${Math.floor(14*SCALE)}px Nunito,sans-serif`;
+    cx.fillText('Tap to play again',W/2,H*0.22+145*SCALE);
   }
 
   cx.textAlign='left';

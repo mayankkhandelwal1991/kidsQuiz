@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Egg Jump</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#8b5cf6);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
+.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:520px;width:100%}
+.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
+.bar .sc{font-weight:800;color:#ff5a8a;font-size:16px}
+canvas{width:100%;border-radius:18px;display:block;background:linear-gradient(180deg,#bfefff 0%,#e8fbff 70%,#c8f7c5 70%);touch-action:manipulation}
+.hint{text-align:center;color:#888;font-size:12px;margin-top:6px;font-weight:600}
+
+/* mobile fit */
+.wrap{display:flex;flex-direction:column;height:100%;max-height:820px}
+.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0}
+canvas{max-height:100%}
+
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <button onclick="location.href='index.html'">← Games</button>
+    <div class="sc">🥚 <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
+    <button onclick="reset()">↻ Restart</button>
+  </div>
+  <div class="stage"><canvas id="cv" width="400" height="480"></canvas></div>
+  <div class="hint">Tap screen or press SPACE to jump</div>
+</div>
+<script src="ads.js"></script>
+<script>
+const cv=document.getElementById('cv'),cx=cv.getContext('2d');
+const G=0.55,JUMP=-10.5,GROUND=400;
+let egg,obs,speed,score,playing,dead,frame,best=+(localStorage.getItem('eggBest')||0);
+document.getElementById('best').textContent=best;
+function reset(){egg={x:70,y:GROUND,vy:0,r:20,onG:true};obs=[];speed=4;score=0;playing=false;dead=false;frame=0;draw();}
+function jump(){
+  if(dead){reset();return;}
+  if(!playing)playing=true;
+  if(egg.onG){egg.vy=JUMP;egg.onG=false;}
+}
+cv.addEventListener('pointerdown',e=>{e.preventDefault();jump();});
+document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();jump();}});
+function spawn(){
+  const type=Math.random()<0.5?'🌵':'🪨';
+  obs.push({x:cv.width+30,emoji:type,w:26});
+}
+function update(){
+  frame++;
+  if(playing&&!dead){
+    egg.vy+=G;egg.y+=egg.vy;
+    if(egg.y>=GROUND){egg.y=GROUND;egg.vy=0;egg.onG=true;}
+    if(frame%Math.max(50,90-Math.floor(score/5))===0)spawn();
+    speed=4+score*0.05;
+    obs.forEach(o=>o.x-=speed);
+    if(obs.length&&obs[0].x<-40){obs.shift();score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('whoosh');}
+    for(const o of obs){
+      if(Math.abs(o.x-egg.x)<o.w&&Math.abs((GROUND)-egg.y)<1e9&&egg.y>GROUND-30&&Math.abs(o.x-egg.x)<26){dead=true;if(window.KQFX)KQFX.play('blast');onGameComplete();
+        if(score>best){best=score;localStorage.setItem('eggBest',best);document.getElementById('best').textContent=best;}
+      }
+    }
+  }
+  draw();
+  requestAnimationFrame(update);
+}
+function draw(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  cx.fillStyle='rgba(255,255,255,.7)';
+  cx.font='26px serif';
+  cx.fillText('☁️',60-(frame*0.4)%600+100,50);cx.fillText('☁️',360-(frame*0.3)%600+120,80);
+  cx.strokeStyle='#7cc576';cx.lineWidth=4;
+  cx.beginPath();cx.moveTo(0,GROUND+22);cx.lineTo(cv.width,GROUND+22);cx.stroke();
+  cx.font='34px serif';
+  obs.forEach(o=>cx.fillText(o.emoji,o.x-15,GROUND+18));
+  cx.font='36px serif';
+  cx.fillText('🥚',egg.x-18,egg.y+12);
+  cx.textAlign='center';cx.fillStyle='#ff5a8a';cx.font='bold 22px sans-serif';
+  if(!playing&&!dead)cx.fillText('Tap to start!',cv.width/2,220);
+  if(dead){cx.fillText('💥 Oops! Score: '+score,cv.width/2,210);cx.font='bold 15px sans-serif';cx.fillText('Tap to play again',cv.width/2,240);}
+  cx.textAlign='left';
+}
+reset();update();
+</script></body></html>

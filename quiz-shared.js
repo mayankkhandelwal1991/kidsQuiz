@@ -1,5 +1,5 @@
 /* ============================================================
-   SHARED ACROSS QUIZ PAGES (quiz-home.html, quiz-index.html)
+   SHARED ACROSS QUIZ PAGES (quiz-home.html, quiz/index.html)
    Categories, palette, local storage, cached-auth, daily
    challenge helpers, and the math question generators.
    Edit here once and every quiz page picks it up.

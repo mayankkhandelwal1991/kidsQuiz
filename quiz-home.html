@@ -304,10 +304,10 @@ function showLevelScreen() {
   showScreen('levelScreen');
 }
 
-/* "Start Quiz" call — hands off to quiz-index.html, which owns the entire
+/* "Start Quiz" call — hands off to quiz/index.html, which owns the entire
    quiz-playing flow (timer, scoring, question generation, end screen). */
 function goToQuiz(level) {
-  window.location.href = 'quiz-index.html?cat=' + encodeURIComponent(currentCategory) + '&level=' + level;
+  window.location.href = 'quiz/index.html?cat=' + encodeURIComponent(currentCategory) + '&level=' + level;
 }
 
 function showQuizCategoryModal() {
@@ -537,7 +537,7 @@ function renderDailyCard() {
 }
 function startDailyChallenge() {
   const dc = getDailyChallenge();
-  window.location.href = 'quiz-index.html?cat=' + encodeURIComponent(dc.catId) + '&level=' + dc.level;
+  window.location.href = 'quiz/index.html?cat=' + encodeURIComponent(dc.catId) + '&level=' + dc.level;
 }
 
 /* ============================================
@@ -623,7 +623,7 @@ getOrCreateUser(currentUser);
   }
 })();
 
-// Deep links from quiz-index.html: ?screen=history opens history directly,
+// Deep links from quiz/index.html: ?screen=history opens history directly,
 // ?cat=<id> jumps straight to that category's level picker.
 (function routeFromParams() {
   const params = new URLSearchParams(window.location.search);

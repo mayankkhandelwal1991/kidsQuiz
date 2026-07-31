@@ -222,6 +222,7 @@ let wrongCount = 0;
 let questionCount = 0;
 let currentAnswer = null;
 let timerInterval = null;
+let quizInProgress = false;
 let acceptingAnswers = false;
 let recentQuestions = [];
 
@@ -274,6 +275,7 @@ function startQuiz(level) {
 
   showScreen('quizScreen');
   nextQuestion();
+  quizInProgress = true;
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(updateTimer, 1000);
 }
@@ -292,11 +294,28 @@ let __quitFromPopstate = false;
 
 function quitQuiz() {
   __quitFromPopstate = false;
+  pauseTimerForQuitPopup();
   document.getElementById('quitConfirmModal').classList.remove('hidden');
+}
+
+// Pausing/resuming the countdown while the "Are you sure?" popup is open —
+// without this, time kept ticking down (and could even hit 0) behind the
+// popup while the player was just deciding whether to quit.
+function pauseTimerForQuitPopup() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+function resumeTimerAfterQuitPopup() {
+  if (quizInProgress && !timerInterval) {
+    timerInterval = setInterval(updateTimer, 1000);
+  }
 }
 
 function cancelQuit() {
   document.getElementById('quitConfirmModal').classList.add('hidden');
+  resumeTimerAfterQuitPopup();
   if (__quitFromPopstate) {
     __quitFromPopstate = false;
     history.pushState({ screen: 'quizScreen' }, '', '');
@@ -307,6 +326,7 @@ function confirmQuit() {
   document.getElementById('quitConfirmModal').classList.add('hidden');
   clearInterval(timerInterval);
   timerInterval = null;
+  quizInProgress = false;
   if (typeof Android !== "undefined" && Android.showAd) {
     Android.showAd("interstitial");
   }
@@ -372,6 +392,7 @@ function checkAnswer(selected, btn) {
 function endQuiz() {
   clearInterval(timerInterval);
   timerInterval = null;
+  quizInProgress = false;
   document.getElementById('finalScore').textContent = score;
   document.getElementById('correctCount').textContent = correctCount;
   document.getElementById('wrongCount').textContent = wrongCount;
@@ -583,10 +604,21 @@ function genReasoning(level) {
 /* ============================================
    BACK BUTTON: confirm-quit while a quiz is in progress
    ============================================ */
+// Some browsers/WebViews can fire a spurious popstate event in the brief
+// window right after a page loads and calls history.pushState() below —
+// not from an actual back-button press. That was making the "Are you
+// sure?" popup appear immediately when the quiz started. This short grace
+// window ignores any popstate before a real back-press could plausibly
+// have happened.
+let __backGuardReady = false;
+setTimeout(function () { __backGuardReady = true; }, 700);
+
 window.addEventListener('popstate', function () {
+  if (!__backGuardReady) return;
   const quizVisible = !document.getElementById('quizScreen').classList.contains('hidden');
-  if (quizVisible && timerInterval) {
+  if (quizVisible && quizInProgress) {
     __quitFromPopstate = true;
+    pauseTimerForQuitPopup();
     document.getElementById('quitConfirmModal').classList.remove('hidden');
   }
 });

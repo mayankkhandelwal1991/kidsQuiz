@@ -174,15 +174,28 @@
     db = firebase.database();
     try { auth = firebase.auth(); } catch (e) { auth = null; }
     if (auth) {
+      // IMPORTANT: `ready` must not resolve until we actually know the auth
+      // state. Firebase reports null->real-user asynchronously, and until the
+      // first callback fires `currentUser()` falls back to a *guest*. If we
+      // resolved `ready` (or let onAuth fire) before this point, callers would
+      // mistake a logged-in user for a guest and route them to the sign-in
+      // page. So we resolve `ready` from inside the first auth callback.
+      var firstAuth = false;
       auth.onAuthStateChanged(function (u) {
         authUser = u || null;
         // Persist Google name as the guest nick fallback too (nice for quiz).
         if (u && u.displayName) { try { localStorage.setItem("kq_nick", u.displayName); } catch (e) {} }
+        if (!firstAuth) { firstAuth = true; readyResolve(); }
         notifyAuth();
       });
+      // If the auth callback never arrives (offline/blocked), don't hang forever.
+      setTimeout(function () {
+        if (!firstAuth) { firstAuth = true; readyResolve(); notifyAuth(); }
+      }, 6000);
+    } else {
+      readyResolve();
+      notifyAuth();
     }
-    readyResolve();
-    notifyAuth();
     injectWidget();
   }).catch(function (e) {
     console.warn("[KQ] Firebase failed to load:", e);

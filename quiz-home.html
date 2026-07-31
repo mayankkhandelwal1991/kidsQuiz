@@ -21,7 +21,7 @@
         <div class="pf-name" id="currentUserDisplay">Guest</div>
       </div>
       <button class="pf-out" onclick="showHistoryScreen()" title="History">📊</button>
-      <button class="pf-out" onclick="switchUser()">Sign out</button>
+      <button class="pf-out" id="pfAuthBtn" onclick="switchUser()">Sign out</button>
     </div>
 
     <div class="pf-stats" id="pfStats"></div>
@@ -212,12 +212,24 @@ if (__cachedAuth && __cachedAuth.name) {
 
 function switchUser() {
   const wasGuest = window.isGuestUser;
+  // Tell watchAuth (below) and quiz2.html this is a deliberate sign-out, so
+  // neither of them re-homes us from a session that hasn't finished clearing.
+  window.__signingOut = true;
   clearCachedAuth();
   setCachedGuest(false);
-  try {
-    if (!wasGuest && window.KQ && KQ.signOut) { KQ.signOut(); }
-  } catch (e) {}
-  window.location.href = 'quiz2.html';
+  try { sessionStorage.setItem('kq_signing_out', '1'); } catch (e) {}
+
+  // replace() so this page isn't left in history to bounce back to.
+  function done() { window.location.replace('quiz2.html'); }
+
+  // A guest has no Firebase session, so just go. A logged-in user must wait for
+  // KQ.signOut() to actually complete first — otherwise the next page still
+  // sees a live session and sends them right back here (the reload loop).
+  if (!wasGuest && window.KQ && KQ.signOut) {
+    try { Promise.resolve(KQ.signOut()).then(done, done); } catch (e) { done(); }
+  } else {
+    done();
+  }
 }
 
 /* ============================================
@@ -484,6 +496,9 @@ function getQuizStats() {
 function renderHomeProfile() {
   document.getElementById('currentUserDisplay').textContent = currentUser;
   document.getElementById('historyUserDisplay').textContent = currentUser;
+  // Guests get a "Sign in" button (to upgrade); signed-in users get "Sign out".
+  const authBtn = document.getElementById('pfAuthBtn');
+  if (authBtn) authBtn.textContent = window.isGuestUser ? 'Sign in' : 'Sign out';
   const av = document.getElementById('pfAvatar');
   if (av) {
     let photo = '';
@@ -577,15 +592,28 @@ getOrCreateUser(currentUser);
 // signed out elsewhere (or the session expired), send them back to the
 // landing page instead of leaving a stale home screen up.
 (function watchAuth() {
+  function decide(u) {
+    if (u && !u.isGuest) {
+      // Signed in with Google — keep the cache/profile fresh.
+      window.isGuestUser = false;
+      setCachedAuth(u);
+      renderHomeProfile();
+    } else if (!window.isGuestUser && !window.__signingOut) {
+      // Genuinely signed out (session expired elsewhere) and not a guest
+      // session — send them to the sign-in gate.
+      clearCachedAuth();
+      window.location.replace('quiz2.html');
+    }
+    // If this is a guest session (window.isGuestUser === true), do nothing:
+    // the transient "guest" KQ reports must not knock a guest off the page.
+  }
   function start() {
-    KQ.onAuth(function (u) {
-      if (u && !u.isGuest) {
-        setCachedAuth(u);
-        renderHomeProfile();
-      } else if (!window.isGuestUser) {
-        clearCachedAuth();
-        window.location.href = 'quiz2.html';
-      }
+    // Wait for KQ.ready before trusting the auth state. KQ reports a *guest*
+    // synchronously before Firebase has loaded; acting on that used to bounce
+    // logged-in users straight to quiz2.html. After ready, KQ.user() is real,
+    // and the immediate onAuth callback below is authoritative.
+    KQ.ready.then(function () {
+      KQ.onAuth(function (u) { decide(u); });
     });
   }
   if (window.KQ) { start(); }

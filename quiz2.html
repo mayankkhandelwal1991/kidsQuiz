@@ -231,6 +231,9 @@ function releaseScroll() {
 }
 
 function goHome() {
+  // Loop-breaker: if quiz2 <-> quiz-home have been bouncing rapidly, stop
+  // auto-homing and show the gate instead of reloading forever.
+  if (kqNavHop()) { kqForceGate(true); showGate(); return; }
   // replace() so the back button can't return here and re-trigger routing.
   window.location.replace('quiz-home.html');
 }
@@ -239,6 +242,10 @@ let gateShown = false;
 function showGate() {
   if (gateShown) return;
   gateShown = true;
+  // The gate is a safe resting screen — clear any loop state now that we've
+  // stopped bouncing and are letting the user choose.
+  kqNavReset();
+  kqForceGate(false);
   const splash = document.getElementById('splashScreen');
   if (splash) splash.style.display = 'none';
   releaseScroll();
@@ -300,6 +307,14 @@ function continueAsGuest() {
     signingOut = sessionStorage.getItem('kq_signing_out') === '1';
     sessionStorage.removeItem('kq_signing_out');
   } catch (e) {}
+
+  // Loop-breaker: if a bounce loop was detected, land on the gate and do NOT
+  // auto-home (which is what kept the reload going).
+  if (kqGateForced()) {
+    kqForceGate(false);
+    afterMinSplash(showGate);
+    return;
+  }
 
   // Fast path: returning user (cached Google login, or chose Guest before).
   if (!signingOut && (getCachedAuth() || getCachedGuest())) {

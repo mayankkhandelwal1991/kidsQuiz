@@ -103,6 +103,7 @@
     position: relative;
     overflow: hidden;
     -webkit-tap-highlight-color: transparent;
+    height:100px;
   }
   .level-btn:hover { transform: translateY(-3px); }
   .level-btn:active { transform: translateY(4px) !important; box-shadow: none !important; }

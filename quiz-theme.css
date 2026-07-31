@@ -198,6 +198,7 @@
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s;
+    width:80%;
   }
   .btn:hover { background: #5568d3; transform: translateY(-2px); }
   .btn-secondary { background: #95a5a6; }

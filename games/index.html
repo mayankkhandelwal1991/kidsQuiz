@@ -41,7 +41,7 @@ h1 .wiggle{display:inline-block;animation:wiggle 2.2s ease-in-out infinite}
 
 /* Game grid */
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;min-height:0;overflow-y:auto;padding:6px 4px 10px;position:relative;z-index:1}
-.card{padding:16px 8px 12px;border-radius:22px;border:none;cursor:pointer;text-align:center;color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:5px;opacity:0;animation:cardPop .45s cubic-bezier(.34,1.56,.64,1) forwards;transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent}
+.card{padding:16px 8px 12px;border-radius:22px;border:none;cursor:pointer;text-align:center;color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:5px;opacity:0;animation:cardPop .45s cubic-bezier(.34,1.56,.64,1) forwards;transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent;height:88px;}
 .card:hover{transform:translateY(-3px)}
 .card.sel{transform:translateY(-3px) scale(1.03)}
 .card:active{transform:translateY(4px) !important;box-shadow:none !important}

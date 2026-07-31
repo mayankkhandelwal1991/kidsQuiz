@@ -21,7 +21,7 @@ h1{font-size:16px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff0
 .startCard{position:absolute;inset:0;background:rgba(5,5,20,.7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:8;text-align:center;padding:20px}
 .flash{position:absolute;inset:0;background:#ff3355;opacity:0;pointer-events:none;z-index:9;transition:opacity .08s}
 .flash.on{opacity:.45}
-.loadbar{position:absolute;left:20%;right:20%;bottom:40%;height:6px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden;z-index:20}
+.loadbar{position:absolute;left:20%;right:20%;bottom:40%;height:6px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden;z-index:1;pointer-events:none}
 .loadbar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#00f5ff,#ff00e5)}
 </style><link rel="stylesheet" href="../../game-theme.css"></head><body>
 <div class="wrap">
@@ -327,10 +327,12 @@ function resetGame(){
   obstacles.forEach(o=>scene.remove(o.mesh)); obstacles=[];
   coins.forEach(c=>scene.remove(c.mesh)); coins=[];
   particles.forEach(p=>scene.remove(p.mesh)); particles=[];
-  score=0; bonus=0; over=false; speed=0.16; curLane=1; jumping=false; jumpVel=0; runPhase=0;
+  score=0; bonus=0; over=false; speed=0.16; curLane=1; jumping=false; jumpVel=0; runPhase=0; scaleTarget=1; shakeT=0;
   document.getElementById('score').textContent='0';
   document.getElementById('overlay').classList.remove('show');
+  document.getElementById('flash').classList.remove('on');
   player.position.set(lanes[1],0.8,2); player.scale.set(1,1,1);
+  if(camera && camBase) camera.position.copy(camBase);
   for(let i=0;i<8;i++) maybeSpawn();
   if(bgAudio && !muted){ bgAudio.currentTime=0; bgAudio.play().catch(()=>{}); }
 }
@@ -341,7 +343,9 @@ async function startGame(){
     loadbar.style.display='block';
     loadAudio(); loadTextures();
     document.getElementById('loadbarFill').style.width='40%';
-    await loadModels();
+    try{
+      await Promise.race([loadModels(), new Promise(r=>setTimeout(r,4000))]);
+    }catch(err){ console.error('Model load error (using fallback shapes):',err); }
     document.getElementById('loadbarFill').style.width='100%';
     initScene();
     loadbar.style.display='none';
@@ -372,15 +376,19 @@ function doJump(){
 }
 
 function loop(){
-  if(!over) update();
-  updateParticles();
-  if(shakeT>0){
-    camera.position.x=camBase.x+(Math.random()-0.5)*0.3;
-    camera.position.y=camBase.y+(Math.random()-0.5)*0.2;
-    shakeT--;
-    if(shakeT===0) camera.position.copy(camBase);
+  try{
+    if(!over) update();
+    updateParticles();
+    if(shakeT>0){
+      camera.position.x=camBase.x+(Math.random()-0.5)*0.3;
+      camera.position.y=camBase.y+(Math.random()-0.5)*0.2;
+      shakeT--;
+      if(shakeT===0) camera.position.copy(camBase);
+    }
+    renderer.render(scene,camera);
+  }catch(err){
+    console.error('Neon Runner frame error (recovered):',err);
   }
-  renderer.render(scene,camera);
   requestAnimationFrame(loop);
 }
 function update(){

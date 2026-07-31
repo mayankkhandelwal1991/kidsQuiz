@@ -127,7 +127,7 @@
       <strong>Rules:</strong> 3-minute timer • +1 for correct • −1 for wrong • 4 options per question • Random questions every time
     </div>
     <div class="center">
-      <button class="btn btn-secondary" onclick="goToMenu()">← Back to Categories</button>
+      <button class="btn btn-secondary" onclick="backToCategories()">← Back to Categories</button>
     </div>
   </div>
 
@@ -191,7 +191,7 @@
 
 </div>
 
-<script src="quiz-shared.js"></script>
+<script src="quiz-shared.js" charset="utf-8"></script>
 <script>
 /* ============================================================
    AUTH GUARD
@@ -257,6 +257,13 @@ function goToMenu() {
   returnToRoot();
   showScreen('menuScreen');
   try { renderHomeProfile(); renderDailyCard(); } catch (e) {}
+}
+
+// "Back to Categories" on the level screen should return to picking a
+// different category, not just dump the user on the home screen.
+function backToCategories() {
+  goToMenu();
+  showQuizCategoryModal();
 }
 
 let currentCategory = '';

@@ -340,11 +340,11 @@ function showGameOptions() { document.getElementById('gameModeModal').classList.
 function closeGameModal() { document.getElementById('gameModeModal').classList.add('hidden'); }
 function openSinglePlayer() {
   closeGameModal();
-  window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/Game/index.html";
+  window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/games/index.html";
 }
 function openMultiPlayer() {
   closeGameModal();
-  window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/MultiPlayerGame/index.html";
+  window.location.href = "https://mayankkhandelwal1991.github.io/kidsQuiz/multiplayer/index.html";
 }
 function goToGames() { openSinglePlayer(); }
 
@@ -651,6 +651,6 @@ getOrCreateUser(currentUser);
 renderHomeProfile();
 renderDailyCard();
 </script>
-<script src="Game/kq-leaderboard.js"></script>
+<script src="games/kq-leaderboard.js"></script>
 </body>
 </html>

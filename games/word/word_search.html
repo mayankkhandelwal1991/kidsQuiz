@@ -21,6 +21,9 @@ body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135de
 .bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
 .bar .sc{font-weight:800;color:#0891b2;font-size:15px}
+.bar .timer{font-weight:800;color:#0891b2;font-size:15px;transition:color .3s}
+.bar .timer.low{color:#ef4444;animation:pulse .6s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
 h1{font-size:17px;color:#0e7490;margin-bottom:6px;font-weight:800}
 .board{
     display:grid;
@@ -72,6 +75,7 @@ h1{font-size:17px;color:#0e7490;margin-bottom:6px;font-weight:800}
   <div class="bar">
     <button onclick="location.href='../index.html'">← Games</button>
     <div class="sc">🔎 <span id="found">0</span>/<span id="total">0</span></div>
+    <div class="timer" id="timer">⏱️ 2:00</div>
     <button onclick="newPuzzle()">↻</button>
   </div>
   <h1>🔤 Word Search</h1>
@@ -100,6 +104,8 @@ const POOL=[
 const N=10, LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const DIRS=[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,-1],[-1,1]];
 let grid,cells,placed,foundCount,total,dragging=false,startCell=null,path=[];
+const GAME_TIME=120; // seconds
+let timeLeft,timerInterval=null,gameOver=false;
 
 function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
@@ -135,11 +141,53 @@ function newPuzzle(){
   const words=shuffleArr([...POOL]).slice(0,10).sort((a,b)=>a[0].length-b[0].length).slice(0,8);
   placed=buildGrid(words);
   foundCount=0;total=placed.length;
+  gameOver=false;
   document.getElementById('found').textContent=0;
   document.getElementById('total').textContent=total;
   document.getElementById('win').classList.remove('show');
   document.getElementById('msg').textContent='Drag across letters to find a word!';
   renderBoard();renderWords();
+  startTimer();
+}
+
+function formatTime(s){
+  const m=Math.floor(s/60), sec=s%60;
+  return m+':'+(sec<10?'0':'')+sec;
+}
+
+function startTimer(){
+  if(timerInterval)clearInterval(timerInterval);
+  timeLeft=GAME_TIME;
+  const el=document.getElementById('timer');
+  el.textContent='⏱️ '+formatTime(timeLeft);
+  el.classList.remove('low');
+  timerInterval=setInterval(()=>{
+    timeLeft--;
+    el.textContent='⏱️ '+formatTime(Math.max(timeLeft,0));
+    if(timeLeft<=20)el.classList.add('low');
+    if(timeLeft<=0){
+      clearInterval(timerInterval);
+      timerInterval=null;
+      timeUp();
+    }
+  },1000);
+}
+
+function stopTimer(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+}
+
+function timeUp(){
+  if(gameOver)return;
+  gameOver=true;
+  dragging=false;
+  clearSel();
+  document.getElementById('msg').textContent="⏰ Time's up!";
+  document.querySelector('.win .big').textContent='⏰';
+  document.getElementById('win').querySelector('h2').textContent="Time's Up!";
+  document.getElementById('winMsg').textContent='You found '+foundCount+' of '+total+' words.';
+  document.getElementById('win').classList.add('show');
+  onGameComplete();
 }
 
 function renderBoard(){
@@ -185,6 +233,7 @@ function clearSel(){
 }
 
 function onDown(e){
+  if(gameOver)return;
   e.preventDefault();
   const el=cellFromPoint(e.clientX,e.clientY);
   if(!el)return;
@@ -243,7 +292,11 @@ function checkSelection(){
     burstConfetti();
     path=[];startCell=null;
     if(foundCount===total){
+      gameOver=true;
+      stopTimer();
       setTimeout(()=>{
+        document.querySelector('.win .big').textContent='🏆';
+        document.getElementById('win').querySelector('h2').textContent='All Found!';
         document.getElementById('winMsg').textContent='You found all '+total+' words!';
         document.getElementById('win').classList.add('show');
         if(window.KQFX)KQFX.win();

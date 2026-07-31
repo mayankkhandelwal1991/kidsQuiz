@@ -153,7 +153,7 @@ function select(i,card){
   document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function startGame(){ if(sel>=0) window.location.href=GAMES[sel].f; }
-function goBack(){ window.location.href='../quiz2.html'; }
+function goBack(){ window.location.href='../quiz-home.html'; }
 function openBoard(){ if(sel>=0 && window.KQ&&KQ.open) { const g=GAMES[sel]; KQ.open('multi',g.id,g.nm); } }
 
 /* ===== Shared Android-style ripple feedback (same as quiz2.html) ===== */

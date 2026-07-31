@@ -261,8 +261,19 @@ function goToMenu() {
 
 // "Back to Categories" on the level screen should return to picking a
 // different category, not just dump the user on the home screen.
+// Note: this deliberately does NOT call goToMenu()/returnToRoot(), because
+// those use history.back(), which is asynchronous — its popstate event was
+// racing with (and sometimes winning against) immediately reopening the
+// category modal below, making it look like the button just went "home".
+// history.replaceState() here is synchronous and never fires popstate, so
+// there's no race at all.
 function backToCategories() {
-  goToMenu();
+  if (!atRootScreen) {
+    history.replaceState({ screen: 'menuScreen' }, '', location.pathname + location.search);
+    atRootScreen = true;
+  }
+  showScreen('menuScreen');
+  try { renderHomeProfile(); renderDailyCard(); } catch (e) {}
   showQuizCategoryModal();
 }
 

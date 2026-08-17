@@ -2,393 +2,645 @@
   "class": 10,
   "subject": "Mathematics",
   "paper": 4,
-  "title": "Class 10 Mathematics — Paper 4",
+  "title": "Class 10 Mathematics Olympiad \u2014 Paper 4",
   "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "instructions": [
+    "The time allowed for this paper is 60 minutes.",
+    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
+    "There is no negative marking for wrong answers.",
+    "Each question has four options; choose the one correct answer.",
+    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
+    "Use of calculators is not permitted unless specified."
+  ],
+  "sections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 15,
+      "marksPerQuestion": 1,
+      "totalMarks": 15
+    },
+    {
+      "name": "Mathematical Reasoning",
+      "questions": 20,
+      "marksPerQuestion": 1,
+      "totalMarks": 20
+    },
+    {
+      "name": "Everyday Mathematics",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
   "questions": [
     {
       "id": 1,
-      "question": "Find the next number: 34, 36, 38, 40, __.",
+      "question": "Which number should replace the question mark: 3, 9, 27, 81, ?",
       "options": [
-        "42",
-        "43",
-        "41",
-        "44"
+        "324",
+        "216",
+        "243",
+        "162"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "A number is 4 more than 21. What is it?",
+      "question": "If '+' means '\u00f7', '\u00f7' means '-', '-' means 'x', and 'x' means '+', evaluate: 12 x 4 - 2 \u00f7 3",
       "options": [
-        "25",
-        "26",
-        "17",
-        "27"
+        "10",
+        "14",
+        "8",
+        "(12+4)-2\u00f73 = 16-2-3 = 11"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which number is odd?",
+      "question": "In a row of children, Raj is 7th from the left and 12th from the right. How many children are in the row?",
       "options": [
-        "32",
-        "33",
-        "34",
-        "36"
+        "17",
+        "20",
+        "19",
+        "18"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "If a shape has 4 sides, how many sides does it have?",
+      "question": "Find the missing number: 7, 14, 28, 56, __",
       "options": [
-        "4",
-        "5",
-        "3",
-        "6"
+        "98",
+        "106",
+        "120",
+        "112"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which is the greatest?",
+      "question": "A is taller than B but shorter than C. D is taller than C. Who is the tallest?",
       "options": [
-        "314",
-        "322",
-        "317",
-        "319"
+        "C",
+        "D",
+        "B",
+        "A"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Find the next number: 39, 42, 45, 48, __.",
+      "question": "Arrange in a logical order: Seed, Flower, Fruit, Plant, Seedling",
       "options": [
-        "51",
-        "52",
-        "49",
-        "54"
+        "Seed, Seedling, Plant, Flower, Fruit",
+        "Seedling, Seed, Plant, Fruit, Flower",
+        "Seed, Flower, Seedling, Plant, Fruit",
+        "Seed, Plant, Seedling, Flower, Fruit"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "A number is 5 more than 26. What is it?",
+      "question": "Pointing to a photograph, a man says, 'She is the daughter of my grandfather's only son.' How is the girl related to the man?",
       "options": [
-        "31",
-        "32",
-        "21",
-        "33"
+        "Daughter",
+        "Cousin",
+        "Sister",
+        "Niece"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which number is odd?",
+      "question": "A is the father of B. C is the sister of A. How is C related to B?",
       "options": [
-        "37",
-        "38",
-        "39",
-        "41"
+        "Grandmother",
+        "Aunt",
+        "Sister",
+        "Mother"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "If a shape has 6 sides, how many sides does it have?",
+      "question": "Statement: All pens are pencils. All pencils are erasers. Conclusion: All pens are erasers.",
       "options": [
-        "6",
-        "7",
-        "5",
-        "8"
+        "The conclusion is valid",
+        "Data is insufficient",
+        "Cannot be determined",
+        "The conclusion is invalid"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which is the greatest?",
+      "question": "Find the odd one out: Triangle, Square, Circle, Sphere",
       "options": [
-        "319",
-        "327",
-        "322",
-        "324"
+        "Square",
+        "Triangle",
+        "Sphere (it is 3D, others are 2D)",
+        "Circle"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What is 149 + 140?",
+      "question": "If 5 workers can build a wall in 12 days, how many days will 10 workers take?",
       "options": [
-        "289",
-        "290",
-        "288",
-        "299"
+        "10 days",
+        "3 days",
+        "6 days",
+        "24 days"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "What is 183 − 126?",
+      "question": "A clock shows 3:15. What is the angle between the hour and minute hands?",
       "options": [
-        "57",
-        "59",
-        "55",
-        "-57"
+        "30 degrees",
+        "7.5 degrees",
+        "0 degrees",
+        "15 degrees"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "What is 4 × 3?",
+      "question": "Find the next term in the series: 2, 6, 12, 20, 30, __",
       "options": [
-        "12",
-        "13",
-        "7",
-        "11"
+        "36",
+        "42",
+        "40",
+        "44"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "What is 30 ÷ 6?",
+      "question": "If in a certain code, MATH is written as NBUI, how is CODE written?",
       "options": [
-        "5",
-        "6",
-        "4",
-        "6"
+        "BNCD",
+        "CPDF",
+        "DPFE",
+        "DPEF"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "If North becomes East, East becomes South, and so on, what will South become?",
       "options": [
-        "24 cm",
-        "36 cm",
-        "12 cm",
-        "10 cm"
+        "South",
+        "West",
+        "North",
+        "East"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "What is 154 + 145?",
+      "question": "Find the distance between points (3, 4) and (0, 0).",
       "options": [
-        "299",
-        "300",
-        "298",
-        "309"
+        "5 units",
+        "4 units",
+        "3 units",
+        "7 units"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "What is 188 − 131?",
+      "question": "What is the 10th term of the AP: 2, 5, 8, 11, ...?",
       "options": [
-        "57",
-        "59",
-        "55",
-        "-57"
+        "32",
+        "35",
+        "26",
+        "29"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "What is 3 × 3?",
+      "question": "Find the coordinates of the point which divides the line segment joining (2,3) and (7,8) in the ratio 2:3.",
       "options": [
-        "9",
-        "10",
-        "6",
-        "8"
+        "(4,5)",
+        "(3,4)",
+        "(4.5,5.5)",
+        "(5,6)"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "What is 30 ÷ 6?",
+      "question": "Find the area of a circle whose radius is 7 cm (use pi = 22/7).",
       "options": [
-        "5",
-        "6",
-        "4",
-        "6"
+        "144 sq cm",
+        "154 sq cm",
+        "176 sq cm",
+        "132 sq cm"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "A die is thrown once. What is the probability of getting a number greater than 4?",
       "options": [
-        "24 cm",
-        "36 cm",
-        "12 cm",
-        "10 cm"
+        "1/2",
+        "1/6",
+        "1/3",
+        "2/3"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "What is 159 + 150?",
+      "question": "A quadratic equation ax^2+bx+c=0 has equal roots when discriminant equals:",
       "options": [
-        "309",
-        "310",
-        "308",
-        "319"
+        "Negative",
+        "1",
+        "0",
+        "Positive"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "What is 193 − 136?",
+      "question": "Two coins are tossed together. What is the probability of getting at least one head?",
       "options": [
-        "57",
-        "59",
-        "55",
-        "-57"
+        "1/2",
+        "3/4",
+        "1",
+        "1/4"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "What is 2 × 3?",
+      "question": "If alpha and beta are zeroes of x^2 - 3x + 2, find the value of alpha times beta.",
       "options": [
-        "6",
-        "7",
-        "5",
-        "5"
+        "-3",
+        "-2",
+        "3",
+        "2"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "What is 30 ÷ 6?",
+      "question": "What is the HCF of 96 and 404?",
       "options": [
-        "5",
-        "6",
         "4",
-        "6"
+        "8",
+        "12",
+        "16"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "What is the degree of the polynomial 5x^4 - 3x^2 + 7?",
       "options": [
-        "24 cm",
-        "36 cm",
-        "12 cm",
-        "10 cm"
+        "2",
+        "4",
+        "3",
+        "7"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "What is 164 + 155?",
+      "question": "Form a quadratic polynomial whose zeroes are 4 and -1.",
       "options": [
-        "319",
-        "320",
-        "318",
-        "329"
+        "x^2 + 3x + 4",
+        "x^2 - 3x - 4",
+        "x^2 + 3x - 4",
+        "x^2 - 3x + 4"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "What is 198 − 141?",
+      "question": "If two triangles are similar with sides in ratio 2:3, what is the ratio of their areas?",
       "options": [
-        "57",
-        "59",
-        "55",
-        "-57"
+        "8:27",
+        "2:3",
+        "4:6",
+        "4:9"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "What is 7 × 3?",
+      "question": "Find the value of tan 45 degrees.",
       "options": [
-        "21",
-        "22",
-        "10",
-        "20"
+        "0.5",
+        "1",
+        "0",
+        "Undefined"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "What is 30 ÷ 6?",
+      "question": "If one zero of the polynomial x^2 - (k+6)x + 2(2k-1) is negative of the other, find k.",
       "options": [
-        "5",
-        "6",
-        "4",
+        "-3",
+        "2",
+        "3",
         "6"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "In a grouped frequency distribution, what is used to estimate the mean when exact values are unknown?",
       "options": [
-        "24 cm",
-        "36 cm",
-        "12 cm",
-        "10 cm"
+        "The lower limit of each class",
+        "The class mark (mid-value) of each class interval",
+        "The upper limit of each class",
+        "The class width only"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "A number is doubled and then 3 is added to get 71. What was the number?",
+      "question": "If p(x) = x^3 - 3x^2 + 2, find the remainder when p(x) is divided by (x-1) using the Remainder Theorem.",
       "options": [
-        "34",
-        "35",
-        "33",
-        "37"
+        "-1",
+        "2",
+        "1",
+        "0"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "A number is doubled and then 3 is added to get 73. What was the number?",
+      "question": "Find the mean of the following data: 4, 8, 10, 12, 16.",
       "options": [
-        "35",
-        "36",
-        "34",
-        "38"
+        "10",
+        "12",
+        "8",
+        "9"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "A number is doubled and then 3 is added to get 75. What was the number?",
+      "question": "What is the probability of a sure (certain) event?",
       "options": [
-        "36",
-        "37",
-        "35",
-        "39"
+        "0",
+        "1",
+        "Undefined",
+        "0.5"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "A number is doubled and then 3 is added to get 77. What was the number?",
+      "question": "Find the coordinates of the centroid of a triangle with vertices (1,2), (3,4), (5,0).",
       "options": [
-        "37",
-        "38",
-        "36",
-        "40"
+        "(2,3)",
+        "(3,3)",
+        "(2,2)",
+        "(3,2)"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "A number is doubled and then 3 is added to get 79. What was the number?",
+      "question": "Is the number 0.101001000100001... rational or irrational?",
       "options": [
-        "38",
-        "39",
-        "37",
-        "41"
+        "Rational, since it follows a pattern",
+        "Irrational, as it is non-terminating and non-recurring",
+        "Cannot be determined",
+        "Rational, as all decimals are rational"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "A tank can be filled by pipe A in 6 hours and by pipe B in 12 hours. How long will both pipes together take to fill the tank?",
+      "options": [
+        "9 hours",
+        "6 hours",
+        "4 hours",
+        "3 hours"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "A train 150 m long crosses a pole in 15 seconds. Find the speed of the train in m/s.",
+      "options": [
+        "12 m/s",
+        "9 m/s",
+        "10 m/s",
+        "15 m/s"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "A shopkeeper's profit percentage is 20% on cost price of Rs. 250. Find the selling price.",
+      "options": [
+        "Rs. 320",
+        "Rs. 280",
+        "Rs. 270",
+        "Rs. 300"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "A car travels 240 km in 4 hours. What is its average speed?",
+      "options": [
+        "50 km/h",
+        "65 km/h",
+        "60 km/h",
+        "70 km/h"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "If 5 pens cost Rs. 60, what is the cost of 12 pens?",
+      "options": [
+        "Rs. 144",
+        "Rs. 150",
+        "Rs. 132",
+        "Rs. 120"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "A room is 5m long and 4m wide. What is the cost of carpeting it at Rs. 50 per sq metre?",
+      "options": [
+        "Rs. 1000",
+        "Rs. 950",
+        "Rs. 900",
+        "Rs. 1100"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "A sum of Rs. 5000 is invested at 8% simple interest per annum. Find the interest after 2 years.",
+      "options": [
+        "Rs. 800",
+        "Rs. 1000",
+        "Rs. 400",
+        "Rs. 900"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "A recipe requires 2 cups of flour for 8 servings. How many cups are needed for 20 servings?",
+      "options": [
+        "6 cups",
+        "4 cups",
+        "5 cups",
+        "4.5 cups"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "Ravi buys a shirt marked at Rs. 800 with a 15% discount. What is the discounted price?",
+      "options": [
+        "Rs. 700",
+        "Rs. 650",
+        "Rs. 680",
+        "Rs. 720"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "A sum doubles itself in 8 years at simple interest. Find the rate of interest per annum.",
+      "options": [
+        "15%",
+        "8%",
+        "12.5%",
+        "10%"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "A quadratic equation representing the age problem: 'The product of Ramu's age 5 years ago and his age 9 years later is 15' leads to which correctly formed equation if x is his present age?",
+      "options": [
+        "(x-5)(x-9) = 15",
+        "(x-5)(x+9) = 15",
+        "(x+5)(x-9) = 15",
+        "x^2 - 4x - 45 = 15"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "A cone and a hemisphere have equal base radius and equal volumes. Find the ratio of the height of the cone to the radius.",
+      "options": [
+        "3:1",
+        "2:1 (height of cone = 2 \u00d7 radius)",
+        "1:2",
+        "1:1"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "In a circle, two tangents are drawn from an external point P to touch the circle at A and B. If the angle APB = 60 degrees, what is the measure of angle AOB (O is the centre)?",
+      "options": [
+        "180 degrees",
+        "120 degrees",
+        "60 degrees",
+        "90 degrees"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "The sum of the first n terms of an AP is given by Sn = 2n^2 + 3n. A student needs to find the 15th term without listing all terms. What method and result apply?",
+      "options": [
+        "The 15th term equals a+14d without needing Sn; cannot be found",
+        "Use Tn = Sn/n; the 15th term is 33",
+        "Use Tn = Sn - S(n-1); the 15th term is 61",
+        "The 15th term is simply 2(15)+3=33"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "Two poles of height 6 m and 11 m stand on a plane ground. If the distance between their feet is 12 m, find the distance between their tops using coordinate/Pythagoras reasoning.",
+      "options": [
+        "12 m",
+        "17 m",
+        "13 m (using the difference in height 5 m and base 12 m to form a right triangle: sqrt(5^2+12^2)=13)",
+        "5 m"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

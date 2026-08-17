@@ -32,6 +32,13 @@
     <p class="subtitle">20 categories • Class 1 to 5 • 3-minute challenge</p>
 
     <div class="play-hero">
+      <div class="play-card play-olympiad" onclick="window.location.href='Olympiad/index.html'">
+        <span class="play-badge">Challenge</span>
+        <div class="play-icon">🏅</div>
+        <div class="play-title">Olympiad</div>
+        <div class="play-sub">Put your knowledge to the test</div>
+        <div class="play-arrow">›</div>
+      </div>
       <div class="play-card play-quiz" onclick="showQuizCategoryModal()">
         <span class="play-badge">20 topics</span>
         <div class="play-icon">🎯</div>
@@ -501,9 +508,12 @@ function getQuizStats() {
 function renderHomeProfile() {
   document.getElementById('currentUserDisplay').textContent = currentUser;
   document.getElementById('historyUserDisplay').textContent = currentUser;
-  // Guests get a "Sign in" button (to upgrade); signed-in users get "Sign out".
+  // Google sign-in is currently hidden; keep the sign-out control for signed-in users.
   const authBtn = document.getElementById('pfAuthBtn');
-  if (authBtn) authBtn.textContent = window.isGuestUser ? 'Sign in' : 'Sign out';
+  if (authBtn) {
+    authBtn.textContent = 'Sign out';
+    authBtn.style.display = window.isGuestUser ? 'none' : '';
+  }
   const av = document.getElementById('pfAvatar');
   if (av) {
     let photo = '';

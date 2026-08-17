@@ -144,8 +144,8 @@
 <div class="container">
   <div id="nameScreen" class="hidden">
     <h1>🎯 Kids Quiz</h1>
-    <p class="subtitle">Sign in with Google, or continue as a guest</p>
-    <div class="center" style="margin-top:20px">
+    <p class="subtitle">Continue as a guest to play</p>
+    <div class="center" style="display:none;margin-top:20px" aria-hidden="true">
       <button class="btn" id="googleGateBtn" onclick="gateSignIn()" style="display:inline-flex;align-items:center;gap:10px">
         <span style="width:22px;height:22px;border-radius:50%;background:#fff;color:#4285F4;font-weight:800;display:inline-flex;align-items:center;justify-content:center">G</span>
         Sign in with Google
@@ -157,7 +157,7 @@
         Continue as Guest
       </button>
     </div>
-    <p class="subtitle" style="margin-top:6px;font-size:11px;opacity:.75">Sign in to save scores to your account and appear on the leaderboard. Guest progress is saved only on this device.</p>
+    <p class="subtitle" style="margin-top:6px;font-size:11px;opacity:.75">Guest progress is saved only on this device.</p>
 
     <div class="android-actions">
       <button class="android-action-btn rate-btn" onclick="rateApp()">

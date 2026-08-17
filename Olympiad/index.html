@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Olympiad Test Portal — Class 1 to 10</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* Compact navigation is kept in the same position on every Olympiad screen. */
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    margin: 0 0 12px;
+    padding: 5px 9px;
+    border-radius: 7px;
+    font-size: 12px;
+    line-height: 1;
+    text-decoration: none;
+  }
+  .history-header .back { margin: 0; }
+  .test-back { margin-bottom: 10px; }
+  .selection-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 150px;
+    color: #fff;
+    border: 0;
+    box-shadow: 0 12px 24px rgba(79, 70, 229, .22);
+  }
+  .selection-card::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    right: -32px;
+    bottom: -42px;
+    border: 18px solid rgba(255,255,255,.16);
+    border-radius: 50%;
+  }
+  .selection-card:hover { border: 0; }
+  .selection-card .card-icon { font-size: 34px; line-height: 1; }
+  .selection-card h3 { font-size: 19px; margin-top: 8px; }
+  .selection-card .muted { color: rgba(255,255,255,.88); }
+  .class-card:nth-child(5n+1) { background: linear-gradient(135deg,#667eea,#764ba2); }
+  .class-card:nth-child(5n+2) { background: linear-gradient(135deg,#f97316,#f43f5e); }
+  .class-card:nth-child(5n+3) { background: linear-gradient(135deg,#0f766e,#14b8a6); }
+  .class-card:nth-child(5n+4) { background: linear-gradient(135deg,#2563eb,#38bdf8); }
+  .class-card:nth-child(5n) { background: linear-gradient(135deg,#a855f7,#ec4899); }
+  .subject-mathematics { background: linear-gradient(135deg,#6366f1,#8b5cf6); }
+  .subject-science { background: linear-gradient(135deg,#0891b2,#22c55e); }
+  .subject-english { background: linear-gradient(135deg,#ec4899,#f97316); }
+  .subject-computer { background: linear-gradient(135deg,#2563eb,#06b6d4); }
+  .subject-gk { background: linear-gradient(135deg,#d97706,#ef4444); }
+  .quit-modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 20px; background: rgba(15,23,42,.56); }
+  .quit-dialog { width: min(360px,100%); padding: 26px; text-align: center; background: #fff; border-radius: 22px; box-shadow: 0 22px 55px rgba(15,23,42,.32); }
+  .quit-dialog .quit-icon { font-size: 40px; }
+  .quit-dialog h2 { margin: 8px 0; font-size: 22px; }
+  .quit-actions { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+  .quit-actions button { padding: 9px 13px; font-size: 13px; }
+  @media (max-width: 600px) { .selection-card { min-height: 126px; padding: 16px; } .selection-card h3 { font-size: 16px; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div><div class="brand">🏆 Olympiad Test Portal</div><div class="tag">Class 1–10 • Practice • History • Retakes</div></div>
+  <button id="historyBtn" class="ghost">📜 History</button>
+</header>
+<main class="container">
+  <section id="screenClass" class="screen active">
+    <a class="back" href="../quiz-home.html">← Back</a>
+    <h1>Select Class</h1><p class="muted">Choose the student's class to begin.</p>
+    <div id="classGrid" class="grid"></div>
+  </section>
+
+  <section id="screenSubject" class="screen">
+    <button class="back" data-back="screenClass">← Back</button>
+    <h1 id="classTitle"></h1><p class="muted">Select a subject.</p>
+    <div id="subjectGrid" class="grid"></div>
+  </section>
+
+  <section id="screenPaper" class="screen">
+    <button class="back" data-back="screenSubject">← Back</button>
+    <h1 id="subjectTitle"></h1><p class="muted">Choose one of 5 papers. Previous attempts never disable a paper.</p>
+    <div id="paperGrid" class="paper-grid"></div>
+  </section>
+
+  <section id="screenTest" class="screen">
+    <button class="back test-back" onclick="leaveTest()">← Back</button>
+    <div class="test-head">
+      <div><div id="testTitle" class="test-title"></div><div id="progress" class="muted"></div></div>
+      <div id="timer" class="timer">60:00</div>
+    </div>
+    <div class="progressbar"><div id="progressFill"></div></div>
+    <div id="questionCard" class="question-card"></div>
+    <div class="test-nav">
+      <button id="prevBtn" class="secondary">← Previous</button>
+      <button id="nextBtn">Next →</button>
+      <button id="submitBtn" class="danger hidden">Submit Test</button>
+    </div>
+  </section>
+
+  <section id="screenResult" class="screen">
+    <button class="back" data-back="screenPaper">← Back</button>
+    <h1>Test Result</h1>
+    <div id="resultCard" class="result-card"></div>
+    <div class="result-actions">
+      <button id="reviewBtn">Review Answers</button>
+      <button id="retakeBtn" class="secondary">Retake</button>
+      <button id="paperAgainBtn" class="secondary">Back to Papers</button>
+    </div>
+    <div id="reviewList" class="review-list hidden"></div>
+  </section>
+
+  <section id="screenHistory" class="screen">
+    <div class="history-header">
+      <button class="back" data-back="screenClass">← Back</button>
+      <button id="clearHistory" class="danger clear-history">Clear History</button>
+    </div>
+    <h1>Attempt History</h1>
+    <p class="muted">All attempts are stored in this browser. Retakes are allowed.</p>
+    <div id="historyList"></div>
+  </section>
+</main>
+<div id="quitTestModal" class="quit-modal hidden" role="dialog" aria-modal="true" aria-labelledby="quitTestTitle">
+  <div class="quit-dialog">
+    <div class="quit-icon">⚠️</div>
+    <h2 id="quitTestTitle">Quit this quiz?</h2>
+    <p class="muted">Your current answers and progress will be lost.</p>
+    <div class="quit-actions">
+      <button id="resumeTestBtn" class="secondary">Resume Quiz</button>
+      <button id="confirmQuitTestBtn" class="danger">Yes, Quit</button>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+<script src="js/app.js"></script>
+</body>
+</html>

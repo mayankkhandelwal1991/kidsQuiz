@@ -646,6 +646,7 @@ h1,h2{
 }
 .play-card:active { transform: scale(.96); }
 .play-card:hover { transform: translateY(-3px); }
+.play-card.play-olympiad { grid-column: 1 / -1; background: linear-gradient(135deg,#0f766e,#14b8a6); box-shadow: 0 10px 22px rgba(20,184,166,.4); }
 .play-card.play-quiz { background: linear-gradient(135deg,#667eea,#764ba2); box-shadow: 0 10px 22px rgba(102,126,234,.4); }
 .play-card.play-game { background: linear-gradient(135deg,#ff7a59,#ff4fa3); box-shadow: 0 10px 22px rgba(255,79,163,.4); }
 .play-card .play-icon { font-size: 30px; }

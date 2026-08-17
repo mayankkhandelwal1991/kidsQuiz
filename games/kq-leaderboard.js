@@ -502,9 +502,7 @@
     if (ctx && ctx.gameId) {
       html += '<button class="kqlb-btn kqlb-trophy" id="kqlb-open">🏆 <span>Leaderboard</span></button>';
     }
-    if (u.isGuest) {
-      html += '<button class="kqlb-btn kqlb-login" id="kqlb-signin">Sign in</button>';
-    } else {
+    if (!u.isGuest) {
       var av = u.photo
         ? '<img src="' + esc(u.photo) + '" referrerpolicy="no-referrer" alt="">'
         : '<span class="kqlb-av">' + esc(initials(u.name)) + '</span>';
@@ -517,9 +515,6 @@
 
     var openBtn = document.getElementById("kqlb-open");
     if (openBtn) openBtn.onclick = function () { open(ctx.category, ctx.gameId, ctx.title); };
-
-    var si = document.getElementById("kqlb-signin");
-    if (si) si.onclick = function () { signIn(); };
 
     var chip = document.getElementById("kqlb-userchip");
     if (chip) chip.onclick = function (e) {

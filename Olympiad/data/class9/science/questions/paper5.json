@@ -2,338 +2,639 @@
   "class": 9,
   "subject": "Science",
   "paper": 5,
-  "title": "Class 9 Science — Paper 5",
+  "title": "Class 9 Science Olympiad \u2014 Paper 5",
   "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "instructions": [
+    "The time allowed for this paper is 60 minutes.",
+    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
+    "There is no negative marking for wrong answers.",
+    "Each question has four options; choose the one correct answer.",
+    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
+    "Use of calculators is not permitted unless specified."
+  ],
+  "sections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Science",
+      "questions": 35,
+      "marksPerQuestion": 1,
+      "totalMarks": 35
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
   "questions": [
     {
       "id": 1,
-      "question": "Which part of a plant usually absorbs water from the soil?",
+      "question": "If 6 workers finish a job in 10 days, how many days will 15 workers take?",
       "options": [
-        "Roots",
-        "Flower",
-        "Fruit",
-        "Leaf"
+        "5 days",
+        "8 days",
+        "4 days",
+        "6 days"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which organ pumps blood around the body?",
+      "question": "Five students are ranked by height. Amit is taller than Bina but shorter than Chetan. Deepa is the tallest. Who is the shortest possible given only this info?",
       "options": [
-        "Lungs",
-        "Stomach",
-        "Heart",
-        "Brain"
+        "Chetan",
+        "Cannot be determined without more data, but Bina is shorter than Amit",
+        "Amit",
+        "Deepa"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which is a renewable source of energy?",
+      "question": "Find the next term: 5, 10, 20, 40, __",
       "options": [
-        "Petrol",
-        "Diesel",
-        "Coal",
-        "Sunlight"
+        "90",
+        "80",
+        "70",
+        "60"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which material is transparent?",
+      "question": "If in a code, PLANT is written as QMBOU, how is WATER written?",
       "options": [
-        "Stone",
-        "Cardboard",
-        "Clear glass",
-        "Wood"
+        "VZSDQ",
+        "YBVFT",
+        "XBUES",
+        "XBUFS"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which change can usually be reversed?",
+      "question": "Statement: All fish live in water. A shark is a fish. Conclusion: A shark lives in water.",
       "options": [
-        "Paper burning",
-        "Ice melting",
-        "Egg cooking",
-        "Wood burning"
+        "The conclusion is invalid",
+        "Insufficient data",
+        "Cannot be determined",
+        "The conclusion is valid"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Which force slows a toy car on a rough floor?",
+      "question": "Arrange in order of increasing size: Molecule, Atom, Electron, Cell",
       "options": [
-        "Friction",
-        "Sound",
-        "Light",
-        "Colour"
+        "Atom, Electron, Molecule, Cell",
+        "Cell, Molecule, Atom, Electron",
+        "Electron, Atom, Molecule, Cell",
+        "Molecule, Cell, Atom, Electron"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Which animal is adapted to a hot desert?",
+      "question": "A is north of B. C is east of B. What direction is C from A?",
       "options": [
-        "Penguin",
-        "Camel",
-        "Polar bear",
-        "Whale"
+        "South-west",
+        "South-east",
+        "North-west",
+        "North-east"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which body part protects the brain?",
+      "question": "If EAST becomes WEST when reflected, what does NORTH become?",
       "options": [
-        "Rib cage",
-        "Knee",
-        "Skull",
-        "Ankle"
+        "NORTH",
+        "SOUTH",
+        "EAST",
+        "WEST"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Which gas do humans need for breathing?",
+      "question": "A clock shows 4:30. What is the angle between the hour and minute hands?",
       "options": [
-        "Neon",
-        "Hydrogen",
-        "Helium",
-        "Oxygen"
+        "60 degrees",
+        "90 degrees",
+        "45 degrees",
+        "30 degrees"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which state of matter keeps its own shape?",
+      "question": "Find the next term: 1, 1, 2, 3, 5, 8, __ (Fibonacci pattern)",
       "options": [
-        "Vapour",
-        "Solid",
-        "Liquid",
-        "Gas"
+        "11",
+        "10",
+        "13",
+        "15"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Which of these is a homogeneous mixture?",
       "options": [
-        "It wilts",
-        "It needs no sunlight",
-        "It becomes a rock",
-        "It grows faster"
+        "Milk",
+        "Sand and water",
+        "Oil and water",
+        "Salt solution"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "What is the value of acceleration due to gravity on Earth approximately?",
       "options": [
-        "Soup heats only metal",
-        "Wood creates cold",
-        "Metal conducts heat better",
-        "Metal contains fire"
+        "9.8 m/s^2",
+        "8.9 m/s^2",
+        "10.8 m/s^2",
+        "6.7 m/s^2"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "An object moving with uniform velocity has what kind of acceleration?",
       "options": [
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Lightning has no sound",
-        "Thunder happens later in the sky"
+        "Uniform negative acceleration",
+        "Uniform positive acceleration",
+        "Variable acceleration",
+        "Zero acceleration"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Which of Newton's laws explains why a passenger jerks forward when a bus suddenly stops?",
       "options": [
-        "Change one main condition and compare results",
-        "Do not record results",
-        "Change everything at once",
-        "Guess without observing"
+        "Second law",
+        "Law of gravitation",
+        "First law (law of inertia)",
+        "Third law"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "What do we call the number of protons in an atom's nucleus?",
       "options": [
-        "It wilts",
-        "It grows faster",
-        "It needs no sunlight",
-        "It becomes a rock"
+        "Atomic mass",
+        "Atomic number",
+        "Valency",
+        "Mass number"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Which method is used to increase crop yield by growing two or more crops on the same field simultaneously?",
       "options": [
-        "Metal conducts heat better",
-        "Soup heats only metal",
-        "Metal contains fire",
-        "Wood creates cold"
+        "Crop rotation",
+        "Intercropping",
+        "Fallowing",
+        "Monoculture"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "What is the term for animals raised for milk, meat, or other products?",
       "options": [
-        "Light travels faster than sound",
-        "Lightning has no sound",
-        "Thunder happens later in the sky",
-        "Clouds stop sound"
+        "Poultry",
+        "Wildlife",
+        "Fauna",
+        "Livestock"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Sound cannot travel through which of these?",
       "options": [
-        "Guess without observing",
-        "Do not record results",
-        "Change everything at once",
-        "Change one main condition and compare results"
+        "Vacuum",
+        "Solid metal",
+        "Air",
+        "Water"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Which gas makes up approximately 78% of Earth's atmosphere?",
       "options": [
-        "It becomes a rock",
-        "It grows faster",
-        "It wilts",
-        "It needs no sunlight"
+        "Carbon dioxide",
+        "Nitrogen",
+        "Argon",
+        "Oxygen"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "What is the SI unit of power?",
       "options": [
-        "Metal conducts heat better",
-        "Wood creates cold",
-        "Soup heats only metal",
-        "Metal contains fire"
+        "Pascal",
+        "Joule",
+        "Newton",
+        "Watt"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Which simple machine is a see-saw an example of?",
       "options": [
-        "Thunder happens later in the sky",
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Lightning has no sound"
+        "Pulley",
+        "Lever",
+        "Wheel and axle",
+        "Inclined plane"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "What is the term for the loss of soil due to wind or water?",
       "options": [
-        "Change one main condition and compare results",
-        "Guess without observing",
-        "Do not record results",
-        "Change everything at once"
+        "Deforestation",
+        "Desertification",
+        "Soil erosion",
+        "Eutrophication"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Which process changes a solid directly into a gas without becoming liquid?",
       "options": [
-        "It wilts",
-        "It needs no sunlight",
-        "It grows faster",
-        "It becomes a rock"
+        "Sublimation",
+        "Evaporation",
+        "Melting",
+        "Condensation"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "What is the SI unit of force?",
       "options": [
-        "Soup heats only metal",
-        "Wood creates cold",
-        "Metal contains fire",
-        "Metal conducts heat better"
+        "Newton",
+        "Watt",
+        "Pascal",
+        "Joule"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Which of these best describes a colloid?",
       "options": [
-        "Thunder happens later in the sky",
-        "Lightning has no sound",
-        "Clouds stop sound",
-        "Light travels faster than sound"
+        "A pure substance with fixed composition",
+        "A mixture where particles settle quickly",
+        "A mixture where components are completely separated",
+        "A mixture where particles are larger than in a solution but do not settle, e.g., milk"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "According to Newton's third law, for every action there is a reaction that is:",
       "options": [
-        "Do not record results",
-        "Change everything at once",
-        "Change one main condition and compare results",
-        "Guess without observing"
+        "Larger in magnitude",
+        "Equal in magnitude and same direction",
+        "Equal in magnitude and opposite in direction",
+        "Smaller in magnitude"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Who proposed the plum pudding model of the atom?",
       "options": [
-        "It needs no sunlight",
-        "It grows faster",
-        "It wilts",
-        "It becomes a rock"
+        "John Dalton",
+        "Niels Bohr",
+        "Ernest Rutherford",
+        "J.J. Thomson"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Which type of change is 'melting of wax' \u2014 physical or chemical?",
       "options": [
-        "Metal conducts heat better",
-        "Soup heats only metal",
-        "Metal contains fire",
-        "Wood creates cold"
+        "Both physical and chemical",
+        "Physical change",
+        "Neither",
+        "Chemical change"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "What is the audible range of frequency for the human ear?",
       "options": [
-        "Lightning has no sound",
-        "Clouds stop sound",
-        "Thunder happens later in the sky",
-        "Light travels faster than sound"
+        "2 Hz to 2,000 Hz",
+        "200 Hz to 200,000 Hz",
+        "20,000 Hz to 200,000 Hz",
+        "20 Hz to 20,000 Hz"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Which process describes water moving from a dilute to a concentrated solution through a semi-permeable membrane?",
       "options": [
-        "Change everything at once",
-        "Change one main condition and compare results",
-        "Guess without observing",
-        "Do not record results"
+        "Diffusion",
+        "Filtration",
+        "Transpiration",
+        "Osmosis"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 31,
+      "question": "Which particle in an atom was discovered by Rutherford's gold foil experiment to be concentrated in the nucleus?",
+      "options": [
+        "Electrons",
+        "Positive charge (protons)",
+        "Neutrons only",
+        "No particles"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 32,
+      "question": "Which form of energy is possessed by a stretched rubber band?",
+      "options": [
+        "Potential energy",
+        "Heat energy",
+        "Kinetic energy",
+        "Sound energy"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 33,
+      "question": "Which organelle is known as the 'powerhouse of the cell'?",
+      "options": [
+        "Nucleus",
+        "Golgi body",
+        "Mitochondria",
+        "Ribosome"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 34,
+      "question": "What happens to the pressure exerted by a liquid as depth increases?",
+      "options": [
+        "It becomes zero",
+        "It decreases",
+        "It remains constant",
+        "It increases"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 35,
+      "question": "What is the SI unit of work?",
+      "options": [
+        "Watt",
+        "Joule",
+        "Pascal",
+        "Newton"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "Which type of tissue allows movement in animals?",
+      "options": [
+        "Epithelial tissue",
+        "Muscular tissue",
+        "Nervous tissue",
+        "Connective tissue"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "What is the valency of oxygen?",
+      "options": [
+        "4",
+        "1",
+        "3",
+        "2"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "Which vitamin is produced in the skin upon exposure to sunlight?",
+      "options": [
+        "Vitamin C",
+        "Vitamin A",
+        "Vitamin B12",
+        "Vitamin D"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "Which kingdom includes organisms like mushrooms and yeast?",
+      "options": [
+        "Fungi",
+        "Protista",
+        "Monera",
+        "Plantae"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "What is the process by which plants lose water vapour through their leaves?",
+      "options": [
+        "Respiration",
+        "Excretion",
+        "Transpiration",
+        "Photosynthesis"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "Which force is responsible for objects floating or sinking in a liquid?",
+      "options": [
+        "Magnetic force",
+        "Gravitational force",
+        "Buoyant force (upthrust)",
+        "Frictional force"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "Which law states that mass can neither be created nor destroyed in a chemical reaction?",
+      "options": [
+        "Law of Multiple Proportions",
+        "Law of Conservation of Mass",
+        "Law of Constant Proportions",
+        "Avogadro's Law"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "What is the SI unit of speed?",
+      "options": [
+        "Kilometre per hour",
+        "Newton",
+        "Metre per second (m/s)",
+        "Metre per second squared"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "Which tissue in plants is responsible for the transport of water?",
+      "options": [
+        "Parenchyma",
+        "Xylem",
+        "Sclerenchyma",
+        "Phloem"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "What is the charge on a neutron?",
+      "options": [
+        "Negative",
+        "Positive",
+        "No charge (neutral)",
+        "Variable"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "If the number of neutrons in an atom is changed while the number of protons stays the same, what results?",
+      "options": [
+        "A different element with the same atomic number",
+        "No change occurs at all",
+        "An isotope of the same element is formed",
+        "An ion of the element"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "A student mixes iron filings with sulphur powder and heats the mixture, forming iron sulphide. How can we tell this is a chemical change rather than physical mixing?",
+      "options": [
+        "The iron filings can still be separated with a magnet after heating",
+        "It is reversible by simply cooling the mixture",
+        "A new substance (iron sulphide) forms with different properties, and the change is not easily reversible by physical means",
+        "No new substance forms, only the color changes"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "A plant's root hair cells absorb water from soil that has a lower solute concentration than the cell sap. Which process explains this water uptake?",
+      "options": [
+        "Transpiration pulling water directly into roots",
+        "Active transport requiring ATP only",
+        "Diffusion of solutes into the soil",
+        "Osmosis, as water moves from a region of higher water potential (soil) to lower water potential (cell)"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "A ball is thrown vertically upward. At the highest point of its path, what are its velocity and acceleration?",
+      "options": [
+        "Both are maximum",
+        "Both velocity and acceleration are zero",
+        "Velocity is maximum, acceleration is zero",
+        "Velocity is zero, acceleration is g (downward, due to gravity)"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "Two identical balloons are filled with equal amounts of air and helium respectively. Which one rises and why, in terms of buoyant force?",
+      "options": [
+        "Both rise equally",
+        "The helium balloon rises because helium is less dense than air, so the buoyant force exceeds its weight",
+        "Neither rises since buoyant force applies only to liquids",
+        "The air-filled balloon rises due to greater weight"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

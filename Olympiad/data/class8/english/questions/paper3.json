@@ -2,393 +2,639 @@
   "class": 8,
   "subject": "English",
   "paper": 3,
-  "title": "Class 8 English — Paper 3",
+  "title": "Class 8 English Olympiad \u2014 Paper 3",
   "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "instructions": [
+    "The time allowed for this paper is 60 minutes.",
+    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
+    "There is no negative marking for wrong answers.",
+    "Each question has four options; choose the one correct answer.",
+    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
+    "Use of calculators is not permitted unless specified."
+  ],
+  "sections": [
+    {
+      "name": "Word and Structure",
+      "questions": 30,
+      "marksPerQuestion": 1,
+      "totalMarks": 30
+    },
+    {
+      "name": "Reading & Expression",
+      "questions": 15,
+      "marksPerQuestion": 1,
+      "totalMarks": 15
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
   "questions": [
     {
       "id": 1,
-      "question": "Choose the word closest in meaning to 'quick'.",
+      "question": "Identify the correctly punctuated sentence.",
       "options": [
-        "rapid",
-        "quiet",
-        "heavy",
-        "slow"
+        "I need the following items, pen paper and glue.",
+        "I need the following items: pen, paper, and glue.",
+        "I need the following items; pen, paper, and glue",
+        "I need the following items pen; paper, and glue."
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Choose the opposite of 'ancient'.",
+      "question": "Choose the correct word: Each of the boys ___ a bicycle.",
       "options": [
-        "old",
-        "modern",
-        "early",
-        "historic"
+        "had have",
+        "has",
+        "have",
+        "having"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Choose the correct article: She saw ___ owl.",
+      "question": "Choose the correct indirect speech: He said, 'I am busy.'",
       "options": [
-        "a",
-        "the",
-        "an",
-        "no article"
+        "He said that he was busy.",
+        "He said that he is busy.",
+        "He said he will be busy.",
+        "He said that I am busy."
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Choose the correct preposition: The keys are ___ the drawer.",
+      "question": "Choose the word closest in meaning to 'vivid'.",
       "options": [
-        "quickly",
-        "because",
-        "inside",
-        "happy"
+        "Faded",
+        "Dull",
+        "Vague",
+        "Bright/clear"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Choose the correct verb: The puppy ___ loudly.",
+      "question": "Fill in the blank: They have been friends ___ childhood.",
       "options": [
-        "barks",
-        "bark",
-        "barked",
-        "barking"
+        "from",
+        "since",
+        "for",
+        "in"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Choose the plural of 'tooth'.",
+      "question": "Identify the part of speech of the underlined word: She sings 'sweetly'.",
       "options": [
-        "toothies",
-        "tooths",
-        "toothes",
-        "teeth"
+        "Verb",
+        "Adjective",
+        "Noun",
+        "Adverb"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Choose the correctly spelled word.",
+      "question": "Choose the antonym of 'cheerful'.",
       "options": [
-        "enviornment",
-        "enviroment",
-        "environment",
-        "envirnment"
+        "Joyful",
+        "Gloomy",
+        "Lively",
+        "Happy"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Choose the homophone of 'right'.",
+      "question": "Fill in the blank with the correct preposition: He is interested ___ music.",
       "options": [
-        "road",
-        "write",
-        "ride",
-        "rate"
+        "in",
+        "on",
+        "with",
+        "at"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Identify the adjective: The clever fox escaped.",
+      "question": "Identify the correctly formed question tag: He is smart, ___?",
       "options": [
-        "fox",
-        "clever",
-        "the",
-        "escaped"
+        "isn't it",
+        "wasn't he",
+        "doesn't he",
+        "isn't he"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Identify the adverb: The boy answered politely.",
+      "question": "Choose the synonym of 'enormous'.",
       "options": [
-        "boy",
-        "politely",
-        "answered",
-        "the"
+        "Huge",
+        "Tiny",
+        "Small",
+        "Average"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What problem did Aarav notice?",
+      "question": "Fill in the blank with the correct modal: You ___ wear a helmet while riding a bike.",
       "options": [
-        "The classroom was noisy",
-        "The books were missing",
-        "The plants looked dry",
-        "The window was broken"
+        "can",
+        "must",
+        "may",
+        "might"
       ],
-      "section": "Reading & Expression"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "What value did the class practise?",
+      "question": "Choose the meaning of the idiom 'to hit the books'.",
       "options": [
-        "Competition only",
-        "Sharing responsibility",
-        "Keeping secrets",
-        "Avoiding work"
+        "To read casually",
+        "To throw books",
+        "To hit something physically",
+        "To study hard"
       ],
-      "section": "Reading & Expression"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "What is the best title?",
+      "question": "Choose the correct conjunction: She was hungry, ___ she ate quickly.",
       "options": [
-        "The Blue Wallet",
-        "The Busy Street",
-        "An Honest Choice",
-        "A Long Walk"
+        "and",
+        "so",
+        "but",
+        "because"
       ],
-      "section": "Reading & Expression"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Which reply is most appropriate?",
+      "question": "Identify the correctly written sentence.",
       "options": [
-        "Yesterday.",
-        "No! Go away.",
-        "Of course. How can I help?",
-        "Blue is my favourite."
+        "Everyone have submitted his assignment.",
+        "Everyone has submitted his or her assignment.",
+        "Everyone has submitted their assignments only.",
+        "Everyone have submitted their assignment."
       ],
-      "section": "Reading & Expression"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "Which sentence is best for the notice?",
+      "question": "Choose the correct comparative form: This road is ___ than that one.",
       "options": [
-        "Students are requested to bring their art materials tomorrow.",
-        "Bring stuff tomorrow!",
-        "You better bring it.",
-        "Art things!!!"
+        "wider",
+        "widest",
+        "more wide",
+        "most wide"
       ],
-      "section": "Reading & Expression"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "Choose the correct sentence.",
+      "question": "Choose the word that best completes the sentence: His ___ remarks hurt her feelings.",
       "options": [
-        "The children have finished their project.",
-        "The children finishing their project.",
-        "The children is finished their project.",
-        "The children has finished their project."
+        "soothing",
+        "kind",
+        "gentle",
+        "harsh"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Choose the past tense of 'bring'.",
+      "question": "Identify the error in the sentence: 'He don't know the answer.'",
       "options": [
-        "brought",
-        "brang",
-        "bringing",
-        "bringed"
+        "'know' should be 'knows'",
+        "No error",
+        "'don't' should be 'doesn't'",
+        "'answer' should be 'answers'"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Choose the correct comparative form.",
+      "question": "Fill in the blank: The class ___ going on a trip next week.",
       "options": [
-        "carefuller",
-        "most carefuler",
-        "carefulest",
-        "more careful"
+        "were",
+        "is",
+        "are",
+        "have"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "Choose the most polite request.",
+      "question": "Fill in the blank: Neither the manager nor the workers ___ satisfied.",
       "options": [
-        "You must help me.",
-        "Help me now!",
-        "Could you please help me?",
-        "Give me that!"
+        "were",
+        "has been",
+        "is",
+        "was"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "Choose the best word: The girl spoke ___ to the baby.",
+      "question": "Choose the correct word: The news ___ shocking.",
       "options": [
-        "softness",
-        "softly",
-        "softer",
-        "soft"
+        "were",
+        "is",
+        "are",
+        "have been"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Identify the correct reported speech: She said, 'I will help you tomorrow.'",
       "options": [
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow,"
+        "She said I will help you tomorrow.",
+        "She said that she would help me the next day.",
+        "She said that she helps me tomorrow.",
+        "She said that she will help me tomorrow."
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Choose the correct passive voice: 'They are building a bridge.'",
       "options": [
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow!"
+        "A bridge was built by them.",
+        "A bridge has been built by them.",
+        "A bridge is being built by them.",
+        "A bridge is built by them."
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Choose the correct form: By next month, he ___ his project.",
       "options": [
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow;"
+        "will complete",
+        "completes",
+        "will have completed",
+        "has completed"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Choose the correctly spelled word.",
       "options": [
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?"
+        "Beautifull",
+        "Beautyful",
+        "Beautiful",
+        "Beutiful"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Choose the meaning of the idiom 'to spill the beans'.",
       "options": [
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow;"
+        "To make a mess",
+        "To argue loudly",
+        "To cook food",
+        "To reveal a secret"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Fill in the blank with the correct article: She bought ___ umbrella.",
       "options": [
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow!"
+        "the",
+        "no article needed",
+        "a",
+        "an"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Choose the correct plural form of 'mouse' (the animal).",
       "options": [
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow;"
+        "Mice",
+        "Mouses",
+        "Mouse",
+        "Mices"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Choose the word closest in meaning to 'courageous'.",
       "options": [
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow;"
+        "Brave",
+        "Weak",
+        "Timid",
+        "Fearful"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Fill in the blank: If she ___ hard, she would pass the exam.",
       "options": [
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow,"
+        "study",
+        "studied",
+        "studies",
+        "studying"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Choose the correctly spelled word.",
       "options": [
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow,"
+        "Enviornment",
+        "Envirnoment",
+        "Enviroment",
+        "Environment"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Read: 'The astronaut described seeing Earth from space as a moment that changed how she viewed her home planet forever.' What effect did this experience have on her?",
       "options": [
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow!"
+        "It gave her a new perspective and deeper appreciation for Earth",
+        "It had no lasting impact",
+        "It made her indifferent to the environment",
+        "It made her afraid of space travel"
       ],
-      "section": "Word and Structure"
+      "section": "Reading & Expression",
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Read: 'The librarian created a 'mystery book' display where covers were hidden, encouraging students to choose books without judging them by appearance.' What was the librarian's intention?",
       "options": [
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow;"
+        "To reduce the number of visitors",
+        "To make the library more confusing",
+        "To hide unpopular books",
+        "To encourage students to explore books beyond their usual preferences"
       ],
-      "section": "Word and Structure"
+      "section": "Reading & Expression",
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Read: 'The young artist painted the same tree every day for a year, capturing how it changed through the seasons.' What does this show about the artist's approach to art?",
       "options": [
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow;"
+        "Boredom with the subject",
+        "Patience and attention to gradual change over time",
+        "A lack of creativity",
+        "Indifference to detail"
       ],
-      "section": "Word and Structure"
+      "section": "Reading & Expression",
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Read: 'The teacher used real-life examples like cooking measurements to explain fractions, making the lesson easier to understand.' What teaching strategy is described?",
       "options": [
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow,"
+        "Testing students without explanation",
+        "Using only textbook definitions",
+        "Avoiding practical examples",
+        "Connecting abstract concepts to familiar real-life examples"
       ],
-      "section": "Word and Structure"
+      "section": "Reading & Expression",
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "Choose the correctly punctuated sentence.",
+      "question": "Read: 'The coach reminded the team before every match that losing gracefully mattered as much as winning.' What value is the coach emphasizing?",
       "options": [
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow?"
+        "Winning at any cost",
+        "Avoiding competition",
+        "Ignoring the outcome",
+        "Sportsmanship and humility"
       ],
-      "section": "Word and Structure"
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "Read: 'Even after breaking his leg, the young cyclist continued training on a stationary bike, determined to return to racing.' What quality is highlighted here?",
+      "options": [
+        "Giving up easily",
+        "Resilience and determination to overcome setbacks",
+        "Recklessness",
+        "Indifference to his injury"
+      ],
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "Read: 'Kabir spent his summer vacation teaching younger children in his neighbourhood to read, refusing any payment for his time.' What quality does Kabir show?",
+      "options": [
+        "Generosity and a willingness to help others",
+        "Selfishness",
+        "Laziness",
+        "Indifference"
+      ],
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "Read: 'The old fisherman knew every current and tide of the bay, having sailed it for over fifty years.' What does this passage suggest about the fisherman?",
+      "options": [
+        "He dislikes the sea",
+        "He has never sailed before",
+        "He is new to fishing",
+        "He has deep, experience-based knowledge of the bay"
+      ],
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "Read: 'The young chef refused to follow a single recipe twice, believing that creativity came from experimenting with new flavours each time.' What value does the chef prioritize?",
+      "options": [
+        "Avoiding risk",
+        "Following tradition strictly",
+        "Repetition and routine",
+        "Creativity and willingness to experiment"
+      ],
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "Read: 'The scientist's notebook was filled with failed experiments, each one crossed out and followed by a new idea.' What does this reveal about the scientific process?",
+      "options": [
+        "Scientists never make mistakes",
+        "Discovery often involves trial, error, and persistence",
+        "Science progresses without any failures",
+        "Failed experiments are always wasted effort"
+      ],
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "Read: 'Despite the power cut, Sana continued her homework using a small torch, determined not to fall behind in her studies.' What trait does Sana display?",
+      "options": [
+        "Determination and responsibility",
+        "Indifference",
+        "Carelessness",
+        "Laziness"
+      ],
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "Read: 'As the train pulled into the station, memories of childhood summers spent at grandmother's house flooded back to Aryan.' What is the tone of this passage?",
+      "options": [
+        "Indifferent",
+        "Nostalgic and warm",
+        "Angry",
+        "Fearful"
+      ],
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "Read: 'The two rival teams, after years of competition, finally joined forces to win the inter-school championship together.' What does this passage suggest about teamwork?",
+      "options": [
+        "The teams never truly cooperated",
+        "Competition prevents any success",
+        "Rivalry is always more effective than teamwork",
+        "Collaboration can achieve what rivalry alone could not"
+      ],
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "Read: 'The company launched a new policy allowing employees to work from home twice a week, aiming to improve work-life balance.' What is the goal of this policy?",
+      "options": [
+        "To reduce employee salaries",
+        "To eliminate weekends",
+        "To increase office attendance",
+        "To help employees balance their personal and professional lives"
+      ],
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "Read: 'Though the twins looked identical, their personalities couldn't have been more different \u2014 one loved adventure, the other preferred quiet reading.' What contrast does this passage highlight?",
+      "options": [
+        "Their difference in age",
+        "Physical similarity versus difference in interests/personality",
+        "Their shared personality traits",
+        "Their difference in appearance"
+      ],
+      "section": "Reading & Expression",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "A paragraph repeatedly switches between past and present tense while describing the same event. What editing skill would fix this?",
+      "options": [
+        "Adding more adjectives",
+        "Maintaining consistent verb tense throughout the passage",
+        "Removing all pronouns",
+        "Shortening every sentence"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "Which sentence best uses a simile to describe someone's bravery?",
+      "options": [
+        "'He was very brave in the fight.'",
+        "'He fought bravely.'",
+        "'His bravery was noted by all.'",
+        "'He fought as bravely as a lion.'"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "Which sentence best uses a rhetorical question to persuade readers about the importance of reading?",
+      "options": [
+        "'Isn't it amazing how a single book can change the way you see the world?'",
+        "'Some people read and some do not.'",
+        "'Books are made of paper.'",
+        "'Reading takes time.'"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "Identify the tone of the sentence: 'Fantastic, my bike has a flat tyre right before the race.'",
+      "options": [
+        "Sarcastic",
+        "Cheerful",
+        "Neutral",
+        "Formal"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "Read the two statements: (1) 'She seldom complains.' (2) 'She almost never complains.' What is the relationship between them?",
+      "options": [
+        "They convey a similar meaning in different words",
+        "They are unrelated",
+        "They contradict each other",
+        "Statement 1 is much stronger than statement 2"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

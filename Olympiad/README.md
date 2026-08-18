@@ -4,7 +4,7 @@ A static HTML/JavaScript Olympiad practice portal with:
 - Class selection (1–10)
 - Subject selection (Mathematics, Science, English, Computer Science, General Knowledge)
 - 5 papers per subject per class
-- 35 questions per paper
+- Question and mark totals read from each paper's JSON file
 - 60-minute timer
 - Automatic checking and score
 - Answer review

@@ -2,393 +2,645 @@
   "class": 9,
   "subject": "General Knowledge",
   "paper": 5,
-  "title": "Class 9 General Knowledge — Paper 5",
+  "title": "Class 9 General Knowledge Olympiad \u2014 Paper 5",
   "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "instructions": [
+    "The time allowed for this paper is 60 minutes.",
+    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
+    "There is no negative marking for wrong answers.",
+    "Each question has four options; choose the one correct answer.",
+    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
+    "Use of calculators is not permitted unless specified."
+  ],
+  "sections": [
+    {
+      "name": "General Awareness",
+      "questions": 20,
+      "marksPerQuestion": 1,
+      "totalMarks": 20
+    },
+    {
+      "name": "World & Current Affairs",
+      "questions": 15,
+      "marksPerQuestion": 1,
+      "totalMarks": 15
+    },
+    {
+      "name": "Life Skills",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
   "questions": [
     {
       "id": 1,
-      "question": "Which is India's national animal?",
+      "question": "Who is considered the first female freedom fighter of India from the Revolt of 1857?",
       "options": [
-        "Lion",
-        "Elephant",
-        "Tiger",
-        "Peacock"
+        "Annie Besant",
+        "Sarojini Naidu",
+        "Rani Lakshmibai",
+        "Kasturba Gandhi"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which is India's national bird?",
+      "question": "Which Indian city is called the 'Pink City'?",
       "options": [
-        "Eagle",
-        "Parrot",
-        "Sparrow",
-        "Peacock"
+        "Jodhpur",
+        "Bikaner",
+        "Udaipur",
+        "Jaipur"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "What is the capital of India?",
+      "question": "Which is the tallest animal in the world?",
       "options": [
-        "Jaipur",
-        "Mumbai",
-        "Kolkata",
-        "New Delhi"
+        "Horse",
+        "Elephant",
+        "Camel",
+        "Giraffe"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which is the largest planet?",
+      "question": "Which planet is known as the 'Red Planet'?",
       "options": [
-        "Earth",
-        "Mars",
         "Jupiter",
-        "Mercury"
+        "Saturn",
+        "Venus",
+        "Mars"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which is the largest ocean?",
+      "question": "Which Indian monument is located in Agra and is a UNESCO World Heritage Site?",
       "options": [
-        "Atlantic Ocean",
-        "Arctic Ocean",
-        "Indian Ocean",
-        "Pacific Ocean"
+        "Red Fort",
+        "Gateway of India",
+        "Taj Mahal",
+        "Qutub Minar"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Which city is called the Pink City?",
-      "options": [
-        "Udaipur",
-        "Ajmer",
-        "Jodhpur",
-        "Jaipur"
-      ],
-      "section": "General Awareness"
-    },
-    {
-      "id": 7,
-      "question": "Which monument is in Agra?",
-      "options": [
-        "Charminar",
-        "India Gate",
-        "Taj Mahal",
-        "Gateway of India"
-      ],
-      "section": "General Awareness"
-    },
-    {
-      "id": 8,
-      "question": "Which planet is closest to the Sun?",
-      "options": [
-        "Mercury",
-        "Venus",
-        "Earth",
-        "Mars"
-      ],
-      "section": "General Awareness"
-    },
-    {
-      "id": 9,
-      "question": "Which planet has famous rings?",
-      "options": [
-        "Mercury",
-        "Saturn",
-        "Earth",
-        "Venus"
-      ],
-      "section": "General Awareness"
-    },
-    {
-      "id": 10,
-      "question": "Which animal is called the Ship of the Desert?",
-      "options": [
-        "Deer",
-        "Goat",
-        "Horse",
-        "Camel"
-      ],
-      "section": "General Awareness"
-    },
-    {
-      "id": 11,
-      "question": "Which instrument measures temperature?",
-      "options": [
-        "Compass",
-        "Ruler",
-        "Thermometer",
-        "Clock"
-      ],
-      "section": "General Awareness"
-    },
-    {
-      "id": 12,
-      "question": "Which device helps find direction?",
-      "options": [
-        "Compass",
-        "Calendar",
-        "Thermometer",
-        "Scale"
-      ],
-      "section": "General Awareness"
-    },
-    {
-      "id": 13,
-      "question": "Which is a renewable energy source?",
-      "options": [
-        "Solar energy",
-        "Diesel",
-        "Coal",
-        "Petrol"
-      ],
-      "section": "General Awareness"
-    },
-    {
-      "id": 14,
-      "question": "Which festival is known as the festival of lights?",
+      "question": "Which festival is celebrated as the harvest festival in Punjab?",
       "options": [
         "Diwali",
-        "Pongal",
+        "Baisakhi",
         "Holi",
         "Onam"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 7,
+      "question": "In which direction does the sun set?",
+      "options": [
+        "West",
+        "East",
+        "North",
+        "South"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 8,
+      "question": "What is the national bird of India?",
+      "options": [
+        "Eagle",
+        "Sparrow",
+        "Parrot",
+        "Peacock"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 9,
+      "question": "What is the currency of the United Kingdom?",
+      "options": [
+        "Dollar",
+        "Franc",
+        "Euro",
+        "Pound Sterling"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 10,
+      "question": "Who is called the 'Father of the Indian Nation'?",
+      "options": [
+        "Mahatma Gandhi",
+        "Jawaharlal Nehru",
+        "Bhagat Singh",
+        "Subhas Chandra Bose"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 11,
+      "question": "Which Indian state is the largest producer of rice?",
+      "options": [
+        "West Bengal",
+        "Punjab",
+        "Assam",
+        "Uttar Pradesh"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 12,
+      "question": "Which gas is essential for photosynthesis in plants?",
+      "options": [
+        "Hydrogen",
+        "Nitrogen",
+        "Carbon dioxide",
+        "Oxygen"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 13,
+      "question": "Which is the smallest state in India by area?",
+      "options": [
+        "Tripura",
+        "Goa",
+        "Manipur",
+        "Sikkim"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 14,
+      "question": "Which continent is the largest by area?",
+      "options": [
+        "Asia",
+        "North America",
+        "Africa",
+        "Europe"
+      ],
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "Which sport uses a bat, ball and wickets?",
+      "question": "Which river is the longest in India?",
       "options": [
-        "Tennis",
-        "Cricket",
-        "Football",
-        "Hockey"
+        "Ganga",
+        "Yamuna",
+        "Godavari",
+        "Brahmaputra"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "If you face West and turn 180 degrees, which direction do you face?",
+      "question": "Which organ of the United Nations deals with international disputes and legal matters?",
       "options": [
-        "South",
-        "West",
-        "East",
-        "North"
+        "International Court of Justice",
+        "Security Council",
+        "General Assembly",
+        "Secretariat"
       ],
-      "section": "General Reasoning"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Which organisation is associated with India's Chandrayaan missions?",
+      "question": "Who was the first woman Prime Minister of India?",
       "options": [
-        "ISRO",
-        "WHO",
-        "FIFA",
-        "UNESCO"
+        "Indira Gandhi",
+        "Sarojini Naidu",
+        "Pratibha Patil",
+        "Sonia Gandhi"
       ],
-      "section": "World & Current Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Which technology is widely used for instant digital payments in India?",
+      "question": "Which is the largest ocean in the world?",
       "options": [
-        "VHS",
-        "UPI",
-        "FM",
-        "DVD"
+        "Atlantic Ocean",
+        "Pacific Ocean",
+        "Arctic Ocean",
+        "Indian Ocean"
       ],
-      "section": "World & Current Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "How can you save electricity?",
+      "question": "Who is known as the 'Missile Man of India'?",
       "options": [
-        "Keep TV on all night",
-        "Switch off lights when not needed",
-        "Leave lights on",
-        "Open the fridge often"
+        "Dr. A.P.J. Abdul Kalam",
+        "Dr. Homi Bhabha",
+        "Dr. Vikram Sarabhai",
+        "Dr. C.V. Raman"
       ],
-      "section": "Life Skills"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "Why are national parks important?",
+      "question": "Who wrote the Indian national anthem?",
       "options": [
-        "They protect wildlife and habitats",
-        "They increase pollution",
-        "They remove forests",
-        "They stop all farming"
+        "Bankim Chandra Chattopadhyay",
+        "Sarojini Naidu",
+        "Muhammad Iqbal",
+        "Rabindranath Tagore"
       ],
-      "section": "Achievers / HOTS"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "If you face West and turn 180 degrees, which direction do you face?",
+      "question": "What was the theme of India's G20 presidency in 2023?",
       "options": [
-        "South",
-        "West",
-        "East",
-        "North"
+        "Make in India",
+        "'Vasudhaiva Kutumbakam' (One Earth, One Family, One Future)",
+        "Digital India Only",
+        "Clean Energy Only"
       ],
-      "section": "General Reasoning"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Which organisation is associated with India's Chandrayaan missions?",
+      "question": "Who is the current Vice-President of India (as of 2026)?",
       "options": [
-        "UNESCO",
-        "WHO",
-        "FIFA",
-        "ISRO"
+        "Hamid Ansari",
+        "Venkaiah Naidu",
+        "Jagdeep Dhankhar",
+        "C. P. Radhakrishnan"
       ],
-      "section": "World & Current Awareness"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "Which technology is widely used for instant digital payments in India?",
+      "question": "Which country hosted the 2024 Summer Olympics?",
       "options": [
-        "UPI",
-        "FM",
-        "VHS",
-        "DVD"
+        "USA",
+        "Japan",
+        "UK",
+        "France (Paris)"
       ],
-      "section": "World & Current Awareness"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "How can you save electricity?",
+      "question": "Who is the current Prime Minister of India (as of 2026)?",
       "options": [
-        "Leave lights on",
-        "Open the fridge often",
-        "Keep TV on all night",
-        "Switch off lights when not needed"
+        "Narendra Modi",
+        "Manmohan Singh",
+        "Rahul Gandhi",
+        "Amit Shah"
       ],
-      "section": "Life Skills"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why are national parks important?",
+      "question": "Who is the current President of India (as of 2026)?",
       "options": [
-        "They protect wildlife and habitats",
-        "They stop all farming",
-        "They remove forests",
-        "They increase pollution"
+        "Pranab Mukherjee",
+        "Ram Nath Kovind",
+        "Pratibha Patil",
+        "Droupadi Murmu"
       ],
-      "section": "Achievers / HOTS"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "If you face West and turn 180 degrees, which direction do you face?",
+      "question": "Which country is hosting the 2026 Winter Olympics?",
       "options": [
-        "South",
-        "West",
-        "East",
-        "North"
+        "France",
+        "Italy (Milan and Cortina d'Ampezzo)",
+        "USA",
+        "China"
       ],
-      "section": "General Reasoning"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "Which organisation is associated with India's Chandrayaan missions?",
+      "question": "What does the term 'G20' refer to?",
       "options": [
-        "FIFA",
-        "ISRO",
-        "UNESCO",
-        "WHO"
+        "A UN peacekeeping mission",
+        "A treaty on climate change",
+        "A trade pact among 20 Asian countries",
+        "A forum of 20 major world economies discussing global economic issues"
       ],
-      "section": "World & Current Awareness"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "Which technology is widely used for instant digital payments in India?",
+      "question": "Which countries are jointly hosting the FIFA World Cup 2026?",
       "options": [
-        "VHS",
-        "DVD",
-        "FM",
-        "UPI"
+        "France and Germany",
+        "USA, Canada, and Mexico",
+        "Qatar, UAE, and Saudi Arabia",
+        "Brazil and Argentina"
       ],
-      "section": "World & Current Awareness"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "How can you save electricity?",
+      "question": "Which two Italian cities are jointly hosting the 2026 Winter Olympics?",
       "options": [
-        "Keep TV on all night",
-        "Switch off lights when not needed",
-        "Leave lights on",
-        "Open the fridge often"
+        "Rome and Venice",
+        "Milan and Cortina d'Ampezzo",
+        "Florence and Naples",
+        "Turin and Milan"
       ],
-      "section": "Life Skills"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Why are national parks important?",
+      "question": "Which Indian space mission successfully landed near the Moon's south pole in 2023?",
       "options": [
-        "They increase pollution",
-        "They remove forests",
-        "They stop all farming",
-        "They protect wildlife and habitats"
+        "Chandrayaan-2",
+        "Aditya-L1",
+        "Chandrayaan-3",
+        "Mangalyaan"
       ],
-      "section": "Achievers / HOTS"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "If you face West and turn 180 degrees, which direction do you face?",
+      "question": "Which day is observed worldwide as International Yoga Day?",
       "options": [
-        "South",
-        "West",
-        "North",
-        "East"
+        "1st May",
+        "10th December",
+        "21st June",
+        "5th June"
       ],
-      "section": "General Reasoning"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "Which organisation is associated with India's Chandrayaan missions?",
+      "question": "Which Indian mission is ISRO's programme for human spaceflight?",
       "options": [
-        "FIFA",
-        "UNESCO",
-        "WHO",
-        "ISRO"
+        "Chandrayaan",
+        "Mangalyaan",
+        "Gaganyaan",
+        "Aditya-L1"
       ],
-      "section": "World & Current Awareness"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "Which technology is widely used for instant digital payments in India?",
+      "question": "Who is the current Chief Justice of India (as of 2026)?",
       "options": [
-        "FM",
-        "UPI",
-        "VHS",
-        "DVD"
+        "Justice Surya Kant",
+        "Justice U.U. Lalit",
+        "Justice N.V. Ramana",
+        "Justice D.Y. Chandrachud"
       ],
-      "section": "World & Current Awareness"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "How can you save electricity?",
+      "question": "Which organization deals with global health issues and is headquartered in Geneva?",
       "options": [
-        "Leave lights on",
-        "Keep TV on all night",
-        "Switch off lights when not needed",
-        "Open the fridge often"
+        "World Health Organization (WHO)",
+        "UNESCO",
+        "World Bank",
+        "UNICEF"
       ],
-      "section": "Life Skills"
+      "section": "World & Current Affairs",
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "Why are national parks important?",
+      "question": "Which sports event is held every four years among Commonwealth nations?",
       "options": [
-        "They remove forests",
-        "They increase pollution",
-        "They stop all farming",
-        "They protect wildlife and habitats"
+        "SAARC Games",
+        "Asian Games",
+        "Olympic Games",
+        "Commonwealth Games"
       ],
-      "section": "Achievers / HOTS"
+      "section": "World & Current Affairs",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "How should one respond to online misinformation shared by a friend?",
+      "options": [
+        "Politely fact-check and share accurate information with sources",
+        "Argue aggressively with the friend",
+        "Share it further without checking",
+        "Ignore it even if it could cause harm"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "Which habit best reflects empathy?",
+      "options": [
+        "Focusing only on your own needs",
+        "Mocking others' problems",
+        "Avoiding emotional conversations",
+        "Trying to understand and share the feelings of others"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "What is the healthiest way to handle failure in a test?",
+      "options": [
+        "Blaming external factors only",
+        "Giving up on the subject entirely",
+        "Reflecting on what went wrong and making an improvement plan",
+        "Comparing yourself negatively to top scorers"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "What is the best way to build a healthy daily routine as a student?",
+      "options": [
+        "Balancing study, exercise, sleep, and leisure time consistently",
+        "Studying all day without breaks",
+        "Avoiding physical activity entirely",
+        "Skipping meals to save time"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "If a classmate is being excluded from group activities, what is the most responsible action?",
+      "options": [
+        "Include them and encourage others to be welcoming",
+        "Ignore the situation",
+        "Join in the exclusion to fit in",
+        "Talk about it only with friends, not the classmate"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "Which action best demonstrates good leadership in a group project?",
+      "options": [
+        "Making all decisions alone",
+        "Listening to everyone's ideas and making fair decisions",
+        "Ignoring quieter members' input",
+        "Taking credit for the group's work"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "Which of these best demonstrates good time management during exam preparation?",
+      "options": [
+        "Creating and following a realistic study timetable",
+        "Cramming everything the night before",
+        "Studying without breaks for many hours straight",
+        "Avoiding revision of difficult topics"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "What is the best approach when you disagree with a friend's opinion?",
+      "options": [
+        "Involve others to gang up against them",
+        "Listen respectfully and share your viewpoint calmly",
+        "Argue loudly to prove your point",
+        "Refuse to speak to them"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "What is an effective way to manage exam-related stress?",
+      "options": [
+        "Skipping meals to save time",
+        "Practicing deep breathing and staying organized in preparation",
+        "Panicking to stay alert",
+        "Skipping sleep to study more"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "Which behaviour shows responsible use of social media?",
+      "options": [
+        "Sharing others' private information without permission",
+        "Thinking before posting and respecting others' privacy",
+        "Ignoring privacy settings",
+        "Posting anything without considering consequences"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "A country invests significantly in girls' education over a decade. What is a likely long-term social impact of this investment?",
+      "options": [
+        "Improved literacy rates, workforce participation, and overall economic development",
+        "No impact on society",
+        "Reduced access to healthcare",
+        "A decrease in population"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "During a natural disaster like an earthquake, why is community disaster-preparedness training important?",
+      "options": [
+        "It prevents earthquakes from occurring",
+        "It only benefits government officials",
+        "It replaces the need for emergency services",
+        "It equips people with knowledge to respond quickly and safely, reducing casualties"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "Two countries sharing a border have a long-standing trade agreement. If one country imposes sudden tariffs, what is a likely consequence for cross-border trade?",
+      "options": [
+        "Trade volume between the two countries may decrease due to increased costs",
+        "There will be no change in trade patterns",
+        "Trade will increase due to tariffs",
+        "Only the imposing country will be affected"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "A city switches its public buses from diesel to electric power over five years. What is a likely long-term benefit for the city's residents?",
+      "options": [
+        "Reduced air pollution and improved public health outcomes",
+        "No change in air quality",
+        "Increased traffic congestion only",
+        "Higher public transport fares only, with no health benefit"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "If a country experiences rapid inflation, what is a likely immediate effect on the purchasing power of its citizens?",
+      "options": [
+        "Purchasing power increases significantly",
+        "There is no effect on purchasing power",
+        "Purchasing power decreases as prices rise faster than income",
+        "Only the wealthy are affected"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

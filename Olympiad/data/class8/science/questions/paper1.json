@@ -2,338 +2,639 @@
   "class": 8,
   "subject": "Science",
   "paper": 1,
-  "title": "Class 8 Science — Paper 1",
+  "title": "Class 8 Science Olympiad \u2014 Paper 1",
   "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "instructions": [
+    "The time allowed for this paper is 60 minutes.",
+    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
+    "There is no negative marking for wrong answers.",
+    "Each question has four options; choose the one correct answer.",
+    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
+    "Use of calculators is not permitted unless specified."
+  ],
+  "sections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Science",
+      "questions": 35,
+      "marksPerQuestion": 1,
+      "totalMarks": 35
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
   "questions": [
     {
       "id": 1,
-      "question": "Which part of a plant usually absorbs water from the soil?",
+      "question": "Arrange in order of increasing hardness: Wax, Wood, Iron, Diamond",
       "options": [
-        "Leaf",
-        "Flower",
-        "Roots",
-        "Fruit"
+        "Wax, Wood, Iron, Diamond",
+        "Wood, Wax, Diamond, Iron",
+        "Diamond, Iron, Wood, Wax",
+        "Iron, Wax, Wood, Diamond"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which organ pumps blood around the body?",
+      "question": "A is south of B. C is west of B. What direction is C from A?",
       "options": [
-        "Lungs",
-        "Brain",
-        "Stomach",
-        "Heart"
+        "South-west",
+        "North-east",
+        "South-east",
+        "North-west"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which is a renewable source of energy?",
+      "question": "If NORTH becomes SOUTH when reflected, what does WEST become?",
       "options": [
-        "Petrol",
-        "Diesel",
-        "Sunlight",
-        "Coal"
+        "NORTH",
+        "SOUTH",
+        "WEST",
+        "EAST"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which material is transparent?",
+      "question": "A clock shows 8:00. What is the angle between the hour and minute hands?",
       "options": [
-        "Clear glass",
-        "Wood",
-        "Stone",
-        "Cardboard"
+        "120 degrees",
+        "60 degrees",
+        "90 degrees",
+        "150 degrees"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which change can usually be reversed?",
+      "question": "Find the next term: 100, 90, 81, 73, __ (differences decreasing by 1)",
       "options": [
-        "Wood burning",
-        "Paper burning",
-        "Egg cooking",
-        "Ice melting"
+        "64",
+        "66",
+        "65",
+        "70"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Which force slows a toy car on a rough floor?",
+      "question": "If '+' means 'x', 'x' means '\u00f7', '\u00f7' means '-', evaluate: 8 + 2 x 4",
       "options": [
-        "Colour",
-        "Light",
-        "Sound",
-        "Friction"
+        "10",
+        "(8x2)\u00f74 = 16\u00f74 = 4",
+        "6",
+        "32"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Which animal is adapted to a hot desert?",
+      "question": "Complete the analogy: Convex lens is to Converge as Concave lens is to ____",
       "options": [
-        "Polar bear",
-        "Penguin",
-        "Camel",
-        "Whale"
+        "Reflect",
+        "Refract only",
+        "Diverge",
+        "Absorb"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which body part protects the brain?",
+      "question": "A is the father of B. C is the daughter of B. How is A related to C?",
       "options": [
-        "Skull",
-        "Knee",
-        "Ankle",
-        "Rib cage"
+        "Uncle",
+        "Grandfather",
+        "Brother",
+        "Father"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Which gas do humans need for breathing?",
+      "question": "Find the missing number: 5, 11, 23, 47, __",
       "options": [
-        "Helium",
-        "Hydrogen",
-        "Oxygen",
-        "Neon"
+        "95",
+        "91",
+        "99",
+        "89"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which state of matter keeps its own shape?",
+      "question": "Find the odd one out: Cotton, Wool, Silk, Nylon",
       "options": [
-        "Liquid",
-        "Solid",
-        "Vapour",
-        "Gas"
+        "Cotton",
+        "Wool",
+        "Silk",
+        "Nylon (synthetic fibre, others are natural)"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Which gas, when released in excess, contributes most to air pollution from vehicles?",
       "options": [
-        "It becomes a rock",
-        "It wilts",
-        "It needs no sunlight",
-        "It grows faster"
+        "Carbon monoxide",
+        "Oxygen",
+        "Helium",
+        "Nitrogen"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Which disease is caused by a virus among these?",
       "options": [
-        "Metal conducts heat better",
-        "Soup heats only metal",
-        "Metal contains fire",
-        "Wood creates cold"
+        "Cholera",
+        "Typhoid",
+        "Tuberculosis",
+        "Common cold"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Which gas is essential for combustion to occur?",
       "options": [
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Lightning has no sound",
-        "Thunder happens later in the sky"
+        "Nitrogen",
+        "Hydrogen",
+        "Carbon dioxide",
+        "Oxygen"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "What is the SI unit of pressure?",
       "options": [
-        "Change one main condition and compare results",
-        "Do not record results",
-        "Change everything at once",
-        "Guess without observing"
+        "Pascal",
+        "Joule",
+        "Newton",
+        "Watt"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Which type of energy conversion takes place in a bulb (electric to light)?",
       "options": [
-        "It grows faster",
-        "It becomes a rock",
-        "It needs no sunlight",
-        "It wilts"
+        "Electrical to light and heat energy",
+        "Light to electrical",
+        "Chemical to electrical",
+        "Mechanical to electrical"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "What is the term for the period of rapid physical and emotional change in humans, usually starting around age 11-19?",
       "options": [
-        "Metal conducts heat better",
-        "Wood creates cold",
-        "Soup heats only metal",
-        "Metal contains fire"
+        "Puberty (a part of adolescence, but adolescence is the broader term)",
+        "Adolescence",
+        "Infancy",
+        "Menopause"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "What is the main function of red blood cells?",
       "options": [
-        "Thunder happens later in the sky",
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Lightning has no sound"
+        "Transporting oxygen throughout the body",
+        "Clotting blood",
+        "Fighting infections",
+        "Digesting food"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Which simple machine reduces the effort needed to lift a load using a sloped surface?",
       "options": [
-        "Guess without observing",
-        "Do not record results",
-        "Change one main condition and compare results",
-        "Change everything at once"
+        "Wheel and axle",
+        "Inclined plane",
+        "Lever",
+        "Pulley"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "What is the term for the number of vibrations per second of a sound wave?",
       "options": [
-        "It grows faster",
-        "It becomes a rock",
-        "It wilts",
-        "It needs no sunlight"
+        "Wavelength",
+        "Amplitude",
+        "Frequency",
+        "Time period"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Which of these is an example of an alloy?",
       "options": [
-        "Metal conducts heat better",
-        "Wood creates cold",
-        "Soup heats only metal",
-        "Metal contains fire"
+        "Aluminium",
+        "Iron",
+        "Copper",
+        "Brass"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Which gas do plants absorb from the atmosphere during photosynthesis?",
       "options": [
-        "Clouds stop sound",
-        "Thunder happens later in the sky",
-        "Lightning has no sound",
-        "Light travels faster than sound"
+        "Hydrogen",
+        "Nitrogen",
+        "Carbon dioxide",
+        "Oxygen"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Which fossil fuel is formed from the remains of dead plants over millions of years?",
       "options": [
-        "Change one main condition and compare results",
-        "Do not record results",
-        "Change everything at once",
-        "Guess without observing"
+        "Uranium",
+        "Petroleum",
+        "Natural gas",
+        "Coal"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Which mirror is used in vehicles as a rear-view/side mirror to give a wider field of view?",
       "options": [
-        "It becomes a rock",
-        "It wilts",
-        "It needs no sunlight",
-        "It grows faster"
+        "Plane mirror",
+        "Cylindrical mirror",
+        "Convex mirror",
+        "Concave mirror"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Which of these best describes 'thrust'?",
       "options": [
-        "Metal contains fire",
-        "Soup heats only metal",
-        "Wood creates cold",
-        "Metal conducts heat better"
+        "The force acting parallel to a surface",
+        "The force acting perpendicular to a surface",
+        "The mass of an object",
+        "The area of a surface"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Which type of friction acts on a body at rest?",
       "options": [
-        "Clouds stop sound",
-        "Thunder happens later in the sky",
-        "Light travels faster than sound",
-        "Lightning has no sound"
+        "Rolling friction",
+        "Fluid friction",
+        "Static friction",
+        "Sliding friction"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "What is the main gas responsible for the greenhouse effect that traps heat in Earth's atmosphere?",
       "options": [
-        "Do not record results",
-        "Change one main condition and compare results",
-        "Change everything at once",
-        "Guess without observing"
+        "Carbon dioxide",
+        "Nitrogen",
+        "Argon",
+        "Neon"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "What is 'combustion'?",
       "options": [
-        "It becomes a rock",
-        "It needs no sunlight",
-        "It wilts",
-        "It grows faster"
+        "A chemical process in which a substance reacts with oxygen to release heat and light",
+        "The process of freezing",
+        "The process of evaporation",
+        "A physical change with no energy release"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "What is the term for the fusion of a sperm and an egg cell?",
       "options": [
-        "Soup heats only metal",
-        "Wood creates cold",
-        "Metal conducts heat better",
-        "Metal contains fire"
+        "Germination",
+        "Ovulation",
+        "Fertilisation",
+        "Gestation"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "What causes lightning during a thunderstorm?",
       "options": [
-        "Lightning has no sound",
-        "Clouds stop sound",
-        "Thunder happens later in the sky",
-        "Light travels faster than sound"
+        "Wind currents alone",
+        "Sound waves in the atmosphere",
+        "Accumulation and discharge of electric charges in clouds",
+        "Sudden temperature drop only"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Which of these materials is a good conductor of electricity?",
       "options": [
-        "Do not record results",
-        "Guess without observing",
-        "Change everything at once",
-        "Change one main condition and compare results"
+        "Rubber",
+        "Plastic",
+        "Copper",
+        "Wood"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 31,
+      "question": "Which type of mixture is 'plastic' broadly classified as in terms of degradability?",
+      "options": [
+        "Biodegradable",
+        "Non-biodegradable",
+        "Partially biodegradable",
+        "Fully compostable"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 32,
+      "question": "Which type of lens is used to correct short-sightedness (myopia)?",
+      "options": [
+        "Bifocal lens with only convex power",
+        "Concave lens",
+        "Convex lens",
+        "Cylindrical lens"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 33,
+      "question": "What is the process of internal fertilisation followed by development inside the mother's body called, as seen in humans?",
+      "options": [
+        "Oviparous reproduction",
+        "Viviparous reproduction",
+        "Asexual reproduction",
+        "External fertilisation"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 34,
+      "question": "What is the process of separating grain from chaff called?",
+      "options": [
+        "Irrigation",
+        "Harvesting",
+        "Winnowing",
+        "Threshing"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 35,
+      "question": "What is 'ozone layer depletion' primarily caused by?",
+      "options": [
+        "Carbon dioxide only",
+        "Chlorofluorocarbons (CFCs)",
+        "Water vapour",
+        "Oxygen"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "Which method of conservation involves protecting a specific area for wildlife?",
+      "options": [
+        "Mining",
+        "Wildlife sanctuary/National park",
+        "Urbanization",
+        "Deforestation"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "What is the term for a group of stars forming a recognizable pattern?",
+      "options": [
+        "Galaxy",
+        "Nebula",
+        "Asteroid belt",
+        "Constellation"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "Which method is used to remove husk from grains?",
+      "options": [
+        "Threshing",
+        "Harvesting",
+        "Winnowing",
+        "Sowing"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "What is the main cause of water pollution from industries?",
+      "options": [
+        "Photosynthesis by aquatic plants",
+        "Rainfall",
+        "Discharge of untreated chemical waste into water bodies",
+        "Evaporation"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "Which celestial body is closest to Earth?",
+      "options": [
+        "The Sun",
+        "Venus",
+        "The Moon",
+        "Mars"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "Which part of the cell controls all its activities?",
+      "options": [
+        "Cytoplasm",
+        "Cell membrane",
+        "Nucleus",
+        "Cell wall"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "Which effect occurs when an electric current passes through a solution, causing chemical decomposition?",
+      "options": [
+        "Heating effect only",
+        "Chemical effect of electric current (electrolysis)",
+        "Magnetic effect",
+        "Photoelectric effect"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "What is the zone of a flame that is the hottest?",
+      "options": [
+        "The middle/luminous zone",
+        "The innermost/dark zone",
+        "The outermost/blue zone",
+        "All zones are equally hot"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "Which microorganism is used to make curd from milk?",
+      "options": [
+        "Protozoa",
+        "Lactobacillus (bacteria)",
+        "Yeast",
+        "Virus"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "Which of these is a natural fibre?",
+      "options": [
+        "Polyester",
+        "Nylon",
+        "Cotton",
+        "Rayon"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "A biogas plant is set up in a village to convert cattle dung into fuel. Which type of microorganism plays the key role in this process, and what is the primary product?",
+      "options": [
+        "Anaerobic bacteria that decompose organic waste to produce methane-rich biogas",
+        "Viruses that produce electricity directly",
+        "Fungi that produce only carbon dioxide",
+        "Aerobic bacteria that produce oxygen"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "A farmer rotates different crops each season instead of growing the same crop repeatedly. Analyze the scientific reasoning behind this practice.",
+      "options": [
+        "It only saves the farmer time",
+        "Crop rotation replenishes soil nutrients and reduces the build-up of pests/diseases specific to one crop",
+        "It is done purely for tradition with no scientific basis",
+        "It has no effect on soil quality"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "A student wants to test if a liquid conducts electricity using a simple circuit with an LED. If the LED lights up, what can be concluded, and what real-world application does this principle have?",
+      "options": [
+        "The liquid contains ions/is an electrolyte; this principle is used in electroplating and testing water purity",
+        "No conclusion can be drawn from this test",
+        "The liquid is pure water with no dissolved substances",
+        "The circuit is broken"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "During a lunar eclipse, the Earth comes between the Sun and the Moon. Using your understanding of light and shadows, explain why the Moon appears reddish during a total lunar eclipse.",
+      "options": [
+        "The Moon changes its own color",
+        "The Sun turns red during eclipses",
+        "Sunlight bends through Earth's atmosphere and scatters, allowing only red wavelengths to reach the Moon",
+        "The Moon absorbs all light except red"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "A student notices that a wooden block held underwater rises to the surface when released, while a stone sinks. Explain this difference using the concept of buoyancy and density.",
+      "options": [
+        "Both should sink since gravity acts on both",
+        "Wood floats because it has no weight",
+        "Stone floats due to its shape only",
+        "Wood is less dense than water so buoyant force exceeds its weight, while stone is denser so its weight exceeds buoyant force"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

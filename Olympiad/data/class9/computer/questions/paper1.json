@@ -2,393 +2,645 @@
   "class": 9,
   "subject": "Computer Science",
   "paper": 1,
-  "title": "Class 9 Computer Science — Paper 1",
+  "title": "Class 9 Computer Science Olympiad \u2014 Paper 1",
   "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "instructions": [
+    "The time allowed for this paper is 60 minutes.",
+    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
+    "There is no negative marking for wrong answers.",
+    "Each question has four options; choose the one correct answer.",
+    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
+    "Use of calculators is not permitted unless specified."
+  ],
+  "sections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Computer Science",
+      "questions": 25,
+      "marksPerQuestion": 1,
+      "totalMarks": 25
+    },
+    {
+      "name": "AI, IT & Safety",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
   "questions": [
     {
       "id": 1,
-      "question": "Which part performs most computer processing?",
+      "question": "Which of these does not belong with the others: HTTP, HTTPS, FTP, USB",
       "options": [
-        "Mouse",
-        "CPU",
-        "Printer",
-        "Speaker"
+        "HTTP",
+        "FTP",
+        "USB (a hardware connector, others are network protocols)",
+        "HTTPS"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which device is used to enter text?",
+      "question": "A file downloads at 2 MB per second. How long will an 20 MB file take to download?",
       "options": [
-        "Keyboard",
-        "Speaker",
-        "Monitor",
-        "Printer"
+        "40 seconds",
+        "10 seconds",
+        "20 seconds",
+        "5 seconds"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which device displays information?",
+      "question": "Find the odd one out: Keyboard, Mouse, Scanner, Printer",
       "options": [
         "Keyboard",
-        "Monitor",
+        "Printer (output device, others are input devices)",
         "Mouse",
         "Scanner"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which device produces a paper copy?",
+      "question": "If a folder has 3 subfolders each with 4 files, how many files are there in total?",
       "options": [
-        "Monitor",
-        "Printer",
-        "Microphone",
-        "Speaker"
+        "7 files",
+        "9 files",
+        "12 files",
+        "15 files"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which memory temporarily stores information while programs run?",
+      "question": "If in a code, 1=A, 2=B, 3=C, what does 3-15-4-5 spell?",
       "options": [
-        "Keyboard",
-        "Printer",
-        "DVD",
-        "RAM"
+        "CODE",
+        "BYTE",
+        "DATA",
+        "LINK"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "What does Ctrl+C commonly do?",
+      "question": "Find the missing term: 2, 4, 8, 16, __",
       "options": [
-        "Undo",
-        "Paste",
-        "Copy",
-        "Save"
+        "30",
+        "24",
+        "32",
+        "36"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "What does Ctrl+V commonly do?",
+      "question": "Find the odd one out: Python, C, Java, Excel",
       "options": [
-        "Close",
-        "Print",
-        "Copy",
-        "Paste"
+        "C",
+        "Excel (application software, others are programming languages)",
+        "Java",
+        "Python"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "What does Ctrl+S commonly do?",
+      "question": "Complete the analogy: CPU is to Processing as Hard Disk is to ____",
       "options": [
-        "Copy",
-        "Paste",
-        "Save",
-        "Undo"
+        "Sound",
+        "Display",
+        "Storage",
+        "Input"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "What does Ctrl+Z commonly do?",
+      "question": "Find the next term: 3, 9, 27, 81, __",
       "options": [
-        "Save",
-        "Copy",
-        "Undo",
-        "Print"
+        "243",
+        "216",
+        "162",
+        "324"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which device records sound?",
+      "question": "If in a code, DISK is written as EJTL, how is MOUSE written?",
       "options": [
-        "Monitor",
-        "Mouse",
-        "Printer",
-        "Microphone"
+        "LNVRD",
+        "NPVTF",
+        "MPVTE",
+        "NPUTF"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What is a browser mainly used for?",
+      "question": "What is the function of an operating system?",
       "options": [
-        "Charging a phone",
-        "Drawing only",
-        "Visiting websites",
-        "Printing money"
+        "It only edits documents",
+        "It manages hardware and software resources of a computer",
+        "It only plays music",
+        "It only browses the internet"
       ],
-      "section": "Computer Science"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "What is an algorithm?",
+      "question": "What is the function of a firewall?",
       "options": [
-        "A monitor",
-        "A password",
-        "A step-by-step method for solving a problem",
-        "A virus"
+        "To print documents remotely",
+        "To increase internet speed",
+        "To store backup data",
+        "To monitor and control incoming and outgoing network traffic for security"
       ],
-      "section": "Computer Science"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "What does AI stand for?",
+      "question": "What is the full form of URL?",
       "options": [
-        "Artificial Intelligence",
-        "Automatic Internet",
-        "Audio Information",
-        "Advanced Input"
+        "Uniform Resource Locator",
+        "Uniform Reference Link",
+        "United Resource Locator",
+        "Universal Resource Link"
       ],
-      "section": "Computer Science"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "What is a safe online habit?",
+      "question": "Which device connects multiple computers within a small area, like an office, into a network?",
       "options": [
-        "Share passwords",
-        "Open every unknown link",
-        "Post your address",
-        "Keep passwords private"
+        "Printer",
+        "Switch/Hub",
+        "Modem",
+        "Scanner"
       ],
-      "section": "Computer Science"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "Why are backups useful?",
+      "question": "What is the function of the 'Ctrl+Z' shortcut?",
       "options": [
-        "They brighten the monitor",
-        "They can help recover lost files",
-        "They stop the internet",
-        "They remove passwords"
+        "Save the file",
+        "Undo the last action",
+        "Redo the last action",
+        "Print the file"
       ],
-      "section": "Computer Science"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "question": "Which of these is a valid email address format?",
       "options": [
-        "15",
-        "16",
-        "14",
-        "13"
+        "name#example.com",
+        "name_example_com",
+        "name.example.com",
+        "name@example.com"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "question": "Which topology connects each computer to a central hub or switch?",
       "options": [
-        "4 steps",
-        "2 steps",
-        "3 steps",
-        "1 step"
+        "Ring topology",
+        "Star topology",
+        "Mesh topology",
+        "Bus topology"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "question": "Which memory is volatile, meaning it loses data when power is turned off?",
       "options": [
-        "Enter it immediately",
-        "Do not enter it without trusted-adult guidance",
-        "Use a friend's address",
-        "Post it publicly"
+        "Hard disk",
+        "RAM",
+        "ROM",
+        "Pen drive"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "An AI answer seems surprising. What should you do?",
+      "question": "What does 'GUI' stand for?",
       "options": [
-        "Assume it cannot be wrong",
-        "Copy it immediately",
-        "Share private information",
-        "Check it with a reliable source or teacher"
+        "Graphic Unit Interface",
+        "Graphical User Interface",
+        "General User Interface",
+        "General Unit Input"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "Why should important accounts use different passwords?",
+      "question": "Which of these is an example of an input device?",
       "options": [
-        "One stolen password is less likely to unlock every account",
-        "It removes security",
-        "It makes the computer faster",
-        "It lets everyone know the password"
+        "Scanner",
+        "Speaker",
+        "Printer",
+        "Monitor"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "question": "Which storage unit is the largest: KB, MB, GB, TB?",
       "options": [
-        "16",
-        "14",
-        "13",
-        "15"
+        "KB (Kilobyte)",
+        "MB (Megabyte)",
+        "TB (Terabyte)",
+        "GB (Gigabyte)"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "question": "What does 'WWW' stand for?",
       "options": [
-        "3 steps",
-        "1 step",
-        "4 steps",
-        "2 steps"
+        "Wide World Web",
+        "World Wide Wire",
+        "World Web Wire",
+        "World Wide Web"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "question": "What is a computer virus?",
       "options": [
-        "Use a friend's address",
-        "Post it publicly",
-        "Enter it immediately",
-        "Do not enter it without trusted-adult guidance"
+        "A network cable",
+        "A hardware component",
+        "A type of antivirus software",
+        "A malicious program that can replicate and harm a computer system"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "An AI answer seems surprising. What should you do?",
+      "question": "What is the primary purpose of an HTML tag <p>?",
       "options": [
-        "Share private information",
-        "Assume it cannot be wrong",
-        "Copy it immediately",
-        "Check it with a reliable source or teacher"
+        "To define a page",
+        "To define a paragraph",
+        "To define a picture",
+        "To define a print area"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why should important accounts use different passwords?",
+      "question": "Which of these is an example of system software?",
       "options": [
-        "It makes the computer faster",
-        "It lets everyone know the password",
-        "It removes security",
-        "One stolen password is less likely to unlock every account"
+        "Operating System",
+        "Adobe Photoshop",
+        "Google Chrome",
+        "MS-Word"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "question": "Which key combination is used to select all content in a document?",
       "options": [
-        "14",
-        "15",
-        "16",
-        "13"
+        "Ctrl+Z",
+        "Ctrl+A",
+        "Ctrl+S",
+        "Ctrl+X"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "question": "Which of these best describes 'freeware'?",
       "options": [
-        "4 steps",
-        "3 steps",
-        "2 steps",
-        "1 step"
+        "Software available for free use without payment",
+        "Software that must be purchased",
+        "Hardware given for free",
+        "Software with a free trial only"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "question": "What is the function of a modem?",
       "options": [
-        "Do not enter it without trusted-adult guidance",
-        "Enter it immediately",
-        "Post it publicly",
-        "Use a friend's address"
+        "It converts digital signals to analog and vice versa for internet connectivity",
+        "It stores data permanently",
+        "It prints documents",
+        "It displays output on screen"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "An AI answer seems surprising. What should you do?",
+      "question": "In MS-Excel, what symbol must precede a formula?",
       "options": [
-        "Share private information",
-        "Assume it cannot be wrong",
-        "Check it with a reliable source or teacher",
-        "Copy it immediately"
+        "= (equals sign)",
+        "@ (at sign)",
+        "# (hash sign)",
+        "+ (plus sign)"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Why should important accounts use different passwords?",
+      "question": "In MS-Word, which feature is used to check spelling and grammar automatically?",
       "options": [
-        "It lets everyone know the password",
-        "It removes security",
-        "One stolen password is less likely to unlock every account",
-        "It makes the computer faster"
+        "Spelling and Grammar Check",
+        "Track Changes",
+        "Find and Replace",
+        "Mail Merge"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "question": "What is the full form of CPU?",
       "options": [
-        "16",
-        "14",
-        "15",
-        "13"
+        "Central Program Unit",
+        "Central Processor Utility",
+        "Central Processing Unit",
+        "Computer Processing Unit"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "question": "Which number system is used internally by computers to represent data?",
       "options": [
-        "4 steps",
-        "1 step",
-        "3 steps",
-        "2 steps"
+        "Decimal",
+        "Binary",
+        "Hexadecimal",
+        "Octal"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "question": "Convert the binary number 1100 to decimal.",
       "options": [
-        "Use a friend's address",
-        "Do not enter it without trusted-adult guidance",
-        "Post it publicly",
-        "Enter it immediately"
+        "8",
+        "14",
+        "10",
+        "12"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "An AI answer seems surprising. What should you do?",
+      "question": "Which shortcut key is used to save a file in most applications?",
       "options": [
-        "Check it with a reliable source or teacher",
-        "Assume it cannot be wrong",
-        "Copy it immediately",
-        "Share private information"
+        "Ctrl+N",
+        "Ctrl+S",
+        "Ctrl+O",
+        "Ctrl+P"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computer Science",
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "Why should important accounts use different passwords?",
+      "question": "In MS-PowerPoint, what is a 'slide transition'?",
       "options": [
-        "One stolen password is less likely to unlock every account",
-        "It lets everyone know the password",
-        "It removes security",
-        "It makes the computer faster"
+        "The visual effect when moving from one slide to the next",
+        "The text formatting within a slide",
+        "The font used in a slide",
+        "The background color of a slide"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "What makes a password strong?",
+      "options": [
+        "A mix of uppercase, lowercase, numbers, and symbols that is hard to guess",
+        "Using a short common word",
+        "Using your birthdate",
+        "Using the word 'password'"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "What is a firewall primarily used for in cybersecurity?",
+      "options": [
+        "Improving screen resolution",
+        "Speeding up downloads",
+        "Increasing storage capacity",
+        "Blocking unauthorized access while permitting legitimate communication"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "Which of these is an example of an AI-powered application?",
+      "options": [
+        "MS Paint",
+        "Calculator",
+        "A voice assistant like Siri or Google Assistant",
+        "Notepad"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "What is 'cyberbullying'?",
+      "options": [
+        "A method of encrypting files",
+        "Using digital platforms to harass, threaten, or intimidate someone",
+        "A network security protocol",
+        "A type of computer hardware"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "Which of these is considered good digital citizenship?",
+      "options": [
+        "Ignoring copyright rules",
+        "Spreading rumors online",
+        "Respecting others' privacy and being kind online",
+        "Sharing others' private photos without consent"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "Why should you avoid sharing personal information with strangers online?",
+      "options": [
+        "It slows down the internet",
+        "It uses up too much data",
+        "It has no real risk",
+        "It can lead to identity theft, stalking, or other forms of exploitation"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "What is Artificial Intelligence primarily concerned with?",
+      "options": [
+        "Only building faster computers",
+        "Enabling machines to simulate human intelligence and decision-making",
+        "Only storing large amounts of data",
+        "Only creating video games"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "What does 'IoT' stand for?",
+      "options": [
+        "Integration of Tools",
+        "Input of Technology",
+        "Internal Object Transfer",
+        "Internet of Things"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "What should you do before clicking a link in an unfamiliar email?",
+      "options": [
+        "Verify the sender and check the link's legitimacy before clicking",
+        "Click it immediately out of curiosity",
+        "Forward it to all your contacts",
+        "Reply with personal information"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "What is 'phishing'?",
+      "options": [
+        "A type of computer game",
+        "A fraudulent attempt to steal sensitive information by posing as a trustworthy entity",
+        "A way to organize files",
+        "A method to speed up the internet"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "A user receives an email claiming they won a lottery and must click a link to claim it. Analyze why this is likely a scam.",
+      "options": [
+        "Lottery emails are always genuine",
+        "Legitimate organizations don't ask for personal/financial info via unsolicited emails; this shows signs of phishing",
+        "There is no risk in clicking such links",
+        "It should be trusted since it mentions a specific prize"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "A computer is running slowly, showing unexpected pop-ups, and unfamiliar icons have appeared on the desktop. What is the most likely cause and best first action?",
+      "options": [
+        "The internet connection is too fast",
+        "The keyboard is malfunctioning",
+        "The system may be infected with malware; run a trusted antivirus scan",
+        "The monitor needs replacement"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "A student wants to create a simple webpage displaying a heading and a paragraph. Which HTML tags should be used together?",
+      "options": [
+        "Only <p> tags for both",
+        "<h1> for the heading and <p> for the paragraph",
+        "<div> tags for both",
+        "Only <h1> tags for both"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "A network administrator wants all computers in an office to connect through one central device so that if one cable fails, only that computer loses connection. Which topology should be used?",
+      "options": [
+        "No topology needed",
+        "Bus topology",
+        "Ring topology",
+        "Star topology"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "A student needs to convert the decimal number 25 to binary for a computer science assignment. What is the correct binary equivalent?",
+      "options": [
+        "11010",
+        "11100",
+        "11001",
+        "10101"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

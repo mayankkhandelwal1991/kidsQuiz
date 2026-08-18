@@ -1,4 +1,4 @@
-const state={classId:null,className:null,subjectId:null,subjectName:null,paper:null,questions:[],answers:{},current:0,userAnswers:{},remaining:3600,timer:null,lastResult:null};
+const state={classId:null,className:null,subjectId:null,subjectName:null,paper:null,questions:[],answers:{},current:0,questionTotal:0,totalMarks:40,usesQuestionMarks:false,userAnswers:{},remaining:3600,timer:null,lastResult:null};
 const $=id=>document.getElementById(id);
 const screens=["screenClass","screenSubject","screenPaper","screenTest","screenResult","screenHistory"];
 function show(id){screens.forEach(x=>$(x).classList.toggle("active",x===id));window.scrollTo({top:0,behavior:"smooth"});}
@@ -23,18 +23,31 @@ async function init(){
 function selectClass(id,name){state.classId=id;state.className=name;$("classTitle").textContent=name;show("screenSubject")}
 function selectSubject(id,name){state.subjectId=id;state.subjectName=name;$("subjectTitle").textContent=`${state.className} — ${name}`;renderPapers();show("screenPaper")}
 function attemptsFor(p){return history().filter(x=>x.classId===state.classId&&x.subjectId===state.subjectId&&x.paper===p)}
+function paperDetails(paper){
+ const questionTotal=Array.isArray(paper.questions)?paper.questions.length:0;
+ const declaredMarks=Number(paper.totalMarks);
+ const totalMarks=Number.isFinite(declaredMarks)&&declaredMarks>0?declaredMarks:40;
+ const usesQuestionMarks=questionTotal>0&&paper.questions.every(q=>Number.isFinite(Number(q.marks))&&Number(q.marks)>=0);
+ return {questionTotal,totalMarks,usesQuestionMarks};
+}
 function renderPapers(){
- let h=history();
- $("paperGrid").innerHTML=Array.from({length:5},(_,i)=>i+1).map(p=>{
+ const classId=state.classId,subjectId=state.subjectId;
+ $("paperGrid").innerHTML=Array.from({length:5},(_,i)=>`<div class="paper"><h3>Paper ${i+1}</h3><div class="meta">Loading paper details…</div></div>`).join("");
+ Promise.all(Array.from({length:5},(_,i)=>fetch(`data/${classId}/${subjectId}/questions/paper${i+1}.json`).then(r=>r.json()))).then(papers=>{
+   if(state.classId!==classId||state.subjectId!==subjectId)return;
+   $("paperGrid").innerHTML=papers.map((paper,index)=>{
+   const p=index+1,details=paperDetails(paper);
    let a=attemptsFor(p),best=a.length?Math.max(...a.map(x=>x.score)):null,last=a.length?a[a.length-1]:null;
-   return `<div class="paper" onclick="startSelected(${p})"><h3>Paper ${p}</h3><div class="meta">35 questions • 60 minutes</div>
-   <div class="attempt">${a.length?`Attempts: <b>${a.length}</b> • Best: <span class="best">${best}/40</span><br>Last: ${last.score}/40`:`<span class="muted">Not attempted yet</span>`}</div></div>`
- }).join("");
+   return `<div class="paper" onclick="startSelected(${p})"><h3>Paper ${p}</h3><div class="meta">${details.questionTotal} questions • ${paper.durationMinutes||60} minutes</div>
+   <div class="attempt">${a.length?`Attempts: <b>${a.length}</b> • Best: <span class="best">${best}/${a[0].totalMarks||details.totalMarks}</span><br>Last: ${last.score}/${last.totalMarks||details.totalMarks}`:`<span class="muted">${details.totalMarks} marks</span>`}</div></div>`
+  }).join("");
+ }).catch(()=>{$("paperGrid").innerHTML=`<div class="card"><h3>Unable to load papers</h3><div class="muted">Please try again.</div></div>`});
 }
 async function startSelected(p){
  const qp=await fetch(`data/${state.classId}/${state.subjectId}/questions/paper${p}.json`).then(r=>r.json());
  const ap=await fetch(`data/${state.classId}/${state.subjectId}/answers/paper${p}.json`).then(r=>r.json());
- state.paper=p;state.questions=qp.questions;state.answers=ap.answers;state.userAnswers={};state.current=0;state.remaining=(qp.durationMinutes||60)*60;
+ const details=paperDetails(qp);
+ state.paper=p;state.questions=qp.questions;state.answers=ap.answers;state.questionTotal=details.questionTotal;state.totalMarks=details.totalMarks;state.usesQuestionMarks=details.usesQuestionMarks;state.userAnswers={};state.current=0;state.remaining=(qp.durationMinutes||60)*60;
  $("testTitle").textContent=`${state.className} • ${state.subjectName} • Paper ${p}`;
  clearInterval(state.timer);state.timer=setInterval(tick,1000);renderQuestion();show("screenTest");
 }
@@ -58,12 +71,13 @@ function prevQ(){if(state.current>0){state.current--;renderQuestion()}}
 function nextQ(){if(state.current<state.questions.length-1){state.current++;renderQuestion()}}
 function submitTest(){
  clearInterval(state.timer);
- let correct=0;
- state.questions.forEach(q=>{if(state.userAnswers[q.id]===state.answers[String(q.id)])correct++});
- let score=Math.round((correct/35)*40*100)/100;
- let attempt={id:Date.now(),date:new Date().toISOString(),classId:state.classId,className:state.className,subjectId:state.subjectId,subjectName:state.subjectName,paper:state.paper,correct,score,total:40,answered:Object.keys(state.userAnswers).length,answers:{...state.userAnswers}};
+ let correct=0,earnedMarks=0;
+ state.questions.forEach(q=>{if(state.userAnswers[q.id]===state.answers[String(q.id)]){correct++;earnedMarks+=state.usesQuestionMarks?Number(q.marks):0}});
+ let score=state.usesQuestionMarks?earnedMarks:(correct/state.questionTotal)*state.totalMarks;
+ score=Math.round(score*100)/100;
+ let attempt={id:Date.now(),date:new Date().toISOString(),classId:state.classId,className:state.className,subjectId:state.subjectId,subjectName:state.subjectName,paper:state.paper,correct,score,totalMarks:state.totalMarks,totalQuestions:state.questionTotal,answered:Object.keys(state.userAnswers).length,answers:{...state.userAnswers}};
  let h=history();h.push(attempt);saveHistory(h);state.lastResult=attempt;
- $("resultCard").innerHTML=`<div class="muted">${attempt.className} • ${attempt.subjectName} • Paper ${attempt.paper}</div><div class="score">${score}/40</div><p><b>${correct}</b> of 35 correct • ${attempt.answered} answered</p><p>Percentage: <b>${Math.round(score/40*100)}%</b></p>`;
+ $("resultCard").innerHTML=`<div class="muted">${attempt.className} • ${attempt.subjectName} • Paper ${attempt.paper}</div><div class="score">${score}/${attempt.totalMarks}</div><p><b>${correct}</b> of ${attempt.totalQuestions} correct • ${attempt.answered} answered</p><p>Percentage: <b>${Math.round(score/attempt.totalMarks*100)}%</b></p>`;
  $("reviewList").classList.add("hidden");renderReview(attempt);show("screenResult");
  setTimeout(showOlympiadCompletionAd,1500);
 }
@@ -78,6 +92,6 @@ function renderReview(a){
 }
 function renderHistory(){
  let h=history().slice().reverse();
- $("historyList").innerHTML=h.length?h.map(x=>`<div class="history-row"><div><b>${x.className} • ${x.subjectName} • Paper ${x.paper}</b><div class="muted">${new Date(x.date).toLocaleString()} • ${x.correct}/35 correct • ${x.answered} answered</div></div><div><b>${x.score}/40</b></div></div>`).join(""):`<div class="card"><h3>No attempts yet</h3><div class="muted">Complete a paper and your result will appear here.</div></div>`;
+ $("historyList").innerHTML=h.length?h.map(x=>{const totalQuestions=x.totalQuestions||35,totalMarks=x.totalMarks||x.total||40;return `<div class="history-row"><div><b>${x.className} • ${x.subjectName} • Paper ${x.paper}</b><div class="muted">${new Date(x.date).toLocaleString()} • ${x.correct}/${totalQuestions} correct • ${x.answered} answered</div></div><div><b>${x.score}/${totalMarks}</b></div></div>`}).join(""):`<div class="card"><h3>No attempts yet</h3><div class="muted">Complete a paper and your result will appear here.</div></div>`;
 }
 init();

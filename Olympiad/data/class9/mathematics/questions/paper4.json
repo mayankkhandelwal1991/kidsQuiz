@@ -2,393 +2,645 @@
   "class": 9,
   "subject": "Mathematics",
   "paper": 4,
-  "title": "Class 9 Mathematics — Paper 4",
+  "title": "Class 9 Mathematics Olympiad \u2014 Paper 4",
   "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "instructions": [
+    "The time allowed for this paper is 60 minutes.",
+    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
+    "There is no negative marking for wrong answers.",
+    "Each question has four options; choose the one correct answer.",
+    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
+    "Use of calculators is not permitted unless specified."
+  ],
+  "sections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 15,
+      "marksPerQuestion": 1,
+      "totalMarks": 15
+    },
+    {
+      "name": "Mathematical Reasoning",
+      "questions": 20,
+      "marksPerQuestion": 1,
+      "totalMarks": 20
+    },
+    {
+      "name": "Everyday Mathematics",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
   "questions": [
     {
       "id": 1,
-      "question": "Find the next number: 31, 33, 35, 37, __.",
+      "question": "Arrange in ascending order: 3/4, 0.6, 5/8, 0.7",
       "options": [
-        "40",
-        "41",
-        "38",
-        "39"
+        "5/8, 0.6, 0.7, 3/4",
+        "0.6, 0.7, 5/8, 3/4",
+        "0.6, 5/8, 0.7, 3/4",
+        "3/4, 0.7, 5/8, 0.6"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "A number is 4 more than 20. What is it?",
+      "question": "A is west of B. C is north of B. What direction is C from A?",
       "options": [
-        "25",
-        "16",
-        "26",
-        "24"
+        "North-west",
+        "South-east",
+        "South-west",
+        "North-east"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which number is odd?",
+      "question": "If SOUTH becomes NORTH when reflected, what does EAST become?",
       "options": [
-        "33",
-        "35",
-        "32",
-        "31"
+        "SOUTH",
+        "EAST",
+        "NORTH",
+        "WEST"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "If a shape has 4 sides, how many sides does it have?",
+      "question": "A clock shows 2:00. What is the angle between the hour and minute hands?",
       "options": [
-        "3",
-        "5",
-        "6",
-        "4"
+        "30 degrees",
+        "90 degrees",
+        "120 degrees",
+        "60 degrees"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which is the greatest?",
+      "question": "Find the next term: 2, 3, 5, 8, 13, __ (Fibonacci-like pattern)",
       "options": [
-        "316",
-        "318",
-        "313",
-        "321"
+        "23",
+        "21",
+        "18",
+        "20"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Find the next number: 36, 39, 42, 45, __.",
+      "question": "If '\u00d7' means '+', '\u00f7' means '-', '+' means '\u00d7', evaluate: 4 \u00f7 2 \u00d7 3",
       "options": [
-        "49",
-        "51",
-        "48",
-        "46"
+        "4-2\u00d73(as \u00f7 means -) using order: 4-(2\u00d73)=4-6=-2",
+        "6",
+        "2",
+        "10"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "A number is 5 more than 25. What is it?",
+      "question": "Complete the analogy: Triangle is to 3 sides as Pentagon is to ____",
       "options": [
-        "20",
-        "30",
-        "32",
-        "31"
+        "4 sides",
+        "7 sides",
+        "5 sides",
+        "6 sides"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which number is odd?",
+      "question": "A is the daughter of B. C is the son of A. How is B related to C?",
       "options": [
-        "40",
-        "38",
-        "37",
-        "36"
+        "Sister",
+        "Grandmother/Grandfather",
+        "Mother",
+        "Aunt"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "If a shape has 6 sides, how many sides does it have?",
+      "question": "Find the missing number: 3, 7, 15, 31, __",
       "options": [
-        "6",
-        "8",
-        "5",
-        "7"
+        "63",
+        "67",
+        "55",
+        "59"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which is the greatest?",
+      "question": "Find the odd one out: Square, Rectangle, Rhombus, Circle",
       "options": [
-        "326",
-        "318",
-        "321",
-        "323"
+        "Rectangle",
+        "Square",
+        "Circle (has no straight sides, others are quadrilaterals)",
+        "Rhombus"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What is 139 + 130?",
+      "question": "If 4 painters can paint a house in 6 days, how many days will 8 painters take?",
       "options": [
-        "270",
-        "279",
-        "268",
-        "269"
+        "4 days",
+        "2 days",
+        "3 days",
+        "12 days"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "What is 173 − 116?",
+      "question": "Five friends sit in a circle. Raj sits opposite Priya. Simran sits between Raj and Aman. Who sits opposite Simran?",
       "options": [
-        "-57",
-        "57",
-        "59",
-        "55"
+        "Raj",
+        "Cannot be determined without knowing the fifth person's position, but likely between Priya and Aman",
+        "Aman",
+        "Priya"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "What is 4 × 3?",
+      "question": "Find the next term: 1, 4, 9, 16, 25, __",
       "options": [
-        "12",
-        "11",
-        "7",
-        "13"
+        "30",
+        "36",
+        "32",
+        "49"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "What is 30 ÷ 6?",
+      "question": "If in a code, BOOK is written as CPPL, how is PAGE written?",
       "options": [
-        "6",
-        "6",
-        "4",
-        "5"
+        "OZFD",
+        "PBHE",
+        "QAHF",
+        "QBHF"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "Statement: All squares are rectangles. All rectangles are quadrilaterals. Conclusion: All squares are quadrilaterals.",
       "options": [
-        "12 cm",
-        "10 cm",
-        "24 cm",
-        "36 cm"
+        "Insufficient data",
+        "The conclusion is invalid",
+        "The conclusion is valid",
+        "Cannot be determined"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "What is 144 + 135?",
+      "question": "According to Euclid's postulates, how many lines can pass through two distinct points?",
       "options": [
-        "279",
-        "289",
-        "278",
-        "280"
+        "Exactly one line",
+        "No line",
+        "Infinitely many lines",
+        "Exactly two lines"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "What is 178 − 121?",
+      "question": "Find the volume of a cuboid with dimensions 5cm x 4cm x 3cm.",
       "options": [
-        "-57",
-        "57",
-        "59",
-        "55"
+        "35 cubic cm",
+        "60 cubic cm",
+        "120 cubic cm",
+        "47 cubic cm"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "What is 3 × 3?",
+      "question": "Find the value of the polynomial p(x) = x^2 - 5x + 6 at x = 2.",
       "options": [
-        "8",
-        "10",
-        "9",
-        "6"
+        "6",
+        "-2",
+        "0",
+        "2"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "What is 30 ÷ 6?",
+      "question": "What is the sum of all interior angles of a quadrilateral?",
       "options": [
-        "5",
-        "6",
-        "4",
-        "6"
+        "180 degrees",
+        "360 degrees",
+        "270 degrees",
+        "540 degrees"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "What is the mean of the data: 10, 20, 30, 40, 50?",
       "options": [
-        "12 cm",
-        "24 cm",
-        "36 cm",
-        "10 cm"
+        "30",
+        "20",
+        "35",
+        "25"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "What is 149 + 140?",
+      "question": "A coin is tossed once. What is the probability of getting a tail?",
       "options": [
-        "289",
-        "290",
-        "288",
-        "299"
+        "0",
+        "1/2",
+        "1/4",
+        "1"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "What is 183 − 126?",
+      "question": "A chord of a circle divides it into how many arcs?",
       "options": [
-        "57",
-        "55",
-        "59",
-        "-57"
+        "Two arcs",
+        "Three arcs",
+        "Four arcs",
+        "One arc"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "What is 2 × 3?",
+      "question": "Solve for x: 2x + 5 = 15",
       "options": [
-        "6",
-        "7",
-        "5",
+        "10",
+        "3",
+        "7.5",
         "5"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "What is 30 ÷ 6?",
+      "question": "What are the coordinates of the origin?",
       "options": [
-        "6",
-        "6",
-        "5",
-        "4"
+        "(0, 0)",
+        "(1, 0)",
+        "(0, 1)",
+        "(1, 1)"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "What is the degree of the polynomial 3x^3 + 2x^2 - x + 7?",
       "options": [
-        "12 cm",
-        "10 cm",
-        "24 cm",
-        "36 cm"
+        "2",
+        "3",
+        "7",
+        "1"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "What is 154 + 145?",
+      "question": "Is the number 7/2 a rational or irrational number?",
       "options": [
-        "299",
-        "309",
-        "298",
-        "300"
+        "Irrational, as it cannot be expressed as p/q",
+        "Neither rational nor irrational",
+        "Rational, as it can be expressed as p/q",
+        "Both rational and irrational"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "What is 188 − 131?",
+      "question": "Simplify: sqrt(50) in simplest radical form.",
       "options": [
-        "-57",
-        "55",
-        "57",
-        "59"
+        "2\u221a5",
+        "10\u221a5",
+        "5\u221a2",
+        "25\u221a2"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "What is 7 × 3?",
+      "question": "What is the sum of the interior angles of a triangle?",
       "options": [
-        "22",
-        "10",
-        "20",
-        "21"
+        "270 degrees",
+        "90 degrees",
+        "180 degrees",
+        "360 degrees"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "What is 30 ÷ 6?",
+      "question": "In a parallelogram, opposite sides are:",
       "options": [
-        "4",
-        "6",
-        "6",
-        "5"
+        "Neither equal nor parallel",
+        "Equal and parallel",
+        "Equal but not parallel",
+        "Parallel but not equal"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "If two lines intersect, the vertically opposite angles formed are:",
       "options": [
-        "36 cm",
-        "24 cm",
-        "12 cm",
-        "10 cm"
+        "Supplementary",
+        "Equal",
+        "Complementary",
+        "Unequal"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "A number is doubled and then 3 is added to get 69. What was the number?",
+      "question": "How many solutions does a linear equation in two variables have?",
       "options": [
-        "33",
-        "34",
-        "36",
-        "32"
+        "Infinitely many",
+        "Exactly two",
+        "Exactly one",
+        "No solution"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "A number is doubled and then 3 is added to get 71. What was the number?",
+      "question": "Find the area of a triangle with base 10 cm and height 6 cm.",
       "options": [
-        "34",
-        "35",
-        "37",
-        "33"
+        "30 sq cm",
+        "60 sq cm",
+        "16 sq cm",
+        "20 sq cm"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "A number is doubled and then 3 is added to get 73. What was the number?",
+      "question": "What is the probability of an impossible event?",
       "options": [
-        "38",
-        "36",
-        "34",
-        "35"
+        "0",
+        "Undefined",
+        "0.5",
+        "1"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "A number is doubled and then 3 is added to get 75. What was the number?",
+      "question": "Which criterion is used to prove two triangles congruent using two sides and the included angle?",
       "options": [
-        "36",
-        "39",
-        "37",
-        "35"
+        "ASA only",
+        "SSA",
+        "SAS (Side-Angle-Side)",
+        "AAA"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "A number is doubled and then 3 is added to get 77. What was the number?",
+      "question": "In which quadrant does the point (-3, 5) lie?",
       "options": [
-        "38",
-        "40",
-        "36",
-        "37"
+        "Second quadrant",
+        "Fourth quadrant",
+        "First quadrant",
+        "Third quadrant"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "If 8 books cost Rs. 480, what is the cost of 5 books?",
+      "options": [
+        "Rs. 280",
+        "Rs. 250",
+        "Rs. 300",
+        "Rs. 320"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "A train travels at 72 km/h. Convert this speed to metres per second.",
+      "options": [
+        "20 m/s",
+        "25 m/s",
+        "15 m/s",
+        "18 m/s"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "A shopkeeper buys an article for Rs. 500 and sells it for Rs. 600. Find the profit percentage.",
+      "options": [
+        "20%",
+        "10%",
+        "15%",
+        "25%"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "A discount of 10% is given on a marked price of Rs. 1200. Find the selling price.",
+      "options": [
+        "Rs. 1080",
+        "Rs. 1150",
+        "Rs. 1100",
+        "Rs. 1000"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "A tank is filled by a pipe in 8 hours. If half the tank is already full, how long will the pipe take to fill the rest?",
+      "options": [
+        "2 hours",
+        "8 hours",
+        "4 hours",
+        "6 hours"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "A car covers 180 km in 3 hours. What is its speed?",
+      "options": [
+        "65 km/h",
+        "70 km/h",
+        "60 km/h",
+        "50 km/h"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "A sum becomes Rs. 1200 in 2 years at simple interest of 10% per annum. Find the original principal.",
+      "options": [
+        "Rs. 900",
+        "Rs. 950",
+        "Rs. 1000",
+        "Rs. 1100"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "A recipe uses 3 eggs for 6 servings. How many eggs are needed for 10 servings?",
+      "options": [
+        "4.5 eggs",
+        "4 eggs",
+        "5 eggs",
+        "6 eggs"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "A sum of Rs. 2000 is invested at 5% simple interest for 3 years. Find the interest earned.",
+      "options": [
+        "Rs. 250",
+        "Rs. 350",
+        "Rs. 300",
+        "Rs. 200"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "A wall is 8m long and 3m high. Find the cost of painting it at Rs. 20 per sq metre.",
+      "options": [
+        "Rs. 460",
+        "Rs. 500",
+        "Rs. 480",
+        "Rs. 440"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "Two poles of heights 6m and 11m are erected 12m apart on level ground. Using distance formula reasoning, what is the distance between their tops?",
+      "options": [
+        "15 m",
+        "13 m (since horizontal difference 12m, vertical difference 5m, hypotenuse = sqrt(12^2+5^2)=13)",
+        "17 m",
+        "10 m"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "A cylindrical tank and a conical tank have the same base radius and height. What is the ratio of their volumes?",
+      "options": [
+        "1:1",
+        "3:1 (cylinder to cone)",
+        "2:1",
+        "1:3"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "A student notices that as the number of sides of a regular polygon increases, the sum of interior angles increases too. Derive the general formula reasoning used here.",
+      "options": [
+        "Sum of interior angles = (n+2) x 180 degrees",
+        "Sum of interior angles = (n-2) x 180 degrees, where n is the number of sides",
+        "Sum of interior angles = n x 180 degrees",
+        "Sum of interior angles = 360 degrees always"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "A bag contains 3 red, 4 blue, and 5 green marbles. If one marble is drawn at random, what is the probability it is NOT blue?",
+      "options": [
+        "5/12",
+        "4/12",
+        "8/12 or 2/3",
+        "3/12"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "A quadratic-like word problem states: 'The sum of a number and its reciprocal is 2.9.' Which equation correctly represents this if x is the number?",
+      "options": [
+        "x * 1/x = 2.9",
+        "x - 1/x = 2.9",
+        "x + 1/x = 2.9",
+        "x^2 + 1 = 2.9"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

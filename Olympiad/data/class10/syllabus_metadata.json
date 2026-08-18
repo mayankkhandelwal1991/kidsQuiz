@@ -1,0 +1,19 @@
+{
+  "class": 10,
+  "description": "SOF-style Olympiad question bank enriched with syllabus and exam metadata",
+  "subjects": [
+    "Mathematics",
+    "Science",
+    "English",
+    "Computer Science",
+    "General Knowledge"
+  ],
+  "note": "Existing questions and answers are preserved. syllabus.json added per subject. Each question receives syllabusTopic and questionType based on its text/section; review auto-classified topics before using as official tagging.",
+  "officialSources": {
+    "IMO": "https://sofworld.org/imo/class-10/imo-syllabus/imo-syllabus-class-10",
+    "ISO": "https://sofworld.org/nso/class-10/nso-syllabus/nso-syllabus-class-10",
+    "IEO": "https://sofworld.org/ieo/class-10/ieo-syllabus/ieo-syllabus-class-10",
+    "IGKO": "https://sofworld.org/igko/class-10/igko-syllabus/igko-syllabus-class-10",
+    "ICSO": "https://sofworld.org/icso/class-10/icso-syllabus/icso-syllabus-class-10"
+  }
+}

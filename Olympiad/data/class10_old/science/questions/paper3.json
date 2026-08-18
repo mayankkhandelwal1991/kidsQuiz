@@ -1,0 +1,640 @@
+{
+  "class": 10,
+  "subject": "Science",
+  "paper": 3,
+  "title": "Class 10 Science Olympiad \u2014 Paper 3",
+  "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "instructions": [
+    "The time allowed for this paper is 60 minutes.",
+    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
+    "There is no negative marking for wrong answers.",
+    "Each question has four options; choose the one correct answer.",
+    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
+    "Use of calculators is not permitted unless specified."
+  ],
+  "sections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Science",
+      "questions": 35,
+      "marksPerQuestion": 1,
+      "totalMarks": 35
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Statement: All metals conduct electricity. Iron is a metal. Conclusion: Iron conducts electricity.",
+      "options": [
+        "Insufficient data",
+        "The conclusion is valid",
+        "The conclusion is invalid",
+        "Cannot be determined"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 2,
+      "question": "Complete the analogy: Plant is to Photosynthesis as Animal is to ____",
+      "options": [
+        "Excretion",
+        "Respiration",
+        "Growth",
+        "Reproduction"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 3,
+      "question": "A is the brother of B. B is the daughter of C. How is A related to C?",
+      "options": [
+        "Nephew",
+        "Cousin",
+        "Son",
+        "Grandson"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 4,
+      "question": "Find the missing number in the series: 4, 9, 16, 25, __",
+      "options": [
+        "36",
+        "32",
+        "30",
+        "49"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 5,
+      "question": "Find the odd one out: Oxygen, Nitrogen, Hydrogen, Water",
+      "options": [
+        "Hydrogen",
+        "Water (a compound, others are elements)",
+        "Oxygen",
+        "Nitrogen"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 6,
+      "question": "If 8 machines produce 480 units in a day, how many units will 12 machines produce in a day at the same rate?",
+      "options": [
+        "800 units",
+        "640 units",
+        "720 units",
+        "600 units"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 7,
+      "question": "If '\u00d7' means '+', '+' means '-', '-' means '\u00f7', and '\u00f7' means '\u00d7', evaluate: 10 + 5 - 2",
+      "options": [
+        "15",
+        "10-5\u00f72 = 10-2.5 = 7.5",
+        "7",
+        "13"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 8,
+      "question": "Find the next term: 3, 6, 11, 18, 27, __",
+      "options": [
+        "40",
+        "35",
+        "38",
+        "36"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 9,
+      "question": "If in a code LIGHT is written as MJHIU, how is SOUND written?",
+      "options": [
+        "TPVOE",
+        "RNTMC",
+        "SPVOE",
+        "TQVOE"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 10,
+      "question": "Five friends are sitting in a row. Raj is to the left of Simran but right of Aman. Simran is to the left of Priya. Who is in the middle?",
+      "options": [
+        "Priya",
+        "Raj",
+        "Simran",
+        "Aman"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 11,
+      "question": "Which type of chemical reaction occurs when calcium oxide reacts with water?",
+      "options": [
+        "Decomposition reaction",
+        "Double displacement reaction",
+        "Combination reaction",
+        "Displacement reaction"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 12,
+      "question": "If the resistance of a conductor is doubled while keeping voltage constant, what happens to the current?",
+      "options": [
+        "It becomes double",
+        "It remains the same",
+        "It becomes half",
+        "It becomes four times"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 13,
+      "question": "A person cannot see distant objects clearly but can see nearby objects. Which defect of vision is this?",
+      "options": [
+        "Astigmatism",
+        "Myopia (short-sightedness)",
+        "Hypermetropia (long-sightedness)",
+        "Presbyopia"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 14,
+      "question": "In human beings, sex of the child is determined by the chromosome contributed by which parent?",
+      "options": [
+        "Mother",
+        "Father",
+        "Neither",
+        "Both equally"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 15,
+      "question": "Which part of the brain controls balance and posture?",
+      "options": [
+        "Medulla oblongata",
+        "Cerebellum",
+        "Cerebrum",
+        "Hypothalamus"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 16,
+      "question": "Why does a plant kept in the dark for 3 days fail to test positive for starch when a leaf is tested with iodine?",
+      "options": [
+        "Iodine only reacts with proteins",
+        "Excess starch was produced",
+        "The leaf lost chlorophyll permanently",
+        "No photosynthesis occurred due to absence of light"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 17,
+      "question": "If a person's pancreas fails to produce sufficient insulin, what condition results?",
+      "options": [
+        "Rickets",
+        "Diabetes mellitus",
+        "Anaemia",
+        "Goitre"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 18,
+      "question": "Why does a copper wire glow when placed in a solution of silver nitrate?",
+      "options": [
+        "Copper nitrate is insoluble",
+        "Copper is more reactive than silver and displaces it",
+        "No reaction takes place",
+        "Silver is more reactive than copper"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 19,
+      "question": "Which observation best supports that respiration is an exothermic process?",
+      "options": [
+        "Plants absorb carbon dioxide during the day",
+        "Body temperature is maintained due to energy released during respiration",
+        "Water evaporates from leaves",
+        "Chlorophyll gives leaves their green colour"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 20,
+      "question": "Which of these is a non-renewable source of energy?",
+      "options": [
+        "Solar energy",
+        "Tidal energy",
+        "Coal",
+        "Wind energy"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 21,
+      "question": "A wire of resistivity rho is stretched to double its length with volume constant. How does its resistance change?",
+      "options": [
+        "It remains unchanged",
+        "It becomes 4 times",
+        "It becomes half",
+        "It becomes 2 times"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 22,
+      "question": "A cell has a shorter life span in humans and lacks a nucleus; which cell is being described?",
+      "options": [
+        "White blood cell",
+        "Nerve cell",
+        "Muscle cell",
+        "Red blood cell"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 23,
+      "question": "If the earth did not have a magnetic field, what would be a likely consequence?",
+      "options": [
+        "Harmful cosmic and solar radiation would reach Earth's surface more easily",
+        "Oceans would freeze",
+        "Gravity would decrease",
+        "Days would become longer"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 24,
+      "question": "Which process in plants converts light energy into chemical energy?",
+      "options": [
+        "Respiration",
+        "Excretion",
+        "Photosynthesis",
+        "Transpiration"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 25,
+      "question": "What is the function of the ozone layer?",
+      "options": [
+        "Absorbing harmful UV radiation",
+        "Producing oxygen",
+        "Causing rainfall",
+        "Trapping heat near Earth's surface"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 26,
+      "question": "Which element has the electronic configuration 2, 8, 7?",
+      "options": [
+        "Chlorine",
+        "Sulphur",
+        "Aluminium",
+        "Sodium"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 27,
+      "question": "What is the pH range of acidic solutions?",
+      "options": [
+        "Equal to 7",
+        "Less than 7",
+        "Between 7 and 14",
+        "More than 7"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 28,
+      "question": "Which gas is evolved when a metal reacts with a dilute acid?",
+      "options": [
+        "Oxygen gas",
+        "Nitrogen gas",
+        "Carbon dioxide gas",
+        "Hydrogen gas"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 29,
+      "question": "A metal reacts vigorously with cold water forming a hydroxide and hydrogen gas with fire. Which metal fits this description?",
+      "options": [
+        "Sodium",
+        "Iron",
+        "Lead",
+        "Copper"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 30,
+      "question": "During electrolysis of water, which gas is collected in double the volume at one electrode?",
+      "options": [
+        "Both in equal volumes",
+        "Neither gas is produced",
+        "Hydrogen",
+        "Oxygen"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 31,
+      "question": "Which of the following is a exothermic reaction?",
+      "options": [
+        "Burning of natural gas",
+        "Photosynthesis",
+        "Electrolysis of water",
+        "Decomposition of calcium carbonate"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 32,
+      "question": "Which law states that the current through a conductor is directly proportional to the potential difference across it?",
+      "options": [
+        "Ohm's Law",
+        "Faraday's Law",
+        "Newton's Law",
+        "Coulomb's Law"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 33,
+      "question": "Which metal is extracted from bauxite ore?",
+      "options": [
+        "Copper",
+        "Iron",
+        "Zinc",
+        "Aluminium"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 34,
+      "question": "A concave mirror produces an image that is virtual, erect and magnified. Where must the object be placed?",
+      "options": [
+        "At the focus",
+        "At the centre of curvature",
+        "Beyond the centre of curvature",
+        "Between the pole and the focus"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 35,
+      "question": "Which vitamin deficiency causes scurvy?",
+      "options": [
+        "Vitamin B12",
+        "Vitamin C",
+        "Vitamin D",
+        "Vitamin A"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "Which hormone regulates blood sugar level in humans?",
+      "options": [
+        "Insulin",
+        "Thyroxine",
+        "Adrenaline",
+        "Testosterone"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "A patient's blood does not clot properly due to lack of a certain mineral in diet. Which mineral is most likely deficient?",
+      "options": [
+        "Iodine",
+        "Potassium",
+        "Calcium",
+        "Sodium"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "Which gas is responsible for the greenhouse effect predominantly?",
+      "options": [
+        "Helium",
+        "Argon",
+        "Carbon dioxide",
+        "Nitrogen"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "Which part of the eye controls the amount of light entering it?",
+      "options": [
+        "Cornea",
+        "Pupil",
+        "Retina",
+        "Iris"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "Why is a food chain usually limited to 4-5 trophic levels?",
+      "options": [
+        "Decomposers stop the chain",
+        "Consumers cannot digest energy beyond 4 levels",
+        "Producers reproduce too slowly",
+        "Energy decreases at each successive trophic level"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "A ray of light passes from air into glass. What happens to its speed and how does it bend relative to the normal?",
+      "options": [
+        "Speed increases and it bends away from the normal",
+        "Speed decreases and it bends towards the normal",
+        "Speed remains the same and it does not bend",
+        "Speed decreases and it bends away from the normal"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "Why does the sky appear blue during the daytime?",
+      "options": [
+        "Refraction of light by clouds",
+        "Reflection of oceans onto the sky",
+        "Absorption of red light by the atmosphere",
+        "Scattering of shorter wavelengths of light by atmospheric particles"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "Why do stomata usually close at night?",
+      "options": [
+        "To reduce water loss when photosynthesis is not occurring",
+        "To increase transpiration",
+        "To increase the rate of photosynthesis",
+        "To allow more carbon dioxide entry for respiration only"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "In a food web, what would likely happen to the population of grasshoppers if all frogs (their predators) were removed?",
+      "options": [
+        "Grasshoppers would become predators",
+        "No effect on grasshopper population",
+        "Grasshopper population would increase initially",
+        "Grasshopper population would decrease immediately"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "Which of the following is the most reactive metal among these?",
+      "options": [
+        "Copper",
+        "Gold",
+        "Potassium",
+        "Silver"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "A student mixes solutions of lead nitrate and potassium iodide and observes a yellow precipitate. Classify this reaction and justify.",
+      "options": [
+        "Double displacement (precipitation) reaction because ions exchange partners forming an insoluble salt",
+        "Combination reaction because two substances combine",
+        "Decomposition reaction because a precipitate forms",
+        "Displacement reaction because lead displaces potassium"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "A green plant is kept in a well-lit room but its soil is never watered for several days. Predict the immediate effect on photosynthesis and explain why.",
+      "options": [
+        "No effect on photosynthesis since light is unaffected",
+        "Photosynthesis increases due to more light absorption",
+        "Photosynthesis decreases because stomata close to conserve water, reducing CO2 uptake",
+        "Photosynthesis stops immediately due to lack of chlorophyll"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "Two identical resistors are first connected in series and then in parallel across the same battery. Compare the total power consumed in both cases.",
+      "options": [
+        "Power cannot be compared without knowing resistance value",
+        "Power consumed is the same in both cases",
+        "Power consumed in parallel combination is 4 times that in series combination",
+        "Power consumed in series is greater"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "In a pedigree study, a trait appears only in male offspring of a family across generations, skipping females entirely. What does this suggest about the trait's inheritance?",
+      "options": [
+        "It is caused entirely by environmental factors",
+        "It is likely a dominant autosomal trait",
+        "It is likely an X-linked recessive trait",
+        "It is a Y-linked dominant trait inherited from mother"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "During an experiment, a student adds dilute HCl to a mixture of zinc granules and copper turnings. Which metal reacts and why?",
+      "options": [
+        "Both react equally",
+        "Zinc reacts because it is more reactive than hydrogen, while copper does not react as it is less reactive than hydrogen",
+        "Neither reacts as HCl is too dilute",
+        "Copper reacts because it is denser"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    }
+  ]
+}

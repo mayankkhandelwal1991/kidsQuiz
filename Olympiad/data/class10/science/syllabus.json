@@ -1,0 +1,52 @@
+{
+  "subject": "Science",
+  "olympiad": "ISO",
+  "officialSections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Science",
+      "questions": 35,
+      "marksPerQuestion": 1,
+      "totalMarks": 35
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
+  "topics": [
+    "Chemical Reactions and Equations",
+    "Acids, Bases and Salts",
+    "Metals and Non-metals",
+    "Carbon and Its Compounds",
+    "Life Processes",
+    "Control and Coordination",
+    "Reproduction in Organisms",
+    "Heredity",
+    "Light - Reflection and Refraction",
+    "The Human Eye and the Colourful World",
+    "Electricity",
+    "Magnetic Effects of Electric Current",
+    "Our Environment"
+  ],
+  "reasoningTopics": [
+    "Verbal and Non-Verbal Reasoning"
+  ],
+  "achieversTopics": [
+    "Higher Order Thinking Questions from the Science syllabus"
+  ],
+  "level1Mix": "60% current class syllabus + 40% previous class syllabus; Achievers from current class only",
+  "class": 10,
+  "totalQuestions": 50,
+  "durationMinutes": 60,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "source": "SOF official Class 10 syllabus/pattern; verify against the latest SOF session before publication"
+}

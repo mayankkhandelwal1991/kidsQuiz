@@ -9,8 +9,8 @@
       "id": 1,
       "question": "Which part performs most computer processing?",
       "options": [
-        "CPU",
         "Mouse",
+        "CPU",
         "Printer",
         "Speaker"
       ],
@@ -21,9 +21,9 @@
       "question": "Which device is used to enter text?",
       "options": [
         "Keyboard",
+        "Speaker",
         "Monitor",
-        "Printer",
-        "Speaker"
+        "Printer"
       ],
       "section": "Computer Science"
     },
@@ -31,8 +31,8 @@
       "id": 3,
       "question": "Which device displays information?",
       "options": [
-        "Monitor",
         "Keyboard",
+        "Monitor",
         "Mouse",
         "Scanner"
       ],
@@ -42,10 +42,10 @@
       "id": 4,
       "question": "Which device produces a paper copy?",
       "options": [
-        "Printer",
-        "Speaker",
         "Monitor",
-        "Microphone"
+        "Printer",
+        "Microphone",
+        "Speaker"
       ],
       "section": "Computer Science"
     },
@@ -53,10 +53,10 @@
       "id": 5,
       "question": "Which memory temporarily stores information while programs run?",
       "options": [
-        "RAM",
-        "DVD",
+        "Keyboard",
         "Printer",
-        "Keyboard"
+        "DVD",
+        "RAM"
       ],
       "section": "Computer Science"
     },
@@ -64,10 +64,10 @@
       "id": 6,
       "question": "What does Ctrl+C commonly do?",
       "options": [
-        "Copy",
+        "Undo",
         "Paste",
-        "Save",
-        "Undo"
+        "Copy",
+        "Save"
       ],
       "section": "Computer Science"
     },
@@ -75,10 +75,10 @@
       "id": 7,
       "question": "What does Ctrl+V commonly do?",
       "options": [
-        "Paste",
-        "Copy",
+        "Close",
         "Print",
-        "Close"
+        "Copy",
+        "Paste"
       ],
       "section": "Computer Science"
     },
@@ -86,9 +86,9 @@
       "id": 8,
       "question": "What does Ctrl+S commonly do?",
       "options": [
-        "Save",
-        "Paste",
         "Copy",
+        "Paste",
+        "Save",
         "Undo"
       ],
       "section": "Computer Science"
@@ -97,9 +97,9 @@
       "id": 9,
       "question": "What does Ctrl+Z commonly do?",
       "options": [
-        "Undo",
-        "Copy",
         "Save",
+        "Copy",
+        "Undo",
         "Print"
       ],
       "section": "Computer Science"
@@ -108,10 +108,10 @@
       "id": 10,
       "question": "Which device records sound?",
       "options": [
-        "Microphone",
         "Monitor",
+        "Mouse",
         "Printer",
-        "Mouse"
+        "Microphone"
       ],
       "section": "Computer Science"
     },
@@ -119,10 +119,10 @@
       "id": 11,
       "question": "What is a browser mainly used for?",
       "options": [
-        "Visiting websites",
         "Charging a phone",
-        "Printing money",
-        "Drawing only"
+        "Drawing only",
+        "Visiting websites",
+        "Printing money"
       ],
       "section": "Computer Science"
     },
@@ -130,10 +130,10 @@
       "id": 12,
       "question": "What is an algorithm?",
       "options": [
-        "A step-by-step method for solving a problem",
         "A monitor",
-        "A virus",
-        "A password"
+        "A password",
+        "A step-by-step method for solving a problem",
+        "A virus"
       ],
       "section": "Computer Science"
     },
@@ -143,8 +143,8 @@
       "options": [
         "Artificial Intelligence",
         "Automatic Internet",
-        "Advanced Input",
-        "Audio Information"
+        "Audio Information",
+        "Advanced Input"
       ],
       "section": "Computer Science"
     },
@@ -152,10 +152,10 @@
       "id": 14,
       "question": "What is a safe online habit?",
       "options": [
-        "Keep passwords private",
         "Share passwords",
         "Open every unknown link",
-        "Post your address"
+        "Post your address",
+        "Keep passwords private"
       ],
       "section": "Computer Science"
     },
@@ -163,10 +163,10 @@
       "id": 15,
       "question": "Why are backups useful?",
       "options": [
-        "They can help recover lost files",
         "They brighten the monitor",
-        "They remove passwords",
-        "They stop the internet"
+        "They can help recover lost files",
+        "They stop the internet",
+        "They remove passwords"
       ],
       "section": "Computer Science"
     },
@@ -174,10 +174,10 @@
       "id": 16,
       "question": "What comes next: 2, 5, 8, 11, __?",
       "options": [
-        "14",
-        "13",
         "15",
-        "16"
+        "16",
+        "14",
+        "13"
       ],
       "section": "Logical Reasoning"
     },
@@ -185,9 +185,9 @@
       "id": 17,
       "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
       "options": [
+        "4 steps",
         "2 steps",
         "3 steps",
-        "4 steps",
         "1 step"
       ],
       "section": "Logical Reasoning"
@@ -196,10 +196,10 @@
       "id": 18,
       "question": "A suspicious website asks for your home address. What is safest?",
       "options": [
-        "Do not enter it without trusted-adult guidance",
         "Enter it immediately",
-        "Post it publicly",
-        "Use a friend's address"
+        "Do not enter it without trusted-adult guidance",
+        "Use a friend's address",
+        "Post it publicly"
       ],
       "section": "AI, IT & Safety"
     },
@@ -207,10 +207,10 @@
       "id": 19,
       "question": "An AI answer seems surprising. What should you do?",
       "options": [
-        "Check it with a reliable source or teacher",
+        "Assume it cannot be wrong",
         "Copy it immediately",
         "Share private information",
-        "Assume it cannot be wrong"
+        "Check it with a reliable source or teacher"
       ],
       "section": "AI, IT & Safety"
     },
@@ -219,8 +219,8 @@
       "question": "Why should important accounts use different passwords?",
       "options": [
         "One stolen password is less likely to unlock every account",
-        "It makes the computer faster",
         "It removes security",
+        "It makes the computer faster",
         "It lets everyone know the password"
       ],
       "section": "Achievers / HOTS"
@@ -229,10 +229,10 @@
       "id": 21,
       "question": "What comes next: 2, 5, 8, 11, __?",
       "options": [
+        "16",
         "14",
         "13",
-        "15",
-        "16"
+        "15"
       ],
       "section": "Logical Reasoning"
     },
@@ -240,10 +240,10 @@
       "id": 22,
       "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
       "options": [
-        "2 steps",
         "3 steps",
+        "1 step",
         "4 steps",
-        "1 step"
+        "2 steps"
       ],
       "section": "Logical Reasoning"
     },
@@ -251,10 +251,10 @@
       "id": 23,
       "question": "A suspicious website asks for your home address. What is safest?",
       "options": [
-        "Do not enter it without trusted-adult guidance",
-        "Enter it immediately",
+        "Use a friend's address",
         "Post it publicly",
-        "Use a friend's address"
+        "Enter it immediately",
+        "Do not enter it without trusted-adult guidance"
       ],
       "section": "AI, IT & Safety"
     },
@@ -262,10 +262,10 @@
       "id": 24,
       "question": "An AI answer seems surprising. What should you do?",
       "options": [
-        "Check it with a reliable source or teacher",
-        "Copy it immediately",
         "Share private information",
-        "Assume it cannot be wrong"
+        "Assume it cannot be wrong",
+        "Copy it immediately",
+        "Check it with a reliable source or teacher"
       ],
       "section": "AI, IT & Safety"
     },
@@ -273,10 +273,10 @@
       "id": 25,
       "question": "Why should important accounts use different passwords?",
       "options": [
-        "One stolen password is less likely to unlock every account",
         "It makes the computer faster",
+        "It lets everyone know the password",
         "It removes security",
-        "It lets everyone know the password"
+        "One stolen password is less likely to unlock every account"
       ],
       "section": "Achievers / HOTS"
     },
@@ -285,9 +285,9 @@
       "question": "What comes next: 2, 5, 8, 11, __?",
       "options": [
         "14",
-        "13",
         "15",
-        "16"
+        "16",
+        "13"
       ],
       "section": "Logical Reasoning"
     },
@@ -295,9 +295,9 @@
       "id": 27,
       "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
       "options": [
-        "2 steps",
-        "3 steps",
         "4 steps",
+        "3 steps",
+        "2 steps",
         "1 step"
       ],
       "section": "Logical Reasoning"
@@ -317,10 +317,10 @@
       "id": 29,
       "question": "An AI answer seems surprising. What should you do?",
       "options": [
-        "Check it with a reliable source or teacher",
-        "Copy it immediately",
         "Share private information",
-        "Assume it cannot be wrong"
+        "Assume it cannot be wrong",
+        "Check it with a reliable source or teacher",
+        "Copy it immediately"
       ],
       "section": "AI, IT & Safety"
     },
@@ -328,10 +328,10 @@
       "id": 30,
       "question": "Why should important accounts use different passwords?",
       "options": [
-        "One stolen password is less likely to unlock every account",
-        "It makes the computer faster",
+        "It lets everyone know the password",
         "It removes security",
-        "It lets everyone know the password"
+        "One stolen password is less likely to unlock every account",
+        "It makes the computer faster"
       ],
       "section": "Achievers / HOTS"
     },
@@ -339,10 +339,10 @@
       "id": 31,
       "question": "What comes next: 2, 5, 8, 11, __?",
       "options": [
+        "16",
         "14",
-        "13",
         "15",
-        "16"
+        "13"
       ],
       "section": "Logical Reasoning"
     },
@@ -350,10 +350,10 @@
       "id": 32,
       "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
       "options": [
-        "2 steps",
-        "3 steps",
         "4 steps",
-        "1 step"
+        "1 step",
+        "3 steps",
+        "2 steps"
       ],
       "section": "Logical Reasoning"
     },
@@ -361,10 +361,10 @@
       "id": 33,
       "question": "A suspicious website asks for your home address. What is safest?",
       "options": [
+        "Use a friend's address",
         "Do not enter it without trusted-adult guidance",
-        "Enter it immediately",
         "Post it publicly",
-        "Use a friend's address"
+        "Enter it immediately"
       ],
       "section": "AI, IT & Safety"
     },
@@ -373,9 +373,9 @@
       "question": "An AI answer seems surprising. What should you do?",
       "options": [
         "Check it with a reliable source or teacher",
+        "Assume it cannot be wrong",
         "Copy it immediately",
-        "Share private information",
-        "Assume it cannot be wrong"
+        "Share private information"
       ],
       "section": "AI, IT & Safety"
     },
@@ -384,9 +384,9 @@
       "question": "Why should important accounts use different passwords?",
       "options": [
         "One stolen password is less likely to unlock every account",
-        "It makes the computer faster",
+        "It lets everyone know the password",
         "It removes security",
-        "It lets everyone know the password"
+        "It makes the computer faster"
       ],
       "section": "Achievers / HOTS"
     }

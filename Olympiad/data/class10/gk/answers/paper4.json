@@ -54,5 +54,32 @@
     "48": 1,
     "49": 3,
     "50": 2
-  }
+  },
+  "syllabusVersion": "SOF Class 10 current syllabus reference",
+  "officialSOFPattern": [
+    {
+      "name": "General Awareness",
+      "questions": 30,
+      "marksPerQuestion": 1,
+      "totalMarks": 30
+    },
+    {
+      "name": "Current Affairs",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Life Skills",
+      "questions": 5,
+      "marksPerQuestion": 1,
+      "totalMarks": 5
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ]
 }

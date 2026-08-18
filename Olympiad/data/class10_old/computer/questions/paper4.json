@@ -1,0 +1,646 @@
+{
+  "class": 10,
+  "subject": "Computer Science",
+  "paper": 4,
+  "title": "Class 10 Computer Science Olympiad \u2014 Paper 4",
+  "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "instructions": [
+    "The time allowed for this paper is 60 minutes.",
+    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
+    "There is no negative marking for wrong answers.",
+    "Each question has four options; choose the one correct answer.",
+    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
+    "Use of calculators is not permitted unless specified."
+  ],
+  "sections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Computer Science",
+      "questions": 25,
+      "marksPerQuestion": 1,
+      "totalMarks": 25
+    },
+    {
+      "name": "AI, IT & Safety",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "question": "If A=1, B=2, C=3, and so on, what does the code '3-15-13-16-21-20-5-18' spell?",
+      "options": [
+        "KEYBOARD",
+        "COMPUTER",
+        "MONITOR",
+        "PRINTER"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 2,
+      "question": "Find the next term: 2, 4, 8, 16, __",
+      "options": [
+        "24",
+        "36",
+        "32",
+        "30"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 3,
+      "question": "Which of these is not like the others: RAM, ROM, CPU, USB drive",
+      "options": [
+        "CPU",
+        "ROM",
+        "RAM",
+        "USB drive (external storage, others are internal components)"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 4,
+      "question": "Find the odd one out: Python, Java, HTML, C++",
+      "options": [
+        "Java",
+        "HTML (markup language, others are programming languages)",
+        "C++",
+        "Python"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 5,
+      "question": "If FILE is coded as EHKD, how is DATA coded?",
+      "options": [
+        "EBUB",
+        "DBTB",
+        "CZSZ",
+        "CBSB"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 6,
+      "question": "Which of these does not belong with the others: Router, Switch, Modem, Monitor",
+      "options": [
+        "Router",
+        "Modem",
+        "Switch",
+        "Monitor (output device, others are networking devices)"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 7,
+      "question": "Complete the analogy: Keyboard is to Type as Mouse is to ____",
+      "options": [
+        "Print",
+        "Click/Point",
+        "Scan",
+        "Speak"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 8,
+      "question": "Complete the analogy: Keyboard is to Input as Printer is to ____",
+      "options": [
+        "Storage",
+        "Processing",
+        "Memory",
+        "Output"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 9,
+      "question": "If in a certain code MOUSE is written as NPVTF, how is KEYS written?",
+      "options": [
+        "KFYT",
+        "LFZR",
+        "JDXR",
+        "LFZT"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 10,
+      "question": "If a file is 5 MB and internet speed is 1 MB/s, how long will it take to download?",
+      "options": [
+        "1 second",
+        "50 seconds",
+        "10 seconds",
+        "5 seconds"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 11,
+      "question": "What is the full form of RAM?",
+      "options": [
+        "Rapid Access Memory",
+        "Run Access Memory",
+        "Random Access Memory",
+        "Read Access Memory"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 12,
+      "question": "Convert the decimal number 25 to binary.",
+      "options": [
+        "11101",
+        "10101",
+        "11001",
+        "11010"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 13,
+      "question": "Which storage device uses flash memory with no moving parts?",
+      "options": [
+        "SSD (Solid State Drive)",
+        "Floppy disk",
+        "HDD (Hard Disk Drive)",
+        "CD-ROM"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 14,
+      "question": "What does the acronym URL stand for?",
+      "options": [
+        "Uniform Resource Locator",
+        "Uniform Reference Link",
+        "United Resource Locator",
+        "Universal Resource Link"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 15,
+      "question": "What is the function of an operating system's 'task manager'?",
+      "options": [
+        "To monitor and manage running processes and applications",
+        "To edit documents",
+        "To browse the internet",
+        "To send emails"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 16,
+      "question": "Which device converts digital signals to analog for transmission over telephone lines?",
+      "options": [
+        "Hub",
+        "Modem",
+        "Router",
+        "Switch"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 17,
+      "question": "Which of these best describes a 'foreign key' in a database?",
+      "options": [
+        "A field that links to the primary key of another table",
+        "A field with only numeric values",
+        "A field used only for storing images",
+        "A field that must always be blank"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 18,
+      "question": "Which of these is a primary key constraint in a database?",
+      "options": [
+        "It can contain duplicate values",
+        "It can be left blank",
+        "It must be a text field only",
+        "It must contain unique, non-null values"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 19,
+      "question": "Which Python operator is used for exponentiation (power)?",
+      "options": [
+        "//",
+        "^",
+        "%",
+        "\\*\\*"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 20,
+      "question": "What does CSS stand for?",
+      "options": [
+        "Computer Style Sheets",
+        "Colour Style Sheets",
+        "Cascading Style Sheets",
+        "Creative Style System"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 21,
+      "question": "What does DBMS stand for?",
+      "options": [
+        "Digital Base Management System",
+        "Database Management System",
+        "Database Model System",
+        "Data Backup Management System"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 22,
+      "question": "Which of these is an example of system software?",
+      "options": [
+        "Google Chrome",
+        "Operating System",
+        "Adobe Photoshop",
+        "MS-Word"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 23,
+      "question": "In HTML, which tag is used to define the largest heading?",
+      "options": [
+        "<header>",
+        "<h6>",
+        "<h1>",
+        "<head>"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 24,
+      "question": "Which shortcut key is used to copy selected text in Windows?",
+      "options": [
+        "Ctrl+X",
+        "Ctrl+Z",
+        "Ctrl+C",
+        "Ctrl+V"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 25,
+      "question": "In MS-PowerPoint, what is used to control how a slide appears on screen during a presentation?",
+      "options": [
+        "Slide master",
+        "Slide sorter",
+        "Slide transition",
+        "Slide layout"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 26,
+      "question": "Which number system uses only digits 0 and 1?",
+      "options": [
+        "Hexadecimal",
+        "Octal",
+        "Binary",
+        "Decimal"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 27,
+      "question": "Which CSS property is used to change the text colour of an element?",
+      "options": [
+        "font-color",
+        "text-color",
+        "color",
+        "fg-color"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 28,
+      "question": "Which Python data type is used to store a sequence of characters?",
+      "options": [
+        "Float",
+        "Integer",
+        "String",
+        "Boolean"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 29,
+      "question": "In Python, which keyword is used to define a function?",
+      "options": [
+        "def",
+        "function",
+        "func",
+        "define"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 30,
+      "question": "Which topology connects all devices to a single central hub?",
+      "options": [
+        "Star topology",
+        "Ring topology",
+        "Bus topology",
+        "Mesh topology"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 31,
+      "question": "In MS-Excel, which function adds up a range of cells?",
+      "options": [
+        "ADD()",
+        "SUM()",
+        "TOTAL()",
+        "PLUS()"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 32,
+      "question": "Convert the binary number 1010 to decimal.",
+      "options": [
+        "12",
+        "10",
+        "9",
+        "8"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 33,
+      "question": "Which HTML tag is used to create a hyperlink?",
+      "options": [
+        "<href>",
+        "<url>",
+        "<a>",
+        "<link>"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 34,
+      "question": "What is the function of a firewall in a network?",
+      "options": [
+        "To monitor and control incoming/outgoing network traffic for security",
+        "To increase internet speed",
+        "To print documents",
+        "To store data permanently"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 35,
+      "question": "What is the purpose of the Ctrl+Z shortcut?",
+      "options": [
+        "Close the file",
+        "Redo the last action",
+        "Save the file",
+        "Undo the last action"
+      ],
+      "section": "Computer Science",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "What precaution should be taken before downloading software from the internet?",
+      "options": [
+        "Disable the antivirus first",
+        "Verify it is from a trusted/official source",
+        "Share your password with the site",
+        "Download from any pop-up link"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "What is malware?",
+      "options": [
+        "Malicious software designed to harm or exploit devices",
+        "An antivirus program",
+        "A type of hardware component",
+        "A search engine"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "Which of these is an example of an AI-based application?",
+      "options": [
+        "MS Paint",
+        "Voice assistants like Siri or Alexa",
+        "Notepad",
+        "Calculator app"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "Which technology allows a robot to 'see' and interpret its surroundings?",
+      "options": [
+        "Computer vision / sensors",
+        "Spreadsheet software",
+        "Word processing software",
+        "Email client"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "What should you do if you receive an email asking for your bank password?",
+      "options": [
+        "Reply with your password immediately",
+        "Forward it to friends",
+        "Click all links in the email",
+        "Do not respond and report/delete the email"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "What is 'phishing' in the context of cyber safety?",
+      "options": [
+        "A method to speed up internet connection",
+        "A way to back up files",
+        "A type of computer virus scanner",
+        "A fraudulent attempt to obtain sensitive information by pretending to be trustworthy"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "Which of these best describes 'machine learning'?",
+      "options": [
+        "A subset of AI where systems learn patterns from data to improve performance",
+        "A method of manually programming every possible outcome",
+        "A way to physically assemble computer hardware",
+        "A type of computer monitor"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "Why is it important to log out of accounts on shared/public computers?",
+      "options": [
+        "To save electricity",
+        "To make the computer run faster",
+        "To prevent unauthorized access to your personal information",
+        "To update the software"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "What does 'IoT' stand for?",
+      "options": [
+        "Integration of Tools",
+        "Input of Technology",
+        "Internal Object Transfer",
+        "Internet of Things"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "What is a 'strong password' characterized by?",
+      "options": [
+        "A mix of uppercase, lowercase, numbers, and symbols, hard to guess",
+        "Your name and birth date",
+        "A short common word",
+        "The word 'password'"
+      ],
+      "section": "AI, IT & Safety",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "An organization's network was breached because employees used the same weak password across multiple systems. Which combination of practices would have best prevented this?",
+      "options": [
+        "Turning off the firewall to allow easier IT monitoring",
+        "Using the same password everywhere for convenience",
+        "Using unique strong passwords and enabling two-factor authentication",
+        "Sharing the password only within the department"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "In a Python program, a loop is meant to run 5 times using 'for i in range(5):' but the student wants it to print numbers 1 to 5 instead of 0 to 4. What change is needed?",
+      "options": [
+        "Use range(1, 6) instead of range(5)",
+        "Use range(0, 5) instead of range(5)",
+        "Use range(6) instead of range(5)",
+        "No change needed, 0 to 4 is correct for 1 to 5"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "A student wants to design a webpage where clicking a button changes the background colour. Which combination of technologies is needed?",
+      "options": [
+        "HTML for structure, CSS for styling, and JavaScript for interactivity",
+        "Only HTML is sufficient",
+        "Only CSS is sufficient",
+        "Only a database is needed"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "A user notices their computer has become very slow, shows pop-up ads, and unfamiliar programs are running. What is the most likely cause and best first action?",
+      "options": [
+        "The monitor resolution is too high; change display settings",
+        "The RAM is too large; reduce RAM",
+        "The system is likely infected with malware/adware; run a trusted antivirus scan",
+        "The internet speed is too fast; disconnect Wi-Fi"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "A robotic arm in a factory uses sensors to detect object position before picking it up. Which field of computer science is primarily responsible for this capability?",
+      "options": [
+        "Robotics combined with AI (sensor-based perception)",
+        "Spreadsheet computation",
+        "Email protocols",
+        "Word processing"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "subject": "Computer Science",
+  "olympiad": "ICSO",
+  "officialSections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Computer Science",
+      "questions": 30,
+      "marksPerQuestion": 1,
+      "totalMarks": 30
+    },
+    {
+      "name": "AI, Robotics and Information Technology",
+      "questions": 5,
+      "marksPerQuestion": 1,
+      "totalMarks": 5
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
+  "topics": [
+    "Fundamentals of Computer - Hardware",
+    "Fundamentals of Computer - Software",
+    "I/O Devices",
+    "Memory and Storage Devices",
+    "Basics of IT",
+    "Number System",
+    "Operating System",
+    "MS Word",
+    "Networking",
+    "MS PowerPoint",
+    "MS Excel",
+    "HTML and CSS",
+    "Cyber Safety",
+    "Database Management System - Functions",
+    "Database Management System - Types",
+    "MS Access",
+    "Using Windows 11",
+    "Programming in Scratch",
+    "Programming in Python 3.14.2",
+    "Programming in Visual Basic"
+  ],
+  "aiTopics": [
+    "AI",
+    "Robotics",
+    "IT Gadgets",
+    "Devices",
+    "Apps",
+    "Computerization",
+    "Other Developments in IT"
+  ],
+  "reasoningTopics": [
+    "Verbal and Non-Verbal Reasoning"
+  ],
+  "achieversTopics": [
+    "Higher Order Thinking Questions from Sections 2 and 3"
+  ],
+  "level1Mix": "Use current SOF Class 10 syllabus; official pattern is 10 reasoning + 30 computer science + 5 AI/Robotics/IT + 5 achievers",
+  "class": 10,
+  "totalQuestions": 50,
+  "durationMinutes": 60,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "source": "SOF official Class 10 syllabus/pattern; verify against the latest SOF session before publication"
+}

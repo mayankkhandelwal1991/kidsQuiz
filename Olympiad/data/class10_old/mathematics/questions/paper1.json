@@ -1,0 +1,646 @@
+{
+  "class": 10,
+  "subject": "Mathematics",
+  "paper": 1,
+  "title": "Class 10 Mathematics Olympiad \u2014 Paper 1",
+  "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "instructions": [
+    "The time allowed for this paper is 60 minutes.",
+    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
+    "There is no negative marking for wrong answers.",
+    "Each question has four options; choose the one correct answer.",
+    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
+    "Use of calculators is not permitted unless specified."
+  ],
+  "sections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 15,
+      "marksPerQuestion": 1,
+      "totalMarks": 15
+    },
+    {
+      "name": "Mathematical Reasoning",
+      "questions": 20,
+      "marksPerQuestion": 1,
+      "totalMarks": 20
+    },
+    {
+      "name": "Everyday Mathematics",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which number should replace the question mark: 3, 9, 27, 81, ?",
+      "options": [
+        "216",
+        "243",
+        "162",
+        "324"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 2,
+      "question": "If '+' means '\u00f7', '\u00f7' means '-', '-' means 'x', and 'x' means '+', evaluate: 12 x 4 - 2 \u00f7 3",
+      "options": [
+        "10",
+        "14",
+        "(12+4)-2\u00f73 = 16-2-3 = 11",
+        "8"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 3,
+      "question": "In a row of children, Raj is 7th from the left and 12th from the right. How many children are in the row?",
+      "options": [
+        "18",
+        "19",
+        "20",
+        "17"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 4,
+      "question": "Find the missing number: 7, 14, 28, 56, __",
+      "options": [
+        "98",
+        "112",
+        "106",
+        "120"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 5,
+      "question": "A is taller than B but shorter than C. D is taller than C. Who is the tallest?",
+      "options": [
+        "D",
+        "A",
+        "B",
+        "C"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 6,
+      "question": "Arrange in a logical order: Seed, Flower, Fruit, Plant, Seedling",
+      "options": [
+        "Seedling, Seed, Plant, Fruit, Flower",
+        "Seed, Plant, Seedling, Flower, Fruit",
+        "Seed, Flower, Seedling, Plant, Fruit",
+        "Seed, Seedling, Plant, Flower, Fruit"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 7,
+      "question": "Pointing to a photograph, a man says, 'She is the daughter of my grandfather's only son.' How is the girl related to the man?",
+      "options": [
+        "Cousin",
+        "Niece",
+        "Daughter",
+        "Sister"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 8,
+      "question": "A is the father of B. C is the sister of A. How is C related to B?",
+      "options": [
+        "Aunt",
+        "Grandmother",
+        "Mother",
+        "Sister"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 9,
+      "question": "Statement: All pens are pencils. All pencils are erasers. Conclusion: All pens are erasers.",
+      "options": [
+        "Data is insufficient",
+        "The conclusion is valid",
+        "The conclusion is invalid",
+        "Cannot be determined"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 10,
+      "question": "Find the odd one out: Triangle, Square, Circle, Sphere",
+      "options": [
+        "Triangle",
+        "Square",
+        "Sphere (it is 3D, others are 2D)",
+        "Circle"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 11,
+      "question": "If 5 workers can build a wall in 12 days, how many days will 10 workers take?",
+      "options": [
+        "10 days",
+        "3 days",
+        "6 days",
+        "24 days"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 12,
+      "question": "A clock shows 3:15. What is the angle between the hour and minute hands?",
+      "options": [
+        "0 degrees",
+        "30 degrees",
+        "15 degrees",
+        "7.5 degrees"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 13,
+      "question": "Find the next term in the series: 2, 6, 12, 20, 30, __",
+      "options": [
+        "42",
+        "40",
+        "36",
+        "44"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 14,
+      "question": "If in a certain code, MATH is written as NBUI, how is CODE written?",
+      "options": [
+        "BNCD",
+        "DPEF",
+        "DPFE",
+        "CPDF"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 15,
+      "question": "If North becomes East, East becomes South, and so on, what will South become?",
+      "options": [
+        "South",
+        "North",
+        "East",
+        "West"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 16,
+      "question": "What is the mode of the data set: 2, 3, 3, 4, 5, 3, 6?",
+      "options": [
+        "5",
+        "4",
+        "3",
+        "2"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 17,
+      "question": "What is the median of the data set: 3, 5, 7, 9, 11?",
+      "options": [
+        "7",
+        "9",
+        "5",
+        "6"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 18,
+      "question": "Find the roots of x^2 - 7x + 12 = 0.",
+      "options": [
+        "-3 and -4",
+        "3 and 4",
+        "2 and 6",
+        "1 and 12"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 19,
+      "question": "What is the total surface area of a cube with side 5 cm?",
+      "options": [
+        "125 sq cm",
+        "175 sq cm",
+        "150 sq cm",
+        "100 sq cm"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 20,
+      "question": "If the sum of first n terms of an AP is 3n^2 + 5n, find the first term.",
+      "options": [
+        "8",
+        "6",
+        "5",
+        "3"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 21,
+      "question": "What is the LCM of 12 and 18?",
+      "options": [
+        "72",
+        "30",
+        "36",
+        "24"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 22,
+      "question": "What is the volume of a cylinder with radius 7 cm and height 10 cm (use pi=22/7)?",
+      "options": [
+        "1500 cubic cm",
+        "1450 cubic cm",
+        "1540 cubic cm",
+        "1650 cubic cm"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 23,
+      "question": "What is the value of sin 30 degrees + cos 60 degrees?",
+      "options": [
+        "1.5",
+        "2",
+        "0.5",
+        "1"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 24,
+      "question": "From an external point, how many tangents can be drawn to a circle?",
+      "options": [
+        "Infinite",
+        "Two",
+        "One",
+        "Three"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 25,
+      "question": "If a pair of linear equations has no solution, what is true about the lines they represent?",
+      "options": [
+        "The lines intersect at one point",
+        "The lines coincide",
+        "The lines are perpendicular",
+        "The lines are parallel"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 26,
+      "question": "A tangent to a circle touches it at how many points?",
+      "options": [
+        "One",
+        "Two",
+        "Infinite",
+        "Three"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 27,
+      "question": "If the length of a tangent from an external point 13 cm from the centre to a circle of radius 5 cm is found, what is its length?",
+      "options": [
+        "10 cm",
+        "8 cm",
+        "18 cm",
+        "12 cm (using Pythagoras: sqrt(13^2-5^2))"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 28,
+      "question": "Three points A(1,2), B(3,4), and C(5,6) are given. Are they collinear?",
+      "options": [
+        "No, they form a triangle",
+        "Only A and B are collinear",
+        "Yes, they are collinear (lie on the same line)",
+        "Cannot be determined"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 29,
+      "question": "What is the relationship between the radius and a tangent at the point of contact?",
+      "options": [
+        "The tangent bisects the radius",
+        "The tangent is perpendicular to the radius at the point of contact",
+        "There is no fixed relationship",
+        "The tangent is parallel to the radius"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 30,
+      "question": "Find the area of the triangle with vertices (0,0), (4,0), and (0,3) using the coordinate geometry formula.",
+      "options": [
+        "7 sq units",
+        "12 sq units",
+        "6 sq units",
+        "3.5 sq units"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 31,
+      "question": "A bag contains 4 red, 5 blue, and 6 green balls. What is the probability of NOT drawing a red ball?",
+      "options": [
+        "6/15",
+        "5/15",
+        "4/15",
+        "11/15"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 32,
+      "question": "Find the discriminant of the quadratic equation 2x^2 - 4x + 3 = 0.",
+      "options": [
+        "-4",
+        "4",
+        "-8",
+        "8"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 33,
+      "question": "Find the coordinates of the midpoint of the segment joining (2,3) and (4,7).",
+      "options": [
+        "(3,4)",
+        "(3,5)",
+        "(2,5)",
+        "(6,10)"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 34,
+      "question": "Find the distance between points (3, 4) and (0, 0).",
+      "options": [
+        "3 units",
+        "7 units",
+        "4 units",
+        "5 units"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 35,
+      "question": "What is the 10th term of the AP: 2, 5, 8, 11, ...?",
+      "options": [
+        "35",
+        "29",
+        "32",
+        "26"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "A car travels 240 km in 4 hours. What is its average speed?",
+      "options": [
+        "60 km/h",
+        "50 km/h",
+        "70 km/h",
+        "65 km/h"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "If 5 pens cost Rs. 60, what is the cost of 12 pens?",
+      "options": [
+        "Rs. 120",
+        "Rs. 132",
+        "Rs. 150",
+        "Rs. 144"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "A room is 5m long and 4m wide. What is the cost of carpeting it at Rs. 50 per sq metre?",
+      "options": [
+        "Rs. 1000",
+        "Rs. 1100",
+        "Rs. 900",
+        "Rs. 950"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "A sum of Rs. 5000 is invested at 8% simple interest per annum. Find the interest after 2 years.",
+      "options": [
+        "Rs. 800",
+        "Rs. 900",
+        "Rs. 400",
+        "Rs. 1000"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "A recipe requires 2 cups of flour for 8 servings. How many cups are needed for 20 servings?",
+      "options": [
+        "6 cups",
+        "5 cups",
+        "4 cups",
+        "4.5 cups"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "Ravi buys a shirt marked at Rs. 800 with a 15% discount. What is the discounted price?",
+      "options": [
+        "Rs. 720",
+        "Rs. 680",
+        "Rs. 700",
+        "Rs. 650"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "A sum doubles itself in 8 years at simple interest. Find the rate of interest per annum.",
+      "options": [
+        "8%",
+        "10%",
+        "15%",
+        "12.5%"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "A shopkeeper marks up an item by 25% then gives a 10% discount. If cost price is Rs. 400, find the selling price.",
+      "options": [
+        "Rs. 400",
+        "Rs. 480",
+        "Rs. 450",
+        "Rs. 500"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "A tank can be filled by pipe A in 6 hours and by pipe B in 12 hours. How long will both pipes together take to fill the tank?",
+      "options": [
+        "9 hours",
+        "6 hours",
+        "3 hours",
+        "4 hours"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "A train 150 m long crosses a pole in 15 seconds. Find the speed of the train in m/s.",
+      "options": [
+        "9 m/s",
+        "12 m/s",
+        "15 m/s",
+        "10 m/s"
+      ],
+      "section": "Everyday Mathematics",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "A cone and a hemisphere have equal base radius and equal volumes. Find the ratio of the height of the cone to the radius.",
+      "options": [
+        "3:1",
+        "2:1 (height of cone = 2 \u00d7 radius)",
+        "1:2",
+        "1:1"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "In a circle, two tangents are drawn from an external point P to touch the circle at A and B. If the angle APB = 60 degrees, what is the measure of angle AOB (O is the centre)?",
+      "options": [
+        "180 degrees",
+        "120 degrees",
+        "60 degrees",
+        "90 degrees"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "The sum of the first n terms of an AP is given by Sn = 2n^2 + 3n. A student needs to find the 15th term without listing all terms. What method and result apply?",
+      "options": [
+        "The 15th term is simply 2(15)+3=33",
+        "Use Tn = Sn - S(n-1); the 15th term is 61",
+        "Use Tn = Sn/n; the 15th term is 33",
+        "The 15th term equals a+14d without needing Sn; cannot be found"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "Two poles of height 6 m and 11 m stand on a plane ground. If the distance between their feet is 12 m, find the distance between their tops using coordinate/Pythagoras reasoning.",
+      "options": [
+        "17 m",
+        "12 m",
+        "5 m",
+        "13 m (using the difference in height 5 m and base 12 m to form a right triangle: sqrt(5^2+12^2)=13)"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "From the top of a 60 m tall tower, the angle of depression to a car on the ground is 30 degrees. Find the distance of the car from the base of the tower.",
+      "options": [
+        "60 m",
+        "120 m",
+        "30 m",
+        "60\u221a3 m (approximately 103.9 m)"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    }
+  ]
+}

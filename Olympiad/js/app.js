@@ -65,6 +65,10 @@ function submitTest(){
  let h=history();h.push(attempt);saveHistory(h);state.lastResult=attempt;
  $("resultCard").innerHTML=`<div class="muted">${attempt.className} • ${attempt.subjectName} • Paper ${attempt.paper}</div><div class="score">${score}/40</div><p><b>${correct}</b> of 35 correct • ${attempt.answered} answered</p><p>Percentage: <b>${Math.round(score/40*100)}%</b></p>`;
  $("reviewList").classList.add("hidden");renderReview(attempt);show("screenResult");
+ setTimeout(showOlympiadCompletionAd,1500);
+}
+function showOlympiadCompletionAd(){
+ try{if(typeof Android!=="undefined"&&Android.showAd)Android.showAd("interstitial")}catch(e){console.log("Olympiad ad skipped:",e)}
 }
 function renderReview(a){
  $("reviewList").innerHTML=`<h2>Answer Review</h2>`+state.questions.map((q,i)=>{

@@ -54,5 +54,26 @@
     "48": 2,
     "49": 2,
     "50": 1
-  }
+  },
+  "syllabusVersion": "SOF Class 10 current syllabus reference",
+  "officialSOFPattern": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Science",
+      "questions": 35,
+      "marksPerQuestion": 1,
+      "totalMarks": 35
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ]
 }

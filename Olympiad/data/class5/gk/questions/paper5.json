@@ -9,10 +9,10 @@
       "id": 1,
       "question": "Which is India's national animal?",
       "options": [
-        "Tiger",
-        "Lion",
         "Elephant",
-        "Peacock"
+        "Peacock",
+        "Tiger",
+        "Lion"
       ],
       "section": "General Awareness"
     },
@@ -20,10 +20,10 @@
       "id": 2,
       "question": "Which is India's national bird?",
       "options": [
+        "Parrot",
         "Peacock",
-        "Sparrow",
         "Eagle",
-        "Parrot"
+        "Sparrow"
       ],
       "section": "General Awareness"
     },
@@ -32,9 +32,9 @@
       "question": "What is the capital of India?",
       "options": [
         "New Delhi",
+        "Kolkata",
         "Mumbai",
-        "Jaipur",
-        "Kolkata"
+        "Jaipur"
       ],
       "section": "General Awareness"
     },
@@ -42,10 +42,10 @@
       "id": 4,
       "question": "Which is the largest planet?",
       "options": [
+        "Mercury",
         "Jupiter",
         "Earth",
-        "Mars",
-        "Mercury"
+        "Mars"
       ],
       "section": "General Awareness"
     },
@@ -53,10 +53,10 @@
       "id": 5,
       "question": "Which is the largest ocean?",
       "options": [
-        "Pacific Ocean",
-        "Indian Ocean",
         "Atlantic Ocean",
-        "Arctic Ocean"
+        "Arctic Ocean",
+        "Pacific Ocean",
+        "Indian Ocean"
       ],
       "section": "General Awareness"
     },
@@ -65,9 +65,9 @@
       "question": "Which city is called the Pink City?",
       "options": [
         "Jaipur",
+        "Ajmer",
         "Jodhpur",
-        "Udaipur",
-        "Ajmer"
+        "Udaipur"
       ],
       "section": "General Awareness"
     },
@@ -75,10 +75,10 @@
       "id": 7,
       "question": "Which monument is in Agra?",
       "options": [
-        "Taj Mahal",
         "India Gate",
-        "Gateway of India",
-        "Charminar"
+        "Taj Mahal",
+        "Charminar",
+        "Gateway of India"
       ],
       "section": "General Awareness"
     },
@@ -86,10 +86,10 @@
       "id": 8,
       "question": "Which planet is closest to the Sun?",
       "options": [
-        "Mercury",
         "Venus",
+        "Mars",
         "Earth",
-        "Mars"
+        "Mercury"
       ],
       "section": "General Awareness"
     },
@@ -98,8 +98,8 @@
       "question": "Which planet has famous rings?",
       "options": [
         "Saturn",
-        "Mercury",
         "Earth",
+        "Mercury",
         "Venus"
       ],
       "section": "General Awareness"
@@ -108,10 +108,10 @@
       "id": 10,
       "question": "Which animal is called the Ship of the Desert?",
       "options": [
-        "Camel",
-        "Horse",
         "Deer",
-        "Goat"
+        "Goat",
+        "Camel",
+        "Horse"
       ],
       "section": "General Awareness"
     },
@@ -119,10 +119,10 @@
       "id": 11,
       "question": "Which instrument measures temperature?",
       "options": [
-        "Thermometer",
-        "Ruler",
         "Compass",
-        "Clock"
+        "Clock",
+        "Ruler",
+        "Thermometer"
       ],
       "section": "General Awareness"
     },
@@ -130,10 +130,10 @@
       "id": 12,
       "question": "Which device helps find direction?",
       "options": [
+        "Scale",
         "Compass",
         "Thermometer",
-        "Calendar",
-        "Scale"
+        "Calendar"
       ],
       "section": "General Awareness"
     },
@@ -141,10 +141,10 @@
       "id": 13,
       "question": "Which is a renewable energy source?",
       "options": [
-        "Solar energy",
-        "Coal",
         "Petrol",
-        "Diesel"
+        "Diesel",
+        "Coal",
+        "Solar energy"
       ],
       "section": "General Awareness"
     },
@@ -152,10 +152,10 @@
       "id": 14,
       "question": "Which festival is known as the festival of lights?",
       "options": [
-        "Diwali",
-        "Holi",
         "Onam",
-        "Pongal"
+        "Holi",
+        "Pongal",
+        "Diwali"
       ],
       "section": "General Awareness"
     },
@@ -163,10 +163,10 @@
       "id": 15,
       "question": "Which sport uses a bat, ball and wickets?",
       "options": [
-        "Cricket",
         "Football",
-        "Hockey",
-        "Tennis"
+        "Tennis",
+        "Cricket",
+        "Hockey"
       ],
       "section": "General Awareness"
     },
@@ -175,9 +175,9 @@
       "question": "If you face West and turn 180 degrees, which direction do you face?",
       "options": [
         "East",
+        "West",
         "North",
-        "South",
-        "West"
+        "South"
       ],
       "section": "General Reasoning"
     },
@@ -185,10 +185,10 @@
       "id": 17,
       "question": "Which organisation is associated with India's Chandrayaan missions?",
       "options": [
-        "ISRO",
         "WHO",
-        "FIFA",
-        "UNESCO"
+        "ISRO",
+        "UNESCO",
+        "FIFA"
       ],
       "section": "World & Current Awareness"
     },
@@ -196,9 +196,9 @@
       "id": 18,
       "question": "Which technology is widely used for instant digital payments in India?",
       "options": [
-        "UPI",
         "DVD",
         "VHS",
+        "UPI",
         "FM"
       ],
       "section": "World & Current Awareness"
@@ -208,9 +208,9 @@
       "question": "How can you save electricity?",
       "options": [
         "Switch off lights when not needed",
+        "Open the fridge often",
         "Leave lights on",
-        "Keep TV on all night",
-        "Open the fridge often"
+        "Keep TV on all night"
       ],
       "section": "Life Skills"
     },
@@ -218,10 +218,10 @@
       "id": 20,
       "question": "Why are national parks important?",
       "options": [
-        "They protect wildlife and habitats",
-        "They increase pollution",
         "They remove forests",
-        "They stop all farming"
+        "They stop all farming",
+        "They increase pollution",
+        "They protect wildlife and habitats"
       ],
       "section": "Achievers / HOTS"
     },
@@ -230,9 +230,9 @@
       "question": "If you face West and turn 180 degrees, which direction do you face?",
       "options": [
         "East",
-        "North",
         "South",
-        "West"
+        "West",
+        "North"
       ],
       "section": "General Reasoning"
     },
@@ -241,9 +241,9 @@
       "question": "Which organisation is associated with India's Chandrayaan missions?",
       "options": [
         "ISRO",
-        "WHO",
+        "UNESCO",
         "FIFA",
-        "UNESCO"
+        "WHO"
       ],
       "section": "World & Current Awareness"
     },
@@ -251,9 +251,9 @@
       "id": 23,
       "question": "Which technology is widely used for instant digital payments in India?",
       "options": [
-        "UPI",
-        "DVD",
         "VHS",
+        "DVD",
+        "UPI",
         "FM"
       ],
       "section": "World & Current Awareness"
@@ -262,10 +262,10 @@
       "id": 24,
       "question": "How can you save electricity?",
       "options": [
-        "Switch off lights when not needed",
-        "Leave lights on",
         "Keep TV on all night",
-        "Open the fridge often"
+        "Open the fridge often",
+        "Leave lights on",
+        "Switch off lights when not needed"
       ],
       "section": "Life Skills"
     },
@@ -273,10 +273,10 @@
       "id": 25,
       "question": "Why are national parks important?",
       "options": [
+        "They stop all farming",
         "They protect wildlife and habitats",
         "They increase pollution",
-        "They remove forests",
-        "They stop all farming"
+        "They remove forests"
       ],
       "section": "Achievers / HOTS"
     },
@@ -284,9 +284,9 @@
       "id": 26,
       "question": "If you face West and turn 180 degrees, which direction do you face?",
       "options": [
-        "East",
-        "North",
         "South",
+        "North",
+        "East",
         "West"
       ],
       "section": "General Reasoning"
@@ -295,9 +295,9 @@
       "id": 27,
       "question": "Which organisation is associated with India's Chandrayaan missions?",
       "options": [
-        "ISRO",
-        "WHO",
         "FIFA",
+        "WHO",
+        "ISRO",
         "UNESCO"
       ],
       "section": "World & Current Awareness"
@@ -307,9 +307,9 @@
       "question": "Which technology is widely used for instant digital payments in India?",
       "options": [
         "UPI",
+        "FM",
         "DVD",
-        "VHS",
-        "FM"
+        "VHS"
       ],
       "section": "World & Current Awareness"
     },
@@ -318,8 +318,8 @@
       "question": "How can you save electricity?",
       "options": [
         "Switch off lights when not needed",
-        "Leave lights on",
         "Keep TV on all night",
+        "Leave lights on",
         "Open the fridge often"
       ],
       "section": "Life Skills"
@@ -328,10 +328,10 @@
       "id": 30,
       "question": "Why are national parks important?",
       "options": [
-        "They protect wildlife and habitats",
         "They increase pollution",
-        "They remove forests",
-        "They stop all farming"
+        "They stop all farming",
+        "They protect wildlife and habitats",
+        "They remove forests"
       ],
       "section": "Achievers / HOTS"
     },
@@ -339,10 +339,10 @@
       "id": 31,
       "question": "If you face West and turn 180 degrees, which direction do you face?",
       "options": [
-        "East",
         "North",
+        "West",
         "South",
-        "West"
+        "East"
       ],
       "section": "General Reasoning"
     },
@@ -350,10 +350,10 @@
       "id": 32,
       "question": "Which organisation is associated with India's Chandrayaan missions?",
       "options": [
-        "ISRO",
-        "WHO",
+        "UNESCO",
         "FIFA",
-        "UNESCO"
+        "ISRO",
+        "WHO"
       ],
       "section": "World & Current Awareness"
     },
@@ -362,9 +362,9 @@
       "question": "Which technology is widely used for instant digital payments in India?",
       "options": [
         "UPI",
-        "DVD",
+        "FM",
         "VHS",
-        "FM"
+        "DVD"
       ],
       "section": "World & Current Awareness"
     },
@@ -372,10 +372,10 @@
       "id": 34,
       "question": "How can you save electricity?",
       "options": [
-        "Switch off lights when not needed",
+        "Open the fridge often",
         "Leave lights on",
         "Keep TV on all night",
-        "Open the fridge often"
+        "Switch off lights when not needed"
       ],
       "section": "Life Skills"
     },
@@ -383,10 +383,10 @@
       "id": 35,
       "question": "Why are national parks important?",
       "options": [
+        "They stop all farming",
         "They protect wildlife and habitats",
         "They increase pollution",
-        "They remove forests",
-        "They stop all farming"
+        "They remove forests"
       ],
       "section": "Achievers / HOTS"
     }

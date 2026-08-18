@@ -1,0 +1,59 @@
+{
+  "subject": "Mathematics",
+  "olympiad": "IMO",
+  "officialSections": [
+    {
+      "name": "Logical Reasoning",
+      "questions": 15,
+      "marksPerQuestion": 1,
+      "totalMarks": 15
+    },
+    {
+      "name": "Mathematical Reasoning",
+      "questions": 20,
+      "marksPerQuestion": 1,
+      "totalMarks": 20
+    },
+    {
+      "name": "Everyday Mathematics",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
+  "topics": [
+    "Real Numbers",
+    "Polynomials",
+    "Pair of Linear Equations in Two Variables",
+    "Quadratic Equations",
+    "Arithmetic Progressions",
+    "Triangles",
+    "Coordinate Geometry",
+    "Introduction to Trigonometry",
+    "Some Applications of Trigonometry",
+    "Circles",
+    "Areas Related to Circles",
+    "Surface Areas and Volumes",
+    "Statistics",
+    "Probability"
+  ],
+  "reasoningTopics": [
+    "Verbal and Non-Verbal Reasoning"
+  ],
+  "achieversTopics": [
+    "Higher Order Thinking Questions from the Mathematical Reasoning syllabus"
+  ],
+  "level1Mix": "60% current class syllabus + 40% previous class syllabus; Achievers from current class only",
+  "class": 10,
+  "totalQuestions": 50,
+  "durationMinutes": 60,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "source": "SOF official Class 10 syllabus/pattern; verify against the latest SOF session before publication"
+}

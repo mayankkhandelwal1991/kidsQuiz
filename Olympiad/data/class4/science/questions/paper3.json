@@ -9,10 +9,10 @@
       "id": 1,
       "question": "Which part of a plant usually absorbs water from the soil?",
       "options": [
+        "Leaf",
         "Roots",
         "Flower",
-        "Fruit",
-        "Leaf"
+        "Fruit"
       ],
       "section": "Science"
     },
@@ -21,9 +21,9 @@
       "question": "Which organ pumps blood around the body?",
       "options": [
         "Heart",
+        "Brain",
         "Lungs",
-        "Stomach",
-        "Brain"
+        "Stomach"
       ],
       "section": "Science"
     },
@@ -43,9 +43,9 @@
       "question": "Which material is transparent?",
       "options": [
         "Clear glass",
-        "Wood",
+        "Stone",
         "Cardboard",
-        "Stone"
+        "Wood"
       ],
       "section": "Science"
     },
@@ -53,10 +53,10 @@
       "id": 5,
       "question": "Which change can usually be reversed?",
       "options": [
-        "Ice melting",
-        "Paper burning",
         "Egg cooking",
-        "Wood burning"
+        "Ice melting",
+        "Wood burning",
+        "Paper burning"
       ],
       "section": "Science"
     },
@@ -75,9 +75,9 @@
       "id": 7,
       "question": "Which animal is adapted to a hot desert?",
       "options": [
-        "Camel",
         "Penguin",
         "Whale",
+        "Camel",
         "Polar bear"
       ],
       "section": "Science"
@@ -86,10 +86,10 @@
       "id": 8,
       "question": "Which body part protects the brain?",
       "options": [
-        "Skull",
         "Knee",
+        "Ankle",
         "Rib cage",
-        "Ankle"
+        "Skull"
       ],
       "section": "Science"
     },
@@ -97,9 +97,9 @@
       "id": 9,
       "question": "Which gas do humans need for breathing?",
       "options": [
-        "Oxygen",
         "Helium",
         "Hydrogen",
+        "Oxygen",
         "Neon"
       ],
       "section": "Science"
@@ -119,10 +119,10 @@
       "id": 11,
       "question": "A plant is kept without water for many days. What is most likely to happen?",
       "options": [
+        "It needs no sunlight",
         "It wilts",
-        "It grows faster",
         "It becomes a rock",
-        "It needs no sunlight"
+        "It grows faster"
       ],
       "section": "Scientific Reasoning"
     },
@@ -131,8 +131,8 @@
       "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
       "options": [
         "Metal conducts heat better",
-        "Wood creates cold",
         "Metal contains fire",
+        "Wood creates cold",
         "Soup heats only metal"
       ],
       "section": "Scientific Reasoning"
@@ -142,9 +142,9 @@
       "question": "Why do we see lightning before hearing thunder?",
       "options": [
         "Light travels faster than sound",
-        "Thunder happens later in the sky",
+        "Lightning has no sound",
         "Clouds stop sound",
-        "Lightning has no sound"
+        "Thunder happens later in the sky"
       ],
       "section": "Scientific Reasoning"
     },
@@ -154,8 +154,8 @@
       "options": [
         "Change one main condition and compare results",
         "Change everything at once",
-        "Guess without observing",
-        "Do not record results"
+        "Do not record results",
+        "Guess without observing"
       ],
       "section": "Achievers / HOTS"
     },
@@ -163,9 +163,9 @@
       "id": 15,
       "question": "A plant is kept without water for many days. What is most likely to happen?",
       "options": [
-        "It wilts",
         "It grows faster",
         "It becomes a rock",
+        "It wilts",
         "It needs no sunlight"
       ],
       "section": "Scientific Reasoning"
@@ -174,10 +174,10 @@
       "id": 16,
       "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
       "options": [
+        "Soup heats only metal",
         "Metal conducts heat better",
-        "Wood creates cold",
         "Metal contains fire",
-        "Soup heats only metal"
+        "Wood creates cold"
       ],
       "section": "Scientific Reasoning"
     },
@@ -185,10 +185,10 @@
       "id": 17,
       "question": "Why do we see lightning before hearing thunder?",
       "options": [
-        "Light travels faster than sound",
-        "Thunder happens later in the sky",
         "Clouds stop sound",
-        "Lightning has no sound"
+        "Light travels faster than sound",
+        "Lightning has no sound",
+        "Thunder happens later in the sky"
       ],
       "section": "Scientific Reasoning"
     },
@@ -196,10 +196,10 @@
       "id": 18,
       "question": "Which is the safest way to test a science idea?",
       "options": [
-        "Change one main condition and compare results",
+        "Do not record results",
         "Change everything at once",
-        "Guess without observing",
-        "Do not record results"
+        "Change one main condition and compare results",
+        "Guess without observing"
       ],
       "section": "Achievers / HOTS"
     },
@@ -207,10 +207,10 @@
       "id": 19,
       "question": "A plant is kept without water for many days. What is most likely to happen?",
       "options": [
-        "It wilts",
         "It grows faster",
         "It becomes a rock",
-        "It needs no sunlight"
+        "It needs no sunlight",
+        "It wilts"
       ],
       "section": "Scientific Reasoning"
     },
@@ -220,8 +220,8 @@
       "options": [
         "Metal conducts heat better",
         "Wood creates cold",
-        "Metal contains fire",
-        "Soup heats only metal"
+        "Soup heats only metal",
+        "Metal contains fire"
       ],
       "section": "Scientific Reasoning"
     },
@@ -230,8 +230,8 @@
       "question": "Why do we see lightning before hearing thunder?",
       "options": [
         "Light travels faster than sound",
-        "Thunder happens later in the sky",
         "Clouds stop sound",
+        "Thunder happens later in the sky",
         "Lightning has no sound"
       ],
       "section": "Scientific Reasoning"
@@ -240,10 +240,10 @@
       "id": 22,
       "question": "Which is the safest way to test a science idea?",
       "options": [
+        "Do not record results",
         "Change one main condition and compare results",
-        "Change everything at once",
         "Guess without observing",
-        "Do not record results"
+        "Change everything at once"
       ],
       "section": "Achievers / HOTS"
     },
@@ -251,9 +251,9 @@
       "id": 23,
       "question": "A plant is kept without water for many days. What is most likely to happen?",
       "options": [
+        "It becomes a rock",
         "It wilts",
         "It grows faster",
-        "It becomes a rock",
         "It needs no sunlight"
       ],
       "section": "Scientific Reasoning"
@@ -262,9 +262,9 @@
       "id": 24,
       "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
       "options": [
+        "Metal contains fire",
         "Metal conducts heat better",
         "Wood creates cold",
-        "Metal contains fire",
         "Soup heats only metal"
       ],
       "section": "Scientific Reasoning"
@@ -273,10 +273,10 @@
       "id": 25,
       "question": "Why do we see lightning before hearing thunder?",
       "options": [
-        "Light travels faster than sound",
         "Thunder happens later in the sky",
         "Clouds stop sound",
-        "Lightning has no sound"
+        "Lightning has no sound",
+        "Light travels faster than sound"
       ],
       "section": "Scientific Reasoning"
     },
@@ -284,10 +284,10 @@
       "id": 26,
       "question": "Which is the safest way to test a science idea?",
       "options": [
+        "Do not record results",
         "Change one main condition and compare results",
         "Change everything at once",
-        "Guess without observing",
-        "Do not record results"
+        "Guess without observing"
       ],
       "section": "Achievers / HOTS"
     },
@@ -295,9 +295,9 @@
       "id": 27,
       "question": "A plant is kept without water for many days. What is most likely to happen?",
       "options": [
-        "It wilts",
-        "It grows faster",
         "It becomes a rock",
+        "It grows faster",
+        "It wilts",
         "It needs no sunlight"
       ],
       "section": "Scientific Reasoning"
@@ -307,9 +307,9 @@
       "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
       "options": [
         "Metal conducts heat better",
-        "Wood creates cold",
         "Metal contains fire",
-        "Soup heats only metal"
+        "Soup heats only metal",
+        "Wood creates cold"
       ],
       "section": "Scientific Reasoning"
     },
@@ -318,8 +318,8 @@
       "question": "Why do we see lightning before hearing thunder?",
       "options": [
         "Light travels faster than sound",
-        "Thunder happens later in the sky",
         "Clouds stop sound",
+        "Thunder happens later in the sky",
         "Lightning has no sound"
       ],
       "section": "Scientific Reasoning"
@@ -328,10 +328,10 @@
       "id": 30,
       "question": "Which is the safest way to test a science idea?",
       "options": [
-        "Change one main condition and compare results",
-        "Change everything at once",
         "Guess without observing",
-        "Do not record results"
+        "Change one main condition and compare results",
+        "Do not record results",
+        "Change everything at once"
       ],
       "section": "Achievers / HOTS"
     }

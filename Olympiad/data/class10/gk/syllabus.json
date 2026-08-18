@@ -1,0 +1,61 @@
+{
+  "subject": "General Knowledge",
+  "olympiad": "IGKO",
+  "officialSections": [
+    {
+      "name": "General Awareness",
+      "questions": 30,
+      "marksPerQuestion": 1,
+      "totalMarks": 30
+    },
+    {
+      "name": "Current Affairs",
+      "questions": 10,
+      "marksPerQuestion": 1,
+      "totalMarks": 10
+    },
+    {
+      "name": "Life Skills",
+      "questions": 5,
+      "marksPerQuestion": 1,
+      "totalMarks": 5
+    },
+    {
+      "name": "Achievers Section",
+      "questions": 5,
+      "marksPerQuestion": 3,
+      "totalMarks": 15
+    }
+  ],
+  "topics": [
+    "Plants and Animals",
+    "Our Environment",
+    "Science and Technology",
+    "India and the World",
+    "Social Studies",
+    "Language, Literature and Media",
+    "Sports",
+    "Quantitative Aptitude and Reasoning",
+    "Current Affairs and Developments",
+    "Life Skills - Empathy",
+    "Life Skills - Effective Communication",
+    "Life Skills - Critical Thinking",
+    "Life Skills - Creative Thinking",
+    "Life Skills - Coping with Stress",
+    "Life Skills - Decision Making",
+    "Life Skills - Problem Solving",
+    "Life Skills - Interpersonal Skills",
+    "Life Skills - Managing Emotions",
+    "Life Skills - Self-awareness"
+  ],
+  "achieversTopics": [
+    "Higher Order Thinking Questions from the above syllabus"
+  ],
+  "level1Mix": "Achievers questions are from the above syllabus.",
+  "class": 10,
+  "totalQuestions": 50,
+  "durationMinutes": 60,
+  "totalMarks": 60,
+  "negativeMarking": false,
+  "source": "SOF official Class 10 syllabus/pattern; verify against the latest SOF session before publication"
+}

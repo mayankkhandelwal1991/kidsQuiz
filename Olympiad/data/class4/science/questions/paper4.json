@@ -4,336 +4,429 @@
   "paper": 4,
   "title": "Class 4 Science — Paper 4",
   "durationMinutes": 60,
+  "totalMarks": 40,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 4 pattern & syllabus. Not an official SOF paper.",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Which part of a plant usually absorbs water from the soil?",
+      "question": "Odd one: Gills, Lungs, Fins, Skin (for breathing context)",
       "options": [
-        "Fruit",
-        "Flower",
-        "Leaf",
-        "Roots"
+        "Gills",
+        "Lungs",
+        "Fins",
+        "Skin"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which organ pumps blood around the body?",
+      "question": "Analogy: Sun : Day :: Moon : ?",
       "options": [
-        "Stomach",
-        "Heart",
-        "Brain",
-        "Lungs"
+        "Light",
+        "Night",
+        "Star",
+        "Sky"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which is a renewable source of energy?",
+      "question": "Arrange life cycle of frog: Adult, Eggs, Tadpole",
       "options": [
-        "Coal",
-        "Sunlight",
-        "Diesel",
-        "Petrol"
+        "Eggs → Tadpole → Adult",
+        "Adult → Eggs → Tadpole",
+        "Tadpole → Adult → Eggs",
+        "Eggs → Adult → Tadpole"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which material is transparent?",
+      "question": "Which pair is mismatched?",
       "options": [
-        "Clear glass",
-        "Cardboard",
-        "Wood",
-        "Stone"
+        "Fish – Gills",
+        "Bird – Wings",
+        "Plant – Roots",
+        "Snake – Legs"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which change can usually be reversed?",
+      "question": "If cloudy sky blocks sunlight, plants will:",
       "options": [
-        "Paper burning",
-        "Wood burning",
-        "Ice melting",
-        "Egg cooking"
+        "Make more food",
+        "Make less food",
+        "Stop needing water",
+        "Turn into animals"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Which force slows a toy car on a rough floor?",
+      "question": "Which nutrient gives us quick energy?",
       "options": [
-        "Sound",
-        "Friction",
-        "Colour",
-        "Light"
+        "Proteins",
+        "Vitamins",
+        "Carbohydrates",
+        "Minerals"
       ],
-      "section": "Science"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Which animal is adapted to a hot desert?",
+      "question": "The smallest bone in the human body is in the:",
       "options": [
-        "Polar bear",
-        "Camel",
-        "Penguin",
-        "Whale"
+        "Leg",
+        "Ear",
+        "Hand",
+        "Nose"
       ],
-      "section": "Science"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which body part protects the brain?",
+      "question": "Which animal has a pouch to carry its young?",
       "options": [
-        "Rib cage",
-        "Knee",
-        "Skull",
-        "Ankle"
+        "Cow",
+        "Kangaroo",
+        "Horse",
+        "Deer"
       ],
-      "section": "Science"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Which gas do humans need for breathing?",
+      "question": "Rain is formed by the process of:",
       "options": [
-        "Hydrogen",
-        "Helium",
-        "Oxygen",
-        "Neon"
+        "Only melting",
+        "Condensation of water vapour",
+        "Freezing of soil",
+        "Burning of clouds"
       ],
-      "section": "Science"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which state of matter keeps its own shape?",
+      "question": "Which of these is a herbivore?",
       "options": [
-        "Vapour",
-        "Gas",
-        "Liquid",
-        "Solid"
+        "Lion",
+        "Eagle",
+        "Goat",
+        "Snake"
       ],
-      "section": "Science"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Our heart is protected by the:",
       "options": [
-        "It grows faster",
-        "It wilts",
-        "It becomes a rock",
-        "It needs no sunlight"
+        "Skull",
+        "Rib cage",
+        "Backbone only",
+        "Pelvis"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Which planet is famous for its rings?",
       "options": [
-        "Metal contains fire",
-        "Wood creates cold",
-        "Soup heats only metal",
-        "Metal conducts heat better"
+        "Mars",
+        "Venus",
+        "Saturn",
+        "Mercury"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "A shadow is formed when light is:",
       "options": [
-        "Thunder happens later in the sky",
-        "Lightning has no sound",
-        "Clouds stop sound",
-        "Light travels faster than sound"
+        "Reflected",
+        "Blocked by an opaque object",
+        "Absorbed by air only",
+        "Bent by water only"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Which is a good conductor of electricity?",
       "options": [
-        "Change everything at once",
-        "Do not record results",
-        "Change one main condition and compare results",
-        "Guess without observing"
+        "Rubber",
+        "Plastic",
+        "Copper",
+        "Wood"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "First aid for a small cut is to:",
       "options": [
-        "It grows faster",
-        "It wilts",
-        "It needs no sunlight",
-        "It becomes a rock"
+        "Rub soil",
+        "Wash and cover cleanly",
+        "Ignore it",
+        "Put butter"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Which part of the plant makes seeds?",
       "options": [
-        "Metal contains fire",
-        "Wood creates cold",
-        "Metal conducts heat better",
-        "Soup heats only metal"
+        "Root",
+        "Stem",
+        "Flower/Fruit",
+        "Leaf only"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Snakes move with the help of:",
       "options": [
-        "Lightning has no sound",
-        "Clouds stop sound",
-        "Thunder happens later in the sky",
-        "Light travels faster than sound"
+        "Legs",
+        "Scales and muscles",
+        "Wings",
+        "Fins"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Which is essential for burning?",
       "options": [
-        "Change everything at once",
-        "Do not record results",
-        "Guess without observing",
-        "Change one main condition and compare results"
+        "Nitrogen only",
+        "Oxygen",
+        "Carbon dioxide only",
+        "Hydrogen only"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "The disease rickets is caused by deficiency of:",
       "options": [
-        "It wilts",
-        "It grows faster",
-        "It needs no sunlight",
-        "It becomes a rock"
+        "Vitamin A",
+        "Vitamin C",
+        "Vitamin D",
+        "Iron"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Which is a natural fibre?",
       "options": [
-        "Metal conducts heat better",
-        "Wood creates cold",
-        "Soup heats only metal",
-        "Metal contains fire"
+        "Polyester",
+        "Nylon",
+        "Cotton",
+        "Acrylic"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Fish use which organ to breathe?",
       "options": [
-        "Thunder happens later in the sky",
-        "Lightning has no sound",
-        "Clouds stop sound",
-        "Light travels faster than sound"
+        "Lungs",
+        "Gills",
+        "Skin only",
+        "Nose"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "The Earth completes one revolution around the Sun in about:",
       "options": [
-        "Change everything at once",
-        "Guess without observing",
-        "Do not record results",
-        "Change one main condition and compare results"
+        "1 day",
+        "1 month",
+        "1 year",
+        "1 week"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Which sense organ detects taste?",
       "options": [
-        "It wilts",
-        "It grows faster",
-        "It becomes a rock",
-        "It needs no sunlight"
+        "Nose",
+        "Tongue",
+        "Skin",
+        "Eye"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Plastics are harmful to the environment mainly because they:",
       "options": [
-        "Metal conducts heat better",
-        "Soup heats only metal",
-        "Wood creates cold",
-        "Metal contains fire"
+        "Are heavy",
+        "Do not rot easily",
+        "Are colourful",
+        "Are cheap"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Which of these is an omnivore?",
       "options": [
-        "Lightning has no sound",
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Thunder happens later in the sky"
+        "Cow",
+        "Tiger",
+        "Human",
+        "Deer"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Water cycle mainly involves:",
       "options": [
-        "Change one main condition and compare results",
-        "Do not record results",
-        "Guess without observing",
-        "Change everything at once"
+        "Only rivers",
+        "Evaporation, condensation and precipitation",
+        "Only oceans",
+        "Only underground water"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Which bird cannot fly?",
       "options": [
-        "It needs no sunlight",
-        "It becomes a rock",
-        "It grows faster",
-        "It wilts"
+        "Sparrow",
+        "Pigeon",
+        "Ostrich",
+        "Crow"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "The unit commonly used to measure temperature is:",
       "options": [
-        "Soup heats only metal",
-        "Metal conducts heat better",
-        "Metal contains fire",
-        "Wood creates cold"
+        "Metre",
+        "Litre",
+        "Degree Celsius",
+        "Kilogram"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Which organ filters waste from blood?",
       "options": [
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Lightning has no sound",
-        "Thunder happens later in the sky"
+        "Heart",
+        "Kidney",
+        "Lungs",
+        "Stomach"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "A food rich in calcium is:",
       "options": [
-        "Do not record results",
-        "Change everything at once",
-        "Guess without observing",
-        "Change one main condition and compare results"
+        "Chips",
+        "Milk",
+        "Soft drink",
+        "Candy"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 31,
+      "question": "Why do mountain climbers carry oxygen cylinders?",
+      "options": [
+        "Air is thinner with less oxygen at height",
+        "It is fashion",
+        "To keep warm only",
+        "To reduce weight"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 32,
+      "question": "A shiny steel plate feels colder than a wooden board at the same room temperature because steel:",
+      "options": [
+        "Is actually colder",
+        "Conducts heat away from hand faster",
+        "Has less mass always",
+        "Reflects light only"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 33,
+      "question": "Which method separates salt from salt water?",
+      "options": [
+        "Filtration",
+        "Evaporation",
+        "Handpicking",
+        "Sieving"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 34,
+      "question": "Cactus plants store water mainly in their:",
+      "options": [
+        "Flowers",
+        "Thick stems",
+        "Thorns only",
+        "Roots only always"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 35,
+      "question": "If the ozone layer is damaged, a major risk is increased:",
+      "options": [
+        "Rainfall only",
+        "Harmful UV rays reaching Earth",
+        "Oxygen production",
+        "Soil fertility only"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
     }
   ]
 }

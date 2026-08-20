@@ -4,391 +4,429 @@
   "paper": 1,
   "title": "Class 4 Computer Science — Paper 1",
   "durationMinutes": 60,
+  "totalMarks": 40,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 4 pattern & syllabus. Not an official SOF paper.",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Which part performs most computer processing?",
+      "question": "Odd one out: Monitor, Keyboard, Mouse, Chair",
       "options": [
+        "Monitor",
+        "Keyboard",
         "Mouse",
-        "Printer",
-        "Speaker",
-        "CPU"
+        "Chair"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which device is used to enter text?",
+      "question": "Analogy: Keyboard : Type :: Mouse : ?",
       "options": [
-        "Monitor",
-        "Speaker",
-        "Printer",
-        "Keyboard"
+        "Print",
+        "Click/Point",
+        "Scan",
+        "Speak"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which device displays information?",
+      "question": "Next in order: Input → Process → ?",
       "options": [
-        "Keyboard",
-        "Mouse",
-        "Monitor",
-        "Scanner"
+        "Delete",
+        "Output",
+        "Ignore",
+        "Break"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which device produces a paper copy?",
+      "question": "If all computers need electricity and a laptop is a computer, then a laptop:",
       "options": [
-        "Microphone",
-        "Monitor",
-        "Printer",
-        "Speaker"
+        "Needs no power",
+        "Needs electricity",
+        "Is not electronic",
+        "Cannot process data"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which memory temporarily stores information while programs run?",
+      "question": "Pattern: 2, 4, 8, 16, __ (think doubling like binary growth)",
       "options": [
-        "Keyboard",
-        "DVD",
-        "Printer",
-        "RAM"
+        "18",
+        "20",
+        "32",
+        "24"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "What does Ctrl+C commonly do?",
+      "question": "Which is an input device?",
       "options": [
-        "Undo",
-        "Copy",
-        "Paste",
-        "Save"
+        "Monitor",
+        "Printer",
+        "Keyboard",
+        "Speaker"
       ],
-      "section": "Computer Science"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "What does Ctrl+V commonly do?",
+      "question": "CPU stands for:",
       "options": [
-        "Copy",
-        "Print",
-        "Paste",
-        "Close"
+        "Central Processing Unit",
+        "Computer Personal Unit",
+        "Central Print Unit",
+        "Control Program Utility"
       ],
-      "section": "Computer Science"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "What does Ctrl+S commonly do?",
+      "question": "Which stores data permanently until erased?",
       "options": [
-        "Save",
-        "Copy",
-        "Undo",
-        "Paste"
+        "RAM",
+        "Hard disk / SSD",
+        "Cache only",
+        "Register only"
       ],
-      "section": "Computer Science"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "What does Ctrl+Z commonly do?",
+      "question": "MS Paint is used mainly for:",
       "options": [
-        "Copy",
-        "Save",
-        "Undo",
-        "Print"
+        "Calculations",
+        "Drawing and editing images",
+        "Sending email only",
+        "Making slides only"
       ],
-      "section": "Computer Science"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which device records sound?",
+      "question": "To copy selected text in Windows, press:",
       "options": [
-        "Mouse",
-        "Printer",
-        "Monitor",
-        "Microphone"
+        "Ctrl + X",
+        "Ctrl + C",
+        "Ctrl + V",
+        "Ctrl + Z"
       ],
-      "section": "Computer Science"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What is a browser mainly used for?",
+      "question": "Which is software?",
       "options": [
-        "Charging a phone",
-        "Printing money",
-        "Drawing only",
-        "Visiting websites"
+        "Mouse",
+        "MS Word",
+        "Monitor",
+        "Printer cable"
       ],
-      "section": "Computer Science"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "What is an algorithm?",
+      "question": "The blinking symbol on the screen that shows typing position is the:",
       "options": [
-        "A monitor",
-        "A step-by-step method for solving a problem",
-        "A virus",
-        "A password"
+        "Icon",
+        "Cursor",
+        "Menu",
+        "Folder"
       ],
-      "section": "Computer Science"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "What does AI stand for?",
+      "question": "www stands for:",
       "options": [
-        "Artificial Intelligence",
-        "Automatic Internet",
-        "Advanced Input",
-        "Audio Information"
+        "World Wide Web",
+        "World Web Wide",
+        "Wide World Web",
+        "Web World Wide"
       ],
-      "section": "Computer Science"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "What is a safe online habit?",
+      "question": "Which key erases character to the left of the cursor?",
       "options": [
-        "Post your address",
-        "Keep passwords private",
-        "Share passwords",
-        "Open every unknown link"
+        "Enter",
+        "Backspace",
+        "Shift",
+        "Ctrl"
       ],
-      "section": "Computer Science"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "Why are backups useful?",
+      "question": "A collection of 8 bits is called a:",
       "options": [
-        "They brighten the monitor",
-        "They stop the internet",
-        "They can help recover lost files",
-        "They remove passwords"
+        "Nibble",
+        "Byte",
+        "Word",
+        "Megabit"
       ],
-      "section": "Computer Science"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "question": "Which is an example of an operating system?",
       "options": [
-        "13",
-        "15",
-        "14",
-        "16"
+        "MS Excel",
+        "Windows",
+        "Google Chrome only",
+        "Photoshop only"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "question": "To paste, we use:",
       "options": [
-        "4 steps",
-        "3 steps",
-        "2 steps",
-        "1 step"
+        "Ctrl + C",
+        "Ctrl + V",
+        "Ctrl + X",
+        "Ctrl + S"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "question": "A pen drive is used to:",
       "options": [
-        "Use a friend's address",
-        "Do not enter it without trusted-adult guidance",
-        "Post it publicly",
-        "Enter it immediately"
+        "Cool the CPU",
+        "Store and carry data",
+        "Display images only",
+        "Print pages"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "An AI answer seems surprising. What should you do?",
+      "question": "Which device produces hard copy?",
       "options": [
-        "Share private information",
-        "Assume it cannot be wrong",
-        "Copy it immediately",
-        "Check it with a reliable source or teacher"
+        "Monitor",
+        "Printer",
+        "Speaker",
+        "Scanner"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "Why should important accounts use different passwords?",
+      "question": "In MS Word, Bold makes text:",
       "options": [
-        "It lets everyone know the password",
-        "It removes security",
-        "One stolen password is less likely to unlock every account",
-        "It makes the computer faster"
+        "Larger",
+        "Darker/thicker",
+        "Italic",
+        "Underlined only"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "question": "The brain of the computer is the:",
       "options": [
-        "15",
-        "14",
-        "13",
-        "16"
+        "Monitor",
+        "CPU",
+        "Keyboard",
+        "UPS"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "question": "Which is a storage device?",
       "options": [
-        "3 steps",
-        "4 steps",
-        "2 steps",
-        "1 step"
+        "Speaker",
+        "DVD / USB drive",
+        "Mouse",
+        "Webcam"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "question": "Email is used to:",
       "options": [
-        "Enter it immediately",
-        "Do not enter it without trusted-adult guidance",
-        "Use a friend's address",
-        "Post it publicly"
+        "Cook food",
+        "Send electronic messages",
+        "Wash clothes",
+        "Draw only"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "An AI answer seems surprising. What should you do?",
+      "question": "Which should you NOT share online?",
       "options": [
-        "Assume it cannot be wrong",
-        "Copy it immediately",
-        "Share private information",
-        "Check it with a reliable source or teacher"
+        "Your favourite colour",
+        "Your password and OTP",
+        "A drawing",
+        "A joke"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why should important accounts use different passwords?",
+      "question": "Icons on the desktop are:",
       "options": [
-        "It lets everyone know the password",
-        "It makes the computer faster",
-        "It removes security",
-        "One stolen password is less likely to unlock every account"
+        "Small pictures representing programs/files",
+        "Viruses",
+        "Hardware parts",
+        "Only games"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "question": "Scanner is used to:",
       "options": [
-        "16",
-        "14",
-        "15",
-        "13"
+        "Print paper",
+        "Convert paper documents into digital form",
+        "Play music",
+        "Cool the PC"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "question": "Which is application software?",
       "options": [
-        "3 steps",
-        "1 step",
-        "2 steps",
-        "4 steps"
+        "Linux kernel only",
+        "Tux Paint / MS Word",
+        "BIOS only",
+        "Device driver only"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "question": "Full form of USB:",
       "options": [
-        "Use a friend's address",
-        "Do not enter it without trusted-adult guidance",
-        "Enter it immediately",
-        "Post it publicly"
+        "Universal Serial Bus",
+        "United System Board",
+        "Ultra Speed Bit",
+        "User Software Base"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "An AI answer seems surprising. What should you do?",
+      "question": "To undo the last action:",
       "options": [
-        "Copy it immediately",
-        "Share private information",
-        "Assume it cannot be wrong",
-        "Check it with a reliable source or teacher"
+        "Ctrl + Y",
+        "Ctrl + Z",
+        "Ctrl + A",
+        "Ctrl + P"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Why should important accounts use different passwords?",
+      "question": "A network of networks across the world is the:",
       "options": [
-        "It lets everyone know the password",
-        "One stolen password is less likely to unlock every account",
-        "It makes the computer faster",
-        "It removes security"
+        "Intranet only",
+        "Internet",
+        "Bluetooth only",
+        "LAN only"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computers and IT",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "question": "RAM is called temporary memory because:",
       "options": [
-        "14",
-        "16",
-        "13",
-        "15"
+        "It is very small always",
+        "Data is lost when power is off",
+        "It cannot store numbers",
+        "It is outside the PC"
       ],
-      "section": "Logical Reasoning"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 32,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "question": "Which sequence is correct for starting a PC?",
       "options": [
-        "4 steps",
-        "3 steps",
-        "1 step",
-        "2 steps"
+        "Monitor on → Power on CPU → Login",
+        "Remove RAM first",
+        "Open CPU box first always",
+        "Unplug keyboard"
       ],
-      "section": "Logical Reasoning"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 33,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "question": "If a file is in Recycle Bin, it means:",
       "options": [
-        "Post it publicly",
-        "Enter it immediately",
-        "Do not enter it without trusted-adult guidance",
-        "Use a friend's address"
+        "It is permanently destroyed always",
+        "It can often be restored",
+        "It is emailed",
+        "It is printed"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 34,
-      "question": "An AI answer seems surprising. What should you do?",
+      "question": "Why do we use antivirus software?",
       "options": [
-        "Copy it immediately",
-        "Share private information",
-        "Check it with a reliable source or teacher",
-        "Assume it cannot be wrong"
+        "To draw pictures",
+        "To detect and help remove malware",
+        "To increase font size",
+        "To cool the laptop"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 35,
-      "question": "Why should important accounts use different passwords?",
+      "question": "In a QWERTY keyboard, the keys Q W E R T Y are on the:",
       "options": [
-        "One stolen password is less likely to unlock every account",
-        "It makes the computer faster",
-        "It lets everyone know the password",
-        "It removes security"
+        "Bottom row",
+        "Top letter row",
+        "Number pad only",
+        "Function row only"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     }
   ]
 }

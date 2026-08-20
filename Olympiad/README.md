@@ -38,6 +38,6 @@ python3 -m http.server 8000
 python -m http.server 8000
 
 ## Important
-The included questions are generated original practice content for demonstrating the Class 1–10 portal structure. They are not copied SOF previous-year questions.
+The included questions are **original SOF-pattern practice** aligned to the 2023–2025 syllabus for demonstrating the Class 1–10 portal structure. They are **not** official copyrighted SOF papers or copied previous-year questions. Class 4 papers (IMO/NSO/IEO/ICSO/IGKO style) follow the public exam pattern (e.g. Achievers 2 marks for classes 3–4 where applicable).
 
 To replace any paper, edit its questions JSON and answer JSON. The HTML/JS does not need to change as long as the JSON schema remains the same.

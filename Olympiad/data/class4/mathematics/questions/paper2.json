@@ -4,391 +4,429 @@
   "paper": 2,
   "title": "Class 4 Mathematics — Paper 2",
   "durationMinutes": 60,
+  "totalMarks": 40,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 4 pattern & syllabus. Not an official SOF paper.",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Find the next number: 14, 16, 18, 20, __.",
+      "question": "Find the next: 11, 22, 33, 44, __.",
       "options": [
-        "23",
-        "21",
-        "22",
-        "24"
+        "54",
+        "55",
+        "56",
+        "66"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "A number is 4 more than 15. What is it?",
+      "question": "If in a code TREE is written as USFF, how is LEAF written?",
       "options": [
-        "20",
-        "21",
-        "19",
-        "11"
+        "MFBG",
+        "MFBH",
+        "KEZG",
+        "MFAG"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which number is odd?",
+      "question": "Odd one out: Circle, Triangle, Square, Cube",
       "options": [
-        "27",
-        "26",
-        "30",
-        "28"
+        "Circle",
+        "Triangle",
+        "Square",
+        "Cube"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "If a shape has 4 sides, how many sides does it have?",
+      "question": "Which comes in the middle if arranged in ascending order: 45, 54, 39, 61, 28?",
       "options": [
-        "6",
-        "4",
-        "5",
-        "3"
+        "39",
+        "45",
+        "54",
+        "28"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which is the greatest?",
+      "question": "Pointing to a photo, Ria says, 'He is the son of my father's only son.' Who is he to Ria if she has one brother?",
       "options": [
-        "313",
-        "316",
-        "308",
-        "311"
+        "Brother",
+        "Nephew",
+        "Son",
+        "Cousin"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Find the next number: 19, 22, 25, 28, __.",
+      "question": "Complete: AZ, BY, CX, __.",
       "options": [
-        "31",
-        "29",
-        "34",
-        "32"
+        "DW",
+        "DV",
+        "EW",
+        "DU"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "A number is 5 more than 20. What is it?",
+      "question": "How many triangles are in a big triangle divided into 4 equal smaller triangles by joining midpoints?",
       "options": [
-        "26",
-        "25",
-        "27",
-        "15"
+        "4",
+        "5",
+        "6",
+        "8"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which number is odd?",
+      "question": "If 1st January is Friday, what day is 8th January?",
       "options": [
-        "32",
-        "35",
-        "33",
-        "31"
+        "Friday",
+        "Saturday",
+        "Sunday",
+        "Thursday"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "If a shape has 6 sides, how many sides does it have?",
+      "question": "Series: 2, 6, 12, 20, 30, __.",
       "options": [
-        "8",
-        "5",
-        "6",
-        "7"
+        "40",
+        "42",
+        "44",
+        "36"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which is the greatest?",
+      "question": "Which pair is different? (2,4), (3,9), (4,16), (5,20)",
       "options": [
-        "313",
-        "318",
-        "316",
-        "321"
+        "(2,4)",
+        "(3,9)",
+        "(4,16)",
+        "(5,20)"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What is 83 + 74?",
+      "question": "Write in numerals: Forty-five thousand six hundred eight",
       "options": [
-        "158",
-        "167",
-        "157",
-        "156"
+        "45,608",
+        "45,680",
+        "4,568",
+        "45,068"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "What is 117 − 60?",
+      "question": "Successor of 9,999 is:",
       "options": [
-        "57",
-        "59",
-        "-57",
-        "55"
+        "9,998",
+        "10,000",
+        "10,001",
+        "9,000"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "What is 4 × 5?",
+      "question": "5,678 − 2,349 = ?",
       "options": [
-        "20",
-        "9",
-        "19",
-        "21"
+        "3,329",
+        "3,319",
+        "3,429",
+        "3,339"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "What is 36 ÷ 6?",
+      "question": "48 ÷ 6 = ?",
       "options": [
-        "7",
         "6",
-        "5",
-        "6"
+        "7",
+        "8",
+        "9"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "7 × 8 × 5 = ?",
       "options": [
-        "12 cm",
-        "10 cm",
-        "24 cm",
-        "36 cm"
+        "240",
+        "280",
+        "300",
+        "260"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "What is 88 + 79?",
+      "question": "Which is a prime number?",
       "options": [
-        "167",
-        "177",
-        "168",
-        "166"
+        "15",
+        "21",
+        "29",
+        "27"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "What is 122 − 65?",
+      "question": "2/3 + 1/6 = ?",
       "options": [
-        "57",
-        "-57",
-        "59",
-        "55"
+        "1/2",
+        "5/6",
+        "3/6",
+        "1"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "What is 3 × 5?",
+      "question": "Convert 3/4 into a decimal.",
       "options": [
-        "8",
-        "15",
-        "16",
-        "14"
+        "0.25",
+        "0.5",
+        "0.75",
+        "0.34"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "What is 36 ÷ 6?",
+      "question": "A water tank holds 50 litres. 18 litres are used. How much is left?",
       "options": [
-        "7",
-        "5",
-        "6",
-        "6"
+        "32 L",
+        "28 L",
+        "38 L",
+        "22 L"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "Perimeter of a triangle with sides 5 cm, 7 cm, 9 cm is:",
       "options": [
-        "12 cm",
-        "36 cm",
-        "24 cm",
-        "10 cm"
+        "21 cm",
+        "20 cm",
+        "22 cm",
+        "19 cm"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "What is 93 + 84?",
+      "question": "How many hours are there in 3 days?",
       "options": [
-        "177",
-        "187",
-        "176",
-        "178"
+        "36",
+        "48",
+        "72",
+        "60"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "What is 127 − 70?",
+      "question": "₹250 − ₹175 = ?",
       "options": [
-        "55",
-        "59",
-        "-57",
-        "57"
+        "₹65",
+        "₹75",
+        "₹85",
+        "₹55"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "What is 2 × 5?",
+      "question": "The face value of 9 in 29,431 is:",
       "options": [
-        "10",
-        "11",
         "9",
-        "7"
+        "900",
+        "9,000",
+        "90"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "What is 36 ÷ 6?",
+      "question": "Which angle is a right angle?",
       "options": [
-        "7",
-        "5",
-        "6",
-        "6"
+        "45°",
+        "90°",
+        "180°",
+        "60°"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "A dozen bananas cost ₹36. Cost of 5 bananas is:",
       "options": [
-        "10 cm",
-        "12 cm",
-        "24 cm",
-        "36 cm"
+        "₹12",
+        "₹15",
+        "₹18",
+        "₹10"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "What is 98 + 89?",
+      "question": "Multiples of 9 between 20 and 50 are how many?",
       "options": [
-        "187",
-        "197",
-        "188",
-        "186"
+        "3",
+        "4",
+        "5",
+        "2"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "What is 132 − 75?",
+      "question": "Simplify: 1000 − 1 = ?",
       "options": [
-        "57",
-        "-57",
-        "55",
-        "59"
+        "999",
+        "990",
+        "1001",
+        "899"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "What is 7 × 5?",
+      "question": "Half of 246 is:",
       "options": [
-        "36",
-        "12",
-        "35",
-        "34"
+        "123",
+        "124",
+        "122",
+        "126"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "What is 36 ÷ 6?",
+      "question": "A square has area 49 cm². Its side is:",
       "options": [
-        "5",
-        "6",
-        "6",
-        "7"
+        "6 cm",
+        "7 cm",
+        "8 cm",
+        "9 cm"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "5 kg 250 g = how many grams?",
       "options": [
-        "24 cm",
-        "12 cm",
-        "10 cm",
-        "36 cm"
+        "5,250 g",
+        "525 g",
+        "52,500 g",
+        "2,550 g"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "A number is doubled and then 3 is added to get 55. What was the number?",
+      "question": "A number is multiplied by 4 and then 7 is subtracted to get 45. The number is:",
       "options": [
-        "29",
-        "25",
-        "27",
-        "26"
+        "13",
+        "12",
+        "14",
+        "11"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 32,
-      "question": "A number is doubled and then 3 is added to get 57. What was the number?",
+      "question": "Find the smallest 4-digit number using digits 3, 0, 8, 1 without repeating.",
       "options": [
-        "28",
-        "27",
-        "30",
-        "26"
+        "0138",
+        "1038",
+        "1308",
+        "3018"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 33,
-      "question": "A number is doubled and then 3 is added to get 59. What was the number?",
+      "question": "A rope of 18 m is cut into pieces of 75 cm each. How many pieces?",
       "options": [
-        "31",
-        "27",
-        "28",
-        "29"
+        "20",
+        "24",
+        "22",
+        "18"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 34,
-      "question": "A number is doubled and then 3 is added to get 61. What was the number?",
+      "question": "If the cost of 8 notebooks is ₹160, cost of 5 notebooks is:",
       "options": [
-        "29",
-        "32",
-        "30",
-        "28"
+        "₹90",
+        "₹100",
+        "₹80",
+        "₹120"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 35,
-      "question": "A number is doubled and then 3 is added to get 63. What was the number?",
+      "question": "The average of 12, 18 and 24 is:",
       "options": [
-        "33",
-        "30",
-        "29",
-        "31"
+        "16",
+        "18",
+        "20",
+        "22"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     }
   ]
 }

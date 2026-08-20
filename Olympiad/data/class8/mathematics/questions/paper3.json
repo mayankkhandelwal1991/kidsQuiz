@@ -2,642 +2,487 @@
   "class": 8,
   "subject": "Mathematics",
   "paper": 3,
-  "title": "Class 8 Mathematics Olympiad \u2014 Paper 3",
-  "durationMinutes": 60,
-  "totalQuestions": 50,
-  "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
-  "sections": [
-    {
-      "name": "Logical Reasoning",
-      "questions": 15,
-      "marksPerQuestion": 1,
-      "totalMarks": 15
-    },
-    {
-      "name": "Mathematical Reasoning",
-      "questions": 20,
-      "marksPerQuestion": 1,
-      "totalMarks": 20
-    },
-    {
-      "name": "Everyday Mathematics",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
+  "totalQuestions": 40,
+  "totalMarks": 50,
+  "patternNote": "IMO pattern: Logical Reasoning 15×1 + Mathematical Reasoning 20×1 + Achievers 5×3 = 40 questions / 50 marks (SOF 2023–2025 style, original practice).",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Arrange in descending order: 3/5, 0.5, 7/10, 0.65",
+      "question": "Select carefully: Find the next term: 11, 16, 21, 26, __.",
       "options": [
-        "0.65, 0.5, 3/5, 7/10",
-        "0.5, 3/5, 0.65, 7/10",
-        "3/5, 0.5, 0.65, 7/10",
-        "7/10, 0.65, 3/5, 0.5"
+        "35",
+        "31",
+        "32",
+        "29"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "A is east of B. C is south of B. What direction is C from A?",
+      "question": "Find the next term: 5, 15, 45, 135, __.",
       "options": [
-        "South-east",
-        "South-west",
-        "North-west",
-        "North-east"
+        "540",
+        "450",
+        "486",
+        "405"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "If EAST becomes WEST and NORTH becomes SOUTH under reflection, what is SOUTHEAST reflected to?",
+      "question": "Odd one out: Cube, Cuboid, Sphere, Square",
       "options": [
-        "NORTHEAST",
-        "NORTHWEST",
-        "EAST",
-        "SOUTHWEST"
+        "Square",
+        "Cube",
+        "Cuboid",
+        "Sphere"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "A clock shows 5:00. What is the angle between the hour and minute hands?",
+      "question": "Choose the correct option: If each letter is coded as the next letter (+1), POWER is coded as:",
       "options": [
-        "120 degrees",
-        "150 degrees",
-        "180 degrees",
-        "90 degrees"
+        "QPXFX",
+        "AAAAA",
+        "ZZZZZ",
+        "QPXFS"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Find the next term: 3, 6, 11, 18, 27, __ (differences increase by 2)",
+      "question": "A girl faces East. She turns 90° left, then 180°, then 90° right. She now faces:",
       "options": [
-        "35",
-        "36",
-        "38",
-        "40"
+        "North",
+        "South",
+        "West",
+        "East"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "If '\u00d7' means '-', '-' means '+', '+' means '\u00f7', evaluate: 12 \u00d7 4 - 2",
+      "question": "Analogy: 5 : 125 :: 6 : ?",
       "options": [
-        "46",
-        "6",
-        "(12-4)+2 = 8+2 = 10",
-        "14"
+        "150",
+        "216",
+        "36",
+        "30"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "Complete the analogy: Square is to 4 equal sides as Rhombus is to ____",
+      "question": "Identify the correct choice: Odd one out: Rational number, Integer, Natural number, Triangle",
       "options": [
-        "No equal sides",
-        "3 equal sides",
-        "4 equal sides (but different angles)",
-        "5 equal sides"
+        "Triangle",
+        "Rational number",
+        "Integer",
+        "Natural number"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "A is the sister of B. B is the father of C. How is A related to C?",
+      "question": "In a certain code, MATH = 42 and ROOT = 68 (A=1…Z=26, sum×1). Then CUBE = ?",
       "options": [
-        "Grandmother",
-        "Mother",
-        "Aunt",
-        "Sister"
+        "33",
+        "29",
+        "35",
+        "31"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "Find the missing number: 1, 8, 27, 64, __ (cubes of numbers)",
+      "question": "Find the missing term: 6, 10, 14, __, 22",
       "options": [
-        "125",
-        "144",
-        "121",
-        "100"
+        "21",
+        "22",
+        "23",
+        "24"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "Find the odd one out: 4, 9, 16, 20, 25 (perfect squares)",
+      "question": "Pick the right answer: In a class of 40, 22 play cricket, 18 play football and 8 play both. How many play only cricket?",
       "options": [
-        "9",
-        "25",
-        "20 (not a perfect square)",
-        "4"
+        "12",
+        "14",
+        "16",
+        "10"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "If 6 taps fill a tank in 4 hours, how many hours will 3 taps take?",
+      "question": "In a row of 25 students, Meera is 9th from the left. Her position from the right is:",
       "options": [
-        "6 hours",
-        "12 hours",
-        "2 hours",
-        "8 hours"
+        "17th",
+        "16th",
+        "18th",
+        "15th"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "Five boxes are stacked. Box A is above Box B but below Box C. Box D is at the bottom. Which box is likely at the top?",
+      "question": "Pointing to a boy, Riya says, 'He is the son of my grandfather's only son.' The boy is Riya's:",
       "options": [
-        "Box B",
-        "Box A",
-        "Box D",
-        "Box C (or higher, based on given info)"
+        "Cousin",
+        "Uncle",
+        "Nephew",
+        "Brother"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "Find the next term: 2, 6, 18, 54, __",
+      "question": "If 1st January is a Monday, what day is 1st February of the same non-leap year?",
       "options": [
-        "216",
-        "162",
-        "144",
-        "108"
+        "Friday",
+        "Tuesday",
+        "Thursday",
+        "Wednesday"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "If in a code, TIGER is written as UJHFS, how is LION written?",
+      "question": "How many squares are there in a 3×3 grid of unit squares?",
       "options": [
-        "MJPO",
-        "MIPO",
-        "KHNM",
-        "MJOP"
+        "16",
+        "14",
+        "9",
+        "12"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "Statement: All prime numbers greater than 2 are odd. 7 is a prime number greater than 2. Conclusion: 7 is odd.",
+      "question": "If all squares are rectangles and some rectangles are rhombuses, which must be true?",
       "options": [
-        "Cannot be determined",
-        "The conclusion is valid",
-        "The conclusion is invalid",
-        "Insufficient data"
+        "Some squares may be rhombuses",
+        "All rectangles are squares",
+        "No square is a rectangle",
+        "All rhombuses are squares"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "Factorize: x^2 - 16",
+      "question": "Select carefully: Between two rational numbers there are:",
       "options": [
-        "(x+4)^2",
-        "(x-16)(x+1)",
-        "(x-4)(x+4)",
-        "(x-4)^2"
+        "No rational numbers",
+        "Exactly one rational",
+        "Only integers",
+        "Infinitely many rational numbers"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 17,
-      "question": "What is the smallest 3-digit number divisible by 7?",
+      "question": "Solve: 2x + 5 = 17. The value of x is:",
       "options": [
-        "105",
-        "100",
-        "98",
-        "112"
+        "8",
+        "6",
+        "7",
+        "5"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 18,
-      "question": "Simplify: 2^3 \u00d7 2^4",
+      "question": "Solve: 3(x − 2) = 18. Then x =",
       "options": [
-        "2^12",
-        "2^1",
-        "2^7 = 128",
-        "2^7 only as exponent, value = 2^7=128 confirmed"
+        "9",
+        "7",
+        "10",
+        "8"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 19,
-      "question": "What is the square root of 169?",
+      "question": "Choose the correct option: The sum of the interior angles of a quadrilateral is:",
       "options": [
-        "15",
-        "13",
-        "12",
-        "14"
+        "360°",
+        "180°",
+        "270°",
+        "540°"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 20,
-      "question": "What is the square of 15?",
+      "question": "A parallelogram with all sides equal and one angle 90° is a:",
       "options": [
-        "210",
-        "230",
-        "225",
-        "220"
+        "Rhombus that is not a square",
+        "Rectangle that is not a square",
+        "Trapezium",
+        "Square"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 21,
-      "question": "What is the sum of angles of a quadrilateral?",
+      "question": "15² = ?",
       "options": [
-        "270 degrees",
-        "360 degrees",
-        "180 degrees",
-        "540 degrees"
+        "451",
+        "225",
+        "240",
+        "255"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 22,
-      "question": "What is the additive inverse of -7/9?",
+      "question": "Identify the correct choice: √121 = ?",
       "options": [
-        "-7/9",
-        "-9/7",
-        "7/9",
-        "9/7"
+        "12",
+        "10",
+        "13",
+        "11"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 23,
-      "question": "Solve for x: 3x - 7 = 14",
+      "question": "3³ = ?",
       "options": [
-        "21/3",
-        "6",
-        "8",
-        "7"
+        "30",
+        "27",
+        "36",
+        "55"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 24,
-      "question": "Find the compound interest on Rs. 1000 for 2 years at 10% per annum.",
+      "question": "13% of 260 is:",
       "options": [
-        "Rs. 200",
-        "Rs. 220",
-        "Rs. 210",
-        "Rs. 190"
+        "59.8",
+        "46.8",
+        "280.8",
+        "33.8"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 25,
-      "question": "Find the area of a trapezium with parallel sides 8 cm and 12 cm, and height 5 cm.",
+      "question": "Pick the right answer: Simple interest on ₹3000 at 8% per annum for 2 years is:",
       "options": [
-        "40 sq cm",
-        "100 sq cm",
-        "50 sq cm",
-        "60 sq cm"
+        "3960",
+        "480",
+        "24480",
+        "720"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 26,
-      "question": "If the cost price is Rs. 400 and profit is 20%, find the selling price.",
+      "question": "(a + b)² equals:",
       "options": [
-        "Rs. 420",
-        "Rs. 450",
-        "Rs. 480",
-        "Rs. 500"
+        "a² + ab + b²",
+        "a² + 2ab + b²",
+        "a² + b²",
+        "a² − 2ab + b²"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 27,
-      "question": "What is the cube of 4?",
+      "question": "(a + b)(a − b) equals:",
       "options": [
-        "64",
-        "32",
-        "16",
-        "48"
+        "a² − b²",
+        "a² + b²",
+        "a² − 2ab + b²",
+        "2ab"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 28,
-      "question": "Find the volume of a cube with side 6 cm.",
+      "question": "Volume of a cube of side 7 cm is:",
       "options": [
-        "144 cubic cm",
-        "216 cubic cm",
-        "36 cubic cm",
-        "196 cubic cm"
+        "392",
+        "637",
+        "364",
+        "343"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 29,
-      "question": "In the number 47N, if the number is divisible by 3, which digit can N NOT be?",
+      "question": "Area of a trapezium with parallel sides 9 cm and 13 cm and height 4 cm is:",
       "options": [
-        "5",
-        "8",
-        "2 (since 4+7+2=13, not divisible by 3)",
-        "1 (checking: 4+7+1=12, divisible)"
+        "66",
+        "44",
+        "161",
+        "132"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 30,
-      "question": "Simplify: (x + 3)(x + 2)",
+      "question": "Simplify: (2³)²",
       "options": [
-        "x^2 + 6",
-        "x^2 + 5x + 6",
-        "x^2 + 6x + 5",
-        "x^2 + 5x + 5"
+        "2⁹",
+        "2⁶",
+        "2⁵",
+        "4³"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 31,
-      "question": "What is the mean of the data: 4, 8, 6, 10, 12?",
+      "question": "Select carefully: Simplify: 5⁰ + 3²",
       "options": [
-        "8",
-        "7",
+        "10",
         "9",
-        "10"
+        "1",
+        "15"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 32,
-      "question": "If a and b are directly proportional and a=6 when b=2, find a when b=5.",
+      "question": "If 4 identical pens cost ₹70, then 6 such pens cost:",
       "options": [
-        "12",
-        "18",
-        "15",
-        "10"
+        "175",
+        "181",
+        "220",
+        "105"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 33,
-      "question": "On a graph, the point (3, -2) lies in which quadrant?",
+      "question": "Factorise: x² − 9",
       "options": [
-        "Third quadrant",
-        "Second quadrant",
-        "First quadrant",
-        "Fourth quadrant"
+        "(x − 3)²",
+        "x(x − 9)",
+        "(x − 3)(x + 3)",
+        "(x − 9)(x + 1)"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 34,
-      "question": "What is (5^0)?",
+      "question": "Choose the correct option: The mean of 13, 15, 17, 19, 21 is:",
       "options": [
-        "1",
-        "0",
-        "5",
-        "undefined"
+        "18",
+        "16",
+        "19",
+        "17"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 35,
-      "question": "Which quadrilateral has all sides equal but angles not necessarily 90 degrees?",
+      "question": "A cuboid has how many faces, edges and vertices?",
       "options": [
-        "Kite (not always all sides equal)",
-        "Trapezium",
-        "Rhombus",
-        "Rectangle"
+        "6 faces, 12 edges, 8 vertices",
+        "6 faces, 8 edges, 12 vertices",
+        "8 faces, 12 edges, 6 vertices",
+        "4 faces, 6 edges, 4 vertices"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 36,
-      "question": "A recipe requires 250g of flour for 5 people. How much flour is needed for 8 people?",
+      "question": "If x/2 + 3 = 10, then x =",
       "options": [
-        "320g",
-        "350g",
-        "450g",
-        "400g"
+        "16",
+        "12",
+        "18",
+        "14"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 3
     },
     {
       "id": 37,
-      "question": "A container holds 15 litres. If 3/5 of it is full, how many litres are in the container?",
+      "question": "Identify the correct choice: Value of (8 + 3)² is:",
       "options": [
-        "6 litres",
-        "9 litres",
-        "10 litres",
-        "12 litres"
+        "145",
+        "121",
+        "194",
+        "143"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 3
     },
     {
       "id": 38,
-      "question": "A shopkeeper marks an item at Rs. 800 and offers a 15% discount. Find the selling price.",
+      "question": "Volume of a cylinder with r = 7 cm and h = 5 cm (take π = 22/7) is:",
       "options": [
-        "Rs. 700",
-        "Rs. 650",
-        "Rs. 720",
-        "Rs. 680"
+        "1540",
+        "1155",
+        "2310",
+        "770"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 3
     },
     {
       "id": 39,
-      "question": "If the population of a town increases by 10% each year from 5000, what will the population be after 1 year?",
+      "question": "If x² + 1/x² = 17, then (x + 1/x)² =",
       "options": [
-        "6000",
-        "5100",
-        "5500",
-        "5050"
+        "37",
+        "19",
+        "36",
+        "34"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 3
     },
     {
       "id": 40,
-      "question": "If a map scale is 1 cm : 50 km, what actual distance does 3 cm represent?",
+      "question": "Pick the right answer: A rectangle has length 8 cm and breadth 6 cm. Length of a diagonal is:",
       "options": [
-        "200 km",
-        "150 km",
-        "50 km",
-        "100 km"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 41,
-      "question": "A car travels 210 km in 3.5 hours. Find its average speed.",
-      "options": [
-        "65 km/h",
-        "50 km/h",
-        "60 km/h",
-        "55 km/h"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 42,
-      "question": "A book's price is reduced from Rs. 250 to Rs. 200. Find the percentage decrease.",
-      "options": [
-        "25%",
-        "20%",
-        "10%",
-        "15%"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 43,
-      "question": "A sum invested at 8% simple interest doubles the interest amount of one invested at 4% for the same time and principal. If the 4% investment earns Rs. 200 interest, what does the 8% investment earn?",
-      "options": [
-        "Rs. 300",
-        "Rs. 400",
-        "Rs. 250",
-        "Rs. 350"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 44,
-      "question": "Find the simple interest on Rs. 5000 at 6% per annum for 3 years.",
-      "options": [
-        "Rs. 850",
-        "Rs. 1000",
-        "Rs. 900",
-        "Rs. 800"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 45,
-      "question": "A worker is paid Rs. 450 for 6 hours of work. What is the pay for 10 hours at the same rate?",
-      "options": [
-        "Rs. 650",
-        "Rs. 700",
-        "Rs. 750",
-        "Rs. 800"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 46,
-      "question": "A cylindrical water tank has a radius of 7m and needs to hold 3080 cubic metres of water. Find its approximate height (use pi=22/7).",
-      "options": [
-        "25 m",
-        "15 m",
-        "10 m",
-        "20 m (using V=pi*r^2*h)"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 47,
-      "question": "Two numbers are in the ratio 3:4. If their sum is 91, analyze the reasoning to find the numbers.",
-      "options": [
-        "42 and 49",
-        "30 and 40",
-        "36 and 48",
-        "39 and 52 (using 3x+4x=91, x=13)"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 48,
-      "question": "A number is such that when 5 is added to twice the number, the result is 3 less than three times the number. Form the equation and find the number.",
-      "options": [
-        "x = 5",
-        "2x + 5 = 3x - 3, so x = 8",
-        "2x + 5 = 3x + 3, so x = 2",
-        "x = 3"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 49,
-      "question": "A rectangular garden's length is increased by 20% and width decreased by 20%. Analyze whether the area increases, decreases, or stays the same.",
-      "options": [
-        "The area stays exactly the same",
-        "The area decreases (new area = 0.96 times original)",
-        "The area increases",
-        "Cannot be determined without actual dimensions"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 50,
-      "question": "A shopkeeper offers a successive discount of 10% and then 10% again on an item marked Rs. 1000. Explain why this is NOT the same as a single 20% discount, and find the actual price.",
-      "options": [
-        "The final price is Rs. 900",
-        "Both give exactly Rs. 800",
-        "Successive discounts always give a lower price than combined discount",
-        "Successive discounts give Rs. 810 (not Rs. 800), since the second discount applies to the already-reduced price"
+        "18",
+        "16",
+        "24",
+        "10"
       ],
       "section": "Achievers Section",
       "marks": 3

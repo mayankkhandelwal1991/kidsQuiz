@@ -2,642 +2,607 @@
   "class": 8,
   "subject": "General Knowledge",
   "paper": 5,
-  "title": "Class 8 General Knowledge Olympiad \u2014 Paper 5",
-  "durationMinutes": 60,
   "totalQuestions": 50,
   "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
-  "sections": [
-    {
-      "name": "General Awareness",
-      "questions": 20,
-      "marksPerQuestion": 1,
-      "totalMarks": 20
-    },
-    {
-      "name": "World & Current Affairs",
-      "questions": 15,
-      "marksPerQuestion": 1,
-      "totalMarks": 15
-    },
-    {
-      "name": "Life Skills",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
+  "patternNote": "IGKO pattern: General Awareness 30×1 + Current Affairs 10×1 + Life Skills 5×1 + Achievers 5×3 = 50 questions / 60 marks (SOF 2023–2025 style, original practice).",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Which Indian monument is located in Delhi and was built by the Mughals?",
+      "question": "Which planet is called the Red Planet?",
       "options": [
-        "Taj Mahal",
-        "Red Fort",
-        "Gateway of India",
-        "Charminar"
+        "Mars",
+        "Venus",
+        "Mercury",
+        "Neptune"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Who is known as the 'Father of the Indian Nuclear Programme'?",
+      "question": "Choose the correct option: Which is a classical dance of India?",
       "options": [
-        "Dr. Homi Bhabha",
-        "Dr. Vikram Sarabhai",
-        "Dr. A.P.J. Abdul Kalam",
-        "Dr. C.V. Raman"
+        "Hip-hop only as classical Indian",
+        "Only ballet exclusive Indian classical",
+        "Breakdance as Natya Shastra only",
+        "Bharatanatyam"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Which planet is known as the 'Morning Star' or 'Evening Star'?",
+      "question": "Which is a SAARC country?",
       "options": [
-        "Mars",
-        "Mercury",
-        "Jupiter",
-        "Venus"
+        "Japan",
+        "Canada",
+        "Nepal",
+        "Brazil"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Which is the second largest continent by area?",
+      "question": "Green Revolution in India is associated with:",
       "options": [
-        "Africa",
-        "North America",
-        "Asia",
-        "South America"
+        "Only cricket stadiums",
+        "Agriculture productivity increase",
+        "Only IT parks",
+        "Only space"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Which Indian river is considered the holiest by Hindus?",
+      "question": "Identify the correct choice: The largest democracy in the world by population is often referred to as:",
       "options": [
-        "Godavari",
-        "Yamuna",
-        "Ganga",
-        "Narmada"
+        "India",
+        "Vatican City",
+        "Monaco",
+        "Nauru"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "What is the currency of China?",
+      "question": "Which is an Indian classical music form?",
       "options": [
-        "Won",
-        "Ringgit",
-        "Yen",
-        "Yuan (Renminbi)"
+        "Only heavy metal as classical Indian exclusive",
+        "Only jazz as Hindustani exclusive",
+        "Only rock as Carnatic exclusive",
+        "Hindustani / Carnatic traditions"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "In which direction does a compass needle typically point?",
+      "question": "Which Indian city is known as the Silicon Valley of India?",
       "options": [
-        "West",
-        "South",
-        "East",
-        "North"
+        "Only Jaisalmer exclusive",
+        "Only Shillong exclusive as Silicon",
+        "Bengaluru",
+        "Only Shimla exclusive"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "Which Indian city is known as the 'City of Lakes'?",
+      "question": "Pick the right answer: The capital of India is:",
       "options": [
-        "Jodhpur",
-        "Bikaner",
-        "Jaipur",
-        "Udaipur"
+        "Chennai",
+        "New Delhi",
+        "Mumbai",
+        "Kolkata"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "Which gas is most abundant in the Sun?",
+      "question": "The Constitution of India came into force on:",
       "options": [
-        "Helium",
-        "Nitrogen",
-        "Hydrogen",
-        "Oxygen"
+        "26 January 1950",
+        "15 August 1947",
+        "26 November 1949",
+        "2 October 1947"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "Which is the fastest land animal?",
+      "question": "The first Prime Minister of India was:",
       "options": [
-        "Lion",
-        "Cheetah",
-        "Horse",
-        "Leopard"
+        "Sardar Patel",
+        "Lal Bahadur Shastri",
+        "Rajendra Prasad",
+        "Jawaharlal Nehru"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "Which organ of the United Nations is responsible for maintaining international peace?",
+      "question": "Which gas do plants release during photosynthesis (net useful to animals)?",
       "options": [
-        "Security Council",
-        "General Assembly",
-        "Secretariat",
-        "Economic and Social Council"
+        "Carbon monoxide",
+        "Helium",
+        "Oxygen",
+        "Nitrogen only"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "Who is credited with founding the Mauryan Empire?",
+      "question": "Which state is known as the 'Spice Garden of India'?",
       "options": [
-        "Chanakya (advisor, not founder)",
-        "Ashoka",
-        "Bindusara",
-        "Chandragupta Maurya"
+        "Haryana",
+        "Kerala",
+        "Rajasthan",
+        "Punjab"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "Who was the first President of independent India?",
+      "question": "Who wrote the Indian National Song 'Vande Mataram'?",
       "options": [
-        "Dr. S. Radhakrishnan",
-        "Mahatma Gandhi",
-        "Jawaharlal Nehru",
-        "Dr. Rajendra Prasad"
+        "Bankim Chandra Chatterjee",
+        "Tagore only",
+        "Gandhi",
+        "Nehru"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "Which Indian festival celebrates the victory of good over evil, commemorating Lord Rama's return?",
+      "question": "Select carefully: Ajanta caves are famous for:",
       "options": [
-        "Dussehra",
-        "Diwali",
-        "Baisakhi",
-        "Holi"
+        "Only modern skyscrapers",
+        "Only car factories",
+        "Only beaches",
+        "Paintings and Buddhist heritage"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "What is the national flower of India?",
+      "question": "ISRO is India's:",
       "options": [
-        "Lotus",
-        "Rose",
-        "Marigold",
-        "Sunflower"
+        "Film censor only",
+        "Tax office only",
+        "Space research organisation",
+        "Cricket board"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "Which continent is known as the 'Land of the Rising Sun', referring to a country within it?",
+      "question": "Lok Sabha is the:",
       "options": [
-        "Australia",
-        "Africa",
-        "Asia (Japan)",
-        "Europe"
+        "Election Commission only",
+        "House of the People (lower house)",
+        "Upper house only",
+        "President’s office only"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 17,
-      "question": "Which is the largest freshwater lake in India?",
+      "question": "Choose the correct option: The Qutub Minar is in:",
       "options": [
-        "Chilika Lake",
-        "Wular Lake",
-        "Loktak Lake",
-        "Dal Lake"
+        "Delhi",
+        "Mumbai",
+        "Kolkata",
+        "Chennai"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 18,
-      "question": "Who led the Salt March (Dandi March) in 1930?",
+      "question": "The Chipko movement is associated with:",
       "options": [
-        "Mahatma Gandhi",
-        "Subhas Chandra Bose",
-        "Jawaharlal Nehru",
-        "Bhagat Singh"
+        "Only space travel",
+        "Only cricket",
+        "Only fashion",
+        "Forest conservation"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 19,
-      "question": "Who wrote the Indian national anthem?",
+      "question": "Which metal is used in galvanisation of iron?",
       "options": [
-        "Rabindranath Tagore",
-        "Sarojini Naidu",
-        "Bankim Chandra Chattopadhyay",
-        "Muhammad Iqbal"
+        "Silver only",
+        "Platinum only",
+        "Zinc",
+        "Gold only"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 20,
-      "question": "Which Indian state is the largest producer of cotton?",
+      "question": "Identify the correct choice: Which day is celebrated as Indian Independence Day?",
       "options": [
-        "Gujarat",
-        "Maharashtra",
-        "Punjab",
-        "Haryana"
+        "14 November",
+        "15 August",
+        "26 January",
+        "2 October"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 21,
-      "question": "Which day is observed worldwide as International Yoga Day?",
+      "question": "The Thar Desert is largely in:",
       "options": [
-        "1st May",
-        "21st June",
-        "5th June",
-        "10th December"
+        "Rajasthan (India)",
+        "Kerala only",
+        "Sikkim only",
+        "Goa only"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 22,
-      "question": "What does 'G20' refer to?",
+      "question": "The Suez Canal connects:",
       "options": [
-        "A trade pact among 20 Asian countries",
-        "A UN peacekeeping mission",
-        "A treaty on climate change",
-        "A forum of 20 major world economies discussing global economic issues"
+        "Pacific and Arctic only",
+        "Amazon and Nile",
+        "Ganga and Yamuna as seas",
+        "Mediterranean Sea and Red Sea"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 23,
-      "question": "Which countries are jointly hosting the FIFA World Cup 2026?",
+      "question": "Pick the right answer: The national animal of India is the:",
       "options": [
-        "Brazil and Argentina",
-        "Qatar, UAE, and Saudi Arabia",
-        "France and Germany",
-        "USA, Canada, and Mexico"
+        "Elephant",
+        "Peacock",
+        "Tiger",
+        "Lion"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 24,
-      "question": "Who is the current Prime Minister of India (as of 2026)?",
+      "question": "Which is the longest river in India by many traditional measures?",
       "options": [
-        "Narendra Modi",
-        "Manmohan Singh",
-        "Rahul Gandhi",
-        "Amit Shah"
+        "Luni",
+        "Ganga",
+        "Yamuna only",
+        "Narmada only as longest always"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 25,
-      "question": "Who is the current President of India (as of 2026)?",
+      "question": "Rajya Sabha is the is:",
       "options": [
-        "Pranab Mukherjee",
-        "Ram Nath Kovind",
-        "Pratibha Patil",
-        "Droupadi Murmu"
+        "Upper house of Parliament",
+        "Lower house only",
+        "Supreme Court bench",
+        "State police unit"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 26,
-      "question": "Which country is hosting the 2026 Winter Olympics?",
+      "question": "The largest planet in our solar system is:",
       "options": [
-        "France",
-        "Italy (Milan and Cortina d'Ampezzo)",
-        "USA",
-        "China"
+        "Mars",
+        "Mercury",
+        "Venus",
+        "Jupiter"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 27,
-      "question": "Which Indian mission successfully landed near the Moon's south pole in 2023?",
+      "question": "The Sahara is a:",
       "options": [
-        "Mangalyaan",
-        "Chandrayaan-2",
-        "Aditya-L1",
-        "Chandrayaan-3"
+        "Mountain range in Europe only",
+        "River in Canada",
+        "Desert",
+        "Ocean"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 28,
-      "question": "Which country hosted the 2024 Summer Olympics?",
+      "question": "The Supreme Court of India is located in:",
       "options": [
-        "UK",
-        "France (Paris)",
-        "Japan",
-        "USA"
+        "Kolkata",
+        "New Delhi",
+        "Mumbai",
+        "Chennai"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 29,
-      "question": "Which two Italian cities are jointly hosting the 2026 Winter Olympics?",
+      "question": "Select carefully: The term GDP is related to:",
       "options": [
-        "Rome and Venice",
-        "Milan and Cortina d'Ampezzo",
-        "Florence and Naples",
-        "Turin and Milan"
+        "Economy / national income measure",
+        "Only weather",
+        "Only cricket scores",
+        "Only planetary orbits"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 30,
-      "question": "Which sports event is held every four years among Commonwealth nations?",
+      "question": "The border between India and China is often called the:",
       "options": [
-        "Asian Games",
-        "SAARC Games",
-        "Commonwealth Games",
-        "Olympic Games"
+        "Radcliffe Line only for China",
+        "Durand Line for China",
+        "McMahon only ocean line",
+        "LAC (Line of Actual Control)"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 31,
-      "question": "Which space agency successfully carried out the Aditya-L1 solar mission?",
+      "question": "Digital payments in India are supported by systems such as:",
       "options": [
-        "ESA",
-        "Roscosmos",
-        "ISRO (Indian Space Research Organisation)",
-        "NASA"
+        "Only cheques from 1800s exclusive",
+        "Only gold coins mandatory",
+        "UPI",
+        "Only barter worldwide exclusive"
       ],
-      "section": "World & Current Affairs",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 32,
-      "question": "Who is the current Chief Justice of India (as of 2026)?",
+      "question": "Choose the correct option: Chandrayaan missions are associated with India's:",
       "options": [
-        "Justice D.Y. Chandrachud",
-        "Justice N.V. Ramana",
-        "Justice Surya Kant",
-        "Justice U.U. Lalit"
+        "Only cricket tours",
+        "Lunar exploration",
+        "Only Antarctic tourism",
+        "Only highway tolls"
       ],
-      "section": "World & Current Affairs",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 33,
-      "question": "Who is the current Vice-President of India (as of 2026)?",
+      "question": "Sustainable Development Goals (SDGs) were adopted by the:",
       "options": [
-        "C. P. Radhakrishnan",
-        "Hamid Ansari",
-        "Venkaiah Naidu",
-        "Jagdeep Dhankhar"
+        "United Nations",
+        "Only one private company",
+        "Only a school board",
+        "Only FIFA"
       ],
-      "section": "World & Current Affairs",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 34,
-      "question": "Which organization deals with global health issues and is headquartered in Geneva?",
+      "question": "Aadhaar in India is a:",
       "options": [
-        "World Health Organization (WHO)",
-        "UNESCO",
-        "World Bank",
-        "UNICEF"
+        "Type of currency note only",
+        "Sports trophy",
+        "Mountain peak",
+        "Unique identity number system"
       ],
-      "section": "World & Current Affairs",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 35,
-      "question": "Which Indian mission is ISRO's programme for human spaceflight?",
+      "question": "Identify the correct choice: Renewable energy targets worldwide often focus on:",
       "options": [
-        "Aditya-L1",
-        "Chandrayaan",
-        "Mangalyaan",
-        "Gaganyaan"
+        "Banning all electricity",
+        "Stopping research",
+        "Solar and wind expansion",
+        "Only increasing coal always"
       ],
-      "section": "World & Current Affairs",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 36,
-      "question": "How should you respond if you make a mistake that affects a group project?",
+      "question": "The International Court of Justice is based in:",
       "options": [
-        "Take responsibility, apologize, and help fix the issue",
-        "Quit the project",
-        "Blame someone else",
-        "Hide the mistake and hope no one notices"
+        "Cairo only",
+        "The Hague",
+        "Mumbai",
+        "Tokyo only"
       ],
-      "section": "Life Skills",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 37,
-      "question": "Which habit best reflects empathy towards others?",
+      "question": "BRICS is a grouping of:",
       "options": [
-        "Ignoring others' feelings to focus only on yourself",
-        "Making fun of someone's mistakes",
-        "Avoiding conversations about feelings",
-        "Trying to understand how someone else feels in a situation"
+        "Emerging economies",
+        "Only European monarchies",
+        "Only island cricket teams",
+        "Only language clubs"
       ],
-      "section": "Life Skills",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 38,
-      "question": "What is the healthiest way to cope with failure in an exam?",
+      "question": "Pick the right answer: Cybersecurity awareness days aim to promote:",
       "options": [
-        "Blaming the teacher only",
-        "Giving up on studying altogether",
-        "Reflecting on mistakes and creating a plan to improve",
-        "Comparing yourself negatively to others"
+        "Password sharing",
+        "Virus creation",
+        "Ignoring updates",
+        "Safer digital practices"
       ],
-      "section": "Life Skills",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 39,
-      "question": "What is a good strategy for managing your allowance or pocket money?",
+      "question": "The United Nations headquarters is in:",
       "options": [
-        "Saving a portion regularly and spending the rest thoughtfully",
-        "Spending it all immediately",
-        "Borrowing more than you have",
-        "Never spending any of it"
+        "Nairobi only",
+        "New Delhi",
+        "New York",
+        "Geneva only as sole HQ"
       ],
-      "section": "Life Skills",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 40,
-      "question": "If a classmate is being teased by others, what is the most responsible action to take?",
+      "question": "G20 is a forum of major:",
       "options": [
-        "Support the classmate and inform a trusted teacher or adult",
-        "Ignore it since it's not your problem",
-        "Join in the teasing to fit in",
-        "Record it and share it online"
+        "Only schools",
+        "Economies",
+        "Only film industries",
+        "Only local clubs"
       ],
-      "section": "Life Skills",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 41,
-      "question": "Which action best demonstrates good leadership in a group activity?",
+      "question": "Teamwork in a group project mainly requires:",
       "options": [
-        "Making all decisions alone without input",
-        "Listening to everyone's ideas and making fair decisions",
-        "Ignoring quieter group members",
-        "Taking credit for others' work"
+        "Cooperation and clear communication",
+        "Doing nothing",
+        "Blaming only",
+        "Hiding information always"
       ],
       "section": "Life Skills",
       "marks": 1
     },
     {
       "id": 42,
-      "question": "Which of these best demonstrates good time management before an exam?",
+      "question": "Saying 'please' and 'thank you' is part of:",
       "options": [
-        "Creating a study schedule and following it consistently",
-        "Studying everything the night before",
-        "Skipping revision entirely",
-        "Depending only on classroom notes without review"
+        "Rudeness",
+        "Only exam rules",
+        "Mathematics only",
+        "Good manners"
       ],
       "section": "Life Skills",
       "marks": 1
     },
     {
       "id": 43,
-      "question": "What is the best way to handle a disagreement with a friend?",
+      "question": "Time management means:",
       "options": [
-        "Involve other friends to take sides",
-        "Talk calmly and listen to their perspective",
-        "Argue loudly until they agree with you",
-        "Stop speaking to them permanently"
+        "Never using a clock",
+        "Only sleeping all day",
+        "Prioritising tasks effectively",
+        "Wasting time on purpose"
       ],
       "section": "Life Skills",
       "marks": 1
     },
     {
       "id": 44,
-      "question": "What is an effective way to manage stress before a big test?",
+      "question": "Select carefully: If a classmate is being bullied, you should:",
       "options": [
-        "Skipping meals to save time",
-        "Practicing deep breathing and staying organized with preparation",
-        "Panicking to stay alert",
-        "Avoiding sleep to study more"
+        "Ignore forever without help",
+        "Support them and report to a trusted adult",
+        "Join the bullying",
+        "Film and mock them"
       ],
       "section": "Life Skills",
       "marks": 1
     },
     {
       "id": 45,
-      "question": "Which behaviour best shows responsible digital citizenship?",
+      "question": "A good way to manage exam stress is to:",
       "options": [
-        "Posting personal details of others without consent",
-        "Verifying information before sharing it online",
-        "Ignoring privacy settings on social media",
-        "Sharing any information without checking its accuracy"
+        "Plan studies and take short breaks",
+        "Skip all sleep for a week",
+        "Never ask doubts",
+        "Panic without a timetable"
       ],
       "section": "Life Skills",
       "marks": 1
     },
     {
       "id": 46,
-      "question": "A country's literacy rate has been steadily rising due to increased investment in schools. What long-term impact would this most likely have on its economy?",
+      "question": "Which is an example of sustainable practice?",
       "options": [
-        "A more skilled workforce, potentially boosting economic growth and innovation",
-        "No impact on the economy at all",
-        "A reduction in the population",
-        "A decrease in the availability of jobs"
+        "Burning all plastic in open streets always",
+        "Wasting water deliberately",
+        "Dumping e-waste in rivers",
+        "Segregating waste and reducing single-use plastic"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 47,
-      "question": "During a natural disaster like a flood, why is an early warning system important for a community?",
+      "question": "Choose the correct option: Which sequence is correct for Indian governance structure at the centre?",
       "options": [
-        "It prevents the flood from occurring",
-        "It only benefits government officials",
-        "It replaces the need for emergency services",
-        "It allows people time to evacuate and take precautions, reducing loss of life and property"
+        "Only Executive without Constitution",
+        "Municipal ward as the only national organ",
+        "Legislature, Executive, Judiciary as organs of government",
+        "Only Judiciary without laws"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 48,
-      "question": "A city switches its public buses from diesel to electric power over several years. What is a likely long-term benefit for residents?",
+      "question": "Match correctly: ISRO – Space; RBI – ?",
       "options": [
-        "Reduced air pollution and improved public health outcomes",
-        "No change in air quality",
-        "Increased traffic congestion only",
-        "Higher fares only, with no health benefit"
+        "Cricket selection only",
+        "Monetary authority / central banking",
+        "Space launch only",
+        "Film certification only"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 49,
-      "question": "Two neighbouring countries share a river as a water source, and one builds a large dam upstream. What is a likely diplomatic concern this could raise?",
+      "question": "Which statement about Fundamental Duties is true?",
       "options": [
-        "The downstream country may face reduced water flow, leading to disputes over water sharing",
-        "The upstream country loses all rights to the river",
-        "There would be no effect since rivers regenerate water instantly",
-        "Only environmental groups would be concerned, not governments"
+        "They are listed in the Constitution and guide citizens",
+        "They replace all Fundamental Rights permanently",
+        "They apply only to foreign tourists",
+        "They are sports-only rules"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 50,
-      "question": "If a country's currency value drops sharply against other currencies, what is a likely effect on its imports and exports?",
+      "question": "Identify the correct choice: A balanced diet and regular exercise primarily support:",
       "options": [
-        "Both imports and exports become cheaper",
-        "Both imports and exports become more expensive",
-        "Imports become more expensive while exports become cheaper for foreign buyers",
-        "There is no effect on trade"
+        "Only exam malpractice",
+        "Ignoring hygiene",
+        "Sleep deprivation as a goal",
+        "Physical and mental well-being"
       ],
       "section": "Achievers Section",
       "marks": 3

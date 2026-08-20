@@ -1,845 +1,748 @@
 {
   "class": 10,
-  "subject": "English",
+  "subject": "english",
   "paper": 1,
-  "title": "Class 10 English Olympiad — Paper 1",
-  "durationMinutes": 60,
-  "totalQuestions": 50,
+  "totalQuestions": 60,
   "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
+  "yearStyle": "2023-2025",
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern & syllabus. Not an official SOF paper. IEO pattern: Word and Structure Knowledge 45×1 + Reading 10×1 + Spoken and Written Expression 5×1 = 60 questions / 60 marks",
   "sections": [
     {
-      "name": "Word and Structure",
-      "questions": 30,
-      "marksPerQuestion": 1,
-      "totalMarks": 30
+      "name": "Word and Structure Knowledge",
+      "questions": 45,
+      "marksEach": 1
     },
     {
-      "name": "Reading & Expression",
-      "questions": 15,
-      "marksPerQuestion": 1,
-      "totalMarks": 15
+      "name": "Reading",
+      "questions": 10,
+      "marksEach": 1
     },
     {
-      "name": "Achievers Section",
+      "name": "Spoken and Written Expression",
       "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
+      "marksEach": 1
     }
   ],
   "questions": [
     {
       "id": 1,
-      "question": "Fill in the blank: Neither the teacher nor the students ___ ready.",
+      "section": "Word and Structure Knowledge",
+      "text": "She is ___ honest leader.",
       "options": [
-        "were",
-        "has been",
-        "is",
-        "was"
+        "an",
+        "a",
+        "the",
+        "no article"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Choose the meaning of the idiom 'to let the cat out of the bag'.",
+      "section": "Word and Structure Knowledge",
+      "text": "___ of the students were present.",
       "options": [
-        "To escape from trouble",
-        "To adopt a pet",
-        "To reveal a secret",
-        "To make a mistake"
+        "Every",
+        "Much",
+        "Little",
+        "All"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Idioms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Fill in the blank with the correct preposition: He is good ___ mathematics.",
+      "section": "Word and Structure Knowledge",
+      "text": "She ___ in Delhi since 2018.",
       "options": [
-        "on",
-        "at",
-        "with",
-        "in"
+        "is live",
+        "living",
+        "has lived",
+        "live"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Prepositions",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Choose the correct conjunction: She was tired, ___ she kept working.",
+      "section": "Word and Structure Knowledge",
+      "text": "She usually ___ to school by bus.",
       "options": [
-        "or",
-        "and",
-        "yet",
-        "because"
+        "gone",
+        "goes",
+        "go",
+        "going"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Conjunctions",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Choose the meaning of the idiom 'to bite the bullet'.",
+      "section": "Word and Structure Knowledge",
+      "text": "Active of ‘The letter was written by Anita’:",
       "options": [
-        "To argue loudly",
-        "To face a difficult situation bravely",
-        "To eat quickly",
-        "To avoid a problem"
+        "Anita wrote the letter.",
+        "Anita was written the letter.",
+        "The letter wrote Anita.",
+        "Anita is written letter."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Idioms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Fill in the blank: The committee ___ meeting today at 5 pm.",
+      "section": "Word and Structure Knowledge",
+      "text": "He said, “I am tired.” →",
       "options": [
-        "have",
-        "were",
-        "is",
-        "are"
+        "He said that I am tired.",
+        "He said that he is tired.",
+        "He told that he tired.",
+        "He said that he was tired."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Concord",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Choose the correct word: The news ___ surprising.",
+      "section": "Word and Structure Knowledge",
+      "text": "He said, “I will help you.” →",
       "options": [
-        "were",
-        "is",
-        "are",
-        "have been"
+        "He said that I will help you.",
+        "He told that he help me.",
+        "He said that he would help me.",
+        "He said that he will help you."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Concord",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Choose the synonym of 'candid'.",
+      "section": "Word and Structure Knowledge",
+      "text": "Choose the correct sentence:",
       "options": [
-        "Confused",
-        "Secretive",
-        "Frank",
-        "Timid"
+        "If rains it, stay we.",
+        "If it rains, we will stay indoors.",
+        "If it will rain, we stay.",
+        "If it raining, we will stay."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Synonyms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Fill in the blank with the correct modal: You ___ see a doctor if the pain continues.",
+      "section": "Word and Structure Knowledge",
+      "text": "He ___ swim when he was five.",
       "options": [
-        "must have",
+        "could",
         "can",
         "may",
-        "should"
+        "must"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Conditionals",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Identify the correct reported speech: She said, 'I will call you tomorrow.'",
+      "section": "Word and Structure Knowledge",
+      "text": "He is good ___ mathematics.",
       "options": [
-        "She said that she will call me tomorrow.",
-        "She said that she calls me tomorrow.",
-        "She said that she would call me the next day.",
-        "She said I will call you tomorrow."
+        "in",
+        "on",
+        "with",
+        "at"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Narration",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "Choose the word that best completes the sentence: The detective's ___ helped solve the mystery.",
+      "section": "Word and Structure Knowledge",
+      "text": "Distribute the sweets ___ the children.",
       "options": [
-        "hesitation",
-        "deduction",
-        "distraction",
-        "confusion"
+        "in",
+        "into",
+        "among",
+        "between"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "Choose the correct comparative form: This is the ___ book of the two.",
+      "section": "Word and Structure Knowledge",
+      "text": "I want ___ the truth.",
       "options": [
-        "better",
-        "best",
-        "most good",
-        "good"
+        "known",
+        "to know",
+        "know",
+        "knowing"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Identify the correctly formed question tag: She is coming, ___?",
+      "section": "Word and Structure Knowledge",
+      "text": "The news ___ true.",
       "options": [
-        "wasn't she",
-        "isn't she",
-        "doesn't she",
-        "isn't it"
+        "is",
+        "are",
+        "were",
+        "have"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Question Forms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Choose the antonym of 'diligent'.",
+      "section": "Word and Structure Knowledge",
+      "text": "Antonym of ‘scarce’:",
       "options": [
-        "Lazy",
-        "Sincere",
-        "Hardworking",
-        "Careful"
+        "rare",
+        "little",
+        "short",
+        "abundant"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Antonyms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "Choose the correct indirect speech: He said, 'I am tired.'",
+      "section": "Word and Structure Knowledge",
+      "text": "Choose correctly spelt word:",
       "options": [
-        "He said that he was tired.",
-        "He said that he will be tired.",
-        "He said that he is tired.",
-        "He said that I am tired."
+        "Accomodation",
+        "Acomodation",
+        "Accommodation",
+        "Acommodation"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Narration",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "Identify the error in the sentence: 'Each of the students have submitted their assignment.'",
+      "section": "Word and Structure Knowledge",
+      "text": "Antonym of ‘optimistic’:",
       "options": [
-        "No error",
-        "'have' should be 'has'",
-        "'Each' should be 'All'",
-        "'their' should be 'his'"
+        "positive",
+        "pessimistic",
+        "hopeful",
+        "cheerful"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Fill in the blank: She apologized ___ being late.",
+      "section": "Word and Structure Knowledge",
+      "text": "Error spot idea: ‘He suggested me to go’ correct is:",
       "options": [
-        "for",
-        "from",
-        "of",
-        "about"
+        "He suggested that I go",
+        "He suggested me go",
+        "He suggested to me going always wrong",
+        "He suggest me to go"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Choose the correct passive voice of: 'They are painting the wall.'",
+      "section": "Word and Structure Knowledge",
+      "text": "Choose correct: The committee ___ divided in its opinion.",
       "options": [
-        "The wall has been painted by them.",
-        "The wall is being painted by them.",
-        "The wall was painted by them.",
-        "The wall is painted by them."
+        "were always only",
+        "are",
+        "have",
+        "was"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Voices",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "Choose the correct form: By this time next year, she ___ her degree.",
+      "section": "Word and Structure Knowledge",
+      "text": "Choose the correct option (55): She prefers tea ___ coffee.",
       "options": [
-        "has completed",
-        "completes",
-        "will complete",
-        "will have completed"
+        "from",
+        "for",
+        "to",
+        "than"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "Choose the correctly spelled word.",
+      "section": "Word and Structure Knowledge",
+      "text": "I have ___ little money left.",
       "options": [
-        "Neccessery",
-        "Necessery",
-        "Necessary",
-        "Neccessary"
+        "many",
+        "a",
+        "an",
+        "the"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "Choose the correct word: She is allergic ___ peanuts.",
+      "section": "Word and Structure Knowledge",
+      "text": "By this time tomorrow, we ___ the project.",
       "options": [
-        "for",
-        "with",
-        "from",
-        "to"
+        "will have finished",
+        "finish",
+        "finished",
+        "are finish"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Fill in the blank with the correct article: He is ___ honest man.",
+      "section": "Word and Structure Knowledge",
+      "text": "The train ___ before we reached the station.",
       "options": [
-        "the",
-        "no article needed",
-        "a",
-        "an"
+        "has left",
+        "leaves",
+        "left only wrong tense pair",
+        "had left"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Articles",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "Choose the correct plural form of 'phenomenon'.",
+      "section": "Word and Structure Knowledge",
+      "text": "Passive of ‘They are repairing the road’:",
       "options": [
-        "Phenomena",
-        "Phenomenae",
-        "Phenomenas",
-        "Phenomenons"
+        "The road was repairing.",
+        "They are repaired the road.",
+        "The road is being repaired by them.",
+        "The road repaired them."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "Choose the word closest in meaning to 'meticulous'.",
+      "section": "Word and Structure Knowledge",
+      "text": "Passive of ‘Who wrote this book?’:",
       "options": [
-        "Lazy",
-        "Careful",
-        "Careless",
-        "Hasty"
+        "Whom wrote this book by?",
+        "By whom was this book written?",
+        "Who was written this book?",
+        "By who this book written?"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Identify the correct sentence.",
+      "section": "Word and Structure Knowledge",
+      "text": "Ram said, “I bought a pen yesterday.” →",
       "options": [
-        "He is one of the students who has passed the exam.",
-        "He is one of the students who have passed the exam.",
-        "He are one of the students who has passed the exam.",
-        "He is one of the student who have passed the exam."
+        "Ram said that he had bought a pen the previous day.",
+        "Ram said that he has bought a pen yesterday.",
+        "Ram said that I bought a pen yesterday.",
+        "Ram said he buy a pen."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Identify the correctly punctuated sentence.",
+      "section": "Word and Structure Knowledge",
+      "text": "Join: ‘This is the girl. She won the medal.’",
       "options": [
-        "My favourite subjects are, Science Mathematics and English.",
-        "My favourite subjects are Science; Mathematics, and English.",
-        "My favourite subjects are; Science, Mathematics, and English",
-        "My favourite subjects are: Science, Mathematics, and English."
+        "This is the girl which won the medal.",
+        "This is the girl whom won.",
+        "This is girl she won medal.",
+        "This is the girl who won the medal."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "Choose the correctly spelled word.",
+      "section": "Word and Structure Knowledge",
+      "text": "You ___ wear a seat belt while driving.",
       "options": [
-        "Occurrence",
-        "Occurrance",
-        "Ocurrence",
-        "Occurence"
+        "need not never",
+        "ought not ever only",
+        "must",
+        "used"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "Choose the antonym of 'benevolent'.",
+      "section": "Word and Structure Knowledge",
+      "text": "You ___ see a doctor; you look ill.",
       "options": [
-        "Malevolent",
-        "Kind",
-        "Generous",
-        "Charitable"
+        "mustn’t ever care",
+        "ought to",
+        "used to only",
+        "needn’t always"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Antonyms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Choose the word closest in meaning to 'ambiguous'.",
+      "section": "Word and Structure Knowledge",
+      "text": "She has been ill ___ Monday.",
       "options": [
-        "Unclear",
-        "Obvious",
-        "Certain",
-        "Direct"
+        "since",
+        "for",
+        "from",
+        "on"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Identify the correctly punctuated sentence.",
+      "section": "Word and Structure Knowledge",
+      "text": "He is fond of ___ cricket.",
       "options": [
-        "Where are you going she asked.",
-        "\"Where are you going?\" she asked.",
-        "\"Where are you going\" she asked?",
-        "Where are you going, she asked?"
+        "play",
+        "played",
+        "plays",
+        "playing"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "Read: 'Despite winning the championship, the team's captain insisted on crediting every single player, saying victory was never a solo effort.' What quality does the captain display?",
+      "section": "Word and Structure Knowledge",
+      "text": "Neither of the boys ___ present.",
       "options": [
-        "Arrogance",
-        "Indifference",
-        "Selfishness",
-        "Humility and team spirit"
+        "are",
+        "have",
+        "was",
+        "were"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "Read: 'After weeks of drought, the first drops of rain brought the entire village out onto the streets, dancing and cheering.' What does the villagers' reaction reveal?",
+      "section": "Word and Structure Knowledge",
+      "text": "Synonym of ‘brief’:",
       "options": [
-        "Indifference to the weather",
-        "Anger at the delayed rain",
-        "Relief and joy after a long period of hardship caused by the drought",
-        "Fear of the rain"
+        "noisy",
+        "concise",
+        "lengthy",
+        "slow"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "Read: 'The museum's newest exhibit uses interactive holograms to let visitors 'walk through' ancient history.' What is unique about this exhibit?",
+      "section": "Word and Structure Knowledge",
+      "text": "Idiom: ‘A blessing in disguise’ means:",
       "options": [
-        "It focuses on modern art",
-        "It uses interactive holograms for an immersive experience",
-        "It has no visitor interaction",
-        "It only displays paintings"
+        "Something good that seemed bad at first",
+        "A hidden curse always",
+        "A costume party",
+        "A religious ritual only"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "Read: 'Even though the power went out during the storm, the family gathered around candlelight, sharing stories and laughing more than they had in months.' What is the underlying theme of this passage?",
+      "section": "Word and Structure Knowledge",
+      "text": "Synonym of ‘diligent’:",
       "options": [
-        "Candles are dangerous during storms",
-        "Unexpected hardships can bring people closer together",
-        "Power outages are always distressing",
-        "Families should avoid storms"
+        "lazy",
+        "careless",
+        "rude",
+        "hardworking"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "Read: 'The librarian noticed that the same worn, dog-eared book kept disappearing and reappearing on the shelf, until she realized a young boy read it every day after school but always returned it before closing time.' What can be inferred about the boy?",
+      "section": "Word and Structure Knowledge",
+      "text": "Fill: He is senior ___ me.",
       "options": [
-        "He worked at the library",
-        "He loved the book and was careful to return it responsibly",
-        "He disliked reading",
-        "He was stealing the book"
+        "from",
+        "of",
+        "to",
+        "than"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 36,
-      "question": "Read: 'The bridge, once thought impossible to build across the roaring river, now stands as a symbol of the engineers' determination and skill.' What does the bridge symbolize?",
+      "section": "Word and Structure Knowledge",
+      "text": "Reported: ‘Do you like tea?’ she said. →",
       "options": [
-        "A failed project",
-        "Human determination and engineering achievement against difficulty",
-        "A natural landmark",
-        "A temporary structure"
+        "She said me if I like tea.",
+        "She asked if I liked tea.",
+        "She asked do you like tea.",
+        "She told that I like tea?"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 37,
-      "question": "Read: 'Rina loved painting but had never shown her work to anyone. One day, her teacher secretly submitted one of her paintings to a competition, and Rina won first prize.' Why was Rina surprised?",
+      "section": "Word and Structure Knowledge",
+      "text": "Article: He is ___ European citizen.",
       "options": [
-        "She didn't like painting",
-        "She expected to lose",
-        "She had entered the competition herself",
-        "She hadn't shown her work to anyone and didn't know it was submitted"
+        "a",
+        "an",
+        "the",
+        "no article"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 38,
-      "question": "Read: 'Though the two brothers often argued, they always stood by each other in times of trouble.' What does this suggest about their relationship?",
+      "section": "Word and Structure Knowledge",
+      "text": "___ Amazon is the largest river by discharge.",
       "options": [
-        "Despite disagreements, their bond remained strong",
-        "They were not related by blood",
-        "They never argued",
-        "They hated each other"
+        "A",
+        "An",
+        "No article",
+        "The"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 39,
-      "question": "Read: 'The young inventor's device failed nine times before finally working on the tenth attempt, proving that persistence pays off.' What lesson does this passage convey?",
+      "section": "Word and Structure Knowledge",
+      "text": "There isn’t ___ water in the bottle.",
       "options": [
-        "Inventions always work on the first try",
-        "Luck is more important than effort",
-        "Persistence and not giving up leads to eventual success",
-        "Failure means one should stop trying"
+        "a few",
+        "several",
+        "much",
+        "many"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 40,
-      "question": "Read: 'The old lighthouse had stood on the cliff for over a hundred years, guiding ships safely to shore even during the fiercest storms.' What is the main function of the lighthouse described here?",
+      "section": "Word and Structure Knowledge",
+      "text": "If he ___ harder, he would have passed.",
       "options": [
-        "Serving as a tourist attraction",
-        "Housing the town's museum",
-        "Providing shelter to sailors",
-        "Guiding ships safely, especially during storms"
+        "will study",
+        "had studied",
+        "studied",
+        "studies"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 41,
-      "question": "Read: 'The chef refused to use a single recipe twice, insisting that true creativity meant reinventing a dish every time it was cooked.' What trait best describes the chef?",
+      "section": "Word and Structure Knowledge",
+      "text": "Look! The children ___ in the park.",
       "options": [
-        "Innovative and creative",
-        "Lazy",
-        "Traditional and repetitive",
-        "Careless"
+        "are playing",
+        "play",
+        "played",
+        "plays"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 42,
-      "question": "Read: 'Maya's grandmother often said that patience was the key to happiness. Years later, Maya finally understood what she meant.' What can be inferred about Maya?",
+      "section": "Word and Structure Knowledge",
+      "text": "Passive of ‘Open the window’:",
       "options": [
-        "She disagreed with her grandmother",
-        "She became impatient as she grew older",
-        "She never thought about her grandmother's advice",
-        "She gained understanding or wisdom about patience over time"
+        "The window opened.",
+        "Window is open by you.",
+        "Let the window opened.",
+        "Let the window be opened."
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 43,
-      "question": "Read: 'Despite the heavy rain, the farmers worked tirelessly in the fields, knowing that the monsoon was essential for their crops.' What does this passage suggest about the farmers' attitude?",
+      "section": "Word and Structure Knowledge",
+      "text": "She said to me, “Where do you live?” →",
       "options": [
-        "They were indifferent to the weather",
-        "They stopped working because of the rain",
-        "They resented the rain",
-        "They valued the rain despite the hardship it caused them"
+        "She told me where I live?",
+        "She said me where I lived.",
+        "She asked me where I lived.",
+        "She asked me where do you live."
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 44,
-      "question": "Read: 'The scientist spent decades researching a cure, facing failure after failure, but she never gave up.' Which word best describes the scientist?",
+      "section": "Word and Structure Knowledge",
+      "text": "Identify the subordinate clause: ‘I know that honesty pays.’",
       "options": [
-        "Impulsive",
-        "Persistent",
-        "Careless",
-        "Indifferent"
+        "pays",
+        "that honesty pays",
+        "I know",
+        "honesty"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 45,
-      "question": "Read: 'As the sun set behind the mountains, the village slowly came alive with lanterns and the sound of laughter.' What time of day does this passage describe transitioning into?",
+      "section": "Word and Structure Knowledge",
+      "text": "Noun clause example:",
       "options": [
-        "Evening/nightfall",
-        "Dawn",
-        "Midday",
-        "Early morning"
+        "What she said surprised everyone.",
+        "Running fast, he won.",
+        "The blue sky",
+        "Very happily"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 46,
-      "question": "Identify the tone of this sentence: 'Oh wonderful, another Monday morning meeting.'",
+      "section": "Reading",
+      "text": "Read the passage and answer: Digital literacy has become as essential as reading and writing. Students who can evaluate online sources critically are less likely to spread misinformation. Schools that integrate media literacy with regular subjects help learners question headlines, check authors, and compare multiple reports before forming opinions.\n\nAccording to the passage, digital literacy is:",
       "options": [
-        "Neutral",
-        "Sarcastic",
-        "Formal",
-        "Enthusiastic"
+        "as essential as reading and writing",
+        "unnecessary for students",
+        "only about typing speed",
+        "limited to video games"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Achievers Section",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 47,
-      "question": "Which of these best demonstrates a well-structured argumentative statement with reasoning?",
+      "section": "Reading",
+      "text": "Read the passage and answer: Digital literacy has become as essential as reading and writing. Students who can evaluate online sources critically are less likely to spread misinformation. Schools that integrate media literacy with regular subjects help learners question headlines, check authors, and compare multiple reports before forming opinions.\n\nCritical evaluation of sources helps students:",
       "options": [
-        "'Later school timings are sometimes discussed.'",
-        "'Schools should start later because I don't like waking up early.'",
-        "'Schools should start later.'",
-        "'Schools should start later because research shows teenagers need more sleep for better focus.'"
+        "spread less misinformation",
+        "ignore all news",
+        "avoid reading",
+        "delete libraries"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Achievers Section",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 48,
-      "question": "A student is asked to summarize a long article in one sentence while retaining its core meaning. Which skill is being tested?",
+      "section": "Reading",
+      "text": "Read the passage and answer: Digital literacy has become as essential as reading and writing. Students who can evaluate online sources critically are less likely to spread misinformation. Schools that integrate media literacy with regular subjects help learners question headlines, check authors, and compare multiple reports before forming opinions.\n\nMedia literacy should be:",
       "options": [
-        "Concise synthesis of the main idea",
-        "Grammar correction only",
-        "Word-for-word memorization",
-        "Vocabulary expansion"
+        "integrated with regular subjects",
+        "banned in schools",
+        "only for teachers",
+        "replaced by memorisation only"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Articles",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 49,
-      "question": "Read the two statements: (1) 'He never lies.' (2) 'He always tells the truth.' What is the relationship between these two statements?",
+      "section": "Reading",
+      "text": "Read the passage and answer: Digital literacy has become as essential as reading and writing. Students who can evaluate online sources critically are less likely to spread misinformation. Schools that integrate media literacy with regular subjects help learners question headlines, check authors, and compare multiple reports before forming opinions.\n\nLearners are encouraged to:",
       "options": [
-        "They contradict each other",
-        "Statement 1 is stronger than statement 2",
-        "They express the same idea in different words",
-        "They are unrelated"
+        "compare multiple reports",
+        "believe every headline",
+        "never check authors",
+        "avoid opinions forever"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 50,
-      "question": "Which sentence uses a rhetorical question effectively to persuade a reader about the importance of recycling?",
+      "section": "Reading",
+      "text": "Read the passage and answer: Digital literacy has become as essential as reading and writing. Students who can evaluate online sources critically are less likely to spread misinformation. Schools that integrate media literacy with regular subjects help learners question headlines, check authors, and compare multiple reports before forming opinions.\n\nThe main idea of the passage is about:",
       "options": [
-        "'Some people recycle and some do not.'",
-        "'Recycling exists in most cities.'",
-        "'Isn't it worth five minutes of effort to protect our planet's future?'",
-        "'Recycling bins are usually blue or green.'"
+        "importance of digital and media literacy",
+        "banning the internet",
+        "only sports education",
+        "handwriting drills only"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
-    }
-  ],
-  "syllabusVersion": "SOF Class 10 current syllabus reference",
-  "syllabusTopics": [
-    "Synonyms",
-    "Antonyms",
-    "Analogies",
-    "Spellings",
-    "One Word",
-    "Word Order",
-    "Nouns",
-    "Verbs",
-    "Adverbs",
-    "Adjectives",
-    "Articles",
-    "Prepositions",
-    "Conjunctions",
-    "Punctuation",
-    "Voices",
-    "Narration",
-    "Concord",
-    "Question Forms",
-    "Tenses",
-    "Conditionals",
-    "Modals",
-    "Collocations",
-    "Phrasal Verbs",
-    "Idioms",
-    "Homonyms and Homophones",
-    "Weather",
-    "Countries",
-    "Language and People",
-    "Global Problems",
-    "Encyclopedias",
-    "Dictionaries",
-    "Instruction Manuals",
-    "Messages",
-    "Editorials",
-    "Essays",
-    "Inference from Advanced Texts",
-    "Spoken and Written Expression"
-  ],
-  "officialSOFPattern": [
-    {
-      "name": "Word and Structure Knowledge / Reading / Spoken and Written Expression",
-      "questions": 45,
-      "marksPerQuestion": 1,
-      "totalMarks": 45
+      "marks": 1
     },
     {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
+      "id": 51,
+      "section": "Reading",
+      "text": "Read the passage and answer: Wetlands act as natural sponges that absorb excess rainwater and reduce floods. They also filter pollutants and provide habitat for migratory birds. Unfortunately, urban expansion often fills wetlands for construction, increasing flood risk and biodiversity loss. Conservation of wetlands is therefore both an environmental and economic priority.\n\nWetlands help reduce floods by:",
+      "options": [
+        "absorbing excess rainwater",
+        "creating more concrete",
+        "removing all rivers",
+        "increasing deserts"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 52,
+      "section": "Reading",
+      "text": "Read the passage and answer: Wetlands act as natural sponges that absorb excess rainwater and reduce floods. They also filter pollutants and provide habitat for migratory birds. Unfortunately, urban expansion often fills wetlands for construction, increasing flood risk and biodiversity loss. Conservation of wetlands is therefore both an environmental and economic priority.\n\nWetlands provide habitat for:",
+      "options": [
+        "migratory birds",
+        "only desert camels",
+        "submarines only",
+        "glaciers"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 53,
+      "section": "Reading",
+      "text": "Read the passage and answer: Wetlands act as natural sponges that absorb excess rainwater and reduce floods. They also filter pollutants and provide habitat for migratory birds. Unfortunately, urban expansion often fills wetlands for construction, increasing flood risk and biodiversity loss. Conservation of wetlands is therefore both an environmental and economic priority.\n\nUrban expansion often:",
+      "options": [
+        "fills wetlands for construction",
+        "expands wetlands always",
+        "bans all buildings",
+        "plants only coral"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 54,
+      "section": "Reading",
+      "text": "Read the passage and answer: Wetlands act as natural sponges that absorb excess rainwater and reduce floods. They also filter pollutants and provide habitat for migratory birds. Unfortunately, urban expansion often fills wetlands for construction, increasing flood risk and biodiversity loss. Conservation of wetlands is therefore both an environmental and economic priority.\n\nLoss of wetlands can increase:",
+      "options": [
+        "flood risk and biodiversity loss",
+        "only tourism profits always",
+        "ozone in space",
+        "moonlight"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 55,
+      "section": "Reading",
+      "text": "Read the passage and answer: Wetlands act as natural sponges that absorb excess rainwater and reduce floods. They also filter pollutants and provide habitat for migratory birds. Unfortunately, urban expansion often fills wetlands for construction, increasing flood risk and biodiversity loss. Conservation of wetlands is therefore both an environmental and economic priority.\n\nConservation of wetlands is described as:",
+      "options": [
+        "environmental and economic priority",
+        "useless effort",
+        "only a sports goal",
+        "purely decorative"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 56,
+      "section": "Spoken and Written Expression",
+      "text": "Best topic sentence for a paragraph on water conservation:",
+      "options": [
+        "Saving water at home and school is essential for a sustainable future.",
+        "Water is wet sometimes.",
+        "I like blue colours.",
+        "Rivers are long maybe."
+      ],
+      "marks": 1
+    },
+    {
+      "id": 57,
+      "section": "Spoken and Written Expression",
+      "text": "Suitable closing for a job application letter:",
+      "options": [
+        "Yours faithfully,",
+        "See ya,",
+        "Bye bye friend,",
+        "Whatever,"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 58,
+      "section": "Spoken and Written Expression",
+      "text": "Choose correct notice heading style:",
+      "options": [
+        "NOTICE",
+        "noticE please read haha",
+        "nOtIcE!!!",
+        "nothing"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 59,
+      "section": "Spoken and Written Expression",
+      "text": "Choose the most appropriate sentence to complete a formal letter opening:",
+      "options": [
+        "I am writing to bring to your notice the frequent power cuts in our area.",
+        "Hey! Fix the lights dude.",
+        "Your power is bad lol.",
+        "I command you immediately without details."
+      ],
+      "marks": 1
+    },
+    {
+      "id": 60,
+      "section": "Spoken and Written Expression",
+      "text": "Polite way to disagree in a discussion:",
+      "options": [
+        "I see your point, but I hold a different view because…",
+        "You are completely stupid.",
+        "Shut up.",
+        "I won't listen ever."
+      ],
+      "marks": 1
     }
-  ],
-  "level1SyllabusRule": "SOF IEO focuses on communication and use of English; not simply rote grammar."
+  ]
 }

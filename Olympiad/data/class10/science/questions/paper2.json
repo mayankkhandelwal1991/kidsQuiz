@@ -1,830 +1,628 @@
 {
   "class": 10,
-  "subject": "Science",
+  "subject": "science",
   "paper": 2,
-  "title": "Class 10 Science Olympiad — Paper 2",
-  "durationMinutes": 60,
   "totalQuestions": 50,
   "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
+  "yearStyle": "2023-2025",
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern & syllabus. Not an official SOF paper. NSO pattern: Logical Reasoning 10×1 + Science 35×1 + Achievers 5×3 = 50 questions / 60 marks",
   "sections": [
     {
       "name": "Logical Reasoning",
       "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
+      "marksEach": 1
     },
     {
       "name": "Science",
       "questions": 35,
-      "marksPerQuestion": 1,
-      "totalMarks": 35
+      "marksEach": 1
     },
     {
       "name": "Achievers Section",
       "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
+      "marksEach": 3
     }
   ],
   "questions": [
     {
       "id": 1,
-      "question": "If 8 machines produce 480 units in a day, how many units will 12 machines produce in a day at the same rate?",
-      "options": [
-        "720 units",
-        "600 units",
-        "640 units",
-        "800 units"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Next in series: 6, 10, 14, __",
+      "options": [
+        "19",
+        "17",
+        "20",
+        "18"
+      ],
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "If '×' means '+', '+' means '-', '-' means '÷', and '÷' means '×', evaluate: 10 + 5 - 2",
-      "options": [
-        "7",
-        "13",
-        "15",
-        "10-5÷2 = 10-2.5 = 7.5"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Odd one out: Photosynthesis, Respiration, Transpiration, Evaporation (of pure water only non-bio process among plant phys?)",
+      "options": [
+        "Evaporation",
+        "Photosynthesis",
+        "Respiration",
+        "Transpiration"
+      ],
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Find the next term: 3, 6, 11, 18, 27, __",
-      "options": [
-        "38",
-        "36",
-        "40",
-        "35"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Analogy: Eye : Sight :: Ear : ?",
+      "options": [
+        "Hearing",
+        "Smell",
+        "Taste",
+        "Touch"
+      ],
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "If in a code LIGHT is written as MJHIU, how is SOUND written?",
-      "options": [
-        "TQVOE",
-        "TPVOE",
-        "SPVOE",
-        "RNTMC"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: If all metals conduct and copper is a metal, copper:",
+      "options": [
+        "conducts electricity",
+        "is a non-metal",
+        "is a gas at room temp always",
+        "cannot be solid"
+      ],
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Five friends are sitting in a row. Raj is to the left of Simran but right of Aman. Simran is to the left of Priya. Who is in the middle?",
-      "options": [
-        "Aman",
-        "Simran",
-        "Priya",
-        "Raj"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Which does not belong: Sodium, Potassium, Iron, Chlorine",
+      "options": [
+        "Chlorine",
+        "Sodium",
+        "Potassium",
+        "Iron"
+      ],
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Arrange in logical order: Egg, Larva, Pupa, Adult, Caterpillar",
-      "options": [
-        "Egg, Pupa, Larva, Caterpillar, Adult",
-        "Egg, Caterpillar, Larva, Pupa, Adult",
-        "Larva, Egg, Caterpillar, Pupa, Adult",
-        "Egg, Larva, Caterpillar, Pupa, Adult"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Series: 1, 2, 4, 8, 16, ?",
+      "options": [
+        "32",
+        "24",
+        "20",
+        "18"
+      ],
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "A is taller than B. C is shorter than B but taller than D. Who is the shortest?",
-      "options": [
-        "C",
-        "A",
-        "D",
-        "B"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: A is mother of B. B is brother of C. C is sister of D. D is A’s:",
+      "options": [
+        "child",
+        "uncle",
+        "grandfather",
+        "mother"
+      ],
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "If North-East becomes North, what does South-West become?",
+      "section": "Logical Reasoning",
+      "text": "Choose the correct option: Directions: Facing East, turn left twice. Face:",
       "options": [
         "West",
-        "South",
         "East",
-        "North"
+        "North",
+        "South"
       ],
-      "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "A clock reads 9:00. What is the angle between the hour and minute hands?",
-      "options": [
-        "270 degrees",
-        "0 degrees",
-        "180 degrees",
-        "90 degrees"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: If WATER is coded as XBUFS (+1), then FIRE is:",
+      "options": [
+        "GJSF",
+        "EHQD",
+        "HKT G",
+        "GJSE"
+      ],
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Find the next shape/number pattern: 1, 4, 9, 16, __ (squares of natural numbers)",
-      "options": [
-        "36",
-        "24",
-        "25",
-        "20"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Find missing: 11, 13, 17, 19, 23, ?",
+      "options": [
+        "29",
+        "27",
+        "25",
+        "31"
+      ],
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "Which of these is a non-renewable source of energy?",
-      "options": [
-        "Wind energy",
-        "Coal",
-        "Tidal energy",
-        "Solar energy"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "pH of a neutral solution at 25°C is:",
+      "options": [
+        "0",
+        "14",
+        "1",
+        "7"
+      ],
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "A wire of resistivity rho is stretched to double its length with volume constant. How does its resistance change?",
-      "options": [
-        "It becomes half",
-        "It becomes 4 times",
-        "It becomes 2 times",
-        "It remains unchanged"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Electricity",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Common salt is chemically:",
+      "options": [
+        "Na₂CO₃",
+        "NaHCO₃",
+        "NaCl",
+        "NaOH"
+      ],
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "A cell has a shorter life span in humans and lacks a nucleus; which cell is being described?",
-      "options": [
-        "Red blood cell",
-        "Nerve cell",
-        "Muscle cell",
-        "White blood cell"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Which is a non-metal that is a good conductor?",
+      "options": [
+        "Iodine crystal poor",
+        "Graphite",
+        "Sulphur",
+        "Phosphorus"
+      ],
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "If the earth did not have a magnetic field, what would be a likely consequence?",
-      "options": [
-        "Gravity would decrease",
-        "Days would become longer",
-        "Oceans would freeze",
-        "Harmful cosmic and solar radiation would reach Earth's surface more easily"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Magnetic Effects of Electric Current",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: The functional group in carboxylic acids is:",
+      "options": [
+        "−COOH",
+        "−CHO",
+        "−OH",
+        "−NH₂"
+      ],
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "Which process in plants converts light energy into chemical energy?",
-      "options": [
-        "Excretion",
-        "Transpiration",
-        "Respiration",
-        "Photosynthesis"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Elements in the same group have the same:",
+      "options": [
+        "Mass number always",
+        "Number of neutrons always",
+        "Density exactly",
+        "Valence electrons (generally)"
+      ],
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "What is the function of the ozone layer?",
-      "options": [
-        "Causing rainfall",
-        "Producing oxygen",
-        "Absorbing harmful UV radiation",
-        "Trapping heat near Earth's surface"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Our Environment",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "In plants, transport of food is mainly through:",
+      "options": [
+        "Stomata only",
+        "Root hairs only",
+        "Phloem",
+        "Xylem only"
+      ],
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Which element has the electronic configuration 2, 8, 7?",
-      "options": [
-        "Chlorine",
-        "Sulphur",
-        "Aluminium",
-        "Sodium"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Reflex actions are controlled mainly by the:",
+      "options": [
+        "Kidney",
+        "Spinal cord",
+        "Cerebrum only always",
+        "Liver"
+      ],
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "What is the pH range of acidic solutions?",
-      "options": [
-        "Equal to 7",
-        "More than 7",
-        "Less than 7",
-        "Between 7 and 14"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Acids, Bases and Salts",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Pollination is transfer of pollen from:",
+      "options": [
+        "Anther to stigma",
+        "Stigma to root",
+        "Leaf to stem",
+        "Seed to fruit only"
+      ],
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "Which gas is evolved when a metal reacts with a dilute acid?",
-      "options": [
-        "Hydrogen gas",
-        "Oxygen gas",
-        "Nitrogen gas",
-        "Carbon dioxide gas"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Metals and Non-metals",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: A convex lens is used to correct:",
+      "options": [
+        "Myopia",
+        "Cataract surgically only without lens",
+        "Colour blindness always",
+        "Hypermetropia"
+      ],
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A metal reacts vigorously with cold water forming a hydroxide and hydrogen gas with fire. Which metal fits this description?",
-      "options": [
-        "Iron",
-        "Copper",
-        "Sodium",
-        "Lead"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Metals and Non-metals",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Myopia is corrected by:",
+      "options": [
+        "Cylindrical only always",
+        "Plane mirror",
+        "Concave lens",
+        "Convex lens"
+      ],
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "During electrolysis of water, which gas is collected in double the volume at one electrode?",
-      "options": [
-        "Neither gas is produced",
-        "Hydrogen",
-        "Both in equal volumes",
-        "Oxygen"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Electric power P = ?",
+      "options": [
+        "V only",
+        "VI",
+        "V/I",
+        "I/V"
+      ],
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Which of the following is a exothermic reaction?",
-      "options": [
-        "Burning of natural gas",
-        "Photosynthesis",
-        "Decomposition of calcium carbonate",
-        "Electrolysis of water"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Chemical Reactions and Equations",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Which is a renewable source of energy?",
+      "options": [
+        "Solar energy",
+        "Coal",
+        "Petroleum",
+        "Natural gas"
+      ],
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "Which law states that the current through a conductor is directly proportional to the potential difference across it?",
-      "options": [
-        "Coulomb's Law",
-        "Ohm's Law",
-        "Faraday's Law",
-        "Newton's Law"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Electricity",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: A chemical reaction in which heat is absorbed is called:",
+      "options": [
+        "Exothermic",
+        "Displacement only",
+        "Neutralisation only",
+        "Endothermic"
+      ],
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "Which metal is extracted from bauxite ore?",
-      "options": [
-        "Copper",
-        "Aluminium",
-        "Iron",
-        "Zinc"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Metals and Non-metals",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Which is a strong acid?",
+      "options": [
+        "H₂CO₃",
+        "Citric acid",
+        "HCl",
+        "CH₃COOH"
+      ],
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "A concave mirror produces an image that is virtual, erect and magnified. Where must the object be placed?",
-      "options": [
-        "At the centre of curvature",
-        "Between the pole and the focus",
-        "At the focus",
-        "Beyond the centre of curvature"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Light - Reflection and Refraction",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Antacids generally contain:",
+      "options": [
+        "Pure HCl",
+        "Mild base",
+        "Strong acid",
+        "Only sugar"
+      ],
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Which vitamin deficiency causes scurvy?",
-      "options": [
-        "Vitamin B12",
-        "Vitamin D",
-        "Vitamin A",
-        "Vitamin C"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Galvanisation is coating iron with:",
+      "options": [
+        "Zinc",
+        "Copper only",
+        "Silver only",
+        "Gold only"
+      ],
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "Which hormone regulates blood sugar level in humans?",
-      "options": [
-        "Thyroxine",
-        "Testosterone",
-        "Insulin",
-        "Adrenaline"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Control and Coordination",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Soap molecules have:",
+      "options": [
+        "Only metals",
+        "Only ions of noble gases",
+        "No carbon",
+        "Hydrophobic and hydrophilic parts"
+      ],
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "A patient's blood does not clot properly due to lack of a certain mineral in diet. Which mineral is most likely deficient?",
-      "options": [
-        "Sodium",
-        "Iodine",
-        "Potassium",
-        "Calcium"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: The process of breakdown of glucose in cytoplasm without oxygen first step is:",
+      "options": [
+        "Photolysis only",
+        "Translocation only",
+        "Glycolysis",
+        "Transpiration"
+      ],
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Which gas is responsible for the greenhouse effect predominantly?",
+      "section": "Science",
+      "text": "Choose the correct option: During photosynthesis, oxygen is released from:",
       "options": [
         "Nitrogen",
-        "Helium",
-        "Carbon dioxide",
-        "Argon"
+        "Water",
+        "Carbon dioxide only",
+        "Chlorophyll only without water"
       ],
-      "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Which part of the eye controls the amount of light entering it?",
-      "options": [
-        "Iris",
-        "Cornea",
-        "Pupil",
-        "Retina"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Plant hormone responsible for cell elongation in shoots is:",
+      "options": [
+        "Auxin",
+        "Abscisic acid",
+        "Cytokinin only as inhibitor",
+        "Ethylene only for elongation always"
+      ],
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "Why is a food chain usually limited to 4-5 trophic levels?",
-      "options": [
-        "Decomposers stop the chain",
-        "Consumers cannot digest energy beyond 4 levels",
-        "Producers reproduce too slowly",
-        "Energy decreases at each successive trophic level"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Our Environment",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Mendel worked mainly on:",
+      "options": [
+        "Drosophila only first",
+        "Humans only",
+        "Bacteria only",
+        "Pea plant"
+      ],
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "A ray of light passes from air into glass. What happens to its speed and how does it bend relative to the normal?",
-      "options": [
-        "Speed decreases and it bends towards the normal",
-        "Speed increases and it bends away from the normal",
-        "Speed decreases and it bends away from the normal",
-        "Speed remains the same and it does not bend"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Focal length of a concave mirror is 10 cm. Its radius of curvature is:",
+      "options": [
+        "5 cm",
+        "40 cm",
+        "20 cm",
+        "10 cm"
+      ],
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "Why does the sky appear blue during the daytime?",
-      "options": [
-        "Absorption of red light by the atmosphere",
-        "Refraction of light by clouds",
-        "Reflection of oceans onto the sky",
-        "Scattering of shorter wavelengths of light by atmospheric particles"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Ohm’s law: V = ?",
+      "options": [
+        "I²R only as voltage",
+        "IR",
+        "I/R",
+        "R/I"
+      ],
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "Why do stomata usually close at night?",
-      "options": [
-        "To increase transpiration",
-        "To reduce water loss when photosynthesis is not occurring",
-        "To allow more carbon dioxide entry for respiration only",
-        "To increase the rate of photosynthesis"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: 1 kWh equals:",
+      "options": [
+        "3.6 × 10⁶ J",
+        "1000 J",
+        "3600 J only",
+        "1 J"
+      ],
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "In a food web, what would likely happen to the population of grasshoppers if all frogs (their predators) were removed?",
-      "options": [
-        "Grasshopper population would decrease immediately",
-        "No effect on grasshopper population",
-        "Grasshoppers would become predators",
-        "Grasshopper population would increase initially"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Ozone layer protects us from excess:",
+      "options": [
+        "Infrared only useful",
+        "Visible light only",
+        "Radio waves only",
+        "UV radiation"
+      ],
+      "marks": 1
     },
     {
       "id": 36,
-      "question": "Which of the following is the most reactive metal among these?",
-      "options": [
-        "Gold",
-        "Copper",
-        "Silver",
-        "Potassium"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Metals and Non-metals",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Rusting of iron is an example of:",
+      "options": [
+        "Sublimation",
+        "Neutralisation",
+        "Oxidation",
+        "Reduction only without oxygen"
+      ],
+      "marks": 1
     },
     {
       "id": 37,
-      "question": "Two resistors of 4 ohm and 6 ohm are connected in series across a 10V battery. What is the current flowing through the circuit?",
-      "options": [
-        "10 A",
-        "0.6 A",
-        "2.5 A",
-        "1 A"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Electricity",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Tooth enamel is mainly:",
+      "options": [
+        "Potassium nitrate",
+        "Calcium phosphate",
+        "Calcium carbonate only",
+        "Sodium chloride"
+      ],
+      "marks": 1
     },
     {
       "id": 38,
-      "question": "Which part of the human body is the site of complete digestion of food?",
-      "options": [
-        "Large intestine",
-        "Small intestine",
-        "Stomach",
-        "Oesophagus"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Life Processes",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Which metal is liquid at room temperature?",
+      "options": [
+        "Mercury",
+        "Iron",
+        "Sodium",
+        "Aluminium"
+      ],
+      "marks": 1
     },
     {
       "id": 39,
-      "question": "What is the general formula of alkanes?",
-      "options": [
-        "CnHn",
-        "CnH2n+2",
-        "CnH2n-2",
-        "CnH2n"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Heredity",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Aqua regia can dissolve gold and is a mixture of:",
+      "options": [
+        "H₂SO₄ and HCl only",
+        "HNO₃ and water only",
+        "NaOH and HCl",
+        "HCl and HNO₃"
+      ],
+      "marks": 1
     },
     {
       "id": 40,
-      "question": "A student observes bubbles of gas when zinc granules are added to dilute sulphuric acid, and the test tube becomes warm. What type of reaction is this?",
-      "options": [
-        "Neutralisation reaction",
-        "Photochemical reaction",
-        "Exothermic displacement reaction",
-        "Endothermic reaction"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Acids, Bases and Salts",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Covalent compounds generally have:",
+      "options": [
+        "Only metallic bonding",
+        "Three-dimensional ionic lattice only",
+        "Low melting and boiling points relative to ionic",
+        "Very high electrical conductivity in solid state always"
+      ],
+      "marks": 1
     },
     {
       "id": 41,
-      "question": "What is the SI unit of electrical resistance?",
-      "options": [
-        "Ampere",
-        "Ohm",
-        "Volt",
-        "Watt"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Electricity",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Which organelle is called the powerhouse of the cell?",
+      "options": [
+        "Golgi apparatus",
+        "Mitochondria",
+        "Ribosome",
+        "Nucleus"
+      ],
+      "marks": 1
     },
     {
       "id": 42,
-      "question": "Which factor explains why LPG combustion is preferred over burning coal for a cleaner environment?",
-      "options": [
-        "LPG cannot be transported",
-        "Coal does not release carbon dioxide",
-        "LPG produces fewer particulate pollutants and burns more completely",
-        "LPG has no carbon atoms"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "Our Environment",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Bile is produced by:",
+      "options": [
+        "Liver",
+        "Pancreas",
+        "Stomach",
+        "Kidney"
+      ],
+      "marks": 1
     },
     {
       "id": 43,
-      "question": "A solution turns red litmus blue. What can be concluded about the solution?",
-      "options": [
-        "It is acidic in nature",
-        "It is a salt solution only",
-        "It is basic in nature",
-        "It is neutral"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Binary fission is common in:",
+      "options": [
+        "Humans",
+        "Flowering plants only",
+        "Birds",
+        "Amoeba"
+      ],
+      "marks": 1
     },
     {
       "id": 44,
-      "question": "How does the eye adjust to focus on objects at varying distances?",
-      "options": [
-        "The retina moves forward and backward",
-        "The ciliary muscles change the curvature/focal length of the eye lens",
-        "The pupil changes its colour",
-        "The cornea changes thickness rapidly"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: A recessive trait appears in F2 monohybrid ratio approximately:",
+      "options": [
+        "1/2",
+        "All",
+        "1/4",
+        "3/4"
+      ],
+      "marks": 1
     },
     {
       "id": 45,
-      "question": "If the image formed by a convex lens is always smaller than the object, virtual and erect, what can be concluded about the lens?",
-      "options": [
-        "The object is beyond 2F",
-        "The object is at F",
-        "The object is between F and 2F",
-        "This never happens for a convex lens with a real object"
-      ],
       "section": "Science",
-      "marks": 1,
-      "syllabusTopic": "The Human Eye and the Colourful World",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: SI unit of power of a lens is:",
+      "options": [
+        "Newton",
+        "Dioptre",
+        "Watt",
+        "Joule"
+      ],
+      "marks": 1
     },
     {
       "id": 46,
-      "question": "A student sets up a circuit with two bulbs in parallel and one in series with the parallel combination. If one of the parallel bulbs fuses, what happens to the other bulb in that parallel branch and the series bulb?",
-      "options": [
-        "The other parallel bulb keeps glowing, the series bulb also keeps glowing (dimmer)",
-        "Brightness of all bulbs increases",
-        "Only the series bulb stops glowing",
-        "Both bulbs stop glowing"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Electricity",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "text": "When 2 Ω, 3 Ω and 6 Ω are connected in parallel, equivalent resistance is:",
+      "options": [
+        "1 Ω",
+        "11 Ω",
+        "2 Ω",
+        "0.5 Ω"
+      ],
+      "marks": 3
     },
     {
       "id": 47,
-      "question": "A wire carrying current is placed in a magnetic field and experiences a force. If the current direction is reversed, predict what happens to the direction of the force.",
-      "options": [
-        "The force becomes zero",
-        "The force doubles in magnitude",
-        "The direction of force reverses (by the right-hand/Fleming's left-hand rule)",
-        "The force remains in the same direction"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Magnetic Effects of Electric Current",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "text": "Choose the correct option: A convex lens of focal length 20 cm forms a real image at 40 cm. Object distance u is (sign convention magnitude):",
+      "options": [
+        "40 cm",
+        "20 cm",
+        "60 cm",
+        "10 cm"
+      ],
+      "marks": 3
     },
     {
       "id": 48,
-      "question": "A student notices that touching a hot object leads to immediate withdrawal of the hand before the sensation of pain is even felt. Which biological concept explains this?",
-      "options": [
-        "Involuntary action controlled by the cerebellum",
-        "Voluntary action controlled by the cerebrum",
-        "Hormonal response via the endocrine system",
-        "Reflex action, controlled by the spinal cord bypassing the brain initially"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Achievers Section",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "text": "Choose the correct option: pH of a solution is 3. It is:",
+      "options": [
+        "Acidic",
+        "Basic",
+        "Neutral",
+        "Saline only"
+      ],
+      "marks": 3
     },
     {
       "id": 49,
-      "question": "A student is given an unknown white powder that turns red litmus blue and reacts with dilute HCl to release a colourless, odourless gas that turns lime water milky. Identify the possible compound.",
-      "options": [
-        "Sulphuric acid",
-        "Copper sulphate",
-        "Sodium carbonate (a basic carbonate salt)",
-        "Sodium chloride"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Achievers Section",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "text": "Choose the correct option: In the reaction MnO₂ + 4HCl → MnCl₂ + 2H₂O + Cl₂, the substance oxidised is:",
+      "options": [
+        "HCl",
+        "MnO₂",
+        "MnCl₂",
+        "H₂O"
+      ],
+      "marks": 3
     },
     {
       "id": 50,
-      "question": "Explain why deforestation in a region leads to a decrease in rainfall over time.",
-      "options": [
-        "Deforestation increases photosynthesis regionally",
-        "Trees have no role in the water cycle",
-        "Fewer trees reduce transpiration, lowering atmospheric moisture and disrupting the local water cycle",
-        "Deforestation increases soil water retention"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Achievers Section",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "text": "Choose the correct option: If 5 A current flows for 10 minutes, charge flown is:",
+      "options": [
+        "3000 C",
+        "50 C",
+        "0.5 C",
+        "500 C"
+      ],
+      "marks": 3
     }
-  ],
-  "syllabusVersion": "SOF Class 10 current syllabus reference",
-  "syllabusTopics": [
-    "Chemical Reactions and Equations",
-    "Acids, Bases and Salts",
-    "Metals and Non-metals",
-    "Carbon and Its Compounds",
-    "Life Processes",
-    "Control and Coordination",
-    "Reproduction in Organisms",
-    "Heredity",
-    "Light - Reflection and Refraction",
-    "The Human Eye and the Colourful World",
-    "Electricity",
-    "Magnetic Effects of Electric Current",
-    "Our Environment"
-  ],
-  "reasoningTopics": [
-    "Verbal and Non-Verbal Reasoning"
-  ],
-  "officialSOFPattern": [
-    {
-      "name": "Logical Reasoning",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Science",
-      "questions": 35,
-      "marksPerQuestion": 1,
-      "totalMarks": 35
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
-  "level1SyllabusRule": "60% current class syllabus + 40% previous class syllabus; Achievers from current class only"
+  ]
 }

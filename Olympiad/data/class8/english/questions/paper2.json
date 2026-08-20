@@ -2,639 +2,730 @@
   "class": 8,
   "subject": "English",
   "paper": 2,
-  "title": "Class 8 English Olympiad \u2014 Paper 2",
-  "durationMinutes": 60,
-  "totalQuestions": 50,
+  "totalQuestions": 60,
   "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
-  "sections": [
-    {
-      "name": "Word and Structure",
-      "questions": 30,
-      "marksPerQuestion": 1,
-      "totalMarks": 30
-    },
-    {
-      "name": "Reading & Expression",
-      "questions": 15,
-      "marksPerQuestion": 1,
-      "totalMarks": 15
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
+  "patternNote": "IEO pattern: Word & Structure Knowledge 45×1 + Reading 10×1 + Spoken & Written Expression 5×1 = 60 questions / 60 marks (SOF 2023–2025 style, original practice).",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Choose the word closest in meaning to 'vivid'.",
+      "question": "Change to active: 'The letter was written by Sita.'",
       "options": [
-        "Faded",
-        "Bright/clear",
-        "Vague",
-        "Dull"
+        "Sita was written the letter.",
+        "The letter wrote Sita.",
+        "Sita is written letter.",
+        "Sita wrote the letter."
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Fill in the blank: They have been friends ___ childhood.",
+      "question": "Select carefully: Ram said, \"I bought a book yesterday.\" →",
       "options": [
-        "since",
-        "for",
-        "from",
-        "in"
+        "Ram said that I bought a book yesterday.",
+        "Ram said he buy a book.",
+        "Ram said that he had bought a book the previous day.",
+        "Ram said that he has bought a book yesterday."
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Identify the part of speech of the underlined word: She sings 'sweetly'.",
+      "question": "He is fond of ___ cricket.",
       "options": [
-        "Noun",
-        "Verb",
-        "Adjective",
-        "Adverb"
+        "plays",
+        "playing",
+        "play",
+        "played"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Choose the antonym of 'cheerful'.",
+      "question": "Beware ___ pickpockets.",
       "options": [
-        "Happy",
-        "Gloomy",
-        "Lively",
-        "Joyful"
+        "of",
+        "from",
+        "off",
+        "with"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Fill in the blank with the correct preposition: He is interested ___ music.",
+      "question": "Choose the correct option: You ___ wear a helmet while riding.",
       "options": [
-        "in",
-        "with",
-        "on",
-        "at"
+        "used",
+        "need",
+        "ought",
+        "must"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "Identify the correctly formed question tag: He is smart, ___?",
+      "question": "'A person who writes books' is a:",
       "options": [
-        "isn't it",
-        "wasn't he",
-        "isn't he",
-        "doesn't he"
+        "sculptor",
+        "pilot",
+        "author",
+        "doctor"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "Choose the synonym of 'enormous'.",
+      "question": "Synonym of 'diligent':",
       "options": [
-        "Small",
-        "Tiny",
-        "Huge",
-        "Average"
+        "rude",
+        "hardworking",
+        "lazy",
+        "careless"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "Fill in the blank with the correct modal: You ___ wear a helmet while riding a bike.",
+      "question": "Identify the correct choice: Choose the correct sentence:",
       "options": [
-        "must",
-        "can",
-        "might",
-        "may"
+        "Neither of the boys is absent.",
+        "Neither of the boys are absent.",
+        "Neither of the boy is absent.",
+        "Neither boys is absents."
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "Choose the meaning of the idiom 'to hit the books'.",
+      "question": "Choose correct degree: This is the ___ book I have read.",
       "options": [
-        "To throw books",
-        "To study hard",
-        "To read casually",
-        "To hit something physically"
+        "better",
+        "good",
+        "well",
+        "best"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "Choose the correct conjunction: She was hungry, ___ she ate quickly.",
+      "question": "Plural of 'crisis' is:",
       "options": [
-        "so",
-        "and",
-        "but",
-        "because"
+        "crisis's",
+        "crisi",
+        "crises",
+        "crisises"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "Identify the correctly written sentence.",
+      "question": "Pick the right answer: Choose the correct passive: 'Someone has stolen my bike.'",
       "options": [
-        "Everyone has submitted their assignments only.",
-        "Everyone have submitted his assignment.",
-        "Everyone has submitted his or her assignment.",
-        "Everyone have submitted their assignment."
+        "Someone is stolen my bike.",
+        "My bike has been stolen.",
+        "My bike has stolen someone.",
+        "My bike was stole."
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "Choose the correct comparative form: This road is ___ than that one.",
+      "question": "Synonym of 'rapid':",
       "options": [
-        "most wide",
-        "wider",
-        "more wide",
-        "widest"
+        "quick",
+        "slow",
+        "lazy",
+        "dull"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "Choose the word that best completes the sentence: His ___ remarks hurt her feelings.",
+      "question": "Choose correct: I look forward to ___ you.",
       "options": [
-        "kind",
-        "soothing",
-        "harsh",
-        "gentle"
+        "meet",
+        "met",
+        "meets",
+        "meeting"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "Identify the error in the sentence: 'He don't know the answer.'",
+      "question": "Modal: We ___ save water.",
       "options": [
-        "'don't' should be 'doesn't'",
-        "No error",
-        "'answer' should be 'answers'",
-        "'know' should be 'knows'"
+        "need not never",
+        "must not always",
+        "should",
+        "used"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "Fill in the blank: The class ___ going on a trip next week.",
+      "question": "Choose correct: Neither Ravi nor his friends ___ present.",
       "options": [
-        "have",
+        "has",
         "are",
-        "were",
-        "is"
+        "is",
+        "was"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "Fill in the blank: Neither the manager nor the workers ___ satisfied.",
+      "question": "Preposition: Distribute the sweets ___ the children.",
       "options": [
-        "has been",
-        "were",
-        "is",
-        "was"
+        "among",
+        "between only for many always",
+        "in",
+        "into"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 17,
-      "question": "Choose the correct word: The news ___ shocking.",
+      "question": "Select carefully: Reported: 'Do you like tea?' she said to me. →",
       "options": [
-        "have been",
-        "is",
-        "are",
-        "were"
+        "She asked me do you like tea.",
+        "She told me that I like tea?",
+        "She said me if I like tea.",
+        "She asked me if I liked tea."
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 18,
-      "question": "Identify the correct reported speech: She said, 'I will help you tomorrow.'",
+      "question": "By next year they ___ this bridge.",
       "options": [
-        "She said I will help you tomorrow.",
-        "She said that she helps me tomorrow.",
-        "She said that she will help me tomorrow.",
-        "She said that she would help me the next day."
+        "are complete",
+        "have been complete",
+        "will have completed",
+        "completed"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 19,
-      "question": "Choose the correct passive voice: 'They are building a bridge.'",
+      "question": "Choose the correct passive of 'Open the door.'",
       "options": [
-        "A bridge was built by them.",
-        "A bridge is being built by them.",
-        "A bridge has been built by them.",
-        "A bridge is built by them."
+        "Let the door opened.",
+        "Let the door be opened.",
+        "The door opened.",
+        "Door is open by you always only."
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 20,
-      "question": "Choose the correct form: By next month, he ___ his project.",
+      "question": "Choose the correct option: Identify the subordinate clause: 'I know that she is right.'",
       "options": [
-        "completes",
-        "has completed",
-        "will complete",
-        "will have completed"
+        "that she is right",
+        "I know",
+        "is right",
+        "I know that"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 21,
-      "question": "Choose the correctly spelled word.",
+      "question": "___ is believing.",
       "options": [
-        "Beautiful",
-        "Beutiful",
-        "Beautifull",
-        "Beautyful"
+        "See",
+        "Seen",
+        "Saw",
+        "Seeing"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 22,
-      "question": "Choose the meaning of the idiom 'to spill the beans'.",
+      "question": "The book is ___ the table.",
       "options": [
-        "To reveal a secret",
-        "To argue loudly",
-        "To cook food",
-        "To make a mess"
+        "at",
+        "over",
+        "on",
+        "in"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 23,
-      "question": "Fill in the blank with the correct article: She bought ___ umbrella.",
+      "question": "Identify the correct choice: He ___ swim when he was five.",
       "options": [
-        "no article needed",
-        "the",
-        "a",
-        "an"
+        "must",
+        "could",
+        "can",
+        "may"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 24,
-      "question": "Choose the correct plural form of 'mouse' (the animal).",
+      "question": "Choose the correctly spelt word:",
       "options": [
-        "Mouses",
-        "Mouse",
-        "Mices",
-        "Mice"
+        "occasion",
+        "ocassion",
+        "occassion",
+        "ocision"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 25,
-      "question": "Choose the word closest in meaning to 'courageous'.",
+      "question": "Antonym of 'expand':",
       "options": [
-        "Fearful",
-        "Weak",
-        "Timid",
-        "Brave"
+        "enlarge",
+        "increase",
+        "swell",
+        "contract"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 26,
-      "question": "Fill in the blank: If she ___ hard, she would pass the exam.",
+      "question": "Pick the right answer: Choose the correct sentence:",
       "options": [
-        "studying",
-        "study",
-        "studied",
-        "studies"
+        "The news were true always only.",
+        "News is a plurals.",
+        "The news is true.",
+        "The news are true."
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 27,
-      "question": "Choose the correctly spelled word.",
+      "question": "Change to comparative: 'This is the tallest building.'",
       "options": [
-        "Environment",
-        "Enviornment",
-        "Envirnoment",
-        "Enviroment"
+        "This building tallest is.",
+        "This is taller than any other building.",
+        "This is tall than building.",
+        "This is more taller."
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 28,
-      "question": "Choose the antonym of 'humble'.",
+      "question": "Adjective form related to 'courage':",
       "options": [
-        "Arrogant",
-        "Polite",
-        "Simple",
-        "Modest"
+        "courageous",
+        "courageously",
+        "courage",
+        "courages"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 29,
-      "question": "Fill in the blank: She is proud ___ her achievements.",
+      "question": "Fill in: He talks as if he ___ everything.",
       "options": [
-        "about",
-        "of",
-        "from",
-        "with"
+        "know",
+        "known",
+        "knowing",
+        "knew"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 30,
-      "question": "Identify the correctly punctuated sentence.",
+      "question": "One word: 'A life history written by oneself' —",
       "options": [
-        "\"Is it raining\" she asked?",
-        "Is it raining she asked.",
-        "Is it raining, she asked?",
-        "\"Is it raining?\" she asked."
+        "bibliography",
+        "atlas",
+        "autobiography",
+        "biography"
       ],
-      "section": "Word and Structure",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 31,
-      "question": "Read: 'The astronaut described seeing Earth from space as a moment that changed how she viewed her home planet forever.' What effect did this experience have on her?",
+      "question": "Narration: He said, \"Please help me.\" →",
       "options": [
-        "It made her indifferent to the environment",
-        "It had no lasting impact",
-        "It gave her a new perspective and deeper appreciation for Earth",
-        "It made her afraid of space travel"
+        "He asked that I helping.",
+        "He requested me to help him.",
+        "He said please help me to me.",
+        "He ordered that help."
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 32,
-      "question": "Read: 'The librarian created a 'mystery book' display where covers were hidden, encouraging students to choose books without judging them by appearance.' What was the librarian's intention?",
+      "question": "Select carefully: Choose correct spelling:",
       "options": [
-        "To reduce the number of visitors",
-        "To make the library more confusing",
-        "To encourage students to explore books beyond their usual preferences",
-        "To hide unpopular books"
+        "maintenance",
+        "maintainance",
+        "maintanance",
+        "mantenance"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 33,
-      "question": "Read: 'The young artist painted the same tree every day for a year, capturing how it changed through the seasons.' What does this show about the artist's approach to art?",
+      "question": "Article: ___ European tourist visited the fort.",
       "options": [
-        "Indifference to detail",
-        "A lack of creativity",
-        "Patience and attention to gradual change over time",
-        "Boredom with the subject"
+        "An",
+        "The only always",
+        "No article mandatory",
+        "A"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 34,
-      "question": "Read: 'The teacher used real-life examples like cooking measurements to explain fractions, making the lesson easier to understand.' What teaching strategy is described?",
+      "question": "Conjunction: He is poor ___ honest.",
       "options": [
-        "Avoiding practical examples",
-        "Connecting abstract concepts to familiar real-life examples",
-        "Using only textbook definitions",
-        "Testing students without explanation"
+        "or",
+        "if",
+        "but",
+        "so"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 35,
-      "question": "Read: 'The coach reminded the team before every match that losing gracefully mattered as much as winning.' What value is the coach emphasizing?",
+      "question": "Choose the correct option: She is ___ honest officer.",
       "options": [
-        "Ignoring the outcome",
-        "Sportsmanship and humility",
-        "Winning at any cost",
-        "Avoiding competition"
+        "no article",
+        "an",
+        "a",
+        "the"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 36,
-      "question": "Read: 'Even after breaking his leg, the young cyclist continued training on a stationary bike, determined to return to racing.' What quality is highlighted here?",
+      "question": "She ___ since morning.",
       "options": [
-        "Indifference to his injury",
-        "Giving up easily",
-        "Recklessness",
-        "Resilience and determination to overcome setbacks"
+        "has been studying",
+        "is study",
+        "study",
+        "have study"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 37,
-      "question": "Read: 'Kabir spent his summer vacation teaching younger children in his neighbourhood to read, refusing any payment for his time.' What quality does Kabir show?",
+      "question": "He said, \"I am busy.\" →",
       "options": [
-        "Selfishness",
-        "Generosity and a willingness to help others",
-        "Laziness",
-        "Indifference"
+        "He said that I am busy.",
+        "He said that he is busy.",
+        "He told that he busy.",
+        "He said that he was busy."
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 38,
-      "question": "Read: 'The old fisherman knew every current and tide of the bay, having sailed it for over fifty years.' What does this passage suggest about the fisherman?",
+      "question": "Identify the correct choice: Join using a relative pronoun: 'This is the boy. He won the prize.'",
       "options": [
-        "He has never sailed before",
-        "He has deep, experience-based knowledge of the bay",
-        "He dislikes the sea",
-        "He is new to fishing"
+        "This is the boy whom won.",
+        "This is boy he won prize.",
+        "This is the boy who won the prize.",
+        "This is the boy which won the prize."
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 39,
-      "question": "Read: 'The young chef refused to follow a single recipe twice, believing that creativity came from experimenting with new flavours each time.' What value does the chef prioritize?",
+      "question": "I want ___ the truth.",
       "options": [
-        "Following tradition strictly",
-        "Creativity and willingness to experiment",
-        "Repetition and routine",
-        "Avoiding risk"
+        "known",
+        "to know",
+        "know",
+        "knowing"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 40,
-      "question": "Read: 'The scientist's notebook was filled with failed experiments, each one crossed out and followed by a new idea.' What does this reveal about the scientific process?",
+      "question": "She has been ill ___ Monday.",
       "options": [
-        "Discovery often involves trial, error, and persistence",
-        "Science progresses without any failures",
-        "Scientists never make mistakes",
-        "Failed experiments are always wasted effort"
+        "since",
+        "for",
+        "from",
+        "on"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 41,
-      "question": "Read: 'Despite the power cut, Sana continued her homework using a small torch, determined not to fall behind in her studies.' What trait does Sana display?",
+      "question": "Pick the right answer: The synonym of 'brief' is:",
       "options": [
-        "Carelessness",
-        "Indifference",
-        "Determination and responsibility",
-        "Laziness"
+        "lengthy",
+        "slow",
+        "noisy",
+        "concise"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 42,
-      "question": "Read: 'As the train pulled into the station, memories of childhood summers spent at grandmother's house flooded back to Aryan.' What is the tone of this passage?",
+      "question": "Idiom: 'A blessing in disguise' means:",
       "options": [
-        "Nostalgic and warm",
-        "Indifferent",
-        "Angry",
-        "Fearful"
+        "a party invitation",
+        "a weather report",
+        "something good that seemed bad at first",
+        "a hidden curse only"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 43,
-      "question": "Read: 'The two rival teams, after years of competition, finally joined forces to win the inter-school championship together.' What does this passage suggest about teamwork?",
+      "question": "'Philanthropist' means a person who:",
       "options": [
-        "The teams never truly cooperated",
-        "Collaboration can achieve what rivalry alone could not",
-        "Rivalry is always more effective than teamwork",
-        "Competition prevents any success"
+        "studies rocks only",
+        "helps others, especially with money",
+        "hates mankind",
+        "collects stamps only"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 44,
-      "question": "Read: 'The company launched a new policy allowing employees to work from home twice a week, aiming to improve work-life balance.' What is the goal of this policy?",
+      "question": "Fill in: The jury ___ divided in their opinions.",
       "options": [
-        "To help employees balance their personal and professional lives",
-        "To eliminate weekends",
-        "To reduce employee salaries",
-        "To increase office attendance"
+        "were",
+        "was",
+        "is",
+        "has"
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 45,
-      "question": "Read: 'Though the twins looked identical, their personalities couldn't have been more different \u2014 one loved adventure, the other preferred quiet reading.' What contrast does this passage highlight?",
+      "question": "Negative of: 'Everyone likes ice cream.'",
       "options": [
-        "Their difference in appearance",
-        "Their difference in age",
-        "Physical similarity versus difference in interests/personality",
-        "Their shared personality traits"
+        "Everyone does not likes.",
+        "Someone likes not.",
+        "Anyone not like.",
+        "No one likes ice cream."
       ],
-      "section": "Reading & Expression",
+      "section": "Word and Structure Knowledge",
       "marks": 1
     },
     {
       "id": 46,
-      "question": "Which sentence best uses a simile to describe someone's bravery?",
+      "question": "Read the passage and answer: Libraries are not merely buildings that store books; they are community spaces where people read, study and share ideas. Digital catalogues have made searching easier, yet the quiet atmosphere of a library still helps many students concentrate better than a noisy café. — According to the passage, libraries are:",
       "options": [
-        "'He fought bravely.'",
-        "'He fought as bravely as a lion.'",
-        "'He was very brave in the fight.'",
-        "'His bravery was noted by all.'"
+        "always noisier than cafés",
+        "closed to students",
+        "community spaces beyond mere storage",
+        "only warehouses of unused paper"
       ],
-      "section": "Achievers Section",
-      "marks": 3
+      "section": "Reading",
+      "marks": 1
     },
     {
       "id": 47,
-      "question": "Which sentence best uses a rhetorical question to persuade readers about the importance of reading?",
+      "question": "Read the passage and answer: Libraries are not merely buildings that store books; they are community spaces where people read, study and share ideas. Digital catalogues have made searching easier, yet the quiet atmosphere of a library still helps many students concentrate better than a noisy café. — Digital catalogues help mainly in:",
       "options": [
-        "'Books are made of paper.'",
-        "'Isn't it amazing how a single book can change the way you see the world?'",
-        "'Reading takes time.'",
-        "'Some people read and some do not.'"
+        "farming",
+        "searching",
+        "cooking",
+        "sports training"
       ],
-      "section": "Achievers Section",
-      "marks": 3
+      "section": "Reading",
+      "marks": 1
     },
     {
       "id": 48,
-      "question": "Identify the tone of the sentence: 'Fantastic, my bike has a flat tyre right before the race.'",
+      "question": "Read the passage and answer: Libraries are not merely buildings that store books; they are community spaces where people read, study and share ideas. Digital catalogues have made searching easier, yet the quiet atmosphere of a library still helps many students concentrate better than a noisy café. — Many students concentrate better in a library than in a:",
       "options": [
-        "Cheerful",
-        "Sarcastic",
-        "Formal",
-        "Neutral"
+        "noisy café",
+        "silent exam hall always only",
+        "desert",
+        "spaceship"
       ],
-      "section": "Achievers Section",
-      "marks": 3
+      "section": "Reading",
+      "marks": 1
     },
     {
       "id": 49,
-      "question": "Read the two statements: (1) 'She seldom complains.' (2) 'She almost never complains.' What is the relationship between them?",
+      "question": "Read the passage and answer: Libraries are not merely buildings that store books; they are community spaces where people read, study and share ideas. Digital catalogues have made searching easier, yet the quiet atmosphere of a library still helps many students concentrate better than a noisy café. — The passage suggests libraries help people to:",
       "options": [
-        "They are unrelated",
-        "They convey a similar meaning in different words",
-        "They contradict each other",
-        "Statement 1 is much stronger than statement 2"
+        "avoid all reading",
+        "ban digital tools",
+        "replace teachers completely",
+        "read, study and share ideas"
       ],
-      "section": "Achievers Section",
-      "marks": 3
+      "section": "Reading",
+      "marks": 1
     },
     {
       "id": 50,
-      "question": "A student must summarize a lengthy article into one clear sentence without losing the main idea. Which skill is being tested?",
+      "question": "Read the passage and answer: Libraries are not merely buildings that store books; they are community spaces where people read, study and share ideas. Digital catalogues have made searching easier, yet the quiet atmosphere of a library still helps many students concentrate better than a noisy café. — The tone of the passage is best described as:",
       "options": [
-        "Grammar correction only",
-        "Expanding vocabulary",
-        "Detailed memorization",
-        "Concise synthesis of the main idea"
+        "purely fictional comedy",
+        "indifferent to reading",
+        "informative and positive",
+        "angry and hostile"
       ],
-      "section": "Achievers Section",
-      "marks": 3
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 51,
+      "question": "Read the passage and answer: Water conservation is essential in regions facing irregular rainfall. Simple habits—fixing leaking taps, reusing greywater for gardens, and harvesting rainwater—can reduce wastage. Schools that involve students in awareness drives often see lasting behavioural change. — The central theme is:",
+      "options": [
+        "classical music",
+        "water conservation",
+        "space exploration",
+        "metal extraction"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 52,
+      "question": "Read the passage and answer: Water conservation is essential in regions facing irregular rainfall. Simple habits—fixing leaking taps, reusing greywater for gardens, and harvesting rainwater—can reduce wastage. Schools that involve students in awareness drives often see lasting behavioural change. — Fixing leaking taps helps to:",
+      "options": [
+        "reduce wastage",
+        "increase floods always",
+        "pollute rivers",
+        "stop rainfall"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 53,
+      "question": "Read the passage and answer: Water conservation is essential in regions facing irregular rainfall. Simple habits—fixing leaking taps, reusing greywater for gardens, and harvesting rainwater—can reduce wastage. Schools that involve students in awareness drives often see lasting behavioural change. — Greywater is mentioned as something to:",
+      "options": [
+        "drink untreated always",
+        "export as fuel",
+        "ignore completely",
+        "reuse for gardens"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 54,
+      "question": "Read the passage and answer: Water conservation is essential in regions facing irregular rainfall. Simple habits—fixing leaking taps, reusing greywater for gardens, and harvesting rainwater—can reduce wastage. Schools that involve students in awareness drives often see lasting behavioural change. — Schools can create lasting change by:",
+      "options": [
+        "closing gardens",
+        "ignoring leaks",
+        "awareness drives involving students",
+        "banning all water use"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 55,
+      "question": "Read the passage and answer: Water conservation is essential in regions facing irregular rainfall. Simple habits—fixing leaking taps, reusing greywater for gardens, and harvesting rainwater—can reduce wastage. Schools that involve students in awareness drives often see lasting behavioural change. — 'Irregular rainfall' suggests rainfall that is:",
+      "options": [
+        "never occurring on Earth",
+        "not consistent",
+        "perfectly timed daily",
+        "only snow"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 56,
+      "question": "Pick the right answer: Polite request:",
+      "options": [
+        "Could you please help me with this bag?",
+        "Hey you, bag now!",
+        "You will help, order!",
+        "Bag carrying refuse."
+      ],
+      "section": "Spoken and Written Expression",
+      "marks": 1
+    },
+    {
+      "id": 57,
+      "question": "Best formal email opening:",
+      "options": [
+        "Yo friend,",
+        "Hey you people,",
+        "Listen up,",
+        "Dear Sir/Madam,"
+      ],
+      "section": "Spoken and Written Expression",
+      "marks": 1
+    },
+    {
+      "id": 58,
+      "question": "Notice writing should mainly be:",
+      "options": [
+        "secret codes only",
+        "only poems",
+        "brief, clear and factual",
+        "long personal diary only"
+      ],
+      "section": "Spoken and Written Expression",
+      "marks": 1
+    },
+    {
+      "id": 59,
+      "question": "Choose coherent order: (1) Therefore we stayed indoors. (2) It rained heavily. (3) The match was postponed.",
+      "options": [
+        "1, 3, 2",
+        "2, 3, 1",
+        "1, 2, 3",
+        "3, 1, 2"
+      ],
+      "section": "Spoken and Written Expression",
+      "marks": 1
+    },
+    {
+      "id": 60,
+      "question": "Choose the most suitable sentence to complete: 'The sky is overcast; ___'",
+      "options": [
+        "it may rain soon.",
+        "the sun is brightly dancing indoors.",
+        "we must water the plastic plants with oil.",
+        "exams cancelled for gravity."
+      ],
+      "section": "Spoken and Written Expression",
+      "marks": 1
     }
   ]
 }

@@ -2,642 +2,487 @@
   "class": 9,
   "subject": "Mathematics",
   "paper": 4,
-  "title": "Class 9 Mathematics Olympiad \u2014 Paper 4",
-  "durationMinutes": 60,
-  "totalQuestions": 50,
-  "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
-  "sections": [
-    {
-      "name": "Logical Reasoning",
-      "questions": 15,
-      "marksPerQuestion": 1,
-      "totalMarks": 15
-    },
-    {
-      "name": "Mathematical Reasoning",
-      "questions": 20,
-      "marksPerQuestion": 1,
-      "totalMarks": 20
-    },
-    {
-      "name": "Everyday Mathematics",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
+  "totalQuestions": 40,
+  "totalMarks": 50,
+  "patternNote": "IMO pattern: Logical Reasoning 15×1 + Mathematical Reasoning 20×1 + Achievers Section 5×3 = 40 questions, 50 marks (SOF 2023–2025 style, original practice).",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Arrange in ascending order: 3/4, 0.6, 5/8, 0.7",
+      "question": "Identify the correct statement: Which does not belong to the group?",
       "options": [
-        "5/8, 0.6, 0.7, 3/4",
-        "0.6, 0.7, 5/8, 3/4",
-        "0.6, 5/8, 0.7, 3/4",
-        "3/4, 0.7, 5/8, 0.6"
+        "Square",
+        "Rectangle",
+        "Rhombus",
+        "Circle"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "A is west of B. C is north of B. What direction is C from A?",
+      "question": "A is taller than B but shorter than C. D is shorter than B. Who is tallest?",
       "options": [
-        "North-west",
-        "South-east",
-        "South-west",
-        "North-east"
+        "C",
+        "B",
+        "A",
+        "D"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "If SOUTH becomes NORTH when reflected, what does EAST become?",
+      "question": "Choose the correct option: If South-East becomes North, what does North-East become?",
       "options": [
-        "SOUTH",
-        "EAST",
-        "NORTH",
-        "WEST"
+        "West",
+        "South",
+        "North-West",
+        "East"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "A clock shows 2:00. What is the angle between the hour and minute hands?",
+      "question": "Select the best answer: How many distinct 3-digit numbers can be formed using the digits 2, 4 and 8 without repetition?",
       "options": [
-        "30 degrees",
-        "90 degrees",
-        "120 degrees",
-        "60 degrees"
+        "6",
+        "9",
+        "3",
+        "1"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Find the next term: 2, 3, 5, 8, 13, __ (Fibonacci-like pattern)",
+      "question": "Pick the right choice: If the mirror is placed vertically, the mirror image of the time 3:40 appears closest to:",
       "options": [
-        "23",
-        "21",
-        "18",
-        "20"
+        "9:40",
+        "2:20",
+        "8:20",
+        "4:30"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "If '\u00d7' means '+', '\u00f7' means '-', '+' means '\u00d7', evaluate: 4 \u00f7 2 \u00d7 3",
+      "question": "Identify the correct statement: Complete the analogy: 7 : 50 :: 9 : ?  (pattern: n² + 1)",
       "options": [
-        "4-2\u00d73(as \u00f7 means -) using order: 4-(2\u00d73)=4-6=-2",
-        "6",
-        "2",
-        "10"
+        "82",
+        "90",
+        "72",
+        "81"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "Complete the analogy: Triangle is to 3 sides as Pentagon is to ____",
+      "question": "If + means ×, × means −, − means ÷ and ÷ means +, then value of 8 + 4 − 2 × 3 ÷ 1 is:",
       "options": [
-        "4 sides",
-        "7 sides",
-        "5 sides",
-        "6 sides"
+        "12",
+        "16",
+        "14",
+        "10"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "A is the daughter of B. C is the son of A. How is B related to C?",
+      "question": "Choose the correct option: Statements: All books are pens. Some pens are pencils. Conclusions: (I) Some books are pencils. (II) All pens are books. Which follows?",
       "options": [
-        "Sister",
-        "Grandmother/Grandfather",
-        "Mother",
-        "Aunt"
+        "Neither I nor II",
+        "Only I",
+        "Only II",
+        "Both"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "Find the missing number: 3, 7, 15, 31, __",
+      "question": "Select the best answer: Find the odd one out: 2, 5, 10, 17, 26, 37, 50, 64",
       "options": [
-        "63",
-        "67",
-        "55",
-        "59"
+        "37",
+        "50",
+        "64",
+        "26"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "Find the odd one out: Square, Rectangle, Rhombus, Circle",
+      "question": "Pick the right choice: In a row of 40 students, R is 11th from the left. What is R’s position from the right?",
       "options": [
-        "Rectangle",
-        "Square",
-        "Circle (has no straight sides, others are quadrilaterals)",
-        "Rhombus"
+        "30th",
+        "29th",
+        "31st",
+        "28th"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "If 4 painters can paint a house in 6 days, how many days will 8 painters take?",
+      "question": "Identify the correct statement: If the day before yesterday was Thursday, what day will it be the day after tomorrow?",
       "options": [
-        "4 days",
-        "2 days",
-        "3 days",
-        "12 days"
+        "Tuesday",
+        "Sunday",
+        "Monday",
+        "Saturday"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "Five friends sit in a circle. Raj sits opposite Priya. Simran sits between Raj and Aman. Who sits opposite Simran?",
+      "question": "Find the next term: 7, 9, 13, 19, 27, ?",
       "options": [
-        "Raj",
-        "Cannot be determined without knowing the fifth person's position, but likely between Priya and Aman",
-        "Aman",
-        "Priya"
+        "37",
+        "35",
+        "39",
+        "31"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "Find the next term: 1, 4, 9, 16, 25, __",
+      "question": "Choose the correct option: If PAPER is coded as QBQFS, how is PEN coded?",
       "options": [
-        "30",
-        "36",
-        "32",
-        "49"
+        "QFO",
+        "OEM",
+        "QDO",
+        "QFP"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "If in a code, BOOK is written as CPPL, how is PAGE written?",
+      "question": "Select the best answer: If ‘+’ means division, ‘−’ means multiplication, ‘×’ means subtraction and ‘÷’ means addition, then 12 − 3 + 6 × 2 ÷ 4 = ?",
       "options": [
-        "OZFD",
-        "PBHE",
-        "QAHF",
-        "QBHF"
+        "8",
+        "6",
+        "10",
+        "4"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "Statement: All squares are rectangles. All rectangles are quadrilaterals. Conclusion: All squares are quadrilaterals.",
+      "question": "Pick the right choice: In a class, 16 play cricket, 14 play football, 8 play both. How many play only cricket?",
       "options": [
-        "Insufficient data",
-        "The conclusion is invalid",
-        "The conclusion is valid",
-        "Cannot be determined"
+        "8",
+        "8",
+        "16",
+        "10"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "According to Euclid's postulates, how many lines can pass through two distinct points?",
+      "question": "Identify the correct statement: Which of the following is an irrational number?",
       "options": [
-        "Exactly one line",
-        "No line",
-        "Infinitely many lines",
-        "Exactly two lines"
+        "4/9",
+        "0.25",
+        "√2",
+        "√9"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 17,
-      "question": "Find the volume of a cuboid with dimensions 5cm x 4cm x 3cm.",
+      "question": "Value of (√(72))² ÷ 2 is:",
       "options": [
-        "35 cubic cm",
-        "60 cubic cm",
-        "120 cubic cm",
-        "47 cubic cm"
+        "36",
+        "6",
+        "72",
+        "38"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 18,
-      "question": "Find the value of the polynomial p(x) = x^2 - 5x + 6 at x = 2.",
+      "question": "Choose the correct option: Between which two integers does √50 lie?",
       "options": [
-        "6",
-        "-2",
-        "0",
-        "2"
+        "8 and 9",
+        "6 and 7",
+        "7 and 8",
+        "5 and 6"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 19,
-      "question": "What is the sum of all interior angles of a quadrilateral?",
+      "question": "Select the best answer: Degree of the polynomial 5x³ − 2x² + 7 is:",
       "options": [
-        "180 degrees",
-        "360 degrees",
-        "270 degrees",
-        "540 degrees"
+        "3",
+        "2",
+        "1",
+        "0"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 20,
-      "question": "What is the mean of the data: 10, 20, 30, 40, 50?",
+      "question": "Pick the right choice: If p(x) = x² − 5x + 6, then p(2) =",
       "options": [
-        "30",
-        "20",
-        "35",
-        "25"
+        "4",
+        "2",
+        "0",
+        "−2"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 21,
-      "question": "A coin is tossed once. What is the probability of getting a tail?",
+      "question": "Identify the correct statement: Zeroes of x² − 5x + 6 are:",
       "options": [
-        "0",
-        "1/2",
-        "1/4",
-        "1"
+        "2 and 3",
+        "1 and 6",
+        "−2 and −3",
+        "0 and 5"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 22,
-      "question": "A chord of a circle divides it into how many arcs?",
+      "question": "(x + 6)(x + 3) expanded is:",
       "options": [
-        "Two arcs",
-        "Three arcs",
-        "Four arcs",
-        "One arc"
+        "x² + 9x + 18",
+        "x² − 9x + 18",
+        "x² + 18x + 9",
+        "x² + 9x − 18"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 23,
-      "question": "Solve for x: 2x + 5 = 15",
+      "question": "Choose the correct option: The point (7, 0) lies on the:",
       "options": [
-        "10",
-        "3",
-        "7.5",
-        "5"
+        "x-axis",
+        "y-axis",
+        "origin only",
+        "line x = y only always"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 24,
-      "question": "What are the coordinates of the origin?",
+      "question": "Select the best answer: Abscissa of the point (5, −3) is:",
       "options": [
-        "(0, 0)",
-        "(1, 0)",
-        "(0, 1)",
-        "(1, 1)"
+        "5",
+        "0",
+        "−3",
+        "−5"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 25,
-      "question": "What is the degree of the polynomial 3x^3 + 2x^2 - x + 7?",
+      "question": "Pick the right choice: Distance of point (8, 0) from the origin is:",
       "options": [
-        "2",
-        "3",
-        "7",
-        "1"
+        "0",
+        "9",
+        "8",
+        "16"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 26,
-      "question": "Is the number 7/2 a rational or irrational number?",
+      "question": "Identify the correct statement: x = 2, y = 3 is a solution of:",
       "options": [
-        "Irrational, as it cannot be expressed as p/q",
-        "Neither rational nor irrational",
-        "Rational, as it can be expressed as p/q",
-        "Both rational and irrational"
+        "x + y = 5",
+        "2x + y = 3",
+        "x − y = 5",
+        "x + 2y = 3"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 27,
-      "question": "Simplify: sqrt(50) in simplest radical form.",
+      "question": "The graph of the linear equation 2x + 3y = 6 cuts the y-axis at:",
       "options": [
-        "2\u221a5",
-        "10\u221a5",
-        "5\u221a2",
-        "25\u221a2"
+        "(0, 3)",
+        "(3, 0)",
+        "(0, 2)",
+        "(2, 0)"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 28,
-      "question": "What is the sum of the interior angles of a triangle?",
+      "question": "Choose the correct option: The sum of the angles of a triangle is:",
       "options": [
-        "270 degrees",
-        "90 degrees",
-        "180 degrees",
-        "360 degrees"
+        "180°",
+        "360°",
+        "90°",
+        "270°"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 29,
-      "question": "In a parallelogram, opposite sides are:",
+      "question": "Select the best answer: If two lines intersect, the vertically opposite angles are:",
       "options": [
-        "Neither equal nor parallel",
-        "Equal and parallel",
-        "Equal but not parallel",
-        "Parallel but not equal"
+        "Supplementary always and unequal",
+        "Complementary",
+        "Equal",
+        "Zero"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 30,
-      "question": "If two lines intersect, the vertically opposite angles formed are:",
+      "question": "Pick the right choice: In ΔABC, if ∠A = 50° and ∠B = 60°, then ∠C =",
       "options": [
-        "Supplementary",
-        "Equal",
-        "Complementary",
-        "Unequal"
+        "70°",
+        "80°",
+        "60°",
+        "50°"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 31,
-      "question": "How many solutions does a linear equation in two variables have?",
+      "question": "Identify the correct statement: A triangle with sides 3 cm, 4 cm, 5 cm is:",
       "options": [
-        "Infinitely many",
-        "Exactly two",
-        "Exactly one",
-        "No solution"
+        "Equilateral",
+        "Obtuse-angled",
+        "Right-angled",
+        "Isosceles only non-right"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 32,
-      "question": "Find the area of a triangle with base 10 cm and height 6 cm.",
+      "question": "The sum of interior angles of a quadrilateral is:",
       "options": [
-        "30 sq cm",
-        "60 sq cm",
-        "16 sq cm",
-        "20 sq cm"
+        "360°",
+        "180°",
+        "540°",
+        "90°"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 33,
-      "question": "What is the probability of an impossible event?",
+      "question": "Choose the correct option: Area of a parallelogram with base 10 cm and height 5 cm is:",
       "options": [
-        "0",
-        "Undefined",
-        "0.5",
-        "1"
+        "50 cm²",
+        "20 cm²",
+        "15 cm²",
+        "25 cm²"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 34,
-      "question": "Which criterion is used to prove two triangles congruent using two sides and the included angle?",
+      "question": "Select the best answer: Area of a triangle with sides 5 cm, 12 cm and 13 cm (Heron’s formula) is:",
       "options": [
-        "ASA only",
-        "SSA",
-        "SAS (Side-Angle-Side)",
-        "AAA"
+        "30 cm²",
+        "36 cm²",
+        "24 cm²",
+        "60 cm²"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 35,
-      "question": "In which quadrant does the point (-3, 5) lie?",
+      "question": "Pick the right choice: Curved surface area of a right circular cylinder of radius 7 cm and height 7 cm is (use π = 22/7):",
       "options": [
-        "Second quadrant",
-        "Fourth quadrant",
-        "First quadrant",
-        "Third quadrant"
+        "308 cm²",
+        "98 cm²",
+        "154 cm²",
+        "49 cm²"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 36,
-      "question": "If 8 books cost Rs. 480, what is the cost of 5 books?",
+      "question": "Identify the correct statement: If (x − 2) is a factor of x³ − 3x² + ax − 10 and remainder theorem / factor conditions hold with another consistent root pattern: given p(2)=0 for p(x)=x³−3x²+ax−10, find a.",
       "options": [
-        "Rs. 280",
-        "Rs. 250",
-        "Rs. 300",
-        "Rs. 320"
+        "3",
+        "5",
+        "7",
+        "2"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 3
     },
     {
       "id": 37,
-      "question": "A train travels at 72 km/h. Convert this speed to metres per second.",
+      "question": "If 2x + 3y = 12 and x − y = 1, then y =",
       "options": [
-        "20 m/s",
-        "25 m/s",
-        "15 m/s",
-        "18 m/s"
+        "2",
+        "1",
+        "3",
+        "4"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 3
     },
     {
       "id": 38,
-      "question": "A shopkeeper buys an article for Rs. 500 and sells it for Rs. 600. Find the profit percentage.",
+      "question": "Choose the correct option: The area of a triangle with sides 13 cm, 14 cm and 15 cm is:",
       "options": [
-        "20%",
-        "10%",
-        "15%",
-        "25%"
+        "78 cm²",
+        "90 cm²",
+        "84 cm²",
+        "96 cm²"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 3
     },
     {
       "id": 39,
-      "question": "A discount of 10% is given on a marked price of Rs. 1200. Find the selling price.",
+      "question": "Select the best answer: CSA of a hemisphere of radius 7 cm is (π=22/7):",
       "options": [
-        "Rs. 1080",
-        "Rs. 1150",
-        "Rs. 1100",
-        "Rs. 1000"
+        "308 cm²",
+        "154 cm²",
+        "462 cm²",
+        "616 cm²"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 3
     },
     {
       "id": 40,
-      "question": "A tank is filled by a pipe in 8 hours. If half the tank is already full, how long will the pipe take to fill the rest?",
+      "question": "Pick the right choice: The mean of 5 observations is 12. If one observation 8 is excluded, the mean of remaining is:",
       "options": [
-        "2 hours",
-        "8 hours",
-        "4 hours",
-        "6 hours"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 41,
-      "question": "A car covers 180 km in 3 hours. What is its speed?",
-      "options": [
-        "65 km/h",
-        "70 km/h",
-        "60 km/h",
-        "50 km/h"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 42,
-      "question": "A sum becomes Rs. 1200 in 2 years at simple interest of 10% per annum. Find the original principal.",
-      "options": [
-        "Rs. 900",
-        "Rs. 950",
-        "Rs. 1000",
-        "Rs. 1100"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 43,
-      "question": "A recipe uses 3 eggs for 6 servings. How many eggs are needed for 10 servings?",
-      "options": [
-        "4.5 eggs",
-        "4 eggs",
-        "5 eggs",
-        "6 eggs"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 44,
-      "question": "A sum of Rs. 2000 is invested at 5% simple interest for 3 years. Find the interest earned.",
-      "options": [
-        "Rs. 250",
-        "Rs. 350",
-        "Rs. 300",
-        "Rs. 200"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 45,
-      "question": "A wall is 8m long and 3m high. Find the cost of painting it at Rs. 20 per sq metre.",
-      "options": [
-        "Rs. 460",
-        "Rs. 500",
-        "Rs. 480",
-        "Rs. 440"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1
-    },
-    {
-      "id": 46,
-      "question": "Two poles of heights 6m and 11m are erected 12m apart on level ground. Using distance formula reasoning, what is the distance between their tops?",
-      "options": [
-        "15 m",
-        "13 m (since horizontal difference 12m, vertical difference 5m, hypotenuse = sqrt(12^2+5^2)=13)",
-        "17 m",
-        "10 m"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 47,
-      "question": "A cylindrical tank and a conical tank have the same base radius and height. What is the ratio of their volumes?",
-      "options": [
-        "1:1",
-        "3:1 (cylinder to cone)",
-        "2:1",
-        "1:3"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 48,
-      "question": "A student notices that as the number of sides of a regular polygon increases, the sum of interior angles increases too. Derive the general formula reasoning used here.",
-      "options": [
-        "Sum of interior angles = (n+2) x 180 degrees",
-        "Sum of interior angles = (n-2) x 180 degrees, where n is the number of sides",
-        "Sum of interior angles = n x 180 degrees",
-        "Sum of interior angles = 360 degrees always"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 49,
-      "question": "A bag contains 3 red, 4 blue, and 5 green marbles. If one marble is drawn at random, what is the probability it is NOT blue?",
-      "options": [
-        "5/12",
-        "4/12",
-        "8/12 or 2/3",
-        "3/12"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 50,
-      "question": "A quadratic-like word problem states: 'The sum of a number and its reciprocal is 2.9.' Which equation correctly represents this if x is the number?",
-      "options": [
-        "x * 1/x = 2.9",
-        "x - 1/x = 2.9",
-        "x + 1/x = 2.9",
-        "x^2 + 1 = 2.9"
+        "12",
+        "11",
+        "13",
+        "10"
       ],
       "section": "Achievers Section",
       "marks": 3

@@ -1,643 +1,608 @@
 {
   "class": 9,
-  "subject": "Computer Science",
+  "subject": "Computer",
   "paper": 2,
-  "title": "Class 9 Computer Science Olympiad \u2014 Paper 2",
-  "durationMinutes": 60,
   "totalQuestions": 50,
   "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
-  "sections": [
-    {
-      "name": "Logical Reasoning",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Computer Science",
-      "questions": 25,
-      "marksPerQuestion": 1,
-      "totalMarks": 25
-    },
-    {
-      "name": "AI, IT & Safety",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
+  "patternNote": "ICSO pattern: Logical Reasoning 10×1 + Computers and IT 35×1 + Achievers Section 5×3 = 50 questions, 60 marks (SOF 2023–2025 style, original practice).",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Which of these does not belong with the others: HTTP, HTTPS, FTP, USB",
+      "question": "Select the best answer: Find missing: 5, 10, 20, 40, ?",
       "options": [
-        "HTTP",
-        "HTTPS",
-        "FTP",
-        "USB (a hardware connector, others are network protocols)"
+        "50",
+        "60",
+        "80",
+        "70"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "A file downloads at 2 MB per second. How long will an 20 MB file take to download?",
+      "question": "Pick the right choice: Analogy: Pen : Write :: Keyboard : ?",
       "options": [
-        "40 seconds",
-        "10 seconds",
-        "5 seconds",
-        "20 seconds"
+        "Type",
+        "Print only always",
+        "Scan only",
+        "Cool"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Find the odd one out: Keyboard, Mouse, Scanner, Printer",
+      "question": "Identify the correct statement: How many 2-digit numbers use only digits 1 and 0?",
       "options": [
-        "Scanner",
-        "Keyboard",
-        "Mouse",
-        "Printer (output device, others are input devices)"
+        "2",
+        "4",
+        "3",
+        "1"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "If a folder has 3 subfolders each with 4 files, how many files are there in total?",
+      "question": "If all codes are programs and some programs are games, then:",
       "options": [
-        "7 files",
-        "15 files",
-        "9 files",
-        "12 files"
+        "Some codes may be games (uncertain)",
+        "All games are codes",
+        "No program is a code",
+        "All codes are games"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "If in a code, 1=A, 2=B, 3=C, what does 3-15-4-5 spell?",
+      "question": "Choose the correct option: Binary pattern: 1, 10, 11, 100, ?",
       "options": [
-        "BYTE",
-        "CODE",
-        "DATA",
-        "LINK"
+        "101",
+        "111",
+        "110",
+        "1000"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "Find the missing term: 2, 4, 8, 16, __",
+      "question": "Select the best answer: Odd one: AND, OR, NOT, CPU (logic gates group)",
       "options": [
-        "24",
-        "30",
-        "32",
-        "36"
+        "OR",
+        "AND",
+        "CPU (logic gates group)",
+        "NOT"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "Find the odd one out: Python, C, Java, Excel",
+      "question": "Pick the right choice: Directions: Facing north, turn right, then right. You face:",
       "options": [
-        "C",
-        "Java",
-        "Excel (application software, others are programming languages)",
-        "Python"
+        "South",
+        "West",
+        "East",
+        "North"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "Complete the analogy: CPU is to Processing as Hard Disk is to ____",
+      "question": "Identify the correct statement: Complete: www stands for:",
       "options": [
-        "Storage",
-        "Display",
-        "Sound",
-        "Input"
+        "Wide World Web",
+        "World Web Wide",
+        "World Wide Web",
+        "Web World Wide"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "Find the next term: 3, 9, 27, 81, __",
+      "question": "Odd one out: Keyboard, Mouse, Monitor, MS Word",
       "options": [
-        "324",
-        "243",
-        "216",
-        "162"
+        "MS Word",
+        "Keyboard",
+        "Mouse",
+        "Monitor"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "If in a code, DISK is written as EJTL, how is MOUSE written?",
+      "question": "Choose the correct option: Series: 1, 2, 4, 8, 16, ?",
       "options": [
-        "MPVTE",
-        "LNVRD",
-        "NPVTF",
-        "NPUTF"
+        "20",
+        "24",
+        "32",
+        "18"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "What is the function of an operating system?",
+      "question": "Select the best answer: HTTP is a:",
       "options": [
-        "It only browses the internet",
-        "It only edits documents",
-        "It manages hardware and software resources of a computer",
-        "It only plays music"
+        "Protocol for web communication",
+        "Hardware chip",
+        "Type of printer",
+        "Antivirus brand only"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "What is the function of a firewall?",
+      "question": "Pick the right choice: Phishing is a type of:",
       "options": [
-        "To store backup data",
-        "To monitor and control incoming and outgoing network traffic for security",
-        "To print documents remotely",
-        "To increase internet speed"
+        "Cyber attack / social engineering",
+        "Disk defragmentation",
+        "Printer error",
+        "Hardware upgrade"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "What is the full form of URL?",
+      "question": "Identify the correct statement: Cloud computing provides:",
       "options": [
-        "Universal Resource Link",
-        "Uniform Resource Locator",
-        "United Resource Locator",
-        "Uniform Reference Link"
+        "On-demand computing resources over the internet",
+        "Only local floppy disks",
+        "Only CRT monitors",
+        "Only typewriters"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "Which device connects multiple computers within a small area, like an office, into a network?",
+      "question": "In Excel, the formula to add A1 and B1 is:",
       "options": [
-        "Printer",
-        "Switch/Hub",
-        "Modem",
-        "Scanner"
+        "=A1+B1",
+        "ADD(A1B1)",
+        "A1+B1 without =",
+        "Sum A1 and B1 text"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "What is the function of the 'Ctrl+Z' shortcut?",
+      "question": "Choose the correct option: A primary key in a database:",
       "options": [
-        "Redo the last action",
-        "Print the file",
-        "Undo the last action",
-        "Save the file"
+        "Uniquely identifies each record",
+        "Can be duplicated freely",
+        "Is only a password",
+        "Stores images only"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "Which of these is a valid email address format?",
+      "question": "Select the best answer: An algorithm is:",
       "options": [
-        "name@example.com",
-        "name#example.com",
-        "name.example.com",
-        "name_example_com"
+        "A step-by-step problem-solving procedure",
+        "A type of virus only",
+        "A hardware port",
+        "A monitor brand"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 17,
-      "question": "Which topology connects each computer to a central hub or switch?",
+      "question": "Pick the right choice: Binary number 1010 in decimal is:",
       "options": [
-        "Ring topology",
-        "Mesh topology",
-        "Star topology",
-        "Bus topology"
+        "8",
+        "5",
+        "10",
+        "12"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 18,
-      "question": "Which memory is volatile, meaning it loses data when power is turned off?",
+      "question": "Identify the correct statement: Which is system software?",
       "options": [
-        "Pen drive",
-        "ROM",
-        "RAM",
-        "Hard disk"
+        "Operating system",
+        "Tally only as OS",
+        "MS Word only as system",
+        "Photoshop only as OS"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 19,
-      "question": "What does 'GUI' stand for?",
+      "question": "CC in email means:",
       "options": [
-        "General Unit Input",
-        "General User Interface",
-        "Graphic Unit Interface",
-        "Graphical User Interface"
+        "Central Control",
+        "Computer Copy",
+        "Carbon Copy",
+        "Cyber Crime"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 20,
-      "question": "Which of these is an example of an input device?",
+      "question": "Choose the correct option: IoT stands for:",
       "options": [
-        "Monitor",
-        "Scanner",
-        "Speaker",
-        "Printer"
+        "Internet of Things",
+        "Input of Text",
+        "Image of Table",
+        "Inline of Tools"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 21,
-      "question": "Which storage unit is the largest: KB, MB, GB, TB?",
+      "question": "Select the best answer: LAN covers a:",
       "options": [
-        "MB (Megabyte)",
-        "KB (Kilobyte)",
-        "GB (Gigabyte)",
-        "TB (Terabyte)"
+        "Only undersea cables exclusive",
+        "Entire planet only",
+        "Local area (small geographic)",
+        "Only satellites exclusive"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 22,
-      "question": "What does 'WWW' stand for?",
+      "question": "Pick the right choice: In PPT, a slide transition is:",
       "options": [
-        "World Wide Wire",
-        "Wide World Web",
-        "World Web Wire",
-        "World Wide Web"
+        "Effect when moving between slides",
+        "A virus",
+        "A database key",
+        "A network cable"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 23,
-      "question": "What is a computer virus?",
+      "question": "Identify the correct statement: Malware is:",
       "options": [
-        "A type of antivirus software",
-        "A malicious program that can replicate and harm a computer system",
-        "A network cable",
-        "A hardware component"
+        "Malicious software",
+        "A printer paper size",
+        "A type of monitor",
+        "A coding language for babies only"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 24,
-      "question": "What is the primary purpose of an HTML tag <p>?",
+      "question": "A byte can represent how many distinct values?",
       "options": [
-        "To define a picture",
-        "To define a paragraph",
-        "To define a page",
-        "To define a print area"
+        "256",
+        "8",
+        "2",
+        "1024"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 25,
-      "question": "Which of these is an example of system software?",
+      "question": "Choose the correct option: SSD compared to HDD generally offers:",
       "options": [
-        "MS-Word",
-        "Operating System",
-        "Google Chrome",
-        "Adobe Photoshop"
+        "Faster access speeds",
+        "No storage",
+        "Only slower always",
+        "Only optical discs"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 26,
-      "question": "Which key combination is used to select all content in a document?",
+      "question": "Select the best answer: Python is a:",
       "options": [
-        "Ctrl+Z",
-        "Ctrl+S",
-        "Ctrl+X",
-        "Ctrl+A"
+        "Type of RAM",
+        "Only a snake in hardware",
+        "High-level programming language",
+        "Printer model"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 27,
-      "question": "Which of these best describes 'freeware'?",
+      "question": "Pick the right choice: HTTPS indicates:",
       "options": [
-        "Software that must be purchased",
-        "Software available for free use without payment",
-        "Hardware given for free",
-        "Software with a free trial only"
+        "Secure HTTP connection",
+        "Offline mode only",
+        "Broken network only",
+        "Only FTP"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 28,
-      "question": "What is the function of a modem?",
+      "question": "Identify the correct statement: Booting is the process of:",
       "options": [
-        "It displays output on screen",
-        "It prints documents",
-        "It converts digital signals to analog and vice versa for internet connectivity",
-        "It stores data permanently"
+        "Only defragmenting forever",
+        "Shutting printer ink",
+        "Starting the computer / loading OS",
+        "Only uninstalling"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 29,
-      "question": "In MS-Excel, what symbol must precede a formula?",
+      "question": "Flowchart oval symbol often represents:",
       "options": [
-        "@ (at sign)",
-        "# (hash sign)",
-        "= (equals sign)",
-        "+ (plus sign)"
+        "Start/End",
+        "Decision only",
+        "Process only",
+        "Input only always"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 30,
-      "question": "In MS-Word, which feature is used to check spelling and grammar automatically?",
+      "question": "Choose the correct option: RAM is a type of:",
       "options": [
-        "Track Changes",
-        "Find and Replace",
-        "Mail Merge",
-        "Spelling and Grammar Check"
+        "Output device",
+        "Permanent storage only",
+        "Volatile memory",
+        "Input device only"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 31,
-      "question": "What is the full form of CPU?",
+      "question": "Select the best answer: The brain of the computer is the:",
       "options": [
-        "Central Processor Utility",
-        "Computer Processing Unit",
-        "Central Program Unit",
-        "Central Processing Unit"
+        "CPU",
+        "Monitor",
+        "Keyboard",
+        "UPS"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 32,
-      "question": "Which number system is used internally by computers to represent data?",
+      "question": "Pick the right choice: In HTML, <br> is used for:",
       "options": [
-        "Hexadecimal",
-        "Decimal",
-        "Octal",
-        "Binary"
+        "Image only",
+        "Bold only",
+        "Line break",
+        "Table only"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 33,
-      "question": "Convert the binary number 1100 to decimal.",
+      "question": "Identify the correct statement: IP address identifies a:",
       "options": [
-        "12",
-        "10",
-        "14",
-        "8"
+        "Device on a network",
+        "Only a keyboard key",
+        "Only a font",
+        "Only a printer ink colour"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 34,
-      "question": "Which shortcut key is used to save a file in most applications?",
+      "question": "A firewall is used for:",
       "options": [
-        "Ctrl+S",
-        "Ctrl+O",
-        "Ctrl+P",
-        "Ctrl+N"
+        "Network security",
+        "Increasing RAM magically",
+        "Cooling the CPU",
+        "Printing faster"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 35,
-      "question": "In MS-PowerPoint, what is a 'slide transition'?",
+      "question": "Choose the correct option: Strong passwords should be:",
       "options": [
-        "The visual effect when moving from one slide to the next",
-        "The font used in a slide",
-        "The text formatting within a slide",
-        "The background color of a slide"
+        "Long and unique with mixed characters",
+        "Your name only",
+        "12345",
+        "password"
       ],
-      "section": "Computer Science",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 36,
-      "question": "What makes a password strong?",
+      "question": "Select the best answer: AI stands for:",
       "options": [
-        "Using a short common word",
-        "Using the word 'password'",
-        "Using your birthdate",
-        "A mix of uppercase, lowercase, numbers, and symbols that is hard to guess"
+        "Artificial Intelligence",
+        "Analog Input only",
+        "Automatic Ink",
+        "Application Installer only"
       ],
-      "section": "AI, IT & Safety",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 37,
-      "question": "What is a firewall primarily used for in cybersecurity?",
+      "question": "Pick the right choice: Which Excel function finds the average?",
       "options": [
-        "Speeding up downloads",
-        "Blocking unauthorized access while permitting legitimate communication",
-        "Increasing storage capacity",
-        "Improving screen resolution"
+        "MID",
+        "MEANONLY",
+        "AVERAGE",
+        "CONCAT"
       ],
-      "section": "AI, IT & Safety",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 38,
-      "question": "Which of these is an example of an AI-powered application?",
+      "question": "Identify the correct statement: SQL is used to:",
       "options": [
-        "Calculator",
-        "MS Paint",
-        "Notepad",
-        "A voice assistant like Siri or Google Assistant"
+        "Query and manage databases",
+        "Paint images only",
+        "Design only CPU fans",
+        "Compile only assembly always"
       ],
-      "section": "AI, IT & Safety",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 39,
-      "question": "What is 'cyberbullying'?",
+      "question": "In programming, a loop is used to:",
       "options": [
-        "A type of computer hardware",
-        "A network security protocol",
-        "A method of encrypting files",
-        "Using digital platforms to harass, threaten, or intimidate someone"
+        "Only print once never again",
+        "Delete the OS",
+        "Repeat a set of instructions",
+        "Shut down permanently"
       ],
-      "section": "AI, IT & Safety",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 40,
-      "question": "Which of these is considered good digital citizenship?",
+      "question": "Choose the correct option: 1 byte equals:",
       "options": [
-        "Respecting others' privacy and being kind online",
-        "Spreading rumors online",
-        "Sharing others' private photos without consent",
-        "Ignoring copyright rules"
+        "8 bits",
+        "4 bits",
+        "16 bits",
+        "2 bits"
       ],
-      "section": "AI, IT & Safety",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 41,
-      "question": "Why should you avoid sharing personal information with strangers online?",
+      "question": "Select the best answer: URL stands for:",
       "options": [
-        "It has no real risk",
-        "It uses up too much data",
-        "It can lead to identity theft, stalking, or other forms of exploitation",
-        "It slows down the internet"
+        "User Random Login",
+        "Universal Record Link",
+        "Uniform Resource Locator",
+        "United Resource List"
       ],
-      "section": "AI, IT & Safety",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 42,
-      "question": "What is Artificial Intelligence primarily concerned with?",
+      "question": "Pick the right choice: Backup means:",
       "options": [
-        "Enabling machines to simulate human intelligence and decision-making",
-        "Only building faster computers",
-        "Only creating video games",
-        "Only storing large amounts of data"
+        "Copying data for recovery",
+        "Deleting all files",
+        "Formatting only",
+        "Overclocking CPU"
       ],
-      "section": "AI, IT & Safety",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 43,
-      "question": "What does 'IoT' stand for?",
+      "question": "Identify the correct statement: A compiler:",
       "options": [
-        "Internet of Things",
-        "Input of Technology",
-        "Integration of Tools",
-        "Internal Object Transfer"
+        "Translates high-level code to machine code",
+        "Only connects printers",
+        "Only displays web pages",
+        "Only stores passwords"
       ],
-      "section": "AI, IT & Safety",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 44,
-      "question": "What should you do before clicking a link in an unfamiliar email?",
+      "question": "Which is open-source OS?",
       "options": [
-        "Click it immediately out of curiosity",
-        "Reply with personal information",
-        "Forward it to all your contacts",
-        "Verify the sender and check the link's legitimacy before clicking"
+        "Linux",
+        "Only a locked fridge OS",
+        "Only microwave firmware as desktop",
+        "A single app"
       ],
-      "section": "AI, IT & Safety",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 45,
-      "question": "What is 'phishing'?",
+      "question": "Choose the correct option: Shortcut Ctrl+C is commonly:",
       "options": [
-        "A fraudulent attempt to steal sensitive information by posing as a trustworthy entity",
-        "A type of computer game",
-        "A way to organize files",
-        "A method to speed up the internet"
+        "Copy",
+        "Paste",
+        "Cut",
+        "Save"
       ],
-      "section": "AI, IT & Safety",
+      "section": "Computers and IT",
       "marks": 1
     },
     {
       "id": 46,
-      "question": "A user receives an email claiming they won a lottery and must click a link to claim it. Analyze why this is likely a scam.",
+      "question": "Select the best answer: In Excel, =SUM(A1:A5) adds:",
       "options": [
-        "Lottery emails are always genuine",
-        "There is no risk in clicking such links",
-        "Legitimate organizations don't ask for personal/financial info via unsolicited emails; this shows signs of phishing",
-        "It should be trusted since it mentions a specific prize"
+        "Values from A1 through A5",
+        "Only A1 and A5",
+        "Only text in A1",
+        "Entire worksheet always"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 47,
-      "question": "A computer is running slowly, showing unexpected pop-ups, and unfamiliar icons have appeared on the desktop. What is the most likely cause and best first action?",
+      "question": "Pick the right choice: Number of unique keys needed if a database table has a composite primary key of (StudentID, CourseID):",
       "options": [
-        "The keyboard is malfunctioning",
-        "The monitor needs replacement",
-        "The system may be infected with malware; run a trusted antivirus scan",
-        "The internet connection is too fast"
+        "The pair together must be unique",
+        "Only CourseID duplicates freely with same StudentID always OK without pair rule",
+        "Neither field matters",
+        "No keys needed"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 48,
-      "question": "A student wants to create a simple webpage displaying a heading and a paragraph. Which HTML tags should be used together?",
+      "question": "Identify the correct statement: Output of logic: If A=1, B=0, A AND (NOT B) is:",
       "options": [
-        "Only <h1> tags for both",
-        "Only <p> tags for both",
-        "<div> tags for both",
-        "<h1> for the heading and <p> for the paragraph"
+        "2",
+        "0",
+        "1",
+        "undefined always"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 49,
-      "question": "A network administrator wants all computers in an office to connect through one central device so that if one cable fails, only that computer loses connection. Which topology should be used?",
+      "question": "A 2 Mbps connection downloads at most about how many megabits in 10 seconds (ideal)?",
       "options": [
-        "No topology needed",
-        "Ring topology",
-        "Bus topology",
-        "Star topology"
+        "20 megabits",
+        "200 megabits",
+        "2 megabits",
+        "0.2 megabits"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 50,
-      "question": "A student needs to convert the decimal number 25 to binary for a computer science assignment. What is the correct binary equivalent?",
+      "question": "Choose the correct option: HTML structure correctly nests:",
       "options": [
-        "11001",
-        "11010",
-        "10101",
-        "11100"
+        "<head><body></head></body>",
+        "<body><html></html></body>",
+        "<!DOCTYPE html><html><head></head><body></body></html>",
+        "<html></body></html><head>"
       ],
       "section": "Achievers Section",
       "marks": 3

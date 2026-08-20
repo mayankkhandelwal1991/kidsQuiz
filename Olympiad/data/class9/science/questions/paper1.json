@@ -2,636 +2,607 @@
   "class": 9,
   "subject": "Science",
   "paper": 1,
-  "title": "Class 9 Science Olympiad \u2014 Paper 1",
-  "durationMinutes": 60,
   "totalQuestions": 50,
   "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
-  "sections": [
-    {
-      "name": "Logical Reasoning",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Science",
-      "questions": 35,
-      "marksPerQuestion": 1,
-      "totalMarks": 35
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
+  "patternNote": "NSO pattern: Logical Reasoning 10×1 + Science 35×1 + Achievers Section 5×3 = 50 questions, 60 marks (SOF 2023–2025 style, original practice).",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Arrange in order of increasing size: Molecule, Atom, Electron, Cell",
+      "question": "If WATER is coded as XBUFS, what is FIRE?",
       "options": [
-        "Electron, Atom, Molecule, Cell",
-        "Cell, Molecule, Atom, Electron",
-        "Atom, Electron, Molecule, Cell",
-        "Molecule, Cell, Atom, Electron"
+        "EHQD",
+        "GHRF",
+        "GJSF",
+        "GJSG"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "A is north of B. C is east of B. What direction is C from A?",
+      "question": "Which is different: Photosynthesis, Respiration, Digestion, Evaporation (of pure water only as life process)?",
       "options": [
-        "South-west",
-        "North-east",
-        "North-west",
-        "South-east"
+        "Evaporation (of pure water only as life process)",
+        "Respiration",
+        "Photosynthesis",
+        "Digestion"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "If EAST becomes WEST when reflected, what does NORTH become?",
+      "question": "A is mother of B. B is sister of C. How is C related to A?",
       "options": [
-        "EAST",
-        "WEST",
-        "NORTH",
-        "SOUTH"
+        "Grandfather",
+        "Uncle",
+        "Child of A",
+        "Nephew only always"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "A clock shows 4:30. What is the angle between the hour and minute hands?",
+      "question": "Series: Z, X, V, T, ?",
       "options": [
-        "45 degrees",
-        "60 degrees",
-        "30 degrees",
-        "90 degrees"
+        "R",
+        "S",
+        "Q",
+        "P"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Find the next term: 1, 1, 2, 3, 5, 8, __ (Fibonacci pattern)",
+      "question": "If all flowers are trees and some trees are bushes, which is true?",
       "options": [
-        "15",
-        "13",
-        "11",
-        "10"
+        "No tree is a flower",
+        "All bushes are flowers",
+        "Cannot say some flowers are bushes",
+        "All flowers are bushes"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "If '+' means 'x', 'x' means '-', '-' means '\u00f7', evaluate: 6 + 2 x 3",
+      "question": "Mirror of 15:20 looks closest to:",
       "options": [
-        "11",
-        "(6x2)-3 = 12-3 = 9",
-        "15",
-        "36"
+        "8:40",
+        "4:40",
+        "9:20",
+        "3:20"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "Complete the analogy: Thermometer is to Temperature as Barometer is to ____",
+      "question": "Odd one: RBC, WBC, Platelet, Neuron (blood cell group)",
       "options": [
-        "Humidity",
-        "Rainfall",
-        "Atmospheric pressure",
-        "Wind speed"
+        "WBC",
+        "RBC",
+        "Neuron (blood cell group)",
+        "Platelet"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "A is the son of B. B is the sister of C. How is A related to C?",
+      "question": "Next in pattern: △, □, ⬠, ⬡, ?",
       "options": [
-        "Cousin",
-        "Nephew",
-        "Grandson",
-        "Son"
+        "Heptagon",
+        "Circle",
+        "Triangle again",
+        "Line"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "Find the missing number: 2, 5, 10, 17, __",
+      "question": "If 1=3, 2=3, 3=5, 4=4, 5=4, then 6=?",
       "options": [
-        "26",
-        "28",
-        "20",
-        "24"
+        "3",
+        "6",
+        "5",
+        "4"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "Find the odd one out: Frog, Fish, Whale, Crocodile",
+      "question": "Which diagram best shows: metals, solids, gold (all gold are metals and solids)",
       "options": [
-        "Frog",
-        "Fish",
-        "Crocodile",
-        "Whale (a mammal, others are cold-blooded)"
+        "Gold ⊂ Metals ⊂ Solids (approx)",
+        "Disjoint circles",
+        "Only solids ⊂ gold",
+        "Metals ∩ gold empty"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "What do we call the number of protons in an atom's nucleus?",
+      "question": "A solution is a:",
       "options": [
-        "Atomic number",
-        "Mass number",
-        "Valency",
-        "Atomic mass"
+        "Homogeneous mixture",
+        "Compound only",
+        "Heterogeneous mixture always",
+        "Element only"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "Which method is used to increase crop yield by growing two or more crops on the same field simultaneously?",
+      "question": "Alloy is an example of:",
       "options": [
-        "Crop rotation",
-        "Fallowing",
-        "Monoculture",
-        "Intercropping"
+        "Compound only always",
+        "Element",
+        "Mixture (solid solution often)",
+        "Colloid only"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "What is the term for animals raised for milk, meat, or other products?",
+      "question": "Molecular mass of H₂O (H=1, O=16) is:",
       "options": [
-        "Poultry",
-        "Fauna",
-        "Wildlife",
-        "Livestock"
+        "18 u",
+        "16 u",
+        "17 u",
+        "20 u"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "Sound cannot travel through which of these?",
+      "question": "Chemical formula of aluminium oxide is:",
       "options": [
-        "Vacuum",
-        "Water",
-        "Air",
-        "Solid metal"
+        "Al₃O₂",
+        "AlO",
+        "Al₂O₃",
+        "AlO₂"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "Which gas makes up approximately 78% of Earth's atmosphere?",
+      "question": "Atomic number is equal to number of:",
       "options": [
-        "Nitrogen",
-        "Oxygen",
-        "Carbon dioxide",
-        "Argon"
+        "Protons",
+        "Neutrons only",
+        "Nucleons only always",
+        "Electrons minus protons"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "What is the SI unit of power?",
+      "question": "Powerhouse of the cell is:",
       "options": [
-        "Newton",
-        "Watt",
-        "Joule",
-        "Pascal"
+        "Nucleus",
+        "Ribosome",
+        "Mitochondria",
+        "Golgi apparatus"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 17,
-      "question": "Which simple machine is a see-saw an example of?",
+      "question": "Lysosomes are known as:",
       "options": [
-        "Lever",
-        "Inclined plane",
-        "Pulley",
-        "Wheel and axle"
+        "Suicidal bags of the cell",
+        "Powerhouse",
+        "Kitchen of cell",
+        "Control room"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 18,
-      "question": "What is the term for the loss of soil due to wind or water?",
+      "question": "Blood is a type of:",
       "options": [
-        "Eutrophication",
-        "Soil erosion",
-        "Deforestation",
-        "Desertification"
+        "Connective tissue",
+        "Muscular tissue",
+        "Epithelial tissue",
+        "Nervous tissue"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 19,
-      "question": "Which process changes a solid directly into a gas without becoming liquid?",
+      "question": "Binomial nomenclature was given by:",
       "options": [
-        "Condensation",
-        "Evaporation",
-        "Sublimation",
-        "Melting"
+        "Linnaeus",
+        "Darwin",
+        "Mendel",
+        "Whittaker"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 20,
-      "question": "What is the SI unit of force?",
+      "question": "SI unit of acceleration is:",
       "options": [
-        "Pascal",
-        "Joule",
-        "Watt",
-        "Newton"
+        "m/s²",
+        "m²/s",
+        "m/s",
+        "N"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 21,
-      "question": "Which of these best describes a colloid?",
+      "question": "v = u + at is a:",
       "options": [
-        "A mixture where particles settle quickly",
-        "A pure substance with fixed composition",
-        "A mixture where particles are larger than in a solution but do not settle, e.g., milk",
-        "A mixture where components are completely separated"
+        "Kepler’s law",
+        "Newton’s third law",
+        "Equation of motion",
+        "Ohm’s law"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 22,
-      "question": "According to Newton's third law, for every action there is a reaction that is:",
+      "question": "Momentum is product of:",
       "options": [
-        "Larger in magnitude",
-        "Smaller in magnitude",
-        "Equal in magnitude and same direction",
-        "Equal in magnitude and opposite in direction"
+        "Mass and velocity",
+        "Force and time only always",
+        "Mass and acceleration",
+        "Weight and speed only"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 23,
-      "question": "Who proposed the plum pudding model of the atom?",
+      "question": "Archimedes’ principle is related to:",
       "options": [
-        "Niels Bohr",
-        "John Dalton",
-        "J.J. Thomson",
-        "Ernest Rutherford"
+        "Refraction",
+        "Reflection",
+        "Buoyancy",
+        "Electromagnetic induction"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 24,
-      "question": "Which type of change is 'melting of wax' \u2014 physical or chemical?",
+      "question": "Power is:",
       "options": [
-        "Chemical change",
-        "Physical change",
-        "Neither",
-        "Both physical and chemical"
+        "Rate of doing work",
+        "Mass × velocity",
+        "Force × distance",
+        "Energy × time"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 25,
-      "question": "What is the audible range of frequency for the human ear?",
+      "question": "Ultrasound has frequency:",
       "options": [
-        "200 Hz to 200,000 Hz",
-        "20,000 Hz to 200,000 Hz",
-        "20 Hz to 20,000 Hz",
-        "2 Hz to 2,000 Hz"
+        "Exactly 20 Hz",
+        "Below 20 Hz",
+        "Above 20 kHz",
+        "Visible light range"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 26,
-      "question": "Which process describes water moving from a dilute to a concentrated solution through a semi-permeable membrane?",
+      "question": "Nitrogen fixation is done by:",
       "options": [
-        "Osmosis",
-        "Diffusion",
-        "Transpiration",
-        "Filtration"
+        "Rhizobium",
+        "Only humans",
+        "Only viruses",
+        "Only fish"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 27,
-      "question": "Which particle in an atom was discovered by Rutherford's gold foil experiment to be concentrated in the nucleus?",
+      "question": "Vector of malaria is:",
       "options": [
-        "Positive charge (protons)",
-        "Neutrons only",
-        "No particles",
-        "Electrons"
+        "Housefly only",
+        "Aedes only always for malaria",
+        "Female Anopheles mosquito",
+        "Sandfly for malaria only"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 28,
-      "question": "Which form of energy is possessed by a stretched rubber band?",
+      "question": "SI unit of temperature is:",
       "options": [
-        "Sound energy",
-        "Kinetic energy",
-        "Potential energy",
-        "Heat energy"
+        "kelvin",
+        "celsius only",
+        "fahrenheit only",
+        "calorie"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 29,
-      "question": "Which organelle is known as the 'powerhouse of the cell'?",
+      "question": "Which has the highest kinetic energy of particles (same substance)?",
       "options": [
-        "Golgi body",
-        "Nucleus",
-        "Mitochondria",
-        "Ribosome"
+        "Steam at 100°C",
+        "Water at 0°C",
+        "Water at 100°C",
+        "Ice at 0°C"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 30,
-      "question": "What happens to the pressure exerted by a liquid as depth increases?",
+      "question": "Which is a compound?",
       "options": [
-        "It decreases",
-        "It remains constant",
-        "It increases",
-        "It becomes zero"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "What is the SI unit of work?",
-      "options": [
-        "Newton",
-        "Joule",
-        "Watt",
-        "Pascal"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 32,
-      "question": "Which type of tissue allows movement in animals?",
-      "options": [
-        "Nervous tissue",
-        "Muscular tissue",
-        "Epithelial tissue",
-        "Connective tissue"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 33,
-      "question": "What is the valency of oxygen?",
-      "options": [
-        "1",
-        "2",
-        "3",
-        "4"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 34,
-      "question": "Which vitamin is produced in the skin upon exposure to sunlight?",
-      "options": [
-        "Vitamin B12",
-        "Vitamin C",
-        "Vitamin A",
-        "Vitamin D"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 35,
-      "question": "Which kingdom includes organisms like mushrooms and yeast?",
-      "options": [
-        "Monera",
-        "Fungi",
-        "Protista",
-        "Plantae"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 36,
-      "question": "What is the process by which plants lose water vapour through their leaves?",
-      "options": [
-        "Photosynthesis",
-        "Transpiration",
-        "Excretion",
-        "Respiration"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 37,
-      "question": "Which force is responsible for objects floating or sinking in a liquid?",
-      "options": [
-        "Gravitational force",
-        "Frictional force",
-        "Magnetic force",
-        "Buoyant force (upthrust)"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 38,
-      "question": "Which law states that mass can neither be created nor destroyed in a chemical reaction?",
-      "options": [
-        "Law of Constant Proportions",
-        "Avogadro's Law",
-        "Law of Conservation of Mass",
-        "Law of Multiple Proportions"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 39,
-      "question": "What is the SI unit of speed?",
-      "options": [
-        "Newton",
-        "Kilometre per hour",
-        "Metre per second (m/s)",
-        "Metre per second squared"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 40,
-      "question": "Which tissue in plants is responsible for the transport of water?",
-      "options": [
-        "Phloem",
-        "Sclerenchyma",
-        "Xylem",
-        "Parenchyma"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 41,
-      "question": "What is the charge on a neutron?",
-      "options": [
-        "Negative",
-        "Positive",
-        "No charge (neutral)",
-        "Variable"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 42,
-      "question": "What is the smallest particle of an element that retains its chemical properties?",
-      "options": [
-        "Ion",
-        "Atom",
-        "Molecule",
-        "Electron"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 43,
-      "question": "Which of these is a homogeneous mixture?",
-      "options": [
-        "Oil and water",
-        "Sand and water",
-        "Salt solution",
+        "Water (H₂O)",
+        "Air",
+        "Brass",
         "Milk"
       ],
       "section": "Science",
       "marks": 1
     },
     {
-      "id": 44,
-      "question": "What is the value of acceleration due to gravity on Earth approximately?",
+      "id": 31,
+      "question": "Tyndall effect is shown by:",
       "options": [
-        "6.7 m/s^2",
-        "9.8 m/s^2",
-        "8.9 m/s^2",
-        "10.8 m/s^2"
+        "Colloids",
+        "Pure elements only",
+        "True solutions",
+        "Vacuum"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 32,
+      "question": "Law of constant proportions was given by:",
+      "options": [
+        "Lavoisier only as proportions",
+        "Dalton only",
+        "Proust",
+        "Thomson"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 33,
+      "question": "Electron was discovered by:",
+      "options": [
+        "J.J. Thomson",
+        "Bohr",
+        "Rutherford",
+        "Chadwick"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 34,
+      "question": "Isotopes have same:",
+      "options": [
+        "Number of neutrons always",
+        "Mass number always",
+        "Atomic number",
+        "Chemical formula different necessarily"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 35,
+      "question": "Cell wall in plants is mainly made of:",
+      "options": [
+        "Cellulose",
+        "Chitin only",
+        "Peptidoglycan only",
+        "Lipid only"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "Prokaryotic cells lack:",
+      "options": [
+        "Cytoplasm",
+        "Cell membrane",
+        "True nucleus",
+        "Ribosomes entirely"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "Meristematic tissues are:",
+      "options": [
+        "Actively dividing",
+        "Dead permanently always",
+        "Only in animals",
+        "Non-living only"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "Which is a cryptogam?",
+      "options": [
+        "Fern",
+        "Pine",
+        "Mango",
+        "Wheat"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "Distance is a:",
+      "options": [
+        "Scalar quantity",
+        "Vector quantity",
+        "Tensor only",
+        "Dimensionless always"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "Newton’s first law is also called law of:",
+      "options": [
+        "Inertia",
+        "Action-reaction only",
+        "Momentum only",
+        "Gravitation"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "Value of g on Earth is approximately:",
+      "options": [
+        "9.8 m/s²",
+        "6.7 × 10⁻¹¹",
+        "3 × 10⁸",
+        "1.6 m/s² only"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "SI unit of work is:",
+      "options": [
+        "joule",
+        "watt",
+        "newton",
+        "pascal"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "Sound needs a:",
+      "options": [
+        "Only light",
+        "Vacuum",
+        "Material medium",
+        "Magnetic field only"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "Antibiotics are effective against:",
+      "options": [
+        "Bacteria",
+        "Genetic diseases only",
+        "All viruses always",
+        "Fractures only"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 45,
-      "question": "An object moving with uniform velocity has what kind of acceleration?",
+      "question": "Which is a non-renewable resource?",
       "options": [
-        "Uniform negative acceleration",
-        "Uniform positive acceleration",
-        "Zero acceleration",
-        "Variable acceleration"
+        "Wind",
+        "Solar energy",
+        "Coal",
+        "Tidal energy"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 46,
-      "question": "Two identical balloons are filled with equal amounts of air and helium respectively. Which one rises and why, in terms of buoyant force?",
+      "question": "An object of mass 2 kg is lifted to 5 m. Potential energy gained (g=10 m/s²) is:",
       "options": [
-        "The helium balloon rises because helium is less dense than air, so the buoyant force exceeds its weight",
-        "Both rise equally",
-        "Neither rises since buoyant force applies only to liquids",
-        "The air-filled balloon rises due to greater weight"
+        "100 J",
+        "50 J",
+        "20 J",
+        "10 J"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 47,
-      "question": "A tuning fork produces sound with a frequency of 15 Hz. Why can't a human hear this sound?",
+      "question": "Number of moles in 36 g of water (M=18 g/mol) is:",
       "options": [
-        "15 Hz is too loud for the human ear",
-        "15 Hz is below the audible range for humans (20 Hz to 20,000 Hz), so it is infrasonic",
-        "The tuning fork does not vibrate at all",
-        "All frequencies are audible to humans"
+        "0.5",
+        "1",
+        "2",
+        "18"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 48,
-      "question": "A student pushes a heavy box but it does not move despite applying force. Explain using Newton's laws why no work is done in the physics sense.",
+      "question": "Electronic configuration of sodium (Z=11) is:",
       "options": [
-        "Work is zero because there is no displacement, even though force is applied",
-        "Work cannot be determined without knowing the box's mass",
-        "Work is done because force was applied",
-        "Work is negative"
+        "2, 8, 1",
+        "2, 8, 2",
+        "2, 7, 2",
+        "2, 8, 8"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 49,
-      "question": "Comparing crop rotation with monoculture farming, what long-term advantage does crop rotation offer for soil health?",
+      "question": "A force of 10 N acts on 2 kg for 3 s from rest. Final velocity is:",
       "options": [
-        "It always produces higher yields in a single season",
-        "It eliminates the need for fertilizers entirely",
-        "It helps replenish soil nutrients and reduces pest/disease buildup by varying crops",
-        "It has no measurable impact on soil quality"
+        "15 m/s",
+        "5 m/s",
+        "10 m/s",
+        "30 m/s"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 50,
-      "question": "If the number of neutrons in an atom is changed while the number of protons stays the same, what results?",
+      "question": "Work done when a force of 5 N moves a body 3 m in direction of force is:",
       "options": [
-        "A different element with the same atomic number",
-        "An ion of the element",
-        "No change occurs at all",
-        "An isotope of the same element is formed"
+        "15 J",
+        "8 J",
+        "2 J",
+        "0 J"
       ],
       "section": "Achievers Section",
       "marks": 3

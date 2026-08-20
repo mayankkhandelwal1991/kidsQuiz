@@ -4,336 +4,609 @@
   "paper": 5,
   "title": "Class 6 Science — Paper 5",
   "durationMinutes": 60,
+  "totalMarks": 60,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern and Class 6 syllabus (not a copyrighted SOF paper).",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Which part of a plant usually absorbs water from the soil?",
+      "question": "Find the next: 5, 10, 20, 40, __.",
       "options": [
-        "Fruit",
-        "Flower",
-        "Roots",
-        "Leaf"
+        "80",
+        "60",
+        "50",
+        "70"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which organ pumps blood around the body?",
+      "question": "Odd one out: Photosynthesis, Respiration, Digestion, Evaporation",
       "options": [
-        "Stomach",
-        "Brain",
-        "Heart",
-        "Lungs"
+        "Evaporation",
+        "Photosynthesis",
+        "Respiration",
+        "Digestion"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which is a renewable source of energy?",
+      "question": "Analogy: Leaf : Photosynthesis :: Root : ?",
       "options": [
-        "Sunlight",
-        "Petrol",
-        "Coal",
-        "Diesel"
+        "Absorption",
+        "Transpiration",
+        "Flowering",
+        "Pollination"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which material is transparent?",
+      "question": "If ‘Plant’ is related to ‘Chlorophyll’, then ‘Blood’ is related to:",
       "options": [
-        "Stone",
-        "Wood",
-        "Cardboard",
-        "Clear glass"
+        "Haemoglobin",
+        "Starch",
+        "Cellulose",
+        "Chloroplast"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which change can usually be reversed?",
+      "question": "Which does not belong: Mercury, Venus, Mars, Moon",
       "options": [
-        "Wood burning",
-        "Egg cooking",
-        "Ice melting",
-        "Paper burning"
+        "Moon",
+        "Mercury",
+        "Venus",
+        "Mars"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Which force slows a toy car on a rough floor?",
+      "question": "Series: 2, 6, 12, 20, 30, __.",
       "options": [
-        "Sound",
-        "Friction",
-        "Light",
-        "Colour"
+        "42",
+        "36",
+        "40",
+        "32"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Which animal is adapted to a hot desert?",
+      "question": "A is taller than B but shorter than C. D is shorter than B. Who is tallest?",
       "options": [
-        "Polar bear",
-        "Whale",
-        "Penguin",
-        "Camel"
+        "C",
+        "A",
+        "B",
+        "D"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which body part protects the brain?",
+      "question": "If all flowers are plants and some plants are green, which is true?",
       "options": [
-        "Ankle",
-        "Rib cage",
-        "Skull",
-        "Knee"
+        "Some flowers may be green",
+        "No flower is a plant",
+        "All green things are flowers",
+        "All plants are flowers"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Which gas do humans need for breathing?",
+      "question": "Mirror image pattern: which letter looks the same in a vertical mirror?",
       "options": [
-        "Oxygen",
-        "Helium",
-        "Hydrogen",
-        "Neon"
+        "A",
+        "B",
+        "C",
+        "F"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which state of matter keeps its own shape?",
+      "question": "In a certain code, WATER is written as XBUFS. Then LIGHT is written as:",
       "options": [
-        "Vapour",
-        "Liquid",
-        "Solid",
-        "Gas"
+        "MJHIU",
+        "KHGFS",
+        "MHHIU",
+        "MJGIU"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Separation of tea leaves from tea using a strainer is:",
       "options": [
-        "It grows faster",
-        "It becomes a rock",
-        "It needs no sunlight",
-        "It wilts"
+        "Sedimentation",
+        "Distillation",
+        "Chromatography",
+        "Filtration"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "A change that cannot be easily reversed is:",
       "options": [
-        "Soup heats only metal",
-        "Metal conducts heat better",
-        "Wood creates cold",
-        "Metal contains fire"
+        "Stretching a rubber band",
+        "Folding paper",
+        "Burning of paper",
+        "Melting of ice"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Which is a chemical change?",
       "options": [
-        "Light travels faster than sound",
-        "Lightning has no sound",
-        "Clouds stop sound",
-        "Thunder happens later in the sky"
+        "Dissolving sugar",
+        "Rusting of iron",
+        "Melting of wax",
+        "Tearing of paper"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "The joint in the skull that does not allow movement is a:",
       "options": [
-        "Change one main condition and compare results",
-        "Do not record results",
-        "Guess without observing",
-        "Change everything at once"
+        "Fixed joint",
+        "Ball and socket",
+        "Hinge joint",
+        "Pivot joint"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "The bone that protects the brain is the:",
       "options": [
-        "It wilts",
-        "It becomes a rock",
-        "It grows faster",
-        "It needs no sunlight"
+        "Rib cage",
+        "Pelvis",
+        "Femur",
+        "Skull"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Earthworms move using:",
       "options": [
-        "Metal contains fire",
-        "Soup heats only metal",
-        "Metal conducts heat better",
-        "Wood creates cold"
+        "Fins only",
+        "Legs with joints like humans",
+        "Muscles and bristles",
+        "Wings"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "The SI unit of length is:",
       "options": [
-        "Light travels faster than sound",
-        "Thunder happens later in the sky",
-        "Clouds stop sound",
-        "Lightning has no sound"
+        "Inch",
+        "Metre",
+        "Centimetre",
+        "Kilometre"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "A body is said to be in motion if it:",
       "options": [
-        "Change everything at once",
-        "Guess without observing",
-        "Do not record results",
-        "Change one main condition and compare results"
+        "Changes position with time",
+        "Remains at rest",
+        "Has mass only",
+        "Is heavy"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Shadows are formed because light:",
       "options": [
-        "It needs no sunlight",
-        "It wilts",
-        "It becomes a rock",
-        "It grows faster"
+        "Bends around all objects always",
+        "Has no speed",
+        "Is a form of sound",
+        "Travels in straight lines"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "An opaque object forms a:",
       "options": [
-        "Metal contains fire",
-        "Metal conducts heat better",
-        "Wood creates cold",
-        "Soup heats only metal"
+        "Transparent image only",
+        "Coloured rainbow always",
+        "Dark shadow",
+        "No shadow ever"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "A mirror that can form a real inverted image of the sun (burning paper) is a:",
       "options": [
-        "Lightning has no sound",
-        "Clouds stop sound",
-        "Light travels faster than sound",
-        "Thunder happens later in the sky"
+        "Rough metal sheet",
+        "Concave mirror",
+        "Plane mirror",
+        "Convex mirror"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Electric current is the flow of:",
       "options": [
-        "Do not record results",
-        "Change one main condition and compare results",
-        "Guess without observing",
-        "Change everything at once"
+        "Charges",
+        "Only heat",
+        "Only light",
+        "Only sound"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Which material is a good conductor of electricity?",
       "options": [
-        "It wilts",
-        "It needs no sunlight",
-        "It grows faster",
-        "It becomes a rock"
+        "Rubber",
+        "Plastic",
+        "Dry wood",
+        "Copper"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "In an electric circuit, a switch is used to:",
       "options": [
-        "Wood creates cold",
-        "Metal conducts heat better",
-        "Metal contains fire",
-        "Soup heats only metal"
+        "Produce food",
+        "Measure temperature only",
+        "Open or close the circuit",
+        "Increase mass of wire"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "The layer of air around the Earth is called:",
       "options": [
-        "Lightning has no sound",
-        "Clouds stop sound",
-        "Light travels faster than sound",
-        "Thunder happens later in the sky"
+        "Biosphere only",
+        "Atmosphere",
+        "Hydrosphere",
+        "Lithosphere"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "About how much of the Earth’s surface is covered with water?",
       "options": [
-        "Guess without observing",
-        "Do not record results",
-        "Change one main condition and compare results",
-        "Change everything at once"
+        "About three-fourths",
+        "About one-fourth",
+        "Exactly half",
+        "Almost none"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Rainwater harvesting helps in:",
       "options": [
-        "It needs no sunlight",
-        "It grows faster",
-        "It becomes a rock",
-        "It wilts"
+        "Increasing air pollution",
+        "Destroying soil only",
+        "Stopping photosynthesis",
+        "Recharging groundwater"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Biodegradable waste includes:",
       "options": [
-        "Metal contains fire",
-        "Wood creates cold",
-        "Metal conducts heat better",
-        "Soup heats only metal"
+        "Glass jars",
+        "Metal cans",
+        "Vegetable peels",
+        "Plastic bottles"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Which of these is a non-biodegradable waste?",
       "options": [
-        "Clouds stop sound",
-        "Thunder happens later in the sky",
-        "Lightning has no sound",
-        "Light travels faster than sound"
+        "Leftover food",
+        "Plastic bag",
+        "Fruit peels",
+        "Paper (usually)"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Stomata in leaves help mainly in:",
       "options": [
-        "Guess without observing",
-        "Change one main condition and compare results",
-        "Do not record results",
-        "Change everything at once"
+        "Exchange of gases",
+        "Absorbing minerals from soil",
+        "Transporting food to roots only",
+        "Producing seeds"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 31,
+      "question": "The process of loss of water from aerial parts of a plant is:",
+      "options": [
+        "Photosynthesis",
+        "Pollination",
+        "Fertilisation",
+        "Transpiration"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 32,
+      "question": "Which vitamin is produced in the skin in sunlight?",
+      "options": [
+        "Vitamin B12 only",
+        "Vitamin K only",
+        "Vitamin D",
+        "Vitamin C"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 33,
+      "question": "A balanced diet should contain:",
+      "options": [
+        "Only vitamins",
+        "Carbohydrates, proteins, fats, vitamins, minerals, water and roughage",
+        "Only carbohydrates",
+        "Only proteins and fats"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 34,
+      "question": "Magnetism: the ends of a magnet are called:",
+      "options": [
+        "Poles",
+        "Equators",
+        "Nodes",
+        "Fuses"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 35,
+      "question": "Which planet is known as the Red Planet?",
+      "options": [
+        "Venus",
+        "Jupiter",
+        "Saturn",
+        "Mars"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "The boiling point of pure water at standard pressure is:",
+      "options": [
+        "50°C",
+        "37°C",
+        "100°C",
+        "0°C"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "Oxygen is necessary for:",
+      "options": [
+        "Making plastic only",
+        "Respiration in most living organisms",
+        "Only photosynthesis",
+        "Only rusting and nothing else"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "Which component of food is needed for body building and repair?",
+      "options": [
+        "Proteins",
+        "Fats only",
+        "Sugars only",
+        "Roughage only"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "The process by which green plants make food is called:",
+      "options": [
+        "Respiration",
+        "Transpiration",
+        "Germination",
+        "Photosynthesis"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "The green pigment in leaves is:",
+      "options": [
+        "Melanin",
+        "Carotene only",
+        "Chlorophyll",
+        "Haemoglobin"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "Which gas is released by plants during photosynthesis?",
+      "options": [
+        "Hydrogen",
+        "Oxygen",
+        "Carbon dioxide",
+        "Nitrogen"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "Animals that eat only plants are called:",
+      "options": [
+        "Herbivores",
+        "Carnivores",
+        "Omnivores",
+        "Parasites"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "Vitamin C deficiency causes:",
+      "options": [
+        "Rickets",
+        "Night blindness",
+        "Anaemia only",
+        "Scurvy"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "Which nutrient mainly gives us energy?",
+      "options": [
+        "Water",
+        "Minerals only",
+        "Carbohydrates",
+        "Vitamins"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "Roughage in our diet is important because it:",
+      "options": [
+        "Replaces water",
+        "Helps in bowel movement",
+        "Builds muscles only",
+        "Is a vitamin"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "A plant is kept in dark for 48 hours, then one leaf is tested for starch. The result is usually negative because:",
+      "options": [
+        "Roots stop absorbing water in dark always",
+        "Chlorophyll becomes protein in dark",
+        "Plants do not have starch ever",
+        "Photosynthesis did not occur without light, so starch was not made (and stored starch may be used up)"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "question": "Two identical cups of hot water are left: one covered, one open. The open cup cools faster mainly due to:",
+      "options": [
+        "Only sound energy",
+        "Greater evaporation and heat loss",
+        "Photosynthesis",
+        "Magnetic field of Earth"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "question": "In a simple circuit, bulb does not glow though cells are fresh. A possible reason is:",
+      "options": [
+        "Air has oxygen",
+        "Bulb glass is transparent",
+        "Copper is a conductor",
+        "The circuit is open or a wire is broken / poor connection"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "question": "Why is a diet with only rice for many weeks unhealthy for a growing child?",
+      "options": [
+        "Rice blocks sunlight",
+        "It lacks adequate proteins, vitamins and minerals needed for growth",
+        "Rice has no carbohydrates",
+        "Rice is non-biodegradable"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "question": "Separating cream from milk by churning works because of difference in:",
+      "options": [
+        "Colour only",
+        "Magnetic properties",
+        "Boiling points only of metals",
+        "Density of components"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

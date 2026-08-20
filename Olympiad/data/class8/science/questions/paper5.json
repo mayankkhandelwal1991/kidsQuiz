@@ -2,636 +2,607 @@
   "class": 8,
   "subject": "Science",
   "paper": 5,
-  "title": "Class 8 Science Olympiad \u2014 Paper 5",
-  "durationMinutes": 60,
   "totalQuestions": 50,
   "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
-  "sections": [
-    {
-      "name": "Logical Reasoning",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Science",
-      "questions": 35,
-      "marksPerQuestion": 1,
-      "totalMarks": 35
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
+  "patternNote": "NSO pattern: Logical Reasoning 10×1 + Science 35×1 + Achievers 5×3 = 50 questions / 60 marks (SOF 2023–2025 style, original practice).",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "If 5 pumps can empty a tank in 8 hours, how many hours will 10 pumps take?",
+      "question": "Next number: 9, 12, 15, 18, __",
       "options": [
-        "10 hours",
-        "2 hours",
-        "4 hours",
-        "6 hours"
+        "25",
+        "22",
+        "27",
+        "24"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Five children are ranked by age. Mira is older than Tara but younger than Neha. Sara is the youngest. Who could be the oldest?",
+      "question": "Choose the correct option: Odd one out: Eye, Ear, Nose, Bone",
       "options": [
-        "Tara",
-        "Neha (or someone older, but Neha is oldest among named)",
-        "Mira",
-        "Sara"
+        "Eye",
+        "Ear",
+        "Nose",
+        "Bone"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Find the next term: 4, 8, 16, 32, __",
+      "question": "Analogy: Leaf : Photosynthesis :: Root : ?",
       "options": [
-        "60",
-        "64",
-        "48",
-        "56"
+        "Flowering",
+        "Pollination",
+        "Absorption of water",
+        "Transpiration only"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "If in a code, LAMP is written as MBNQ, how is DESK written?",
+      "question": "If WATER is coded as XBUFS (+1), then PLANT is coded as:",
       "options": [
-        "CDRJ",
-        "EDTL",
-        "EFRJ",
-        "EFTL"
+        "QMAOU",
+        "QMBOU",
+        "OKZMS",
+        "PLBOU"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Statement: All insects have six legs. A butterfly is an insect. Conclusion: A butterfly has six legs.",
+      "question": "Identify the correct choice: A faces North, turns 90° right twice. A now faces:",
       "options": [
-        "The conclusion is invalid",
-        "Insufficient data",
-        "Cannot be determined",
-        "The conclusion is valid"
+        "South",
+        "North",
+        "East",
+        "West"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "Arrange in order of increasing hardness: Wax, Wood, Iron, Diamond",
+      "question": "Which does not belong: Virus, Bacteria, Fungi, Quartz",
       "options": [
-        "Diamond, Iron, Wood, Wax",
-        "Wood, Wax, Diamond, Iron",
-        "Wax, Wood, Iron, Diamond",
-        "Iron, Wax, Wood, Diamond"
+        "Virus",
+        "Bacteria",
+        "Fungi",
+        "Quartz"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "A is south of B. C is west of B. What direction is C from A?",
+      "question": "Series: 2, 6, 12, 20, 30, ?",
       "options": [
-        "South-west",
-        "North-west",
-        "South-east",
-        "North-east"
+        "40",
+        "32",
+        "42",
+        "36"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "If NORTH becomes SOUTH when reflected, what does WEST become?",
+      "question": "Pick the right answer: If all metals conduct heat and copper is a metal, then:",
       "options": [
-        "WEST",
-        "EAST",
-        "NORTH",
-        "SOUTH"
+        "Heat is a metal",
+        "Copper conducts heat",
+        "Copper is not a metal",
+        "All conductors are copper"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "A clock shows 8:00. What is the angle between the hour and minute hands?",
+      "question": "Find the odd pair: Force–Newton, Pressure–Pascal, Work–Joule, Mass–Litre",
       "options": [
-        "60 degrees",
-        "150 degrees",
-        "120 degrees",
-        "90 degrees"
+        "Mass–Litre",
+        "Force–Newton",
+        "Pressure–Pascal",
+        "Work–Joule"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "Find the next term: 100, 90, 81, 73, __ (differences decreasing by 1)",
+      "question": "Mirror letter of 'b' (vertical mirror) is often represented as:",
       "options": [
-        "65",
-        "70",
-        "66",
-        "64"
+        "p",
+        "q",
+        "b",
+        "d"
       ],
       "section": "Logical Reasoning",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "Which gas, when released in excess, contributes most to air pollution from vehicles?",
+      "question": "Weeds are unwanted plants that:",
       "options": [
-        "Nitrogen",
-        "Carbon monoxide",
-        "Helium",
-        "Oxygen"
+        "Are only animals",
+        "Produce only metals",
+        "Compete with crops for nutrients",
+        "Always help crops grow faster"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "Which disease is caused by a virus among these?",
+      "question": "Sodium is stored in:",
       "options": [
-        "Cholera",
-        "Common cold",
-        "Typhoid",
-        "Tuberculosis"
+        "Alcohol only always",
+        "Kerosene",
+        "Water",
+        "Open air only"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "Which gas is essential for combustion to occur?",
+      "question": "Red Data Book keeps a record of:",
       "options": [
-        "Nitrogen",
-        "Carbon dioxide",
-        "Hydrogen",
-        "Oxygen"
+        "Endangered species",
+        "Only cricket scores",
+        "Only school marks",
+        "Only bus routes"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "What is the SI unit of pressure?",
+      "question": "Select carefully: Endocrine glands release:",
       "options": [
-        "Pascal",
-        "Watt",
-        "Newton",
-        "Joule"
+        "Only digestive enzymes into gut always exclusive",
+        "Only sweat salts exclusive",
+        "Only urine",
+        "Hormones"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "Which type of energy conversion takes place in a bulb (electric to light)?",
+      "question": "Amplitude of vibration is related to sound's:",
       "options": [
-        "Chemical to electrical",
-        "Electrical to light and heat energy",
-        "Mechanical to electrical",
-        "Light to electrical"
+        "Only smell",
+        "Only taste",
+        "Loudness",
+        "Only colour"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "What is the term for the period of rapid physical and emotional change in humans, usually starting around age 11-19?",
+      "question": "Seismograph records:",
       "options": [
-        "Menopause",
-        "Infancy",
-        "Puberty (a part of adolescence, but adolescence is the broader term)",
-        "Adolescence"
+        "Only humidity",
+        "Earthquakes",
+        "Only rainfall",
+        "Only wind speed exclusive"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 17,
-      "question": "What is the main function of red blood cells?",
+      "question": "Choose the correct option: CNG is preferred over petrol sometimes because it is:",
       "options": [
-        "Fighting infections",
-        "Transporting oxygen throughout the body",
-        "Digesting food",
-        "Clotting blood"
+        "Cleaner burning",
+        "Always more polluting",
+        "A solid fuel",
+        "Not a fuel"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 18,
-      "question": "Which simple machine reduces the effort needed to lift a load using a sloped surface?",
+      "question": "Which is a kharif crop?",
       "options": [
-        "Lever",
-        "Pulley",
-        "Inclined plane",
-        "Wheel and axle"
+        "Wheat",
+        "Mustard",
+        "Gram",
+        "Paddy"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 19,
-      "question": "What is the term for the number of vibrations per second of a sound wave?",
+      "question": "Antibiotics are effective mainly against:",
       "options": [
-        "Frequency",
-        "Amplitude",
-        "Time period",
-        "Wavelength"
+        "All diseases",
+        "Only fungal toxins",
+        "Bacteria",
+        "All viruses"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 20,
-      "question": "Which of these is an example of an alloy?",
+      "question": "Identify the correct choice: Rusting of iron needs:",
       "options": [
-        "Brass",
-        "Copper",
-        "Aluminium",
-        "Iron"
+        "Only dry hydrogen",
+        "Oxygen and moisture",
+        "Only nitrogen",
+        "Only helium"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 21,
-      "question": "Which gas do plants absorb from the atmosphere during photosynthesis?",
+      "question": "The hottest part of a candle flame is generally the:",
       "options": [
-        "Nitrogen",
-        "Hydrogen",
-        "Oxygen",
-        "Carbon dioxide"
+        "Outer non-luminous zone",
+        "Dark innermost zone",
+        "Wick only",
+        "Melted wax pool only"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 22,
-      "question": "Which fossil fuel is formed from the remains of dead plants over millions of years?",
+      "question": "The powerhouse of the cell is the:",
       "options": [
-        "Uranium",
-        "Natural gas",
-        "Coal",
-        "Petroleum"
+        "Ribosome",
+        "Cell wall",
+        "Vacuole only in animals",
+        "Mitochondrion"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 23,
-      "question": "Which mirror is used in vehicles as a rear-view/side mirror to give a wider field of view?",
+      "question": "Pick the right answer: SI unit of force is:",
       "options": [
-        "Cylindrical mirror",
-        "Plane mirror",
-        "Concave mirror",
-        "Convex mirror"
+        "Joule",
+        "Watt",
+        "Newton",
+        "Pascal"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 24,
-      "question": "Which of these best describes 'thrust'?",
+      "question": "Sound needs a:",
       "options": [
-        "The area of a surface",
-        "The force acting perpendicular to a surface",
-        "The mass of an object",
-        "The force acting parallel to a surface"
+        "Light beam only",
+        "Material medium to travel",
+        "Vacuum only",
+        "Magnetic field only"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 25,
-      "question": "Which type of friction acts on a body at rest?",
+      "question": "Lightning is a:",
       "options": [
-        "Sliding friction",
-        "Rolling friction",
-        "Fluid friction",
-        "Static friction"
+        "Electric discharge",
+        "Sound only with no charge",
+        "Only magnetic storm without charge",
+        "Nuclear explosion in clouds always"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 26,
-      "question": "What is the main gas responsible for the greenhouse effect that traps heat in Earth's atmosphere?",
+      "question": "The planet known for its prominent rings is:",
       "options": [
-        "Nitrogen",
-        "Neon",
-        "Argon",
-        "Carbon dioxide"
+        "Mercury",
+        "Venus",
+        "Earth",
+        "Saturn"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 27,
-      "question": "What is 'combustion'?",
+      "question": "Pasteurisation is a process of:",
       "options": [
-        "A physical change with no energy release",
-        "A chemical process in which a substance reacts with oxygen to release heat and light",
-        "The process of freezing",
-        "The process of evaporation"
+        "Drying only stones",
+        "Magnetic separation of milk",
+        "Heating milk to kill microbes",
+        "Freezing iron"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 28,
-      "question": "What is the term for the fusion of a sperm and an egg cell?",
+      "question": "Which metal is liquid at room temperature?",
       "options": [
-        "Fertilisation",
-        "Gestation",
-        "Ovulation",
-        "Germination"
+        "Zinc",
+        "Mercury",
+        "Iron",
+        "Aluminium"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 29,
-      "question": "What causes lightning during a thunderstorm?",
+      "question": "Select carefully: Project Tiger aims to protect:",
       "options": [
-        "Sound waves in the atmosphere",
-        "Wind currents alone",
-        "Accumulation and discharge of electric charges in clouds",
-        "Sudden temperature drop only"
+        "Tigers and their habitats",
+        "Only crops",
+        "Only rivers from fish",
+        "Only monuments of brick"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 30,
-      "question": "Which of these materials is a good conductor of electricity?",
+      "question": "Atmospheric pressure acts:",
       "options": [
-        "Wood",
-        "Rubber",
-        "Plastic",
-        "Copper"
+        "Only upward",
+        "Only in vacuum",
+        "Only on metals",
+        "In all directions"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 31,
-      "question": "Which type of mixture is 'plastic' broadly classified as in terms of degradability?",
+      "question": "Ultrasound has frequency:",
       "options": [
-        "Partially biodegradable",
-        "Non-biodegradable",
-        "Fully compostable",
-        "Biodegradable"
+        "Only infra always exclusive",
+        "Exactly 1 Hz always",
+        "Above the human audible range",
+        "Only zero always"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 32,
-      "question": "Which type of lens is used to correct short-sightedness (myopia)?",
+      "question": "Choose the correct option: Myopia is corrected by:",
       "options": [
-        "Convex lens",
+        "Prism only always",
         "Concave lens",
-        "Bifocal lens with only convex power",
-        "Cylindrical lens"
+        "Convex lens only always",
+        "Plane mirror only"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 33,
-      "question": "What is the process of internal fertilisation followed by development inside the mother's body called, as seen in humans?",
+      "question": "Lactic acid bacteria help in formation of:",
       "options": [
-        "External fertilisation",
-        "Oviparous reproduction",
-        "Asexual reproduction",
-        "Viviparous reproduction"
+        "Curd from milk",
+        "Only bread yeast exclusive",
+        "Only vinegar from metal",
+        "Only rust"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 34,
-      "question": "What is the process of separating grain from chaff called?",
+      "question": "Nitrogen-fixing bacteria in legume roots are mainly:",
       "options": [
-        "Harvesting",
-        "Winnowing",
-        "Irrigation",
-        "Threshing"
+        "Lactobacillus",
+        "Yeast",
+        "Amoeba",
+        "Rhizobium"
       ],
       "section": "Science",
       "marks": 1
     },
     {
       "id": 35,
-      "question": "What is 'ozone layer depletion' primarily caused by?",
+      "question": "Identify the correct choice: Which is a synthetic fibre — choose the best answer:",
       "options": [
-        "Chlorofluorocarbons (CFCs)",
-        "Water vapour",
-        "Carbon dioxide only",
-        "Oxygen"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 36,
-      "question": "Which method of conservation involves protecting a specific area for wildlife?",
-      "options": [
-        "Deforestation",
-        "Urbanization",
-        "Wildlife sanctuary/National park",
-        "Mining"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 37,
-      "question": "What is the term for a group of stars forming a recognizable pattern?",
-      "options": [
-        "Asteroid belt",
-        "Galaxy",
-        "Constellation",
-        "Nebula"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 38,
-      "question": "Which method is used to remove husk from grains?",
-      "options": [
-        "Sowing",
-        "Winnowing",
-        "Threshing",
-        "Harvesting"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 39,
-      "question": "What is the main cause of water pollution from industries?",
-      "options": [
-        "Rainfall",
-        "Photosynthesis by aquatic plants",
-        "Discharge of untreated chemical waste into water bodies",
-        "Evaporation"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 40,
-      "question": "Which celestial body is closest to Earth?",
-      "options": [
-        "Mars",
-        "The Moon",
-        "Venus",
-        "The Sun"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 41,
-      "question": "Which part of the cell controls all its activities?",
-      "options": [
-        "Cytoplasm",
-        "Cell membrane",
-        "Nucleus",
-        "Cell wall"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 42,
-      "question": "Which effect occurs when an electric current passes through a solution, causing chemical decomposition?",
-      "options": [
-        "Magnetic effect",
-        "Photoelectric effect",
-        "Chemical effect of electric current (electrolysis)",
-        "Heating effect only"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 43,
-      "question": "What is the zone of a flame that is the hottest?",
-      "options": [
-        "All zones are equally hot",
-        "The innermost/dark zone",
-        "The middle/luminous zone",
-        "The outermost/blue zone"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 44,
-      "question": "Which microorganism is used to make curd from milk?",
-      "options": [
-        "Lactobacillus (bacteria)",
-        "Yeast",
-        "Virus",
-        "Protozoa"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 45,
-      "question": "Which of these is a natural fibre?",
-      "options": [
-        "Polyester",
+        "Jute",
+        "Silk",
         "Nylon",
-        "Rayon",
         "Cotton"
       ],
       "section": "Science",
       "marks": 1
     },
     {
-      "id": 46,
-      "question": "A biogas plant is set up in a village to convert cattle dung into fuel. Which type of microorganism plays the key role in this process, and what is the primary product?",
+      "id": 36,
+      "question": "Which non-metal is essential for combustion in air?",
       "options": [
-        "Viruses that produce electricity directly",
-        "Anaerobic bacteria that decompose organic waste to produce methane-rich biogas",
-        "Fungi that produce only carbon dioxide",
-        "Aerobic bacteria that produce oxygen"
+        "Argon",
+        "Oxygen",
+        "Nitrogen alone",
+        "Neon"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "question": "A good fuel should ideally have:",
+      "options": [
+        "High calorific value",
+        "Very low calorific value",
+        "Lots of smoke always",
+        "No ignition possible"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "question": "Pick the right answer: Plant cells have a distinct:",
+      "options": [
+        "Centriole only like animal exclusive always",
+        "No nucleus ever",
+        "No membrane",
+        "Cell wall"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "question": "Pressure equals:",
+      "options": [
+        "Mass × Velocity",
+        "Work / Time",
+        "Force / Area",
+        "Force × Area"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "question": "Frequency of sound is measured in:",
+      "options": [
+        "Pascals only",
+        "Hertz",
+        "Metres",
+        "Newtons"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "question": "Earthquake magnitude is commonly reported on the:",
+      "options": [
+        "Richter scale (or similar magnitude scales)",
+        "Celsius scale only",
+        "Decibel scale only",
+        "pH scale"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "question": "Stars appear to twinkle mainly due to:",
+      "options": [
+        "Constant size change of stars each second",
+        "Moon’s shadow only",
+        "Earth’s magnetism only",
+        "Atmospheric refraction"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "question": "Which disease is caused by a virus — choose the best answer:",
+      "options": [
+        "Anaemia from iron only always",
+        "Goitre from iodine only always",
+        "Influenza (flu)",
+        "Scurvy only"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "question": "Select carefully: Coke is used in extraction of metals as a:",
+      "options": [
+        "Fertiliser only",
+        "Reducing agent",
+        "Oxidising perfume",
+        "Coolant gas only"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "question": "Nucleus of a cell contains:",
+      "options": [
+        "Genetic material (DNA)",
+        "Only food vacuoles exclusive",
+        "Only cell wall cellulose",
+        "Only flagella"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "question": "A force of 90 N acts on 2 m². The pressure is:",
+      "options": [
+        "90",
+        "180",
+        "22.5",
+        "45"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 47,
-      "question": "A farmer rotates different crops each season instead of growing the same crop repeatedly. Analyze the scientific reasoning behind this practice.",
+      "question": "Choose the correct option: A force of 50 N acts on 2 m². The pressure is:",
       "options": [
-        "Crop rotation replenishes soil nutrients and reduces the build-up of pests/diseases specific to one crop",
-        "It is done purely for tradition with no scientific basis",
-        "It only saves the farmer time",
-        "It has no effect on soil quality"
+        "50 Pa",
+        "10 Pa",
+        "25 Pa",
+        "100 Pa"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 48,
-      "question": "A student wants to test if a liquid conducts electricity using a simple circuit with an LED. If the LED lights up, what can be concluded, and what real-world application does this principle have?",
+      "question": "Which sequence correctly orders zones of a candle flame from inside to outside?",
       "options": [
-        "No conclusion can be drawn from this test",
-        "The circuit is broken",
-        "The liquid is pure water with no dissolved substances",
-        "The liquid contains ions/is an electrolyte; this principle is used in electroplating and testing water purity"
+        "Only one uniform zone",
+        "Dark zone → Luminous zone → Non-luminous zone",
+        "Non-luminous → Dark → Luminous",
+        "Luminous → Dark → Non-luminous"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 49,
-      "question": "During a lunar eclipse, the Earth comes between the Sun and the Moon. Using your understanding of light and shadows, explain why the Moon appears reddish during a total lunar eclipse.",
+      "question": "During electroplating of copper on an iron object, the iron object is made the:",
       "options": [
-        "The Moon changes its own color",
-        "The Sun turns red during eclipses",
-        "The Moon absorbs all light except red",
-        "Sunlight bends through Earth's atmosphere and scatters, allowing only red wavelengths to reach the Moon"
+        "Cathode",
+        "Anode only always",
+        "Electrolyte salt bridge",
+        "Battery negative terminal wire insulation"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 50,
-      "question": "A student notices that a wooden block held underwater rises to the surface when released, while a stone sinks. Explain this difference using the concept of buoyancy and density.",
+      "question": "Identify the correct choice: If the area of contact is halved for the same force, pressure becomes:",
       "options": [
-        "Both should sink since gravity acts on both",
-        "Stone floats due to its shape only",
-        "Wood is less dense than water so buoyant force exceeds its weight, while stone is denser so its weight exceeds buoyant force",
-        "Wood floats because it has no weight"
+        "Half",
+        "Same",
+        "Zero",
+        "Double"
       ],
       "section": "Achievers Section",
       "marks": 3

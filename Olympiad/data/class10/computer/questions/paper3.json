@@ -1,858 +1,628 @@
 {
   "class": 10,
-  "subject": "Computer Science",
+  "subject": "computer",
   "paper": 3,
-  "title": "Class 10 Computer Science Olympiad — Paper 3",
-  "durationMinutes": 60,
   "totalQuestions": 50,
   "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
+  "yearStyle": "2023-2025",
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern & syllabus. Not an official SOF paper. ICSO pattern: Logical Reasoning 10×1 + Computers and IT 35×1 + Achievers 5×3 = 50 questions / 60 marks",
   "sections": [
     {
       "name": "Logical Reasoning",
       "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
+      "marksEach": 1
     },
     {
-      "name": "Computer Science",
-      "questions": 25,
-      "marksPerQuestion": 1,
-      "totalMarks": 25
-    },
-    {
-      "name": "AI, IT & Safety",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
+      "name": "Computers and IT",
+      "questions": 35,
+      "marksEach": 1
     },
     {
       "name": "Achievers Section",
       "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
+      "marksEach": 3
     }
   ],
   "questions": [
     {
       "id": 1,
-      "question": "Find the next term: 2, 4, 8, 16, __",
-      "options": [
-        "30",
-        "32",
-        "24",
-        "36"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Next: 8, 12, 16, 20, __",
+      "options": [
+        "25",
+        "23",
+        "26",
+        "24"
+      ],
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which of these is not like the others: RAM, ROM, CPU, USB drive",
-      "options": [
-        "CPU",
-        "ROM",
-        "USB drive (external storage, others are internal components)",
-        "RAM"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Memory and Storage Devices",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Pick the right answer: Odd one out: Keyboard, Mouse, Monitor, Wheat",
+      "options": [
+        "Wheat",
+        "Keyboard",
+        "Mouse",
+        "Monitor"
+      ],
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Find the odd one out: Python, Java, HTML, C++",
-      "options": [
-        "C++",
-        "Java",
-        "Python",
-        "HTML (markup language, others are programming languages)"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "HTML and CSS",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Pick the right answer: Analogy: CPU : Process :: Monitor : ?",
+      "options": [
+        "Display",
+        "Print only",
+        "Type only",
+        "Store fuel"
+      ],
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "If FILE is coded as EHKD, how is DATA coded?",
-      "options": [
-        "EBUB",
-        "CZSZ",
-        "CBSB",
-        "DBTB"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Pick the right answer: If CAT = 24 (A=1 sum), DOG = ?",
+      "options": [
+        "26",
+        "24",
+        "30",
+        "20"
+      ],
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which of these does not belong with the others: Router, Switch, Modem, Monitor",
-      "options": [
-        "Router",
-        "Modem",
-        "Switch",
-        "Monitor (output device, others are networking devices)"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Networking",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Pick the right answer: Binary next: 1, 10, 11, 100, ?",
+      "options": [
+        "101",
+        "110",
+        "111",
+        "1000"
+      ],
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Complete the analogy: Keyboard is to Type as Mouse is to ____",
-      "options": [
-        "Print",
-        "Click/Point",
-        "Scan",
-        "Speak"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "I/O Devices",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Face West, turn left, then left. Face:",
+      "options": [
+        "East",
+        "West",
+        "North",
+        "South"
+      ],
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Complete the analogy: Keyboard is to Input as Printer is to ____",
-      "options": [
-        "Memory",
-        "Storage",
-        "Processing",
-        "Output"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "I/O Devices",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Pick the right answer: Odd one: AND, OR, NOT, CPU",
+      "options": [
+        "CPU",
+        "AND",
+        "OR",
+        "NOT"
+      ],
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "If in a certain code MOUSE is written as NPVTF, how is KEYS written?",
-      "options": [
-        "JDXR",
-        "KFYT",
-        "LFZT",
-        "LFZR"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "I/O Devices",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Pick the right answer: Series: 5, 10, 20, 40, ?",
+      "options": [
+        "80",
+        "60",
+        "50",
+        "70"
+      ],
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "If a file is 5 MB and internet speed is 1 MB/s, how long will it take to download?",
-      "options": [
-        "50 seconds",
-        "5 seconds",
-        "1 second",
-        "10 seconds"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Pick the right answer: If passwords must be secret and X is a password, X must be:",
+      "options": [
+        "kept secret",
+        "published online",
+        "shared widely always",
+        "written on the door"
+      ],
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "A file is 240 KB. Approximately how many such files fit in 1 MB (1 MB = 1024 KB)?",
-      "options": [
-        "2 files",
-        "Approximately 4 files",
-        "10 files",
-        "8 files"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Pick the right answer: 2-letter codes from A,B repetition allowed:",
+      "options": [
+        "4",
+        "2",
+        "3",
+        "1"
+      ],
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What is the full form of RAM?",
+      "section": "Computers and IT",
+      "text": "A LAN typically covers a:",
       "options": [
-        "Rapid Access Memory",
-        "Run Access Memory",
-        "Read Access Memory",
-        "Random Access Memory"
+        "Only undersea cables",
+        "Outer space only",
+        "Local area such as a building",
+        "The entire planet only"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Memory and Storage Devices",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "Convert the decimal number 25 to binary.",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: A strong password should be:",
       "options": [
-        "11001",
-        "11010",
-        "11101",
-        "10101"
+        "password",
+        "Long mixed letters numbers symbols",
+        "Your name only",
+        "12345"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Number System",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Which storage device uses flash memory with no moving parts?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: A database is:",
       "options": [
-        "SSD (Solid State Drive)",
-        "HDD (Hard Disk Drive)",
-        "Floppy disk",
-        "CD-ROM"
+        "An organised collection of data",
+        "A single unformatted paragraph only",
+        "Only a power cable",
+        "A type of virus"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Memory and Storage Devices",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "What does the acronym URL stand for?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: AI in simple terms:",
       "options": [
-        "United Resource Locator",
-        "Uniform Resource Locator",
-        "Uniform Reference Link",
-        "Universal Resource Link"
+        "Only mechanical gears without data",
+        "Paper filing cabinets",
+        "Analog radio only",
+        "Machines performing tasks needing human-like intelligence"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "What is the function of an operating system's 'task manager'?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: URL stands for:",
       "options": [
-        "To monitor and manage running processes and applications",
-        "To edit documents",
-        "To browse the internet",
-        "To send emails"
+        "User Remote Login only",
+        "United Router Link",
+        "Uniform Resource Locator",
+        "Universal Random List"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Database Management System - Functions",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "Which device converts digital signals to analog for transmission over telephone lines?",
+      "section": "Computers and IT",
+      "text": "CSS is mainly used for:",
       "options": [
-        "Switch",
-        "Modem",
-        "Router",
-        "Hub"
+        "Antivirus definitions",
+        "Styling web pages",
+        "Only database queries",
+        "CPU manufacturing"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Which of these best describes a 'foreign key' in a database?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: A loop that continues while a condition is true is a:",
       "options": [
-        "A field that must always be blank",
-        "A field with only numeric values",
-        "A field that links to the primary key of another table",
-        "A field used only for storing images"
+        "while loop",
+        "only a variable",
+        "firewall rule only",
+        "CSS class"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Database Management System - Functions",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Which of these is a primary key constraint in a database?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: SELECT in SQL is used to:",
       "options": [
-        "It can contain duplicate values",
-        "It must be a text field only",
-        "It must contain unique, non-null values",
-        "It can be left blank"
+        "Delete the operating system",
+        "Format a disk always",
+        "Send phishing mail",
+        "Retrieve data"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Database Management System - Functions",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "Which Python operator is used for exponentiation (power)?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Machine learning models improve by:",
       "options": [
-        "\\*\\*",
-        "//",
-        "^",
-        "%"
+        "Only hard-coded single IF forever without data",
+        "Randomly deleting files",
+        "Learning patterns from data",
+        "Ignoring all data"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Programming in Python 3.14.2",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "What does CSS stand for?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Bandwidth commonly refers to:",
       "options": [
-        "Cascading Style Sheets",
-        "Computer Style Sheets",
-        "Creative Style System",
-        "Colour Style Sheets"
+        "Printer paper size only",
+        "Data transfer capacity of a link",
+        "Width of a monitor bezel only",
+        "CPU clock only"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "HTML and CSS",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "What does DBMS stand for?",
+      "section": "Computers and IT",
+      "text": "Cookie in a browser is often used to:",
       "options": [
-        "Database Management System",
-        "Database Model System",
-        "Digital Base Management System",
-        "Data Backup Management System"
+        "Store small data for session/preferences",
+        "Infect BIOS always",
+        "Replace the CPU",
+        "Print documents automatically always"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Which of these is an example of system software?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Git is commonly used for:",
       "options": [
-        "Operating System",
-        "Adobe Photoshop",
-        "Google Chrome",
-        "MS-Word"
+        "Only frying food",
+        "Only antivirus signatures as OS",
+        "Power supply design only",
+        "Version control"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Software",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "In HTML, which tag is used to define the largest heading?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: A PDF is primarily a:",
       "options": [
-        "<head>",
-        "<h6>",
-        "<header>",
-        "<h1>"
+        "Network topology",
+        "Type of RAM",
+        "Document format",
+        "Programming language"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "HTML and CSS",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "Which shortcut key is used to copy selected text in Windows?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Encryption transforms data so that:",
       "options": [
-        "Ctrl+V",
-        "Ctrl+C",
-        "Ctrl+Z",
-        "Ctrl+X"
+        "It deletes itself always",
+        "Only authorised parties can read it easily",
+        "Everyone must read it in plain form",
+        "It becomes larger images only"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Operating System",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "In MS-PowerPoint, what is used to control how a slide appears on screen during a presentation?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: DNS translates:",
       "options": [
-        "Slide transition",
-        "Slide master",
-        "Slide layout",
-        "Slide sorter"
+        "Domain names to IP addresses",
+        "Only images to text",
+        "RAM to ROM",
+        "Passwords to usernames"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "MS PowerPoint",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Which number system uses only digits 0 and 1?",
+      "section": "Computers and IT",
+      "text": "An operating system example is:",
       "options": [
-        "Hexadecimal",
-        "Decimal",
-        "Binary",
-        "Octal"
+        "MS Word only",
+        "Google Chrome only as OS",
+        "JPEG",
+        "Linux"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Number System",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "Which CSS property is used to change the text colour of an element?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: HTML is used to:",
       "options": [
-        "fg-color",
-        "color",
-        "text-color",
-        "font-color"
+        "Replace electricity",
+        "Compile only C++",
+        "Create web page structure",
+        "Only edit offline videos"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "HTML and CSS",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "Which Python data type is used to store a sequence of characters?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Which device connects different networks?",
       "options": [
-        "String",
-        "Integer",
-        "Boolean",
-        "Float"
+        "Microphone",
+        "Router",
+        "Mouse",
+        "Joystick"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Programming in Python 3.14.2",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "In Python, which keyword is used to define a function?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: In MS Excel, a formula usually begins with:",
       "options": [
-        "def",
-        "function",
-        "func",
-        "define"
+        "=",
+        "#",
+        "@",
+        "&"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Database Management System - Functions",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Which topology connects all devices to a single central hub?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Primary key should be:",
       "options": [
-        "Ring topology",
-        "Mesh topology",
-        "Star topology",
-        "Bus topology"
+        "Always duplicated",
+        "Always blank",
+        "Only images",
+        "Unique for each record"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "In MS-Excel, which function adds up a range of cells?",
+      "section": "Computers and IT",
+      "text": "Which is malware?",
       "options": [
-        "TOTAL()",
-        "PLUS()",
-        "SUM()",
-        "ADD()"
+        "Antivirus update",
+        "UPS",
+        "Ransomware",
+        "Firewall"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Database Management System - Functions",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "Convert the binary number 1010 to decimal.",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: IP address identifies a:",
       "options": [
-        "8",
-        "9",
-        "10",
-        "12"
+        "Font style",
+        "Device on a network",
+        "Only a printer ink type",
+        "Keyboard layout only"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Number System",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "Which HTML tag is used to create a hyperlink?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: JavaScript in browsers is commonly used to:",
       "options": [
-        "<a>",
-        "<link>",
-        "<href>",
-        "<url>"
+        "Add interactivity to web pages",
+        "Replace the operating system kernel only",
+        "Manufacture RAM",
+        "Cool GPUs with code"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "HTML and CSS",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "What is the function of a firewall in a network?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Which data type stores True/False?",
       "options": [
-        "To store data permanently",
-        "To print documents",
-        "To increase internet speed",
-        "To monitor and control incoming/outgoing network traffic for security"
+        "Integer only",
+        "String only",
+        "Float only",
+        "Boolean"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "Database Management System - Functions",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "What is the purpose of the Ctrl+Z shortcut?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Two-factor authentication improves security by requiring:",
       "options": [
-        "Redo the last action",
-        "Save the file",
-        "Undo the last action",
-        "Close the file"
+        "Public password posts",
+        "No login ever",
+        "Something extra beyond password (e.g. OTP)",
+        "Weaker passwords"
       ],
-      "section": "Computer Science",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 36,
-      "question": "Which of these is an example of an AI-based application?",
+      "section": "Computers and IT",
+      "text": "Backup of important files should be:",
       "options": [
-        "Voice assistants like Siri or Alexa",
-        "Calculator app",
-        "MS Paint",
-        "Notepad"
+        "Shared publicly with passwords",
+        "Regular and preferably offsite/cloud too",
+        "Never done",
+        "Only on the same failing disk"
       ],
-      "section": "AI, IT & Safety",
-      "marks": 1,
-      "syllabusTopic": "Software",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 37,
-      "question": "Which technology allows a robot to 'see' and interpret its surroundings?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Which is an email protocol?",
       "options": [
-        "Spreadsheet software",
-        "Email client",
-        "Word processing software",
-        "Computer vision / sensors"
+        "SMTP",
+        "HTML only",
+        "CSS only",
+        "PNG"
       ],
-      "section": "AI, IT & Safety",
-      "marks": 1,
-      "syllabusTopic": "AI",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 38,
-      "question": "What should you do if you receive an email asking for your bank password?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Which is NOT an output device?",
       "options": [
-        "Do not respond and report/delete the email",
-        "Click all links in the email",
-        "Reply with your password immediately",
-        "Forward it to friends"
+        "Printer",
+        "Speaker",
+        "Monitor",
+        "Keyboard"
       ],
-      "section": "AI, IT & Safety",
-      "marks": 1,
-      "syllabusTopic": "Cyber Safety",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 39,
-      "question": "What is 'phishing' in the context of cyber safety?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: In Excel, =SUM(A1:A5) calculates:",
       "options": [
-        "A fraudulent attempt to obtain sensitive information by pretending to be trustworthy",
-        "A way to back up files",
-        "A type of computer virus scanner",
-        "A method to speed up internet connection"
+        "Average of whole sheet always",
+        "Maximum of column Z only",
+        "Sum of A1 through A5",
+        "Product only"
       ],
-      "section": "AI, IT & Safety",
-      "marks": 1,
-      "syllabusTopic": "Cyber Safety",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 40,
-      "question": "Which of these best describes 'machine learning'?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Bluetooth is mainly for:",
       "options": [
-        "A type of computer monitor",
-        "A subset of AI where systems learn patterns from data to improve performance",
-        "A method of manually programming every possible outcome",
-        "A way to physically assemble computer hardware"
+        "Undersea cables only",
+        "Short-range wireless communication",
+        "Intercontinental fibre only",
+        "Satellite TV only"
       ],
-      "section": "AI, IT & Safety",
-      "marks": 1,
-      "syllabusTopic": "AI",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 41,
-      "question": "Why is it important to log out of accounts on shared/public computers?",
+      "section": "Computers and IT",
+      "text": "An algorithm is:",
       "options": [
-        "To prevent unauthorized access to your personal information",
-        "To update the software",
-        "To save electricity",
-        "To make the computer run faster"
+        "A step-by-step procedure to solve a problem",
+        "A hardware fan",
+        "Only a brand of mouse",
+        "A type of virus"
       ],
-      "section": "AI, IT & Safety",
-      "marks": 1,
-      "syllabusTopic": "AI",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 42,
-      "question": "What does 'IoT' stand for?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: CPU stands for:",
       "options": [
-        "Internal Object Transfer",
-        "Input of Technology",
-        "Internet of Things",
-        "Integration of Tools"
+        "Computer Personal Utility",
+        "Central Print Unit",
+        "Control Program Upload",
+        "Central Processing Unit"
       ],
-      "section": "AI, IT & Safety",
-      "marks": 1,
-      "syllabusTopic": "AI",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 43,
-      "question": "What is a 'strong password' characterized by?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Which is an input device?",
       "options": [
-        "A mix of uppercase, lowercase, numbers, and symbols, hard to guess",
-        "The word 'password'",
-        "A short common word",
-        "Your name and birth date"
+        "Printer",
+        "Monitor",
+        "Scanner",
+        "Speaker"
       ],
-      "section": "AI, IT & Safety",
-      "marks": 1,
-      "syllabusTopic": "Cyber Safety",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 44,
-      "question": "Cyberbullying refers to:",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Largest HTML heading tag pair:",
       "options": [
-        "A method of encrypting files",
-        "Using digital platforms to harass or intimidate someone",
-        "A software update process",
-        "A type of network cable"
+        "<heading>",
+        "<h1>...</h1>",
+        "<h6> as largest",
+        "<head1>"
       ],
-      "section": "AI, IT & Safety",
-      "marks": 1,
-      "syllabusTopic": "Cyber Safety",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 45,
-      "question": "What is the main purpose of Artificial Intelligence?",
+      "section": "Computers and IT",
+      "text": "Pick the right answer: Phishing attempts to:",
       "options": [
-        "To enable machines to mimic human intelligence and learning",
-        "To only play games",
-        "To replace all human jobs",
-        "To store data faster"
+        "Steal sensitive information by deception",
+        "Speed up the CPU",
+        "Clean dust",
+        "Charge a battery"
       ],
-      "section": "AI, IT & Safety",
-      "marks": 1,
-      "syllabusTopic": "AI",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 46,
-      "question": "In a Python program, a loop is meant to run 5 times using 'for i in range(5):' but the student wants it to print numbers 1 to 5 instead of 0 to 4. What change is needed?",
-      "options": [
-        "No change needed, 0 to 4 is correct for 1 to 5",
-        "Use range(6) instead of range(5)",
-        "Use range(1, 6) instead of range(5)",
-        "Use range(0, 5) instead of range(5)"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Programming in Python 3.14.2",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "text": "In binary, 1101 + 1 = ?",
+      "options": [
+        "1110",
+        "1111",
+        "1100",
+        "1001"
+      ],
+      "marks": 3
     },
     {
       "id": 47,
-      "question": "A student wants to design a webpage where clicking a button changes the background colour. Which combination of technologies is needed?",
-      "options": [
-        "HTML for structure, CSS for styling, and JavaScript for interactivity",
-        "Only a database is needed",
-        "Only HTML is sufficient",
-        "Only CSS is sufficient"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Networking",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "text": "Pick the right answer: Which normal form removes partial dependency on a composite key (basic idea)?",
+      "options": [
+        "2NF",
+        "1NF only",
+        "Only physical layer",
+        "CSS NF"
+      ],
+      "marks": 3
     },
     {
       "id": 48,
-      "question": "A user notices their computer has become very slow, shows pop-up ads, and unfamiliar programs are running. What is the most likely cause and best first action?",
-      "options": [
-        "The monitor resolution is too high; change display settings",
-        "The RAM is too large; reduce RAM",
-        "The internet speed is too fast; disconnect Wi-Fi",
-        "The system is likely infected with malware/adware; run a trusted antivirus scan"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Memory and Storage Devices",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "text": "Pick the right answer: Time complexity of scanning n elements once is commonly:",
+      "options": [
+        "O(n)",
+        "O(1) always",
+        "O(n²) only",
+        "O(2^n) only"
+      ],
+      "marks": 3
     },
     {
       "id": 49,
-      "question": "A robotic arm in a factory uses sensors to detect object position before picking it up. Which field of computer science is primarily responsible for this capability?",
-      "options": [
-        "Robotics combined with AI (sensor-based perception)",
-        "Word processing",
-        "Email protocols",
-        "Spreadsheet computation"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Database Management System - Functions",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "text": "Pick the right answer: Public key cryptography uses:",
+      "options": [
+        "A key pair (public and private)",
+        "Only one shared hidden sticky note always",
+        "No keys",
+        "Only biometric without keys ever"
+      ],
+      "marks": 3
     },
     {
       "id": 50,
-      "question": "A school database has a 'Students' table with a duplicate entry causing errors when searching by ID. What database concept was likely violated during table design?",
-      "options": [
-        "Normalization to third normal form only",
-        "Foreign key relationship",
-        "Data type mismatch",
-        "Primary key uniqueness constraint"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Database Management System - Functions",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "text": "Pick the right answer: Output of Python: print(2 ** 3 + 1)",
+      "options": [
+        "9",
+        "7",
+        "8",
+        "6"
+      ],
+      "marks": 3
     }
-  ],
-  "syllabusVersion": "SOF Class 10 current syllabus reference",
-  "syllabusTopics": [
-    "Fundamentals of Computer - Hardware",
-    "Fundamentals of Computer - Software",
-    "I/O Devices",
-    "Memory and Storage Devices",
-    "Basics of IT",
-    "Number System",
-    "Operating System",
-    "MS Word",
-    "Networking",
-    "MS PowerPoint",
-    "MS Excel",
-    "HTML and CSS",
-    "Cyber Safety",
-    "Database Management System - Functions",
-    "Database Management System - Types",
-    "MS Access",
-    "Using Windows 11",
-    "Programming in Scratch",
-    "Programming in Python 3.14.2",
-    "Programming in Visual Basic"
-  ],
-  "reasoningTopics": [
-    "Verbal and Non-Verbal Reasoning"
-  ],
-  "aiTopics": [
-    "AI",
-    "Robotics",
-    "IT Gadgets",
-    "Devices",
-    "Apps",
-    "Computerization",
-    "Other Developments in IT"
-  ],
-  "officialSOFPattern": [
-    {
-      "name": "Logical Reasoning",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Computer Science",
-      "questions": 30,
-      "marksPerQuestion": 1,
-      "totalMarks": 30
-    },
-    {
-      "name": "AI, Robotics and Information Technology",
-      "questions": 5,
-      "marksPerQuestion": 1,
-      "totalMarks": 5
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
-  "level1SyllabusRule": "Use current SOF Class 10 syllabus; official pattern is 10 reasoning + 30 computer science + 5 AI/Robotics/IT + 5 achievers"
+  ]
 }

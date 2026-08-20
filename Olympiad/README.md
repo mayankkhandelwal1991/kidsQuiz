@@ -40,4 +40,16 @@ python -m http.server 8000
 ## Important
 The included questions are **original SOF-pattern practice** aligned to the 2023–2025 syllabus for demonstrating the Class 1–10 portal structure. They are **not** official copyrighted SOF papers or copied previous-year questions. Class 4 papers (IMO/NSO/IEO/ICSO/IGKO style) follow the public exam pattern (e.g. Achievers 2 marks for classes 3–4 where applicable).
 
+**Class 5** papers are original SOF-pattern practice (2023–2025 style): Mathematics 40Q/50 marks (Achievers ×3), Science/Computer/GK 50Q/60 marks (Achievers ×3), English 60Q/60 marks. Generated via `tools/generate-class5-sof.js`.
+
+**Class 6** papers are original SOF-pattern practice (2023–2025 style, NCERT Class 6 level): Mathematics 40Q/50 marks (LR 15 + MR 20 + Achievers 5×3), Science/Computer 50Q/60 (LR 10 + 35 + Achievers 5×3), English 60Q/60 (WSK 45 + Reading 10 + SWE 5), GK 50Q/60 (GA 30 + CA 10 + Life Skills 5 + Achievers 5×3). Generated via `tools/generate-class6-sof.js`.
+**Class 8** papers are original SOF-pattern practice (2023–2025 style): Mathematics 40Q/50 marks (Achievers ×3), Science/Computer/GK 50Q/60 marks (Achievers ×3), English 60Q/60 marks. Generated via `tools/generate-class8-sof.js`.
+
+**Class 7** papers are original SOF-pattern practice (2023–2025 style, NCERT Class 7 level): Mathematics 40Q/50 marks (LR 15 + MR 20 + Achievers 5×3), Science/Computer 50Q/60 (LR 10 + 35 + Achievers 5×3), English 60Q/60 (WSK 45 + Reading 10 + SWE 5), GK 50Q/60 (GA 30 + CA 10 + Life Skills 5 + Achievers 5×3). Generated via `tools/generate-class7-sof.js`.
+
+**Class 9** papers are original SOF-pattern practice (2023–2025 style, NCERT Class 9 level): Mathematics 40Q/50 (LR 15 + MR 20 + Achievers 5×3), Science/Computer 50Q/60 (LR 10 + 35 + Achievers 5×3), English 60Q/60 (WSK 45 + Reading 10 + SWE 5), GK 50Q/60 (GA 30 + CA 10 + Life Skills 5 + Achievers 5×3). Topics include number systems, polynomials, linear equations, geometry, Heron, surface areas & volumes, motion, atoms, tissues, HTML/CSS, cyber safety, Constitution, etc. Generated via `tools/generate-class9-sof.js`.
+
+**Class 10** papers are original SOF-pattern practice (2023–2025 style, NCERT Class 10 level): Mathematics 40Q/50 (LR 15 + MR 20 + Achievers 5×3), Science/Computer 50Q/60 (LR 10 + 35 + Achievers 5×3), English 60Q/60 (WSK 45 + Reading 10 + SWE 5), GK 50Q/60 (GA 30 + CA 10 + Life Skills 5 + Achievers 5×3). Topics include real numbers, polynomials, linear/quadratic equations, AP, triangles, coordinate geometry, trigonometry, circles, surface areas & volumes, statistics, probability; chemical reactions, acids–bases, metals, carbon compounds, life processes, control & coordination, reproduction, heredity, light, electricity, magnetic effects, environment; advanced grammar/reading/writing; networking, HTML/CSS/JS, cybersecurity, AI/ML awareness, DBMS, Python basics; India polity/history/geography, economy, sports, SDGs/life skills. Generated via `tools/generate-class10-sof.js`.
+
+
 To replace any paper, edit its questions JSON and answer JSON. The HTML/JS does not need to change as long as the JSON schema remains the same.

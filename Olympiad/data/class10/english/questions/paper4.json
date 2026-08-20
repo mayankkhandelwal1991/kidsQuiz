@@ -1,845 +1,748 @@
 {
   "class": 10,
-  "subject": "English",
+  "subject": "english",
   "paper": 4,
-  "title": "Class 10 English Olympiad — Paper 4",
-  "durationMinutes": 60,
-  "totalQuestions": 50,
+  "totalQuestions": 60,
   "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
+  "yearStyle": "2023-2025",
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern & syllabus. Not an official SOF paper. IEO pattern: Word and Structure Knowledge 45×1 + Reading 10×1 + Spoken and Written Expression 5×1 = 60 questions / 60 marks",
   "sections": [
     {
-      "name": "Word and Structure",
-      "questions": 30,
-      "marksPerQuestion": 1,
-      "totalMarks": 30
+      "name": "Word and Structure Knowledge",
+      "questions": 45,
+      "marksEach": 1
     },
     {
-      "name": "Reading & Expression",
-      "questions": 15,
-      "marksPerQuestion": 1,
-      "totalMarks": 15
+      "name": "Reading",
+      "questions": 10,
+      "marksEach": 1
     },
     {
-      "name": "Achievers Section",
+      "name": "Spoken and Written Expression",
       "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
+      "marksEach": 1
     }
   ],
   "questions": [
     {
       "id": 1,
-      "question": "Choose the correct word: She is allergic ___ peanuts.",
+      "section": "Word and Structure Knowledge",
+      "text": "Choose the correct sentence:",
       "options": [
-        "from",
-        "for",
-        "with",
-        "to"
+        "If it will rain, we stay.",
+        "If it raining, we will stay.",
+        "If rains it, stay we.",
+        "If it rains, we will stay indoors."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Fill in the blank with the correct article: He is ___ honest man.",
+      "section": "Word and Structure Knowledge",
+      "text": "He ___ swim when he was five.",
       "options": [
-        "an",
-        "a",
-        "the",
-        "no article needed"
+        "may",
+        "must",
+        "could",
+        "can"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Articles",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Choose the correct plural form of 'phenomenon'.",
+      "section": "Word and Structure Knowledge",
+      "text": "He is good ___ mathematics.",
       "options": [
-        "Phenomenas",
-        "Phenomenons",
-        "Phenomena",
-        "Phenomenae"
+        "with",
+        "at",
+        "in",
+        "on"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Choose the word closest in meaning to 'meticulous'.",
+      "section": "Word and Structure Knowledge",
+      "text": "Distribute the sweets ___ the children.",
       "options": [
-        "Careful",
-        "Lazy",
-        "Hasty",
-        "Careless"
+        "among",
+        "between",
+        "in",
+        "into"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Identify the correct sentence.",
+      "section": "Word and Structure Knowledge",
+      "text": "I want ___ the truth.",
       "options": [
-        "He is one of the student who have passed the exam.",
-        "He are one of the students who has passed the exam.",
-        "He is one of the students who has passed the exam.",
-        "He is one of the students who have passed the exam."
+        "know",
+        "knowing",
+        "known",
+        "to know"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Identify the correctly punctuated sentence.",
+      "section": "Word and Structure Knowledge",
+      "text": "The news ___ true.",
       "options": [
-        "My favourite subjects are: Science, Mathematics, and English.",
-        "My favourite subjects are; Science, Mathematics, and English",
-        "My favourite subjects are, Science Mathematics and English.",
-        "My favourite subjects are Science; Mathematics, and English."
+        "were",
+        "have",
+        "is",
+        "are"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Choose the correctly spelled word.",
+      "section": "Word and Structure Knowledge",
+      "text": "Antonym of ‘scarce’:",
       "options": [
-        "Occurence",
-        "Occurrance",
-        "Ocurrence",
-        "Occurrence"
+        "short",
+        "abundant",
+        "rare",
+        "little"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Choose the antonym of 'benevolent'.",
+      "section": "Word and Structure Knowledge",
+      "text": "Choose correctly spelt word:",
       "options": [
-        "Malevolent",
-        "Charitable",
-        "Generous",
-        "Kind"
+        "Accommodation",
+        "Acommodation",
+        "Accomodation",
+        "Acomodation"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Antonyms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Choose the word closest in meaning to 'ambiguous'.",
+      "section": "Word and Structure Knowledge",
+      "text": "Antonym of ‘optimistic’:",
       "options": [
-        "Direct",
-        "Obvious",
-        "Unclear",
-        "Certain"
+        "hopeful",
+        "cheerful",
+        "positive",
+        "pessimistic"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Identify the correctly punctuated sentence.",
+      "section": "Word and Structure Knowledge",
+      "text": "Error spot idea: ‘He suggested me to go’ correct is:",
       "options": [
-        "Where are you going she asked.",
-        "\"Where are you going?\" she asked.",
-        "Where are you going, she asked?",
-        "\"Where are you going\" she asked?"
+        "He suggested to me going always wrong",
+        "He suggest me to go",
+        "He suggested that I go",
+        "He suggested me go"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "Fill in the blank: Hardly had she left ___ the phone rang.",
+      "section": "Word and Structure Knowledge",
+      "text": "Choose correct: The committee ___ divided in its opinion.",
       "options": [
-        "than",
-        "then",
-        "when",
-        "after"
+        "have",
+        "was",
+        "were always only",
+        "are"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "Identify the correctly written sentence.",
+      "section": "Word and Structure Knowledge",
+      "text": "Choose the correct option (55): She prefers tea ___ coffee.",
       "options": [
-        "Neither of the boys has done their homework.",
-        "Neither of the boys have done his homework.",
-        "Neither of the boys has done his homework.",
-        "Neither of the boys have done their homework."
+        "to",
+        "than",
+        "from",
+        "for"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Fill in the blank: If I ___ rich, I would travel the world.",
+      "section": "Word and Structure Knowledge",
+      "text": "I have ___ little money left.",
       "options": [
-        "be",
-        "were",
-        "am",
-        "was"
+        "an",
+        "the",
+        "many",
+        "a"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Conditionals",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Fill in the blank: She has been living here ___ 2015.",
+      "section": "Word and Structure Knowledge",
+      "text": "By this time tomorrow, we ___ the project.",
       "options": [
-        "since",
-        "in",
-        "for",
-        "from"
+        "finished",
+        "are finish",
+        "will have finished",
+        "finish"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "Identify the part of speech of the underlined word: She sings 'beautifully'.",
+      "section": "Word and Structure Knowledge",
+      "text": "The train ___ before we reached the station.",
       "options": [
-        "Adverb",
-        "Noun",
-        "Adjective",
-        "Verb"
+        "left only wrong tense pair",
+        "had left",
+        "has left",
+        "leaves"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "Fill in the blank: Neither the teacher nor the students ___ ready.",
+      "section": "Word and Structure Knowledge",
+      "text": "Passive of ‘They are repairing the road’:",
       "options": [
-        "was",
-        "has been",
-        "is",
-        "were"
+        "The road is being repaired by them.",
+        "The road repaired them.",
+        "The road was repairing.",
+        "They are repaired the road."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Choose the meaning of the idiom 'to let the cat out of the bag'.",
+      "section": "Word and Structure Knowledge",
+      "text": "Passive of ‘Who wrote this book?’:",
       "options": [
-        "To reveal a secret",
-        "To escape from trouble",
-        "To make a mistake",
-        "To adopt a pet"
+        "Who was written this book?",
+        "By who this book written?",
+        "Whom wrote this book by?",
+        "By whom was this book written?"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Idioms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Fill in the blank with the correct preposition: He is good ___ mathematics.",
+      "section": "Word and Structure Knowledge",
+      "text": "Ram said, “I bought a pen yesterday.” →",
       "options": [
-        "at",
-        "on",
-        "in",
-        "with"
+        "Ram said that I bought a pen yesterday.",
+        "Ram said he buy a pen.",
+        "Ram said that he had bought a pen the previous day.",
+        "Ram said that he has bought a pen yesterday."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Prepositions",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "Choose the correct conjunction: She was tired, ___ she kept working.",
+      "section": "Word and Structure Knowledge",
+      "text": "Join: ‘This is the girl. She won the medal.’",
       "options": [
-        "or",
-        "because",
-        "yet",
-        "and"
+        "This is girl she won medal.",
+        "This is the girl who won the medal.",
+        "This is the girl which won the medal.",
+        "This is the girl whom won."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Conjunctions",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "Choose the meaning of the idiom 'to bite the bullet'.",
+      "section": "Word and Structure Knowledge",
+      "text": "You ___ wear a seat belt while driving.",
       "options": [
-        "To face a difficult situation bravely",
-        "To argue loudly",
-        "To avoid a problem",
-        "To eat quickly"
+        "must",
+        "used",
+        "need not never",
+        "ought not ever only"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Idioms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "Fill in the blank: The committee ___ meeting today at 5 pm.",
+      "section": "Word and Structure Knowledge",
+      "text": "You ___ see a doctor; you look ill.",
       "options": [
-        "have",
-        "are",
-        "is",
-        "were"
+        "used to only",
+        "needn’t always",
+        "mustn’t ever care",
+        "ought to"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Concord",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Choose the correct word: The news ___ surprising.",
+      "section": "Word and Structure Knowledge",
+      "text": "She has been ill ___ Monday.",
       "options": [
-        "is",
-        "are",
-        "have been",
-        "were"
+        "from",
+        "on",
+        "since",
+        "for"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Concord",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "Choose the synonym of 'candid'.",
+      "section": "Word and Structure Knowledge",
+      "text": "He is fond of ___ cricket.",
       "options": [
-        "Confused",
-        "Secretive",
-        "Timid",
-        "Frank"
+        "plays",
+        "playing",
+        "play",
+        "played"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Synonyms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "Fill in the blank with the correct modal: You ___ see a doctor if the pain continues.",
+      "section": "Word and Structure Knowledge",
+      "text": "Neither of the boys ___ present.",
       "options": [
-        "may",
-        "must have",
-        "should",
-        "can"
+        "was",
+        "were",
+        "are",
+        "have"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Conditionals",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Identify the correct reported speech: She said, 'I will call you tomorrow.'",
+      "section": "Word and Structure Knowledge",
+      "text": "Synonym of ‘brief’:",
       "options": [
-        "She said that she calls me tomorrow.",
-        "She said I will call you tomorrow.",
-        "She said that she will call me tomorrow.",
-        "She said that she would call me the next day."
+        "lengthy",
+        "slow",
+        "noisy",
+        "concise"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Narration",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Choose the word that best completes the sentence: The detective's ___ helped solve the mystery.",
+      "section": "Word and Structure Knowledge",
+      "text": "Idiom: ‘A blessing in disguise’ means:",
       "options": [
-        "deduction",
-        "distraction",
-        "confusion",
-        "hesitation"
+        "A costume party",
+        "A religious ritual only",
+        "Something good that seemed bad at first",
+        "A hidden curse always"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "Choose the correct comparative form: This is the ___ book of the two.",
+      "section": "Word and Structure Knowledge",
+      "text": "Synonym of ‘diligent’:",
       "options": [
-        "most good",
-        "good",
-        "best",
-        "better"
+        "rude",
+        "hardworking",
+        "lazy",
+        "careless"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "Identify the correctly formed question tag: She is coming, ___?",
+      "section": "Word and Structure Knowledge",
+      "text": "Fill: He is senior ___ me.",
       "options": [
-        "doesn't she",
-        "isn't it",
-        "isn't she",
-        "wasn't she"
+        "to",
+        "than",
+        "from",
+        "of"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Question Forms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Choose the antonym of 'diligent'.",
+      "section": "Word and Structure Knowledge",
+      "text": "Reported: ‘Do you like tea?’ she said. →",
       "options": [
-        "Sincere",
-        "Lazy",
-        "Hardworking",
-        "Careful"
+        "She asked do you like tea.",
+        "She told that I like tea?",
+        "She said me if I like tea.",
+        "She asked if I liked tea."
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Antonyms",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Choose the correct indirect speech: He said, 'I am tired.'",
+      "section": "Word and Structure Knowledge",
+      "text": "Article: He is ___ European citizen.",
       "options": [
-        "He said that he is tired.",
-        "He said that he will be tired.",
-        "He said that I am tired.",
-        "He said that he was tired."
+        "the",
+        "no article",
+        "a",
+        "an"
       ],
-      "section": "Word and Structure",
-      "marks": 1,
-      "syllabusTopic": "Narration",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "Read: 'Despite winning the championship, the team's captain insisted on crediting every single player, saying victory was never a solo effort.' What quality does the captain display?",
+      "section": "Word and Structure Knowledge",
+      "text": "___ Amazon is the largest river by discharge.",
       "options": [
-        "Selfishness",
-        "Indifference",
-        "Arrogance",
-        "Humility and team spirit"
+        "No article",
+        "The",
+        "A",
+        "An"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "Read: 'After weeks of drought, the first drops of rain brought the entire village out onto the streets, dancing and cheering.' What does the villagers' reaction reveal?",
+      "section": "Word and Structure Knowledge",
+      "text": "There isn’t ___ water in the bottle.",
       "options": [
-        "Fear of the rain",
-        "Relief and joy after a long period of hardship caused by the drought",
-        "Indifference to the weather",
-        "Anger at the delayed rain"
+        "much",
+        "many",
+        "a few",
+        "several"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "Read: 'The museum's newest exhibit uses interactive holograms to let visitors 'walk through' ancient history.' What is unique about this exhibit?",
+      "section": "Word and Structure Knowledge",
+      "text": "If he ___ harder, he would have passed.",
       "options": [
-        "It uses interactive holograms for an immersive experience",
-        "It only displays paintings",
-        "It focuses on modern art",
-        "It has no visitor interaction"
+        "studied",
+        "studies",
+        "will study",
+        "had studied"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "Read: 'Even though the power went out during the storm, the family gathered around candlelight, sharing stories and laughing more than they had in months.' What is the underlying theme of this passage?",
+      "section": "Word and Structure Knowledge",
+      "text": "Look! The children ___ in the park.",
       "options": [
-        "Candles are dangerous during storms",
-        "Power outages are always distressing",
-        "Families should avoid storms",
-        "Unexpected hardships can bring people closer together"
+        "played",
+        "plays",
+        "are playing",
+        "play"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "Read: 'The librarian noticed that the same worn, dog-eared book kept disappearing and reappearing on the shelf, until she realized a young boy read it every day after school but always returned it before closing time.' What can be inferred about the boy?",
+      "section": "Word and Structure Knowledge",
+      "text": "Passive of ‘Open the window’:",
       "options": [
-        "He loved the book and was careful to return it responsibly",
-        "He was stealing the book",
-        "He disliked reading",
-        "He worked at the library"
+        "Let the window opened.",
+        "Let the window be opened.",
+        "The window opened.",
+        "Window is open by you."
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 36,
-      "question": "Read: 'The bridge, once thought impossible to build across the roaring river, now stands as a symbol of the engineers' determination and skill.' What does the bridge symbolize?",
+      "section": "Word and Structure Knowledge",
+      "text": "She said to me, “Where do you live?” →",
       "options": [
-        "Human determination and engineering achievement against difficulty",
-        "A failed project",
-        "A natural landmark",
-        "A temporary structure"
+        "She asked me where I lived.",
+        "She asked me where do you live.",
+        "She told me where I live?",
+        "She said me where I lived."
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 37,
-      "question": "Read: 'Rina loved painting but had never shown her work to anyone. One day, her teacher secretly submitted one of her paintings to a competition, and Rina won first prize.' Why was Rina surprised?",
+      "section": "Word and Structure Knowledge",
+      "text": "Identify the subordinate clause: ‘I know that honesty pays.’",
       "options": [
-        "She expected to lose",
-        "She hadn't shown her work to anyone and didn't know it was submitted",
-        "She had entered the competition herself",
-        "She didn't like painting"
+        "I know",
+        "honesty",
+        "pays",
+        "that honesty pays"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 38,
-      "question": "Read: 'Though the two brothers often argued, they always stood by each other in times of trouble.' What does this suggest about their relationship?",
+      "section": "Word and Structure Knowledge",
+      "text": "Noun clause example:",
       "options": [
-        "Despite disagreements, their bond remained strong",
-        "They never argued",
-        "They hated each other",
-        "They were not related by blood"
+        "The blue sky",
+        "Very happily",
+        "What she said surprised everyone.",
+        "Running fast, he won."
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 39,
-      "question": "Read: 'The young inventor's device failed nine times before finally working on the tenth attempt, proving that persistence pays off.' What lesson does this passage convey?",
+      "section": "Word and Structure Knowledge",
+      "text": "___ I borrow your pen?",
       "options": [
-        "Failure means one should stop trying",
-        "Inventions always work on the first try",
-        "Persistence and not giving up leads to eventual success",
-        "Luck is more important than effort"
+        "Used",
+        "May",
+        "Should must only",
+        "Ought"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 40,
-      "question": "Read: 'The old lighthouse had stood on the cliff for over a hundred years, guiding ships safely to shore even during the fiercest storms.' What is the main function of the lighthouse described here?",
+      "section": "Word and Structure Knowledge",
+      "text": "Beware ___ pickpockets.",
       "options": [
-        "Serving as a tourist attraction",
-        "Housing the town's museum",
-        "Providing shelter to sailors",
-        "Guiding ships safely, especially during storms"
+        "of",
+        "from",
+        "off",
+        "with"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 41,
-      "question": "Read: 'The chef refused to use a single recipe twice, insisting that true creativity meant reinventing a dish every time it was cooked.' What trait best describes the chef?",
+      "section": "Word and Structure Knowledge",
+      "text": "He congratulated me ___ my success.",
       "options": [
-        "Lazy",
-        "Traditional and repetitive",
-        "Innovative and creative",
-        "Careless"
+        "for",
+        "at",
+        "with",
+        "on"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 42,
-      "question": "Read: 'Maya's grandmother often said that patience was the key to happiness. Years later, Maya finally understood what she meant.' What can be inferred about Maya?",
+      "section": "Word and Structure Knowledge",
+      "text": "___ is believing.",
       "options": [
-        "She became impatient as she grew older",
-        "She never thought about her grandmother's advice",
-        "She gained understanding or wisdom about patience over time",
-        "She disagreed with her grandmother"
+        "Seen",
+        "Saw",
+        "Seeing",
+        "See"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 43,
-      "question": "Read: 'Despite the heavy rain, the farmers worked tirelessly in the fields, knowing that the monsoon was essential for their crops.' What does this passage suggest about the farmers' attitude?",
+      "section": "Word and Structure Knowledge",
+      "text": "Each of the girls ___ a book.",
       "options": [
-        "They resented the rain",
-        "They valued the rain despite the hardship it caused them",
-        "They were indifferent to the weather",
-        "They stopped working because of the rain"
+        "were",
+        "has",
+        "have",
+        "are"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 44,
-      "question": "Read: 'The scientist spent decades researching a cure, facing failure after failure, but she never gave up.' Which word best describes the scientist?",
+      "section": "Word and Structure Knowledge",
+      "text": "‘A person who writes books’ is a:",
       "options": [
-        "Indifferent",
-        "Impulsive",
-        "Persistent",
-        "Careless"
+        "author",
+        "doctor",
+        "pilot",
+        "baker"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 45,
-      "question": "Read: 'As the sun set behind the mountains, the village slowly came alive with lanterns and the sound of laughter.' What time of day does this passage describe transitioning into?",
+      "section": "Word and Structure Knowledge",
+      "text": "One-word: ‘A life story of a person written by himself/herself’:",
       "options": [
-        "Dawn",
-        "Midday",
-        "Early morning",
-        "Evening/nightfall"
+        "Biography",
+        "Bibliography",
+        "Photography",
+        "Autobiography"
       ],
-      "section": "Reading & Expression",
-      "marks": 1,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 46,
-      "question": "Choose the sentence that best demonstrates effective use of a metaphor.",
+      "section": "Reading",
+      "text": "Read the passage and answer: Public transport reduces traffic congestion and per-passenger emissions compared with many private cars. Reliable buses and trains also expand access to jobs and education for people who cannot afford personal vehicles. Investment in clean, frequent transit is therefore a step toward more equitable and sustainable cities.\n\nPublic transport can reduce:",
       "options": [
-        "'The clock shows the current time.'",
-        "'Time moves at a constant rate.'",
-        "'Time is a thief that steals our moments.'",
-        "'Time is measured in seconds.'"
+        "congestion and per-passenger emissions",
+        "all walking forever",
+        "only rainfall",
+        "library hours"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Achievers Section",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 47,
-      "question": "Identify the tone of this sentence: 'Oh wonderful, another Monday morning meeting.'",
+      "section": "Reading",
+      "text": "Read the passage and answer: Public transport reduces traffic congestion and per-passenger emissions compared with many private cars. Reliable buses and trains also expand access to jobs and education for people who cannot afford personal vehicles. Investment in clean, frequent transit is therefore a step toward more equitable and sustainable cities.\n\nReliable transit expands access to:",
       "options": [
-        "Neutral",
-        "Sarcastic",
-        "Formal",
-        "Enthusiastic"
+        "jobs and education",
+        "only private jets",
+        "space travel only",
+        "underwater homes"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Achievers Section",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 48,
-      "question": "Which of these best demonstrates a well-structured argumentative statement with reasoning?",
+      "section": "Reading",
+      "text": "Read the passage and answer: Public transport reduces traffic congestion and per-passenger emissions compared with many private cars. Reliable buses and trains also expand access to jobs and education for people who cannot afford personal vehicles. Investment in clean, frequent transit is therefore a step toward more equitable and sustainable cities.\n\nPeople without personal vehicles benefit from:",
       "options": [
-        "'Schools should start later because I don't like waking up early.'",
-        "'Schools should start later because research shows teenagers need more sleep for better focus.'",
-        "'Later school timings are sometimes discussed.'",
-        "'Schools should start later.'"
+        "buses and trains",
+        "more toll booths only",
+        "closed stations",
+        "no schedules"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Achievers Section",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 49,
-      "question": "A student is asked to summarize a long article in one sentence while retaining its core meaning. Which skill is being tested?",
+      "section": "Reading",
+      "text": "Read the passage and answer: Public transport reduces traffic congestion and per-passenger emissions compared with many private cars. Reliable buses and trains also expand access to jobs and education for people who cannot afford personal vehicles. Investment in clean, frequent transit is therefore a step toward more equitable and sustainable cities.\n\nClean frequent transit supports:",
       "options": [
-        "Word-for-word memorization",
-        "Grammar correction only",
-        "Concise synthesis of the main idea",
-        "Vocabulary expansion"
+        "equitable sustainable cities",
+        "more pollution always",
+        "fewer opportunities",
+        "gridlock only"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Articles",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 50,
-      "question": "Read the two statements: (1) 'He never lies.' (2) 'He always tells the truth.' What is the relationship between these two statements?",
+      "section": "Reading",
+      "text": "Read the passage and answer: Public transport reduces traffic congestion and per-passenger emissions compared with many private cars. Reliable buses and trains also expand access to jobs and education for people who cannot afford personal vehicles. Investment in clean, frequent transit is therefore a step toward more equitable and sustainable cities.\n\nThe author’s tone toward public transport is:",
       "options": [
-        "They contradict each other",
-        "Statement 1 is stronger than statement 2",
-        "They are unrelated",
-        "They express the same idea in different words"
+        "supportive",
+        "hostile",
+        "indifferent",
+        "mocking"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Reading and Inference",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
-    }
-  ],
-  "syllabusVersion": "SOF Class 10 current syllabus reference",
-  "syllabusTopics": [
-    "Synonyms",
-    "Antonyms",
-    "Analogies",
-    "Spellings",
-    "One Word",
-    "Word Order",
-    "Nouns",
-    "Verbs",
-    "Adverbs",
-    "Adjectives",
-    "Articles",
-    "Prepositions",
-    "Conjunctions",
-    "Punctuation",
-    "Voices",
-    "Narration",
-    "Concord",
-    "Question Forms",
-    "Tenses",
-    "Conditionals",
-    "Modals",
-    "Collocations",
-    "Phrasal Verbs",
-    "Idioms",
-    "Homonyms and Homophones",
-    "Weather",
-    "Countries",
-    "Language and People",
-    "Global Problems",
-    "Encyclopedias",
-    "Dictionaries",
-    "Instruction Manuals",
-    "Messages",
-    "Editorials",
-    "Essays",
-    "Inference from Advanced Texts",
-    "Spoken and Written Expression"
-  ],
-  "officialSOFPattern": [
-    {
-      "name": "Word and Structure Knowledge / Reading / Spoken and Written Expression",
-      "questions": 45,
-      "marksPerQuestion": 1,
-      "totalMarks": 45
+      "marks": 1
     },
     {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
+      "id": 51,
+      "section": "Reading",
+      "text": "Read the passage and answer: Sleep is not wasted time; it consolidates memory and restores the body. Teenagers who regularly sleep fewer than seven hours often show reduced attention in class. Limiting late-night screens and keeping a consistent schedule are simple habits that improve both mood and academic performance.\n\nSleep helps to:",
+      "options": [
+        "consolidate memory and restore the body",
+        "erase all learning",
+        "replace nutrition entirely",
+        "stop growth always"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 52,
+      "section": "Reading",
+      "text": "Read the passage and answer: Sleep is not wasted time; it consolidates memory and restores the body. Teenagers who regularly sleep fewer than seven hours often show reduced attention in class. Limiting late-night screens and keeping a consistent schedule are simple habits that improve both mood and academic performance.\n\nFewer than seven hours of sleep may reduce:",
+      "options": [
+        "attention in class",
+        "need for friends",
+        "all physical growth instantly forever",
+        "school buildings"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 53,
+      "section": "Reading",
+      "text": "Read the passage and answer: Sleep is not wasted time; it consolidates memory and restores the body. Teenagers who regularly sleep fewer than seven hours often show reduced attention in class. Limiting late-night screens and keeping a consistent schedule are simple habits that improve both mood and academic performance.\n\nA helpful habit mentioned is:",
+      "options": [
+        "limiting late-night screens",
+        "never sleeping",
+        "only energy drinks",
+        "skipping schedules"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 54,
+      "section": "Reading",
+      "text": "Read the passage and answer: Sleep is not wasted time; it consolidates memory and restores the body. Teenagers who regularly sleep fewer than seven hours often show reduced attention in class. Limiting late-night screens and keeping a consistent schedule are simple habits that improve both mood and academic performance.\n\nConsistent sleep schedules can improve:",
+      "options": [
+        "mood and academic performance",
+        "only traffic",
+        "screen addiction",
+        "noise pollution"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 55,
+      "section": "Reading",
+      "text": "Read the passage and answer: Sleep is not wasted time; it consolidates memory and restores the body. Teenagers who regularly sleep fewer than seven hours often show reduced attention in class. Limiting late-night screens and keeping a consistent schedule are simple habits that improve both mood and academic performance.\n\nThe passage argues sleep is:",
+      "options": [
+        "important, not wasted time",
+        "useless for teens",
+        "optional always",
+        "harmful"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 56,
+      "section": "Spoken and Written Expression",
+      "text": "Analytical paragraph should mainly:",
+      "options": [
+        "Present data-based interpretation clearly",
+        "Only list random jokes",
+        "Avoid any facts",
+        "Copy without understanding"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 57,
+      "section": "Spoken and Written Expression",
+      "text": "In spoken English, a courteous request is:",
+      "options": [
+        "Could you please help me with this sum?",
+        "Do this now slave.",
+        "Help! or else.",
+        "You must obey me silently."
+      ],
+      "marks": 1
+    },
+    {
+      "id": 58,
+      "section": "Spoken and Written Expression",
+      "text": "Best topic sentence for a paragraph on water conservation:",
+      "options": [
+        "Saving water at home and school is essential for a sustainable future.",
+        "Water is wet sometimes.",
+        "I like blue colours.",
+        "Rivers are long maybe."
+      ],
+      "marks": 1
+    },
+    {
+      "id": 59,
+      "section": "Spoken and Written Expression",
+      "text": "Suitable closing for a job application letter:",
+      "options": [
+        "Yours faithfully,",
+        "See ya,",
+        "Bye bye friend,",
+        "Whatever,"
+      ],
+      "marks": 1
+    },
+    {
+      "id": 60,
+      "section": "Spoken and Written Expression",
+      "text": "Choose correct notice heading style:",
+      "options": [
+        "NOTICE",
+        "noticE please read haha",
+        "nOtIcE!!!",
+        "nothing"
+      ],
+      "marks": 1
     }
-  ],
-  "level1SyllabusRule": "SOF IEO focuses on communication and use of English; not simply rote grammar."
+  ]
 }

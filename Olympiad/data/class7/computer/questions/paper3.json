@@ -1,394 +1,611 @@
 {
   "class": 7,
-  "subject": "Computer Science",
+  "subject": "computer",
   "paper": 3,
-  "title": "Class 7 Computer Science — Paper 3",
-  "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern & syllabus. Not an official SOF paper. ICSO Class 7 pattern: Logical Reasoning 10×1 + Computers 35×1 + Achievers 5×3 = 50 Q / 60 marks",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Which part performs most computer processing?",
+      "text": "Find the next: 4, 8, 16, 32, __.",
       "options": [
-        "Printer",
-        "Speaker",
-        "Mouse",
-        "CPU"
+        "64",
+        "48",
+        "40",
+        "36"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which device is used to enter text?",
+      "text": "Odd one out: Keyboard, Mouse, Monitor, Compiler",
       "options": [
-        "Speaker",
-        "Monitor",
-        "Printer",
-        "Keyboard"
+        "Compiler",
+        "Keyboard",
+        "Mouse",
+        "Monitor"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which device displays information?",
+      "text": "Analogy: CPU : Processing :: Monitor : ?",
       "options": [
-        "Scanner",
-        "Mouse",
-        "Keyboard",
-        "Monitor"
+        "Display",
+        "Printing only",
+        "Cooling only",
+        "Storing OS only"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which device produces a paper copy?",
+      "text": "If ‘Input’ is related to ‘Keyboard’, then ‘Output’ is related to:",
       "options": [
-        "Speaker",
         "Printer",
-        "Monitor",
-        "Microphone"
+        "Mouse only as input",
+        "Scanner only as input",
+        "Microphone only as input"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which memory temporarily stores information while programs run?",
+      "text": "Which does not belong: AND, OR, NOT, CPU fan dust",
       "options": [
-        "Printer",
-        "DVD",
-        "RAM",
-        "Keyboard"
+        "CPU fan dust",
+        "AND",
+        "OR",
+        "NOT"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "What does Ctrl+C commonly do?",
+      "text": "Series: 5, 10, 20, 40, __.",
       "options": [
-        "Undo",
-        "Paste",
-        "Copy",
-        "Save"
+        "80",
+        "60",
+        "50",
+        "45"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "What does Ctrl+V commonly do?",
+      "text": "A is faster than B. C is slower than B. D is faster than A. Who is fastest?",
       "options": [
-        "Print",
-        "Paste",
-        "Close",
-        "Copy"
+        "D",
+        "A",
+        "B",
+        "C"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "What does Ctrl+S commonly do?",
+      "text": "If each letter is coded as its position (A=1,…), and CAT = 3+1+20=24, then BAD = ?",
       "options": [
-        "Copy",
-        "Save",
-        "Undo",
-        "Paste"
+        "7",
+        "6",
+        "9",
+        "8"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "What does Ctrl+Z commonly do?",
+      "text": "Odd one out: HTML, CSS, JavaScript, Wheat",
       "options": [
-        "Undo",
-        "Copy",
-        "Print",
-        "Save"
+        "Wheat",
+        "HTML",
+        "CSS",
+        "JavaScript"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which device records sound?",
+      "text": "Mirror pattern: If 1 2 3 appears as 3 2 1 in a mirror line, then 4 5 6 appears as:",
       "options": [
-        "Monitor",
-        "Printer",
-        "Mouse",
-        "Microphone"
+        "6 5 4",
+        "4 5 6",
+        "5 6 4",
+        "6 4 5"
       ],
-      "section": "Computer Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What is a browser mainly used for?",
+      "text": "An operating system is:",
       "options": [
-        "Charging a phone",
-        "Drawing only",
-        "Visiting websites",
-        "Printing money"
+        "A type of virus",
+        "A hardware chip only",
+        "System software that manages hardware and software",
+        "A printer brand only"
       ],
-      "section": "Computer Science"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "What is an algorithm?",
+      "text": "Which is an operating system?",
       "options": [
-        "A monitor",
-        "A password",
-        "A virus",
-        "A step-by-step method for solving a problem"
+        "Chrome browser only",
+        "Linux",
+        "MS Word",
+        "Intel CPU"
       ],
-      "section": "Computer Science"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "What does AI stand for?",
+      "text": "In MS Word, Ctrl + B is commonly used to:",
       "options": [
-        "Automatic Internet",
-        "Audio Information",
-        "Artificial Intelligence",
-        "Advanced Input"
+        "Insert a table only",
+        "Bold text",
+        "Save as PDF only",
+        "Turn off the PC"
       ],
-      "section": "Computer Science"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "What is a safe online habit?",
+      "text": "In a spreadsheet, the intersection of a row and a column is a:",
       "options": [
-        "Share passwords",
-        "Post your address",
-        "Open every unknown link",
-        "Keep passwords private"
+        "Router",
+        "Pixel printer",
+        "Workbench",
+        "Cell"
       ],
-      "section": "Computer Science"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "Why are backups useful?",
+      "text": "A formula in Excel usually begins with:",
       "options": [
-        "They stop the internet",
-        "They can help recover lost files",
-        "They brighten the monitor",
-        "They remove passwords"
+        "=",
+        "& only",
+        "@",
+        "#"
       ],
-      "section": "Computer Science"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "text": "In PowerPoint, slides are used to:",
       "options": [
-        "15",
-        "13",
-        "16",
-        "14"
+        "Generate electricity",
+        "Cool the CPU",
+        "Present information visually",
+        "Replace the OS kernel"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "text": "The Internet is:",
       "options": [
-        "2 steps",
-        "3 steps",
-        "4 steps",
-        "1 step"
+        "Only a keyboard",
+        "A global network of networks",
+        "A single home PC only",
+        "A type of printer"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "text": "A web browser is used to:",
       "options": [
-        "Do not enter it without trusted-adult guidance",
-        "Enter it immediately",
-        "Post it publicly",
-        "Use a friend's address"
+        "Cook food",
+        "Access websites",
+        "Print only without computer",
+        "Replace the CPU fan"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "An AI answer seems surprising. What should you do?",
+      "text": "An email address typically contains:",
       "options": [
-        "Copy it immediately",
-        "Assume it cannot be wrong",
-        "Check it with a reliable source or teacher",
-        "Share private information"
+        "spaces only",
+        "only digits without domain",
+        "# only",
+        "@"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "Why should important accounts use different passwords?",
+      "text": "Cyber safety includes:",
       "options": [
-        "It makes the computer faster",
-        "One stolen password is less likely to unlock every account",
-        "It lets everyone know the password",
-        "It removes security"
+        "Not sharing passwords and being careful with links",
+        "Using the same weak password everywhere",
+        "Downloading any attachment blindly",
+        "Sharing OTP with strangers"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "text": "A strong password should be:",
       "options": [
-        "13",
-        "16",
-        "15",
-        "14"
+        "blank",
+        "Your name only",
+        "Long and hard to guess, mixing character types",
+        "12345 only"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "text": "Phishing is an attempt to:",
       "options": [
-        "1 step",
-        "2 steps",
-        "4 steps",
-        "3 steps"
+        "Clean the monitor",
+        "Trick users into revealing sensitive information",
+        "Speed up the CPU legally",
+        "Charge the battery faster"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "text": "HTML is mainly used to:",
       "options": [
-        "Use a friend's address",
-        "Enter it immediately",
-        "Do not enter it without trusted-adult guidance",
-        "Post it publicly"
+        "Replace electricity",
+        "Grow plants",
+        "Cool laptops",
+        "Structure content on web pages"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "An AI answer seems surprising. What should you do?",
+      "text": "A common HTML tag for a paragraph is:",
       "options": [
-        "Check it with a reliable source or teacher",
-        "Assume it cannot be wrong",
-        "Copy it immediately",
-        "Share private information"
+        "<br> only for images",
+        "<table> only for sound",
+        "<img> only",
+        "<p>"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why should important accounts use different passwords?",
+      "text": "In coding logic, a loop is used to:",
       "options": [
-        "It lets everyone know the password",
-        "It makes the computer faster",
-        "It removes security",
-        "One stolen password is less likely to unlock every account"
+        "Repeat a set of instructions",
+        "Print only once never again",
+        "Stop all input forever",
+        "Delete the OS"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "text": "An algorithm is:",
       "options": [
-        "13",
-        "15",
-        "14",
-        "16"
+        "A monitor brand",
+        "A hardware port",
+        "A step-by-step method to solve a problem",
+        "A virus type only"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "text": "Which is an input device?",
       "options": [
-        "1 step",
-        "2 steps",
-        "4 steps",
-        "3 steps"
+        "Monitor",
+        "Scanner",
+        "Speaker",
+        "Projector"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "text": "Which is an output device?",
       "options": [
-        "Enter it immediately",
-        "Use a friend's address",
-        "Do not enter it without trusted-adult guidance",
-        "Post it publicly"
+        "Mouse",
+        "Microphone",
+        "Keyboard",
+        "Printer"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "An AI answer seems surprising. What should you do?",
+      "text": "SSD compared to traditional HDD often provides:",
       "options": [
-        "Share private information",
-        "Check it with a reliable source or teacher",
-        "Copy it immediately",
-        "Assume it cannot be wrong"
+        "Faster data access",
+        "Only paper output",
+        "No storage",
+        "Only slower access always"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Why should important accounts use different passwords?",
+      "text": "Cloud storage means:",
       "options": [
-        "One stolen password is less likely to unlock every account",
-        "It removes security",
-        "It makes the computer faster",
-        "It lets everyone know the password"
+        "Storing data on remote servers accessed via internet",
+        "Printing to sky",
+        "Deleting all backups",
+        "Storing data only on paper clouds"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "What comes next: 2, 5, 8, 11, __?",
+      "text": "A firewall helps to:",
       "options": [
-        "15",
-        "13",
-        "14",
-        "16"
+        "Charge phones wirelessly by magic only",
+        "Increase room temperature",
+        "Filter network traffic for security",
+        "Replace antivirus always completely alone without need"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "A robot moves 3 steps forward and 1 backward. How far from its start?",
+      "text": "Software that harms a system intentionally is often called:",
       "options": [
-        "1 step",
-        "2 steps",
-        "3 steps",
-        "4 steps"
+        "Compiler",
+        "Malware",
+        "Freeware always safe",
+        "Spreadsheet"
       ],
-      "section": "Logical Reasoning"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "A suspicious website asks for your home address. What is safest?",
+      "text": "Backup means:",
       "options": [
-        "Use a friend's address",
-        "Do not enter it without trusted-adult guidance",
-        "Enter it immediately",
-        "Post it publicly"
+        "Formatting without copy",
+        "Unplugging forever",
+        "Deleting all files",
+        "Keeping copies of important data"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "An AI answer seems surprising. What should you do?",
+      "text": "In binary, 10 represents decimal:",
       "options": [
-        "Share private information",
-        "Assume it cannot be wrong",
-        "Copy it immediately",
-        "Check it with a reliable source or teacher"
+        "2",
+        "1",
+        "3",
+        "10"
       ],
-      "section": "AI, IT & Safety"
+      "section": "Computers and Information Technology",
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "Why should important accounts use different passwords?",
+      "text": "The full form of IP in networking is commonly:",
       "options": [
-        "It removes security",
-        "One stolen password is less likely to unlock every account",
-        "It makes the computer faster",
-        "It lets everyone know the password"
+        "Instant Processing only",
+        "Internal Printer",
+        "Internet Protocol",
+        "Input Password"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "text": "URL stands for:",
+      "options": [
+        "Unique ROM Link",
+        "Universal Random List",
+        "Uniform Resource Locator",
+        "User Real Login"
+      ],
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "text": "A file extension .xlsx is commonly associated with:",
+      "options": [
+        "PowerPoint only",
+        "Excel workbook",
+        "Word only",
+        "Image only"
+      ],
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "text": "Copy and paste shortcuts are commonly:",
+      "options": [
+        "Alt+F4 only",
+        "Shift+Delete only",
+        "Ctrl+Z and Ctrl+Y only",
+        "Ctrl+C and Ctrl+V"
+      ],
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "text": "In presentations, excessive animations can:",
+      "options": [
+        "Distract the audience",
+        "Increase RAM permanently",
+        "Replace content quality always positively",
+        "Cool the CPU always"
+      ],
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "text": "Which device connects a LAN to a wider network often at home?",
+      "options": [
+        "Webcam only",
+        "Monitor",
+        "Router",
+        "Joystick only"
+      ],
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "text": "Two-factor authentication adds security by requiring:",
+      "options": [
+        "Disabling all updates",
+        "No password ever",
+        "An extra verification step beyond password",
+        "Sharing OTP publicly"
+      ],
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "text": "Open-source software typically allows:",
+      "options": [
+        "Only offline paper use",
+        "Access to source code under a license",
+        "No installation ever",
+        "Mandatory payment to one vendor always"
+      ],
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "text": "In Scratch-like block coding, ‘repeat 10’ is an example of:",
+      "options": [
+        "Hardware failure",
+        "A printer jam",
+        "A virus",
+        "A loop"
+      ],
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "text": "Cache memory is:",
+      "options": [
+        "Very fast memory close to the CPU",
+        "A type of printer ink",
+        "Only cloud backup",
+        "Slowest storage always"
+      ],
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "text": "The binary number system uses digits:",
+      "options": [
+        "1 to 7 only",
+        "0 to 9",
+        "0 and 1",
+        "A to F only"
+      ],
+      "section": "Computers and Information Technology",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "text": "Convert decimal 13 to binary:",
+      "options": [
+        "1110",
+        "1001",
+        "1011",
+        "1101"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "text": "In a spreadsheet, cell A1 has 10, B1 has 20. Formula =A1+B1 in C1 shows:",
+      "options": [
+        "A1B1",
+        "Error always",
+        "1020",
+        "30"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "text": "Why is a network password on home Wi-Fi important?",
+      "options": [
+        "It helps prevent unauthorised users from using the network",
+        "It makes cables unnecessary for electricity",
+        "It replaces antivirus completely always",
+        "It increases the room temperature"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "text": "HTML <img> tag is primarily used to:",
+      "options": [
+        "Format a hard disk",
+        "Create a spreadsheet formula",
+        "Embed an image in a web page",
+        "Compile a program"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "text": "An algorithm to find the largest of three numbers must:",
+      "options": [
+        "Only print the smallest always",
+        "Compare the numbers using clear steps",
+        "Ignore two numbers always",
+        "Require no logic"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

@@ -1,394 +1,611 @@
 {
   "class": 7,
-  "subject": "General Knowledge",
+  "subject": "gk",
   "paper": 3,
-  "title": "Class 7 General Knowledge — Paper 3",
-  "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern & syllabus. Not an official SOF paper. IGKO Class 7 pattern: General Awareness 30×1 + Current Affairs 10×1 + Life Skills 5×1 + Achievers 5×3 = 50 Q / 60 marks",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Which is India's national animal?",
+      "text": "The Himalayas are located in the:",
       "options": [
-        "Peacock",
-        "Tiger",
-        "Elephant",
-        "Lion"
+        "North of India",
+        "West of Brazil only",
+        "Centre of Australia",
+        "South of India only"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which is India's national bird?",
+      "text": "The Indian Constitution came into effect on:",
       "options": [
-        "Peacock",
-        "Parrot",
-        "Eagle",
-        "Sparrow"
+        "14 November 1889",
+        "15 August 1947",
+        "26 January 1950",
+        "2 October 1869"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "What is the capital of India?",
+      "text": "The President of India is elected by an:",
       "options": [
-        "Mumbai",
-        "New Delhi",
-        "Kolkata",
-        "Jaipur"
+        "Foreign parliament only",
+        "Electoral college",
+        "Single village panchayat only",
+        "Sports committee only"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which is the largest planet?",
+      "text": "The lower house of the Indian Parliament is the:",
       "options": [
-        "Jupiter",
-        "Mars",
-        "Earth",
-        "Mercury"
+        "Supreme Court",
+        "Vidhan Parishad only all states",
+        "Rajya Sabha",
+        "Lok Sabha"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which is the largest ocean?",
+      "text": "Fundamental Rights in India are guaranteed by the:",
       "options": [
-        "Indian Ocean",
-        "Atlantic Ocean",
-        "Pacific Ocean",
-        "Arctic Ocean"
+        "Constitution",
+        "Only company policies",
+        "Only school diaries",
+        "Only municipal rules"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Which city is called the Pink City?",
+      "text": "Mahatma Gandhi is known as the:",
       "options": [
-        "Jodhpur",
-        "Jaipur",
-        "Ajmer",
-        "Udaipur"
+        "Inventor of the telephone",
+        "First President of USA",
+        "Father of the Nation (India)",
+        "Discoverer of gravity only"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Which monument is in Agra?",
+      "text": "The first Prime Minister of independent India was:",
       "options": [
-        "Charminar",
-        "Gateway of India",
-        "Taj Mahal",
-        "India Gate"
+        "Bhagat Singh as PM",
+        "Sardar only as PM",
+        "Jawaharlal Nehru",
+        "Dr. APJ Abdul Kalam as PM"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which planet is closest to the Sun?",
+      "text": "The Quit India Movement began in:",
       "options": [
-        "Mars",
-        "Mercury",
-        "Venus",
-        "Earth"
+        "1919 only Jallianwala focus",
+        "1942",
+        "1857",
+        "2000"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Which planet has famous rings?",
+      "text": "The largest desert in India is the:",
       "options": [
-        "Saturn",
-        "Earth",
-        "Mercury",
-        "Venus"
+        "Gobi",
+        "Atacama",
+        "Sahara",
+        "Thar Desert"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which animal is called the Ship of the Desert?",
+      "text": "Which planet is known as the Red Planet?",
       "options": [
-        "Deer",
-        "Goat",
-        "Camel",
-        "Horse"
+        "Mars",
+        "Saturn",
+        "Jupiter",
+        "Venus"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "Which instrument measures temperature?",
+      "text": "Among nearby stars, the closest known star system to the Sun includes:",
       "options": [
-        "Thermometer",
-        "Compass",
-        "Ruler",
-        "Clock"
+        "Polaris as nearest always",
+        "The Moon as a star",
+        "Proxima Centauri",
+        "Venus as a star"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "Which device helps find direction?",
+      "text": "The currency of Japan is the:",
       "options": [
-        "Compass",
-        "Scale",
-        "Thermometer",
-        "Calendar"
+        "Won",
+        "Yen",
+        "Yuan",
+        "Dollar"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Which is a renewable energy source?",
+      "text": "The United Nations headquarters is in:",
       "options": [
-        "Coal",
-        "Diesel",
-        "Solar energy",
-        "Petrol"
+        "Paris only",
+        "New York",
+        "Geneva only main HQ wrong",
+        "New Delhi"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Which festival is known as the festival of lights?",
+      "text": "Olympic Games are held every:",
       "options": [
-        "Diwali",
-        "Holi",
-        "Onam",
-        "Pongal"
+        "10 years",
+        "6 months",
+        "1 year",
+        "4 years"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "Which sport uses a bat, ball and wickets?",
+      "text": "A marathon race is approximately:",
       "options": [
-        "Cricket",
-        "Football",
-        "Tennis",
-        "Hockey"
+        "42.195 km",
+        "26 m only",
+        "1 km only",
+        "100 m only"
       ],
-      "section": "General Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "If you face West and turn 180 degrees, which direction do you face?",
+      "text": "The inventor associated with the telephone is:",
       "options": [
-        "South",
-        "North",
-        "East",
-        "West"
+        "Wright only flight exclusive",
+        "Newton only gravity",
+        "Alexander Graham Bell",
+        "Einstein only relativity"
       ],
-      "section": "General Reasoning"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Which organisation is associated with India's Chandrayaan missions?",
+      "text": "Photosynthesis mainly occurs in:",
       "options": [
-        "FIFA",
-        "WHO",
-        "UNESCO",
-        "ISRO"
+        "Only metal wires",
+        "Leaves (chloroplasts)",
+        "Only bones",
+        "Only plastic"
       ],
-      "section": "World & Current Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Which technology is widely used for instant digital payments in India?",
+      "text": "The hardest natural substance is:",
       "options": [
-        "UPI",
-        "FM",
-        "VHS",
-        "DVD"
+        "Silver",
+        "Diamond",
+        "Gold",
+        "Iron"
       ],
-      "section": "World & Current Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "How can you save electricity?",
+      "text": "Which gas do plants absorb for photosynthesis?",
       "options": [
-        "Switch off lights when not needed",
-        "Keep TV on all night",
-        "Open the fridge often",
-        "Leave lights on"
+        "Helium",
+        "Neon",
+        "Nitrogen only exclusive",
+        "Carbon dioxide"
       ],
-      "section": "Life Skills"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "Why are national parks important?",
+      "text": "The largest ocean on Earth is the:",
       "options": [
-        "They increase pollution",
-        "They protect wildlife and habitats",
-        "They remove forests",
-        "They stop all farming"
+        "Pacific Ocean",
+        "Atlantic is largest wrong",
+        "Arctic Ocean",
+        "Indian Ocean"
       ],
-      "section": "Achievers / HOTS"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "If you face West and turn 180 degrees, which direction do you face?",
+      "text": "Mount Everest lies in the:",
       "options": [
-        "East",
-        "South",
-        "North",
-        "West"
+        "Rockies only",
+        "Alps",
+        "Himalayas",
+        "Andes only"
       ],
-      "section": "General Reasoning"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Which organisation is associated with India's Chandrayaan missions?",
+      "text": "The Sahara Desert is in:",
       "options": [
-        "ISRO",
-        "UNESCO",
-        "WHO",
-        "FIFA"
+        "Europe only",
+        "Africa",
+        "Australia only",
+        "Antarctica only"
       ],
-      "section": "World & Current Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "Which technology is widely used for instant digital payments in India?",
+      "text": "Who wrote the national anthem of India?",
       "options": [
-        "UPI",
-        "FM",
-        "DVD",
-        "VHS"
+        "Sarojini Naidu only",
+        "Premchand only",
+        "Bankim Chandra only Vande Mataram",
+        "Rabindranath Tagore"
       ],
-      "section": "World & Current Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "How can you save electricity?",
+      "text": "The study of coins is called:",
       "options": [
-        "Keep TV on all night",
-        "Leave lights on",
-        "Open the fridge often",
-        "Switch off lights when not needed"
+        "Ornithology",
+        "Astronomy",
+        "Philately",
+        "Numismatics"
       ],
-      "section": "Life Skills"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why are national parks important?",
+      "text": "The instrument used to measure temperature is a:",
       "options": [
-        "They stop all farming",
-        "They increase pollution",
-        "They remove forests",
-        "They protect wildlife and habitats"
+        "Thermometer",
+        "Speedometer",
+        "Ammeter",
+        "Barometer"
       ],
-      "section": "Achievers / HOTS"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "If you face West and turn 180 degrees, which direction do you face?",
+      "text": "Which vitamin is mainly produced in skin on sunlight exposure?",
       "options": [
-        "North",
-        "South",
-        "West",
-        "East"
+        "Vitamin B12 only exclusive",
+        "Vitamin C only",
+        "Vitamin D",
+        "Vitamin K only exclusive"
       ],
-      "section": "General Reasoning"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "Which organisation is associated with India's Chandrayaan missions?",
+      "text": "The Supreme Court of India is located in:",
       "options": [
-        "ISRO",
-        "FIFA",
-        "WHO",
-        "UNESCO"
+        "Chennai",
+        "New Delhi",
+        "Mumbai",
+        "Kolkata"
       ],
-      "section": "World & Current Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "Which technology is widely used for instant digital payments in India?",
+      "text": "Which is a classical dance of Tamil Nadu?",
       "options": [
-        "VHS",
-        "DVD",
-        "UPI",
-        "FM"
+        "Manipuri only",
+        "Mohiniyattam only Kerala exclusive",
+        "Kathak only North",
+        "Bharatanatyam"
       ],
-      "section": "World & Current Awareness"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "How can you save electricity?",
+      "text": "The Green Revolution in India is associated mainly with:",
       "options": [
-        "Leave lights on",
-        "Open the fridge often",
-        "Keep TV on all night",
-        "Switch off lights when not needed"
+        "Agriculture / food grain production",
+        "Only cricket",
+        "Only space missions",
+        "Only IT software"
       ],
-      "section": "Life Skills"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Why are national parks important?",
+      "text": "Which blood group is called a universal donor (red cells, classic teaching)?",
       "options": [
-        "They protect wildlife and habitats",
-        "They stop all farming",
-        "They remove forests",
-        "They increase pollution"
+        "O negative (commonly taught)",
+        "B only always",
+        "AB only",
+        "AB positive only as donor classic wrong"
       ],
-      "section": "Achievers / HOTS"
+      "section": "General Awareness",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "If you face West and turn 180 degrees, which direction do you face?",
+      "text": "The G20 is a forum of major:",
       "options": [
-        "West",
-        "South",
-        "North",
-        "East"
+        "Economies",
+        "Only deserts",
+        "Only film studios",
+        "Only football clubs"
       ],
-      "section": "General Reasoning"
+      "section": "Current Affairs",
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "Which organisation is associated with India's Chandrayaan missions?",
+      "text": "ISRO is the space agency of:",
       "options": [
-        "WHO",
-        "ISRO",
-        "UNESCO",
-        "FIFA"
+        "Japan only",
+        "USA only",
+        "India",
+        "Russia only"
       ],
-      "section": "World & Current Awareness"
+      "section": "Current Affairs",
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "Which technology is widely used for instant digital payments in India?",
+      "text": "The headquarters of the WHO is in:",
       "options": [
-        "DVD",
-        "UPI",
-        "VHS",
-        "FM"
+        "Cairo only",
+        "New Delhi only",
+        "Geneva",
+        "Tokyo only"
       ],
-      "section": "World & Current Awareness"
+      "section": "Current Affairs",
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "How can you save electricity?",
+      "text": "Sustainable Development Goals (SDGs) were adopted by the:",
       "options": [
-        "Open the fridge often",
-        "Keep TV on all night",
-        "Switch off lights when not needed",
-        "Leave lights on"
+        "A single company",
+        "United Nations",
+        "Only one school board",
+        "A sports club"
       ],
-      "section": "Life Skills"
+      "section": "Current Affairs",
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "Why are national parks important?",
+      "text": "Aadhaar in India is related to:",
       "options": [
-        "They remove forests",
-        "They increase pollution",
-        "They stop all farming",
-        "They protect wildlife and habitats"
+        "A dance form only",
+        "A river only",
+        "A type of crop only",
+        "Unique identity number"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Current Affairs",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "text": "The Indian Super League is associated with:",
+      "options": [
+        "Football",
+        "Swimming only exclusive",
+        "Wrestling only exclusive",
+        "Chess only"
+      ],
+      "section": "Current Affairs",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "text": "UNESCO is mainly concerned with:",
+      "options": [
+        "Only cricket umpiring",
+        "Only military tanks",
+        "Education, science and culture",
+        "Only currency printing"
+      ],
+      "section": "Current Affairs",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "text": "Earth Day is observed on:",
+      "options": [
+        "25 December",
+        "1 April",
+        "22 April",
+        "31 October"
+      ],
+      "section": "Current Affairs",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "text": "The Nobel Prizes are associated with contributions in fields such as:",
+      "options": [
+        "Only one sport",
+        "Peace, literature, sciences, etc.",
+        "Only local school tests",
+        "Only cooking shows"
+      ],
+      "section": "Current Affairs",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "text": "India’s Republic Day is celebrated on:",
+      "options": [
+        "2 October",
+        "14 November",
+        "15 August",
+        "26 January"
+      ],
+      "section": "Current Affairs",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "text": "Teamwork is effective when members:",
+      "options": [
+        "Avoid all planning",
+        "Hide information always",
+        "Share tasks and communicate clearly",
+        "Work against each other only"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "text": "Managing exam stress can include:",
+      "options": [
+        "Only cramming without rest",
+        "Planning study time and taking short breaks",
+        "Skipping all sleep",
+        "Avoiding all questions forever"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "text": "Empathy means:",
+      "options": [
+        "Only thinking of yourself",
+        "Mocking others’ problems",
+        "Ignoring everyone",
+        "Understanding others’ feelings"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "text": "A responsible digital citizen should:",
+      "options": [
+        "Respect others online and think before posting",
+        "Share friends’ private info",
+        "Use rude language freely",
+        "Forward every rumour"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "text": "When someone is injured at school, you should:",
+      "options": [
+        "Give unknown medicines yourself casually",
+        "Film only for fun",
+        "Seek help from a teacher/adult immediately",
+        "Leave them alone always"
+      ],
+      "section": "Life Skills",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "text": "A citizen can contribute to democracy by:",
+      "options": [
+        "Disrespecting laws as a hobby",
+        "Spreading unchecked rumours only",
+        "Staying informed and participating responsibly (e.g. when eligible, voting)",
+        "Avoiding all civic duties always"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "text": "Which is a renewable source of energy?",
+      "options": [
+        "Petroleum only",
+        "Solar energy",
+        "Coal only",
+        "Natural gas only exclusive non-renewable set"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "text": "The Tropic of Cancer passes through:",
+      "options": [
+        "Only Arctic Ocean exclusive",
+        "Only Australia exclusive always",
+        "Only Antarctica",
+        "India (among other countries)"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "text": "Which organ system transports oxygen in the human body?",
+      "options": [
+        "Only digestive system exclusive",
+        "Only integumentary hair only",
+        "Only skeletal system exclusive",
+        "Circulatory system"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "text": "Global cooperation on climate change is important because:",
+      "options": [
+        "Greenhouse gas effects cross national borders",
+        "Energy use has no environmental impact",
+        "Oceans are unrelated to climate",
+        "Weather is only local forever with no shared atmosphere"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

@@ -1,843 +1,508 @@
 {
   "class": 10,
-  "subject": "Mathematics",
+  "subject": "mathematics",
   "paper": 2,
-  "title": "Class 10 Mathematics Olympiad — Paper 2",
-  "durationMinutes": 60,
-  "totalQuestions": 50,
-  "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
+  "totalQuestions": 40,
+  "totalMarks": 50,
+  "yearStyle": "2023-2025",
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern & syllabus. Not an official SOF paper. IMO pattern: Logical Reasoning 15×1 + Mathematical Reasoning 20×1 + Achievers 5×3 = 40 questions / 50 marks",
   "sections": [
     {
       "name": "Logical Reasoning",
       "questions": 15,
-      "marksPerQuestion": 1,
-      "totalMarks": 15
+      "marksEach": 1
     },
     {
       "name": "Mathematical Reasoning",
       "questions": 20,
-      "marksPerQuestion": 1,
-      "totalMarks": 20
-    },
-    {
-      "name": "Everyday Mathematics",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
+      "marksEach": 1
     },
     {
       "name": "Achievers Section",
       "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
+      "marksEach": 3
     }
   ],
   "questions": [
     {
       "id": 1,
-      "question": "Which number should replace the question mark: 3, 9, 27, 81, ?",
-      "options": [
-        "162",
-        "216",
-        "243",
-        "324"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Find the next term: 7, 12, 17, 22, __",
+      "options": [
+        "29",
+        "27",
+        "28",
+        "26"
+      ],
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "If '+' means '÷', '÷' means '-', '-' means 'x', and 'x' means '+', evaluate: 12 x 4 - 2 ÷ 3",
-      "options": [
-        "14",
-        "(12+4)-2÷3 = 16-2-3 = 11",
-        "10",
-        "8"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Statistics",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Odd one out: 3, 5, 7, 9, 11 (which is not prime?)",
+      "options": [
+        "9",
+        "3",
+        "5",
+        "7"
+      ],
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "In a row of children, Raj is 7th from the left and 12th from the right. How many children are in the row?",
-      "options": [
-        "19",
-        "17",
-        "18",
-        "20"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Analogy: 7 : 49 :: 9 : ?",
+      "options": [
+        "81",
+        "72",
+        "18",
+        "27"
+      ],
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Find the missing number: 7, 14, 28, 56, __",
-      "options": [
-        "120",
-        "112",
-        "98",
-        "106"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Introduction to Trigonometry",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: If A=1, B=2, … and CODE means sum of letter positions, CODE = ?",
+      "options": [
+        "27",
+        "30",
+        "24",
+        "33"
+      ],
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "A is taller than B but shorter than C. D is taller than C. Who is the tallest?",
-      "options": [
-        "B",
-        "D",
-        "A",
-        "C"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: A faces North, turns 90° clockwise, then 180°. Final direction:",
+      "options": [
+        "West",
+        "South",
+        "North",
+        "East"
+      ],
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Arrange in a logical order: Seed, Flower, Fruit, Plant, Seedling",
-      "options": [
-        "Seedling, Seed, Plant, Fruit, Flower",
-        "Seed, Flower, Seedling, Plant, Fruit",
-        "Seed, Plant, Seedling, Flower, Fruit",
-        "Seed, Seedling, Plant, Flower, Fruit"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "In a class of 40, 22 play cricket, 18 football, 8 both. Only cricket = ?",
+      "options": [
+        "14",
+        "22",
+        "10",
+        "8"
+      ],
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Pointing to a photograph, a man says, 'She is the daughter of my grandfather's only son.' How is the girl related to the man?",
-      "options": [
-        "Daughter",
-        "Cousin",
-        "Niece",
-        "Sister"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Mirror image of time 3:00 on a clock is closest to:",
+      "options": [
+        "9:00",
+        "3:00",
+        "6:00",
+        "12:00"
+      ],
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "A is the father of B. C is the sister of A. How is C related to B?",
-      "options": [
-        "Grandmother",
-        "Aunt",
-        "Mother",
-        "Sister"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: If 15% of a number is 45, the number is:",
+      "options": [
+        "270",
+        "350",
+        "300",
+        "320"
+      ],
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Statement: All pens are pencils. All pencils are erasers. Conclusion: All pens are erasers.",
-      "options": [
-        "The conclusion is valid",
-        "Cannot be determined",
-        "The conclusion is invalid",
-        "Data is insufficient"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Find the missing number: 2, 6, 12, 20, 30, ?",
+      "options": [
+        "42",
+        "40",
+        "36",
+        "48"
+      ],
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Find the odd one out: Triangle, Square, Circle, Sphere",
-      "options": [
-        "Square",
-        "Circle",
-        "Triangle",
-        "Sphere (it is 3D, others are 2D)"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Surface Areas and Volumes",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: A is taller than B, B taller than C, D taller than A. Tallest is:",
+      "options": [
+        "D",
+        "A",
+        "B",
+        "C"
+      ],
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "If 5 workers can build a wall in 12 days, how many days will 10 workers take?",
-      "options": [
-        "24 days",
-        "6 days",
-        "10 days",
-        "3 days"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "How many 2-digit numbers are divisible by 9?",
+      "options": [
+        "10",
+        "9",
+        "11",
+        "8"
+      ],
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "A clock shows 3:15. What is the angle between the hour and minute hands?",
-      "options": [
-        "7.5 degrees",
-        "15 degrees",
-        "0 degrees",
-        "30 degrees"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: All squares are rectangles. Figure X is a square. Therefore X is a rectangle.",
+      "options": [
+        "True",
+        "False",
+        "Cannot say",
+        "Only sometimes"
+      ],
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Find the next term in the series: 2, 6, 12, 20, 30, __",
-      "options": [
-        "40",
-        "44",
-        "36",
-        "42"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Complete the series: 5, 10, 20, 40, ?",
+      "options": [
+        "80",
+        "60",
+        "50",
+        "70"
+      ],
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "If in a certain code, MATH is written as NBUI, how is CODE written?",
-      "options": [
-        "CPDF",
-        "BNCD",
-        "DPEF",
-        "DPFE"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Angle between clock hands at 3:00 is:",
+      "options": [
+        "90°",
+        "180°",
+        "60°",
+        "120°"
+      ],
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "If North becomes East, East becomes South, and so on, what will South become?",
-      "options": [
-        "East",
-        "North",
-        "West",
-        "South"
-      ],
       "section": "Logical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Dictionary order: second among Mathematics, Measure, Matrix, Medium is:",
+      "options": [
+        "Matrix",
+        "Mathematics",
+        "Measure",
+        "Medium"
+      ],
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "Find the coordinates of the point which divides the line segment joining (2,3) and (7,8) in the ratio 2:3.",
-      "options": [
-        "(4,5)",
-        "(5,6)",
-        "(3,4)",
-        "(4.5,5.5)"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Coordinate Geometry",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "For the quadratic polynomial x² − 5x + 2, the sum of zeroes is:",
+      "options": [
+        "7",
+        "5",
+        "6",
+        "4"
+      ],
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Find the area of a circle whose radius is 7 cm (use pi = 22/7).",
-      "options": [
-        "154 sq cm",
-        "144 sq cm",
-        "176 sq cm",
-        "132 sq cm"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Areas Related to Circles",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Discriminant of x² − 4x + 4 = 0 is:",
+      "options": [
+        "0",
+        "4",
+        "16",
+        "−4"
+      ],
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "A die is thrown once. What is the probability of getting a number greater than 4?",
-      "options": [
-        "1/6",
-        "2/3",
-        "1/2",
-        "1/3"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Probability",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: The quadratic equation x² + 1 = 0 has:",
+      "options": [
+        "No real roots",
+        "Two equal real roots",
+        "Two distinct real roots",
+        "One real root"
+      ],
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "A quadratic equation ax^2+bx+c=0 has equal roots when discriminant equals:",
-      "options": [
-        "Positive",
-        "1",
-        "Negative",
-        "0"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Quadratic Equations",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: 10th term of AP 5, 7, 9, … is:",
+      "options": [
+        "22",
+        "25",
+        "23",
+        "24"
+      ],
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "Two coins are tossed together. What is the probability of getting at least one head?",
-      "options": [
-        "3/4",
-        "1",
-        "1/2",
-        "1/4"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Probability",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Sum of first 12 terms of AP 2, 5, 8, … is:",
+      "options": [
+        "232",
+        "222",
+        "225",
+        "219"
+      ],
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "If alpha and beta are zeroes of x^2 - 3x + 2, find the value of alpha times beta.",
-      "options": [
-        "-3",
-        "3",
-        "-2",
-        "2"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Polynomials",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "If in two similar triangles, corresponding sides are in ratio 2 : 3, ratio of areas is:",
+      "options": [
+        "4 : 9",
+        "2 : 3",
+        "3 : 2",
+        "8 : 27"
+      ],
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "What is the HCF of 96 and 404?",
+      "section": "Mathematical Reasoning",
+      "text": "Choose the correct option: In a right triangle, sides 6 and 8 are legs. Hypotenuse is:",
       "options": [
-        "4",
-        "8",
-        "16",
+        "10",
+        "14",
+        "7",
         "12"
       ],
-      "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Real Numbers",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "What is the degree of the polynomial 5x^4 - 3x^2 + 7?",
-      "options": [
-        "3",
-        "7",
-        "4",
-        "2"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Polynomials",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Mid-point of A(2, 3) and B(4, 7) is:",
+      "options": [
+        "(3, 5)",
+        "(2, 7)",
+        "(4, 3)",
+        "(3, 4)"
+      ],
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "Form a quadratic polynomial whose zeroes are 4 and -1.",
-      "options": [
-        "x^2 + 3x - 4",
-        "x^2 - 3x + 4",
-        "x^2 - 3x - 4",
-        "x^2 + 3x + 4"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Quadratic Equations",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Distance between (0, 0) and (3, 4) is:",
+      "options": [
+        "5",
+        "7",
+        "12",
+        "25"
+      ],
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "If two triangles are similar with sides in ratio 2:3, what is the ratio of their areas?",
-      "options": [
-        "8:27",
-        "4:6",
-        "2:3",
-        "4:9"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Triangles",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: sin 30° + cos 60° = ?",
+      "options": [
+        "1",
+        "0",
+        "1/2",
+        "√3/2"
+      ],
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Find the value of tan 45 degrees.",
-      "options": [
-        "0",
-        "1",
-        "Undefined",
-        "0.5"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Introduction to Trigonometry",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "sec²θ − tan²θ equals:",
+      "options": [
+        "1",
+        "0",
+        "sinθ",
+        "2"
+      ],
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "If one zero of the polynomial x^2 - (k+6)x + 2(2k-1) is negative of the other, find k.",
-      "options": [
-        "2",
-        "6",
-        "3",
-        "-3"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Polynomials",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: A tower’s top is observed at 30° from a point 30√3 m away on level ground. Height of tower is:",
+      "options": [
+        "30 m",
+        "30√3 m",
+        "60 m",
+        "15 m"
+      ],
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "In a grouped frequency distribution, what is used to estimate the mean when exact values are unknown?",
-      "options": [
-        "The class mark (mid-value) of each class interval",
-        "The upper limit of each class",
-        "The class width only",
-        "The lower limit of each class"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Statistics",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: A tangent at a point of a circle is perpendicular to the:",
+      "options": [
+        "Radius through the point of contact",
+        "Chord only always parallel",
+        "Diameter never radius",
+        "Secant only"
+      ],
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "If p(x) = x^3 - 3x^2 + 2, find the remainder when p(x) is divided by (x-1) using the Remainder Theorem.",
-      "options": [
-        "0",
-        "1",
-        "2",
-        "-1"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Introduction to Trigonometry",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Area of a circle with radius 7 cm is (π=22/7):",
+      "options": [
+        "154 cm²",
+        "44 cm²",
+        "49 cm²",
+        "22 cm²"
+      ],
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Find the mean of the following data: 4, 8, 10, 12, 16.",
-      "options": [
-        "12",
-        "8",
-        "10",
-        "9"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Statistics",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Volume of a cylinder with r = 7 cm and h = 10 cm is (π=22/7):",
+      "options": [
+        "1540 cm³",
+        "440 cm³",
+        "770 cm³",
+        "220 cm³"
+      ],
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "What is the probability of a sure (certain) event?",
-      "options": [
-        "0.5",
-        "0",
-        "1",
-        "Undefined"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Probability",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Volume of a cone with r = 3 cm and h = 7 cm is (π=22/7):",
+      "options": [
+        "66 cm³",
+        "198 cm³",
+        "22 cm³",
+        "44 cm³"
+      ],
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "Find the coordinates of the centroid of a triangle with vertices (1,2), (3,4), (5,0).",
-      "options": [
-        "(3,2)",
-        "(2,2)",
-        "(3,3)",
-        "(2,3)"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Coordinate Geometry",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Mean of 2, 4, 6, 8, 10 is:",
+      "options": [
+        "6",
+        "5",
+        "8",
+        "10"
+      ],
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "Is the number 0.101001000100001... rational or irrational?",
-      "options": [
-        "Rational, since it follows a pattern",
-        "Irrational, as it is non-terminating and non-recurring",
-        "Rational, as all decimals are rational",
-        "Cannot be determined"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Verbal and Non-Verbal Reasoning",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Median of 3, 5, 7, 9, 11 is:",
+      "options": [
+        "7",
+        "5",
+        "9",
+        "6"
+      ],
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "A bag contains 3 red and 2 blue balls. What is the probability of drawing a red ball?",
-      "options": [
-        "1/5",
-        "3/5",
-        "3/2",
-        "2/5"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Probability",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: Probability of getting a prime when a die is thrown once:",
+      "options": [
+        "1/2",
+        "1/6",
+        "1/3",
+        "2/3"
+      ],
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "In a right triangle, if one acute angle is 30 degrees, what is the other acute angle?",
-      "options": [
-        "30 degrees",
-        "90 degrees",
-        "60 degrees",
-        "45 degrees"
-      ],
       "section": "Mathematical Reasoning",
-      "marks": 1,
-      "syllabusTopic": "Triangles",
-      "questionType": "Regular",
-      "currentClass": 10
+      "text": "Choose the correct option: A card is drawn from a well-shuffled deck of 52. P(an ace) =",
+      "options": [
+        "1/13",
+        "1/52",
+        "4/13",
+        "1/4"
+      ],
+      "marks": 1
     },
     {
       "id": 36,
-      "question": "A shopkeeper's profit percentage is 20% on cost price of Rs. 250. Find the selling price.",
+      "section": "Achievers Section",
+      "text": "If the roots of x² − 7x + k = 0 differ by 3, then k equals:",
       "options": [
-        "Rs. 270",
-        "Rs. 280",
-        "Rs. 300",
-        "Rs. 320"
+        "10",
+        "7",
+        "4",
+        "12"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1,
-      "syllabusTopic": "Introduction to Trigonometry",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 3
     },
     {
       "id": 37,
-      "question": "A car travels 240 km in 4 hours. What is its average speed?",
+      "section": "Achievers Section",
+      "text": "Choose the correct option: Sum of first 15 terms of AP 5, 8, 11, … is:",
       "options": [
-        "65 km/h",
-        "50 km/h",
-        "70 km/h",
-        "60 km/h"
+        "390",
+        "400",
+        "375",
+        "420"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 3
     },
     {
       "id": 38,
-      "question": "If 5 pens cost Rs. 60, what is the cost of 12 pens?",
+      "section": "Achievers Section",
+      "text": "Choose the correct option: If tan θ = 3/4 and θ is acute, then sin θ = ?",
       "options": [
-        "Rs. 132",
-        "Rs. 150",
-        "Rs. 144",
-        "Rs. 120"
+        "3/5",
+        "4/5",
+        "3/4",
+        "5/3"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1,
-      "syllabusTopic": "Introduction to Trigonometry",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 3
     },
     {
       "id": 39,
-      "question": "A room is 5m long and 4m wide. What is the cost of carpeting it at Rs. 50 per sq metre?",
+      "section": "Achievers Section",
+      "text": "Choose the correct option: Total surface area of a sphere of radius 7 cm is (π=22/7):",
       "options": [
-        "Rs. 950",
-        "Rs. 900",
-        "Rs. 1100",
-        "Rs. 1000"
+        "594",
+        "716",
+        "616",
+        "638"
       ],
-      "section": "Everyday Mathematics",
-      "marks": 1,
-      "syllabusTopic": "Introduction to Trigonometry",
-      "questionType": "Regular",
-      "currentClass": 10
+      "marks": 3
     },
     {
       "id": 40,
-      "question": "A sum of Rs. 5000 is invested at 8% simple interest per annum. Find the interest after 2 years.",
-      "options": [
-        "Rs. 900",
-        "Rs. 800",
-        "Rs. 400",
-        "Rs. 1000"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
-    },
-    {
-      "id": 41,
-      "question": "A recipe requires 2 cups of flour for 8 servings. How many cups are needed for 20 servings?",
-      "options": [
-        "4.5 cups",
-        "5 cups",
-        "6 cups",
-        "4 cups"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
-    },
-    {
-      "id": 42,
-      "question": "Ravi buys a shirt marked at Rs. 800 with a 15% discount. What is the discounted price?",
-      "options": [
-        "Rs. 650",
-        "Rs. 680",
-        "Rs. 720",
-        "Rs. 700"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
-    },
-    {
-      "id": 43,
-      "question": "A sum doubles itself in 8 years at simple interest. Find the rate of interest per annum.",
-      "options": [
-        "12.5%",
-        "10%",
-        "8%",
-        "15%"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1,
-      "syllabusTopic": "General / Syllabus topic to review",
-      "questionType": "Regular",
-      "currentClass": 10
-    },
-    {
-      "id": 44,
-      "question": "A shopkeeper marks up an item by 25% then gives a 10% discount. If cost price is Rs. 400, find the selling price.",
-      "options": [
-        "Rs. 450",
-        "Rs. 500",
-        "Rs. 400",
-        "Rs. 480"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1,
-      "syllabusTopic": "Introduction to Trigonometry",
-      "questionType": "Regular",
-      "currentClass": 10
-    },
-    {
-      "id": 45,
-      "question": "A tank can be filled by pipe A in 6 hours and by pipe B in 12 hours. How long will both pipes together take to fill the tank?",
-      "options": [
-        "6 hours",
-        "3 hours",
-        "4 hours",
-        "9 hours"
-      ],
-      "section": "Everyday Mathematics",
-      "marks": 1,
-      "syllabusTopic": "Introduction to Trigonometry",
-      "questionType": "Regular",
-      "currentClass": 10
-    },
-    {
-      "id": 46,
-      "question": "A ladder 10 m long rests against a vertical wall such that its foot is 6 m from the wall's base. If the top of the ladder slides down by 2 m, by how much will the foot slide out? (Use Pythagoras theorem)",
-      "options": [
-        "The foot does not move",
-        "The foot moves out by approximately 3.31 m (new base = 9.31 m, so shift ≈ 3.31 m)",
-        "The foot moves out by 6 m",
-        "The foot moves out by exactly 2 m"
-      ],
       "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Triangles",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
-    },
-    {
-      "id": 47,
-      "question": "A card is drawn from a well-shuffled deck of 52 cards. Given that the card drawn is a face card, what is the probability that it is a king? (Conditional probability)",
+      "text": "Choose the correct option: Two coins are tossed. Probability of getting at least one head is:",
       "options": [
-        "1/3 (4 kings out of 12 face cards)",
-        "4/52",
-        "1/13",
-        "1/12"
+        "3/4",
+        "1/2",
+        "1/4",
+        "1"
       ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Probability",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
-    },
-    {
-      "id": 48,
-      "question": "A quadratic equation representing the age problem: 'The product of Ramu's age 5 years ago and his age 9 years later is 15' leads to which correctly formed equation if x is his present age?",
-      "options": [
-        "(x+5)(x-9) = 15",
-        "(x-5)(x-9) = 15",
-        "x^2 - 4x - 45 = 15",
-        "(x-5)(x+9) = 15"
-      ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Quadratic Equations",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
-    },
-    {
-      "id": 49,
-      "question": "A cone and a hemisphere have equal base radius and equal volumes. Find the ratio of the height of the cone to the radius.",
-      "options": [
-        "1:2",
-        "1:1",
-        "2:1 (height of cone = 2 × radius)",
-        "3:1"
-      ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Surface Areas and Volumes",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
-    },
-    {
-      "id": 50,
-      "question": "In a circle, two tangents are drawn from an external point P to touch the circle at A and B. If the angle APB = 60 degrees, what is the measure of angle AOB (O is the centre)?",
-      "options": [
-        "120 degrees",
-        "90 degrees",
-        "180 degrees",
-        "60 degrees"
-      ],
-      "section": "Achievers Section",
-      "marks": 3,
-      "syllabusTopic": "Areas Related to Circles",
-      "questionType": "Achievers/HOTS",
-      "currentClass": 10
+      "marks": 3
     }
-  ],
-  "syllabusVersion": "SOF Class 10 current syllabus reference",
-  "syllabusTopics": [
-    "Real Numbers",
-    "Polynomials",
-    "Pair of Linear Equations in Two Variables",
-    "Quadratic Equations",
-    "Arithmetic Progressions",
-    "Triangles",
-    "Coordinate Geometry",
-    "Introduction to Trigonometry",
-    "Some Applications of Trigonometry",
-    "Circles",
-    "Areas Related to Circles",
-    "Surface Areas and Volumes",
-    "Statistics",
-    "Probability"
-  ],
-  "reasoningTopics": [
-    "Verbal and Non-Verbal Reasoning"
-  ],
-  "officialSOFPattern": [
-    {
-      "name": "Logical Reasoning",
-      "questions": 15,
-      "marksPerQuestion": 1,
-      "totalMarks": 15
-    },
-    {
-      "name": "Mathematical Reasoning",
-      "questions": 20,
-      "marksPerQuestion": 1,
-      "totalMarks": 20
-    },
-    {
-      "name": "Everyday Mathematics",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
-  "level1SyllabusRule": "60% current class syllabus + 40% previous class syllabus; Achievers from current class only"
+  ]
 }

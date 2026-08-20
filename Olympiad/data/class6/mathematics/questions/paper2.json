@@ -4,391 +4,489 @@
   "paper": 2,
   "title": "Class 6 Mathematics — Paper 2",
   "durationMinutes": 60,
+  "totalMarks": 50,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern and Class 6 syllabus (not a copyrighted SOF paper).",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Find the next number: 20, 22, 24, 26, __.",
+      "question": "Find the next term: 4, 8, 12, 16, __.",
       "options": [
-        "28",
-        "27",
-        "30",
-        "29"
+        "21",
+        "20",
+        "19",
+        "23"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "A number is 4 more than 17. What is it?",
+      "question": "Find the next term: 5, 10, 20, 40, __.",
       "options": [
-        "22",
-        "21",
-        "13",
-        "23"
+        "82",
+        "84",
+        "80",
+        "77"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which number is odd?",
+      "question": "Odd one out: Square, Rectangle, Rhombus, Circle",
       "options": [
-        "30",
-        "29",
-        "28",
-        "32"
+        "Circle",
+        "Square",
+        "Rectangle",
+        "Rhombus"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "If a shape has 4 sides, how many sides does it have?",
+      "question": "If PAPER is coded as QBQFS (each letter +1), then PENCIL is coded as:",
       "options": [
-        "6",
-        "5",
-        "4",
-        "3"
+        "QFODJM",
+        "QDOBJK",
+        "ODMBHK",
+        "QFODJN"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which is the greatest?",
+      "question": "Ravi faces North. He turns 90° right, then 180°, then 90° left. He now faces:",
       "options": [
-        "318",
-        "313",
-        "310",
-        "315"
+        "South",
+        "North",
+        "East",
+        "West"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Find the next number: 25, 28, 31, 34, __.",
+      "question": "Analogy: 3 : 27 :: 4 : ?",
       "options": [
-        "40",
-        "37",
-        "38",
-        "35"
+        "64",
+        "16",
+        "32",
+        "12"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "A number is 5 more than 22. What is it?",
+      "question": "Odd one out: Addition, Subtraction, Multiplication, Equation",
       "options": [
-        "28",
-        "17",
-        "29",
-        "27"
+        "Equation",
+        "Addition",
+        "Subtraction",
+        "Multiplication"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which number is odd?",
+      "question": "In a line of 30 students, Meera is 12th from the left. Her position from the right is:",
       "options": [
-        "33",
-        "34",
-        "35",
-        "37"
+        "19",
+        "21",
+        "17",
+        "23"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "If a shape has 6 sides, how many sides does it have?",
+      "question": "If the 1st of a month is a Monday, then the 22nd of the same month is a:",
       "options": [
-        "7",
-        "6",
-        "5",
-        "8"
+        "Monday",
+        "Tuesday",
+        "Sunday",
+        "Wednesday"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which is the greatest?",
+      "question": "There are 22 students; 14 play cricket and 12 play football. If 6 play both, how many play only cricket?",
       "options": [
-        "318",
-        "323",
-        "315",
-        "320"
+        "9",
+        "7",
+        "8",
+        "10"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What is 103 + 94?",
+      "question": "Which letter comes midway between K and Q in the English alphabet?",
       "options": [
-        "198",
-        "207",
-        "197",
-        "196"
+        "N",
+        "M",
+        "O",
+        "L"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "What is 137 − 80?",
+      "question": "If ‘+’ means ×, ‘×’ means −, ‘−’ means ÷ and ‘÷’ means +, then 8 + 2 − 4 × 3 = ?",
       "options": [
-        "57",
-        "-57",
-        "55",
-        "59"
+        "1",
+        "4",
+        "7",
+        "13"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "What is 4 × 5?",
+      "question": "Pointing to a boy, Riya says, “He is the son of my grandfather’s only son.” The boy is Riya’s:",
       "options": [
-        "20",
-        "9",
-        "19",
-        "21"
+        "Brother",
+        "Uncle",
+        "Cousin",
+        "Father"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "What is 36 ÷ 6?",
+      "question": "Find the next letters: AZ, BY, CX, __.",
       "options": [
-        "6",
-        "5",
-        "7",
-        "6"
+        "DW",
+        "DV",
+        "EW",
+        "DU"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "A cube has how many edges?",
       "options": [
-        "36 cm",
-        "10 cm",
-        "24 cm",
-        "12 cm"
+        "12",
+        "6",
+        "8",
+        "10"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "What is 108 + 99?",
+      "question": "The place value of digit 5 in 352104 is:",
       "options": [
-        "206",
-        "207",
-        "208",
-        "217"
+        "50000",
+        "60000",
+        "550000",
+        "50005"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "What is 142 − 85?",
+      "question": "Evaluate: (14) + (−7) = ?",
       "options": [
-        "59",
-        "55",
-        "-57",
-        "57"
+        "8",
+        "7",
+        "6",
+        "9"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "What is 3 × 5?",
+      "question": "What is (−5) × (6)?",
       "options": [
-        "15",
-        "14",
-        "8",
-        "16"
+        "-27",
+        "-33",
+        "-30",
+        "-25"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "What is 36 ÷ 6?",
+      "question": "Simplify: \\( \\dfrac{2}{3} + \\dfrac{1}{6} \\)",
       "options": [
-        "5",
-        "6",
-        "6",
-        "7"
+        "5/6",
+        "3/9",
+        "1/2",
+        "2/6"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "Divide 63 in the ratio 4:5. The first part is:",
       "options": [
-        "36 cm",
-        "12 cm",
-        "24 cm",
-        "10 cm"
+        "28",
+        "32",
+        "33",
+        "91"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "What is 113 + 104?",
+      "question": "If 4 : 5 = 12 : x, then x = ?",
       "options": [
-        "216",
-        "218",
-        "227",
-        "217"
+        "15",
+        "16",
+        "10",
+        "20"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "What is 147 − 90?",
+      "question": "If x + 7 = 22, then x = ?",
       "options": [
-        "-57",
-        "55",
-        "59",
-        "57"
+        "17",
+        "13",
+        "15",
+        "20"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "What is 2 × 5?",
+      "question": "Solve: 3x = 30",
       "options": [
-        "7",
-        "10",
+        "11",
         "9",
-        "11"
+        "12",
+        "10"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "What is 36 ÷ 6?",
+      "question": "Two angles form a linear pair. If one is 50°, the other is:",
       "options": [
-        "6",
-        "7",
-        "5",
-        "6"
+        "130",
+        "140",
+        "120",
+        "150"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "In a triangle, two angles are 52° and 62°. The third angle is:",
       "options": [
-        "24 cm",
-        "12 cm",
-        "10 cm",
-        "36 cm"
+        "71",
+        "66",
+        "61",
+        "76"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "What is 118 + 109?",
+      "question": "Perimeter of a rectangle of length 14 cm and breadth 9 cm is:",
       "options": [
-        "227",
-        "237",
-        "226",
-        "228"
+        "69",
+        "172",
+        "46",
+        "44"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "What is 152 − 95?",
+      "question": "Area of a square of side 11 cm is:",
       "options": [
-        "-57",
-        "55",
-        "59",
-        "57"
+        "165",
+        "132",
+        "110",
+        "121"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "What is 7 × 5?",
+      "question": "Area of a triangle with base 14 cm and height 10 cm is:",
       "options": [
-        "36",
-        "35",
-        "34",
-        "12"
+        "70",
+        "210",
+        "94",
+        "72"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "What is 36 ÷ 6?",
+      "question": "HCF of 48 and 36 is:",
       "options": [
-        "6",
-        "5",
-        "7",
-        "6"
+        "14",
+        "12",
+        "15",
+        "11"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "LCM of 12 and 16 is:",
       "options": [
-        "36 cm",
-        "10 cm",
-        "12 cm",
-        "24 cm"
+        "60",
+        "64",
+        "48",
+        "52"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "A number is doubled and then 3 is added to get 59. What was the number?",
+      "question": "15% of 300 is:",
       "options": [
-        "31",
-        "27",
-        "29",
-        "28"
+        "60",
+        "345",
+        "55",
+        "45"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "A number is doubled and then 3 is added to get 61. What was the number?",
+      "question": "The mean of 6, 8, 10, 12 is:",
       "options": [
-        "32",
-        "29",
-        "30",
-        "28"
+        "9",
+        "10",
+        "8",
+        "11"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "A number is doubled and then 3 is added to get 63. What was the number?",
+      "question": "An angle measuring 90° is called a:",
       "options": [
-        "30",
-        "33",
-        "29",
-        "31"
+        "Right angle",
+        "Acute angle",
+        "Obtuse angle",
+        "Reflex angle"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "A number is doubled and then 3 is added to get 65. What was the number?",
+      "question": "The algebraic expression for “5 more than twice a number x” is:",
       "options": [
-        "30",
-        "31",
-        "34",
-        "32"
+        "2x + 5",
+        "5x + 2",
+        "2x − 5",
+        "x + 10"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "A number is doubled and then 3 is added to get 67. What was the number?",
+      "question": "0.4 × 10 = ?",
       "options": [
-        "31",
-        "33",
-        "32",
-        "35"
+        "4",
+        "0.4",
+        "40",
+        "0.04"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "question": "Evaluate: (−7) × 3 + (4) × (−4)",
+      "options": [
+        "-37",
+        "-32",
+        "-42",
+        "-27"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 37,
+      "question": "A tank is 3/4 full of water. After using 1/3 of the water in it, the tank is what fraction full?",
+      "options": [
+        "1/2",
+        "1/4",
+        "2/3",
+        "1/3"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 38,
+      "question": "A rectangle has perimeter 52 cm and length is 6 cm more than breadth. Its area is:",
+      "options": [
+        "212",
+        "186",
+        "160",
+        "170"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 39,
+      "question": "Two numbers are in ratio 3 : 5 and their sum is 56. The smaller number is:",
+      "options": [
+        "26",
+        "24",
+        "49",
+        "21"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 40,
+      "question": "The mean of 5 numbers is 14. If the number 20 is removed, the mean of the remaining numbers is:",
+      "options": [
+        "12.5",
+        "26.5",
+        "32.5",
+        "13.5"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

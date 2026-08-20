@@ -1,394 +1,731 @@
 {
   "class": 7,
-  "subject": "English",
+  "subject": "english",
   "paper": 1,
-  "title": "Class 7 English — Paper 1",
-  "durationMinutes": 60,
+  "totalQuestions": 60,
+  "totalMarks": 60,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern & syllabus. Not an official SOF paper. IEO Class 7 pattern: Word & Structure Knowledge 45×1 + Reading 10×1 + Spoken & Written Expression 5×1 = 60 Q / 60 marks",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Choose the word closest in meaning to 'quick'.",
+      "text": "She _____ to school every day.",
       "options": [
-        "heavy",
-        "rapid",
-        "quiet",
-        "slow"
+        "going",
+        "goes",
+        "go",
+        "gone"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Choose the opposite of 'ancient'.",
+      "text": "They _____ playing cricket when it started raining.",
       "options": [
-        "historic",
-        "modern",
-        "old",
-        "early"
+        "are",
+        "is",
+        "was",
+        "were"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Choose the correct article: She saw ___ owl.",
+      "text": "By next year, we _____ this project.",
       "options": [
-        "the",
-        "a",
-        "an",
-        "no article"
+        "will have completed",
+        "completed",
+        "completing",
+        "complete"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Choose the correct preposition: The keys are ___ the drawer.",
+      "text": "The letter _____ yesterday.",
       "options": [
-        "inside",
-        "because",
-        "happy",
-        "quickly"
+        "has post",
+        "posted",
+        "was posted",
+        "was posting"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Choose the correct verb: The puppy ___ loudly.",
+      "text": "Change to passive: ‘They built a bridge.’ →",
       "options": [
-        "bark",
-        "barks",
-        "barking",
-        "barked"
+        "A bridge is building them.",
+        "A bridge built them.",
+        "A bridge was built by them.",
+        "They were built a bridge."
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Choose the plural of 'tooth'.",
+      "text": "He said, “I am busy.” → He said that he _____ busy.",
       "options": [
-        "toothies",
-        "tooths",
-        "teeth",
-        "toothes"
+        "am",
+        "was",
+        "is",
+        "were"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Choose the correctly spelled word.",
+      "text": "Choose the correct indirect speech: She said, “I will help you.”",
       "options": [
-        "enviornment",
-        "enviroment",
-        "environment",
-        "envirnment"
+        "She says she help.",
+        "She said she helping.",
+        "She said that she will help you.",
+        "She said that she would help me."
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Choose the homophone of 'right'.",
+      "text": "Identify the subordinate clause: ‘I know that he is honest.’",
       "options": [
-        "write",
-        "rate",
-        "ride",
-        "road"
+        "that he is honest",
+        "honest",
+        "he",
+        "I know"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Identify the adjective: The clever fox escaped.",
+      "text": "You _____ wear a helmet while riding a bike. (obligation)",
       "options": [
-        "the",
-        "escaped",
-        "fox",
-        "clever"
+        "needn’t always only",
+        "might",
+        "must",
+        "used to"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Identify the adverb: The boy answered politely.",
+      "text": "_____ I borrow your pen?",
       "options": [
-        "politely",
-        "the",
-        "boy",
-        "answered"
+        "Used",
+        "May",
+        "Ought",
+        "Needn’t"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What problem did Aarav notice?",
+      "text": "The synonym of ‘brave’ is:",
       "options": [
-        "The window was broken",
-        "The books were missing",
-        "The plants looked dry",
-        "The classroom was noisy"
+        "timid",
+        "courageous",
+        "cowardly",
+        "fearful"
       ],
-      "section": "Reading & Expression"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "What value did the class practise?",
+      "text": "The antonym of ‘expand’ is:",
       "options": [
-        "Avoiding work",
-        "Keeping secrets",
-        "Sharing responsibility",
-        "Competition only"
+        "increase",
+        "grow",
+        "enlarge",
+        "contract"
       ],
-      "section": "Reading & Expression"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "What is the best title?",
+      "text": "Choose the correctly spelled word:",
       "options": [
-        "The Blue Wallet",
-        "An Honest Choice",
-        "The Busy Street",
-        "A Long Walk"
+        "Environment",
+        "Envirenment",
+        "Enviornment",
+        "Enviroment"
       ],
-      "section": "Reading & Expression"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Which reply is most appropriate?",
+      "text": "A person who writes books is an:",
       "options": [
-        "Blue is my favourite.",
-        "No! Go away.",
-        "Of course. How can I help?",
-        "Yesterday."
+        "auditor only always",
+        "anchor",
+        "author",
+        "aviator"
       ],
-      "section": "Reading & Expression"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "Which sentence is best for the notice?",
+      "text": "‘Break the ice’ means:",
       "options": [
-        "You better bring it.",
-        "Bring stuff tomorrow!",
-        "Art things!!!",
-        "Students are requested to bring their art materials tomorrow."
+        "End a friendship",
+        "Start a conversation in a friendly way",
+        "Smash frozen water only literally always",
+        "Fail an exam"
       ],
-      "section": "Reading & Expression"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "Choose the correct sentence.",
+      "text": "Neither Ravi nor his friends _____ present.",
       "options": [
-        "The children finishing their project.",
-        "The children has finished their project.",
-        "The children is finished their project.",
-        "The children have finished their project."
+        "was",
+        "are",
+        "is",
+        "be"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Choose the past tense of 'bring'.",
+      "text": "The jury _____ divided in their opinions. (emphasising individuals)",
       "options": [
-        "brang",
-        "brought",
-        "bringing",
-        "bringed"
+        "is",
+        "be",
+        "was",
+        "were"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Choose the correct comparative form.",
+      "text": "Insert article: He is _____ honest man.",
       "options": [
-        "carefulest",
-        "carefuller",
-        "more careful",
-        "most carefuler"
+        "an",
+        "no article possible",
+        "the",
+        "a"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "Choose the most polite request.",
+      "text": "Insert article: _____ Himalayas are in the north of India.",
       "options": [
-        "Could you please help me?",
-        "Give me that!",
-        "Help me now!",
-        "You must help me."
+        "No article",
+        "A",
+        "The",
+        "An"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "Choose the best word: The girl spoke ___ to the baby.",
+      "text": "Choose the correct preposition: She is good _____ mathematics.",
       "options": [
-        "softness",
-        "softly",
-        "softer",
-        "soft"
+        "on",
+        "at",
+        "in",
+        "over"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "He congratulated me _____ my success.",
       "options": [
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow;"
+        "at",
+        "with",
+        "for",
+        "on"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Identify the adjective: The beautiful garden attracts visitors.",
       "options": [
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow!"
+        "attracts",
+        "visitors",
+        "garden",
+        "beautiful"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Identify the adverb: She sang melodiously.",
       "options": [
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?"
+        "melodiously",
+        "none",
+        "sang",
+        "She"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Choose correct conjunction: I stayed at home _____ it was raining.",
       "options": [
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow,"
+        "or",
+        "but only wrong",
+        "because",
+        "although always opposite"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "‘Who’ refers to:",
       "options": [
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow!"
+        "Places only",
+        "People (subject)",
+        "Things only",
+        "Time only"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Relative clause: This is the book _____ I bought yesterday.",
       "options": [
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?"
+        "whose only person",
+        "whom always",
+        "who",
+        "which/that"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Choose the correct form: If it rains, we _____ indoors.",
       "options": [
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow,"
+        "will stay",
+        "had stay",
+        "staying",
+        "stayed"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Past perfect: When we arrived, the train _____.",
       "options": [
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow,"
+        "had left",
+        "leaving",
+        "leaves",
+        "has left"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Gerund: _____ is a good exercise.",
       "options": [
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow,"
+        "Swimmed",
+        "Swam",
+        "Swimming",
+        "Swum"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Infinitive: She wants _____ a doctor.",
       "options": [
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow;"
+        "becoming",
+        "to become",
+        "become",
+        "became"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Choose correct: One of the boys _____ absent today.",
       "options": [
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow;"
+        "were",
+        "be",
+        "are",
+        "is"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 32,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "The news _____ true.",
       "options": [
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow;"
+        "is",
+        "have",
+        "were",
+        "are"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 33,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Plural of ‘crisis’ is:",
       "options": [
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow,",
-        "What a beautiful rainbow!"
+        "crisi",
+        "crisises",
+        "crises",
+        "crisis"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 34,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Feminine of ‘actor’ is:",
       "options": [
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow,"
+        "act",
+        "actorine",
+        "actress",
+        "actora"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
     },
     {
       "id": 35,
-      "question": "Choose the correctly punctuated sentence.",
+      "text": "Choose correct question tag: You are coming, _____?",
       "options": [
-        "What a beautiful rainbow!",
-        "What a beautiful rainbow?",
-        "What a beautiful rainbow;",
-        "What a beautiful rainbow,"
+        "isn’t you",
+        "aren’t you",
+        "are you not not",
+        "don’t you are"
       ],
-      "section": "Word and Structure"
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "text": "Order of adjectives: She bought a _____ bag.",
+      "options": [
+        "black small leather",
+        "small leather black",
+        "leather black small",
+        "small black leather"
+      ],
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "text": "Choose the correct sentence:",
+      "options": [
+        "He has been living here since 2018.",
+        "He live here since 2018.",
+        "He is live here since 2018.",
+        "He living here since 2018."
+      ],
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "text": "‘Their’ is a:",
+      "options": [
+        "conjunction",
+        "verb",
+        "possessive determiner",
+        "adverb of manner"
+      ],
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "text": "Choose synonym of ‘ancient’:",
+      "options": [
+        "recent",
+        "modern",
+        "old",
+        "new"
+      ],
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "text": "Antonym of ‘generous’:",
+      "options": [
+        "helpful",
+        "selfish",
+        "kind",
+        "noble"
+      ],
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "text": "Idiom: ‘A piece of cake’ means:",
+      "options": [
+        "A difficult task",
+        "An expensive item",
+        "A dessert only always",
+        "Something very easy"
+      ],
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "text": "Choose correct narration: He said to me, “Please wait.”",
+      "options": [
+        "He requested me to wait.",
+        "He told waiting.",
+        "He ordered please.",
+        "He said me wait."
+      ],
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "text": "Voice: ‘Open the door.’ (passive imperative sense)",
+      "options": [
+        "Opening door was.",
+        "The door opened him.",
+        "Let the door be opened.",
+        "Door is open they."
+      ],
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "text": "Modal of possibility: It _____ rain this evening.",
+      "options": [
+        "ought not never",
+        "may",
+        "must to",
+        "used"
+      ],
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "text": "Choose correct: The committee _____ submitted its report.",
+      "options": [
+        "are",
+        "has",
+        "have always only",
+        "were"
+      ],
+      "section": "Word and Structure Knowledge",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "text": "Read the passage:\n\nRivers have shaped human civilisation for thousands of years. Early settlements grew along river banks because water was available for drinking, farming and transport. Today, rivers still support cities, but pollution from factories and untreated sewage threatens fish and human health. Conserving rivers means reducing waste, treating wastewater and planting trees along banks to prevent soil erosion.\n\nEarly settlements often grew along rivers mainly because:",
+      "options": [
+        "water supported drinking, farming and transport",
+        "rivers blocked all travel",
+        "there was no land elsewhere",
+        "rivers had no fish"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 47,
+      "text": "A modern threat to rivers mentioned is:",
+      "options": [
+        "excess gold mining on Moon",
+        "too many trees only",
+        "pollution from factories and untreated sewage",
+        "lack of sunlight in space"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 48,
+      "text": "Conserving rivers includes:",
+      "options": [
+        "cutting all bank vegetation",
+        "treating wastewater and reducing waste",
+        "dumping more plastic",
+        "blocking all rainfall"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 49,
+      "text": "Planting trees along banks helps to:",
+      "options": [
+        "stop photosynthesis forever",
+        "prevent soil erosion",
+        "increase sewage",
+        "remove all water"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 50,
+      "text": "The passage is mainly about:",
+      "options": [
+        "space travel",
+        "desert animals only",
+        "how to build factories only",
+        "importance and conservation of rivers"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 51,
+      "text": "Read the passage:\n\nLibraries are more than rooms full of books. They offer quiet spaces to study, access to digital resources and programmes that encourage reading among children. A library card lets members borrow materials for a limited time. Returning items promptly is a responsibility that keeps the collection available for everyone. In the digital age, libraries also teach information literacy so users can judge reliable sources.\n\nBesides books, libraries may offer:",
+      "options": [
+        "weather control",
+        "only loud concerts always",
+        "digital resources and reading programmes",
+        "car repairs"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 52,
+      "text": "A library card allows members to:",
+      "options": [
+        "never return anything",
+        "borrow materials for a limited time",
+        "own the entire library",
+        "print currency"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 53,
+      "text": "Returning items on time:",
+      "options": [
+        "closes the library forever",
+        "is unnecessary",
+        "destroys books",
+        "keeps the collection available for everyone"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 54,
+      "text": "Information literacy helps users:",
+      "options": [
+        "delete catalogues only",
+        "ignore facts always",
+        "avoid all reading",
+        "judge reliable sources"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 55,
+      "text": "A suitable title could be:",
+      "options": [
+        "Libraries in the Modern Age",
+        "Cricket Rules Only",
+        "Types of Rocks",
+        "Ocean Currents"
+      ],
+      "section": "Reading",
+      "marks": 1
+    },
+    {
+      "id": 56,
+      "text": "Best opening for a formal email to a principal:",
+      "options": [
+        "Respected Sir/Madam,",
+        "What's up?",
+        "Yo!",
+        "Hey buddy!"
+      ],
+      "section": "Spoken and Written Expression",
+      "marks": 1
+    },
+    {
+      "id": 57,
+      "text": "A school notice should mainly be:",
+      "options": [
+        "Only emojis",
+        "A long unrelated story only",
+        "Brief, clear and include key details (what, when, where)",
+        "Written without date or venue"
+      ],
+      "section": "Spoken and Written Expression",
+      "marks": 1
+    },
+    {
+      "id": 58,
+      "text": "Choose the polite request:",
+      "options": [
+        "You must throw the book.",
+        "Could you please pass the book?",
+        "Give book now!",
+        "Pass not."
+      ],
+      "section": "Spoken and Written Expression",
+      "marks": 1
+    },
+    {
+      "id": 59,
+      "text": "Suitable closing for a formal letter:",
+      "options": [
+        "Bye bye friend forever only",
+        "Laterz",
+        "See ya!",
+        "Yours faithfully,"
+      ],
+      "section": "Spoken and Written Expression",
+      "marks": 1
+    },
+    {
+      "id": 60,
+      "text": "In a debate, a good practice is to:",
+      "options": [
+        "Interrupt constantly only",
+        "Ignore the topic",
+        "Shout without facts",
+        "Listen to the other side and respond with reasons"
+      ],
+      "section": "Spoken and Written Expression",
+      "marks": 1
     }
   ]
 }

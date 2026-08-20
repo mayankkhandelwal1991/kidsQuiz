@@ -1,339 +1,611 @@
 {
   "class": 7,
-  "subject": "Science",
+  "subject": "science",
   "paper": 2,
-  "title": "Class 7 Science — Paper 2",
-  "durationMinutes": 60,
+  "totalQuestions": 50,
+  "totalMarks": 60,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 pattern & syllabus. Not an official SOF paper. NSO Class 7 pattern: Logical Reasoning 10×1 + Science 35×1 + Achievers 5×3 = 50 Q / 60 marks",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Which part of a plant usually absorbs water from the soil?",
+      "text": "Find the next: 3, 6, 12, 24, __.",
       "options": [
-        "Flower",
-        "Fruit",
-        "Leaf",
-        "Roots"
+        "48",
+        "36",
+        "30",
+        "40"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which organ pumps blood around the body?",
+      "text": "Odd one out: Photosynthesis, Transpiration, Respiration, Condensation",
       "options": [
-        "Lungs",
-        "Brain",
-        "Heart",
-        "Stomach"
+        "Condensation",
+        "Photosynthesis",
+        "Transpiration",
+        "Respiration"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which is a renewable source of energy?",
+      "text": "Analogy: Stomata : Gas exchange :: Xylem : ?",
       "options": [
-        "Sunlight",
-        "Petrol",
-        "Diesel",
-        "Coal"
+        "Water transport",
+        "Food storage only",
+        "Pollination",
+        "Seed dispersal"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which material is transparent?",
+      "text": "If ‘Acid’ is related to ‘Sour’, then ‘Base’ is related to:",
       "options": [
-        "Cardboard",
-        "Clear glass",
-        "Wood",
-        "Stone"
+        "Bitter",
+        "Sweet only",
+        "Salty only",
+        "Odourless always"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which change can usually be reversed?",
+      "text": "Which does not belong: Conduction, Convection, Radiation, Digestion",
       "options": [
-        "Paper burning",
-        "Wood burning",
-        "Egg cooking",
-        "Ice melting"
+        "Digestion",
+        "Conduction",
+        "Convection",
+        "Radiation"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Which force slows a toy car on a rough floor?",
+      "text": "Series: 1, 4, 9, 16, 25, __.",
       "options": [
-        "Sound",
-        "Friction",
-        "Colour",
-        "Light"
+        "36",
+        "30",
+        "32",
+        "49"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Which animal is adapted to a hot desert?",
+      "text": "A is faster than B but slower than C. D is slower than B. Who is fastest?",
       "options": [
-        "Polar bear",
-        "Camel",
-        "Whale",
-        "Penguin"
+        "C",
+        "A",
+        "B",
+        "D"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which body part protects the brain?",
+      "text": "Which letter has a vertical line of symmetry?",
       "options": [
-        "Knee",
-        "Rib cage",
-        "Skull",
-        "Ankle"
+        "A",
+        "B",
+        "C",
+        "E"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Which gas do humans need for breathing?",
+      "text": "If all roses are flowers and some flowers fade quickly, which must be true?",
       "options": [
-        "Helium",
-        "Hydrogen",
-        "Oxygen",
-        "Neon"
+        "Some roses may fade quickly",
+        "No rose is a flower",
+        "All flowers are roses",
+        "Roses never fade"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which state of matter keeps its own shape?",
+      "text": "Odd one out: Thermometer, Barometer, Speedometer, Chlorophyll",
       "options": [
-        "Liquid",
-        "Gas",
-        "Vapour",
-        "Solid"
+        "Chlorophyll",
+        "Thermometer",
+        "Barometer",
+        "Speedometer"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "text": "The largest gland in the human body is the:",
       "options": [
-        "It wilts",
-        "It grows faster",
-        "It needs no sunlight",
-        "It becomes a rock"
+        "Liver",
+        "Salivary gland",
+        "Thyroid",
+        "Pancreas"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "text": "Bile is stored in the:",
       "options": [
-        "Metal conducts heat better",
-        "Soup heats only metal",
-        "Metal contains fire",
-        "Wood creates cold"
+        "Lungs",
+        "Stomach",
+        "Gall bladder",
+        "Kidney"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Why do we see lightning before hearing thunder?",
+      "text": "Cotton fibre is obtained from:",
       "options": [
-        "Lightning has no sound",
-        "Light travels faster than sound",
-        "Thunder happens later in the sky",
-        "Clouds stop sound"
+        "Silkworm",
+        "Cotton plant seeds/bolls",
+        "Sheep",
+        "Jute stem only"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Which is the safest way to test a science idea?",
+      "text": "Silk is obtained from:",
       "options": [
-        "Change everything at once",
-        "Change one main condition and compare results",
-        "Guess without observing",
-        "Do not record results"
+        "Flax",
+        "Silkworm cocoons",
+        "Cotton plant",
+        "Polyester factory trees"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "text": "Heat flows from a hotter body to a colder body until:",
       "options": [
-        "It wilts",
-        "It becomes a rock",
-        "It needs no sunlight",
-        "It grows faster"
+        "Volumes become zero",
+        "Colours match",
+        "Masses become equal",
+        "Temperatures become equal"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "text": "A clinical thermometer is used to measure:",
       "options": [
-        "Wood creates cold",
-        "Soup heats only metal",
-        "Metal contains fire",
-        "Metal conducts heat better"
+        "Body temperature",
+        "Rainfall",
+        "Wind speed",
+        "Atmospheric pressure"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Why do we see lightning before hearing thunder?",
+      "text": "Land breeze blows from:",
       "options": [
-        "Lightning has no sound",
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Thunder happens later in the sky"
+        "Equator to poles only",
+        "Sea to land always at noon only",
+        "Land to sea (usually at night)",
+        "Mountains to space"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Which is the safest way to test a science idea?",
+      "text": "Acids turn blue litmus:",
       "options": [
-        "Change one main condition and compare results",
-        "Guess without observing",
-        "Do not record results",
-        "Change everything at once"
+        "Blue deeper",
+        "Red",
+        "Green",
+        "Black"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "text": "Bases turn red litmus:",
       "options": [
-        "It needs no sunlight",
-        "It grows faster",
-        "It wilts",
-        "It becomes a rock"
+        "Yellow",
+        "Blue",
+        "Red deeper",
+        "Orange"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "text": "A salt and water are formed in a reaction between:",
       "options": [
-        "Soup heats only metal",
-        "Metal contains fire",
-        "Metal conducts heat better",
-        "Wood creates cold"
+        "Oxygen and nitrogen only",
+        "Sand and clay",
+        "Two metals only",
+        "Acid and base (neutralisation)"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "Why do we see lightning before hearing thunder?",
+      "text": "Rusting of iron is a:",
       "options": [
-        "Clouds stop sound",
-        "Thunder happens later in the sky",
-        "Light travels faster than sound",
-        "Lightning has no sound"
+        "Chemical change",
+        "Change of state of water",
+        "Reversible melting only",
+        "Physical change only"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Which is the safest way to test a science idea?",
+      "text": "Melting of ice is a:",
       "options": [
-        "Change everything at once",
-        "Guess without observing",
-        "Do not record results",
-        "Change one main condition and compare results"
+        "Biological evolution",
+        "Chemical change",
+        "Physical change",
+        "Nuclear change"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "text": "Weather describes atmospheric conditions:",
       "options": [
-        "It needs no sunlight",
-        "It grows faster",
-        "It wilts",
-        "It becomes a rock"
+        "Only inside the Earth",
+        "Over a short period at a place",
+        "Over many decades globally only",
+        "Only in oceans depths"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "text": "Climate is the:",
       "options": [
-        "Metal conducts heat better",
-        "Metal contains fire",
-        "Wood creates cold",
-        "Soup heats only metal"
+        "Temperature of a cup of tea",
+        "Speed of a car",
+        "Weather of one afternoon only",
+        "Average weather pattern over a long period"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why do we see lightning before hearing thunder?",
+      "text": "High speed winds are accompanied by:",
       "options": [
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Lightning has no sound",
-        "Thunder happens later in the sky"
+        "No change in pressure ever",
+        "Solid rock formation",
+        "Increased air pressure always only",
+        "Reduced air pressure"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Which is the safest way to test a science idea?",
+      "text": "The uppermost layer of soil is generally rich in:",
       "options": [
-        "Do not record results",
-        "Guess without observing",
-        "Change everything at once",
-        "Change one main condition and compare results"
+        "Humus",
+        "Glass",
+        "Plastic",
+        "Only pure metal"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "text": "During inhalation, the diaphragm:",
       "options": [
-        "It grows faster",
-        "It becomes a rock",
-        "It needs no sunlight",
-        "It wilts"
+        "Turns into bone",
+        "Relaxes and moves upward only always",
+        "Contracts and moves downward",
+        "Disappears"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "text": "In humans, oxygen is carried mainly by:",
       "options": [
-        "Metal contains fire",
-        "Soup heats only metal",
-        "Metal conducts heat better",
-        "Wood creates cold"
+        "Platelets only",
+        "Haemoglobin in red blood cells",
+        "White blood cells only",
+        "Plasma proteins that make hair"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Why do we see lightning before hearing thunder?",
+      "text": "Xylem transports:",
       "options": [
-        "Clouds stop sound",
-        "Lightning has no sound",
-        "Light travels faster than sound",
-        "Thunder happens later in the sky"
+        "Only oxygen to roots",
+        "Only carbon dioxide to flowers",
+        "Only food from leaves",
+        "Water and minerals"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Which is the safest way to test a science idea?",
+      "text": "Phloem transports:",
       "options": [
-        "Change everything at once",
-        "Change one main condition and compare results",
-        "Do not record results",
-        "Guess without observing"
+        "Food (mainly sugars)",
+        "Only sunlight",
+        "Only minerals from air",
+        "Only water upward"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 31,
+      "text": "The human heart has:",
+      "options": [
+        "Four chambers",
+        "Six chambers",
+        "Three chambers",
+        "Two chambers"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 32,
+      "text": "Seeds may be dispersed by:",
+      "options": [
+        "Only earthquakes",
+        "Only electricity",
+        "Wind, water, animals",
+        "Only magnets"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 33,
+      "text": "Vegetative propagation is reproduction from:",
+      "options": [
+        "Only flowers always",
+        "Vegetative parts like stem/leaf/root",
+        "Only seeds always",
+        "Only fruits always"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 34,
+      "text": "Speed is defined as:",
+      "options": [
+        "Mass per volume",
+        "Energy per charge",
+        "Force per unit area",
+        "Distance travelled per unit time"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 35,
+      "text": "The SI unit of speed is:",
+      "options": [
+        "m/s",
+        "s/m",
+        "m only",
+        "km only"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 36,
+      "text": "A simple pendulum’s time period depends mainly on:",
+      "options": [
+        "Only room number",
+        "Mass of bob only (ideally independent)",
+        "Length of the pendulum",
+        "Colour of bob"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 37,
+      "text": "Electric current is the flow of:",
+      "options": [
+        "Only light always",
+        "Only heat without charge",
+        "Electric charges",
+        "Only sound"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 38,
+      "text": "A good conductor among the following is:",
+      "options": [
+        "Plastic",
+        "Copper",
+        "Rubber",
+        "Dry wood"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 39,
+      "text": "In a closed circuit with a battery and bulb, the bulb glows when:",
+      "options": [
+        "There is no cell",
+        "The switch is open and breaks path",
+        "The wire is cut",
+        "The circuit is complete"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 40,
+      "text": "Light travels in:",
+      "options": [
+        "Straight lines in a uniform medium",
+        "Only through metals",
+        "Only zig-zag without reason",
+        "Only circles"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 41,
+      "text": "A real image formed by a concave mirror can be:",
+      "options": [
+        "Formed only by sound",
+        "Never inverted",
+        "Caught on a screen",
+        "Only virtual always"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 42,
+      "text": "White light can be split into a spectrum using a:",
+      "options": [
+        "Metal spoon only",
+        "Plain mirror only",
+        "Prism",
+        "Wooden block"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 43,
+      "text": "Forests help in:",
+      "options": [
+        "Destroying biodiversity only",
+        "Maintaining water cycle and preventing soil erosion",
+        "Increasing air pollution only",
+        "Stopping rainfall forever"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 44,
+      "text": "Wastewater should be treated before release to:",
+      "options": [
+        "Kill all fish intentionally",
+        "Block sunlight in space",
+        "Increase toxic chemicals",
+        "Reduce pollution of water bodies"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 45,
+      "text": "Neutralisation is used in:",
+      "options": [
+        "Treating acidic soil with base (e.g. lime)",
+        "Only measuring length",
+        "Only cutting wood",
+        "Only freezing water"
+      ],
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 46,
+      "text": "If the distance–time graph of a body is a straight line parallel to the time axis, the body is:",
+      "options": [
+        "At rest",
+        "Moving with increasing speed always",
+        "In free fall only",
+        "Accelerating uniformly"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 47,
+      "text": "Two plane mirrors are placed at 90°. The number of images of an object placed between them is generally:",
+      "options": [
+        "Infinite always",
+        "1",
+        "3",
+        "5"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 48,
+      "text": "Why is a fuse used in an electric circuit?",
+      "options": [
+        "It stores food",
+        "It melts and breaks the circuit if current is too high",
+        "It increases voltage without limit",
+        "It produces chlorophyll"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 49,
+      "text": "Which combination correctly matches transport in plants?",
+      "options": [
+        "Both carry only sunlight",
+        "Neither carries anything",
+        "Xylem – food; Phloem – only oxygen",
+        "Xylem – water; Phloem – food"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
+    },
+    {
+      "id": 50,
+      "text": "An acid is accidentally spilled on the floor. A safe first approach among options is:",
+      "options": [
+        "Add more strong acid",
+        "Ignore and walk barefoot on it",
+        "Taste it to check",
+        "Inform an adult and neutralise carefully with suitable mild base as guided"
+      ],
+      "section": "Achievers Section",
+      "marks": 3
     }
   ]
 }

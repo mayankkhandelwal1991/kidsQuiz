@@ -2,642 +2,607 @@
   "class": 9,
   "subject": "General Knowledge",
   "paper": 2,
-  "title": "Class 9 General Knowledge Olympiad \u2014 Paper 2",
-  "durationMinutes": 60,
   "totalQuestions": 50,
   "totalMarks": 60,
-  "negativeMarking": false,
-  "instructions": [
-    "The time allowed for this paper is 60 minutes.",
-    "This paper contains 50 objective-type (multiple-choice) questions carrying a total of 60 marks.",
-    "There is no negative marking for wrong answers.",
-    "Each question has four options; choose the one correct answer.",
-    "Section 1 and other regular sections carry 1 mark per question; the Achievers Section carries 3 marks per question.",
-    "Use of calculators is not permitted unless specified."
-  ],
-  "sections": [
-    {
-      "name": "General Awareness",
-      "questions": 20,
-      "marksPerQuestion": 1,
-      "totalMarks": 20
-    },
-    {
-      "name": "World & Current Affairs",
-      "questions": 15,
-      "marksPerQuestion": 1,
-      "totalMarks": 15
-    },
-    {
-      "name": "Life Skills",
-      "questions": 10,
-      "marksPerQuestion": 1,
-      "totalMarks": 10
-    },
-    {
-      "name": "Achievers Section",
-      "questions": 5,
-      "marksPerQuestion": 3,
-      "totalMarks": 15
-    }
-  ],
+  "patternNote": "IGKO pattern: General Awareness 30×1 + Current Affairs 10×1 + Life Skills 5×1 + Achievers Section 5×3 = 50 questions, 60 marks (SOF 2023–2025 style, original practice).",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Who is considered the first female freedom fighter of India from the Revolt of 1857?",
+      "question": "Select the best answer: The longest written constitution among major nations is often cited as that of:",
       "options": [
-        "Sarojini Naidu",
-        "Rani Lakshmibai",
-        "Annie Besant",
-        "Kasturba Gandhi"
+        "UK unwritten as longest written",
+        "USA only always longest",
+        "India",
+        "France only"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Which Indian city is called the 'Pink City'?",
+      "question": "Pick the right choice: The national anthem of India is:",
       "options": [
-        "Jaipur",
-        "Udaipur",
-        "Jodhpur",
-        "Bikaner"
+        "Jana Gana Mana",
+        "Vande Mataram",
+        "Saare Jahan Se Achha",
+        "Jai Hind only"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Which is the tallest animal in the world?",
+      "question": "Identify the correct statement: The Quit India Movement began in:",
       "options": [
-        "Giraffe",
-        "Camel",
-        "Horse",
-        "Elephant"
+        "1942",
+        "1930",
+        "1919",
+        "1947"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Which planet is known as the 'Red Planet'?",
+      "question": "Who gave the slogan 'Do or Die'?",
       "options": [
-        "Saturn",
-        "Jupiter",
-        "Mars",
-        "Venus"
+        "Mahatma Gandhi",
+        "Bhagat Singh",
+        "Lal Bahadur Shastri",
+        "Bal Gangadhar Tilak"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Which Indian monument is located in Agra and is a UNESCO World Heritage Site?",
+      "question": "Choose the correct option: Which river is called the 'Sorrow of Bihar'?",
       "options": [
-        "Gateway of India",
-        "Qutub Minar",
-        "Red Fort",
-        "Taj Mahal"
+        "Kosi",
+        "Narmada",
+        "Yamuna",
+        "Godavari"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "Which festival is celebrated as the harvest festival in Punjab?",
+      "question": "Select the best answer: The westernmost state of India (mainland) is:",
       "options": [
-        "Holi",
-        "Onam",
-        "Diwali",
-        "Baisakhi"
+        "Punjab",
+        "Rajasthan",
+        "Gujarat",
+        "Maharashtra"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "In which direction does the sun set?",
+      "question": "Pick the right choice: The currency of the United Kingdom is:",
       "options": [
-        "South",
-        "West",
-        "North",
-        "East"
+        "Pound sterling",
+        "Dollar",
+        "Euro only",
+        "Yen"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "What is the national bird of India?",
+      "question": "Identify the correct statement: The headquarters of the United Nations is in:",
       "options": [
-        "Parrot",
-        "Peacock",
-        "Eagle",
-        "Sparrow"
+        "Paris only",
+        "Geneva only as sole HQ",
+        "New York",
+        "New Delhi"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "What is the currency of the United Kingdom?",
+      "question": "The Reserve Bank of India was established in:",
       "options": [
-        "Pound Sterling",
-        "Euro",
-        "Dollar",
-        "Franc"
+        "1935",
+        "1947",
+        "1950",
+        "1991"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "Who is called the 'Father of the Indian Nation'?",
+      "question": "Choose the correct option: Green Revolution is associated mainly with:",
       "options": [
-        "Subhas Chandra Bose",
-        "Mahatma Gandhi",
-        "Bhagat Singh",
-        "Jawaharlal Nehru"
+        "Only space research",
+        "Only IT industry",
+        "Food grain production increase",
+        "Only cricket"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "Which Indian state is the largest producer of rice?",
+      "question": "Select the best answer: Olympic Games are normally held every:",
       "options": [
-        "West Bengal",
-        "Assam",
-        "Uttar Pradesh",
-        "Punjab"
+        "4 years",
+        "2 years only summer",
+        "10 years",
+        "1 year"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "Which gas is essential for photosynthesis in plants?",
+      "question": "Pick the right choice: ISRO's full form is:",
       "options": [
-        "Hydrogen",
-        "Nitrogen",
-        "Carbon dioxide",
-        "Oxygen"
+        "Indian Space Research Organisation",
+        "Indian Science Research Organisation",
+        "International Satellite Research Office",
+        "Institute of Space and Rocket Operations"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "Which is the smallest state in India by area?",
+      "question": "Identify the correct statement: Vitamin C deficiency causes:",
       "options": [
-        "Sikkim",
-        "Goa",
-        "Tripura",
-        "Manipur"
+        "Scurvy",
+        "Rickets",
+        "Night blindness",
+        "Beriberi"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "Which continent is the largest by area?",
+      "question": "Who is known as Missile Man of India?",
       "options": [
-        "Asia",
-        "Europe",
-        "North America",
-        "Africa"
+        "Dr. A.P.J. Abdul Kalam",
+        "Homi Bhabha",
+        "Vikram Sarabhai",
+        "C.V. Raman"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "Which river is the longest in India?",
+      "question": "Choose the correct option: Which is the largest democracy in the world by population?",
       "options": [
-        "Ganga",
-        "Godavari",
-        "Yamuna",
-        "Brahmaputra"
+        "India",
+        "USA",
+        "UK",
+        "Australia"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "Which organ of the United Nations deals with international disputes and legal matters?",
+      "question": "Select the best answer: The national bird of India is:",
       "options": [
-        "Secretariat",
-        "General Assembly",
-        "International Court of Justice",
-        "Security Council"
+        "Peacock",
+        "Eagle",
+        "Sparrow",
+        "Parrot"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 17,
-      "question": "Who was the first woman Prime Minister of India?",
+      "question": "Pick the right choice: The largest ocean is the:",
       "options": [
-        "Sonia Gandhi",
-        "Pratibha Patil",
-        "Sarojini Naidu",
-        "Indira Gandhi"
+        "Indian Ocean",
+        "Atlantic Ocean",
+        "Pacific Ocean",
+        "Arctic Ocean"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 18,
-      "question": "Which is the largest ocean in the world?",
+      "question": "Identify the correct statement: The Constitution of India was adopted on:",
       "options": [
-        "Pacific Ocean",
-        "Arctic Ocean",
-        "Atlantic Ocean",
-        "Indian Ocean"
+        "26 November 1949",
+        "15 August 1947",
+        "26 January 1950",
+        "2 October 1949"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 19,
-      "question": "Who is known as the 'Missile Man of India'?",
+      "question": "Who is known as the Father of the Indian Constitution?",
       "options": [
-        "Dr. A.P.J. Abdul Kalam",
-        "Dr. C.V. Raman",
-        "Dr. Homi Bhabha",
-        "Dr. Vikram Sarabhai"
+        "Mahatma Gandhi",
+        "Jawaharlal Nehru",
+        "Dr. B.R. Ambedkar",
+        "Sardar Patel"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 20,
-      "question": "Who wrote the Indian national anthem?",
+      "question": "Choose the correct option: Fundamental Duties are in which part/article area commonly cited?",
       "options": [
-        "Rabindranath Tagore",
-        "Bankim Chandra Chattopadhyay",
-        "Sarojini Naidu",
-        "Muhammad Iqbal"
+        "Part IVA (Article 51A)",
+        "Only Directive Principles exclusive",
+        "Only Preamble exclusive",
+        "Only Schedule 10 exclusive"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 21,
-      "question": "What was the theme of India's G20 presidency in 2023?",
+      "question": "Select the best answer: The longest written constitution among major nations is often cited as that of:",
       "options": [
-        "Clean Energy Only",
-        "Digital India Only",
-        "Make in India",
-        "'Vasudhaiva Kutumbakam' (One Earth, One Family, One Future)"
+        "UK unwritten as longest written",
+        "USA only always longest",
+        "India",
+        "France only"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 22,
-      "question": "Who is the current Vice-President of India (as of 2026)?",
+      "question": "Pick the right choice: The national anthem of India is:",
       "options": [
-        "Hamid Ansari",
-        "Jagdeep Dhankhar",
-        "Venkaiah Naidu",
-        "C. P. Radhakrishnan"
+        "Jana Gana Mana",
+        "Vande Mataram",
+        "Saare Jahan Se Achha",
+        "Jai Hind only"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 23,
-      "question": "Which country hosted the 2024 Summer Olympics?",
+      "question": "Identify the correct statement: The Quit India Movement began in:",
       "options": [
-        "USA",
-        "France (Paris)",
-        "Japan",
-        "UK"
+        "1942",
+        "1930",
+        "1919",
+        "1947"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 24,
-      "question": "Who is the current Prime Minister of India (as of 2026)?",
+      "question": "Who gave the slogan 'Do or Die'?",
       "options": [
-        "Rahul Gandhi",
-        "Manmohan Singh",
-        "Narendra Modi",
-        "Amit Shah"
+        "Mahatma Gandhi",
+        "Bhagat Singh",
+        "Lal Bahadur Shastri",
+        "Bal Gangadhar Tilak"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 25,
-      "question": "Who is the current President of India (as of 2026)?",
+      "question": "Choose the correct option: Which river is called the 'Sorrow of Bihar'?",
       "options": [
-        "Droupadi Murmu",
-        "Ram Nath Kovind",
-        "Pranab Mukherjee",
-        "Pratibha Patil"
+        "Kosi",
+        "Narmada",
+        "Yamuna",
+        "Godavari"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 26,
-      "question": "Which country is hosting the 2026 Winter Olympics?",
+      "question": "Select the best answer: The westernmost state of India (mainland) is:",
       "options": [
-        "France",
-        "China",
-        "Italy (Milan and Cortina d'Ampezzo)",
-        "USA"
+        "Punjab",
+        "Rajasthan",
+        "Gujarat",
+        "Maharashtra"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 27,
-      "question": "What does the term 'G20' refer to?",
+      "question": "Pick the right choice: The currency of the United Kingdom is:",
       "options": [
-        "A trade pact among 20 Asian countries",
-        "A UN peacekeeping mission",
-        "A forum of 20 major world economies discussing global economic issues",
-        "A treaty on climate change"
+        "Pound sterling",
+        "Dollar",
+        "Euro only",
+        "Yen"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 28,
-      "question": "Which countries are jointly hosting the FIFA World Cup 2026?",
+      "question": "Identify the correct statement: The headquarters of the United Nations is in:",
       "options": [
-        "France and Germany",
-        "USA, Canada, and Mexico",
-        "Qatar, UAE, and Saudi Arabia",
-        "Brazil and Argentina"
+        "Paris only",
+        "Geneva only as sole HQ",
+        "New York",
+        "New Delhi"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 29,
-      "question": "Which two Italian cities are jointly hosting the 2026 Winter Olympics?",
+      "question": "The Reserve Bank of India was established in:",
       "options": [
-        "Turin and Milan",
-        "Florence and Naples",
-        "Rome and Venice",
-        "Milan and Cortina d'Ampezzo"
+        "1935",
+        "1950",
+        "1947",
+        "1991"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 30,
-      "question": "Which Indian space mission successfully landed near the Moon's south pole in 2023?",
+      "question": "Choose the correct option: Green Revolution is associated mainly with:",
       "options": [
-        "Aditya-L1",
-        "Chandrayaan-3",
-        "Mangalyaan",
-        "Chandrayaan-2"
+        "Only space research",
+        "Only IT industry",
+        "Food grain production increase",
+        "Only cricket"
       ],
-      "section": "World & Current Affairs",
+      "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 31,
-      "question": "Which day is observed worldwide as International Yoga Day?",
+      "question": "Select the best answer: WHO is a specialised agency of the:",
       "options": [
-        "5th June",
-        "21st June",
-        "1st May",
-        "10th December"
+        "United Nations",
+        "World Bank only",
+        "NATO only",
+        "SAARC only"
       ],
-      "section": "World & Current Affairs",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 32,
-      "question": "Which Indian mission is ISRO's programme for human spaceflight?",
+      "question": "Pick the right choice: UPI in India is associated with:",
       "options": [
-        "Mangalyaan",
-        "Aditya-L1",
-        "Chandrayaan",
-        "Gaganyaan"
+        "Only wildlife census",
+        "Only space launch",
+        "Digital payments",
+        "Only school uniforms"
       ],
-      "section": "World & Current Affairs",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 33,
-      "question": "Who is the current Chief Justice of India (as of 2026)?",
+      "question": "Identify the correct statement: Net zero emissions goal discussions focus on:",
       "options": [
-        "Justice N.V. Ramana",
-        "Justice U.U. Lalit",
-        "Justice D.Y. Chandrachud",
-        "Justice Surya Kant"
+        "Balancing emitted and removed greenhouse gases",
+        "Only zero exams",
+        "Only zero sports",
+        "Only zero trade"
       ],
-      "section": "World & Current Affairs",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 34,
-      "question": "Which organization deals with global health issues and is headquartered in Geneva?",
+      "question": "The Nobel Peace Prize is awarded in:",
       "options": [
-        "UNESCO",
-        "World Health Organization (WHO)",
-        "World Bank",
-        "UNICEF"
+        "Oslo, Norway",
+        "New Delhi",
+        "Stockholm only for peace always",
+        "Geneva only always"
       ],
-      "section": "World & Current Affairs",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 35,
-      "question": "Which sports event is held every four years among Commonwealth nations?",
+      "question": "Choose the correct option: Sustainable Development Goals (SDGs) were adopted by UN member states in:",
       "options": [
-        "Commonwealth Games",
-        "Asian Games",
-        "SAARC Games",
-        "Olympic Games"
+        "2015",
+        "2000 only as SDG start",
+        "1992 only as SDG text",
+        "2025"
       ],
-      "section": "World & Current Affairs",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 36,
-      "question": "How should one respond to online misinformation shared by a friend?",
+      "question": "Select the best answer: Vaccine development for COVID-19 highlighted importance of:",
       "options": [
-        "Ignore it even if it could cause harm",
-        "Argue aggressively with the friend",
-        "Politely fact-check and share accurate information with sources",
-        "Share it further without checking"
+        "Global scientific collaboration",
+        "Only astrology",
+        "Avoiding all science",
+        "Only folklore medicine exclusive"
       ],
-      "section": "Life Skills",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 37,
-      "question": "Which habit best reflects empathy?",
+      "question": "Pick the right choice: India's national sports day is celebrated on the birth anniversary of:",
       "options": [
-        "Mocking others' problems",
-        "Focusing only on your own needs",
-        "Trying to understand and share the feelings of others",
-        "Avoiding emotional conversations"
+        "Milkha Singh only as official day",
+        "Sachin Tendulkar only as official day",
+        "Major Dhyan Chand",
+        "P.T. Usha only as official day"
       ],
-      "section": "Life Skills",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 38,
-      "question": "What is the healthiest way to handle failure in a test?",
+      "question": "Identify the correct statement: The term 'startup ecosystem' refers mainly to:",
       "options": [
-        "Giving up on the subject entirely",
-        "Comparing yourself negatively to top scorers",
-        "Reflecting on what went wrong and making an improvement plan",
-        "Blaming external factors only"
+        "New innovative businesses and support networks",
+        "Only coal mines",
+        "Only ancient forts",
+        "Only traditional farming exclusive"
       ],
-      "section": "Life Skills",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 39,
-      "question": "What is the best way to build a healthy daily routine as a student?",
+      "question": "G20 presidency of India (2023) theme included:",
       "options": [
-        "Studying all day without breaks",
-        "Balancing study, exercise, sleep, and leisure time consistently",
-        "Avoiding physical activity entirely",
-        "Skipping meals to save time"
+        "Only film awards exclusive",
+        "Only sports scores",
+        "Vasudhaiva Kutumbakam / One Earth One Family One Future (widely associated)",
+        "Only local traffic rules"
       ],
-      "section": "Life Skills",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 40,
-      "question": "If a classmate is being excluded from group activities, what is the most responsible action?",
+      "question": "Choose the correct option: Chandrayaan-3 successfully soft-landed near the Moon's:",
       "options": [
-        "Ignore the situation",
-        "Talk about it only with friends, not the classmate",
-        "Include them and encourage others to be welcoming",
-        "Join in the exclusion to fit in"
+        "South polar region",
+        "Only far side exclusive claim without nuance",
+        "Only Earth orbit",
+        "Only Mars"
       ],
-      "section": "Life Skills",
+      "section": "Current Affairs",
       "marks": 1
     },
     {
       "id": 41,
-      "question": "Which action best demonstrates good leadership in a group project?",
+      "question": "Select the best answer: If a stranger online asks for your OTP, you should:",
       "options": [
-        "Ignoring quieter members' input",
-        "Listening to everyone's ideas and making fair decisions",
-        "Taking credit for the group's work",
-        "Making all decisions alone"
+        "Post it on social media",
+        "Share immediately",
+        "Never share it",
+        "Send your password too"
       ],
       "section": "Life Skills",
       "marks": 1
     },
     {
       "id": 42,
-      "question": "Which of these best demonstrates good time management during exam preparation?",
+      "question": "Pick the right choice: Empathy is the ability to:",
       "options": [
-        "Avoiding revision of difficult topics",
-        "Studying without breaks for many hours straight",
-        "Creating and following a realistic study timetable",
-        "Cramming everything the night before"
+        "Understand and share others' feelings",
+        "Ignore everyone",
+        "Only win arguments",
+        "Avoid teamwork"
       ],
       "section": "Life Skills",
       "marks": 1
     },
     {
       "id": 43,
-      "question": "What is the best approach when you disagree with a friend's opinion?",
+      "question": "Identify the correct statement: A growth mindset believes that:",
       "options": [
-        "Listen respectfully and share your viewpoint calmly",
-        "Refuse to speak to them",
-        "Involve others to gang up against them",
-        "Argue loudly to prove your point"
+        "Abilities can improve with effort",
+        "Practice is useless",
+        "Talent is fixed forever with no learning",
+        "Feedback should be avoided"
       ],
       "section": "Life Skills",
       "marks": 1
     },
     {
       "id": 44,
-      "question": "What is an effective way to manage exam-related stress?",
+      "question": "Peer pressure to cheat in an exam should be handled by:",
       "options": [
-        "Skipping meals to save time",
-        "Skipping sleep to study more",
-        "Panicking to stay alert",
-        "Practicing deep breathing and staying organized in preparation"
+        "Refusing and staying honest",
+        "Cheating to fit in",
+        "Helping others cheat",
+        "Blaming the teacher only"
       ],
       "section": "Life Skills",
       "marks": 1
     },
     {
       "id": 45,
-      "question": "Which behaviour shows responsible use of social media?",
+      "question": "Choose the correct option: Emotional intelligence includes:",
       "options": [
-        "Posting anything without considering consequences",
-        "Sharing others' private information without permission",
-        "Thinking before posting and respecting others' privacy",
-        "Ignoring privacy settings"
+        "Recognising and managing emotions",
+        "Only physical strength",
+        "Only memorising facts",
+        "Avoiding all communication"
       ],
       "section": "Life Skills",
       "marks": 1
     },
     {
       "id": 46,
-      "question": "A country invests significantly in girls' education over a decade. What is a likely long-term social impact of this investment?",
+      "question": "Select the best answer: If GDP rises but inequality worsens sharply, a balanced view is:",
       "options": [
-        "A decrease in population",
-        "Reduced access to healthcare",
-        "No impact on society",
-        "Improved literacy rates, workforce participation, and overall economic development"
+        "Growth occurred but distribution may be uneven",
+        "GDP measures happiness only",
+        "Inequality always falls with any GDP rise",
+        "GDP is unrelated to economy"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 47,
-      "question": "During a natural disaster like an earthquake, why is community disaster-preparedness training important?",
+      "question": "Pick the right choice: Fundamental Rights can be enforced mainly through:",
       "options": [
-        "It equips people with knowledge to respond quickly and safely, reducing casualties",
-        "It replaces the need for emergency services",
-        "It only benefits government officials",
-        "It prevents earthquakes from occurring"
+        "Courts (e.g. writs)",
+        "Only social media polls",
+        "Only private clubs",
+        "Only international sports bodies"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 48,
-      "question": "Two countries sharing a border have a long-standing trade agreement. If one country imposes sudden tariffs, what is a likely consequence for cross-border trade?",
+      "question": "Identify the correct statement: Which pair is correctly matched?",
       "options": [
-        "Only the imposing country will be affected",
-        "Trade volume between the two countries may decrease due to increased costs",
-        "Trade will increase due to tariffs",
-        "There will be no change in trade patterns"
+        "Article 370 — currently identical unchanged forever without legal history",
+        "Right to Property — still a Fundamental Right as originally unlimited always",
+        "Right to Education — free and compulsory education (6–14) framework",
+        "Directive Principles — directly enforceable like Fundamental Rights always"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 49,
-      "question": "A city switches its public buses from diesel to electric power over five years. What is a likely long-term benefit for the city's residents?",
+      "question": "Biosphere reserves aim to:",
       "options": [
-        "Reduced air pollution and improved public health outcomes",
-        "Increased traffic congestion only",
-        "No change in air quality",
-        "Higher public transport fares only, with no health benefit"
+        "Conserve biodiversity with sustainable use zones",
+        "Remove all local communities always",
+        "Only build factories inside core areas always",
+        "Ban all research"
       ],
       "section": "Achievers Section",
       "marks": 3
     },
     {
       "id": 50,
-      "question": "If a country experiences rapid inflation, what is a likely immediate effect on the purchasing power of its citizens?",
+      "question": "Choose the correct option: A balanced diet for adolescents should include:",
       "options": [
-        "There is no effect on purchasing power",
-        "Purchasing power increases significantly",
-        "Purchasing power decreases as prices rise faster than income",
-        "Only the wealthy are affected"
+        "Only fried snacks",
+        "Only sugar",
+        "Carbohydrates, proteins, fats, vitamins, minerals and water in suitable amounts",
+        "Only soft drinks"
       ],
       "section": "Achievers Section",
       "marks": 3

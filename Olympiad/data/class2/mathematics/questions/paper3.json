@@ -4,391 +4,429 @@
   "paper": 3,
   "title": "Class 2 Mathematics — Paper 3",
   "durationMinutes": 60,
+  "totalMarks": 40,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 2 pattern & syllabus. Not an official SOF paper.",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Find the next number: 9, 11, 13, 15, __.",
+      "question": "Pick the correct option. what comes next? 5, 7, 9, 11, __",
       "options": [
+        "11",
         "16",
-        "18",
-        "19",
-        "17"
+        "13",
+        "14"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "A number is 4 more than 13. What is it?",
+      "question": "Find the next number: 15, 20, 25, 30, __",
       "options": [
-        "18",
-        "9",
-        "17",
-        "19"
+        "35",
+        "40",
+        "31",
+        "25"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which number is odd?",
+      "question": "Which is the odd one out?",
       "options": [
-        "24",
-        "25",
-        "28",
-        "26"
+        "Dog",
+        "Lion",
+        "Car",
+        "Cat"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "If a shape has 4 sides, how many sides does it have?",
+      "question": "In a line of 7 children, Riya is 3rd from the left. How many children are to her right?",
       "options": [
+        "3",
         "6",
         "4",
-        "3",
         "5"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which is the greatest?",
+      "question": "Find: your left hand side, if you face North, is:",
       "options": [
-        "309",
-        "314",
-        "306",
-        "311"
+        "North",
+        "East",
+        "West",
+        "South"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Find the next number: 14, 17, 20, 23, __.",
+      "question": "How many sides does a rectangle have?",
       "options": [
-        "26",
-        "27",
-        "29",
-        "24"
+        "3",
+        "4",
+        "5",
+        "6"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "A number is 5 more than 18. What is it?",
+      "question": "Eye : See :: Ear : ?",
       "options": [
-        "25",
-        "13",
-        "23",
-        "24"
+        "Smell",
+        "Hear",
+        "Touch",
+        "Taste"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which number is odd?",
+      "question": "What comes next? Z, Y, X, W, __",
       "options": [
-        "29",
-        "30",
-        "31",
-        "33"
+        "T",
+        "A",
+        "V",
+        "U"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "If a shape has 6 sides, how many sides does it have?",
+      "question": "Choose: if CAT is written as 3 letters, how many letters are in BALL?",
       "options": [
-        "5",
-        "6",
-        "7",
-        "8"
-      ],
-      "section": "Logical Reasoning"
-    },
-    {
-      "id": 10,
-      "question": "Which is the greatest?",
-      "options": [
-        "314",
-        "311",
-        "316",
-        "319"
-      ],
-      "section": "Logical Reasoning"
-    },
-    {
-      "id": 11,
-      "question": "What is 66 + 57?",
-      "options": [
-        "122",
-        "123",
-        "133",
-        "124"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 12,
-      "question": "What is 100 − 43?",
-      "options": [
-        "59",
-        "55",
-        "-57",
-        "57"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 13,
-      "question": "What is 4 × 6?",
-      "options": [
-        "24",
-        "25",
-        "10",
-        "23"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 14,
-      "question": "What is 24 ÷ 6?",
-      "options": [
-        "5",
+        "2",
         "3",
-        "6",
-        "4"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 15,
-      "question": "A square has side 6 cm. What is its perimeter?",
-      "options": [
-        "12 cm",
-        "10 cm",
-        "36 cm",
-        "24 cm"
-      ],
-      "section": "Everyday Mathematics"
-    },
-    {
-      "id": 16,
-      "question": "What is 71 + 62?",
-      "options": [
-        "143",
-        "134",
-        "133",
-        "132"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 17,
-      "question": "What is 105 − 48?",
-      "options": [
-        "-57",
-        "55",
-        "59",
-        "57"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 18,
-      "question": "What is 3 × 6?",
-      "options": [
-        "18",
-        "19",
-        "9",
-        "17"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 19,
-      "question": "What is 24 ÷ 6?",
-      "options": [
-        "4",
-        "5",
-        "3",
-        "6"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 20,
-      "question": "A square has side 6 cm. What is its perimeter?",
-      "options": [
-        "12 cm",
-        "36 cm",
-        "10 cm",
-        "24 cm"
-      ],
-      "section": "Everyday Mathematics"
-    },
-    {
-      "id": 21,
-      "question": "What is 76 + 67?",
-      "options": [
-        "144",
-        "142",
-        "143",
-        "153"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 22,
-      "question": "What is 110 − 53?",
-      "options": [
-        "59",
-        "-57",
-        "57",
-        "55"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 23,
-      "question": "What is 2 × 6?",
-      "options": [
-        "8",
-        "12",
-        "11",
-        "13"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 24,
-      "question": "What is 24 ÷ 6?",
-      "options": [
-        "3",
-        "6",
         "4",
         "5"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 10,
+      "question": "How many months have 30 days? (approx common set)",
+      "options": [
+        "2",
+        "4",
+        "6",
+        "7"
+      ],
+      "section": "Logical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 11,
+      "question": "In 680, the digit in the hundreds place is:",
+      "options": [
+        "8",
+        "0",
+        "1",
+        "6"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 12,
+      "question": "What is the place value of 8 in 680?",
+      "options": [
+        "800",
+        "0",
+        "80",
+        "8"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 13,
+      "question": "680 in expanded form is:",
+      "options": [
+        "600 + 8 + 0",
+        "600 + 80 + 0",
+        "6 + 8 + 0",
+        "60 + 8 + 0"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 14,
+      "question": "Which is greater, 73 or 79?",
+      "options": [
+        "73",
+        "79",
+        "152",
+        "6"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 15,
+      "question": "32 + 20 = ?",
+      "options": [
+        "53",
+        "50",
+        "62",
+        "52"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 16,
+      "question": "95 − 34 = ?",
+      "options": [
+        "60",
+        "129",
+        "61",
+        "63"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 17,
+      "question": "Select: ria has 15 pencils. She buys 11 more. How many pencils does she have now?",
+      "options": [
+        "11",
+        "26",
+        "4",
+        "27"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 18,
+      "question": "There were 36 balloons. 12 burst. How many are left?",
+      "options": [
+        "24",
+        "48",
+        "12",
+        "23"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 19,
+      "question": "4 × 8 = ?",
+      "options": [
+        "36",
+        "12",
+        "31",
+        "32"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 20,
+      "question": "3 × 6 = ?",
+      "options": [
+        "9",
+        "15",
+        "20",
+        "18"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 21,
+      "question": "Pick the correct option. 4 + 4 + 4 is the same as:",
+      "options": [
+        "4 × 4",
+        "4 × 2",
+        "4 × 3",
+        "4 + 3"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 22,
+      "question": "A quarter of 20 is:",
+      "options": [
+        "10",
+        "4",
+        "5",
+        "8"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 23,
+      "question": "There are ___ hours in a day.",
+      "options": [
+        "24",
+        "60",
+        "30",
+        "12"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 24,
+      "question": "A pencil costs ₹7. You give ₹10. Change is:",
+      "options": [
+        "₹4",
+        "₹5",
+        "₹2",
+        "₹3"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "Find: which is a 2D shape?",
       "options": [
-        "10 cm",
-        "12 cm",
-        "36 cm",
-        "24 cm"
+        "Can",
+        "Ball",
+        "Box",
+        "Circle"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "What is 81 + 72?",
+      "question": "A ruler is usually used to measure:",
       "options": [
-        "154",
-        "152",
-        "153",
-        "163"
+        "Weight",
+        "Length",
+        "Time",
+        "Money"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "What is 115 − 58?",
+      "question": "What comes just after 133?",
       "options": [
-        "59",
-        "55",
-        "-57",
-        "57"
+        "134",
+        "143",
+        "133",
+        "132"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "What is 7 × 6?",
+      "question": "Which numeral is 'ninety-nine'?",
       "options": [
-        "13",
-        "43",
-        "42",
-        "41"
+        "99",
+        "9",
+        "19",
+        "90"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "What is 24 ÷ 6?",
+      "question": "Choose: arrange in ascending order: 33, 13, 23",
       "options": [
-        "5",
-        "6",
-        "3",
-        "4"
+        "13, 33, 23",
+        "13, 23, 33",
+        "33, 23, 13",
+        "23, 13, 33"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "17 is an:",
       "options": [
-        "12 cm",
-        "24 cm",
-        "10 cm",
-        "36 cm"
+        "Even number",
+        "Odd number",
+        "Both",
+        "None"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "A number is doubled and then 3 is added to get 53. What was the number?",
+      "question": "A basket has 21 mangoes. 13 are sold and then 8 more are put in. How many mangoes are in the basket now?",
       "options": [
-        "28",
-        "25",
-        "24",
-        "26"
+        "42",
+        "0",
+        "26",
+        "16"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 32,
-      "question": "A number is doubled and then 3 is added to get 55. What was the number?",
+      "question": "A square park has each side 7 m. What is its perimeter?",
       "options": [
-        "27",
-        "29",
-        "25",
-        "26"
+        "21",
+        "11",
+        "28",
+        "14"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 33,
-      "question": "A number is doubled and then 3 is added to get 57. What was the number?",
+      "question": "3 erasers cost ₹9 each. You pay ₹50. How much change do you get?",
       "options": [
-        "30",
-        "27",
-        "28",
-        "26"
+        "59",
+        "23",
+        "41",
+        "27"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 34,
-      "question": "A number is doubled and then 3 is added to get 59. What was the number?",
+      "question": "Half of 24 children are girls. How many girls are there?",
       "options": [
-        "29",
-        "27",
-        "31",
-        "28"
+        "12",
+        "8",
+        "6",
+        "22"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 35,
-      "question": "A number is doubled and then 3 is added to get 61. What was the number?",
+      "question": "Look at the pattern: 6, 10, 14, 18, __. What is the missing number? Also, the common difference is 4.",
       "options": [
-        "29",
-        "30",
-        "28",
-        "32"
+        "20",
+        "26",
+        "16",
+        "22"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     }
   ]
 }

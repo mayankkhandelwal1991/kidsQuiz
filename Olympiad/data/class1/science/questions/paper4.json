@@ -4,336 +4,429 @@
   "paper": 4,
   "title": "Class 1 Science — Paper 4",
   "durationMinutes": 60,
+  "totalMarks": 40,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 1 pattern & syllabus. Not an official SOF paper.",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Which part of a plant usually absorbs water from the soil?",
+      "question": "Which can grow? Child, Chair, Stone, Ball",
       "options": [
-        "Leaf",
-        "Roots",
-        "Fruit",
-        "Flower"
+        "Ball",
+        "Child",
+        "Chair",
+        "Stone"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "Which organ pumps blood around the body?",
+      "question": "Which needs food? Baby, Doll, Rock, Pen",
       "options": [
-        "Stomach",
-        "Brain",
-        "Lungs",
-        "Heart"
+        "Baby",
+        "Doll",
+        "Rock",
+        "Pen"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which is a renewable source of energy?",
+      "question": "Group: sparrow, pigeon, parrot — all are:",
       "options": [
-        "Sunlight",
-        "Diesel",
-        "Petrol",
-        "Coal"
+        "Birds",
+        "Insects",
+        "Cats",
+        "Fish"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "Which material is transparent?",
+      "question": "What comes next? Sun, Moon, Sun, Moon, __",
       "options": [
-        "Cardboard",
-        "Stone",
-        "Wood",
-        "Clear glass"
+        "Cloud",
+        "Rain",
+        "Star only",
+        "Sun"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which change can usually be reversed?",
+      "question": "Pattern: big, small, big, small, __",
       "options": [
-        "Egg cooking",
-        "Ice melting",
-        "Wood burning",
-        "Paper burning"
+        "none",
+        "tiny",
+        "big",
+        "huge only"
       ],
-      "section": "Science"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Which force slows a toy car on a rough floor?",
+      "question": "We walk with our:",
       "options": [
-        "Friction",
-        "Colour",
-        "Sound",
-        "Light"
+        "Hair",
+        "Hands",
+        "Legs",
+        "Ears"
       ],
-      "section": "Science"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "Which animal is adapted to a hot desert?",
+      "question": "Which is a fruit?",
       "options": [
-        "Camel",
-        "Polar bear",
-        "Penguin",
-        "Whale"
+        "Potato",
+        "Carrot",
+        "Mango",
+        "Onion"
       ],
-      "section": "Science"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which body part protects the brain?",
+      "question": "Day time is when we see the:",
       "options": [
-        "Knee",
-        "Ankle",
-        "Rib cage",
-        "Skull"
+        "Sun",
+        "Stars only",
+        "Nothing",
+        "Moon only"
       ],
-      "section": "Science"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "Which gas do humans need for breathing?",
+      "question": "We should wash our hands:",
       "options": [
-        "Helium",
-        "Oxygen",
-        "Hydrogen",
-        "Neon"
+        "Only once a year",
+        "With mud",
+        "Never",
+        "Before eating"
       ],
-      "section": "Science"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which state of matter keeps its own shape?",
+      "question": "Which sense organ helps us taste?",
       "options": [
-        "Gas",
-        "Liquid",
-        "Solid",
-        "Vapour"
+        "Nose only",
+        "Eye",
+        "Ear",
+        "Tongue"
       ],
-      "section": "Science"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "We wear woollen clothes in:",
       "options": [
-        "It becomes a rock",
-        "It needs no sunlight",
-        "It wilts",
-        "It grows faster"
+        "Summer",
+        "Winter",
+        "Only underwater",
+        "Never"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Which is a vegetable?",
       "options": [
-        "Metal contains fire",
-        "Soup heats only metal",
-        "Wood creates cold",
-        "Metal conducts heat better"
+        "Banana",
+        "Spinach",
+        "Mango",
+        "Apple"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "We must cross the road at a:",
       "options": [
-        "Thunder happens later in the sky",
-        "Light travels faster than sound",
-        "Lightning has no sound",
-        "Clouds stop sound"
+        "Blind fold",
+        "Dark only",
+        "Any place while running",
+        "Zebra crossing / safe place"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "A table is:",
       "options": [
-        "Change everything at once",
-        "Do not record results",
-        "Guess without observing",
-        "Change one main condition and compare results"
+        "A plant",
+        "Living",
+        "Non-living",
+        "An animal"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "We hear with our:",
       "options": [
-        "It wilts",
-        "It needs no sunlight",
-        "It grows faster",
-        "It becomes a rock"
+        "Eyes",
+        "Ears",
+        "Nose",
+        "Tongue"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Plants make food mainly in their:",
       "options": [
-        "Metal conducts heat better",
-        "Metal contains fire",
-        "Soup heats only metal",
-        "Wood creates cold"
+        "Leaves",
+        "Flowers only",
+        "Seeds only",
+        "Roots only"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "A butterfly is an:",
       "options": [
-        "Thunder happens later in the sky",
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Lightning has no sound"
+        "Fish",
+        "Plant",
+        "Insect",
+        "Bird only"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Fish breathe in water using:",
       "options": [
-        "Change one main condition and compare results",
-        "Do not record results",
-        "Change everything at once",
-        "Guess without observing"
+        "Nose like dog only",
+        "Lungs like us only",
+        "Gills",
+        "Wings"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Shadow is formed when light is:",
       "options": [
-        "It wilts",
-        "It grows faster",
-        "It becomes a rock",
-        "It needs no sunlight"
+        "Blocked by an object",
+        "Never present anywhere",
+        "Only under water always",
+        "Eaten by plants"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 20,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "We must not play with:",
       "options": [
-        "Metal contains fire",
-        "Metal conducts heat better",
-        "Wood creates cold",
-        "Soup heats only metal"
+        "Fire / matchsticks",
+        "Balls in park with care",
+        "Books",
+        "Soft toys safely"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 21,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "We should throw waste in a:",
       "options": [
-        "Lightning has no sound",
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Thunder happens later in the sky"
+        "Road always",
+        "Friend's bag",
+        "Dustbin",
+        "River always"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 22,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Ice is water in __ form.",
       "options": [
-        "Guess without observing",
-        "Do not record results",
-        "Change one main condition and compare results",
-        "Change everything at once"
+        "Fire",
+        "Liquid",
+        "Solid",
+        "Gas steam only"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 23,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "The Earth is round like a:",
       "options": [
-        "It needs no sunlight",
-        "It wilts",
-        "It becomes a rock",
-        "It grows faster"
+        "Book",
+        "Ball",
+        "Stick",
+        "Box only"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "Ears help us to:",
       "options": [
-        "Wood creates cold",
-        "Metal conducts heat better",
-        "Metal contains fire",
-        "Soup heats only metal"
+        "Hear sounds",
+        "Taste sweet",
+        "Smell flowers",
+        "See colours"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Cows eat mainly:",
       "options": [
-        "Thunder happens later in the sky",
-        "Light travels faster than sound",
-        "Clouds stop sound",
-        "Lightning has no sound"
+        "Stones",
+        "Plastic",
+        "Meat only",
+        "Grass / plants"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "Which is a living thing?",
       "options": [
-        "Change one main condition and compare results",
-        "Change everything at once",
-        "Do not record results",
-        "Guess without observing"
+        "Ball",
+        "Stone",
+        "Cat",
+        "Chair"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "A plant is kept without water for many days. What is most likely to happen?",
+      "question": "Plants need __ to grow.",
       "options": [
-        "It wilts",
-        "It grows faster",
-        "It becomes a rock",
-        "It needs no sunlight"
+        "Only toys",
+        "Sunlight, water and air",
+        "Plastic only",
+        "Noise"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "A metal spoon becomes hot in soup faster than a wooden spoon. Why?",
+      "question": "We see with our:",
       "options": [
-        "Soup heats only metal",
-        "Wood creates cold",
-        "Metal conducts heat better",
-        "Metal contains fire"
+        "Eyes",
+        "Tongue",
+        "Legs",
+        "Nose"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "Why do we see lightning before hearing thunder?",
+      "question": "Which animal lives in water?",
       "options": [
-        "Thunder happens later in the sky",
-        "Clouds stop sound",
-        "Light travels faster than sound",
-        "Lightning has no sound"
+        "Goat",
+        "Hen",
+        "Lion",
+        "Fish"
       ],
-      "section": "Scientific Reasoning"
+      "section": "Science",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "Which is the safest way to test a science idea?",
+      "question": "We should drink clean:",
       "options": [
-        "Do not record results",
-        "Guess without observing",
-        "Change everything at once",
-        "Change one main condition and compare results"
+        "Paint",
+        "Mud",
+        "Water",
+        "Oil only"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Science",
+      "marks": 1
+    },
+    {
+      "id": 31,
+      "question": "Drinking dirty water can make us:",
+      "options": [
+        "Taller instantly",
+        "Stronger always",
+        "Sick",
+        "Fly"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 32,
+      "question": "Boiling water can kill many:",
+      "options": [
+        "Toys",
+        "Germs",
+        "Books",
+        "Shadows"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 33,
+      "question": "The Sun is a:",
+      "options": [
+        "Star",
+        "Moon",
+        "Comet only",
+        "Planet like Earth exactly"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 34,
+      "question": "The process of a baby plant coming out of a seed is called:",
+      "options": [
+        "Only freezing",
+        "Only flying",
+        "Sprouting / germination",
+        "Only melting"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 35,
+      "question": "Green colour in leaves helps plants to:",
+      "options": [
+        "Only make noise",
+        "Make food",
+        "Only dance",
+        "Only sleep"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
     }
   ]
 }

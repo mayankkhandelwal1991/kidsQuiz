@@ -4,391 +4,429 @@
   "paper": 2,
   "title": "Class 1 Mathematics — Paper 2",
   "durationMinutes": 60,
+  "totalMarks": 40,
+  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 1 pattern & syllabus. Not an official SOF paper.",
+  "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Find the next number: 5, 7, 9, 11, __.",
+      "question": "Next: 1, 3, 5, 7, __",
       "options": [
-        "12",
-        "14",
-        "13",
-        "15"
+        "9",
+        "10",
+        "6",
+        "8"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 2,
-      "question": "A number is 4 more than 12. What is it?",
+      "question": "Odd one out: Circle, Square, Apple, Triangle",
       "options": [
-        "17",
-        "8",
-        "16",
-        "18"
+        "Apple",
+        "Triangle",
+        "Circle",
+        "Square"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 3,
-      "question": "Which number is odd?",
+      "question": "Odd one out: Spoon, Fork, Plate, Tree",
       "options": [
-        "25",
-        "27",
-        "23",
-        "24"
+        "Tree",
+        "Spoon",
+        "Fork",
+        "Plate"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 4,
-      "question": "If a shape has 4 sides, how many sides does it have?",
+      "question": "Odd one out: Mango, Banana, Carrot, Apple",
       "options": [
-        "5",
-        "6",
-        "4",
-        "3"
+        "Mango",
+        "Banana",
+        "Carrot",
+        "Apple"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 5,
-      "question": "Which is the greatest?",
+      "question": "Pattern: △ □ △ □ △ __",
       "options": [
-        "313",
-        "310",
-        "308",
-        "305"
+        "□",
+        "○",
+        "★",
+        "△"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 6,
-      "question": "Find the next number: 10, 13, 16, 19, __.",
+      "question": "Pattern: big, small, big, small, big, __",
       "options": [
-        "20",
-        "25",
-        "22",
-        "23"
+        "tiny",
+        "huge",
+        "big",
+        "small"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 7,
-      "question": "A number is 5 more than 17. What is it?",
+      "question": "Which comes just before Wednesday?",
       "options": [
-        "23",
-        "24",
-        "22",
-        "12"
+        "Friday",
+        "Monday",
+        "Tuesday",
+        "Thursday"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 8,
-      "question": "Which number is odd?",
+      "question": "Day before Monday is:",
       "options": [
-        "29",
-        "28",
-        "30",
-        "32"
+        "Sunday",
+        "Tuesday",
+        "Saturday",
+        "Friday"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 9,
-      "question": "If a shape has 6 sides, how many sides does it have?",
+      "question": "Ria has more pencils than Sam. Sam has more than Tom. Who has the least?",
       "options": [
-        "8",
-        "5",
-        "6",
-        "7"
+        "Sam",
+        "Tom",
+        "All same",
+        "Ria"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 10,
-      "question": "Which is the greatest?",
+      "question": "If star means 1, then four stars mean:",
       "options": [
-        "313",
-        "315",
-        "310",
-        "318"
+        "4",
+        "5",
+        "2",
+        "3"
       ],
-      "section": "Logical Reasoning"
+      "section": "Logical Reasoning",
+      "marks": 1
     },
     {
       "id": 11,
-      "question": "What is 53 + 44?",
+      "question": "What is 3 + 9?",
       "options": [
-        "97",
-        "107",
-        "96",
-        "98"
+        "11",
+        "13",
+        "14",
+        "12"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 12,
-      "question": "What is 87 − 30?",
+      "question": "What is 1 + 2?",
       "options": [
-        "-57",
-        "59",
-        "57",
-        "55"
+        "4",
+        "5",
+        "3",
+        "2"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 13,
-      "question": "What is 4 × 5?",
+      "question": "What is 8 + 1?",
       "options": [
-        "19",
-        "21",
-        "20",
-        "9"
+        "11",
+        "9",
+        "8",
+        "10"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 14,
-      "question": "What is 36 ÷ 6?",
+      "question": "What is 4 + 4?",
       "options": [
-        "6",
-        "5",
+        "8",
         "7",
-        "6"
+        "9",
+        "10"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 15,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "What is 7 + 2?",
       "options": [
-        "10 cm",
-        "36 cm",
-        "24 cm",
-        "12 cm"
+        "8",
+        "10",
+        "11",
+        "9"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 16,
-      "question": "What is 58 + 49?",
+      "question": "What is 3 + 3?",
       "options": [
-        "106",
-        "107",
-        "117",
-        "108"
+        "7",
+        "8",
+        "6",
+        "5"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 17,
-      "question": "What is 92 − 35?",
+      "question": "What is 12 − 5?",
       "options": [
-        "55",
-        "59",
-        "-57",
-        "57"
+        "17",
+        "7",
+        "8",
+        "6"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 18,
-      "question": "What is 3 × 5?",
+      "question": "What is 15 − 7?",
       "options": [
         "8",
-        "14",
-        "16",
-        "15"
+        "9",
+        "7",
+        "22"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 19,
-      "question": "What is 36 ÷ 6?",
-      "options": [
-        "7",
-        "5",
-        "6",
-        "6"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 20,
-      "question": "A square has side 6 cm. What is its perimeter?",
-      "options": [
-        "10 cm",
-        "24 cm",
-        "36 cm",
-        "12 cm"
-      ],
-      "section": "Everyday Mathematics"
-    },
-    {
-      "id": 21,
-      "question": "What is 63 + 54?",
-      "options": [
-        "117",
-        "118",
-        "116",
-        "127"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 22,
-      "question": "What is 97 − 40?",
-      "options": [
-        "57",
-        "55",
-        "-57",
-        "59"
-      ],
-      "section": "Mathematical Reasoning"
-    },
-    {
-      "id": 23,
-      "question": "What is 2 × 5?",
+      "question": "What is 16 − 8?",
       "options": [
         "9",
         "7",
-        "11",
+        "24",
+        "8"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 20,
+      "question": "What is 18 − 9?",
+      "options": [
+        "8",
+        "27",
+        "9",
         "10"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 21,
+      "question": "What is 20 − 10?",
+      "options": [
+        "30",
+        "10",
+        "11",
+        "9"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 22,
+      "question": "What is 6 − 2?",
+      "options": [
+        "4",
+        "5",
+        "3",
+        "8"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 23,
+      "question": "What is 8 − 3?",
+      "options": [
+        "6",
+        "4",
+        "11",
+        "5"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 24,
-      "question": "What is 36 ÷ 6?",
+      "question": "How many tens are there in 40?",
       "options": [
-        "7",
-        "6",
-        "6",
-        "5"
+        "4",
+        "5",
+        "2",
+        "3"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 25,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "2 tens and 5 ones make:",
       "options": [
-        "12 cm",
-        "10 cm",
-        "36 cm",
-        "24 cm"
+        "15",
+        "25",
+        "52",
+        "7"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 26,
-      "question": "What is 68 + 59?",
+      "question": "3 tens and 0 ones =",
       "options": [
-        "137",
-        "126",
-        "128",
-        "127"
+        "3",
+        "30",
+        "300",
+        "13"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 27,
-      "question": "What is 102 − 45?",
+      "question": "5 tens and 5 ones =",
       "options": [
-        "-57",
-        "57",
-        "55",
-        "59"
+        "50",
+        "15",
+        "555",
+        "55"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 28,
-      "question": "What is 7 × 5?",
+      "question": "How many tens in 90?",
       "options": [
-        "12",
-        "35",
-        "34",
-        "36"
+        "10",
+        "0",
+        "8",
+        "9"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 29,
-      "question": "What is 36 ÷ 6?",
+      "question": "Which number comes after 19?",
       "options": [
-        "6",
-        "6",
-        "7",
-        "5"
+        "17",
+        "18",
+        "20",
+        "21"
       ],
-      "section": "Mathematical Reasoning"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 30,
-      "question": "A square has side 6 cm. What is its perimeter?",
+      "question": "After 74 comes:",
       "options": [
-        "36 cm",
-        "12 cm",
-        "10 cm",
-        "24 cm"
+        "73",
+        "75",
+        "84",
+        "70"
       ],
-      "section": "Everyday Mathematics"
+      "section": "Mathematical Reasoning",
+      "marks": 1
     },
     {
       "id": 31,
-      "question": "A number is doubled and then 3 is added to get 49. What was the number?",
+      "question": "Aman has 10 stickers. He gets 5 more. Total stickers?",
       "options": [
-        "22",
-        "26",
-        "24",
-        "23"
+        "15",
+        "5",
+        "50",
+        "12"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 32,
-      "question": "A number is doubled and then 3 is added to get 51. What was the number?",
+      "question": "Which is the number just after 89?",
       "options": [
-        "24",
-        "25",
-        "23",
-        "27"
+        "98",
+        "80",
+        "88",
+        "90"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 33,
-      "question": "A number is doubled and then 3 is added to get 53. What was the number?",
+      "question": "A pencil costs ₹5. Two pencils cost:",
       "options": [
-        "26",
-        "28",
-        "25",
-        "24"
+        "₹15",
+        "₹5",
+        "₹10",
+        "₹7"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 34,
-      "question": "A number is doubled and then 3 is added to get 55. What was the number?",
+      "question": "There are 2 baskets with 6 mangoes each. Total mangoes?",
       "options": [
-        "26",
-        "29",
-        "27",
-        "25"
+        "8",
+        "10",
+        "12",
+        "14"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 35,
-      "question": "A number is doubled and then 3 is added to get 57. What was the number?",
+      "question": "Mother buys 3 bananas for ₹2 each. Total money spent?",
       "options": [
-        "26",
-        "30",
-        "28",
-        "27"
+        "₹6",
+        "₹3",
+        "₹8",
+        "₹5"
       ],
-      "section": "Achievers / HOTS"
+      "section": "Achievers Section",
+      "marks": 2
     }
   ]
 }

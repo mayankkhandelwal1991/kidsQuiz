@@ -30,8 +30,8 @@ function shuffleOptions(options, answerIndex, salt) {
   };
 }
 
-function Q(id, text, options, answer, section, marks = 1) {
-  return { id, text, options: options.slice(), answer, section, marks };
+function Q(id, question, options, answer, section, marks = 1) {
+  return { id, question, options: options.slice(), answer, section, marks };
 }
 
 function numOpts(correct, salt, deltas = [1, -1, 2, -2]) {
@@ -58,7 +58,7 @@ function writePaper(subject, paperNo, built, totalMarks, patternNote) {
 
   const questions = built.map((q, idx) => ({
     id: idx + 1,
-    text: q.text,
+    question: q.question,
     options: q.options,
     section: q.section,
     marks: q.marks,

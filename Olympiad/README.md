@@ -5,9 +5,10 @@ A static HTML/JavaScript Olympiad practice portal with:
 - Subject selection (Mathematics, Science, English, Computer Science, General Knowledge)
 - 5 papers per subject per class
 - Question and mark totals read from each paper's JSON file
-- 60-minute timer
+- 30-minute timer (per paper `durationMinutes`)
+- Pause / Resume during the test (timer stops; answers kept)
 - Automatic checking and score
-- Answer review
+- Color-coded answer review (all options: green = correct, red = your wrong choice)
 - Unlimited retakes
 - Attempt history in browser localStorage
 - Separate class/subject/question/answer JSON files

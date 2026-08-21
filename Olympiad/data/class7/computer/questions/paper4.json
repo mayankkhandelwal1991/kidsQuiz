@@ -9,7 +9,6 @@
   "questions": [
     {
       "id": 1,
-      "text": "Find the next: 4, 8, 16, 32, __.",
       "options": [
         "64",
         "48",
@@ -17,11 +16,11 @@
         "36"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Find the next: 4, 8, 16, 32, __."
     },
     {
       "id": 2,
-      "text": "Odd one out: Keyboard, Mouse, Monitor, Compiler",
       "options": [
         "Compiler",
         "Keyboard",
@@ -29,11 +28,11 @@
         "Monitor"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Odd one out: Keyboard, Mouse, Monitor, Compiler"
     },
     {
       "id": 3,
-      "text": "Analogy: CPU : Processing :: Monitor : ?",
       "options": [
         "Display",
         "Printing only",
@@ -41,11 +40,11 @@
         "Storing OS only"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Analogy: CPU : Processing :: Monitor : ?"
     },
     {
       "id": 4,
-      "text": "If ‘Input’ is related to ‘Keyboard’, then ‘Output’ is related to:",
       "options": [
         "Printer",
         "Mouse only as input",
@@ -53,11 +52,11 @@
         "Microphone only as input"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "If ‘Input’ is related to ‘Keyboard’, then ‘Output’ is related to:"
     },
     {
       "id": 5,
-      "text": "Which does not belong: AND, OR, NOT, CPU fan dust",
       "options": [
         "CPU fan dust",
         "AND",
@@ -65,11 +64,11 @@
         "NOT"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Which does not belong: AND, OR, NOT, CPU fan dust"
     },
     {
       "id": 6,
-      "text": "Series: 5, 10, 20, 40, __.",
       "options": [
         "80",
         "60",
@@ -77,11 +76,11 @@
         "45"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Series: 5, 10, 20, 40, __."
     },
     {
       "id": 7,
-      "text": "A is faster than B. C is slower than B. D is faster than A. Who is fastest?",
       "options": [
         "D",
         "A",
@@ -89,11 +88,11 @@
         "C"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "A is faster than B. C is slower than B. D is faster than A. Who is fastest?"
     },
     {
       "id": 8,
-      "text": "If each letter is coded as its position (A=1,…), and CAT = 3+1+20=24, then BAD = ?",
       "options": [
         "7",
         "6",
@@ -101,11 +100,11 @@
         "8"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "If each letter is coded as its position (A=1,…), and CAT = 3+1+20=24, then BAD = ?"
     },
     {
       "id": 9,
-      "text": "Odd one out: HTML, CSS, JavaScript, Wheat",
       "options": [
         "Wheat",
         "HTML",
@@ -113,11 +112,11 @@
         "JavaScript"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Odd one out: HTML, CSS, JavaScript, Wheat"
     },
     {
       "id": 10,
-      "text": "Mirror pattern: If 1 2 3 appears as 3 2 1 in a mirror line, then 4 5 6 appears as:",
       "options": [
         "6 5 4",
         "4 5 6",
@@ -125,11 +124,11 @@
         "6 4 5"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Mirror pattern: If 1 2 3 appears as 3 2 1 in a mirror line, then 4 5 6 appears as:"
     },
     {
       "id": 11,
-      "text": "In a spreadsheet, the intersection of a row and a column is a:",
       "options": [
         "Router",
         "Cell",
@@ -137,11 +136,11 @@
         "Pixel printer"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In a spreadsheet, the intersection of a row and a column is a:"
     },
     {
       "id": 12,
-      "text": "A formula in Excel usually begins with:",
       "options": [
         "@",
         "=",
@@ -149,11 +148,11 @@
         "& only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A formula in Excel usually begins with:"
     },
     {
       "id": 13,
-      "text": "In PowerPoint, slides are used to:",
       "options": [
         "Replace the OS kernel",
         "Generate electricity",
@@ -161,11 +160,11 @@
         "Present information visually"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In PowerPoint, slides are used to:"
     },
     {
       "id": 14,
-      "text": "The Internet is:",
       "options": [
         "A global network of networks",
         "A type of printer",
@@ -173,11 +172,11 @@
         "A single home PC only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The Internet is:"
     },
     {
       "id": 15,
-      "text": "A web browser is used to:",
       "options": [
         "Replace the CPU fan",
         "Print only without computer",
@@ -185,11 +184,11 @@
         "Cook food"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A web browser is used to:"
     },
     {
       "id": 16,
-      "text": "An email address typically contains:",
       "options": [
         "spaces only",
         "@",
@@ -197,11 +196,11 @@
         "only digits without domain"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "An email address typically contains:"
     },
     {
       "id": 17,
-      "text": "Cyber safety includes:",
       "options": [
         "Downloading any attachment blindly",
         "Not sharing passwords and being careful with links",
@@ -209,11 +208,11 @@
         "Using the same weak password everywhere"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Cyber safety includes:"
     },
     {
       "id": 18,
-      "text": "A strong password should be:",
       "options": [
         "12345 only",
         "blank",
@@ -221,11 +220,11 @@
         "Long and hard to guess, mixing character types"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A strong password should be:"
     },
     {
       "id": 19,
-      "text": "Phishing is an attempt to:",
       "options": [
         "Trick users into revealing sensitive information",
         "Charge the battery faster",
@@ -233,11 +232,11 @@
         "Speed up the CPU legally"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Phishing is an attempt to:"
     },
     {
       "id": 20,
-      "text": "HTML is mainly used to:",
       "options": [
         "Grow plants",
         "Cool laptops",
@@ -245,11 +244,11 @@
         "Replace electricity"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "HTML is mainly used to:"
     },
     {
       "id": 21,
-      "text": "A common HTML tag for a paragraph is:",
       "options": [
         "<br> only for images",
         "<p>",
@@ -257,11 +256,11 @@
         "<table> only for sound"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A common HTML tag for a paragraph is:"
     },
     {
       "id": 22,
-      "text": "In coding logic, a loop is used to:",
       "options": [
         "Stop all input forever",
         "Print only once never again",
@@ -269,11 +268,11 @@
         "Repeat a set of instructions"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In coding logic, a loop is used to:"
     },
     {
       "id": 23,
-      "text": "An algorithm is:",
       "options": [
         "A virus type only",
         "A monitor brand",
@@ -281,11 +280,11 @@
         "A step-by-step method to solve a problem"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "An algorithm is:"
     },
     {
       "id": 24,
-      "text": "Which is an input device?",
       "options": [
         "Scanner",
         "Projector",
@@ -293,11 +292,11 @@
         "Speaker"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Which is an input device?"
     },
     {
       "id": 25,
-      "text": "Which is an output device?",
       "options": [
         "Microphone",
         "Keyboard",
@@ -305,11 +304,11 @@
         "Mouse"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Which is an output device?"
     },
     {
       "id": 26,
-      "text": "SSD compared to traditional HDD often provides:",
       "options": [
         "No storage",
         "Faster data access",
@@ -317,11 +316,11 @@
         "Only paper output"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "SSD compared to traditional HDD often provides:"
     },
     {
       "id": 27,
-      "text": "Cloud storage means:",
       "options": [
         "Deleting all backups",
         "Printing to sky",
@@ -329,11 +328,11 @@
         "Storing data on remote servers accessed via internet"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Cloud storage means:"
     },
     {
       "id": 28,
-      "text": "A firewall helps to:",
       "options": [
         "Filter network traffic for security",
         "Charge phones wirelessly by magic only",
@@ -341,11 +340,11 @@
         "Increase room temperature"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A firewall helps to:"
     },
     {
       "id": 29,
-      "text": "Software that harms a system intentionally is often called:",
       "options": [
         "Malware",
         "Spreadsheet",
@@ -353,11 +352,11 @@
         "Freeware always safe"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Software that harms a system intentionally is often called:"
     },
     {
       "id": 30,
-      "text": "Backup means:",
       "options": [
         "Unplugging forever",
         "Deleting all files",
@@ -365,11 +364,11 @@
         "Formatting without copy"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Backup means:"
     },
     {
       "id": 31,
-      "text": "In binary, 10 represents decimal:",
       "options": [
         "3",
         "2",
@@ -377,11 +376,11 @@
         "1"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In binary, 10 represents decimal:"
     },
     {
       "id": 32,
-      "text": "The full form of IP in networking is commonly:",
       "options": [
         "Input Password",
         "Instant Processing only",
@@ -389,11 +388,11 @@
         "Internet Protocol"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The full form of IP in networking is commonly:"
     },
     {
       "id": 33,
-      "text": "URL stands for:",
       "options": [
         "Uniform Resource Locator",
         "Unique ROM Link",
@@ -401,11 +400,11 @@
         "Universal Random List"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "URL stands for:"
     },
     {
       "id": 34,
-      "text": "A file extension .xlsx is commonly associated with:",
       "options": [
         "Image only",
         "Word only",
@@ -413,11 +412,11 @@
         "PowerPoint only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A file extension .xlsx is commonly associated with:"
     },
     {
       "id": 35,
-      "text": "Copy and paste shortcuts are commonly:",
       "options": [
         "Shift+Delete only",
         "Ctrl+Z and Ctrl+Y only",
@@ -425,11 +424,11 @@
         "Alt+F4 only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Copy and paste shortcuts are commonly:"
     },
     {
       "id": 36,
-      "text": "In presentations, excessive animations can:",
       "options": [
         "Replace content quality always positively",
         "Distract the audience",
@@ -437,11 +436,11 @@
         "Increase RAM permanently"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In presentations, excessive animations can:"
     },
     {
       "id": 37,
-      "text": "Which device connects a LAN to a wider network often at home?",
       "options": [
         "Joystick only",
         "Webcam only",
@@ -449,11 +448,11 @@
         "Router"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Which device connects a LAN to a wider network often at home?"
     },
     {
       "id": 38,
-      "text": "Two-factor authentication adds security by requiring:",
       "options": [
         "An extra verification step beyond password",
         "Disabling all updates",
@@ -461,11 +460,11 @@
         "No password ever"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Two-factor authentication adds security by requiring:"
     },
     {
       "id": 39,
-      "text": "Open-source software typically allows:",
       "options": [
         "Mandatory payment to one vendor always",
         "No installation ever",
@@ -473,11 +472,11 @@
         "Only offline paper use"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Open-source software typically allows:"
     },
     {
       "id": 40,
-      "text": "In Scratch-like block coding, ‘repeat 10’ is an example of:",
       "options": [
         "A printer jam",
         "A virus",
@@ -485,11 +484,11 @@
         "Hardware failure"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In Scratch-like block coding, ‘repeat 10’ is an example of:"
     },
     {
       "id": 41,
-      "text": "Cache memory is:",
       "options": [
         "Only cloud backup",
         "Very fast memory close to the CPU",
@@ -497,11 +496,11 @@
         "A type of printer ink"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Cache memory is:"
     },
     {
       "id": 42,
-      "text": "The binary number system uses digits:",
       "options": [
         "A to F only",
         "1 to 7 only",
@@ -509,11 +508,11 @@
         "0 and 1"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The binary number system uses digits:"
     },
     {
       "id": 43,
-      "text": "Decimal number 5 in binary is:",
       "options": [
         "101",
         "110",
@@ -521,11 +520,11 @@
         "100"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Decimal number 5 in binary is:"
     },
     {
       "id": 44,
-      "text": "1 byte equals:",
       "options": [
         "4 bits",
         "2 bits",
@@ -533,11 +532,11 @@
         "16 bits always only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "1 byte equals:"
     },
     {
       "id": 45,
-      "text": "The brain of the computer is the:",
       "options": [
         "Keyboard",
         "CPU",
@@ -545,11 +544,11 @@
         "Speaker"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The brain of the computer is the:"
     },
     {
       "id": 46,
-      "text": "In a spreadsheet, cell A1 has 10, B1 has 20. Formula =A1+B1 in C1 shows:",
       "options": [
         "Error always",
         "1020",
@@ -557,11 +556,11 @@
         "A1B1"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "In a spreadsheet, cell A1 has 10, B1 has 20. Formula =A1+B1 in C1 shows:"
     },
     {
       "id": 47,
-      "text": "Why is a network password on home Wi-Fi important?",
       "options": [
         "It replaces antivirus completely always",
         "It helps prevent unauthorised users from using the network",
@@ -569,11 +568,11 @@
         "It makes cables unnecessary for electricity"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "Why is a network password on home Wi-Fi important?"
     },
     {
       "id": 48,
-      "text": "HTML <img> tag is primarily used to:",
       "options": [
         "Compile a program",
         "Format a hard disk",
@@ -581,11 +580,11 @@
         "Embed an image in a web page"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "HTML <img> tag is primarily used to:"
     },
     {
       "id": 49,
-      "text": "An algorithm to find the largest of three numbers must:",
       "options": [
         "Only print the smallest always",
         "Require no logic",
@@ -593,11 +592,11 @@
         "Compare the numbers using clear steps"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "An algorithm to find the largest of three numbers must:"
     },
     {
       "id": 50,
-      "text": "You save a project only in RAM and power off the PC without saving to disk. What happens to the project?",
       "options": [
         "It is lost because RAM is volatile",
         "It emails itself",
@@ -605,7 +604,9 @@
         "It is permanently stored in ROM"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "You save a project only in RAM and power off the PC without saving to disk. What happens to the project?"
     }
-  ]
+  ],
+  "durationMinutes": 30
 }

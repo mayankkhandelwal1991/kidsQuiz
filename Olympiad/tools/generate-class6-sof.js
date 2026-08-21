@@ -33,7 +33,7 @@ function writePaper(folder, paperNo, meta, questions, answers) {
     subject: meta.subject,
     paper: paperNo,
     title: `Class ${CLASS} ${meta.subject} — Paper ${paperNo}`,
-    durationMinutes: 60,
+    durationMinutes: 30,
     totalMarks: meta.totalMarks,
     patternNote:
       "Original practice paper aligned to SOF 2023–2025 pattern and Class 6 syllabus (not a copyrighted SOF paper).",

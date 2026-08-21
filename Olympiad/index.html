@@ -24,10 +24,19 @@
     position: relative;
     overflow: hidden;
     min-height: 150px;
-    color: #fff;
-    border: 0;
+    color: #fff !important;
+    border: 0 !important;
     box-shadow: 0 12px 24px rgba(79, 70, 229, .22);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 6px;
+    text-align: left;
   }
+  .selection-card strong { color: #fff; font-size: 1.15rem; }
+  .selection-card span { color: rgba(255,255,255,.9); font-size: .9rem; }
+  .selection-card.subject-card { min-height: 140px; }
   .selection-card::after {
     content: '';
     position: absolute;
@@ -47,11 +56,21 @@
   .class-card:nth-child(5n+3) { background: linear-gradient(135deg,#0f766e,#14b8a6); }
   .class-card:nth-child(5n+4) { background: linear-gradient(135deg,#2563eb,#38bdf8); }
   .class-card:nth-child(5n) { background: linear-gradient(135deg,#a855f7,#ec4899); }
-  .subject-mathematics { background: linear-gradient(135deg,#6366f1,#8b5cf6); }
-  .subject-science { background: linear-gradient(135deg,#0891b2,#22c55e); }
-  .subject-english { background: linear-gradient(135deg,#ec4899,#f97316); }
-  .subject-computer { background: linear-gradient(135deg,#2563eb,#06b6d4); }
-  .subject-gk { background: linear-gradient(135deg,#d97706,#ef4444); }
+  .subject-card.subject-mathematics,
+  .subject-mathematics { background: linear-gradient(135deg,#6366f1,#8b5cf6) !important; }
+  .subject-card.subject-science,
+  .subject-science { background: linear-gradient(135deg,#0891b2,#22c55e) !important; }
+  .subject-card.subject-english,
+  .subject-english { background: linear-gradient(135deg,#ec4899,#f97316) !important; }
+  .subject-card.subject-computer,
+  .subject-computer { background: linear-gradient(135deg,#2563eb,#06b6d4) !important; }
+  .subject-card.subject-gk,
+  .subject-gk { background: linear-gradient(135deg,#d97706,#ef4444) !important; }
+  .class-card:nth-child(5n+1) { background: linear-gradient(135deg,#667eea,#764ba2) !important; }
+  .class-card:nth-child(5n+2) { background: linear-gradient(135deg,#f97316,#f43f5e) !important; }
+  .class-card:nth-child(5n+3) { background: linear-gradient(135deg,#0f766e,#14b8a6) !important; }
+  .class-card:nth-child(5n+4) { background: linear-gradient(135deg,#2563eb,#38bdf8) !important; }
+  .class-card:nth-child(5n) { background: linear-gradient(135deg,#a855f7,#ec4899) !important; }
   .quit-modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 20px; background: rgba(15,23,42,.56); }
   .quit-dialog { width: min(360px,100%); padding: 26px; text-align: center; background: #fff; border-radius: 22px; box-shadow: 0 22px 55px rgba(15,23,42,.32); }
   .quit-dialog .quit-icon { font-size: 40px; }
@@ -89,10 +108,23 @@
     <button class="back test-back" onclick="leaveTest()">← Back</button>
     <div class="test-head">
       <div><div id="testTitle" class="test-title"></div><div id="progress" class="muted"></div></div>
-      <div id="timer" class="timer">30:00</div>
+      <div class="timer-wrap">
+        <div id="timer" class="timer">30:00</div>
+        <button type="button" id="pauseResumeBtn" class="pause-btn" aria-pressed="false" title="Pause or resume the timer">⏸ Pause</button>
+      </div>
     </div>
     <div class="progressbar"><div id="progressFill"></div></div>
-    <div id="questionCard" class="question-card"></div>
+    <div class="test-stage">
+      <div id="questionCard" class="question-card"></div>
+      <div id="pauseOverlay" class="pause-overlay hidden" role="status" aria-live="polite">
+        <div class="pause-card">
+          <div class="pause-icon">⏸</div>
+          <h2>Test paused</h2>
+          <p class="muted">Timer is stopped. Your answers are saved on this page.</p>
+          <button type="button" id="resumeFromOverlayBtn" onclick="resumeTest()">▶ Resume Test</button>
+        </div>
+      </div>
+    </div>
     <div class="test-nav">
       <button id="prevBtn" class="secondary">← Previous</button>
       <button id="nextBtn">Next →</button>
@@ -126,7 +158,7 @@
   <div class="quit-dialog">
     <div class="quit-icon">⚠️</div>
     <h2 id="quitTestTitle">Quit this quiz?</h2>
-    <p class="muted">Your current answers and progress will be lost.</p>
+    <p class="muted">Timer is paused. Quit discards this attempt. Resume continues where you left off.</p>
     <div class="quit-actions">
       <button id="resumeTestBtn" class="secondary">Resume Quiz</button>
       <button id="confirmQuitTestBtn" class="danger">Yes, Quit</button>

@@ -20,7 +20,7 @@ const CLASS = 10;
 const PAPERS = [1, 2, 3, 4, 5];
 const ROOT = path.join(__dirname, "..", "data", "class10");
 
-function Q(id, text, options, answer, section, marks) {
+function Q(id, question, options, answer, section, marks) {
   if (!Array.isArray(options) || options.length !== 4) {
     throw new Error(`Q${id}: need 4 options`);
   }
@@ -34,7 +34,7 @@ function Q(id, text, options, answer, section, marks) {
   return {
     id,
     section,
-    text,
+    question,
     options: options.map(String),
     marks: m,
   };
@@ -74,8 +74,8 @@ function diversify(items, paperNo) {
   return items.map((q, i) => {
     if (!pref || i % 5 === 0) return q;
     // Don't double-prefix reading passages / long stems
-    if (q.text.length > 120 || q.text.startsWith("Read ")) return q;
-    return { ...q, text: pref + q.text };
+    if (q.question.length > 120 || q.question.startsWith("Read ")) return q;
+    return { ...q, question: pref + q.question };
   });
 }
 
@@ -110,10 +110,10 @@ function writePair(subject, paperNo, questions, meta) {
     yearStyle: "2023-2025",
     patternNote: meta.patternNote,
     sections: meta.sections,
-    questions: questions.map(({ id, section, text, options, marks }) => ({
+    questions: questions.map(({ id, section, question, options, marks }) => ({
       id,
       section,
-      text,
+      question,
       options,
       marks,
     })),
@@ -147,8 +147,8 @@ function pack(items) {
 function makeBag() {
   const items = [];
   const answersMap = {};
-  function push(id, text, options, answer, section, marks) {
-    const q = Q(id, text, options, answer, section, marks);
+  function push(id, question, options, answer, section, marks) {
+    const q = Q(id, question, options, answer, section, marks);
     items.push(q);
     answersMap[String(id)] = answer;
     return q;

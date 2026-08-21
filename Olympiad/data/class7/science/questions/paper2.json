@@ -9,7 +9,6 @@
   "questions": [
     {
       "id": 1,
-      "text": "Find the next: 3, 6, 12, 24, __.",
       "options": [
         "48",
         "36",
@@ -17,11 +16,11 @@
         "40"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Find the next: 3, 6, 12, 24, __."
     },
     {
       "id": 2,
-      "text": "Odd one out: Photosynthesis, Transpiration, Respiration, Condensation",
       "options": [
         "Condensation",
         "Photosynthesis",
@@ -29,11 +28,11 @@
         "Respiration"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Odd one out: Photosynthesis, Transpiration, Respiration, Condensation"
     },
     {
       "id": 3,
-      "text": "Analogy: Stomata : Gas exchange :: Xylem : ?",
       "options": [
         "Water transport",
         "Food storage only",
@@ -41,11 +40,11 @@
         "Seed dispersal"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Analogy: Stomata : Gas exchange :: Xylem : ?"
     },
     {
       "id": 4,
-      "text": "If ‘Acid’ is related to ‘Sour’, then ‘Base’ is related to:",
       "options": [
         "Bitter",
         "Sweet only",
@@ -53,11 +52,11 @@
         "Odourless always"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "If ‘Acid’ is related to ‘Sour’, then ‘Base’ is related to:"
     },
     {
       "id": 5,
-      "text": "Which does not belong: Conduction, Convection, Radiation, Digestion",
       "options": [
         "Digestion",
         "Conduction",
@@ -65,11 +64,11 @@
         "Radiation"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Which does not belong: Conduction, Convection, Radiation, Digestion"
     },
     {
       "id": 6,
-      "text": "Series: 1, 4, 9, 16, 25, __.",
       "options": [
         "36",
         "30",
@@ -77,11 +76,11 @@
         "49"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Series: 1, 4, 9, 16, 25, __."
     },
     {
       "id": 7,
-      "text": "A is faster than B but slower than C. D is slower than B. Who is fastest?",
       "options": [
         "C",
         "A",
@@ -89,11 +88,11 @@
         "D"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "A is faster than B but slower than C. D is slower than B. Who is fastest?"
     },
     {
       "id": 8,
-      "text": "Which letter has a vertical line of symmetry?",
       "options": [
         "A",
         "B",
@@ -101,11 +100,11 @@
         "E"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Which letter has a vertical line of symmetry?"
     },
     {
       "id": 9,
-      "text": "If all roses are flowers and some flowers fade quickly, which must be true?",
       "options": [
         "Some roses may fade quickly",
         "No rose is a flower",
@@ -113,11 +112,11 @@
         "Roses never fade"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "If all roses are flowers and some flowers fade quickly, which must be true?"
     },
     {
       "id": 10,
-      "text": "Odd one out: Thermometer, Barometer, Speedometer, Chlorophyll",
       "options": [
         "Chlorophyll",
         "Thermometer",
@@ -125,11 +124,11 @@
         "Speedometer"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Odd one out: Thermometer, Barometer, Speedometer, Chlorophyll"
     },
     {
       "id": 11,
-      "text": "The largest gland in the human body is the:",
       "options": [
         "Liver",
         "Salivary gland",
@@ -137,11 +136,11 @@
         "Pancreas"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "The largest gland in the human body is the:"
     },
     {
       "id": 12,
-      "text": "Bile is stored in the:",
       "options": [
         "Lungs",
         "Stomach",
@@ -149,11 +148,11 @@
         "Kidney"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Bile is stored in the:"
     },
     {
       "id": 13,
-      "text": "Cotton fibre is obtained from:",
       "options": [
         "Silkworm",
         "Cotton plant seeds/bolls",
@@ -161,11 +160,11 @@
         "Jute stem only"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Cotton fibre is obtained from:"
     },
     {
       "id": 14,
-      "text": "Silk is obtained from:",
       "options": [
         "Flax",
         "Silkworm cocoons",
@@ -173,11 +172,11 @@
         "Polyester factory trees"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Silk is obtained from:"
     },
     {
       "id": 15,
-      "text": "Heat flows from a hotter body to a colder body until:",
       "options": [
         "Volumes become zero",
         "Colours match",
@@ -185,11 +184,11 @@
         "Temperatures become equal"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Heat flows from a hotter body to a colder body until:"
     },
     {
       "id": 16,
-      "text": "A clinical thermometer is used to measure:",
       "options": [
         "Body temperature",
         "Rainfall",
@@ -197,11 +196,11 @@
         "Atmospheric pressure"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "A clinical thermometer is used to measure:"
     },
     {
       "id": 17,
-      "text": "Land breeze blows from:",
       "options": [
         "Equator to poles only",
         "Sea to land always at noon only",
@@ -209,11 +208,11 @@
         "Mountains to space"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Land breeze blows from:"
     },
     {
       "id": 18,
-      "text": "Acids turn blue litmus:",
       "options": [
         "Blue deeper",
         "Red",
@@ -221,11 +220,11 @@
         "Black"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Acids turn blue litmus:"
     },
     {
       "id": 19,
-      "text": "Bases turn red litmus:",
       "options": [
         "Yellow",
         "Blue",
@@ -233,11 +232,11 @@
         "Orange"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Bases turn red litmus:"
     },
     {
       "id": 20,
-      "text": "A salt and water are formed in a reaction between:",
       "options": [
         "Oxygen and nitrogen only",
         "Sand and clay",
@@ -245,11 +244,11 @@
         "Acid and base (neutralisation)"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "A salt and water are formed in a reaction between:"
     },
     {
       "id": 21,
-      "text": "Rusting of iron is a:",
       "options": [
         "Chemical change",
         "Change of state of water",
@@ -257,11 +256,11 @@
         "Physical change only"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Rusting of iron is a:"
     },
     {
       "id": 22,
-      "text": "Melting of ice is a:",
       "options": [
         "Biological evolution",
         "Chemical change",
@@ -269,11 +268,11 @@
         "Nuclear change"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Melting of ice is a:"
     },
     {
       "id": 23,
-      "text": "Weather describes atmospheric conditions:",
       "options": [
         "Only inside the Earth",
         "Over a short period at a place",
@@ -281,11 +280,11 @@
         "Only in oceans depths"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Weather describes atmospheric conditions:"
     },
     {
       "id": 24,
-      "text": "Climate is the:",
       "options": [
         "Temperature of a cup of tea",
         "Speed of a car",
@@ -293,11 +292,11 @@
         "Average weather pattern over a long period"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Climate is the:"
     },
     {
       "id": 25,
-      "text": "High speed winds are accompanied by:",
       "options": [
         "No change in pressure ever",
         "Solid rock formation",
@@ -305,11 +304,11 @@
         "Reduced air pressure"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "High speed winds are accompanied by:"
     },
     {
       "id": 26,
-      "text": "The uppermost layer of soil is generally rich in:",
       "options": [
         "Humus",
         "Glass",
@@ -317,11 +316,11 @@
         "Only pure metal"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "The uppermost layer of soil is generally rich in:"
     },
     {
       "id": 27,
-      "text": "During inhalation, the diaphragm:",
       "options": [
         "Turns into bone",
         "Relaxes and moves upward only always",
@@ -329,11 +328,11 @@
         "Disappears"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "During inhalation, the diaphragm:"
     },
     {
       "id": 28,
-      "text": "In humans, oxygen is carried mainly by:",
       "options": [
         "Platelets only",
         "Haemoglobin in red blood cells",
@@ -341,11 +340,11 @@
         "Plasma proteins that make hair"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "In humans, oxygen is carried mainly by:"
     },
     {
       "id": 29,
-      "text": "Xylem transports:",
       "options": [
         "Only oxygen to roots",
         "Only carbon dioxide to flowers",
@@ -353,11 +352,11 @@
         "Water and minerals"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Xylem transports:"
     },
     {
       "id": 30,
-      "text": "Phloem transports:",
       "options": [
         "Food (mainly sugars)",
         "Only sunlight",
@@ -365,11 +364,11 @@
         "Only water upward"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Phloem transports:"
     },
     {
       "id": 31,
-      "text": "The human heart has:",
       "options": [
         "Four chambers",
         "Six chambers",
@@ -377,11 +376,11 @@
         "Two chambers"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "The human heart has:"
     },
     {
       "id": 32,
-      "text": "Seeds may be dispersed by:",
       "options": [
         "Only earthquakes",
         "Only electricity",
@@ -389,11 +388,11 @@
         "Only magnets"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Seeds may be dispersed by:"
     },
     {
       "id": 33,
-      "text": "Vegetative propagation is reproduction from:",
       "options": [
         "Only flowers always",
         "Vegetative parts like stem/leaf/root",
@@ -401,11 +400,11 @@
         "Only fruits always"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Vegetative propagation is reproduction from:"
     },
     {
       "id": 34,
-      "text": "Speed is defined as:",
       "options": [
         "Mass per volume",
         "Energy per charge",
@@ -413,11 +412,11 @@
         "Distance travelled per unit time"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Speed is defined as:"
     },
     {
       "id": 35,
-      "text": "The SI unit of speed is:",
       "options": [
         "m/s",
         "s/m",
@@ -425,11 +424,11 @@
         "km only"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "The SI unit of speed is:"
     },
     {
       "id": 36,
-      "text": "A simple pendulum’s time period depends mainly on:",
       "options": [
         "Only room number",
         "Mass of bob only (ideally independent)",
@@ -437,11 +436,11 @@
         "Colour of bob"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "A simple pendulum’s time period depends mainly on:"
     },
     {
       "id": 37,
-      "text": "Electric current is the flow of:",
       "options": [
         "Only light always",
         "Only heat without charge",
@@ -449,11 +448,11 @@
         "Only sound"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Electric current is the flow of:"
     },
     {
       "id": 38,
-      "text": "A good conductor among the following is:",
       "options": [
         "Plastic",
         "Copper",
@@ -461,11 +460,11 @@
         "Dry wood"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "A good conductor among the following is:"
     },
     {
       "id": 39,
-      "text": "In a closed circuit with a battery and bulb, the bulb glows when:",
       "options": [
         "There is no cell",
         "The switch is open and breaks path",
@@ -473,11 +472,11 @@
         "The circuit is complete"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "In a closed circuit with a battery and bulb, the bulb glows when:"
     },
     {
       "id": 40,
-      "text": "Light travels in:",
       "options": [
         "Straight lines in a uniform medium",
         "Only through metals",
@@ -485,11 +484,11 @@
         "Only circles"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Light travels in:"
     },
     {
       "id": 41,
-      "text": "A real image formed by a concave mirror can be:",
       "options": [
         "Formed only by sound",
         "Never inverted",
@@ -497,11 +496,11 @@
         "Only virtual always"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "A real image formed by a concave mirror can be:"
     },
     {
       "id": 42,
-      "text": "White light can be split into a spectrum using a:",
       "options": [
         "Metal spoon only",
         "Plain mirror only",
@@ -509,11 +508,11 @@
         "Wooden block"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "White light can be split into a spectrum using a:"
     },
     {
       "id": 43,
-      "text": "Forests help in:",
       "options": [
         "Destroying biodiversity only",
         "Maintaining water cycle and preventing soil erosion",
@@ -521,11 +520,11 @@
         "Stopping rainfall forever"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Forests help in:"
     },
     {
       "id": 44,
-      "text": "Wastewater should be treated before release to:",
       "options": [
         "Kill all fish intentionally",
         "Block sunlight in space",
@@ -533,11 +532,11 @@
         "Reduce pollution of water bodies"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Wastewater should be treated before release to:"
     },
     {
       "id": 45,
-      "text": "Neutralisation is used in:",
       "options": [
         "Treating acidic soil with base (e.g. lime)",
         "Only measuring length",
@@ -545,11 +544,11 @@
         "Only freezing water"
       ],
       "section": "Science",
-      "marks": 1
+      "marks": 1,
+      "question": "Neutralisation is used in:"
     },
     {
       "id": 46,
-      "text": "If the distance–time graph of a body is a straight line parallel to the time axis, the body is:",
       "options": [
         "At rest",
         "Moving with increasing speed always",
@@ -557,11 +556,11 @@
         "Accelerating uniformly"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "If the distance–time graph of a body is a straight line parallel to the time axis, the body is:"
     },
     {
       "id": 47,
-      "text": "Two plane mirrors are placed at 90°. The number of images of an object placed between them is generally:",
       "options": [
         "Infinite always",
         "1",
@@ -569,11 +568,11 @@
         "5"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "Two plane mirrors are placed at 90°. The number of images of an object placed between them is generally:"
     },
     {
       "id": 48,
-      "text": "Why is a fuse used in an electric circuit?",
       "options": [
         "It stores food",
         "It melts and breaks the circuit if current is too high",
@@ -581,11 +580,11 @@
         "It produces chlorophyll"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "Why is a fuse used in an electric circuit?"
     },
     {
       "id": 49,
-      "text": "Which combination correctly matches transport in plants?",
       "options": [
         "Both carry only sunlight",
         "Neither carries anything",
@@ -593,11 +592,11 @@
         "Xylem – water; Phloem – food"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "Which combination correctly matches transport in plants?"
     },
     {
       "id": 50,
-      "text": "An acid is accidentally spilled on the floor. A safe first approach among options is:",
       "options": [
         "Add more strong acid",
         "Ignore and walk barefoot on it",
@@ -605,7 +604,9 @@
         "Inform an adult and neutralise carefully with suitable mild base as guided"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "An acid is accidentally spilled on the floor. A safe first approach among options is:"
     }
-  ]
+  ],
+  "durationMinutes": 30
 }

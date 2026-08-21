@@ -9,7 +9,6 @@
   "questions": [
     {
       "id": 1,
-      "text": "Find the next: 4, 8, 16, 32, __.",
       "options": [
         "64",
         "48",
@@ -17,11 +16,11 @@
         "36"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Find the next: 4, 8, 16, 32, __."
     },
     {
       "id": 2,
-      "text": "Odd one out: Keyboard, Mouse, Monitor, Compiler",
       "options": [
         "Compiler",
         "Keyboard",
@@ -29,11 +28,11 @@
         "Monitor"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Odd one out: Keyboard, Mouse, Monitor, Compiler"
     },
     {
       "id": 3,
-      "text": "Analogy: CPU : Processing :: Monitor : ?",
       "options": [
         "Display",
         "Printing only",
@@ -41,11 +40,11 @@
         "Storing OS only"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Analogy: CPU : Processing :: Monitor : ?"
     },
     {
       "id": 4,
-      "text": "If ‘Input’ is related to ‘Keyboard’, then ‘Output’ is related to:",
       "options": [
         "Printer",
         "Mouse only as input",
@@ -53,11 +52,11 @@
         "Microphone only as input"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "If ‘Input’ is related to ‘Keyboard’, then ‘Output’ is related to:"
     },
     {
       "id": 5,
-      "text": "Which does not belong: AND, OR, NOT, CPU fan dust",
       "options": [
         "CPU fan dust",
         "AND",
@@ -65,11 +64,11 @@
         "NOT"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Which does not belong: AND, OR, NOT, CPU fan dust"
     },
     {
       "id": 6,
-      "text": "Series: 5, 10, 20, 40, __.",
       "options": [
         "80",
         "60",
@@ -77,11 +76,11 @@
         "45"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Series: 5, 10, 20, 40, __."
     },
     {
       "id": 7,
-      "text": "A is faster than B. C is slower than B. D is faster than A. Who is fastest?",
       "options": [
         "D",
         "A",
@@ -89,11 +88,11 @@
         "C"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "A is faster than B. C is slower than B. D is faster than A. Who is fastest?"
     },
     {
       "id": 8,
-      "text": "If each letter is coded as its position (A=1,…), and CAT = 3+1+20=24, then BAD = ?",
       "options": [
         "7",
         "6",
@@ -101,11 +100,11 @@
         "8"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "If each letter is coded as its position (A=1,…), and CAT = 3+1+20=24, then BAD = ?"
     },
     {
       "id": 9,
-      "text": "Odd one out: HTML, CSS, JavaScript, Wheat",
       "options": [
         "Wheat",
         "HTML",
@@ -113,11 +112,11 @@
         "JavaScript"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Odd one out: HTML, CSS, JavaScript, Wheat"
     },
     {
       "id": 10,
-      "text": "Mirror pattern: If 1 2 3 appears as 3 2 1 in a mirror line, then 4 5 6 appears as:",
       "options": [
         "6 5 4",
         "4 5 6",
@@ -125,11 +124,11 @@
         "6 4 5"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Mirror pattern: If 1 2 3 appears as 3 2 1 in a mirror line, then 4 5 6 appears as:"
     },
     {
       "id": 11,
-      "text": "The binary number system uses digits:",
       "options": [
         "A to F only",
         "1 to 7 only",
@@ -137,11 +136,11 @@
         "0 and 1"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The binary number system uses digits:"
     },
     {
       "id": 12,
-      "text": "Decimal number 5 in binary is:",
       "options": [
         "101",
         "110",
@@ -149,11 +148,11 @@
         "100"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Decimal number 5 in binary is:"
     },
     {
       "id": 13,
-      "text": "1 byte equals:",
       "options": [
         "4 bits",
         "2 bits",
@@ -161,11 +160,11 @@
         "16 bits always only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "1 byte equals:"
     },
     {
       "id": 14,
-      "text": "The brain of the computer is the:",
       "options": [
         "Keyboard",
         "CPU",
@@ -173,11 +172,11 @@
         "Speaker"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The brain of the computer is the:"
     },
     {
       "id": 15,
-      "text": "RAM is a type of:",
       "options": [
         "Output device only",
         "Volatile memory",
@@ -185,11 +184,11 @@
         "Network cable"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "RAM is a type of:"
     },
     {
       "id": 16,
-      "text": "ROM typically stores:",
       "options": [
         "Only videos you edit today",
         "Only printer paper",
@@ -197,11 +196,11 @@
         "Firmware/boot instructions"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "ROM typically stores:"
     },
     {
       "id": 17,
-      "text": "An operating system is:",
       "options": [
         "System software that manages hardware and software",
         "A type of virus",
@@ -209,11 +208,11 @@
         "A hardware chip only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "An operating system is:"
     },
     {
       "id": 18,
-      "text": "Which is an operating system?",
       "options": [
         "Intel CPU",
         "MS Word",
@@ -221,11 +220,11 @@
         "Chrome browser only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Which is an operating system?"
     },
     {
       "id": 19,
-      "text": "In MS Word, Ctrl + B is commonly used to:",
       "options": [
         "Insert a table only",
         "Bold text",
@@ -233,11 +232,11 @@
         "Turn off the PC"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In MS Word, Ctrl + B is commonly used to:"
     },
     {
       "id": 20,
-      "text": "In a spreadsheet, the intersection of a row and a column is a:",
       "options": [
         "Router",
         "Cell",
@@ -245,11 +244,11 @@
         "Pixel printer"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In a spreadsheet, the intersection of a row and a column is a:"
     },
     {
       "id": 21,
-      "text": "A formula in Excel usually begins with:",
       "options": [
         "@",
         "& only",
@@ -257,11 +256,11 @@
         "="
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A formula in Excel usually begins with:"
     },
     {
       "id": 22,
-      "text": "In PowerPoint, slides are used to:",
       "options": [
         "Present information visually",
         "Generate electricity",
@@ -269,11 +268,11 @@
         "Cool the CPU"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In PowerPoint, slides are used to:"
     },
     {
       "id": 23,
-      "text": "The Internet is:",
       "options": [
         "A type of printer",
         "A single home PC only",
@@ -281,11 +280,11 @@
         "Only a keyboard"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The Internet is:"
     },
     {
       "id": 24,
-      "text": "A web browser is used to:",
       "options": [
         "Cook food",
         "Access websites",
@@ -293,11 +292,11 @@
         "Replace the CPU fan"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A web browser is used to:"
     },
     {
       "id": 25,
-      "text": "An email address typically contains:",
       "options": [
         "spaces only",
         "only digits without domain",
@@ -305,11 +304,11 @@
         "@"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "An email address typically contains:"
     },
     {
       "id": 26,
-      "text": "Cyber safety includes:",
       "options": [
         "Downloading any attachment blindly",
         "Using the same weak password everywhere",
@@ -317,11 +316,11 @@
         "Not sharing passwords and being careful with links"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Cyber safety includes:"
     },
     {
       "id": 27,
-      "text": "A strong password should be:",
       "options": [
         "Long and hard to guess, mixing character types",
         "blank",
@@ -329,11 +328,11 @@
         "Your name only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A strong password should be:"
     },
     {
       "id": 28,
-      "text": "Phishing is an attempt to:",
       "options": [
         "Charge the battery faster",
         "Speed up the CPU legally",
@@ -341,11 +340,11 @@
         "Clean the monitor"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Phishing is an attempt to:"
     },
     {
       "id": 29,
-      "text": "HTML is mainly used to:",
       "options": [
         "Replace electricity",
         "Structure content on web pages",
@@ -353,11 +352,11 @@
         "Grow plants"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "HTML is mainly used to:"
     },
     {
       "id": 30,
-      "text": "A common HTML tag for a paragraph is:",
       "options": [
         "<br> only for images",
         "<table> only for sound",
@@ -365,11 +364,11 @@
         "<p>"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A common HTML tag for a paragraph is:"
     },
     {
       "id": 31,
-      "text": "In coding logic, a loop is used to:",
       "options": [
         "Repeat a set of instructions",
         "Print only once never again",
@@ -377,11 +376,11 @@
         "Delete the OS"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In coding logic, a loop is used to:"
     },
     {
       "id": 32,
-      "text": "An algorithm is:",
       "options": [
         "A step-by-step method to solve a problem",
         "A monitor brand",
@@ -389,11 +388,11 @@
         "A hardware port"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "An algorithm is:"
     },
     {
       "id": 33,
-      "text": "Which is an input device?",
       "options": [
         "Projector",
         "Speaker",
@@ -401,11 +400,11 @@
         "Monitor"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Which is an input device?"
     },
     {
       "id": 34,
-      "text": "Which is an output device?",
       "options": [
         "Mouse",
         "Printer",
@@ -413,11 +412,11 @@
         "Microphone"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Which is an output device?"
     },
     {
       "id": 35,
-      "text": "SSD compared to traditional HDD often provides:",
       "options": [
         "No storage",
         "Only paper output",
@@ -425,11 +424,11 @@
         "Faster data access"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "SSD compared to traditional HDD often provides:"
     },
     {
       "id": 36,
-      "text": "Cloud storage means:",
       "options": [
         "Storing data on remote servers accessed via internet",
         "Printing to sky",
@@ -437,11 +436,11 @@
         "Storing data only on paper clouds"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Cloud storage means:"
     },
     {
       "id": 37,
-      "text": "A firewall helps to:",
       "options": [
         "Charge phones wirelessly by magic only",
         "Increase room temperature",
@@ -449,11 +448,11 @@
         "Replace antivirus always completely alone without need"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A firewall helps to:"
     },
     {
       "id": 38,
-      "text": "Software that harms a system intentionally is often called:",
       "options": [
         "Spreadsheet",
         "Freeware always safe",
@@ -461,11 +460,11 @@
         "Compiler"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Software that harms a system intentionally is often called:"
     },
     {
       "id": 39,
-      "text": "Backup means:",
       "options": [
         "Formatting without copy",
         "Keeping copies of important data",
@@ -473,11 +472,11 @@
         "Unplugging forever"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Backup means:"
     },
     {
       "id": 40,
-      "text": "In binary, 10 represents decimal:",
       "options": [
         "3",
         "1",
@@ -485,11 +484,11 @@
         "2"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In binary, 10 represents decimal:"
     },
     {
       "id": 41,
-      "text": "The full form of IP in networking is commonly:",
       "options": [
         "Internet Protocol",
         "Instant Processing only",
@@ -497,11 +496,11 @@
         "Internal Printer"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The full form of IP in networking is commonly:"
     },
     {
       "id": 42,
-      "text": "URL stands for:",
       "options": [
         "Unique ROM Link",
         "Universal Random List",
@@ -509,11 +508,11 @@
         "User Real Login"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "URL stands for:"
     },
     {
       "id": 43,
-      "text": "A file extension .xlsx is commonly associated with:",
       "options": [
         "Image only",
         "Word only",
@@ -521,11 +520,11 @@
         "PowerPoint only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A file extension .xlsx is commonly associated with:"
     },
     {
       "id": 44,
-      "text": "Copy and paste shortcuts are commonly:",
       "options": [
         "Alt+F4 only",
         "Ctrl+C and Ctrl+V",
@@ -533,11 +532,11 @@
         "Shift+Delete only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Copy and paste shortcuts are commonly:"
     },
     {
       "id": 45,
-      "text": "In presentations, excessive animations can:",
       "options": [
         "Replace content quality always positively",
         "Increase RAM permanently",
@@ -545,11 +544,11 @@
         "Distract the audience"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In presentations, excessive animations can:"
     },
     {
       "id": 46,
-      "text": "Which arrangement is correct from typically fastest/smallest toward larger permanent store?",
       "options": [
         "Printer → Scanner → CPU",
         "Cache → RAM → SSD/HDD",
@@ -557,11 +556,11 @@
         "Monitor → Keyboard → Mouse"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "Which arrangement is correct from typically fastest/smallest toward larger permanent store?"
     },
     {
       "id": 47,
-      "text": "You receive an email asking for your school login password to ‘verify account’. You should:",
       "options": [
         "Post password on social media",
         "Not share the password; verify via official channels",
@@ -569,11 +568,11 @@
         "Change nothing and ignore security forever"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "You receive an email asking for your school login password to ‘verify account’. You should:"
     },
     {
       "id": 48,
-      "text": "Convert decimal 13 to binary:",
       "options": [
         "1110",
         "1001",
@@ -581,11 +580,11 @@
         "1101"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "Convert decimal 13 to binary:"
     },
     {
       "id": 49,
-      "text": "In a spreadsheet, cell A1 has 10, B1 has 20. Formula =A1+B1 in C1 shows:",
       "options": [
         "30",
         "Error always",
@@ -593,11 +592,11 @@
         "1020"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "In a spreadsheet, cell A1 has 10, B1 has 20. Formula =A1+B1 in C1 shows:"
     },
     {
       "id": 50,
-      "text": "Why is a network password on home Wi-Fi important?",
       "options": [
         "It makes cables unnecessary for electricity",
         "It increases the room temperature",
@@ -605,7 +604,9 @@
         "It replaces antivirus completely always"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "Why is a network password on home Wi-Fi important?"
     }
-  ]
+  ],
+  "durationMinutes": 30
 }

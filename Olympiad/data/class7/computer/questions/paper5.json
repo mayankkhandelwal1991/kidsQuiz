@@ -9,7 +9,6 @@
   "questions": [
     {
       "id": 1,
-      "text": "Find the next: 4, 8, 16, 32, __.",
       "options": [
         "64",
         "48",
@@ -17,11 +16,11 @@
         "36"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Find the next: 4, 8, 16, 32, __."
     },
     {
       "id": 2,
-      "text": "Odd one out: Keyboard, Mouse, Monitor, Compiler",
       "options": [
         "Compiler",
         "Keyboard",
@@ -29,11 +28,11 @@
         "Monitor"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Odd one out: Keyboard, Mouse, Monitor, Compiler"
     },
     {
       "id": 3,
-      "text": "Analogy: CPU : Processing :: Monitor : ?",
       "options": [
         "Display",
         "Printing only",
@@ -41,11 +40,11 @@
         "Storing OS only"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Analogy: CPU : Processing :: Monitor : ?"
     },
     {
       "id": 4,
-      "text": "If ‘Input’ is related to ‘Keyboard’, then ‘Output’ is related to:",
       "options": [
         "Printer",
         "Mouse only as input",
@@ -53,11 +52,11 @@
         "Microphone only as input"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "If ‘Input’ is related to ‘Keyboard’, then ‘Output’ is related to:"
     },
     {
       "id": 5,
-      "text": "Which does not belong: AND, OR, NOT, CPU fan dust",
       "options": [
         "CPU fan dust",
         "AND",
@@ -65,11 +64,11 @@
         "NOT"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Which does not belong: AND, OR, NOT, CPU fan dust"
     },
     {
       "id": 6,
-      "text": "Series: 5, 10, 20, 40, __.",
       "options": [
         "80",
         "60",
@@ -77,11 +76,11 @@
         "45"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Series: 5, 10, 20, 40, __."
     },
     {
       "id": 7,
-      "text": "A is faster than B. C is slower than B. D is faster than A. Who is fastest?",
       "options": [
         "D",
         "A",
@@ -89,11 +88,11 @@
         "C"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "A is faster than B. C is slower than B. D is faster than A. Who is fastest?"
     },
     {
       "id": 8,
-      "text": "If each letter is coded as its position (A=1,…), and CAT = 3+1+20=24, then BAD = ?",
       "options": [
         "7",
         "6",
@@ -101,11 +100,11 @@
         "8"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "If each letter is coded as its position (A=1,…), and CAT = 3+1+20=24, then BAD = ?"
     },
     {
       "id": 9,
-      "text": "Odd one out: HTML, CSS, JavaScript, Wheat",
       "options": [
         "Wheat",
         "HTML",
@@ -113,11 +112,11 @@
         "JavaScript"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Odd one out: HTML, CSS, JavaScript, Wheat"
     },
     {
       "id": 10,
-      "text": "Mirror pattern: If 1 2 3 appears as 3 2 1 in a mirror line, then 4 5 6 appears as:",
       "options": [
         "6 5 4",
         "4 5 6",
@@ -125,11 +124,11 @@
         "6 4 5"
       ],
       "section": "Logical Reasoning",
-      "marks": 1
+      "marks": 1,
+      "question": "Mirror pattern: If 1 2 3 appears as 3 2 1 in a mirror line, then 4 5 6 appears as:"
     },
     {
       "id": 11,
-      "text": "The Internet is:",
       "options": [
         "Only a keyboard",
         "A global network of networks",
@@ -137,11 +136,11 @@
         "A type of printer"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The Internet is:"
     },
     {
       "id": 12,
-      "text": "A web browser is used to:",
       "options": [
         "Cook food",
         "Replace the CPU fan",
@@ -149,11 +148,11 @@
         "Access websites"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A web browser is used to:"
     },
     {
       "id": 13,
-      "text": "An email address typically contains:",
       "options": [
         "@",
         "only digits without domain",
@@ -161,11 +160,11 @@
         "# only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "An email address typically contains:"
     },
     {
       "id": 14,
-      "text": "Cyber safety includes:",
       "options": [
         "Using the same weak password everywhere",
         "Sharing OTP with strangers",
@@ -173,11 +172,11 @@
         "Downloading any attachment blindly"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Cyber safety includes:"
     },
     {
       "id": 15,
-      "text": "A strong password should be:",
       "options": [
         "12345 only",
         "Long and hard to guess, mixing character types",
@@ -185,11 +184,11 @@
         "blank"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A strong password should be:"
     },
     {
       "id": 16,
-      "text": "Phishing is an attempt to:",
       "options": [
         "Clean the monitor",
         "Trick users into revealing sensitive information",
@@ -197,11 +196,11 @@
         "Charge the battery faster"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Phishing is an attempt to:"
     },
     {
       "id": 17,
-      "text": "HTML is mainly used to:",
       "options": [
         "Replace electricity",
         "Grow plants",
@@ -209,11 +208,11 @@
         "Structure content on web pages"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "HTML is mainly used to:"
     },
     {
       "id": 18,
-      "text": "A common HTML tag for a paragraph is:",
       "options": [
         "<p>",
         "<table> only for sound",
@@ -221,11 +220,11 @@
         "<img> only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A common HTML tag for a paragraph is:"
     },
     {
       "id": 19,
-      "text": "In coding logic, a loop is used to:",
       "options": [
         "Print only once never again",
         "Delete the OS",
@@ -233,11 +232,11 @@
         "Stop all input forever"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In coding logic, a loop is used to:"
     },
     {
       "id": 20,
-      "text": "An algorithm is:",
       "options": [
         "A virus type only",
         "A step-by-step method to solve a problem",
@@ -245,11 +244,11 @@
         "A monitor brand"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "An algorithm is:"
     },
     {
       "id": 21,
-      "text": "Which is an input device?",
       "options": [
         "Monitor",
         "Projector",
@@ -257,11 +256,11 @@
         "Scanner"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Which is an input device?"
     },
     {
       "id": 22,
-      "text": "Which is an output device?",
       "options": [
         "Mouse",
         "Microphone",
@@ -269,11 +268,11 @@
         "Printer"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Which is an output device?"
     },
     {
       "id": 23,
-      "text": "SSD compared to traditional HDD often provides:",
       "options": [
         "Faster data access",
         "Only paper output",
@@ -281,11 +280,11 @@
         "Only slower access always"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "SSD compared to traditional HDD often provides:"
     },
     {
       "id": 24,
-      "text": "Cloud storage means:",
       "options": [
         "Printing to sky",
         "Storing data only on paper clouds",
@@ -293,11 +292,11 @@
         "Deleting all backups"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Cloud storage means:"
     },
     {
       "id": 25,
-      "text": "A firewall helps to:",
       "options": [
         "Replace antivirus always completely alone without need",
         "Filter network traffic for security",
@@ -305,11 +304,11 @@
         "Charge phones wirelessly by magic only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A firewall helps to:"
     },
     {
       "id": 26,
-      "text": "Software that harms a system intentionally is often called:",
       "options": [
         "Compiler",
         "Spreadsheet",
@@ -317,11 +316,11 @@
         "Malware"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Software that harms a system intentionally is often called:"
     },
     {
       "id": 27,
-      "text": "Backup means:",
       "options": [
         "Keeping copies of important data",
         "Unplugging forever",
@@ -329,11 +328,11 @@
         "Deleting all files"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Backup means:"
     },
     {
       "id": 28,
-      "text": "In binary, 10 represents decimal:",
       "options": [
         "2",
         "1",
@@ -341,11 +340,11 @@
         "10"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In binary, 10 represents decimal:"
     },
     {
       "id": 29,
-      "text": "The full form of IP in networking is commonly:",
       "options": [
         "Instant Processing only",
         "Internal Printer",
@@ -353,11 +352,11 @@
         "Input Password"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The full form of IP in networking is commonly:"
     },
     {
       "id": 30,
-      "text": "URL stands for:",
       "options": [
         "User Real Login",
         "Uniform Resource Locator",
@@ -365,11 +364,11 @@
         "Unique ROM Link"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "URL stands for:"
     },
     {
       "id": 31,
-      "text": "A file extension .xlsx is commonly associated with:",
       "options": [
         "PowerPoint only",
         "Image only",
@@ -377,11 +376,11 @@
         "Excel workbook"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "A file extension .xlsx is commonly associated with:"
     },
     {
       "id": 32,
-      "text": "Copy and paste shortcuts are commonly:",
       "options": [
         "Ctrl+C and Ctrl+V",
         "Shift+Delete only",
@@ -389,11 +388,11 @@
         "Ctrl+Z and Ctrl+Y only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Copy and paste shortcuts are commonly:"
     },
     {
       "id": 33,
-      "text": "In presentations, excessive animations can:",
       "options": [
         "Increase RAM permanently",
         "Cool the CPU always",
@@ -401,11 +400,11 @@
         "Replace content quality always positively"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In presentations, excessive animations can:"
     },
     {
       "id": 34,
-      "text": "Which device connects a LAN to a wider network often at home?",
       "options": [
         "Webcam only",
         "Monitor",
@@ -413,11 +412,11 @@
         "Joystick only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Which device connects a LAN to a wider network often at home?"
     },
     {
       "id": 35,
-      "text": "Two-factor authentication adds security by requiring:",
       "options": [
         "Sharing OTP publicly",
         "An extra verification step beyond password",
@@ -425,11 +424,11 @@
         "Disabling all updates"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Two-factor authentication adds security by requiring:"
     },
     {
       "id": 36,
-      "text": "Open-source software typically allows:",
       "options": [
         "Only offline paper use",
         "Mandatory payment to one vendor always",
@@ -437,11 +436,11 @@
         "Access to source code under a license"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Open-source software typically allows:"
     },
     {
       "id": 37,
-      "text": "In Scratch-like block coding, ‘repeat 10’ is an example of:",
       "options": [
         "A loop",
         "A printer jam",
@@ -449,11 +448,11 @@
         "A virus"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "In Scratch-like block coding, ‘repeat 10’ is an example of:"
     },
     {
       "id": 38,
-      "text": "Cache memory is:",
       "options": [
         "A type of printer ink",
         "Slowest storage always",
@@ -461,11 +460,11 @@
         "Only cloud backup"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Cache memory is:"
     },
     {
       "id": 39,
-      "text": "The binary number system uses digits:",
       "options": [
         "1 to 7 only",
         "0 to 9",
@@ -473,11 +472,11 @@
         "A to F only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The binary number system uses digits:"
     },
     {
       "id": 40,
-      "text": "Decimal number 5 in binary is:",
       "options": [
         "111",
         "101",
@@ -485,11 +484,11 @@
         "110"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "Decimal number 5 in binary is:"
     },
     {
       "id": 41,
-      "text": "1 byte equals:",
       "options": [
         "16 bits always only",
         "4 bits",
@@ -497,11 +496,11 @@
         "8 bits"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "1 byte equals:"
     },
     {
       "id": 42,
-      "text": "The brain of the computer is the:",
       "options": [
         "CPU",
         "Speaker",
@@ -509,11 +508,11 @@
         "Monitor"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "The brain of the computer is the:"
     },
     {
       "id": 43,
-      "text": "RAM is a type of:",
       "options": [
         "Network cable",
         "Permanent ink",
@@ -521,11 +520,11 @@
         "Output device only"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "RAM is a type of:"
     },
     {
       "id": 44,
-      "text": "ROM typically stores:",
       "options": [
         "Only videos you edit today",
         "Firmware/boot instructions",
@@ -533,11 +532,11 @@
         "Only printer paper"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "ROM typically stores:"
     },
     {
       "id": 45,
-      "text": "An operating system is:",
       "options": [
         "A printer brand only",
         "System software that manages hardware and software",
@@ -545,11 +544,11 @@
         "A type of virus"
       ],
       "section": "Computers and Information Technology",
-      "marks": 1
+      "marks": 1,
+      "question": "An operating system is:"
     },
     {
       "id": 46,
-      "text": "Why is a network password on home Wi-Fi important?",
       "options": [
         "It replaces antivirus completely always",
         "It makes cables unnecessary for electricity",
@@ -557,11 +556,11 @@
         "It helps prevent unauthorised users from using the network"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "Why is a network password on home Wi-Fi important?"
     },
     {
       "id": 47,
-      "text": "HTML <img> tag is primarily used to:",
       "options": [
         "Embed an image in a web page",
         "Format a hard disk",
@@ -569,11 +568,11 @@
         "Create a spreadsheet formula"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "HTML <img> tag is primarily used to:"
     },
     {
       "id": 48,
-      "text": "An algorithm to find the largest of three numbers must:",
       "options": [
         "Require no logic",
         "Ignore two numbers always",
@@ -581,11 +580,11 @@
         "Only print the smallest always"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "An algorithm to find the largest of three numbers must:"
     },
     {
       "id": 49,
-      "text": "You save a project only in RAM and power off the PC without saving to disk. What happens to the project?",
       "options": [
         "It prints automatically",
         "It is lost because RAM is volatile",
@@ -593,11 +592,11 @@
         "It emails itself"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "You save a project only in RAM and power off the PC without saving to disk. What happens to the project?"
     },
     {
       "id": 50,
-      "text": "Which arrangement is correct from typically fastest/smallest toward larger permanent store?",
       "options": [
         "Printer → Scanner → CPU",
         "Monitor → Keyboard → Mouse",
@@ -605,7 +604,9 @@
         "Cache → RAM → SSD/HDD"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 3,
+      "question": "Which arrangement is correct from typically fastest/smallest toward larger permanent store?"
     }
-  ]
+  ],
+  "durationMinutes": 30
 }

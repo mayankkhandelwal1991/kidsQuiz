@@ -1,6 +1,6 @@
 # Kids Quiz & Games
 
-A kid-friendly educational app: a 20-topic quiz (Class 1–5), 56 single-player
+A kid-friendly educational app: a 20-topic quiz (Class 1–10), 56 single-player
 games, and 24 real-time multiplayer games — all in one place.
 
 ## Start point

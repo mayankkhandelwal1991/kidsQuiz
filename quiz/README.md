@@ -14,13 +14,13 @@ Every subject has its own folder, and every folder has one file per class:
 
 ```
 quiz/
-  hindi/    class1.js  class2.js  class3.js  class4.js  class5.js
+  hindi/    class1.js  class2.js  class3.js  class4.js  class5.js … class10.js
   english/  class1.js  ...
   gk/       ...
-  ... (14 subjects in total)
+  ... (16 content subjects; math topics are generated)
 ```
 
-`class1.js` = Class 1 questions, `class2.js` = Class 2, and so on up to Class 5.
+`class1.js` = Class 1 questions, `class2.js` = Class 2, and so on up to Class 10.
 
 ## To change the questions for a subject + class
 

@@ -37,19 +37,6 @@
     </div>
   </div>
 
-  <!-- QUIT CONFIRMATION POPUP -->
-  <div id="quitConfirmModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:150; display:flex; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:linear-gradient(180deg,#ffffff,#fef6ff); border:6px solid #fff; border-radius:28px; padding:28px 24px 22px; max-width:340px; width:100%; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,.3);">
-      <div style="font-size:44px; margin-bottom:8px;">🤔</div>
-      <h2 style="color:#ff5a8a; font-size:22px; margin-bottom:8px;">Are You Sure?</h2>
-      <p class="subtitle" style="margin-bottom:22px; font-size:14px;">Your progress and score in this quiz will be lost if you quit now.</p>
-      <div style="display:flex; gap:10px; justify-content:center;">
-        <button class="btn btn-secondary" onclick="cancelQuit()">Keep Playing</button>
-        <button class="btn" style="background:linear-gradient(135deg,#f59e0b,#f43f5e); box-shadow:0 8px 18px rgba(244,63,94,.35);" onclick="confirmQuit()">Yes, Quit</button>
-      </div>
-    </div>
-  </div>
-
   <!-- END SCREEN -->
   <div id="endScreen" class="hidden">
     <h1>⏰ Time's Up!</h1>
@@ -99,6 +86,19 @@
 
 </div>
 
+<!-- QUIT CONFIRMATION POPUP — outside .container so it always stacks on top -->
+<div id="quitConfirmModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:99999; display:none; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:linear-gradient(180deg,#ffffff,#fef6ff); border:6px solid #fff; border-radius:28px; padding:28px 24px 22px; max-width:340px; width:100%; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,.35);">
+    <div style="font-size:44px; margin-bottom:8px;">🤔</div>
+    <h2 style="color:#ff5a8a; font-size:22px; margin-bottom:8px;">Are You Sure?</h2>
+    <p class="subtitle" style="margin-bottom:22px; font-size:14px;">Your progress and score in this quiz will be lost if you quit now.</p>
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button class="btn btn-secondary" onclick="cancelQuit()">Keep Playing</button>
+      <button class="btn" style="background:linear-gradient(135deg,#f59e0b,#f43f5e); box-shadow:0 8px 18px rgba(244,63,94,.35);" onclick="confirmQuit()">Yes, Quit</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============================================================
      QUIZ QUESTION LOADER
      Questions live in editable files under  <subject>/class<N>.js
@@ -112,78 +112,170 @@
     window.QUIZ_REGISTRY[subject][level] = questions;
   }
 </script>
+<script src="hindi/class0.js"></script>
 <script src="hindi/class1.js"></script>
 <script src="hindi/class2.js"></script>
 <script src="hindi/class3.js"></script>
 <script src="hindi/class4.js"></script>
 <script src="hindi/class5.js"></script>
+<script src="hindi/class6.js"></script>
+<script src="hindi/class7.js"></script>
+<script src="hindi/class8.js"></script>
+<script src="hindi/class9.js"></script>
+<script src="hindi/class10.js"></script>
+<script src="english/class0.js"></script>
 <script src="english/class1.js"></script>
 <script src="english/class2.js"></script>
 <script src="english/class3.js"></script>
 <script src="english/class4.js"></script>
 <script src="english/class5.js"></script>
+<script src="english/class6.js"></script>
+<script src="english/class7.js"></script>
+<script src="english/class8.js"></script>
+<script src="english/class9.js"></script>
+<script src="english/class10.js"></script>
+<script src="gk/class0.js"></script>
 <script src="gk/class1.js"></script>
 <script src="gk/class2.js"></script>
 <script src="gk/class3.js"></script>
 <script src="gk/class4.js"></script>
 <script src="gk/class5.js"></script>
+<script src="gk/class6.js"></script>
+<script src="gk/class7.js"></script>
+<script src="gk/class8.js"></script>
+<script src="gk/class9.js"></script>
+<script src="gk/class10.js"></script>
+<script src="science/class0.js"></script>
 <script src="science/class1.js"></script>
 <script src="science/class2.js"></script>
 <script src="science/class3.js"></script>
 <script src="science/class4.js"></script>
 <script src="science/class5.js"></script>
+<script src="science/class6.js"></script>
+<script src="science/class7.js"></script>
+<script src="science/class8.js"></script>
+<script src="science/class9.js"></script>
+<script src="science/class10.js"></script>
 <script src="history/class1.js"></script>
 <script src="history/class2.js"></script>
 <script src="history/class3.js"></script>
 <script src="history/class4.js"></script>
 <script src="history/class5.js"></script>
+<script src="history/class6.js"></script>
+<script src="history/class7.js"></script>
+<script src="history/class8.js"></script>
+<script src="history/class9.js"></script>
+<script src="history/class10.js"></script>
+<script src="geography/class0.js"></script>
 <script src="geography/class1.js"></script>
 <script src="geography/class2.js"></script>
 <script src="geography/class3.js"></script>
 <script src="geography/class4.js"></script>
 <script src="geography/class5.js"></script>
+<script src="geography/class6.js"></script>
+<script src="geography/class7.js"></script>
+<script src="geography/class8.js"></script>
+<script src="geography/class9.js"></script>
+<script src="geography/class10.js"></script>
+<script src="sports/class0.js"></script>
 <script src="sports/class1.js"></script>
 <script src="sports/class2.js"></script>
 <script src="sports/class3.js"></script>
 <script src="sports/class4.js"></script>
 <script src="sports/class5.js"></script>
+<script src="sports/class6.js"></script>
+<script src="sports/class7.js"></script>
+<script src="sports/class8.js"></script>
+<script src="sports/class9.js"></script>
+<script src="sports/class10.js"></script>
+<script src="computers/class0.js"></script>
 <script src="computers/class1.js"></script>
 <script src="computers/class2.js"></script>
 <script src="computers/class3.js"></script>
 <script src="computers/class4.js"></script>
 <script src="computers/class5.js"></script>
+<script src="computers/class6.js"></script>
+<script src="computers/class7.js"></script>
+<script src="computers/class8.js"></script>
+<script src="computers/class9.js"></script>
+<script src="computers/class10.js"></script>
+<script src="animals/class0.js"></script>
 <script src="animals/class1.js"></script>
 <script src="animals/class2.js"></script>
 <script src="animals/class3.js"></script>
 <script src="animals/class4.js"></script>
 <script src="animals/class5.js"></script>
+<script src="animals/class6.js"></script>
+<script src="animals/class7.js"></script>
+<script src="animals/class8.js"></script>
+<script src="animals/class9.js"></script>
+<script src="animals/class10.js"></script>
+<script src="plants/class0.js"></script>
 <script src="plants/class1.js"></script>
 <script src="plants/class2.js"></script>
 <script src="plants/class3.js"></script>
 <script src="plants/class4.js"></script>
 <script src="plants/class5.js"></script>
+<script src="plants/class6.js"></script>
+<script src="plants/class7.js"></script>
+<script src="plants/class8.js"></script>
+<script src="plants/class9.js"></script>
+<script src="plants/class10.js"></script>
+<script src="humanbody/class0.js"></script>
 <script src="humanbody/class1.js"></script>
 <script src="humanbody/class2.js"></script>
 <script src="humanbody/class3.js"></script>
 <script src="humanbody/class4.js"></script>
 <script src="humanbody/class5.js"></script>
+<script src="humanbody/class6.js"></script>
+<script src="humanbody/class7.js"></script>
+<script src="humanbody/class8.js"></script>
+<script src="humanbody/class9.js"></script>
+<script src="humanbody/class10.js"></script>
+<script src="inventions/class6.js"></script>
+<script src="inventions/class7.js"></script>
+<script src="inventions/class8.js"></script>
+<script src="inventions/class9.js"></script>
+<script src="inventions/class10.js"></script>
+<script src="brainteasers/class6.js"></script>
+<script src="brainteasers/class7.js"></script>
+<script src="brainteasers/class8.js"></script>
+<script src="brainteasers/class9.js"></script>
+<script src="brainteasers/class10.js"></script>
+<script src="space/class0.js"></script>
 <script src="space/class1.js"></script>
 <script src="space/class2.js"></script>
 <script src="space/class3.js"></script>
 <script src="space/class4.js"></script>
 <script src="space/class5.js"></script>
+<script src="space/class6.js"></script>
+<script src="space/class7.js"></script>
+<script src="space/class8.js"></script>
+<script src="space/class9.js"></script>
+<script src="space/class10.js"></script>
 <script src="capitals/class1.js"></script>
 <script src="capitals/class2.js"></script>
 <script src="capitals/class3.js"></script>
 <script src="capitals/class4.js"></script>
 <script src="capitals/class5.js"></script>
+<script src="capitals/class6.js"></script>
+<script src="capitals/class7.js"></script>
+<script src="capitals/class8.js"></script>
+<script src="capitals/class9.js"></script>
+<script src="capitals/class10.js"></script>
 <script src="riddles/class1.js"></script>
 <script src="riddles/class2.js"></script>
 <script src="riddles/class3.js"></script>
 <script src="riddles/class4.js"></script>
 <script src="riddles/class5.js"></script>
+<script src="riddles/class6.js"></script>
+<script src="riddles/class7.js"></script>
+<script src="riddles/class8.js"></script>
+<script src="riddles/class9.js"></script>
+<script src="riddles/class10.js"></script>
 
 <script src="../quiz-shared.js"></script>
+<script src="../emoji-images.js"></script>
 <script>
 /* ============================================================
    AUTH GUARD — this page requires a session set up by quiz2.html.
@@ -205,7 +297,8 @@ getOrCreateUser(currentUser);
    ============================================================ */
 const __params = new URLSearchParams(window.location.search);
 let currentCategory = __params.get('cat') || '';
-let currentLevel = parseInt(__params.get('level'), 10) || 1;
+let __levelParam = parseInt(__params.get('level'), 10);
+let currentLevel = Number.isNaN(__levelParam) ? 1 : __levelParam; // 0 = LKG
 
 if (!getCatInfo(currentCategory)) {
   // Unknown/missing category — nothing sensible to quiz on, back to picking one.
@@ -221,6 +314,7 @@ let correctCount = 0;
 let wrongCount = 0;
 let questionCount = 0;
 let currentAnswer = null;
+let currentAnswerSpoken = null; // readable label for currentAnswer — pure-emoji answers (listen mode) have no text to speak, so this carries q.speak instead
 let timerInterval = null;
 let quizInProgress = false;
 let acceptingAnswers = false;
@@ -248,7 +342,11 @@ function pickFromPoolNoRepeat(pool) {
   } while (recentQuestions.includes(q.question) && tries < 20);
   recentQuestions.push(q.question);
   if (recentQuestions.length > Math.min(15, Math.floor(pool.length / 2))) recentQuestions.shift();
-  return { question: q.question, answer: q.answer, options: shuffle(q.options.slice()), size: q.size || 'small' };
+  return {
+    question: q.question, answer: q.answer, options: shuffle(q.options.slice()),
+    size: q.size || (currentLevel === 0 ? 'pico' : 'small'),
+    mode: q.mode, speak: q.speak
+  };
 }
 
 /* ============================================
@@ -271,7 +369,7 @@ function startQuiz(level) {
   document.getElementById('timer').classList.remove('warning');
 
   const cat = getCatInfo(currentCategory);
-  document.getElementById('quizBreadcrumb').textContent = cat.icon + ' ' + cat.title + ' • Class ' + level;
+  document.getElementById('quizBreadcrumb').textContent = cat.icon + ' ' + cat.title + ' • ' + classLabel(level);
 
   showScreen('quizScreen');
   nextQuestion();
@@ -295,7 +393,10 @@ let __quitFromPopstate = false;
 function quitQuiz() {
   __quitFromPopstate = false;
   pauseTimerForQuitPopup();
-  document.getElementById('quitConfirmModal').classList.remove('hidden');
+  var m = document.getElementById('quitConfirmModal');
+  if (!m) return;
+  m.classList.remove('hidden');
+  m.style.display = 'flex';
 }
 
 // Pausing/resuming the countdown while the "Are you sure?" popup is open —
@@ -314,7 +415,11 @@ function resumeTimerAfterQuitPopup() {
 }
 
 function cancelQuit() {
-  document.getElementById('quitConfirmModal').classList.add('hidden');
+  var m = document.getElementById('quitConfirmModal');
+  if (m) {
+    m.classList.add('hidden');
+    m.style.display = 'none';
+  }
   resumeTimerAfterQuitPopup();
   if (__quitFromPopstate) {
     __quitFromPopstate = false;
@@ -323,7 +428,11 @@ function cancelQuit() {
 }
 
 function confirmQuit() {
-  document.getElementById('quitConfirmModal').classList.add('hidden');
+  var m = document.getElementById('quitConfirmModal');
+  if (m) {
+    m.classList.add('hidden');
+    m.style.display = 'none';
+  }
   clearInterval(timerInterval);
   timerInterval = null;
   quizInProgress = false;
@@ -333,6 +442,10 @@ function confirmQuit() {
   goToMenu();
 }
 
+/* LKG (level 0) pastel card backdrops — cycled per question so the
+   pictorial screen doesn't look the same twice in a row. */
+const PICO_THEMES = ['pico-1', 'pico-2', 'pico-3', 'pico-4'];
+
 function nextQuestion() {
   questionCount++;
   document.getElementById('qCount').textContent = questionCount;
@@ -341,28 +454,75 @@ function nextQuestion() {
 
   const q = generateQuestion(currentCategory, currentLevel);
   currentAnswer = q.answer;
+  currentAnswerSpoken = q.speak || String(q.answer);
+  const isPico = q.size === 'pico';
+  const isListen = isPico && q.mode === 'listen';
 
   const qEl = document.getElementById('question');
-  qEl.textContent = q.question;
+  qEl.innerHTML = '';
   qEl.className = 'question';
   if (q.size === 'large') qEl.classList.add('large');
   if (q.size === 'small') qEl.classList.add('small');
+  if (isPico) {
+    qEl.classList.add('pico', PICO_THEMES[questionCount % PICO_THEMES.length]);
+    if (isListen) qEl.classList.add('listen');
+  }
+
+  const qTextSpan = document.createElement('span');
+  if (isPico && typeof emojiImgHtml === 'function') {
+    // Real downloaded pictures instead of the OS/browser emoji font, so
+    // LKG cards look the same (and don't come out tiny/monochrome) on
+    // every device. Falls back to plain emoji text if images ever fail.
+    qTextSpan.innerHTML = emojiImgHtml(q.question, 44, '../');
+  } else {
+    qTextSpan.textContent = q.question;
+  }
+  qEl.appendChild(qTextSpan);
+
+  const spokenText = q.speak || q.question;
+  const spokenLang = currentCategory === 'hindi' ? 'hi-IN' : 'en-US';
+  if (isPico) {
+    const speakBtn = document.createElement('button');
+    speakBtn.type = 'button';
+    speakBtn.className = 'q-speak-btn';
+    speakBtn.setAttribute('aria-label', 'Hear it again');
+    speakBtn.textContent = '🔊';
+    speakBtn.onclick = function (e) { e.stopPropagation(); speak(spokenText, { rate: 0.82, lang: spokenLang }); };
+    qEl.appendChild(speakBtn);
+    // Auto-narrate once the card is on screen — helps pre-readers answer
+    // without needing to read anything.
+    setTimeout(function () { speak(spokenText, { rate: 0.82, lang: spokenLang }); }, 350);
+  }
 
   const optionsEl = document.getElementById('options');
   optionsEl.innerHTML = '';
-  q.options.forEach(opt => {
+  optionsEl.className = 'options' + (isPico ? ' pico' : '') + (isListen ? ' listen' : '');
+  const optPx = isListen ? 60 : 40;
+  q.options.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';
-    btn.textContent = opt;
+    btn.style.animationDelay = (i * 0.06) + 's';
+    btn.dataset.value = opt; // checkAnswer compares this, since pico buttons hold <img>, not text
+    if (isPico && typeof emojiImgHtml === 'function') {
+      btn.innerHTML = emojiImgHtml(opt, optPx, '../');
+    } else {
+      btn.textContent = opt;
+    }
     btn.onclick = () => checkAnswer(opt, btn);
     optionsEl.appendChild(btn);
   });
   acceptingAnswers = true;
 }
 
+// A few different cheerful cues instead of always the same one sound —
+// keeps LKG rounds feeling lively rather than repetitive.
+const LKG_CORRECT_SOUNDS = ['success', 'chime', 'ding', 'levelup'];
+const LKG_PRAISE = ['Yay! Well done!', 'Correct! You got it!', 'Super! That’s right!', 'Great job!'];
+
 function checkAnswer(selected, btn) {
   if (!acceptingAnswers) return;
   acceptingAnswers = false;
+  const isPico = currentLevel === 0;
   const buttons = document.querySelectorAll('.option-btn');
   buttons.forEach(b => b.disabled = true);
   const feedback = document.getElementById('feedback');
@@ -373,20 +533,36 @@ function checkAnswer(selected, btn) {
     correctCount++;
     feedback.textContent = '✓ Correct!';
     feedback.className = 'feedback correct';
-    try { if (window.KQFX) KQFX.play('success'); } catch (e) {}
+    if (isPico) {
+      try { if (window.KQFX) { KQFX.play(pickRandom(LKG_CORRECT_SOUNDS)); KQFX.celebrate({ power: 0.8 }); } } catch (e) {}
+      speak(pickRandom(LKG_PRAISE), { raw: true, pitch: 1.3, lang: 'en-US' });
+    } else {
+      try { if (window.KQFX) KQFX.play('success'); } catch (e) {}
+    }
   } else {
     btn.classList.add('wrong');
     score--;
     wrongCount++;
     feedback.textContent = '✗ Wrong! Answer: ' + currentAnswer;
     feedback.className = 'feedback wrong';
-    try { if (window.KQFX) KQFX.play('wrong'); } catch (e) {}
+    if (isPico) {
+      try { if (window.KQFX) KQFX.play('boing'); } catch (e) {}
+      // Mixing an English preamble with a Hindi voice mispronounces both,
+      // so Hindi questions just speak the answer word on its own.
+      if (currentCategory === 'hindi') {
+        speak(stripEmojiForSpeech(currentAnswerSpoken), { raw: true, lang: 'hi-IN' });
+      } else {
+        speak('Not quite! It’s ' + stripEmojiForSpeech(currentAnswerSpoken), { raw: true, lang: 'en-US' });
+      }
+    } else {
+      try { if (window.KQFX) KQFX.play('wrong'); } catch (e) {}
+    }
     buttons.forEach(b => {
-      if (String(b.textContent) === String(currentAnswer)) b.classList.add('correct');
+      if (String(b.dataset.value != null ? b.dataset.value : b.textContent) === String(currentAnswer)) b.classList.add('correct');
     });
   }
   document.getElementById('score').textContent = score;
-  setTimeout(() => { if (timeLeft > 0) nextQuestion(); }, 850);
+  setTimeout(() => { if (timeLeft > 0) nextQuestion(); }, isPico ? 1200 : 850);
 }
 
 function endQuiz() {
@@ -411,7 +587,7 @@ function endQuiz() {
     if (window.KQ && KQ.submit) {
       const cat = getCatInfo(currentCategory);
       window.KQ_CONTEXT = { category: 'quiz', gameId: currentCategory + '__' + currentLevel,
-        title: (cat.icon + ' ' + cat.title + ' • Class ' + currentLevel) };
+        title: (cat.icon + ' ' + cat.title + ' • ' + classLabel(currentLevel)) };
       KQ.submit('quiz', currentCategory + '__' + currentLevel, score,
         { meta: { correct: correctCount, wrong: wrongCount, cat: cat.title, level: currentLevel } });
     }
@@ -441,7 +617,7 @@ function openQuizBoard() {
   if (!window.KQ || !KQ.open) return;
   const cat = getCatInfo(currentCategory);
   KQ.open('quiz', currentCategory + '__' + currentLevel,
-    cat.icon + ' ' + cat.title + ' • Class ' + currentLevel);
+    cat.icon + ' ' + cat.title + ' • ' + classLabel(currentLevel));
 }
 
 function markDailyDoneIfMatches() {
@@ -462,6 +638,13 @@ function markDailyDoneIfMatches() {
    QUESTION ROUTER
    ============================================ */
 function generateQuestion(cat, level) {
+  // LKG (level 0) only has a dedicated picture-counting mode for Add & Subtract;
+  // the other procedural math generators don't have age-appropriate LKG logic
+  // (their level branches would fall through to the hardest tier), so treat
+  // LKG the same as Class 1 for just those. Content-pool subjects (gk,
+  // animals, science, ...) have their own class0.js pool and are untouched.
+  const NO_LKG_MATH = ['multiply', 'divide', 'mixedmath', 'patterns', 'reasoning'];
+  if (level === 0 && NO_LKG_MATH.indexOf(cat) !== -1) level = 1;
   switch(cat) {
     case 'addsub':    return genAddSub(level);
     case 'multiply':  return genMultiply(level);
@@ -488,20 +671,47 @@ function getPool(cat, level) {
 /* ============================================
    MATH GENERATORS - PROCEDURAL (infinite questions)
    ============================================ */
+const LKG_COUNT_ICONS = ['🍎','⭐','🎈','🐶','🐱','🧸','🚗','🌸','🍭','⚽','🦋','🐣'];
+
 function genAddSub(level) {
   let a, b, op, answer, qText, size = 'large';
+  if (level === 0) {
+    // LKG — pure picture counting or tiny picture addition (numbers 1-5),
+    // no operators to read, just pictures a pre-reader can count.
+    const icon = pickRandom(LKG_COUNT_ICONS);
+    if (Math.random() < 0.5) {
+      a = rand(1, 5);
+      qText = icon.repeat(a) + '  —  Count them!';
+      answer = a;
+    } else {
+      a = rand(1, 3); b = rand(1, 3);
+      qText = icon.repeat(a) + ' + ' + icon.repeat(b) + ' = ?';
+      answer = a + b;
+    }
+    return { question: qText, answer: answer, options: buildNumericOptions(answer, 3), size: 'pico' };
+  }
   if (level === 1) { a = rand(0, 9); b = rand(0, 9); }
   else if (level === 2) { a = rand(5, 30); b = rand(1, 20); }
   else if (level === 3) { a = rand(20, 99); b = rand(10, 70); }
-  else if (level === 4) { a = rand(100, 500); b = rand(50, 300); size='medium'; }
-  else { a = rand(200, 999); b = rand(100, 800); size='medium'; }
+  else if (level === 4) { a = rand(100, 500); b = rand(50, 300); size = 'medium'; }
+  else if (level === 5) { a = rand(200, 999); b = rand(100, 800); size = 'medium'; }
+  else if (level <= 7) { a = rand(500, 5000); b = rand(200, 2500); size = 'medium'; }
+  else if (level <= 9) { a = rand(1000, 25000); b = rand(500, 12000); size = 'small'; }
+  else { a = rand(5000, 99999); b = rand(1000, 50000); size = 'small'; }
   op = Math.random() < 0.5 ? '+' : '−';
   if (op === '+') { answer = a + b; qText = a + ' + ' + b; }
   else {
-    if (b > a) [a, b] = [b, a];
+    if (b > a) { const t = a; a = b; b = t; }
     answer = a - b; qText = a + ' − ' + b;
   }
-  const range = Math.max(3, Math.floor(answer * 0.15) + 2);
+  // Integers for class 8+
+  if (level >= 8 && Math.random() < 0.35) {
+    a = rand(-50, 80); b = rand(-40, 60);
+    if (Math.random() < 0.5) { answer = a + b; qText = '(' + a + ') + (' + b + ')'; }
+    else { answer = a - b; qText = '(' + a + ') − (' + b + ')'; }
+    size = 'small';
+  }
+  const range = Math.max(3, Math.floor(Math.abs(answer) * 0.15) + 2);
   return { question: qText, answer: answer, options: buildNumericOptions(answer, range), size: size };
 }
 
@@ -511,11 +721,49 @@ function genMultiply(level) {
   else if (level === 2) { a = rand(2, 10); b = rand(1, 10); }
   else if (level === 3) { a = rand(2, 12); b = rand(2, 10); }
   else if (level === 4) { a = rand(10, 25); b = rand(2, 9); }
-  else { a = rand(11, 25); b = rand(11, 20); }
+  else if (level === 5) { a = rand(11, 25); b = rand(11, 20); }
+  else if (level <= 7) { a = rand(12, 99); b = rand(3, 25); }
+  else if (level <= 9) { a = rand(-20, 40); b = rand(-12, 18); if (a === 0) a = 7; if (b === 0) b = 5; }
+  else { a = rand(15, 120); b = rand(11, 35); }
+  // Fractions of a number (class 6–8)
+  if (level >= 6 && level <= 8 && Math.random() < 0.3) {
+    const whole = rand(12, 120);
+    const num = pickRandom([1, 1, 2, 3]);
+    const den = pickRandom([2, 3, 4, 5]);
+    if (whole % den !== 0) {
+      const w2 = Math.floor(whole / den) * den || den * rand(3, 20);
+      const answer = (w2 / den) * num;
+      return {
+        question: 'Find ' + num + '/' + den + ' of ' + w2,
+        answer: answer,
+        options: buildNumericOptions(answer, Math.max(3, Math.floor(answer * 0.25) + 2)),
+        size: 'small'
+      };
+    }
+    const answer = (whole / den) * num;
+    return {
+      question: 'Find ' + num + '/' + den + ' of ' + whole,
+      answer: answer,
+      options: buildNumericOptions(answer, Math.max(3, Math.floor(answer * 0.25) + 2)),
+      size: 'small'
+    };
+  }
+  // Percent (class 7+)
+  if (level >= 7 && Math.random() < 0.25) {
+    const base = rand(2, 20) * 10;
+    const pct = pickRandom([5, 10, 15, 20, 25, 50]);
+    const answer = (base * pct) / 100;
+    return {
+      question: pct + '% of ' + base + ' = ?',
+      answer: answer,
+      options: buildNumericOptions(answer, Math.max(3, Math.floor(answer * 0.3) + 2)),
+      size: 'small'
+    };
+  }
   const answer = a * b;
   const qText = a + ' × ' + b;
-  const range = Math.max(5, Math.floor(answer * 0.2) + 3);
-  return { question: qText, answer: answer, options: buildNumericOptions(answer, range), size: 'large' };
+  const range = Math.max(5, Math.floor(Math.abs(answer) * 0.2) + 3);
+  return { question: qText, answer: answer, options: buildNumericOptions(answer, range), size: level >= 6 ? 'medium' : 'large' };
 }
 
 function genDivide(level) {
@@ -524,15 +772,32 @@ function genDivide(level) {
   else if (level === 2) { divisor = rand(2, 5); quotient = rand(2, 10); }
   else if (level === 3) { divisor = rand(2, 9); quotient = rand(2, 10); }
   else if (level === 4) { divisor = rand(2, 10); quotient = rand(5, 15); }
-  else { divisor = rand(3, 12); quotient = rand(5, 25); }
+  else if (level === 5) { divisor = rand(3, 12); quotient = rand(5, 25); }
+  else if (level <= 7) { divisor = rand(4, 25); quotient = rand(6, 40); }
+  else if (level <= 9) { divisor = rand(5, 30); quotient = rand(8, 50); }
+  else { divisor = rand(6, 40); quotient = rand(10, 60); }
+  // Simple linear: ax = b (class 8+)
+  if (level >= 8 && Math.random() < 0.35) {
+    const x = rand(2, 25);
+    const coef = rand(2, 12);
+    return {
+      question: 'Solve: ' + coef + 'x = ' + (coef * x),
+      answer: x,
+      options: buildNumericOptions(x, Math.max(3, Math.floor(x * 0.3) + 2)),
+      size: 'small'
+    };
+  }
   const dividend = divisor * quotient;
   const qText = dividend + ' ÷ ' + divisor;
   const range = Math.max(3, Math.floor(quotient * 0.3) + 2);
-  return { question: qText, answer: quotient, options: buildNumericOptions(quotient, range), size: 'large' };
+  return { question: qText, answer: quotient, options: buildNumericOptions(quotient, range), size: level >= 6 ? 'medium' : 'large' };
 }
 
 function genMixedMath(level) {
-  const ops = level <= 2 ? ['+', '−'] : level <= 3 ? ['+', '−', '×'] : ['+', '−', '×', '÷'];
+  const ops = level <= 2 ? ['+', '−']
+    : level <= 3 ? ['+', '−', '×']
+    : level <= 5 ? ['+', '−', '×', '÷']
+    : ['+', '−', '×', '÷', '×', '÷'];
   const op = pickRandom(ops);
   if (op === '+' || op === '−') return genAddSub(level);
   if (op === '×') return genMultiply(Math.max(1, level - 1));
@@ -540,36 +805,50 @@ function genMixedMath(level) {
 }
 
 function genPatterns(level) {
-  const types = level <= 2 ? ['arith'] : level <= 3 ? ['arith', 'arith2'] : ['arith', 'arith2', 'mult'];
+  let types = ['arith'];
+  if (level >= 3) types.push('arith2');
+  if (level >= 4) types.push('mult');
+  if (level >= 6) types.push('square');
+  if (level >= 8) types.push('fib');
   const type = pickRandom(types);
   let seq, next, qText;
   if (type === 'arith') {
-    const start = rand(1, level <= 2 ? 10 : 30);
-    const step = rand(1, level <= 2 ? 3 : 6);
-    seq = [start, start + step, start + 2*step, start + 3*step];
-    next = start + 4*step;
+    const start = rand(1, level <= 2 ? 10 : level <= 5 ? 30 : 80);
+    const step = rand(1, level <= 2 ? 3 : level <= 5 ? 6 : 12);
+    seq = [start, start + step, start + 2 * step, start + 3 * step];
+    next = start + 4 * step;
   } else if (type === 'arith2') {
-    const start = rand(2, 20);
-    const step = rand(2, 8);
-    seq = [start, start + step, start + 2*step, start + 3*step];
-    next = start + 4*step;
-  } else {
+    const start = rand(2, 40);
+    const step = rand(2, level >= 6 ? 15 : 8);
+    seq = [start, start + step, start + 2 * step, start + 3 * step];
+    next = start + 4 * step;
+  } else if (type === 'mult') {
     const start = rand(2, 5);
-    const factor = rand(2, 3);
+    const factor = rand(2, level >= 7 ? 4 : 3);
     seq = [start, start * factor, start * factor * factor];
     next = start * factor * factor * factor;
+  } else if (type === 'square') {
+    const n = rand(2, level >= 8 ? 12 : 8);
+    seq = [n * n, (n + 1) * (n + 1), (n + 2) * (n + 2)];
+    next = (n + 3) * (n + 3);
+  } else {
+    let a = 1, b = 1;
+    seq = [a, b];
+    for (let i = 0; i < 3; i++) { const c = a + b; a = b; b = c; seq.push(c); }
+    next = a + b;
+    seq = seq.slice(0, 5);
   }
   qText = 'Next number? ' + seq.join(', ') + ', __';
-  const range = Math.max(3, Math.floor(next * 0.2) + 2);
+  const range = Math.max(3, Math.floor(Math.abs(next) * 0.2) + 2);
   return { question: qText, answer: next, options: buildNumericOptions(next, range), size: 'small' };
 }
 
 function genReasoning(level) {
-  const types = ['compare', 'missing', 'word'];
+  const types = level >= 6 ? ['compare', 'missing', 'word', 'ratio'] : ['compare', 'missing', 'word'];
   const type = pickRandom(types);
   if (type === 'compare') {
-    const a = rand(1, level * 20);
-    const b = rand(1, level * 20);
+    const a = rand(1, level * 25);
+    const b = rand(1, level * 25);
     if (a === b) return genReasoning(level);
     const correct = a > b ? 'Greater' : 'Smaller';
     return {
@@ -579,18 +858,28 @@ function genReasoning(level) {
       size: 'small'
     };
   } else if (type === 'missing') {
-    const a = rand(2, level * 10);
-    const b = rand(2, level * 10);
+    const a = rand(2, level * 12);
+    const b = rand(2, level * 12);
     const sum = a + b;
     return {
       question: a + ' + __ = ' + sum,
       answer: b,
-      options: buildNumericOptions(b, Math.max(3, Math.floor(b*0.3)+2)),
+      options: buildNumericOptions(b, Math.max(3, Math.floor(b * 0.3) + 2)),
       size: 'large'
     };
+  } else if (type === 'ratio') {
+    const a = rand(2, 9);
+    const b = rand(2, 9);
+    const k = rand(2, 8);
+    return {
+      question: 'If ratio is ' + a + ':' + b + ', find part when total is ' + ((a + b) * k) + ' for first part',
+      answer: a * k,
+      options: buildNumericOptions(a * k, Math.max(3, a + 2)),
+      size: 'small'
+    };
   } else {
-    const items = level <= 2 ? rand(2, 8) : rand(5, 30);
-    const more = level <= 2 ? rand(1, 5) : rand(2, 20);
+    const items = level <= 2 ? rand(2, 8) : level <= 5 ? rand(5, 30) : rand(20, 120);
+    const more = level <= 2 ? rand(1, 5) : level <= 5 ? rand(2, 20) : rand(10, 80);
     const total = items + more;
     return {
       question: 'Ravi has ' + items + ' apples. He gets ' + more + ' more. How many now?',
@@ -619,7 +908,11 @@ window.addEventListener('popstate', function () {
   if (quizVisible && quizInProgress) {
     __quitFromPopstate = true;
     pauseTimerForQuitPopup();
-    document.getElementById('quitConfirmModal').classList.remove('hidden');
+    var m = document.getElementById('quitConfirmModal');
+    if (m) {
+      m.classList.remove('hidden');
+      m.style.display = 'flex';
+    }
   }
 });
 history.pushState({ screen: 'quizScreen' }, '', '');

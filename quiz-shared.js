@@ -68,15 +68,16 @@ function buildNumericOptions(correct, range) {
   const options = new Set();
   options.add(correct);
   let attempts = 0;
-  while (options.size < 4 && attempts < 60) {
+  const allowNeg = correct < 0 || range > 20;
+  while (options.size < 4 && attempts < 80) {
     let delta = rand(-range, range);
-    if (delta === 0) delta = rand(1, range);
+    if (delta === 0) delta = rand(1, Math.max(1, range));
     const distractor = correct + delta;
-    if (distractor >= 0) options.add(distractor);
+    if (allowNeg || distractor >= 0) options.add(distractor);
     attempts++;
   }
   let fb = correct + 1;
-  while (options.size < 4) { options.add(fb); fb++; }
+  while (options.size < 4) { options.add(fb); fb += (fb >= correct ? 1 : -1) || 1; }
   return shuffle(Array.from(options));
 }
 
@@ -214,13 +215,63 @@ function dateKeyOffset(days) {
   const d = new Date(); d.setDate(d.getDate() + days);
   return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
 }
+/** Highest class level offered in the quiz (Class 1 … MAX_CLASS). */
+const MAX_CLASS = 10;
+/** Lowest class level offered — 0 is LKG (pre-Class-1, pictorial questions). */
+const MIN_CLASS = 0;
+/** Display label for a level: 0 -> "LKG", otherwise "Class N". */
+function classLabel(n) {
+  n = parseInt(n, 10);
+  return n === 0 ? 'LKG' : 'Class ' + n;
+}
+/** Subjects with pictorial LKG (level 0) content — everything else only
+    goes down to Class 1, since LKG-age content doesn't exist for them yet. */
+const LKG_SUBJECTS = ['addsub', 'english', 'hindi', 'gk', 'science', 'animals', 'plants', 'humanbody', 'space', 'geography', 'computers', 'sports'];
+function hasLkg(catId) { return LKG_SUBJECTS.indexOf(catId) !== -1; }
+
+/* ============================================
+   READ-ALOUD (LKG) — speaks questions/prompts so pre-readers don't need
+   to read. Reuses the same mute flag as kq-fx.js ("kq_muted") so the one
+   mute button silences both sound effects and narration together.
+   ============================================ */
+function isSoundMuted() {
+  try { return localStorage.getItem('kq_muted') === '1'; } catch (e) { return false; }
+}
+/** Strip emoji/pictographs before speaking so TTS doesn't stumble on them. */
+function stripEmojiForSpeech(text) {
+  return String(text)
+    .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+let __kqVoicesReady = false;
+if (typeof window !== 'undefined' && window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = function () { __kqVoicesReady = true; };
+}
+/** Speak `text` aloud (kid-pitched, unhurried). opts.raw skips emoji-stripping. */
+function speak(text, opts) {
+  try {
+    if (isSoundMuted()) return;
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+    opts = opts || {};
+    const clean = opts.raw ? String(text) : stripEmojiForSpeech(text);
+    if (!clean) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(clean);
+    u.rate = opts.rate || 0.88;
+    u.pitch = opts.pitch || 1.15;
+    if (opts.lang) u.lang = opts.lang;
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+
 function dailyHash(str) {
   let h = 0; for (let i = 0; i < str.length; i++) { h = (h * 31 + str.charCodeAt(i)) >>> 0; } return h;
 }
 function getDailyChallenge() {
   const seed = dailyHash(todayKey());
   const cat = CATEGORIES[seed % CATEGORIES.length];
-  const level = (Math.floor(seed / 7) % 5) + 1;
+  const level = (Math.floor(seed / 7) % MAX_CLASS) + 1;
   return { catId: cat.id, level: level, title: cat.title, icon: cat.icon };
 }
 function loadDaily() {

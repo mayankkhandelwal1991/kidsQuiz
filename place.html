@@ -393,6 +393,8 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
 .kid-card label.gt-opt{display:flex;align-items:center;gap:6px;margin:0;padding:6px 10px;border-radius:99px;background:#fff;border:2px solid #e3c8ff;font-size:13px;font-weight:700;color:#172033}
 .kid-card .gt-opt input{width:18px;height:18px;min-height:0;padding:0;flex:none}
 .app-ver{text-align:center;margin-top:16px;color:#98a2b3}
+#nbList{max-height:46vh;overflow-y:auto;margin-top:6px;padding-right:2px}
+.nb-row{cursor:pointer;padding:8px 10px}.nb-row .col-th{width:44px;height:44px;font-size:20px}
 </style>
 </head>
 <body>
@@ -527,6 +529,7 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
           <button class="gray" onclick="document.getElementById('restoreFile').click()" data-t>📂 Restore from file</button>
         </div>
         <input id="restoreFile" type="file" accept=".json,application/json" hidden>
+        <label class="switch-row"><span data-t>Suggest nearby places after I add one</span><input type="checkbox" id="nearbyToggle" checked></label>
         <label class="switch-row"><span data-t>Celebration sounds</span><input type="checkbox" id="soundToggle" checked></label>
         <button class="gray full danger" onclick="resetPlaces()" data-t>↺ Reset</button>
         <div class="small app-ver" id="appVer"></div>
@@ -660,6 +663,19 @@ const HI={
 "None of these photos has a location saved inside it. Tip: choose the original camera photos (photos received on WhatsApp lose their location), and on Android pick them through “Files” or “Browse”.":"इनमें से किसी फ़ोटो में लोकेशन सेव नहीं है। सुझाव: कैमरे की असली फ़ोटो चुनें (WhatsApp से आई फ़ोटो में लोकेशन नहीं रहती), और Android पर इन्हें “Files” या “Browse” से चुनें।",
 "{0} photos":"{0} फ़ोटो","New pin":"नया पिन","Already on your map: photo will be added":"पहले से नक्शे पर है: फ़ोटो जुड़ जाएगी",
 "Add pins 📍":"पिन जोड़ें 📍",
+"🧭 Add nearby places I visited":"🧭 आसपास की घूमी हुई जगहें जोड़ें",
+"Looking for places near {0}…":"{0} के आसपास की जगहें खोज रहे हैं…",
+"I could not find more places near {0}.":"{0} के आसपास और जगहें नहीं मिलीं।",
+
+"Tick the places you have also visited":"जो जगहें आपने भी घूमी हैं, उन पर निशान लगाएँ",
+"Add ticked places ✅":"चुनी हुई जगहें जोड़ें ✅",
+"Skip":"छोड़ें",
+"Been near {0} too?":"क्या {0} के आसपास भी घूमे हैं?",
+"Add {0} places ✅":"{0} जगहें जोड़ें ✅",
+"Less than 1 km away":"1 किमी से भी पास",
+"{0} km away":"{0} किमी दूर",
+"Suggest nearby places after I add one":"जगह जोड़ने के बाद आसपास की जगहें सुझाएँ",
+
 "Open in your browser":"अपने ब्राउज़र में खोलें",
 "Google sign-in does not work inside the small browser of WhatsApp, Instagram and similar apps. Open this page in Safari or Chrome and sign in there.":"WhatsApp, Instagram जैसे ऐप के अंदर वाले छोटे ब्राउज़र में Google साइन इन नहीं चलता। यह पेज Safari या Chrome में खोलें और वहाँ साइन इन करें।",
 "How: tap the ⋯ or share button on this screen and choose “Open in Safari” or “Open in Chrome”.":"कैसे: इस स्क्रीन पर ⋯ या शेयर बटन दबाएँ और “Open in Safari” या “Open in Chrome” चुनें।",
@@ -1679,6 +1695,7 @@ function addResolvedPlace(name,lat,lon,cat,country){
   document.getElementById("catSel").value="";
 
   render();
+  if(status==="visited" && lsGet("myNearbyOnV1",true)!==false) badgeQueue=badgeQueue.then(()=>nearbyCard(np));   // "been nearby too?" list
   return true;
 }
 
@@ -1789,7 +1806,7 @@ function openPlaceCard(p){
     +'<label for="pcDate">'+T("Exact date (optional)")+'</label><input id="pcDate" type="date" min="1950-01-01" max="'+todayStr()+'">'
     +'<label for="pcNote">'+T("My memory")+'</label><textarea id="pcNote" maxlength="140" placeholder="'+T("What was the best part?")+'"></textarea>'
     +'<div><button type="button" class="kid-mini" id="pcPick">'+T("📷 Use my own photo")+'</button><button type="button" class="kid-mini" id="pcUnpick">'+T("↩ Use web photo")+'</button><input id="pcFile" type="file" accept="image/*" hidden></div>'
-    +'<div><button type="button" class="kid-mini" id="pcFactBtn">'+T("✨ Tell me a fun fact!")+'</button></div>'
+    +'<div><button type="button" class="kid-mini" id="pcFactBtn">'+T("✨ Tell me a fun fact!")+'</button><button type="button" class="kid-mini" id="pcNearBtn">'+T("🧭 Add nearby places I visited")+'</button></div>'
     +'<div class="kid-fact" id="pcFact" hidden></div>'
     +'<div class="kid-btns" style="margin-top:14px"><button class="kid-yes" id="pcSave">'+T("Save 💾")+'</button><button class="kid-no" id="pcDel">'+T("Remove 🗑️")+'</button></div>');
   const $=id=>card.box.querySelector("#"+id);
@@ -1819,6 +1836,7 @@ function openPlaceCard(p){
     try{ draft.photo=await readPhoto(f); paint(); }
     catch(e){ kidSay(T("Hmm, I could not open that photo. Try another one!"),"🖼️"); }
   };
+  $("pcNearBtn").onclick=()=>{ card.close(); nearbyCard(p,true); };
   $("pcFactBtn").onclick=async()=>{
     const out=$("pcFact"), btn=$("pcFactBtn");
     out.hidden=false; out.textContent=T("Thinking… 🤔"); btn.disabled=true;
@@ -2785,7 +2803,7 @@ const FIREBASE_CONFIG={
   messagingSenderId:"851797718600",
   appId:"1:851797718600:web:e990b3435751d209228a7d"
 };
-const APP_VERSION="1.19", APP_DATE="8 Oct 2026";      // shown at the bottom of the More tab; change both with every update
+const APP_VERSION="1.21", APP_DATE="8 Oct 2026";      // shown at the bottom of the More tab; change both with every update
 const FB_VER="10.12.2";
 // The web address people should open, used in share messages and invites.
 // Leave "" to use the address this page is opened from; set it (e.g. "https://example.com/india-map.html") if you share from an app or a saved file.
@@ -4343,6 +4361,69 @@ function plannerText(){
   return T("My travel wishlist plans")+":\n"+lines.join("\n")+(pageUrl()?"\n"+T("Make your own map here: {0}",pageUrl()):"");
 }
 
+
+// ---- After adding a place: tick other places nearby that you have also visited ----
+async function nearbyFind(p){
+  const out=[], seen=new Set([norm(p.name)]);
+  const take=(name,lat,lon,img)=>{
+    const k=norm(name);
+    if(!k || seen.has(k) || !Number.isFinite(lat) || !Number.isFinite(lon) || !inBounds(lat,lon) || places.some(q=>norm(q.name)===k)) return;
+    seen.add(k); out.push({name:String(name).slice(0,80),lat,lon,img:img||"",km:haversine(p,{lat,lon})});
+  };
+  try{                                                // sights within 10 km, from Wikipedia
+    const ctl=new AbortController(), timer=setTimeout(()=>ctl.abort(),6000);
+    const url="https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=geosearch&ggscoord="+p.lat.toFixed(4)+"%7C"+p.lon.toFixed(4)+"&ggsradius=10000&ggslimit=40&prop=coordinates%7Cpageimages&piprop=thumbnail&pithumbsize=120&colimit=40&pilimit=40";
+    const d=await (await fetch(url,{signal:ctl.signal})).json();
+    clearTimeout(timer);
+    const junk=/\b(station|school|college|university|institute|hospital|constituency|district|division|airport|stadium|metro|road|highway|company|ltd|bank|election|tehsil|taluk|ward|municipal|corporation|assembly|lok sabha|junction|academy|campus)\b|^list of|\d{4}/i;
+    Object.keys((d.query && d.query.pages)||{}).map(k=>d.query.pages[k]).sort((a,b)=>(a.index||0)-(b.index||0)).forEach(pg=>{
+      const c=pg.coordinates && pg.coordinates[0], img=pg.thumbnail && pg.thumbnail.source;
+      if(c && !junk.test(pg.title) && out.length<14) take(pg.title,Number(c.lat),Number(c.lon),/^https:\/\/upload\.wikimedia\.org\//.test(img||"")?img:"");
+    });
+  }catch(e){ console.warn("Nearby sights could not be loaded; using the built-in list.",e); }
+  famousPool().map(x=>({x,km:haversine(p,x)})).filter(o=>o.km>0.5 && o.km<(isWorld()?700:220)).sort((a,b)=>a.km-b.km).slice(0,out.length>=10?6:12)   // well-known places in the area
+    .forEach(o=>{ if(out.length<20) take(o.x.main,o.x.lat,o.x.lon,""); });
+  return out.sort((a,b)=>a.km-b.km);
+}
+function nearbyCard(p,asked){                          // asked = opened from the place card, so always answer
+  return new Promise(async resolve=>{
+    if(!places.includes(p)){ resolve(); return; }
+    if(asked) toast("🧭 "+T("Looking for places near {0}…",p.name));
+    let list=[];
+    try{ list=await nearbyFind(p); }catch(e){ console.warn(e); }
+    if(!list.length || !places.includes(p)){ if(asked) kidSay(T("I could not find more places near {0}.",p.name),"🧭"); resolve(); return; }
+    const card=kidCard('<div class="kid-emoji">🧭</div><h3></h3><div class="sub">'+T("Tick the places you have also visited")+'</div><div id="nbList"></div>'
+      +'<div class="kid-btns" style="margin-top:12px"><button class="kid-yes" id="nbAdd">'+T("Add ticked places ✅")+'</button><button class="kid-no" id="nbSkip">'+T("Skip")+'</button></div>');
+    card.box.querySelector("h3").textContent=T("Been near {0} too?",p.name);
+    const box=card.box.querySelector("#nbList"), btn=card.box.querySelector("#nbAdd");
+    const count=()=>{ const n=box.querySelectorAll("input:checked").length; btn.textContent=n?T("Add {0} places ✅",n):T("Add ticked places ✅"); btn.disabled=!n; };
+    list.forEach(x=>{
+      const row=mkEl("label","kid-row nb-row"), th=mkEl("span","col-th done");
+      th.append(mkEl("span","col-em",CATS[guessCat(x.name)][0]));
+      if(x.img){ const im=mkEl("img"); im.alt=""; im.loading="lazy"; im.onerror=()=>im.remove(); im.src=x.img; th.append(im); }
+      const mid=mkEl("div"); mid.append(mkEl("b","",x.name),mkEl("small","",x.km<1?T("Less than 1 km away"):T("{0} km away",Math.round(x.km))));
+      const ck=mkEl("input","ph-ck"); ck.type="checkbox"; ck.onchange=count; x.box=ck;
+      row.append(th,mid,ck); box.appendChild(row);
+    });
+    count();
+    card.box.querySelector("#nbSkip").onclick=card.close;
+    btn.onclick=()=>{
+      const picked=list.filter(x=>x.box.checked);
+      picked.forEach(x=>{
+        const np={name:x.name,lat:x.lat,lon:x.lon,status:"visited",cat:guessCat(x.name)};
+        if(p.year) np.year=p.year;                              // same trip, same year
+        if(isWorld()) np.country=p.country||stateOf(p)||"";
+        places.push(np);
+      });
+      card.close(); showEverything(); render();
+      toast("✅ "+(picked.length===1?T("{0} place",1):T("{0} places",picked.length))+" · "+T("Added ✓"));
+    };
+    whenClosed(card).then(resolve);
+  });
+}
+const nearbyToggle=document.getElementById("nearbyToggle");
+nearbyToggle.checked=lsGet("myNearbyOnV1",true)!==false;
+nearbyToggle.addEventListener("change",()=>lsSet("myNearbyOnV1",nearbyToggle.checked));
 
 const soundToggle=document.getElementById("soundToggle");
 soundToggle.checked=lsGet("myIndiaSoundV2",true)!==false;

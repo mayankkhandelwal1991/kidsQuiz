@@ -380,6 +380,18 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
 .mys-card .ic{font-size:28px}.mys-card b{display:block;font-size:13px}.mys-card small{display:block;font-size:12px;color:#667085;line-height:1.3}
 .type-em{font-size:76px;line-height:1.1}.type-tag{font-size:14px;color:#475467;margin:6px 0 10px;line-height:1.4}
 .home-row{display:flex;gap:8px}.home-row input{flex:1;min-width:0}.home-row button{flex:none;min-width:64px}
+.gm-table{display:grid;grid-template-columns:1fr 54px 54px 40px;gap:4px 6px;font-size:13px;align-items:center;margin-top:4px}
+.gm-table span{text-align:center;font-weight:700}.gm-table .gm-n{text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gm-table .gm-n.me{color:#b06a00}.gm-h{color:#667085;font-size:15px}
+.trip-card{margin-top:8px;padding:12px;border-radius:16px;background:#f8fafc;border:1px solid #e3e9f1}
+.trip-card b{display:block;font-size:15px}.trip-card small{display:block;font-size:12px;color:#667085;margin:3px 0 6px;line-height:1.35}
+.trip-act{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.trip-act button{flex:1 1 auto;font-size:12px;padding:8px 10px;min-height:36px;display:block}
+.feed-row{display:flex;gap:8px;align-items:baseline;justify-content:space-between;padding:8px 6px;border-bottom:1px solid #edf0f4;font-size:13px}
+.feed-row small{flex:none;color:#98a2b3;font-size:11px}
+.feed-row.new{background:#fff8e1;border-radius:10px;font-weight:700}
+.gt-wish{display:flex;flex-wrap:wrap;gap:6px;text-align:left;margin-bottom:8px}
+.kid-card label.gt-opt{display:flex;align-items:center;gap:6px;margin:0;padding:6px 10px;border-radius:99px;background:#fff;border:2px solid #e3c8ff;font-size:13px;font-weight:700;color:#172033}
+.kid-card .gt-opt input{width:18px;height:18px;min-height:0;padding:0;flex:none}
 </style>
 </head>
 <body>
@@ -644,6 +656,57 @@ const HI={
 "None of these photos has a location saved inside it. Tip: choose the original camera photos (photos received on WhatsApp lose their location), and on Android pick them through “Files” or “Browse”.":"इनमें से किसी फ़ोटो में लोकेशन सेव नहीं है। सुझाव: कैमरे की असली फ़ोटो चुनें (WhatsApp से आई फ़ोटो में लोकेशन नहीं रहती), और Android पर इन्हें “Files” या “Browse” से चुनें।",
 "{0} photos":"{0} फ़ोटो","New pin":"नया पिन","Already on your map: photo will be added":"पहले से नक्शे पर है: फ़ोटो जुड़ जाएगी",
 "Add pins 📍":"पिन जोड़ें 📍",
+"{0} visited {1}":"{0} ने {1} घूमा",
+"{0} coloured in {1}":"{0} ने {1} में रंग भरा",
+"{0} is now: {1}":"{0} अब हैं: {1}",
+"{0} completed the collection {1}":"{0} ने संग्रह {1} पूरा किया",
+"{0} scored {1} in the pin-drop challenge":"{0} ने पिन-ड्रॉप चुनौती में {1} अंक बनाए",
+"{0} scored {1} in Guess the place":"{0} ने 'जगह पहचानो' में {1} अंक बनाए",
+"{0} planned a group trip: {1}":"{0} ने ग्रुप यात्रा बनाई: {1}",
+"{0} is joining the trip {1}":"{0} यात्रा {1} में शामिल हो रहे हैं",
+"{0} scored {1} in the quiz about {2}":"{0} ने {2} वाले क्विज़ में {1} अंक बनाए",
+"{0} min ago":"{0} मिनट पहले",
+"{0} h ago":"{0} घंटे पहले",
+"{0} d ago":"{0} दिन पहले",
+"Today’s games":"आज के खेल",
+"Nobody has played today. Be the first and your friends will see your score!":"आज अभी किसी ने नहीं खेला। सबसे पहले खेलें, आपका स्कोर दोस्तों को दिखेगा!",
+"Group trips":"ग्रुप यात्राएँ",
+"No trips yet. Plan one and see who is in!":"अभी कोई यात्रा नहीं। एक बनाएँ और देखें कौन साथ चलेगा!",
+"planned by {0}":"{0} ने बनाई",
+"Going ({0}): {1}":"जा रहे हैं ({0}): {1}",
+"Delete":"हटाएँ",
+"Delete the trip {0}?":"यात्रा {0} हटानी है?",
+"I am out":"मैं नहीं जा रहा",
+"I am in ✋":"मैं चलूँगा ✋",
+"⭐ Add to my wishlist":"⭐ मेरी विशलिस्ट में जोड़ें",
+"Join us on My Travel Map with group code {0}":"My Travel Map पर ग्रुप कोड {0} से हमारे साथ जुड़ें",
+"➕ Plan a group trip":"➕ ग्रुप यात्रा बनाएँ",
+"Friend activity":"दोस्तों की गतिविधि",
+"Nothing yet. When your friends add places or play games, you will see it here.":"अभी कुछ नहीं। जब आपके दोस्त जगहें जोड़ेंगे या खेल खेलेंगे, तो यहाँ दिखेगा।",
+"Copied! Paste it in WhatsApp or any chat.":"कॉपी हो गया! इसे WhatsApp या किसी भी चैट में पेस्ट करें।",
+"Plan a group trip":"ग्रुप यात्रा बनाएँ",
+"Trip name":"यात्रा का नाम",
+"When (for example December 2026)":"कब (जैसे दिसंबर 2026)",
+"Other places, with commas":"और जगहें, कॉमा लगाकर",
+"Save and tell my friends 📣":"सेव करें और दोस्तों को बताएँ 📣",
+"{0}’s trip":"{0} की यात्रा",
+"Tip: places on your wishlist appear here to tick.":"सुझाव: आपकी विशलिस्ट की जगहें यहाँ चुनने के लिए दिखती हैं।",
+"Give your trip a name first!":"पहले यात्रा का नाम लिखें!",
+"{0} needs at least 2 visited places for a quiz.":"क्विज़ के लिए {0} की कम से कम 2 घूमी हुई जगहें चाहिए।",
+"Which of these places has {0} visited?":"इनमें से {0} कौन-सी जगह घूम चुके हैं?",
+"Yes":"हाँ",
+"No":"नहीं",
+"Has {0} been to {1}?":"क्या {0}, {1} गए हैं?",
+"How many places has {0} visited?":"{0} कितनी जगहें घूम चुके हैं?",
+"Which of these countries has {0} NOT visited?":"इनमें से {0} कौन-सा देश नहीं घूमे?",
+"Which of these states has {0} NOT visited?":"इनमें से {0} कौन-सा राज्य नहीं घूमे?",
+"How well do you know {0}?":"आप {0} को कितना जानते हैं?",
+"best time {0}, {1} days":"सबसे अच्छा समय {0}, {1} दिन",
+"combine with {0}":"साथ में {0}",
+"My travel wishlist plans":"मेरी यात्रा विशलिस्ट की योजनाएँ",
+"📤 Share my trip plans":"📤 मेरी यात्रा योजनाएँ शेयर करें",
+"🧠 Quiz: how well do I know {0}?":"🧠 क्विज़: मैं {0} को कितना जानता हूँ?",
+
 "Games and fun":"खेल और मज़ा",
 "Pin-drop challenge":"पिन-ड्रॉप चुनौती",
 "Guess the place":"जगह पहचानो",
@@ -2410,6 +2473,8 @@ async function tripPlanner(force){
   const again=card.box.querySelector("#tpAgain");
   again.hidden=false;
   again.onclick=()=>{ card.close(); tripPlanner(true); };
+  const sh=mkEl("button","kid-mini",T("📤 Share my trip plans")); sh.type="button"; sh.onclick=()=>shareText(plannerText());
+  again.parentNode.appendChild(sh);
 }
 
 // ---- 5. India quiz about the places you have visited ----
@@ -2738,7 +2803,7 @@ function onAuthChange(){
       localStorage.setItem("myIndiaNameV2",nameInput.value);
       render();
     }
-    scheduleSubmit(); cloudStart(); joinFromLink();
+    scheduleSubmit(); cloudStart(); joinFromLink(); setTimeout(checkFeed,5000);
   }else{                                                        // signed out: back to the sign-in screen
     localStorage.removeItem("myIndiaAuthV2");
     welcome(true);
@@ -2905,7 +2970,7 @@ async function joinGroup(raw,isNew){
   try{
     const nm=(await gref(code).child("name").once("value")).val();
     if(!nm){ kidSay(T("I could not find a group with that code."),"🔍"); return; }
-    await gref(code).child("members/"+fbUser.uid).set({name:myName(),joined:firebase.database.ServerValue.TIMESTAMP});
+    await gref(code).child("members/"+fbUser.uid).update({name:myName(),joined:firebase.database.ServerValue.TIMESTAMP});
     await uroot().child("groups/"+code).set(String(nm).slice(0,40));
     const g=myGroups().filter(x=>x.code!==code); g.push({code,name:String(nm).slice(0,40)});
     lsSet("myIndiaGroupsV2_"+fbUser.uid,g);
@@ -2947,6 +3012,8 @@ function compareWith(r){
     +'<div class="cmp"></div><div class="kid-btns" style="margin-top:12px"><button class="kid-yes"></button></div>');
   const $=q=>card.box.querySelector(q);
   $(".vs-me").textContent=T("You"); $(".vs-them").textContent=r.name;
+  const fq=mkEl("button","kid-no",T("🧠 Quiz: how well do I know {0}?",r.name)); fq.type="button"; fq.onclick=()=>{ card.close(); friendQuiz(r); };
+  $(".kid-btns").appendChild(fq);
   const avatar=(el,photo,name)=>{ if(photo){ const im=mkEl("img"); im.alt=""; im.referrerPolicy="no-referrer"; im.src=photo; im.onerror=()=>{ im.remove(); el.textContent=name.charAt(0).toUpperCase(); }; el.appendChild(im); } else el.textContent=(name||"?").charAt(0).toUpperCase(); };
   avatar($(".lb-av.me"),fbUser?safePhoto(fbUser.photoURL):"",myName()); avatar($(".lb-av.them"),r.photo,r.name);
   [[T("Points"),sc.xp,num(ts.xp)],[T("Places"),mine.length,theirs.length],[isWorld()?T("Countries"):T("States"),myS.size,theirS.size],[T("Km"),sc.km,num(ts.km)]].forEach(m=>{
@@ -3068,6 +3135,7 @@ async function loadFriends(box,tools,id,stale){
     rows.forEach((r,i)=>{ const el=lbRowEl(r,i,id); if(r.k!==fbUser.uid){ el.classList.add("tap"); el.title=T("You and {0}",r.name); el.onclick=()=>compareWith(r); } box.appendChild(el); });
     if(rows.length>1) box.appendChild(mkEl("div","small lb-note",T("Tap a friend to compare your maps.")));
     renderLbMe();
+    renderSocial(box,g,mem,rows);
     tools.append(mk(T("📨 Invite friends · code {0}",g.code),"green full",()=>inviteGroup(g)));
     tools.append.apply(tools,starters());
     tools.append(mk(T("👯 Find my travel twin"),"gray full",findTwin),mk(T("👑 Kings and queens"),"gray full",openRulers));
@@ -3380,6 +3448,7 @@ function openDaily(){
       const ok=o===right, streak=ok?liveStreak(d)+1:0;
       if(!ok) b.classList.add("wrong");
       lsSet("myIndiaDailyV2",{last:todayStr(),streak,best:Math.max(d.best||0,streak)});
+      postGame("daily",ok?1:0);
       const f=card.box.querySelector(".kid-fact"); f.hidden=false;
       f.textContent=ok?T("✅ Correct! Your streak is now {0}. Come back tomorrow!",streak):T("❌ Not quite! The answer is {0}. Try again tomorrow.",right);
       if(ok) confetti();
@@ -3528,11 +3597,13 @@ let prevStates=null, quiet=true, lastSlim=null;       // quiet = no celebrations
 function quietCelebrate(){ quiet=true; prevStates=null; }
 function slimSig(){ return JSON.stringify(ownPlaces().map(p=>[p.name,p.status,p.cat,p.year||0,p.date||"",p.note||"",p.rating||0,p.fav?1:0,p.photo?p.photo.length:0])); }
 function afterRender(st){
+  const justAdded=places.filter(p=>typeof p.added!=="number" && !p._in && p.status==="visited");
   places.forEach(p=>{ if(typeof p.added!=="number") p.added=Date.now(); });
+  if(!quiet) justAdded.slice(0,2).forEach(p=>logAct("place",p.name,stateOf(p)));
   const names=[...st.regions];
   if(prevStates && !quiet){
     const fresh=names.filter(n=>!prevStates.has(n));
-    if(fresh.length){ toast("🎉 "+T("New on your map: {0}!",fresh.map(stName).join(", "))); badgeQueue=badgeQueue.then(()=>scratchState(fresh[0])); }   // scratch card for the new state
+    if(fresh.length){ toast("🎉 "+T("New on your map: {0}!",fresh.map(stName).join(", "))); badgeQueue=badgeQueue.then(()=>scratchState(fresh[0])); logAct("state",fresh[0]); }   // scratch card for the new state
   }
   prevStates=new Set(names);
   mysteryAward();
@@ -3545,11 +3616,11 @@ function afterRender(st){
   const es=engageState();
   const doneIds=es.cols.filter(x=>x.done===x.pr.length).map(x=>x.c.id), had=lsGet(mk("myIndiaColsV2"),null);
   if(had && !quiet) es.cols.filter(x=>doneIds.includes(x.c.id) && !had.includes(x.c.id)).forEach(x=>{
-    confetti(); badgeQueue=badgeQueue.then(()=>kidPopup(T("Collection complete: {0}!",T(x.c.n)),{emoji:"🏆",yes:T("Woohoo! 🥳"),no:null}));
+    confetti(); logAct("col",x.c.n); badgeQueue=badgeQueue.then(()=>kidPopup(T("Collection complete: {0}!",T(x.c.n)),{emoji:"🏆",yes:T("Woohoo! 🥳"),no:null}));
   });
   lsSet(mk("myIndiaColsV2"),doneIds);
   const lv=lsGet(mk("myIndiaLevelV2"),null);
-  if(lv!==null && es.lvl>lv && !quiet){ confetti(); badgeQueue=badgeQueue.then(()=>kidPopup(T("Level up! You are now: {0}",T(LEVELS[es.lvl][2])),{emoji:LEVELS[es.lvl][1],yes:T("Woohoo! 🥳"),no:null})); }
+  if(lv!==null && es.lvl>lv && !quiet){ confetti(); logAct("level",LEVELS[es.lvl][2]); badgeQueue=badgeQueue.then(()=>kidPopup(T("Level up! You are now: {0}",T(LEVELS[es.lvl][2])),{emoji:LEVELS[es.lvl][1],yes:T("Woohoo! 🥳"),no:null})); }
   lsSet(mk("myIndiaLevelV2"),es.lvl);
   quiet=false;
   renderEngage(es,mp);
@@ -3736,6 +3807,7 @@ function endPinDrop(quit){
   if(!quit){
     const max=g.list.length*100, rec=lsGet(mk("myPinDropV1"),{}), best=Math.max(rec.best||0,g.score);
     lsSet(mk("myPinDropV1"),{d:todayStr(),score:g.score,best});
+    postGame("pin",g.score);
     if(g.score>=max*0.8) confetti();
     kidSay(T("Pin-drop score: {0} out of {1}! Your best: {2}.",g.score,max,best),"📍");
   }
@@ -3759,6 +3831,7 @@ async function startGuessPlace(){
   const finish=()=>{
     const max=rounds.length*100, rec=lsGet(mk("myGuessV1"),{}), best=Math.max(rec.best||0,score);
     lsSet(mk("myGuessV1"),{d:todayStr(),score,best});
+    postGame("guess",score);
     sub.textContent=T("You scored {0} out of {1}!",score,max);
     body.innerHTML='<div class="qz-score">'+(score>=max*0.7?"🏅":"💪")+'</div><div class="kid-btns"><button class="kid-yes">'+T("Okie dokie! 👍")+'</button></div>';
     body.querySelector("button").onclick=card.close;
@@ -4013,6 +4086,225 @@ function mysteryCardEl(){
   return box;
 }
 document.getElementById("homeInput").value=(lsGet("myHomeV1",null)||{}).name||"";
+
+
+// =====================================================================
+//  FRIENDS: activity feed, daily game scores, group trips, friend quiz
+//  Everything is kept in my own member entry of each group:
+//    travel/groups/<code>/members/<my id>/{act, games, trips, going}
+// =====================================================================
+let actTimer=null, feedSeenTimer=null;
+function eachGroup(fn){
+  if(!fbUser || !fbDb || cloudOk===false) return Promise.resolve();
+  return Promise.all(myGroups().map(g=>Promise.resolve().then(()=>fn(gref(g.code).child("members/"+fbUser.uid),g)).catch(e=>console.warn("Group update failed.",e))));
+}
+// Remember something I did so that my friends see it in their activity feed.
+function logAct(type,a,b){
+  if(!fbUser || !myGroups().length) return;
+  const key="myActsV1_"+fbUser.uid, acts=lsGet(key,[]);
+  acts.push({t:Date.now(),y:type,a:String(a==null?"":a).slice(0,60),b:String(b==null?"":b).slice(0,60)});
+  while(acts.length>12) acts.shift();
+  lsSet(key,acts);
+  clearTimeout(actTimer);
+  actTimer=setTimeout(()=>eachGroup(ref=>ref.child("act").set(acts)),2000);
+}
+function postGame(kind,score){
+  if(!fbUser) return;
+  const key="myGamesV1_"+fbUser.uid; let g=lsGet(key,{});
+  if(g.d!==todayStr()) g={d:todayStr()};
+  g[kind+(isWorld()?"W":"")]=score;
+  lsSet(key,g);
+  eachGroup(ref=>ref.child("games").set(g));
+  if(kind!=="daily") logAct(kind,score);
+}
+function actText(e,name){
+  const a=String(e.a||""), b=String(e.b||"");
+  switch(e.y){
+    case "place": return T("{0} visited {1}",name,a)+(b?" ("+stName(b)+")":"");
+    case "state": return T("{0} coloured in {1}",name,stName(a));
+    case "level": return T("{0} is now: {1}",name,T(a));
+    case "col": return T("{0} completed the collection {1}",name,T(a));
+    case "pin": return T("{0} scored {1} in the pin-drop challenge",name,a);
+    case "guess": return T("{0} scored {1} in Guess the place",name,a);
+    case "trip": return T("{0} planned a group trip: {1}",name,a);
+    case "going": return T("{0} is joining the trip {1}",name,a);
+    case "fq": return T("{0} scored {1} in the quiz about {2}",name,a,b);
+    default: return "";
+  }
+}
+function agoText(t){
+  const m=Math.max(1,Math.round((Date.now()-t)/60000));
+  return m<60?T("{0} min ago",m):m<1440?T("{0} h ago",Math.round(m/60)):T("{0} d ago",Math.round(m/1440));
+}
+function feedFrom(mem){
+  const out=[];
+  Object.keys(mem||{}).forEach(u=>{
+    if(fbUser && u===fbUser.uid) return;
+    const m=mem[u]||{}, name=String(m.name||T("Traveller")).slice(0,40), acts=Array.isArray(m.act)?m.act:Object.keys(m.act||{}).map(k=>m.act[k]);
+    acts.forEach(e=>{ if(e && Number(e.t)>0 && Number(e.t)<Date.now()+3600000){ const text=actText(e,name); if(text) out.push({t:Number(e.t),text}); } });
+  });
+  return out.sort((a,b)=>b.t-a.t);
+}
+function feedSeenKey(){ return "myFeedSeenV1_"+fbUser.uid; }
+function boardDot(on){ document.querySelectorAll('[data-go="board"]').forEach(b=>b.classList.toggle("dot",on)); }
+// Called a few seconds after opening the app: is there anything new from my friends?
+async function checkFeed(){
+  if(!fbUser || !fbDb || cloudOk===false) return;
+  const groups=myGroups().slice(0,4); if(!groups.length) return;
+  try{
+    const seen=lsGet(feedSeenKey(),0); let fresh=[];
+    for(const g of groups){ const mem=(await gref(g.code).child("members").once("value")).val()||{}; fresh=fresh.concat(feedFrom(mem).filter(e=>e.t>seen)); }
+    const uniq=[...new Map(fresh.map(e=>[e.t+e.text,e])).values()].sort((a,b)=>b.t-a.t);
+    if(!uniq.length) return;
+    boardDot(true);
+    toast("🔔 "+uniq[0].text+(uniq.length>1?" · +"+(uniq.length-1):""));
+  }catch(e){ console.warn("Friend activity could not be checked.",e); }
+}
+
+// ---- extra sections under the friends leaderboard ----
+function renderSocial(box,g,mem,rows){
+  const mk=(txt,cls,fn)=>{ const b=mkEl("button",cls,txt); b.type="button"; b.onclick=fn; return b; };
+  const nameOf=u=>u===fbUser.uid?T("You"):String((rows.find(r=>r.k===u)||{}).name||(mem[u]&&mem[u].name)||T("Traveller")).slice(0,40);
+  const myRef=()=>gref(g.code).child("members/"+fbUser.uid);
+
+  // today's games
+  const W=isWorld()?"W":"", today=todayStr(), played=Object.keys(mem).map(u=>({u,g:(mem[u]&&mem[u].games)||{}})).filter(x=>x.g.d===today && (x.g["pin"+W]!==undefined || x.g["guess"+W]!==undefined || x.g.daily!==undefined));
+  box.appendChild(mkEl("div","share-title","🎮 "+T("Today’s games")));
+  if(played.length){
+    const tb=mkEl("div","gm-table");
+    tb.append(mkEl("span","gm-h",""),mkEl("span","gm-h","📍"),mkEl("span","gm-h","🖼️"),mkEl("span","gm-h","🔥"));
+    played.sort((a,b)=>(Number(b.g["pin"+W])||0)-(Number(a.g["pin"+W])||0)).forEach(x=>{
+      const num=v=>v===undefined?"–":String(Number(v)||0);
+      tb.append(mkEl("span","gm-n"+(x.u===fbUser.uid?" me":""),nameOf(x.u)),mkEl("span","",num(x.g["pin"+W])),mkEl("span","",num(x.g["guess"+W])),mkEl("span","",x.g.daily===undefined?"–":Number(x.g.daily)?"✅":"❌"));
+    });
+    box.appendChild(tb);
+  }else box.appendChild(mkEl("div","small lb-note",T("Nobody has played today. Be the first and your friends will see your score!")));
+  const gr=mkEl("div","actions"); gr.style.marginTop="6px";
+  gr.append(mk("📍 "+T("Pin-drop challenge"),"gray",startPinDrop),mk("🖼️ "+T("Guess the place"),"gray",startGuessPlace));
+  box.appendChild(gr);
+
+  // group trips
+  const trips=[];
+  Object.keys(mem).forEach(u=>{
+    const tr=mem[u] && mem[u].trips;
+    if(tr && typeof tr==="object") Object.keys(tr).slice(0,5).forEach(id=>{
+      const x=tr[id];
+      if(x && typeof x.title==="string" && /^[a-z0-9]{1,16}$/.test(id)) trips.push({id,owner:u,title:x.title.slice(0,50),when:String(x.when||"").slice(0,30),t:Number(x.t)||0,
+        places:(Array.isArray(x.places)?x.places:Object.keys(x.places||{}).map(k=>x.places[k])).slice(0,8).map(s=>String(s).slice(0,60))});
+    });
+  });
+  trips.sort((a,b)=>b.t-a.t);
+  box.appendChild(mkEl("div","share-title","🧳 "+T("Group trips")));
+  if(!trips.length) box.appendChild(mkEl("div","small lb-note",T("No trips yet. Plan one and see who is in!")));
+  trips.forEach(tr=>{
+    const key=tr.owner+"_"+tr.id, going=Object.keys(mem).filter(u=>u===tr.owner || (mem[u] && mem[u].going && mem[u].going[key])), mine=tr.owner===fbUser.uid, iAmIn=going.includes(fbUser.uid);
+    const cardEl=mkEl("div","trip-card");
+    cardEl.append(mkEl("b","",tr.title),mkEl("small","",(tr.when?"📅 "+tr.when+" · ":"")+T("planned by {0}",nameOf(tr.owner))));
+    if(tr.places.length){ const w=mkEl("div","cmp-chips"); tr.places.forEach(n=>w.append(mkEl("span","cchip a",n))); cardEl.append(w); }
+    cardEl.append(mkEl("small","","✋ "+T("Going ({0}): {1}",going.length,going.map(nameOf).join(", "))));
+    const act=mkEl("div","trip-act");
+    if(mine) act.append(mk(T("Delete"),"gray",async()=>{ if(await kidAsk(T("Delete the trip {0}?",tr.title),{emoji:"🧳"})){ await myRef().child("trips/"+tr.id).remove().catch(e=>console.warn(e)); loadBoard(); } }));
+    else act.append(mk(iAmIn?T("I am out"):T("I am in ✋"),iAmIn?"gray":"green",async()=>{
+      try{ if(iAmIn) await myRef().child("going/"+key).remove(); else{ await myRef().child("going/"+key).set(true); logAct("going",tr.title); confetti(); } }catch(e){ console.warn(e); }
+      loadBoard();
+    }));
+    if(tr.places.length) act.append(mk(T("⭐ Add to my wishlist"),"gray",()=>wishMany(tr.places)));
+    act.append(mk(T("📤 Share"),"gray",()=>shareText("🧳 "+tr.title+(tr.when?" · "+tr.when:"")+"\n"+(tr.places.length?"📍 "+tr.places.join(", ")+"\n":"")+"✋ "+going.map(nameOf).join(", ")+"\n"+T("Join us on My Travel Map with group code {0}",g.code)+" "+pageUrl("?join="+g.code))));
+    cardEl.append(act);
+    box.appendChild(cardEl);
+  });
+  box.appendChild(mk(T("➕ Plan a group trip"),"primary full",()=>planGroupTrip(g)));
+
+  // friend activity
+  const feed=feedFrom(mem).slice(0,15), seen=lsGet(feedSeenKey(),0);
+  box.appendChild(mkEl("div","share-title","🔔 "+T("Friend activity")));
+  if(!feed.length) box.appendChild(mkEl("div","small lb-note",T("Nothing yet. When your friends add places or play games, you will see it here.")));
+  feed.forEach(e=>{ const row=mkEl("div","feed-row"+(e.t>seen?" new":"")); row.append(mkEl("span","",e.text),mkEl("small","",agoText(e.t))); box.appendChild(row); });
+  clearTimeout(feedSeenTimer);
+  feedSeenTimer=setTimeout(()=>{ if(fbUser){ lsSet(feedSeenKey(),Date.now()); boardDot(false); } },1500);      // opening the list marks it as read
+}
+async function shareText(text){
+  try{ if(navigator.share){ await navigator.share({text}); return; } }catch(e){ if(e.name==="AbortError") return; }
+  let copied=false;
+  try{ await navigator.clipboard.writeText(text); copied=true; }catch(e){}
+  kidSay(copied?T("Copied! Paste it in WhatsApp or any chat."):text,"📤");
+}
+// Adds a list of place names to my wishlist (used for a friend's trip).
+async function wishMany(names){
+  const seg=document.querySelectorAll("#statusSeg button"), was=[...seg].find(b=>b.classList.contains("on"));
+  seg.forEach(b=>b.classList.toggle("on",b.dataset.v==="wish"));
+  try{ if(!isWide()) showTab("map",true); await addMany(names); }
+  finally{ seg.forEach(b=>b.classList.toggle("on",b===was)); }
+}
+function planGroupTrip(g){
+  const wish=places.filter(p=>p.status==="wish").slice(0,20);
+  const card=kidCard('<div class="kid-emoji">🧳</div><h3>'+T("Plan a group trip")+'</h3>'
+    +'<label for="gtTitle">'+T("Trip name")+'</label><input id="gtTitle" maxlength="50" autocomplete="off">'
+    +'<label for="gtWhen">'+T("When (for example December 2026)")+'</label><input id="gtWhen" maxlength="30" autocomplete="off">'
+    +'<label>'+T("Places")+'</label><div id="gtWish" class="gt-wish"></div>'
+    +'<input id="gtMore" maxlength="200" autocomplete="off" placeholder="'+T("Other places, with commas")+'">'
+    +'<div class="kid-btns" style="margin-top:14px"><button class="kid-yes">'+T("Save and tell my friends 📣")+'</button></div>');
+  const $=id=>card.box.querySelector("#"+id);
+  $("gtTitle").value=T("{0}’s trip",myName().split(" ")[0]);
+  wish.forEach(p=>{ const l=mkEl("label","gt-opt"); const c=mkEl("input"); c.type="checkbox"; c.value=p.name; l.append(c,mkEl("span","",catIcon(p)+" "+p.name)); $("gtWish").appendChild(l); });
+  if(!wish.length) $("gtWish").appendChild(mkEl("div","small",T("Tip: places on your wishlist appear here to tick.")));
+  card.box.querySelector(".kid-yes").onclick=async()=>{
+    const title=$("gtTitle").value.trim(), picked=[...card.box.querySelectorAll("#gtWish input:checked")].map(c=>c.value).concat($("gtMore").value.split(",").map(s=>s.trim()).filter(Boolean));
+    const list=[...new Set(picked)].slice(0,8).map(s=>s.slice(0,60));
+    if(!title){ kidSay(T("Give your trip a name first!"),"🧳"); return; }
+    const id="t"+Date.now().toString(36);
+    try{
+      await gref(g.code).child("members/"+fbUser.uid+"/trips/"+id).set({title:title.slice(0,50),when:$("gtWhen").value.trim().slice(0,30),places:list,t:Date.now()});
+      logAct("trip",title); card.close(); confetti(); loadBoard();
+    }catch(e){ groupRulesMsg(e); }
+  };
+}
+
+// ---- "How well do you know <friend>?" quiz made from a friend's map ----
+function friendQuiz(r){
+  const theirs=theirVisited(r);
+  if(theirs.length<2){ kidSay(T("{0} needs at least 2 visited places for a quiz.",r.name),"🧠"); return; }
+  const not=shuffle(famousPool().filter(x=>!samePlace({name:x.main,lat:x.lat,lon:x.lon},theirs))), pick=shuffle(theirs.slice()), qs=[];
+  pick.slice(0,2).forEach((p,k)=>{ const opts=shuffle([p.name].concat(not.slice(k*3,k*3+3).map(x=>x.main))); if(opts.length===4) qs.push({q:T("Which of these places has {0} visited?",r.name),options:opts,answer:opts.indexOf(p.name)}); });
+  [pick[2]||pick[0],not[7]].forEach((p,k)=>{ if(!p) return; const nm=p.name||p.main, yes=k===0, opts=[T("Yes"),T("No")]; qs.push({q:T("Has {0} been to {1}?",r.name,nm),options:opts,answer:yes?0:1}); });
+  const n=theirs.length, set=[...new Set([n,n+2,Math.max(1,n-2),n+5])]; if(set.length===4){ const opts=shuffle(set); qs.push({q:T("How many places has {0} visited?",r.name),options:opts.map(String),answer:opts.indexOf(n)}); }
+  const states=[...new Set(theirs.map(x=>x.st).filter(Boolean))], other=shuffle(statePaths.map(e=>e.dataset.n).filter(s=>!states.includes(s)));
+  if(states.length>=3 && other.length){ const opts=shuffle(shuffle(states).slice(0,3).concat(other[0])); qs.push({q:isWorld()?T("Which of these countries has {0} NOT visited?",r.name):T("Which of these states has {0} NOT visited?",r.name),options:opts.map(stName),answer:opts.indexOf(other[0])}); }
+  const list=shuffle(qs).slice(0,5);
+  const card=kidCard('<div class="kid-emoji">🧠</div><h3></h3><div class="sub" id="fqSub"></div><div id="fqBody"></div>');
+  card.box.querySelector("h3").textContent=T("How well do you know {0}?",r.name);
+  const sub=card.box.querySelector("#fqSub"), body=card.box.querySelector("#fqBody");
+  let i=0, score=0;
+  const finish=()=>{
+    sub.textContent=T("You scored {0} out of {1}!",score,list.length);
+    body.innerHTML='<div class="qz-score">'+(score===list.length?"🏅":score>=list.length/2?"👍":"😅")+'</div><div class="kid-btns"><button class="kid-yes">'+T("Okie dokie! 👍")+'</button></div>';
+    body.querySelector("button").onclick=card.close;
+    if(score===list.length) confetti();
+    logAct("fq",score+"/"+list.length,r.name);
+  };
+  const show=()=>{
+    const q=list[i];
+    sub.textContent=T("Question {0} of {1}",i+1,list.length);
+    body.innerHTML='<div class="qz-q"></div><div class="qz-opts"></div><div class="kid-btns" style="margin-top:12px"><button class="kid-yes" hidden></button></div>';
+    body.querySelector(".qz-q").textContent=q.q;
+    q.options.forEach((o,k)=>{
+      const b=mkEl("button","qz-opt",o); b.type="button";
+      b.onclick=()=>{
+        body.querySelectorAll(".qz-opt").forEach((x,m)=>{ x.disabled=true; if(m===q.answer) x.classList.add("right"); });
+        if(k===q.answer) score++; else b.classList.add("wrong");
+        const nx=body.querySelector(".kid-yes"); nx.hidden=false; nx.textContent=i+1<list.length?T("Next ➡️"):T("See my score 🏁");
+        nx.onclick=()=>{ i++; if(i<list.length) show(); else finish(); };
+      };
+      body.querySelector(".qz-opts").appendChild(b);
+    });
+  };
+  show();
+}
+// Trip plans from the wishlist planner as a message to send.
+function plannerText(){
+  const lines=places.filter(p=>p.status==="wish" && p.plan).map(p=>"🧳 "+p.name+": "+T("best time {0}, {1} days",p.plan.season,p.plan.days)+(p.plan.combine?", "+T("combine with {0}",p.plan.combine):""));
+  return T("My travel wishlist plans")+":\n"+lines.join("\n")+(pageUrl()?"\n"+T("Make your own map here: {0}",pageUrl()):"");
+}
 
 
 const soundToggle=document.getElementById("soundToggle");

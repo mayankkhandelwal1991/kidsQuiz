@@ -70,7 +70,7 @@ button.ig{background:linear-gradient(45deg,#f9ce34,#ee2a7b 55%,#6228d7);color:#f
 .marker-photo{position:absolute;right:11px;bottom:2px;width:38px;height:38px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 6px #0005;overflow:hidden;background:linear-gradient(135deg,#ffd86b,#ff8a5c);display:flex;align-items:center;justify-content:center;font-size:19px;line-height:1}
 .marker-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .kid-overlay{position:fixed;inset:0;z-index:9999;background:rgba(40,20,90,.45);display:flex;align-items:center;justify-content:center;padding:18px}
-.kid-box{font-family:"Comic Sans MS","Comic Neue","Chalkboard SE","Baloo 2",cursive,sans-serif;background:#fffbe8;border:5px dashed #ff7eb6;border-radius:28px;padding:20px 20px 18px;max-width:330px;width:100%;text-align:center;box-shadow:0 10px 0 #ffcf5c,0 18px 30px #0004;animation:kidPop .45s cubic-bezier(.3,1.7,.5,1)}
+.kid-box{font-family:inherit;background:#fffbe8;border:5px dashed #ff7eb6;border-radius:28px;padding:20px 20px 18px;max-width:330px;width:100%;text-align:center;box-shadow:0 10px 0 #ffcf5c,0 18px 30px #0004;animation:kidPop .45s cubic-bezier(.3,1.7,.5,1)}
 .kid-emoji{font-size:54px;line-height:1;display:inline-block;animation:kidWiggle 1s ease-in-out infinite}
 .kid-msg{font-size:18px;font-weight:800;color:#4a2a8a;margin:10px 0 16px;line-height:1.35;word-break:break-word}
 .kid-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
@@ -348,6 +348,12 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
 .cmp-chips{display:flex;flex-wrap:wrap;gap:5px}
 .cchip{font-size:12px;font-weight:700;padding:4px 9px;border-radius:99px}
 .cchip.a{background:#d7e6ff;color:#0b3b73}.cchip.b{background:#ece3ff;color:#4a2a8a}.cchip.mid{background:#d9f7e5;color:#14532d}.cchip.more{background:#eef2f7;color:#667085}
+.marker.cluster{display:none;z-index:6}
+.map-wrap.india-far .marker.cluster{display:block}
+.map-wrap.india-far .marker.in{display:none!important}
+.marker.cluster .pin{background:#ff9933;width:28px;height:28px}
+.marker.cluster .marker-label{display:block!important;background:#0b3b73;color:#fff;border-color:#fff;left:22px}
+.in-row{display:block;width:100%;margin-top:8px;text-align:left;background:#fff7e6;border:2px solid #ffd9a0;color:#6a4a00;border-radius:12px;padding:12px;font-size:13px}
 </style>
 </head>
 <body>
@@ -417,6 +423,7 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
         <div class="badge" id="count">0 places</div>
         <div class="small order-hint" id="orderHint" hidden data-t>Drag ⠿ to change the order</div>
         <div id="placeList"></div>
+        <button type="button" class="in-row" id="linkedRow" onclick="setMode('india')" hidden></button>
       </section>
 
       <section data-tab="board" hidden>
@@ -600,6 +607,9 @@ const HI={
 "None of these photos has a location saved inside it. Tip: choose the original camera photos (photos received on WhatsApp lose their location), and on Android pick them through “Files” or “Browse”.":"इनमें से किसी फ़ोटो में लोकेशन सेव नहीं है। सुझाव: कैमरे की असली फ़ोटो चुनें (WhatsApp से आई फ़ोटो में लोकेशन नहीं रहती), और Android पर इन्हें “Files” या “Browse” से चुनें।",
 "{0} photos":"{0} फ़ोटो","New pin":"नया पिन","Already on your map: photo will be added":"पहले से नक्शे पर है: फ़ोटो जुड़ जाएगी",
 "Add pins 📍":"पिन जोड़ें 📍",
+"India · {0} places":"भारत · {0} जगहें","From my India map · {0} places":"मेरे भारत के नक्शे से · {0} जगहें",
+"{0} comes from your India map. Open the India map to change it.":"{0} आपके भारत के नक्शे से है। इसे बदलने के लिए भारत का नक्शा खोलें।","Open India map 🇮🇳":"भारत का नक्शा खोलें 🇮🇳",
+"Getting your picture ready…":"आपकी तस्वीर तैयार हो रही है…",
 "World":"दुनिया",
 "{0} countries visited":"{0} देश घूमे",
 "countries":"देश",
@@ -818,6 +828,22 @@ function mk(k){return isWorld()?k+"_W":k;}                    // separate saved 
 function inBounds(lat,lon){ const b=MODES[MODE].box; return lat>=b[0] && lat<=b[1] && lon>=b[2] && lon<=b[3]; }
 function loadPlaces(){ try{ const v=JSON.parse(localStorage.getItem(MODES[MODE].key)||"null"); return Array.isArray(v)?v:[]; }catch(e){ return []; } }
 let places=loadPlaces();
+// On the World map the places from the India map are shown too. They are linked copies (marked _in):
+// they count in the totals but are never saved in the World list, and are edited only on the India map.
+function ownPlaces(){ return places.filter(p=>!p._in); }
+function linkIndia(){
+  places=places.filter(p=>!p._in);
+  if(!isWorld()) return;
+  let list=[];
+  try{ list=JSON.parse(localStorage.getItem(MODES.india.key)||"[]")||[]; }catch(e){}
+  const same=(a,b)=>String(a.name).toLowerCase().replace(/[^a-z0-9]/g,"")===String(b.name).toLowerCase().replace(/[^a-z0-9]/g,"") || (Math.abs(a.lat-b.lat)<0.03 && Math.abs(a.lon-b.lon)<0.03);
+  list.forEach(p=>{
+    if(!p || typeof p.name!=="string" || !Number.isFinite(p.lat) || !Number.isFinite(p.lon) || places.some(q=>same(q,p))) return;
+    const c=Object.assign({},p,{_in:true,country:"India"}); delete c.state; delete c.plan;
+    places.push(c);
+  });
+}
+linkIndia();
 let MAP_W, MAP_H, GEO, mapSvg, statePaths;
 const SVGS={india:document.getElementById("mapSvg")};
 function attachMap(){
@@ -980,6 +1006,14 @@ function linePath(list){
   }).join("");
 }
 
+const INDIA_MID={lat:22.5,lon:79};
+let clusterOn=false;
+function zoomToIndia(){
+  const w=mapWrap.clientWidth, h=mapWrap.clientHeight, q=project(INDIA_MID.lat,INDIA_MID.lon);
+  Z=Math.min(Z_MAX,Math.max(1,330/(BASE_W*32/360)));
+  TX=w/2-q.x/100*BASE_W*Z; TY=h/2-q.y/100*BASE_W*Z*MAP_H/MAP_W;
+  applyZoom();
+}
 const markerEls=new Map();                 // place -> its pin on the map (used by the journey replay)
 let replaying=false, renderQueued=false;
 function render() {
@@ -991,7 +1025,7 @@ function render() {
   shown.forEach(p=>{
     const q=project(p.lat,p.lon), ph=photoOf(p);
     const el=document.createElement("div");
-    el.className="marker "+p.status;
+    el.className="marker "+p.status+(p._in?" in":"");
     el.style.left=q.x+"%"; el.style.top=q.y+"%";
     el.title=p.name+(p.note?" — "+p.note:"");
     el.innerHTML='<div class="marker-photo"><span>'+catIcon(p)+'</span>'+(ph?'<img '+(p.photo?'':'crossorigin="anonymous" ')+'alt="" src="'+escapeHtml(ph)+'" onerror="this.remove()">':'')+'</div>'
@@ -1001,6 +1035,17 @@ function render() {
     layer.appendChild(el);
     markerEls.set(p,el);
   });
+  // World map: many Indian pins become one "India" pin until you zoom in
+  const linkedShown=shown.filter(p=>p._in).length;
+  clusterOn=isWorld() && linkedShown>3;
+  if(clusterOn){
+    const q=project(INDIA_MID.lat,INDIA_MID.lon), el=document.createElement("div");
+    el.className="marker visited cluster";
+    el.style.left=q.x+"%"; el.style.top=q.y+"%";
+    el.innerHTML='<div class="pin"></div><div class="marker-label">🇮🇳 '+escapeHtml(T("India · {0} places",linkedShown))+'</div>';
+    el.onclick=zoomToIndia;
+    layer.appendChild(el);
+  }
   drawGhost(layer);
 
   const st=getStats(), view=yearScope()?getStats(yearScope()):st;   // view = what the map shows (one year or everything)
@@ -1029,7 +1074,8 @@ function render() {
     : T("Showing {0} of {1} places",shown.length,places.length);
   const list=document.getElementById("placeList");
   list.innerHTML="";
-  shown.forEach((p,i)=>{
+  const listed=shown.filter(p=>!p._in);
+  listed.forEach((p,i)=>{
     const row=document.createElement("div");
     row.className="place";
     row.innerHTML='<button type="button" class="grip" aria-label="Move" title="Move">⠿</button><span><i class="dot '+p.status+'"></i>'+(i+1)+'. '+catIcon(p)+' '+escapeHtml(p.name)+(p.year?'<small>'+p.year+'</small>':'')+(p.rating?'<span class="rt">★'+p.rating+'</span>':'')+(p.fav?' ❤️':'')+'</span><button class="del" aria-label="Remove">×</button>';
@@ -1038,10 +1084,13 @@ function render() {
     row.querySelector(".del").onclick=e=>{e.stopPropagation();removePlace(p);};
     list.appendChild(row);
   });
-  enableReorder(list,shown);
-  document.getElementById("orderHint").hidden=shown.length<2;
+  enableReorder(list,listed);
+  document.getElementById("orderHint").hidden=listed.length<2;
+  const lr=document.getElementById("linkedRow");
+  lr.hidden=!(shown.length-listed.length);
+  lr.textContent="🇮🇳 "+T("From my India map · {0} places",shown.length-listed.length)+"  ›";
 
-  try{ localStorage.setItem(MODES[MODE].key,JSON.stringify(places)); }
+  try{ localStorage.setItem(MODES[MODE].key,JSON.stringify(ownPlaces())); }
   catch(e){ console.warn(e); kidSay(T("Uh-oh! Your browser storage is full. Try removing some of your own photos."),"📦"); }
   places.forEach(p=>{ if(p.img===undefined) loadPlaceImage(p); });
   scheduleMapBlob();
@@ -1500,9 +1549,9 @@ async function removePlace(p){
   return false;
 }
 async function resetPlaces(){
-  if(!places.length){ kidSay(T("Your map is already empty! Add a place first."),"🗺️"); return; }
-  if(await kidAsk(T("Whoa! Wipe ALL {0} places off the map and start fresh?",places.length),{emoji:"🙈",yes:T("Yes, start over! 🔄"),no:T("Nooo, keep them! 🛑")})){
-    places=[]; fStatus="all"; fCat="all"; fYear="all"; fFav=false;
+  if(!ownPlaces().length){ kidSay(T("Your map is already empty! Add a place first."),"🗺️"); return; }
+  if(await kidAsk(T("Whoa! Wipe ALL {0} places off the map and start fresh?",ownPlaces().length),{emoji:"🙈",yes:T("Yes, start over! 🔄"),no:T("Nooo, keep them! 🛑")})){
+    places=[]; linkIndia(); fStatus="all"; fCat="all"; fYear="all"; fFav=false;
     const input=document.getElementById("placeName");
     input.value=""; delete input.dataset.lat; delete input.dataset.lon; delete input.dataset.selectedName; delete input.dataset.cat; delete input.dataset.sub;
     hideSuggestions();
@@ -1540,6 +1589,10 @@ function readPhoto(file){
 
 // Tap a pin (or a row in the list): trip details, stars, favourite, own photo and a fun fact.
 function openPlaceCard(p){
+  if(p._in){                                         // linked from the India map: change it there
+    kidChoice(T("{0} comes from your India map. Open the India map to change it.",p.name),"🇮🇳",[["go",T("Open India map 🇮🇳"),"kid-yes"],["",T("Close"),"kid-plain"]]).then(v=>{ if(v==="go") setMode("india"); });
+    return;
+  }
   const draft={status:p.status,cat:catOf(p),photo:p.photo||"",rating:p.rating||0,fav:!!p.fav};
   const thisYear=new Date().getFullYear();
   const card=kidCard(
@@ -1681,21 +1734,26 @@ Return ONLY JSON:
   });
 }
 
+const canvasImages=new Map();           // photos already loaded for the picture, so they are fetched only once
 function loadCanvasImage(src){
-  return new Promise(resolve=>{
+  if(canvasImages.has(src)) return canvasImages.get(src);
+  const job=new Promise(resolve=>{
     const im=new Image();
     im.crossOrigin="anonymous";
-    const t=setTimeout(()=>resolve(null),6000);
+    const t=setTimeout(()=>{ canvasImages.delete(src); resolve(null); },2500);     // slow photo: leave it out, try again next time
     im.onload=()=>{clearTimeout(t);resolve(im);};
     im.onerror=()=>{clearTimeout(t);resolve(null);};
     im.src=src;
   });
+  canvasImages.set(src,job);
+  return job;
 }
 
 // The map (with coloured states, journey line and title) as an image for the picture.
-function svgImage(){
+function svgImage(forceLine){
   return new Promise((resolve,reject)=>{
     const clone=mapSvg.cloneNode(true);
+    if(forceLine){ const trip=journeyPlaces(yearScope()); if(trip.length>1) clone.querySelector("#journey").setAttribute("d",linePath(trip)); }   // journey line even when it is switched off on screen
     clone.setAttribute("width",MAP_W); clone.setAttribute("height",MAP_H);
     const im=new Image();
     im.onload=()=>resolve(im);
@@ -1710,12 +1768,14 @@ function fitText(ctx,text,maxW){
   return t+"…";
 }
 
-async function buildCanvas(mapOnly){
-  const shown=shownPlaces(), st=getStats(yearScope());
+async function buildCanvas(mapOnly,forceLine){
+  let shown=shownPlaces();
+  const st=getStats(yearScope()), linked=isWorld()?shown.filter(p=>p._in):[];
+  if(linked.length>3) shown=shown.filter(p=>!p._in).concat([{name:"🇮🇳 "+T("India · {0} places",linked.length),lat:INDIA_MID.lat,lon:INDIA_MID.lon,status:"visited",cat:"city"}]);
   const w=MAP_W, h=MAP_H, PW=(shown.length && !mapOnly)?440:0;        // PW = places-list panel on the right
   const canvas=document.createElement("canvas"); canvas.width=w+PW; canvas.height=h;
   const ctx=canvas.getContext("2d");
-  ctx.drawImage(await svgImage(),0,0,w,h);
+  ctx.drawImage(await svgImage(forceLine),0,0,w,h);
 
   const COL={visited:"#1faa59",wish:"#f5b301"};
   const photos=await Promise.all(shown.map(p=>photoOf(p)?loadCanvasImage(photoOf(p)):null));
@@ -1832,11 +1892,12 @@ async function downloadPNG(){
 }
 
 // Keep a ready-made picture so the share buttons can act instantly on click.
-let mapBlobCache=null, mapBlobTimer=null;
+let mapBlobCache=null, mapBlobTimer=null, shareReady=null;      // shareReady = the journey picture, made in the background after every change
+function makeSharePicture(){ return buildCanvas(false,true).then(c=>new Promise(res=>c.toBlob(res,"image/jpeg",0.92))); }
 function scheduleMapBlob(){
-  mapBlobCache=null;
+  mapBlobCache=null; shareReady=null;
   clearTimeout(mapBlobTimer);
-  mapBlobTimer=setTimeout(async()=>{ try{ mapBlobCache=await mapBlob(); }catch(e){ console.warn(e); } },400);
+  mapBlobTimer=setTimeout(()=>{ const job=makeSharePicture(); job.catch(e=>console.warn(e)); shareReady=job; },500);
 }
 
 // Share only to WhatsApp or Instagram: one click saves the picture and opens the app.
@@ -1903,6 +1964,7 @@ function applyZoom(){
   const zoomed=Z>1.01, pan=iw>w+1 || ih>h+1;
   mapWrap.classList.toggle("zoomed",zoomed);
   mapWrap.classList.toggle("pannable",pan);
+  mapWrap.classList.toggle("india-far",isWorld() && clusterOn && iw*32/360<200);     // India is still small on screen: show one pin for it
   mapWrap.style.touchAction=pan?"none":"pan-y";
   document.getElementById("zoomOut").disabled=!zoomed;
   document.getElementById("zoomReset").disabled=!zoomed;
@@ -2098,11 +2160,11 @@ async function shareYearCard(){
 
 // ---- 2. Backup and restore: everything goes into one file ----
 function backupData(){
-  if(!places.length){ kidSay(T("Add a place first, then make a backup!"),"💾"); return; }
+  if(!ownPlaces().length){ kidSay(T("Add a place first, then make a backup!"),"💾"); return; }
   const data={app:"my-visiting-places-india",version:1,exported:new Date().toISOString(),
-    name:nameInput.value.trim(),lang:LANG,journey:journeyToggle.checked,quiz:localStorage.getItem("myIndiaQuizV2")||"",places};
+    name:nameInput.value.trim(),lang:LANG,journey:journeyToggle.checked,quiz:localStorage.getItem("myIndiaQuizV2")||"",mode:MODE,places:ownPlaces()};
   saveBlob(new Blob([JSON.stringify(data)],{type:"application/json"}),"my-india-places-backup-"+new Date().toISOString().slice(0,10)+".json");
-  kidSay(T("Backup saved: {0} places with notes and photos. Send this file to your other phone and tap “Restore from file” there.",places.length),"💾");
+  kidSay(T("Backup saved: {0} places with notes and photos. Send this file to your other phone and tap “Restore from file” there.",ownPlaces().length),"💾");
 }
 // Keeps only safe, sensible values from a backup file.
 function cleanPlace(x){
@@ -2139,6 +2201,7 @@ async function restoreFile(file){
       [["merge",T("Add to my map ➕"),"kid-yes"],["replace",T("Replace my map 🔄"),"kid-no"],["",T("Cancel"),"kid-plain"]]);
     if(!mode) return;
   }
+  places=ownPlaces();
   if(mode==="replace") places=[];
   good.forEach(p=>{
     const dup=findDuplicate(p.name,p.lat,p.lon);
@@ -2150,10 +2213,11 @@ async function restoreFile(file){
     localStorage.setItem("myIndiaNameV2",nameInput.value);
   }
   if(data && data.quiz==="perfect") localStorage.setItem("myIndiaQuizV2","perfect");
+  linkIndia();
   showEverything();
   earnedBadges=null; quietCelebrate();   // restored badges should not all pop up again
   render();
-  kidSay(T("All done! {0} places are on your map now.",places.length),"🎉");
+  kidSay(T("All done! {0} places are on your map now.",ownPlaces().length),"🎉");
 }
 
 // ---- 4. Trip planner for the wishlist ----
@@ -2646,13 +2710,13 @@ function markDirty(){
   clearTimeout(pushTimer); pushTimer=setTimeout(cloudPush,3000);
   renderCloudNote();
 }
-function photoSig(){ return places.map((p,i)=>p.photo?i+":"+p.photo.length:"").join(","); }
+function photoSig(){ return ownPlaces().map((p,i)=>p.photo?i+":"+p.photo.length:"").join(","); }
 async function cloudPush(){
   if(!fbUser || !fbDb || cloudOk===false || !syncReady) return;
   const s=lsGet(syncKey(),{}), t=Date.now(), sig=photoSig();
-  const data=JSON.parse(JSON.stringify(places.map(p=>{ const o=Object.assign({},p); delete o.photo; delete o.state; return o; })));
-  const up={data,meta:{updated:t,count:places.length,name:nameInput.value.trim().slice(0,24)}};
-  if(sig!==s.psig){ up.photos={}; places.forEach((p,i)=>{ if(p.photo) up.photos["p"+i]=p.photo; }); }   // photos only when they changed
+  const mine=ownPlaces(), data=JSON.parse(JSON.stringify(mine.map(p=>{ const o=Object.assign({},p); delete o.photo; delete o.state; return o; })));
+  const up={data,meta:{updated:t,count:mine.length,name:nameInput.value.trim().slice(0,24)}};
+  if(sig!==s.psig){ up.photos={}; mine.forEach((p,i)=>{ if(p.photo) up.photos["p"+i]=p.photo; }); }   // photos only when they changed
   try{ await uref().update(up); cloudOk=true; lsSet(syncKey(),{t,dirty:false,psig:sig}); }
   catch(e){ cloudFail(e); }
   renderCloudNote();
@@ -2661,6 +2725,7 @@ async function cloudPull(meta){
   const v=(await uref().once("value")).val()||{}, ph=v.photos||{};
   const raw=Array.isArray(v.data)?v.data:Object.keys(v.data||{}).map(k=>v.data[k]);
   places=raw.map((x,i)=>x?cleanPlace(Object.assign({},x,{photo:ph["p"+i]})):null).filter(Boolean);
+  linkIndia();
   if(v.meta && typeof v.meta.name==="string" && v.meta.name && !nameInput.value.trim()){ nameInput.value=v.meta.name.slice(0,24); localStorage.setItem("myIndiaNameV2",nameInput.value); }
   showEverything(); earnedBadges=null; quietCelebrate();
   lastSlim=slimSig();
@@ -2674,12 +2739,12 @@ async function cloudStart(){
     const meta=(await uref().child("meta").once("value")).val();
     cloudOk=true;
     const s=lsGet(syncKey(),{});
-    if(!meta){ syncReady=true; if(places.length) await cloudPush(); }
-    else if(!places.length) await cloudPull(meta);
+    if(!meta){ syncReady=true; if(ownPlaces().length) await cloudPush(); }
+    else if(!ownPlaces().length) await cloudPull(meta);
     else if(meta.updated===s.t){ syncReady=true; if(s.dirty) await cloudPush(); }
     else if(s.t && !s.dirty) await cloudPull(meta);                      // changed on another phone, nothing new here
     else{
-      const pick=await kidChoice(T("Your account has a saved map with {0} places and this phone has {1}. Which one should I keep?",meta.count||0,places.length),"☁️",
+      const pick=await kidChoice(T("Your account has a saved map with {0} places and this phone has {1}. Which one should I keep?",meta.count||0,ownPlaces().length),"☁️",
         [["cloud",T("Use the saved map ☁️"),"kid-yes"],["local",T("Keep this phone’s map 📱"),"kid-no"]]);
       if(pick==="cloud") await cloudPull(meta); else{ syncReady=true; await cloudPush(); }
     }
@@ -2999,15 +3064,14 @@ function shareMessage(){
 // Share button on the home screen: sends the journey picture with a message and the site link.
 async function shareHome(){
   if(!places.length){ kidSay(T("Add a place first, then share your map!"),"📤"); return; }
-  const line=document.getElementById("journey"), keep=line.getAttribute("d"), trip=journeyPlaces(yearScope());
+  clearTimeout(mapBlobTimer);
+  if(!shareReady){ shareReady=makeSharePicture(); toast("📤 "+T("Getting your picture ready…")); }   // normally it is ready before the tap
   let blob;
+  try{ blob=await shareReady; }
+  catch(e){ console.warn(e); shareReady=null; blob=await makeSharePicture(); }
+  const text=shareMessage(), fname=isWorld()?"my-world-journey.jpg":"my-india-journey.jpg";
   try{
-    if(trip.length>1) line.setAttribute("d",linePath(trip));        // the journey line is always on the shared picture
-    blob=await mapBlob();
-  }finally{ line.setAttribute("d",keep); }
-  const text=shareMessage(), fname="my-india-journey.png";
-  try{
-    const file=new File([blob],fname,{type:"image/png"});
+    const file=new File([blob],fname,{type:"image/jpeg"});
     if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file],title:titleText(),text}); return; }
   }catch(e){ if(e.name==="AbortError") return; console.warn("Share sheet failed; saving the picture instead.",e); }
   saveBlob(blob,fname);                                            // computers: save the picture and copy the message
@@ -3335,7 +3399,7 @@ function renderEngage(es,mp){
 // ---- runs after every redraw: stamps new places, celebrates, keeps the cloud copy fresh ----
 let prevStates=null, quiet=true, lastSlim=null;       // quiet = no celebrations (page load, restore, cloud download)
 function quietCelebrate(){ quiet=true; prevStates=null; }
-function slimSig(){ return JSON.stringify(places.map(p=>[p.name,p.status,p.cat,p.year||0,p.date||"",p.note||"",p.rating||0,p.fav?1:0,p.photo?p.photo.length:0])); }
+function slimSig(){ return JSON.stringify(ownPlaces().map(p=>[p.name,p.status,p.cat,p.year||0,p.date||"",p.note||"",p.rating||0,p.fav?1:0,p.photo?p.photo.length:0])); }
 function afterRender(st){
   places.forEach(p=>{ if(typeof p.added!=="number") p.added=Date.now(); });
   const names=[...st.regions];
@@ -3448,7 +3512,7 @@ function renderModeSeg(){ document.querySelectorAll("#modeSeg button").forEach(b
 function setMode(m){
   if(m===MODE || replaying || !MODES[m]) return;
   MODE=m; localStorage.setItem("myMapModeV2",m);
-  ghost=null; places=loadPlaces(); normPlaces();
+  ghost=null; places=loadPlaces(); linkIndia(); normPlaces();
   LOCAL_PLACES=isWorld()?WORLD_PLACES:INDIA_PLACES;
   showEverything(); Z=1; hideSuggestions();
   attachMap();

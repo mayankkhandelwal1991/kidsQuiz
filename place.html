@@ -392,6 +392,7 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
 .gt-wish{display:flex;flex-wrap:wrap;gap:6px;text-align:left;margin-bottom:8px}
 .kid-card label.gt-opt{display:flex;align-items:center;gap:6px;margin:0;padding:6px 10px;border-radius:99px;background:#fff;border:2px solid #e3c8ff;font-size:13px;font-weight:700;color:#172033}
 .kid-card .gt-opt input{width:18px;height:18px;min-height:0;padding:0;flex:none}
+.app-ver{text-align:center;margin-top:16px;color:#98a2b3}
 </style>
 </head>
 <body>
@@ -528,6 +529,7 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
         <input id="restoreFile" type="file" accept=".json,application/json" hidden>
         <label class="switch-row"><span data-t>Celebration sounds</span><input type="checkbox" id="soundToggle" checked></label>
         <button class="gray full danger" onclick="resetPlaces()" data-t>↺ Reset</button>
+        <div class="small app-ver" id="appVer"></div>
       </section>
     </div>
   </aside>
@@ -2783,6 +2785,7 @@ const FIREBASE_CONFIG={
   messagingSenderId:"851797718600",
   appId:"1:851797718600:web:e990b3435751d209228a7d"
 };
+const APP_VERSION="1.19", APP_DATE="8 Oct 2026";      // shown at the bottom of the More tab; change both with every update
 const FB_VER="10.12.2";
 // The web address people should open, used in share messages and invites.
 // Leave "" to use the address this page is opened from; set it (e.g. "https://example.com/india-map.html") if you share from an app or a saved file.
@@ -3308,6 +3311,7 @@ function shareHub(){
 }
 
 document.getElementById("inAppNote").hidden=!inAppBrowser();
+document.getElementById("appVer").textContent="My Travel Map · v"+APP_VERSION+" · "+APP_DATE;
 
 // ---- start-up ----
 showTab(isWide()?"places":"map",true);

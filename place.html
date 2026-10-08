@@ -400,6 +400,7 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
           <button class="ig" onclick="shareMap('instagram')">📸 Instagram</button>
         </div>
         <button class="green full" onclick="downloadPNG()" data-t>⬇ Download PNG</button>
+        <button class="gray full" onclick="shareHub()" data-t>📤 More ways to share</button>
         <div class="share-title" data-t>Backup (move to another phone)</div>
         <div class="actions" style="margin-top:6px">
           <button class="gray" onclick="backupData()" data-t>💾 Backup to file</button>
@@ -534,6 +535,13 @@ const HI={
 "None of these photos has a location saved inside it. Tip: choose the original camera photos (photos received on WhatsApp lose their location), and on Android pick them through “Files” or “Browse”.":"इनमें से किसी फ़ोटो में लोकेशन सेव नहीं है। सुझाव: कैमरे की असली फ़ोटो चुनें (WhatsApp से आई फ़ोटो में लोकेशन नहीं रहती), और Android पर इन्हें “Files” या “Browse” से चुनें।",
 "{0} photos":"{0} फ़ोटो","New pin":"नया पिन","Already on your map: photo will be added":"पहले से नक्शे पर है: फ़ोटो जुड़ जाएगी",
 "Add pins 📍":"पिन जोड़ें 📍",
+"🇮🇳 My India journey so far: {0} places, {1} states and {2} km!":"🇮🇳 मेरी अब तक की भारत यात्रा: {0} जगहें, {1} राज्य और {2} किमी!",
+"⭐ My favourite so far: {0}.":"⭐ अब तक की मेरी सबसे पसंदीदा जगह: {0}।","✈️ Next on my wishlist: {0}.":"✈️ मेरी विशलिस्ट में अगला: {0}।",
+"{0} My level on My India Travel Map: {1}. Can you beat me?":"{0} My India Travel Map पर मेरा लेवल: {1}। क्या आप मुझसे आगे निकल सकते हैं?",
+"Make your own map here: {0}":"अपना नक्शा यहाँ बनाएँ: {0}",
+"Your journey picture is saved and the message with the link is copied. Paste it in WhatsApp or Instagram and attach the picture.":"आपकी यात्रा की तस्वीर सेव हो गई और लिंक वाला संदेश कॉपी हो गया। इसे WhatsApp या Instagram में पेस्ट करें और तस्वीर अटैच करें।",
+"Your journey picture is saved! Attach it in WhatsApp or Instagram.":"आपकी यात्रा की तस्वीर सेव हो गई! इसे WhatsApp या Instagram में अटैच करें।",
+"📤 More ways to share":"📤 शेयर करने के और तरीके",
 "Drag ⠿ to change the order":"क्रम बदलने के लिए ⠿ को खींचें",
 "12 Jyotirlingas":"12 ज्योतिर्लिंग",
 "Add 2 places you visited":"2 घूमी हुई जगहें जोड़ें",
@@ -2358,6 +2366,9 @@ const FIREBASE_CONFIG={
   appId:"1:851797718600:web:e990b3435751d209228a7d"
 };
 const FB_VER="10.12.2";
+// The web address people should open, used in share messages and invites.
+// Leave "" to use the address this page is opened from; set it (e.g. "https://example.com/india-map.html") if you share from an app or a saved file.
+const SITE_URL="";
 const BOARDS=[["xp","⭐","Points"],["places","📍","Places"],["states","🗺️","States"],["km","🛣️","Km"],["badges","🏅","Badges"]];
 let fbUser=null, fbAuth=null, fbDb=null, lbCrit="xp", lbRows=null, submitTimer=null;
 
@@ -2566,7 +2577,7 @@ async function leaveGroup(g){
   lsSet("myIndiaGroupsV2_"+fbUser.uid,myGroups().filter(x=>x.code!==g.code));
   lbGroup=""; loadBoard();
 }
-function pageUrl(extra){ return /^https?:$/.test(location.protocol) ? location.origin+location.pathname+(extra||"") : ""; }
+function pageUrl(extra){ const base=SITE_URL || (/^https?:$/.test(location.protocol)?location.origin+location.pathname:""); return base?base+(extra||""):""; }
 async function inviteGroup(g){
   const text=T("Join my travel group “{0}” on My India Travel Map! Group code: {1}",g.name,g.code)+" "+pageUrl("?join="+g.code);
   try{ if(navigator.share){ await navigator.share({text}); return; } }catch(e){ if(e.name==="AbortError") return; }
@@ -2780,8 +2791,37 @@ async function recordJourney(){
   const blob=new Blob(chunks,{type:mime.split(";")[0]});
   shareBlob(blob,"india-journey."+(mime.includes("mp4")?"mp4":"webm"),challengeText());
 }
-// Share button on the home screen: pick what to share.
-function shareHome(){
+// The message that goes with the journey picture.
+function shareMessage(){
+  const es=engageState(), st=es.st, best=topFive(0)[0], next=places.find(p=>p.status==="wish"), url=pageUrl(), L=LEVELS[es.lvl];
+  const lines=[T("🇮🇳 My India journey so far: {0} places, {1} states and {2} km!",st.v,st.states,st.km.toLocaleString("en-IN"))];
+  if(best) lines.push(T("⭐ My favourite so far: {0}.",best.name));
+  if(next) lines.push(T("✈️ Next on my wishlist: {0}.",next.name));
+  lines.push(T("{0} My level on My India Travel Map: {1}. Can you beat me?",L[1],T(L[2])));
+  if(url) lines.push(T("Make your own map here: {0}",url));
+  return lines.join("\n");
+}
+// Share button on the home screen: sends the journey picture with a message and the site link.
+async function shareHome(){
+  if(!places.length){ kidSay(T("Add a place first, then share your map!"),"📤"); return; }
+  const line=document.getElementById("journey"), keep=line.getAttribute("d"), trip=journeyPlaces(yearScope());
+  let blob;
+  try{
+    if(trip.length>1) line.setAttribute("d",linePath(trip));        // the journey line is always on the shared picture
+    blob=await mapBlob();
+  }finally{ line.setAttribute("d",keep); }
+  const text=shareMessage(), fname="my-india-journey.png";
+  try{
+    const file=new File([blob],fname,{type:"image/png"});
+    if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file],title:titleText(),text}); return; }
+  }catch(e){ if(e.name==="AbortError") return; console.warn("Share sheet failed; saving the picture instead.",e); }
+  saveBlob(blob,fname);                                            // computers: save the picture and copy the message
+  let copied=false;
+  try{ await navigator.clipboard.writeText(text); copied=true; }catch(e){}
+  kidSay(copied?T("Your journey picture is saved and the message with the link is copied. Paste it in WhatsApp or Instagram and attach the picture."):T("Your journey picture is saved! Attach it in WhatsApp or Instagram."),"🎉");
+}
+// More ways to share (in the More tab).
+function shareHub(){
   if(!places.length){ kidSay(T("Add a place first, then share your map!"),"📤"); return; }
   const card=kidCard('<div class="kid-emoji">📤</div><h3>'+T("Share my map")+'</h3><div class="tool-grid" id="shGrid"></div>');
   const toBlob=c=>new Promise(r=>c.toBlob(r,"image/png"));

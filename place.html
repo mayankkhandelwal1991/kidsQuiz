@@ -354,6 +354,32 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
 .marker.cluster .pin{background:#ff9933;width:28px;height:28px}
 .marker.cluster .marker-label{display:block!important;background:#0b3b73;color:#fff;border-color:#fff;left:22px}
 .in-row{display:block;width:100%;margin-top:8px;text-align:left;background:#fff7e6;border:2px solid #ffd9a0;color:#6a4a00;border-radius:12px;padding:12px;font-size:13px}
+.col-th{position:relative;flex:none;width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#ffd86b,#ff8a5c);display:flex;align-items:center;justify-content:center;font-size:24px}
+.col-th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:14px}
+.col-th:not(.done) img,.col-th:not(.done) .col-em{filter:grayscale(.85);opacity:.75}
+.col-th:not(.done){background:#e3e9f1}
+.col-tick{position:absolute;right:-5px;bottom:-5px;width:20px;height:20px;border-radius:50%;background:#33c26b;color:#fff;font-style:normal;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.col-tick:empty{display:none}
+.tool.span2{grid-column:1/-1;flex-direction:row;min-height:52px}
+.map-wrap.gaming{cursor:crosshair}
+.map-wrap.gaming .marker:not(.gm),.map-wrap.gaming .home-mk,.map-wrap.gaming .crown-mk{display:none!important}
+.marker.gm .marker-label{display:block!important}
+.game-bar{background:#fff3c4;color:#6a4a00}.game-bar button{background:#6a4a00}
+.home-mk{position:absolute;transform:translate(-50%,-50%);font-size:20px;line-height:1;z-index:6;pointer-events:none;filter:drop-shadow(0 1px 2px #0007)}
+.crown-mk{position:absolute;transform:translate(-50%,-50%);z-index:7;background:#fff;border:2px solid #b487de;color:#4a2a8a;border-radius:99px;padding:1px 7px;font-size:11px;font-weight:800;white-space:nowrap;box-shadow:0 1px 4px #0004;pointer-events:none}
+.crown-mk.me{border-color:#f5a700;background:#fff8e1;color:#6a4a00}
+.kid-row.mine{background:#fff8e1;border-color:#ffcf5c}
+.gp-pic{width:100%;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:#e3e9f1}
+.gp-pic img{width:100%;height:100%;object-fit:cover;filter:blur(22px);transform:scale(1.15);transition:filter 9s linear}
+.gp-pic img.clear{filter:blur(0)}.gp-pic img.now{transition:none}
+.scratch{position:relative;width:300px;max-width:100%;aspect-ratio:1;margin:8px auto 0;border-radius:18px;overflow:hidden;background:#fff;box-shadow:inset 0 0 0 2px #e3c8ff}
+.scratch canvas{position:absolute;inset:0;width:100%;height:100%}
+.sc-foil{touch-action:none;cursor:grab;transition:opacity .5s}
+.mys-card{display:flex;gap:10px;align-items:center;margin-top:8px;padding:10px 12px;border-radius:16px;background:#f3ecff;border:2px solid #dcc9fb}
+.mys-card.done{background:#fff8e1;border-color:#ffcf5c}
+.mys-card .ic{font-size:28px}.mys-card b{display:block;font-size:13px}.mys-card small{display:block;font-size:12px;color:#667085;line-height:1.3}
+.type-em{font-size:76px;line-height:1.1}.type-tag{font-size:14px;color:#475467;margin:6px 0 10px;line-height:1.4}
+.home-row{display:flex;gap:8px}.home-row input{flex:1;min-width:0}.home-row button{flex:none;min-width:64px}
 </style>
 </head>
 <body>
@@ -390,6 +416,7 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
       <button type="button" id="factBtn" onclick="factPopup()" aria-label="Fun fact" title="Fun fact">💡</button>
     </div>
     <div class="ghost-bar" id="ghostBar" hidden><span id="ghostTxt"></span><button type="button" onclick="clearGhost()"><span data-t>Hide</span> ✕</button></div>
+    <div class="ghost-bar game-bar" id="gameBar" hidden><span id="gameTxt"></span><button type="button" onclick="endPinDrop(true)" aria-label="Close">✕</button></div>
     <div class="stage" id="stage">
       <div class="map-wrap" id="mapWrap">
         <div id="mapInner">
@@ -437,6 +464,14 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
 
       <section data-tab="fun" hidden>
         <div id="engage"></div>
+        <div class="share-title" data-t>Games and fun</div>
+        <div class="tool-grid">
+          <button type="button" class="tool" onclick="startPinDrop()"><span class="ic">📍</span><span data-t>Pin-drop challenge</span></button>
+          <button type="button" class="tool" onclick="startGuessPlace()"><span class="ic">🖼️</span><span data-t>Guess the place</span></button>
+          <button type="button" class="tool" onclick="surpriseMe()"><span class="ic">🎲</span><span data-t>Surprise me</span></button>
+          <button type="button" class="tool" onclick="openPersonality()"><span class="ic">🧬</span><span data-t>My traveller type</span></button>
+          <button type="button" class="tool span2" onclick="openNumbers()"><span class="ic">🔢</span><span data-t>My travel in numbers</span></button>
+        </div>
         <div class="prog">
           <h4 data-t>🗺️ My progress</h4>
           <div class="prog-top">
@@ -464,6 +499,8 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
         <div class="notice cloud-note" id="cloudNote" hidden></div>
         <label for="travellerName" data-t>Your name (shown on the picture)</label>
         <input id="travellerName" maxlength="24" autocomplete="off" data-tp placeholder="e.g. Mayank">
+        <label for="homeInput" data-t>My home town (draws a line from home to every place)</label>
+        <div class="home-row"><input id="homeInput" maxlength="40" autocomplete="off" data-tp placeholder="e.g. Jaipur"><button type="button" class="primary" onclick="setHome()" data-t>Set</button></div>
         <div class="share-title" data-t>Share my map</div>
         <div class="actions" style="margin-top:6px">
           <button class="wa" onclick="shareMap('whatsapp')">🟢 WhatsApp</button>
@@ -607,6 +644,76 @@ const HI={
 "None of these photos has a location saved inside it. Tip: choose the original camera photos (photos received on WhatsApp lose their location), and on Android pick them through “Files” or “Browse”.":"इनमें से किसी फ़ोटो में लोकेशन सेव नहीं है। सुझाव: कैमरे की असली फ़ोटो चुनें (WhatsApp से आई फ़ोटो में लोकेशन नहीं रहती), और Android पर इन्हें “Files” या “Browse” से चुनें।",
 "{0} photos":"{0} फ़ोटो","New pin":"नया पिन","Already on your map: photo will be added":"पहले से नक्शे पर है: फ़ोटो जुड़ जाएगी",
 "Add pins 📍":"पिन जोड़ें 📍",
+"Games and fun":"खेल और मज़ा",
+"Pin-drop challenge":"पिन-ड्रॉप चुनौती",
+"Guess the place":"जगह पहचानो",
+"Surprise me":"मुझे चौंकाओ",
+"My traveller type":"मेरा यात्री प्रकार",
+"My travel in numbers":"आँकड़ों में मेरी यात्रा",
+"My home town (draws a line from home to every place)":"मेरा घर का शहर (घर से हर जगह तक रेखा बनती है)",
+"Set":"सेट करें",
+"e.g. Jaipur":"जैसे जयपुर",
+"Where is {0}? Tap the map!":"{0} कहाँ है? नक्शे पर टैप करें!",
+"{0} km away · +{1} points":"{0} किमी दूर · +{1} अंक",
+"Pin-drop score: {0} out of {1}! Your best: {2}.":"पिन-ड्रॉप स्कोर: {1} में से {0}! आपका सबसे अच्छा: {2}।",
+"Finding photos… 🤔":"फ़ोटो खोज रहे हैं… 🤔",
+"I could not load the photos. Check your internet and try again.":"फ़ोटो लोड नहीं हुईं। इंटरनेट जाँचकर फिर कोशिश करें।",
+"Photo {0} of {1}":"फ़ोटो {0} / {1}",
+"✅ Correct! +{0} points":"✅ सही! +{0} अंक",
+"❌ It is {0}.":"❌ यह {0} है।",
+"⭐ Add to wishlist":"⭐ विशलिस्ट में जोड़ें",
+"🎲 Another":"🎲 कोई और",
+"{0} is on your wishlist!":"{0} आपकी विशलिस्ट में जुड़ गया!",
+"Mountain Soul":"पहाड़ों का दीवाना",
+"You are happiest where the air is cool and the roads keep climbing.":"आपको वहीं सबसे अच्छा लगता है जहाँ हवा ठंडी हो और रास्ते ऊपर चढ़ते जाएँ।",
+"Beach Lover":"समुद्र तट प्रेमी",
+"Sand, waves and sunsets are your idea of a perfect trip.":"रेत, लहरें और डूबता सूरज: यही आपकी मनपसंद यात्रा है।",
+"Temple Trailblazer":"मंदिरों का यात्री",
+"You follow the sound of bells and the stories of old shrines.":"आप घंटियों की आवाज़ और पुराने मंदिरों की कहानियों के पीछे चलते हैं।",
+"History Hunter":"इतिहास खोजी",
+"Forts, palaces and old walls pull you in every time.":"किले, महल और पुरानी दीवारें आपको हर बार खींच लाती हैं।",
+"Jungle Explorer":"जंगल का खोजी",
+"You would swap any hotel for a safari at sunrise.":"आप किसी भी होटल के बदले सुबह की सफ़ारी चुनेंगे।",
+"City Wanderer":"शहरों का घुमक्कड़",
+"Busy streets, food lanes and city lights are your playground.":"भीड़ भरी सड़कें, खाने की गलियाँ और शहर की रोशनी आपका मैदान हैं।",
+"All-Rounder":"हरफ़नमौला",
+"Mountains, beaches, temples or cities: you say yes to all of it.":"पहाड़, समुद्र, मंदिर या शहर: आप सबके लिए तैयार रहते हैं।",
+"Add a few visited places and I will tell you your traveller type!":"कुछ घूमी हुई जगहें जोड़ें, फिर मैं आपका यात्री प्रकार बताऊँगा!",
+"📤 Share my type":"📤 मेरा प्रकार शेयर करें",
+"I am a {0}! What is your traveller type?":"मैं हूँ {0}! आपका यात्री प्रकार क्या है?",
+"Add a few visited places and I will show your travel in numbers!":"कुछ घूमी हुई जगहें जोड़ें, फिर मैं आपकी यात्रा के आँकड़े दिखाऊँगा!",
+"{0} km travelled: that is {1} times around the Earth":"{0} किमी का सफ़र: यानी पृथ्वी के {1} चक्कर",
+"{0} km travelled: like crossing India top to bottom {1} times":"{0} किमी का सफ़र: जैसे भारत को ऊपर से नीचे {1} बार पार करना",
+"You have seen {0}% of the world’s countries":"आप दुनिया के {0}% देश देख चुके हैं",
+"You have seen {0}% of India’s states and union territories":"आप भारत के {0}% राज्य और केंद्र शासित प्रदेश देख चुके हैं",
+"Furthest north: {0} · furthest south: {1}":"सबसे उत्तर में: {0} · सबसे दक्षिण में: {1}",
+"Longest hop: {0} to {1}, {2} km":"सबसे लंबी छलाँग: {0} से {1}, {2} किमी",
+"Busiest year: {0} with {1} places":"सबसे व्यस्त साल: {0}, {1} जगहें",
+"Furthest from home: {0}, {1} km away":"घर से सबसे दूर: {0}, {1} किमी",
+"{0} favourites and {1} places with a memory":"{0} पसंदीदा और {1} जगहें यादों के साथ",
+"Your friends have not added places yet. Invite them to find your travel twin!":"आपके दोस्तों ने अभी जगहें नहीं जोड़ीं। अपना यात्रा जुड़वाँ खोजने के लिए उन्हें बुलाएँ!",
+"Your travel twin is {0}! Your maps are {1}% the same, with {2} places in common.":"आपका यात्रा जुड़वाँ है {0}! आपके नक्शे {1}% एक जैसे हैं और {2} जगहें दोनों में हैं।",
+"Compare our maps":"हमारे नक्शों की तुलना करें",
+"👯 Find my travel twin":"👯 मेरा यात्रा जुड़वाँ खोजें",
+"👑 Kings and queens":"👑 राजा और रानी",
+"Kings and queens":"राजा और रानी",
+"You rule {0} of {1} countries":"{1} में से {0} देशों पर आपका राज है",
+"You rule {0} of {1} states":"{1} में से {0} राज्यों पर आपका राज है",
+"Tie: {0}":"बराबरी: {0}",
+"🙈 Hide crowns from my map":"🙈 मेरे नक्शे से ताज हटाएँ",
+"👑 Show crowns on my map":"👑 मेरे नक्शे पर ताज दिखाएँ",
+"👑 Crowns show who leads each place in your group":"👑 ताज बताते हैं कि आपके ग्रुप में हर जगह कौन आगे है",
+"Home town removed":"घर का शहर हटा दिया",
+"Home set: {0}":"घर सेट हुआ: {0}",
+"Scratch the silver to reveal your new place!":"अपनी नई जगह देखने के लिए चाँदी को खुरचें!",
+"Scratch here":"यहाँ खुरचें",
+"You won this week’s mystery stamp: {0}! +30 points":"आपने इस हफ़्ते का रहस्यमय स्टैम्प जीता: {0}! +30 अंक",
+"Mystery stamp of the week":"हफ़्ते का रहस्यमय स्टैम्प",
+"You have it: {0}! +30 points":"यह आपके पास है: {0}! +30 अंक",
+"Clue: it is in {0}. Been there? Add it to win a rare stamp.":"संकेत: यह {0} में है। वहाँ गए हैं? जोड़ें और दुर्लभ स्टैम्प जीतें।",
+"Rare stamps won: {0}":"जीते हुए दुर्लभ स्टैम्प: {0}",
+
+"Visited ✓":"घूम लिया ✓","Not visited yet":"अभी नहीं घूमे",
 "India · {0} places":"भारत · {0} जगहें","From my India map · {0} places":"मेरे भारत के नक्शे से · {0} जगहें",
 "{0} comes from your India map. Open the India map to change it.":"{0} आपके भारत के नक्शे से है। इसे बदलने के लिए भारत का नक्शा खोलें।","Open India map 🇮🇳":"भारत का नक्शा खोलें 🇮🇳",
 "Getting your picture ready…":"आपकी तस्वीर तैयार हो रही है…",
@@ -1017,7 +1124,7 @@ function zoomToIndia(){
 const markerEls=new Map();                 // place -> its pin on the map (used by the journey replay)
 let replaying=false, renderQueued=false;
 function render() {
-  if(replaying){ renderQueued=true; return; }                       // do not disturb the travel film
+  if(replaying || pinGame){ renderQueued=true; return; }                       // do not disturb the travel film
   if(fYear!=="all" && !places.some(p=>p.year===fYear)) fYear="all";  // that year has no trips any more
   const layer = document.getElementById("markers");
   const shown=shownPlaces();
@@ -1047,6 +1154,7 @@ function render() {
     layer.appendChild(el);
   }
   drawGhost(layer);
+  drawExtras(layer);
 
   const st=getStats(), view=yearScope()?getStats(yearScope()):st;   // view = what the map shows (one year or everything)
   // colour in the states that have a visited place
@@ -2962,6 +3070,7 @@ async function loadFriends(box,tools,id,stale){
     renderLbMe();
     tools.append(mk(T("📨 Invite friends · code {0}",g.code),"green full",()=>inviteGroup(g)));
     tools.append.apply(tools,starters());
+    tools.append(mk(T("👯 Find my travel twin"),"gray full",findTwin),mk(T("👑 Kings and queens"),"gray full",openRulers));
     tools.append(mk(T("Leave this group"),"gray full danger",()=>leaveGroup(g)));
   }catch(e){
     cloudFail(e);
@@ -3193,7 +3302,8 @@ function engageState(){
   const cols=COLS().map(c=>{ const pr=collectionProgress(c,st); return {c,pr,done:pr.filter(x=>x.done).length}; });
   const colDone=cols.filter(x=>x.done===x.pr.length).length;
   const daily=lsGet("myIndiaDailyV2",{}), monthly=lsGet("myIndiaMonthlyV2",[]), badges=BADGES.filter(b=>b.t(st)).length;
-  const xp=st.v*10+st.states*50+st.uts*30+st.w*2+st.mem*5+st.rated*2+badges*20+colDone*100+monthly.length*50+(daily.best||0)*5;
+  const xp=st.v*10+st.states*50+st.uts*30+st.w*2+st.mem*5+st.rated*2+badges*20+colDone*100+monthly.length*50+(daily.best||0)*5
+    +lsGet(mk("myMysteryV1"),[]).length*30+Math.floor((lsGet(mk("myPinDropV1"),{}).best||0)/10)+Math.floor((lsGet(mk("myGuessV1"),{}).best||0)/10);
   let lvl=0; LEVELS.forEach((L,i)=>{ if(xp>=L[0]) lvl=i; });
   return {st,cols,colDone,xp,lvl,badges,daily,monthly};
 }
@@ -3337,13 +3447,29 @@ function passportCanvas(){
 }
 
 // ---- Explore tab: level, daily, monthly, memory, collections ----
+// Small photo for a collection item, looked up on Wikipedia once and then remembered on this phone.
+const thumbJobs=new Map();
+function thumbFor(name){
+  const key=(isWorld()?"w:":"i:")+name, saved=lsGet("myThumbsV1",{});
+  const good=u=>typeof u==="string" && /^https:\/\/upload\.wikimedia\.org\/[^\s"'<>]+$/.test(u);
+  if(good(saved[key])) return Promise.resolve(saved[key]);
+  if(thumbJobs.has(key)) return thumbJobs.get(key);
+  const job=findPlaceImage(name.replace(/[()]/g," ")).then(url=>{
+    if(good(url)){ const all=lsGet("myThumbsV1",{}); all[key]=url; lsSet("myThumbsV1",all); return url; }
+    return "";
+  }).catch(e=>{ console.warn("No photo for "+name,e); thumbJobs.delete(key); return ""; });
+  thumbJobs.set(key,job);
+  return job;
+}
 function openCollection(x){
   const card=kidCard('<div class="kid-emoji">'+x.c.e+'</div><h3>'+T(x.c.n)+'</h3><div class="sub">'+T("{0} of {1} done",x.done,x.pr.length)+(x.done===x.pr.length?" 🏆":"")+'</div><div class="col-list"></div>');
   const list=card.box.querySelector(".col-list");
   x.pr.forEach(it=>{
     const row=mkEl("div","kid-row");
-    row.append(mkEl("span","em",it.done?"✅":"⬜"));
-    const mid=mkEl("div"); mid.append(mkEl("b","",it.label)); row.append(mid);
+    const th=mkEl("span","col-th"+(it.done?" done":"")); th.append(mkEl("span","col-em",x.c.e),mkEl("i","col-tick",it.done?"✓":""));
+    row.append(th);
+    thumbFor(it.label).then(url=>{ if(!url || !document.body.contains(th)) return; const im=mkEl("img"); im.alt=""; im.loading="lazy"; im.onerror=()=>im.remove(); im.src=url; th.insertBefore(im,th.lastChild); });
+    const mid=mkEl("div"); mid.append(mkEl("b","",it.label),mkEl("small","",it.done?T("Visited ✓"):T("Not visited yet"))); row.append(mid);
     if(!it.done && it.lat && !findDuplicate(it.label,it.lat,it.lon)){
       const b=mkEl("button","kid-mini",T("⭐ Add")); b.type="button";
       b.onclick=()=>{ if(findDuplicate(it.label,it.lat,it.lon)) return; places.push({name:it.label,lat:it.lat,lon:it.lon,status:"wish",cat:guessCat(it.label)}); b.textContent=T("Added ✓"); b.disabled=true; showEverything(); render(); };
@@ -3369,6 +3495,7 @@ function renderEngage(es,mp){
   const mc=mkEl("div","eg-card"+(mp.done?" done":""));
   mc.innerHTML='<span class="ic">🎯</span><b>'+T("{0} challenge",new Date().toLocaleString(LANG==="hi"?"hi-IN":"en-IN",{month:"long"}))+'</b><small>'+T(isWorld() && mp.ch.t==="state"?"Colour in 1 new country":mp.ch.txt)+'</small><div class="bar"><i style="width:'+Math.round(mp.have/mp.ch.n*100)+'%"></i></div><small>'+(mp.done?T("Done! +50 points"):mp.have+" / "+mp.ch.n)+'</small>';
   row.append(dc,mc); box.appendChild(row);
+  box.appendChild(mysteryCardEl());
   document.querySelectorAll('[data-go="fun"]').forEach(b=>b.classList.toggle("dot",!dDone));
 
   const mem=memoryNow();
@@ -3405,9 +3532,10 @@ function afterRender(st){
   const names=[...st.regions];
   if(prevStates && !quiet){
     const fresh=names.filter(n=>!prevStates.has(n));
-    if(fresh.length){ confetti(); toast("🎉 "+T("New on your map: {0}!",fresh.map(stName).join(", "))); }
+    if(fresh.length){ toast("🎉 "+T("New on your map: {0}!",fresh.map(stName).join(", "))); badgeQueue=badgeQueue.then(()=>scratchState(fresh[0])); }   // scratch card for the new state
   }
   prevStates=new Set(names);
+  mysteryAward();
   const mp=monthlyProgress();
   let monthly=lsGet("myIndiaMonthlyV2",[]);
   if(mp.done && !monthly.includes(mp.key)){
@@ -3439,7 +3567,7 @@ async function askHideGhost(){
 }
 function drawGhost(layer){
   const bar=document.getElementById("ghostBar"), was=bar.hidden;
-  bar.hidden=!ghost;
+  bar.hidden=!ghost && !crowns;
   if(ghost){
     document.getElementById("ghostTxt").textContent=T("Purple pins: {0}’s places",ghost.name);
     ghost.places.forEach(g=>{
@@ -3452,7 +3580,7 @@ function drawGhost(layer){
   }
   if(was!==bar.hidden) setTimeout(fitMap,0);
 }
-function clearGhost(){ ghost=null; render(); }
+function clearGhost(){ ghost=null; crowns=null; render(); }
 
 // ---- progress panel in the Explore tab ----
 function renderProgress(es){
@@ -3512,7 +3640,8 @@ function renderModeSeg(){ document.querySelectorAll("#modeSeg button").forEach(b
 function setMode(m){
   if(m===MODE || replaying || !MODES[m]) return;
   MODE=m; localStorage.setItem("myMapModeV2",m);
-  ghost=null; places=loadPlaces(); linkIndia(); normPlaces();
+  if(pinGame) endPinDrop(true);
+  ghost=null; crowns=null; places=loadPlaces(); linkIndia(); normPlaces();
   LOCAL_PLACES=isWorld()?WORLD_PLACES:INDIA_PLACES;
   showEverything(); Z=1; hideSuggestions();
   attachMap();
@@ -3524,6 +3653,367 @@ function setMode(m){
 }
 document.querySelectorAll("#modeSeg button").forEach(b=>{ b.onclick=()=>setMode(b.dataset.m); });
 renderModeSeg();
+
+// =====================================================================
+//  GAMES AND FUN: pin-drop, guess the place, surprise me, traveller type,
+//  travel in numbers, travel twin, kings and queens, home lines,
+//  scratch-to-reveal and the weekly mystery stamp
+// =====================================================================
+function unproject(xp,yp){
+  const lon=GEO.minLon+xp/100*(GEO.maxLon-GEO.minLon), m=mercY(GEO.maxLat)-yp/100*(mercY(GEO.maxLat)-mercY(GEO.minLat));
+  return {lat:(2*Math.atan(Math.exp(m))-Math.PI/2)*180/Math.PI,lon};
+}
+function zoomTo(lat,lon,z){
+  const w=mapWrap.clientWidth, h=mapWrap.clientHeight, q=project(lat,lon);
+  Z=Math.min(Z_MAX,Math.max(1,z));
+  TX=w/2-q.x/100*BASE_W*Z; TY=h/2-q.y/100*BASE_W*Z*MAP_H/MAP_W;
+  applyZoom();
+}
+function famousPool(){ return LOCAL_PLACES.filter(x=>x.sub!=="State" && x.sub!=="Union Territory"); }
+// The same "random" picks for everyone on the same day or week.
+function seededPick(n,seed,pool){
+  const out=[], used=new Set(); let s=seed>>>0, guard=0;
+  while(out.length<Math.min(n,pool.length) && guard++<5000){ s=(Math.imul(s,1103515245)+12345)&0x7fffffff; const i=s%pool.length; if(!used.has(i)){ used.add(i); out.push(pool[i]); } }
+  return out;
+}
+function whenClosed(card){ return new Promise(res=>{ const t=setInterval(()=>{ if(!document.body.contains(card.box)){ clearInterval(t); res(); } },200); }); }
+function wrapText(x,text,cx,y,maxW,lineH){
+  let line=""; String(text).split(" ").forEach(w=>{ const t=line?line+" "+w:w; if(x.measureText(t).width>maxW && line){ x.fillText(line,cx,y); y+=lineH; line=w; } else line=t; });
+  if(line) x.fillText(line,cx,y);
+  return y+lineH;
+}
+function myVisited(){ return places.filter(p=>p.status==="visited"); }
+function theirVisited(r){
+  return (r.prof && Array.isArray(r.prof.places)?r.prof.places:[]).filter(x=>x && typeof x.n==="string" && x.s==="visited" && inBounds(Number(x.lat),Number(x.lon))).slice(0,400)
+    .map(x=>({name:x.n.slice(0,80),lat:Number(x.lat),lon:Number(x.lon),st:(isWorld() || HI_STATES[x.st])?String(x.st||"").slice(0,60):""}));
+}
+function samePlace(a,list){ return list.some(b=>norm(a.name)===norm(b.name) || haversine(a,b)<15); }
+
+// ---- 1. Pin-drop challenge: tap where you think the place is ----
+let pinGame=null;
+function gameBar(text){
+  const bar=document.getElementById("gameBar"), was=bar.hidden;
+  bar.hidden=text===null;
+  if(text!==null) document.getElementById("gameTxt").textContent=text;
+  if(was!==bar.hidden) setTimeout(fitMap,0);
+}
+function startPinDrop(){
+  if(replaying || pinGame) return;
+  const list=seededPick(5,dayNum()*31+(isWorld()?7:3),famousPool());
+  if(list.length<3) return;
+  if(!isWide()) showTab("map",true);
+  ghost=null; crowns=null; render();
+  pinGame={list,i:0,score:0,busy:false,extra:[]};
+  mapWrap.classList.add("gaming");
+  Z=1; centreMap(); applyZoom();
+  pinAsk();
+}
+function pinAsk(){
+  const g=pinGame;
+  g.extra.forEach(e=>e.remove()); g.extra=[]; g.busy=false;
+  document.getElementById("journey").setAttribute("d","");
+  const hl=mapSvg.querySelector("#homeLines"); if(hl) hl.setAttribute("d","");
+  gameBar("📍 "+(g.i+1)+"/"+g.list.length+" · "+T("Where is {0}? Tap the map!",g.list[g.i].main));
+}
+function pinTap(e){
+  const g=pinGame;
+  if(!g || g.busy || e.target.closest(".zoom")) return;
+  const r=mapInner.getBoundingClientRect(), xp=(e.clientX-r.left)/r.width*100, yp=(e.clientY-r.top)/r.height*100;
+  if(xp<0 || xp>100 || yp<0 || yp>100) return;
+  const t=g.list[g.i], km=Math.round(haversine(unproject(xp,yp),t)), pts=Math.max(0,Math.round(100-km/(isWorld()?50:8))), q=project(t.lat,t.lon);
+  g.busy=true; g.score+=pts;
+  const a=mkEl("div","marker gm wish"); a.style.left=xp+"%"; a.style.top=yp+"%"; a.append(mkEl("div","pin"));
+  const b=mkEl("div","marker gm visited"); b.style.left=q.x+"%"; b.style.top=q.y+"%"; b.append(mkEl("div","pin"),mkEl("div","marker-label",t.main));
+  document.getElementById("markers").append(a,b); g.extra=[a,b];
+  document.getElementById("journey").setAttribute("d","M"+(xp*MAP_W/100).toFixed(1)+","+(yp*MAP_H/100).toFixed(1)+"L"+(q.x*MAP_W/100).toFixed(1)+","+(q.y*MAP_H/100).toFixed(1));
+  gameBar((pts>=80?"🎯 ":pts>=40?"👍 ":"😅 ")+T("{0} km away · +{1} points",km.toLocaleString("en-IN"),pts));
+  setTimeout(()=>{ if(pinGame!==g) return; g.i++; if(g.i<g.list.length) pinAsk(); else endPinDrop(false); },2300);
+}
+function endPinDrop(quit){
+  const g=pinGame; if(!g) return;
+  pinGame=null; g.extra.forEach(e=>e.remove());
+  mapWrap.classList.remove("gaming"); gameBar(null);
+  if(!quit){
+    const max=g.list.length*100, rec=lsGet(mk("myPinDropV1"),{}), best=Math.max(rec.best||0,g.score);
+    lsSet(mk("myPinDropV1"),{d:todayStr(),score:g.score,best});
+    if(g.score>=max*0.8) confetti();
+    kidSay(T("Pin-drop score: {0} out of {1}! Your best: {2}.",g.score,max,best),"📍");
+  }
+  renderQueued=false; render();
+}
+mapWrap.addEventListener("click",pinTap);
+
+// ---- 2. Guess the place: the photo starts blurred and slowly gets clear ----
+async function startGuessPlace(){
+  const card=kidCard('<div class="kid-emoji">🖼️</div><h3>'+T("Guess the place")+'</h3><div class="sub" id="gpSub">'+T("Finding photos… 🤔")+'</div><div id="gpBody"></div>');
+  const sub=card.box.querySelector("#gpSub"), body=card.box.querySelector("#gpBody"), open=()=>document.body.contains(card.box);
+  const rounds=[];
+  for(const c of seededPick(14,dayNum()*17+(isWorld()?5:1),famousPool())){
+    if(rounds.length>=5 || !open()) break;
+    const url=await thumbFor(c.main);
+    if(url) rounds.push({p:c,url});
+  }
+  if(!open()) return;
+  if(rounds.length<3){ sub.textContent=T("I could not load the photos. Check your internet and try again."); return; }
+  let i=0, score=0;
+  const finish=()=>{
+    const max=rounds.length*100, rec=lsGet(mk("myGuessV1"),{}), best=Math.max(rec.best||0,score);
+    lsSet(mk("myGuessV1"),{d:todayStr(),score,best});
+    sub.textContent=T("You scored {0} out of {1}!",score,max);
+    body.innerHTML='<div class="qz-score">'+(score>=max*0.7?"🏅":"💪")+'</div><div class="kid-btns"><button class="kid-yes">'+T("Okie dokie! 👍")+'</button></div>';
+    body.querySelector("button").onclick=card.close;
+    if(score>=max*0.7) confetti();
+    render();
+  };
+  const show=()=>{
+    const r=rounds[i], t0=performance.now();
+    sub.textContent=T("Photo {0} of {1}",i+1,rounds.length);
+    body.innerHTML='<div class="gp-pic"><img alt=""></div><div class="qz-opts"></div><div class="kid-fact" hidden></div><div class="kid-btns" style="margin-top:10px"><button class="kid-yes" hidden></button></div>';
+    const im=body.querySelector("img"); im.src=r.url;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>im.classList.add("clear")));
+    const opts=shuffle([r.p.main].concat(shuffle(famousPool().filter(x=>x.main!==r.p.main)).slice(0,3).map(x=>x.main)));
+    opts.forEach(o=>{
+      const b=mkEl("button","qz-opt",o); b.type="button";
+      b.onclick=()=>{
+        body.querySelectorAll(".qz-opt").forEach(x=>{ x.disabled=true; if(x.textContent===r.p.main) x.classList.add("right"); });
+        const ok=o===r.p.main, pts=ok?Math.max(20,Math.round(100-(performance.now()-t0)/100)):0;
+        if(!ok) b.classList.add("wrong");
+        score+=pts; im.classList.add("clear","now");
+        const f=body.querySelector(".kid-fact"); f.hidden=false; f.textContent=ok?T("✅ Correct! +{0} points",pts):T("❌ It is {0}.",r.p.main);
+        const nx=body.querySelector(".kid-yes"); nx.hidden=false; nx.textContent=i+1<rounds.length?T("Next ➡️"):T("See my score 🏁");
+        nx.onclick=()=>{ i++; if(i<rounds.length) show(); else finish(); };
+      };
+      body.querySelector(".qz-opts").appendChild(b);
+    });
+  };
+  show();
+}
+
+// ---- 3. Surprise me: jump to a random place you have not added ----
+function surpriseMe(){
+  const pool=famousPool().filter(x=>!findDuplicate(x.main,x.lat,x.lon));
+  if(!pool.length){ kidSay(T("Wow, you have been everywhere I know!"),"🎲"); return; }
+  const x=pool[Math.floor(Math.random()*pool.length)], q=project(x.lat,x.lon);
+  if(!isWide()) showTab("map",true);
+  zoomTo(x.lat,x.lon,isWorld()?520/(BASE_W*40/360):2.4);
+  document.querySelectorAll(".marker.dice").forEach(e=>e.remove());
+  const el=mkEl("div","marker gm wish dice"); el.style.left=q.x+"%"; el.style.top=q.y+"%"; el.append(mkEl("div","pin"),mkEl("div","marker-label","🎲 "+x.main));
+  document.getElementById("markers").appendChild(el);
+  const card=kidCard('<div class="kid-emoji">🎲</div><h3></h3><div class="sub"></div><div class="kid-fact">'+T("Thinking… 🤔")+'</div><div class="kid-btns" style="margin-top:12px"><button class="kid-yes">'+T("⭐ Add to wishlist")+'</button><button class="kid-no">'+T("🎲 Another")+'</button></div>');
+  card.box.querySelector("h3").textContent=x.main; card.box.querySelector(".sub").textContent=x.sub;
+  funFact({name:x.main,lat:x.lat,lon:x.lon}).then(t=>{ if(document.body.contains(card.box)) card.box.querySelector(".kid-fact").textContent="💡 "+t; });
+  card.box.querySelector(".kid-yes").onclick=()=>{
+    if(!findDuplicate(x.main,x.lat,x.lon)){ const np={name:x.main,lat:x.lat,lon:x.lon,status:"wish",cat:guessCat(x.main)}; if(isWorld()) np.country=x.sub.split(", ").pop(); places.push(np); }
+    card.close(); showEverything(); render(); toast("⭐ "+T("{0} is on your wishlist!",x.main));
+  };
+  card.box.querySelector(".kid-no").onclick=()=>{ card.close(); surpriseMe(); };
+}
+
+// ---- 4. My traveller type ----
+const TYPES={
+  hill:["🏔️","Mountain Soul","You are happiest where the air is cool and the roads keep climbing."],
+  beach:["🏖️","Beach Lover","Sand, waves and sunsets are your idea of a perfect trip."],
+  temple:["🛕","Temple Trailblazer","You follow the sound of bells and the stories of old shrines."],
+  fort:["🏰","History Hunter","Forts, palaces and old walls pull you in every time."],
+  wildlife:["🐯","Jungle Explorer","You would swap any hotel for a safari at sunrise."],
+  city:["🏙️","City Wanderer","Busy streets, food lanes and city lights are your playground."],
+  all:["🌈","All-Rounder","Mountains, beaches, temples or cities: you say yes to all of it."]};
+function myType(){
+  const st=getStats(); if(!st.v) return null;
+  const arr=Object.keys(CATS).map(c=>[c,st.cat[c]||0]).sort((a,b)=>b[1]-a[1]);
+  const key=(arr.filter(a=>a[1]>0).length>=4 && arr[0][1]/st.v<0.36)?"all":arr[0][0];
+  return {key,t:TYPES[key],arr,tot:st.v};
+}
+function personalityCanvas(m){
+  const W=1080, H=1350, c=document.createElement("canvas"); c.width=W; c.height=H; const x=c.getContext("2d");
+  const g=x.createLinearGradient(0,0,W,H); g.addColorStop(0,"#0b3b73"); g.addColorStop(1,"#7b5cff"); x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.textAlign="center"; x.textBaseline="alphabetic";
+  x.fillStyle="#dbe8fb"; x.font="bold 40px Arial"; x.fillText(fitText(x,(nameInput.value.trim()?nameInput.value.trim()+" · ":"")+T("My traveller type"),W-120),W/2,120);
+  x.font="230px serif"; x.fillText(m.t[0],W/2,400);
+  x.fillStyle="#ffd86b"; x.font="bold 92px Arial"; x.fillText(fitText(x,T(m.t[1]),W-100),W/2,540);
+  x.fillStyle="#fff"; x.font="38px Arial"; let y=wrapText(x,T(m.t[2]),W/2,620,W-200,52)+40;
+  m.arr.forEach(a=>{
+    const pct=Math.round(a[1]/m.tot*100);
+    x.textAlign="left"; x.fillStyle="#fff"; x.font="34px Arial"; x.fillText(CATS[a[0]][0]+" "+catLabel(a[0]),120,y);
+    x.fillStyle="rgba(255,255,255,.2)"; roundRect(x,480,y-28,400,30,15); x.fill();
+    if(pct){ x.fillStyle="#ffd86b"; roundRect(x,480,y-28,Math.max(30,400*pct/100),30,15); x.fill(); }
+    x.textAlign="right"; x.fillStyle="#fff"; x.font="bold 34px Arial"; x.fillText(pct+"%",W-100,y);
+    y+=74;
+  });
+  x.textAlign="center"; x.fillStyle="#cfe1f7"; x.font="28px Arial"; x.fillText(fitText(x,"My Travel Map"+(pageUrl()?" · "+pageUrl().replace(/^https?:\/\//,""):""),W-100),W/2,H-56);
+  return c;
+}
+function openPersonality(){
+  const m=myType();
+  if(!m){ kidSay(T("Add a few visited places and I will tell you your traveller type!"),"🧬"); return; }
+  const card=kidCard('<div class="type-em">'+m.t[0]+'</div><div class="sub">'+T("My traveller type")+'</div><h3>'+T(m.t[1])+'</h3><div class="type-tag">'+T(m.t[2])+'</div><div class="cat-bars" id="tyBars"></div><div class="kid-btns" style="margin-top:14px"><button class="kid-yes">'+T("📤 Share my type")+'</button></div>');
+  m.arr.forEach(a=>{
+    const row=mkEl("div","cbar"), bar=mkEl("div","bar"), fill=mkEl("i"); fill.style.width=(a[1]/m.tot*100)+"%"; bar.appendChild(fill);
+    row.append(mkEl("span","",CATS[a[0]][0]),mkEl("span","",catLabel(a[0])),bar,mkEl("b","",Math.round(a[1]/m.tot*100)+"%"));
+    card.box.querySelector("#tyBars").appendChild(row);
+  });
+  card.box.querySelector(".kid-yes").onclick=async()=>{ const c=personalityCanvas(m); shareBlob(await new Promise(r=>c.toBlob(r,"image/png")),"my-traveller-type.png",T("I am a {0}! What is your traveller type?",T(m.t[1]))+(pageUrl()?" "+pageUrl():"")); };
+}
+
+// ---- 5. My travel in numbers ----
+function openNumbers(){
+  const st=getStats(), vis=myVisited();
+  if(!vis.length){ kidSay(T("Add a few visited places and I will show your travel in numbers!"),"🔢"); return; }
+  const lines=[], km=st.km.toLocaleString("en-IN");
+  lines.push(isWorld()?["🌍",T("{0} km travelled: that is {1} times around the Earth",km,(st.km/40075).toFixed(2))]:["🛣️",T("{0} km travelled: like crossing India top to bottom {1} times",km,(st.km/3214).toFixed(1))]);
+  lines.push(isWorld()?["🗺️",T("You have seen {0}% of the world’s countries",(st.states/195*100).toFixed(1))]:["🗺️",T("You have seen {0}% of India’s states and union territories",Math.round(st.regions.size/36*100))]);
+  const n=vis.reduce((a,b)=>b.lat>a.lat?b:a), s=vis.reduce((a,b)=>b.lat<a.lat?b:a);
+  if(n!==s) lines.push(["🧭",T("Furthest north: {0} · furthest south: {1}",n.name,s.name)]);
+  let hop=null; for(let i=1;i<st.journey.length;i++){ const d=haversine(st.journey[i-1],st.journey[i]); if(!hop || d>hop.d) hop={d,a:st.journey[i-1],b:st.journey[i]}; }
+  if(hop) lines.push(["✈️",T("Longest hop: {0} to {1}, {2} km",hop.a.name,hop.b.name,Math.round(hop.d).toLocaleString("en-IN"))]);
+  const by={}; vis.forEach(p=>{ if(p.year) by[p.year]=(by[p.year]||0)+1; });
+  const top=Object.keys(by).sort((a,b)=>by[b]-by[a])[0];
+  if(top) lines.push(["📅",T("Busiest year: {0} with {1} places",top,by[top])]);
+  const h=homeNow();
+  if(h){ const far=vis.reduce((a,b)=>haversine(h,b)>haversine(h,a)?b:a); lines.push(["🏠",T("Furthest from home: {0}, {1} km away",far.name,Math.round(haversine(h,far)).toLocaleString("en-IN"))]); }
+  lines.push(["❤️",T("{0} favourites and {1} places with a memory",places.filter(p=>p.fav).length,st.mem)]);
+  const card=kidCard('<div class="kid-emoji">🔢</div><h3>'+T("My travel in numbers")+'</h3><div class="cmp"></div>');
+  lines.forEach(l=>{ const row=mkEl("div","kid-row"); row.append(mkEl("span","em",l[0])); const d=mkEl("div"); d.append(mkEl("b","",l[1])); row.append(d); card.box.querySelector(".cmp").appendChild(row); });
+}
+
+// ---- 6. Travel twin: the friend whose map looks most like mine ----
+function findTwin(){
+  if(!fbUser || !lbRows) return;
+  const mine=myVisited(); let best=null;
+  lbRows.forEach(r=>{
+    if(r.k===fbUser.uid) return;
+    const theirs=theirVisited(r); if(!theirs.length) return;
+    const both=mine.filter(p=>samePlace(p,theirs)).length, union=mine.length+theirs.length-both, pct=union?Math.round(both/union*100):0;
+    if(!best || pct>best.pct) best={r,pct,both};
+  });
+  if(!best){ kidSay(T("Your friends have not added places yet. Invite them to find your travel twin!"),"👯"); return; }
+  if(best.pct>=40) confetti();
+  kidChoice(T("Your travel twin is {0}! Your maps are {1}% the same, with {2} places in common.",best.r.name,best.pct,best.both),"👯",[["cmp",T("Compare our maps"),"kid-yes"],["",T("Close"),"kid-plain"]])
+    .then(v=>{ if(v==="cmp") compareWith(best.r); });
+}
+
+// ---- 7. Kings and queens: who in the group has the most places in each state ----
+let crowns=null;
+function groupRulers(){
+  const count={}, add=(st,uid,name)=>{ if(!st) return; const m=count[st]=count[st]||{}; (m[uid]=m[uid]||{name,n:0}).n++; };
+  myVisited().forEach(p=>add(stateOf(p),fbUser.uid,T("You")));
+  lbRows.forEach(r=>{ if(r.k!==fbUser.uid) theirVisited(r).forEach(x=>add(x.st,r.k,r.name)); });
+  return Object.keys(count).sort().map(st=>{
+    const arr=Object.keys(count[st]).map(u=>({uid:u,name:count[st][u].name,n:count[st][u].n})).sort((a,b)=>b.n-a.n);
+    return arr.length>1 && arr[0].n===arr[1].n ? {st,tie:true,n:arr[0].n,names:arr.filter(a=>a.n===arr[0].n).map(a=>a.name)} : {st,uid:arr[0].uid,name:arr[0].name,n:arr[0].n,me:arr[0].uid===fbUser.uid};
+  });
+}
+function openRulers(){
+  if(!fbUser || !lbRows) return;
+  const list=groupRulers(), mine=list.filter(x=>x.me).length;
+  const card=kidCard('<div class="kid-emoji">👑</div><h3>'+T("Kings and queens")+'</h3><div class="sub">'+(isWorld()?T("You rule {0} of {1} countries",mine,list.length):T("You rule {0} of {1} states",mine,list.length))+'</div><div class="cmp"></div><div class="kid-btns" style="margin-top:12px"><button class="kid-yes"></button></div>');
+  list.forEach(x=>{
+    const row=mkEl("div","kid-row"+(x.me?" mine":"")); row.append(mkEl("span","em",x.tie?"🤝":"👑"));
+    const d=mkEl("div"); d.append(mkEl("b","",stName(x.st)),mkEl("small","",x.tie?T("Tie: {0}",x.names.join(", ")):x.name+" · "+(x.n===1?T("{0} place",1):T("{0} places",x.n)))); row.append(d);
+    card.box.querySelector(".cmp").appendChild(row);
+  });
+  const btn=card.box.querySelector(".kid-yes");
+  btn.textContent=crowns?T("🙈 Hide crowns from my map"):T("👑 Show crowns on my map");
+  btn.onclick=()=>{ card.close(); if(crowns){ crowns=null; render(); return; } crowns=list; if(!isWide()) showTab("map",true); Z=1; centreMap(); render(); applyZoom(); };
+}
+
+// ---- 8. Home town: a line from home to every place ----
+function homeNow(){ const h=lsGet("myHomeV1",null); return h && Number.isFinite(h.lat) && Number.isFinite(h.lon) && inBounds(h.lat,h.lon) ? h : null; }
+async function setHome(){
+  const inp=document.getElementById("homeInput"), name=inp.value.trim();
+  if(!name){ localStorage.removeItem("myHomeV1"); render(); toast("🏠 "+T("Home town removed")); return; }
+  inp.disabled=true;
+  const r=await findPlace(name,false);
+  inp.disabled=false;
+  if(!r || !inBounds(r.lat,r.lon)){ kidSay(T("Hmm, I could not find that place! Try picking one from the suggestions."),"🔍"); return; }
+  lsSet("myHomeV1",{name:String(r.name).slice(0,40),lat:r.lat,lon:r.lon});
+  inp.value=r.name; render(); toast("🏠 "+T("Home set: {0}",r.name));
+}
+// Extra things drawn on the map after the pins: home lines and group crowns.
+function drawExtras(layer){
+  let hp=mapSvg.querySelector("#homeLines");
+  if(!hp){
+    hp=document.createElementNS("http://www.w3.org/2000/svg","path"); hp.setAttribute("id","homeLines");
+    hp.setAttribute("fill","none"); hp.setAttribute("stroke","#f5a700"); hp.setAttribute("stroke-linecap","round"); hp.setAttribute("opacity",".8");
+    const j=mapSvg.querySelector("#journey"); j.parentNode.insertBefore(hp,j);
+  }
+  hp.setAttribute("stroke-width",isWorld()?"1":"1.8");
+  const h=homeNow(), X=p=>{ const q=project(p.lat,p.lon); return (q.x*MAP_W/100).toFixed(1)+","+(q.y*MAP_H/100).toFixed(1); };
+  hp.setAttribute("d",h?shownPlaces().filter(p=>p.status==="visited").map(p=>"M"+X(h)+"L"+X(p)).join(""):"");
+  if(h){ const q=project(h.lat,h.lon), el=mkEl("div","home-mk","🏠"); el.style.left=q.x+"%"; el.style.top=q.y+"%"; el.title=h.name; layer.appendChild(el); }
+  if(crowns){
+    if(!ghost) document.getElementById("ghostTxt").textContent=T("👑 Crowns show who leads each place in your group");
+    crowns.forEach(x=>{
+      const path=statePaths.find(e=>e.dataset.n===x.st); if(!path) return;
+      let bb; try{ bb=path.getBBox(); }catch(e){ return; }
+      const el=mkEl("div","crown-mk"+(x.me?" me":""),x.tie?"🤝":"👑 "+String(x.name).split(" ")[0].slice(0,10));
+      el.style.left=((bb.x+bb.width/2)/MAP_W*100)+"%"; el.style.top=((bb.y+bb.height/2)/MAP_H*100)+"%";
+      el.title=stName(x.st);
+      layer.appendChild(el);
+    });
+  }
+}
+
+// ---- 9. Scratch to reveal a new state or country ----
+function scratchState(name){
+  return new Promise(resolve=>{
+    const el=statePaths.find(e=>e.dataset.n===name);
+    if(!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches){ confetti(); resolve(); return; }
+    const card=kidCard('<div class="kid-emoji">🪙</div><h3></h3><div class="sub">'+T("Scratch the silver to reveal your new place!")+'</div><div class="scratch"><canvas class="sc-under" width="300" height="300"></canvas><canvas class="sc-foil" width="300" height="300"></canvas></div><div class="kid-btns" style="margin-top:10px"><button class="kid-yes" hidden>'+T("Woohoo! 🥳")+'</button></div>');
+    card.box.querySelector("h3").textContent=stName(name);
+    const u=card.box.querySelector(".sc-under").getContext("2d"), foil=card.box.querySelector(".sc-foil"), f=foil.getContext("2d");
+    try{
+      const bb=el.getBBox(), k=Math.min(250/bb.width,250/bb.height), path=new Path2D(el.getAttribute("d"));
+      u.translate(150-(bb.x+bb.width/2)*k,150-(bb.y+bb.height/2)*k); u.scale(k,k);
+      u.fillStyle=el.dataset.c; u.fill(path); u.lineWidth=2.5/k; u.strokeStyle="#0b3b73"; u.stroke(path);
+    }catch(e){ console.warn(e); }
+    const g=f.createLinearGradient(0,0,300,300); g.addColorStop(0,"#cfd5dc"); g.addColorStop(.5,"#9aa3ad"); g.addColorStop(1,"#cfd5dc");
+    f.fillStyle=g; f.fillRect(0,0,300,300);
+    f.fillStyle="#ffffffcc"; f.font="bold 26px Arial"; f.textAlign="center"; f.fillText("✨ "+T("Scratch here")+" ✨",150,158);
+    let down=false, moves=0, done=false;
+    const finish=()=>{ if(done) return; done=true; foil.style.opacity="0"; foil.style.pointerEvents="none"; confetti(); const b=card.box.querySelector(".kid-yes"); b.hidden=false; b.onclick=card.close; };
+    const rub=e=>{
+      if(done) return;
+      const r=foil.getBoundingClientRect(), x=(e.clientX-r.left)/r.width*300, y=(e.clientY-r.top)/r.height*300;
+      f.globalCompositeOperation="destination-out"; f.beginPath(); f.arc(x,y,26,0,Math.PI*2); f.fill();
+      if(++moves%6===0){
+        const d=f.getImageData(0,0,300,300).data; let clear=0, n=0;
+        for(let i=3;i<d.length;i+=4*37){ n++; if(d[i]<40) clear++; }
+        if(clear/n>0.45) finish();
+      }
+    };
+    foil.addEventListener("pointerdown",e=>{ down=true; rub(e); });
+    foil.addEventListener("pointermove",e=>{ if(down || e.pointerType==="touch") rub(e); });
+    window.addEventListener("pointerup",()=>{ down=false; });
+    whenClosed(card).then(resolve);
+  });
+}
+
+// ---- 10. Mystery stamp of the week ----
+function mysteryNow(){
+  const pool=famousPool(); if(!pool.length) return null;
+  const wk=Math.floor(dayNum()/7), p=seededPick(1,wk*2654435+(isWorld()?11:9),pool)[0];
+  return {wk,p,have:places.some(q=>q.status==="visited" && haversine(q,p)<NEAR_KM)};
+}
+function mysteryAward(){
+  const m=mysteryNow(); if(!m || !m.have) return;
+  const won=lsGet(mk("myMysteryV1"),[]);
+  if(won.includes(m.wk)) return;
+  won.push(m.wk); lsSet(mk("myMysteryV1"),won);
+  if(!quiet){ confetti(); badgeQueue=badgeQueue.then(()=>kidPopup(T("You won this week’s mystery stamp: {0}! +30 points",m.p.main),{emoji:"🎁",yes:T("Woohoo! 🥳"),no:null})); }
+}
+function mysteryCardEl(){
+  const m=mysteryNow(), box=mkEl("div","mys-card"+(m && m.have?" done":""));
+  if(!m){ box.hidden=true; return box; }
+  const tx=mkEl("div");
+  tx.append(mkEl("b","",T("Mystery stamp of the week")),
+    mkEl("small","",m.have?T("You have it: {0}! +30 points",m.p.main):T("Clue: it is in {0}. Been there? Add it to win a rare stamp.",stName(m.p.sub.split(", ").pop()))),
+    mkEl("small","",T("Rare stamps won: {0}",lsGet(mk("myMysteryV1"),[]).length)));
+  box.append(mkEl("span","ic",m.have?"🎁":"❓"),tx);
+  return box;
+}
+document.getElementById("homeInput").value=(lsGet("myHomeV1",null)||{}).name||"";
+
 
 const soundToggle=document.getElementById("soundToggle");
 soundToggle.checked=lsGet("myIndiaSoundV2",true)!==false;

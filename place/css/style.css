@@ -403,3 +403,6 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
 .near{flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:#e8f0ff;font-size:16px;line-height:1}
 .nb-head{text-align:left;font-size:13px;font-weight:800;color:#4a2a8a;margin:12px 2px 2px;position:sticky;top:0;background:#fffbe8;padding:4px 0;z-index:1}
 .nb-head:first-child{margin-top:0}
+.nb-chips{margin:8px 0 2px}.nb-chips .chip{background:#fff;border:2px solid #e3c8ff;color:#4a2a8a;font-weight:700}.nb-chips .chip.on{background:#4a2a8a;border-color:#4a2a8a;color:#fff}
+#nbList{max-height:44vh}
+.nb-row[hidden],.nb-head[hidden]{display:none!important}

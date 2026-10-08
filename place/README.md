@@ -26,6 +26,7 @@ Upload `place.html` and the whole `place/` folder to the same folder of the site
 | `place/js/engage.js` | Levels, daily question, monthly challenge, collections, passport, progress, facts, India/World switch. |
 | `place/js/games.js` | Pin-drop, guess the place, surprise me, traveller type, numbers, twin, crowns, home lines, scratch card, mystery stamp. |
 | `place/js/friends-social.js` | Friend activity, shared game scores, group trips and the friend quiz. |
+| `place/js/sights-data.js` | Hand-picked famous sights for big Indian cities (add your own city here). |
 | `place/js/nearby.js` | "Been near here too?" tick list after adding a place. |
 | `place/js/tour.js` | The quick guide shown after the first sign-in. |
 | `place/js/boot.js` | Runs last: starts the app once every other file is loaded. |

@@ -235,6 +235,47 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
 .g-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#fff;color:#1f1f1f;border:1px solid #747775;border-radius:99px;min-height:48px;font-size:15px;font-weight:700;margin-top:18px}
 .w-guest{background:none;color:#1264d6;margin-top:8px;width:100%;min-height:44px}
 #mapInner{will-change:auto}
+.grip{flex:none;background:none;color:#98a2b3;font-size:20px;line-height:1;padding:8px 8px 8px 2px;cursor:grab;touch-action:none}
+.place span{flex:1;min-width:0}
+.place.dragging{background:#e8f0ff;border-radius:10px;box-shadow:0 4px 14px #0003;position:relative;z-index:2}
+.place.dragging .grip{cursor:grabbing;color:#0b3b73}
+.order-hint{display:inline-block;margin-left:8px}
+[hidden]{display:none!important}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:10000}
+.toast{position:fixed;left:50%;top:64px;transform:translateX(-50%);z-index:9500;background:#0b3b73;color:#fff;font-weight:800;font-size:14px;padding:10px 16px;border-radius:99px;box-shadow:0 6px 20px #0005;max-width:92vw;text-align:center;animation:kidPop .4s cubic-bezier(.3,1.7,.5,1)}
+.lvl-card{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:18px;background:linear-gradient(135deg,#0b3b73,#1264d6);color:#fff}
+.lvl-em{font-size:38px;line-height:1}.lvl-txt{flex:1;min-width:0}.lvl-txt b{font-size:15px}.lvl-txt small{font-size:12px;color:#dbe8fb}
+.lvl-card .bar{background:#ffffff33}.lvl-card .bar i{background:linear-gradient(90deg,#ffd86b,#ff9933)}
+.eg-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.eg-card{background:#fff7e6;border:2px solid #ffd9a0;color:#172033;border-radius:16px;padding:10px;text-align:left;display:flex;flex-direction:column;gap:2px;font-weight:400;font-family:inherit;min-width:0}
+.eg-card .ic{font-size:22px;line-height:1}.eg-card b{font-size:13px}.eg-card small{font-size:12px;color:#667085;line-height:1.3}
+.eg-card.done{background:#e8fff1;border-color:#9fe0b8}
+.mem-card{display:flex;gap:10px;align-items:center;width:100%;margin-top:8px;background:#f3ecff;border:2px solid #dcc9fb;border-radius:16px;padding:10px;text-align:left;color:#172033;font-weight:400}
+.mem-card img{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none}.mem-card .ic{font-size:30px}
+.mem-card b{display:block;font-size:13px}.mem-card small{display:block;font-size:12px;color:#667085}
+.col-chip{flex:none;width:128px;background:#fff;border:2px solid #e3e9f1;border-radius:16px;padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;color:#172033;font-weight:400;white-space:normal}
+.col-chip .ic{font-size:26px;line-height:1.1}.col-chip b{font-size:12px;line-height:1.2;min-height:29px;display:flex;align-items:center;text-align:center}
+.col-chip .bar{width:100%}.col-chip small{font-size:11px;color:#667085}
+.col-chip.full{border-color:#ffcf5c;background:#fff8e1}
+.tool.passport{background:#eef2ff;color:#27348b;border:0;margin-top:10px;width:100%}
+.stamps{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px}
+.stamp{aspect-ratio:1;border-radius:50%;border:2px dashed #d0c8ae;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#b9b29a;line-height:1.05}
+.stamp b{font-size:13px}.stamp small{font-size:9px;font-weight:700}
+.stamp.on{border:3px solid #0b3b73;color:#172033;transform:rotate(-8deg)}.stamp.on:nth-child(even){transform:rotate(7deg)}
+.col-list .kid-row,.cmp .kid-row{padding:8px 10px}
+.ghost-bar{flex:none;display:flex;align-items:center;gap:8px;margin:8px 10px 0;padding:6px 6px 6px 14px;border-radius:99px;background:#efe8ff;color:#4a2a8a;font-weight:800;font-size:13px}
+.ghost-bar span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ghost-bar button{width:30px;height:30px;border-radius:50%;padding:0;background:#fff;color:#4a2a8a}
+.marker.ghost{z-index:4;cursor:default;pointer-events:none}.marker.ghost .pin{background:#7b5cff}
+.marker.ghost .marker-label{border-color:#7b5cff;color:#4a2a8a}
+.lb-scope{margin:0 0 10px}.lb-scope button{min-height:40px}.lb-scope button.on{background:#0b3b73;color:#fff}
+.lb-crit{margin:10px 0 2px}
+.lb-name small{display:block;font-weight:400;font-size:11px;color:#667085}
+.lb-row.tap{cursor:pointer}.lb-row.tap:hover{background:#f5f8fc}
+#lbTools button{display:block}
+.cloud-note{margin:0 0 6px}
+[data-go].dot .ic{position:relative}
+[data-go].dot .ic::after{content:"";position:absolute;right:-5px;top:-1px;width:9px;height:9px;border-radius:50%;background:#e6492d;border:2px solid #fff}
 .act-row{flex:none;display:flex;gap:8px;padding:8px 10px 0}
 .act-row button{flex:1;min-width:0;min-height:40px;border-radius:99px;font-size:13px;padding:6px 10px;box-shadow:0 2px 6px #0002;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #playBtn{background:#e6492d;color:#fff} #shareBtn{background:#fff;color:#0b3b73;flex:.6}
@@ -284,6 +325,7 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
       <button type="button" id="playBtn" onclick="playJourney()" data-t>▶ Play my journey</button>
       <button type="button" id="shareBtn" onclick="shareHome()" data-t>📤 Share</button>
     </div>
+    <div class="ghost-bar" id="ghostBar" hidden><span id="ghostTxt"></span><button type="button" onclick="clearGhost()" aria-label="Close">✕</button></div>
     <div class="stage" id="stage">
       <div class="map-wrap" id="mapWrap">
         <div id="mapInner">
@@ -315,18 +357,22 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
           <button type="button" class="year-btn" id="yearCardBtn" onclick="shareYearCard()" hidden></button>
         </div>
         <div class="badge" id="count">0 places</div>
+        <div class="small order-hint" id="orderHint" hidden data-t>Drag ⠿ to change the order</div>
         <div id="placeList"></div>
       </section>
 
       <section data-tab="board" hidden>
+        <div class="seg lb-scope" id="lbScope"></div>
         <div class="lb-me" id="lbMe"></div>
-        <div class="seg lb-seg" id="lbSeg"></div>
+        <div class="chips slide lb-crit" id="lbSeg"></div>
         <div id="lbList"></div>
+        <div id="lbTools"></div>
         <button type="button" class="gray lb-refresh" onclick="loadBoard()" data-t>🔄 Refresh</button>
       </section>
 
       <section data-tab="fun" hidden>
-        <div class="box" style="margin-top:0">
+        <div id="engage"></div>
+        <div class="box">
           <h4 data-t>🗺️ My progress</h4>
           <div class="stat" id="stateStat"></div>
           <div class="bar"><i id="stateBar"></i></div>
@@ -345,6 +391,7 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
       </section>
 
       <section data-tab="more" hidden>
+        <div class="notice cloud-note" id="cloudNote" hidden></div>
         <label for="travellerName" data-t>Your name (shown on the picture)</label>
         <input id="travellerName" maxlength="24" autocomplete="off" data-tp placeholder="e.g. Mayank">
         <div class="share-title" data-t>Share my map</div>
@@ -359,6 +406,7 @@ button.danger{background:#fee2e2;color:#991b1b;margin-top:18px}
           <button class="gray" onclick="document.getElementById('restoreFile').click()" data-t>📂 Restore from file</button>
         </div>
         <input id="restoreFile" type="file" accept=".json,application/json" hidden>
+        <label class="switch-row"><span data-t>Celebration sounds</span><input type="checkbox" id="soundToggle" checked></label>
         <button class="gray full danger" onclick="resetPlaces()" data-t>↺ Reset</button>
       </section>
     </div>
@@ -486,6 +534,101 @@ const HI={
 "None of these photos has a location saved inside it. Tip: choose the original camera photos (photos received on WhatsApp lose their location), and on Android pick them through “Files” or “Browse”.":"इनमें से किसी फ़ोटो में लोकेशन सेव नहीं है। सुझाव: कैमरे की असली फ़ोटो चुनें (WhatsApp से आई फ़ोटो में लोकेशन नहीं रहती), और Android पर इन्हें “Files” या “Browse” से चुनें।",
 "{0} photos":"{0} फ़ोटो","New pin":"नया पिन","Already on your map: photo will be added":"पहले से नक्शे पर है: फ़ोटो जुड़ जाएगी",
 "Add pins 📍":"पिन जोड़ें 📍",
+"Drag ⠿ to change the order":"क्रम बदलने के लिए ⠿ को खींचें",
+"12 Jyotirlingas":"12 ज्योतिर्लिंग",
+"Add 2 places you visited":"2 घूमी हुई जगहें जोड़ें",
+"Add 3 places you visited":"3 घूमी हुई जगहें जोड़ें",
+"Add a beach you visited":"कोई घूमा हुआ समुद्र तट जोड़ें",
+"Add a fort or monument you visited":"कोई घूमा हुआ किला या स्मारक जोड़ें",
+"Add a hill station you visited":"कोई घूमा हुआ हिल स्टेशन जोड़ें",
+"Add a temple you visited":"कोई घूमा हुआ मंदिर जोड़ें",
+"Add a wildlife place you visited":"कोई घूमी हुई वन्यजीव जगह जोड़ें",
+"Answer now · streak {0}":"अभी जवाब दें · लगातार {0} दिन",
+"Bharat Champion":"भारत चैंपियन",
+"Bharat Yatri":"भारत यात्री",
+"Big Six Cities":"छह बड़े शहर",
+"Can you beat me?":"क्या आप मुझसे आगे निकल सकते हैं?",
+"Celebration sounds":"जश्न की आवाज़ें",
+"Char Dham":"चार धाम",
+"Coastline States":"समुद्र तट वाले राज्य",
+"Collection complete: {0}!":"संग्रह पूरा हुआ: {0}!",
+"Collections":"संग्रह",
+"Colour in 1 new state":"1 नए राज्य में रंग भरें",
+"Daily question":"रोज़ का सवाल",
+"Done for today! Streak: {0}":"आज का हो गया! लगातार {0} दिन",
+"Done! +50 points":"पूरा हुआ! +50 अंक",
+"Exact date (optional)":"सही तारीख (ज़रूरी नहीं)",
+"Explorer":"खोजी",
+"Friends groups need the new database rules. Publish the rules file that came with this version in Firebase.":"दोस्तों के ग्रुप के लिए नए डेटाबेस नियम चाहिए। इस संस्करण के साथ मिली नियम फ़ाइल को Firebase में पब्लिश करें।",
+"Ghumakkad":"घुमक्कड़",
+"Golden Triangle":"स्वर्ण त्रिभुज",
+"Himalayan States":"हिमालयी राज्य",
+"I could not find a group with that code.":"इस कोड का कोई ग्रुप नहीं मिला।",
+"I have visited {0} of 28 states and {1} places in India. Can you beat me?":"मैं भारत के 28 में से {0} राज्य और {1} जगहें घूम चुका हूँ। क्या आप मुझसे आगे निकल सकते हैं?",
+"Join my travel group “{0}” on My India Travel Map! Group code: {1}":"My India Travel Map पर मेरे यात्रा ग्रुप “{0}” से जुड़ें! ग्रुप कोड: {1}",
+"Journey video":"यात्रा का वीडियो",
+"Keep this phone’s map 📱":"इस फ़ोन का नक्शा रखें 📱",
+"Keep this screen open for a few seconds.":"कुछ सेकंड यह स्क्रीन खुली रखें।",
+"Leave the group {0}?":"ग्रुप {0} छोड़ना है?",
+"Leave this group":"यह ग्रुप छोड़ें",
+"Level up! You are now: {0}":"लेवल बढ़ गया! अब आप हैं: {0}",
+"Level {0}":"लेवल {0}",
+"Make a private leaderboard for your family and friends. People in a group can see each other’s place names and scores.":"अपने परिवार और दोस्तों के लिए निजी लीडरबोर्ड बनाएँ। ग्रुप के लोग एक-दूसरे की जगहों के नाम और स्कोर देख सकते हैं।",
+"Making your video…":"आपका वीडियो बन रहा है…",
+"Map picture":"नक्शे की तस्वीर",
+"Monthly challenge done! +50 points":"महीने की चुनौती पूरी! +50 अंक",
+"My state passport":"मेरा राज्य पासपोर्ट",
+"Name your friends group":"अपने दोस्तों के ग्रुप का नाम रखें",
+"New on your map: {0}!":"आपके नक्शे पर नया: {0}!",
+"Only you":"सिर्फ़ आप",
+"Only {0}":"सिर्फ़ {0}",
+"Passport stamps":"पासपोर्ट के स्टैम्प",
+"Points":"अंक",
+"Purple pins: {0}’s places":"बैंगनी पिन: {0} की जगहें",
+"Put 2 dream places on your wishlist":"विशलिस्ट में 2 सपनों की जगहें जोड़ें",
+"Put 3 dream places on your wishlist":"विशलिस्ट में 3 सपनों की जगहें जोड़ें",
+"Saved! Attach it in WhatsApp or Instagram.":"सेव हो गया! इसे WhatsApp या Instagram में अटैच करें।",
+"Send this code to your friends: {0} (the invite message is copied).":"यह कोड अपने दोस्तों को भेजें: {0} (न्योते का संदेश कॉपी हो गया है)।",
+"Seven Sisters":"सात बहनें",
+"States {0} has and you do not":"वे राज्य जो {0} ने घूमे और आपने नहीं",
+"Story card (tall)":"स्टोरी कार्ड (लंबा)",
+"Tap a friend to compare your maps.":"नक्शों की तुलना के लिए किसी दोस्त पर टैप करें।",
+"Tap to open this memory":"यह याद खोलने के लिए टैप करें",
+"That did not work: {0}":"यह नहीं हो पाया: {0}",
+"This browser cannot make videos. Try it in Chrome.":"यह ब्राउज़र वीडियो नहीं बना सकता। Chrome में आज़माएँ।",
+"This month, 1 year ago: {0}":"इसी महीने, 1 साल पहले: {0}",
+"This month, {0} years ago: {1}":"इसी महीने, {0} साल पहले: {1}",
+"Tourist":"पर्यटक",
+"Type the group code your friend sent you":"दोस्त का भेजा हुआ ग्रुप कोड लिखें",
+"Use the saved map ☁️":"सेव किया हुआ नक्शा लें ☁️",
+"Wanderer":"घुमंतू",
+"World Heritage Wonders":"विश्व धरोहर स्थल",
+"Yatri":"यात्री",
+"You already answered today. Come back tomorrow to keep your streak going!":"आज का जवाब आप दे चुके हैं। अपना सिलसिला जारी रखने के लिए कल फिर आएँ!",
+"You and {0}":"आप और {0}",
+"You both visited":"दोनों ने घूमा",
+"You joined {0}!":"आप {0} से जुड़ गए!",
+"Your account has a saved map with {0} places and this phone has {1}. Which one should I keep?":"आपके खाते में {0} जगहों वाला नक्शा सेव है और इस फ़ोन में {1} जगहें हैं। कौन-सा रखूँ?",
+"{0} challenge":"{0} की चुनौती",
+"{0} of 36 stamps collected":"36 में से {0} स्टैम्प मिले",
+"{0} of {1} done":"{1} में से {0} पूरे",
+"{0} points":"{0} अंक",
+"{0} points · top level!":"{0} अंक · सबसे ऊँचा लेवल!",
+"{0} points · {1} more to become {2}":"{0} अंक · {2} बनने के लिए {1} और",
+"{0}’s travel gang":"{0} की यात्रा टोली",
+"☁️ Cloud save is off. Publish the new database rules in Firebase to turn it on. Your places are still saved on this phone.":"☁️ क्लाउड सेव बंद है। इसे चालू करने के लिए Firebase में नए डेटाबेस नियम पब्लिश करें। आपकी जगहें इस फ़ोन में सेव हैं।",
+"☁️ Saved to your Google account. Sign in on another phone to get your map there.":"☁️ आपके Google खाते में सेव है। दूसरे फ़ोन पर साइन इन करके अपना नक्शा वहाँ पाएँ।",
+"☁️ Saving to your Google account…":"☁️ आपके Google खाते में सेव हो रहा है…",
+"✅ Correct! Your streak is now {0}. Come back tomorrow!":"✅ सही! अब आपका सिलसिला {0} दिन का है। कल फिर आएँ!",
+"❌ Not quite! The answer is {0}. Try again tomorrow.":"❌ सही नहीं! सही जवाब है {0}। कल फिर कोशिश करें।",
+"➕ Create a friends group":"➕ दोस्तों का ग्रुप बनाएँ",
+"🌍 Everyone":"🌍 सभी",
+"👀 Show their places on my map":"👀 उनकी जगहें मेरे नक्शे पर दिखाएँ",
+"👥 Friends":"👥 दोस्त",
+"📤 Share my passport":"📤 मेरा पासपोर्ट शेयर करें",
+"📨 Invite friends · code {0}":"📨 दोस्तों को बुलाएँ · कोड {0}",
+"🔑 Join with a code":"🔑 कोड से जुड़ें",
+
 "📤 Share":"📤 शेयर","Add a place first, then share your map!":"पहले कोई जगह जोड़ें, फिर अपना नक्शा शेयर करें!",
 "Sign in is needed to use the map. Your places stay saved on this phone and your scores go to the leaderboard.":"नक्शा इस्तेमाल करने के लिए साइन इन ज़रूरी है। आपकी जगहें इसी फ़ोन में सेव रहती हैं और स्कोर लीडरबोर्ड पर जाते हैं।",
 "Adding {0} of {1}: {2}…":"{1} में से {0} जोड़ रहे हैं: {2}…","Added {0}: {1}.":"{0} जगहें जुड़ीं: {1}।","Already on your map: {0}.":"पहले से नक्शे पर हैं: {0}।",
@@ -563,7 +706,7 @@ function guessCat(name){
 }
 function catOf(p){return CATS[p.cat]?p.cat:"city";}
 function catIcon(p){return CATS[catOf(p)][0];}
-places.forEach(p=>{ if(p.status!=="wish") p.status="visited"; if(!CATS[p.cat]) p.cat=guessCat(p.name); });
+places.forEach(p=>{ if(p.status!=="wish") p.status="visited"; if(!CATS[p.cat]) p.cat=guessCat(p.name); if(typeof p.added!=="number") p.added=0; });   // added = when it was put on the map (0 = before this version)
 
 let fStatus="all", fCat="all", fYear="all", fFav=false;     // what is shown on the map
 function shownPlaces(){return places.filter(p=>(fStatus==="all"||p.status===fStatus)&&(fCat==="all"||catOf(p)===fCat)&&(fYear==="all"||p.year===fYear)&&(!fFav||p.fav));}
@@ -656,7 +799,7 @@ function updateBadges(st){
   const now=BADGES.filter(b=>b.t(st)).map(b=>b.id);
   if(earnedBadges){
     BADGES.filter(b=>now.includes(b.id) && !earnedBadges.includes(b.id)).forEach(b=>{
-      badgeQueue=badgeQueue.then(()=>kidPopup(T("You won a new badge: {0}!",T(b.n)),{emoji:b.e,yes:T("Woohoo! 🥳"),no:null}));
+      badgeQueue=badgeQueue.then(()=>{ confetti(); return kidPopup(T("You won a new badge: {0}!",T(b.n)),{emoji:b.e,yes:T("Woohoo! 🥳"),no:null}); });
     });
   }
   earnedBadges=now;
@@ -703,6 +846,7 @@ function render() {
     layer.appendChild(el);
     markerEls.set(p,el);
   });
+  drawGhost(layer);
 
   const st=getStats(), view=yearScope()?getStats(yearScope()):st;   // view = what the map shows (one year or everything)
   // colour in the states that have a visited place
@@ -722,7 +866,7 @@ function render() {
   updateBadges(st);
   renderFilters();
   renderYears();
-  document.getElementById("statPill").textContent="📍 "+st.v+"  ·  🗺️ "+st.states+"/28  ·  🛣️ "+st.km.toLocaleString("en-IN")+" km";
+  afterRender(st);                                    // points, challenges, celebrations, cloud save
   scheduleSubmit();                                   // keeps my leaderboard numbers fresh
 
   document.getElementById("count").textContent=shown.length===places.length
@@ -733,16 +877,51 @@ function render() {
   shown.forEach((p,i)=>{
     const row=document.createElement("div");
     row.className="place";
-    row.innerHTML='<span><i class="dot '+p.status+'"></i>'+(i+1)+'. '+catIcon(p)+' '+escapeHtml(p.name)+(p.year?'<small>'+p.year+'</small>':'')+(p.rating?'<span class="rt">★'+p.rating+'</span>':'')+(p.fav?' ❤️':'')+'</span><button class="del" aria-label="Remove">×</button>';
+    row.innerHTML='<button type="button" class="grip" aria-label="Move" title="Move">⠿</button><span><i class="dot '+p.status+'"></i>'+(i+1)+'. '+catIcon(p)+' '+escapeHtml(p.name)+(p.year?'<small>'+p.year+'</small>':'')+(p.rating?'<span class="rt">★'+p.rating+'</span>':'')+(p.fav?' ❤️':'')+'</span><button class="del" aria-label="Remove">×</button>';
+    row._p=p;
     row.onclick=()=>openPlaceCard(p);
     row.querySelector(".del").onclick=e=>{e.stopPropagation();removePlace(p);};
     list.appendChild(row);
   });
+  enableReorder(list,shown);
+  document.getElementById("orderHint").hidden=shown.length<2;
 
   try{ localStorage.setItem("myIndiaPlacesV2",JSON.stringify(places)); }
   catch(e){ console.warn(e); kidSay(T("Uh-oh! Your browser storage is full. Try removing some of your own photos."),"📦"); }
   places.forEach(p=>{ if(p.img===undefined) loadPlaceImage(p); });
   scheduleMapBlob();
+}
+
+// Drag the ⠿ handle on a row to change the order of the places.
+function enableReorder(list,shown){
+  const scroller=document.getElementById("sheetBody");
+  list.querySelectorAll(".grip").forEach(grip=>{
+    grip.onclick=e=>e.stopPropagation();
+    grip.onpointerdown=e=>{
+      e.preventDefault(); e.stopPropagation();
+      const row=grip.parentNode;
+      row.classList.add("dragging");
+      const move=ev=>{                                        // listen on the window: the row itself moves around while dragging
+        ev.preventDefault();
+        const next=[...list.children].filter(r=>r!==row).find(r=>{ const b=r.getBoundingClientRect(); return ev.clientY<b.top+b.height/2; });
+        if(next!==row.nextSibling) list.insertBefore(row,next||null);
+        const sb=scroller.getBoundingClientRect();           // scroll the list when dragging near its edges
+        if(ev.clientY>sb.bottom-44) scroller.scrollTop+=14; else if(ev.clientY<sb.top+44) scroller.scrollTop-=14;
+      };
+      const done=()=>{
+        window.removeEventListener("pointermove",move); window.removeEventListener("pointerup",done); window.removeEventListener("pointercancel",done);
+        row.classList.remove("dragging");
+        const order=[...list.children].map(r=>r._p);
+        if(order.some((p,i)=>p!==shown[i])){
+          // only the places in the list move; hidden (filtered-out) places keep their position
+          const slots=shown.map(p=>places.indexOf(p)).sort((a,b)=>a-b);
+          slots.forEach((slot,i)=>{ places[slot]=order[i]; });
+          render();
+        }
+      };
+      window.addEventListener("pointermove",move,{passive:false}); window.addEventListener("pointerup",done); window.addEventListener("pointercancel",done);
+    };
+  });
 }
 
 function renderFilters(){
@@ -1202,6 +1381,7 @@ function openPlaceCard(p){
     +'<select id="pcCat" aria-label="Category">'+Object.keys(CATS).map(c=>'<option value="'+c+'">'+CATS[c][0]+' '+catLabel(c)+'</option>').join("")+'</select>'
     +'<div class="rate-row" role="group" aria-label="'+T("My stars")+'"><span id="pcStars">'+[1,2,3,4,5].map(n=>'<button type="button" class="star" data-n="'+n+'" aria-label="'+n+' ★">★</button>').join("")+'</span><button type="button" class="fav-btn" id="pcFav" aria-label="'+T("❤️ Favourites")+'"></button></div>'
     +'<label for="pcYear">'+T("Year I visited")+'</label><input id="pcYear" type="number" inputmode="numeric" min="1950" max="'+thisYear+'" placeholder="'+T("e.g. {0}",thisYear)+'">'
+    +'<label for="pcDate">'+T("Exact date (optional)")+'</label><input id="pcDate" type="date" min="1950-01-01" max="'+todayStr()+'">'
     +'<label for="pcNote">'+T("My memory")+'</label><textarea id="pcNote" maxlength="140" placeholder="'+T("What was the best part?")+'"></textarea>'
     +'<div><button type="button" class="kid-mini" id="pcPick">'+T("📷 Use my own photo")+'</button><button type="button" class="kid-mini" id="pcUnpick">'+T("↩ Use web photo")+'</button><input id="pcFile" type="file" accept="image/*" hidden></div>'
     +'<div><button type="button" class="kid-mini" id="pcFactBtn">'+T("✨ Tell me a fun fact!")+'</button></div>'
@@ -1210,7 +1390,7 @@ function openPlaceCard(p){
   const $=id=>card.box.querySelector("#"+id);
   card.box.querySelector("h3").textContent=p.name;
   card.box.querySelector(".sub").textContent=stName(stateOf(p)) || T("India");
-  $("pcYear").value=p.year||""; $("pcNote").value=p.note||""; $("pcCat").value=draft.cat;
+  $("pcYear").value=p.year||""; $("pcDate").value=p.date||""; $("pcNote").value=p.note||""; $("pcCat").value=draft.cat;
 
   const paint=()=>{
     card.box.querySelectorAll("#pcStatus button").forEach(b=>b.classList.toggle("on",b.dataset.v===draft.status));
@@ -1245,6 +1425,8 @@ function openPlaceCard(p){
     if($("pcYear").value && !(y>=1950 && y<=thisYear)){ kidSay(T("That year looks funny! Pick a year from 1950 to {0}.",thisYear),"📅"); return; }
     p.status=draft.status; p.cat=draft.cat;
     if(y) p.year=y; else delete p.year;
+    const dt=$("pcDate").value;
+    if(/^\d{4}-\d\d-\d\d$/.test(dt) && dt>="1950-01-01" && dt<=todayStr()){ p.date=dt; p.year=Number(dt.slice(0,4)); } else delete p.date;
     const note=$("pcNote").value.trim(); if(note) p.note=note; else delete p.note;
     if(draft.photo) p.photo=draft.photo; else delete p.photo;
     if(draft.rating) p.rating=draft.rating; else delete p.rating;
@@ -1762,6 +1944,8 @@ function cleanPlace(x){
   if(x.img==="" || (typeof x.img==="string" && /^https:\/\/[^\s"'<>]+$/.test(x.img))) p.img=x.img;
   const r=parseInt(x.rating,10); if(r>=1 && r<=5) p.rating=r;
   if(x.fav===true) p.fav=true;
+  p.added=Number(x.added)>0?Number(x.added):0;
+  if(typeof x.date==="string" && /^\d{4}-\d\d-\d\d$/.test(x.date)) p.date=x.date;
   if(x.plan && typeof x.plan==="object"){
     const pl=x.plan, la=Number(pl.lat), lo=Number(pl.lon), dd=parseInt(pl.days,10);
     p.plan={season:String(pl.season||"").slice(0,80),days:dd>=1&&dd<=30?dd:2,combine:String(pl.combine||"").slice(0,80),why:String(pl.why||"").slice(0,160),ai:pl.ai===true,lang:pl.lang==="hi"?"hi":"en"};
@@ -1794,7 +1978,7 @@ async function restoreFile(file){
   }
   if(data && data.quiz==="perfect") localStorage.setItem("myIndiaQuizV2","perfect");
   showEverything();
-  earnedBadges=null;            // restored badges should not all pop up again
+  earnedBadges=null; quietCelebrate();   // restored badges should not all pop up again
   render();
   kidSay(T("All done! {0} places are on your map now.",places.length),"🎉");
 }
@@ -2009,6 +2193,7 @@ function exifInfo(buf){
     if(i0.has(0x8769)){ const ex=ifd(u32(i0.get(0x8769).vo)); if(ex.has(0x9003)) when=str(ex.get(0x9003)); }
     if(!when && i0.has(0x0132)) when=str(i0.get(0x0132));
     const y=parseInt(when,10);
+    if(/^\d{4}:\d\d:\d\d/.test(when)) out.date=when.slice(0,10).replace(/:/g,"-");
     if(y>=1950 && y<=new Date().getFullYear()) out.year=y;
     if(i0.has(0x8825)){
       const g=ifd(u32(i0.get(0x8825).vo));
@@ -2047,7 +2232,7 @@ async function importPhotos(fileList){
     used++;
     let g=groups.find(x=>haversine(x,info)<12);              // photos taken close together = one pin
     if(!g){ g={lat:info.lat,lon:info.lon,files:[],years:[]}; groups.push(g); }
-    g.files.push(f); if(info.year) g.years.push(info.year);
+    g.files.push(f); if(info.year) g.years.push(info.year); if(info.year && info.date){ g.dates=g.dates||[]; g.dates.push(info.date); }
   }
   // give every group a name
   const named=[]; let asked=0;
@@ -2066,12 +2251,13 @@ async function importPhotos(fileList){
       g.existing=places.find(p=>norm(p.name)===norm(g.name)) || null;
     }
     const twin=named.find(o=>o.existing?o.existing===g.existing:(!g.existing && norm(o.name)===norm(g.name)));
-    if(twin){ twin.files=twin.files.concat(g.files); twin.years=twin.years.concat(g.years); }
+    if(twin){ twin.files=twin.files.concat(g.files); twin.years=twin.years.concat(g.years); twin.dates=(twin.dates||[]).concat(g.dates||[]); }
     else named.push(g);
   }
   groups=named;
   for(const g of groups){
     g.year=g.years.length?Math.min.apply(null,g.years):0;
+    g.date=(g.dates||[]).sort()[0]||"";
     for(const f of g.files.slice(0,3)){ try{ g.photo=await readPhoto(f); break; }catch(e){} }   // first photo that opens
   }
   if(!open()) return;
@@ -2102,11 +2288,12 @@ async function importPhotos(fileList){
       if(!g.box.checked) return;
       if(g.existing){
         if(!g.existing.photo && g.photo) g.existing.photo=g.photo;
-        if(!g.existing.year && g.year) g.existing.year=g.year;
+        if(!g.existing.year && g.year){ g.existing.year=g.year; if(g.date) g.existing.date=g.date; }
         updated++; return;
       }
       const p={name:g.name,lat:g.lat,lon:g.lon,status:"visited",cat:guessCat(g.name)};
       if(g.year) p.year=g.year;
+      if(g.date) p.date=g.date;
       if(g.photo) p.photo=g.photo;
       places.push(p); added++;
     });
@@ -2155,7 +2342,7 @@ document.getElementById("scrim").onclick=()=>showTab("map");
   head.addEventListener("pointerup",e=>{ if(y0!==null && e.clientY-y0>40 && !isWide()) showTab("map"); y0=null; });
   head.addEventListener("pointercancel",()=>{ y0=null; });
 })();
-function refreshChrome(){ showTab(curTab,true); renderLbSeg(); renderAcct(); }
+function refreshChrome(){ showTab(curTab,true); renderLbSeg(); renderAcct(); renderCloudNote(); }
 
 // =====================================================================
 //  GOOGLE SIGN-IN + LEADERBOARD (Firebase Realtime Database)
@@ -2171,8 +2358,8 @@ const FIREBASE_CONFIG={
   appId:"1:851797718600:web:e990b3435751d209228a7d"
 };
 const FB_VER="10.12.2";
-const BOARDS=[["places","📍","Places"],["states","🗺️","States"],["km","🛣️","Km"],["badges","🏅","Badges"]];
-let fbUser=null, fbAuth=null, fbDb=null, lbCrit="places", lbRows=null, submitTimer=null;
+const BOARDS=[["xp","⭐","Points"],["places","📍","Places"],["states","🗺️","States"],["km","🛣️","Km"],["badges","🏅","Badges"]];
+let fbUser=null, fbAuth=null, fbDb=null, lbCrit="xp", lbRows=null, submitTimer=null;
 
 function loadScript(src){
   return new Promise((res,rej)=>{ const s=document.createElement("script"); s.src=src; s.onload=res; s.onerror=()=>rej(new Error("Could not load "+src)); document.head.appendChild(s); });
@@ -2198,12 +2385,12 @@ function onAuthChange(){
       localStorage.setItem("myIndiaNameV2",nameInput.value);
       render();
     }
-    scheduleSubmit();
+    scheduleSubmit(); cloudStart(); joinFromLink();
   }else{                                                        // signed out: back to the sign-in screen
     localStorage.removeItem("myIndiaAuthV2");
     welcome(true);
   }
-  renderAcct();
+  renderAcct(); renderCloudNote();
   if(curTab==="board") loadBoard();
 }
 async function googleSignIn(){
@@ -2235,11 +2422,15 @@ function renderAcct(){
   renderLbMe();
 }
 
+function myName(){ return (nameInput.value.trim() || (fbUser && fbUser.displayName) || "Traveller").slice(0,40); }
 function myScores(){
-  const st=getStats();
-  return {places:st.v, states:st.states+st.uts, km:st.km, badges:BADGES.filter(b=>b.t(st)).length};
+  const es=engageState(), st=es.st;
+  return {places:st.v, states:st.states+st.uts, km:st.km, badges:es.badges, xp:es.xp};
 }
 function boardRef(id){ return fbDb.ref("leaderboards/travel/india-"+id); }
+function uref(){ return fbDb.ref("travel/users/"+fbUser.uid); }
+function pref(uid){ return fbDb.ref("travel/public/"+uid); }
+function gref(code){ return fbDb.ref("travel/groups/"+code); }
 function scheduleSubmit(){
   clearTimeout(submitTimer);
   if(fbUser) submitTimer=setTimeout(submitScores,1500);
@@ -2249,21 +2440,179 @@ async function submitScores(){
   if(!fbUser || !fbDb) return;
   const sc=myScores(), key="myIndiaLbV2_"+fbUser.uid, last=localStorage.getItem(key);
   if(!sc.places && !last) return;                               // nothing to show yet
-  const name=(nameInput.value.trim() || fbUser.displayName || "Traveller").slice(0,40);
-  const sig=JSON.stringify([sc,name]);
+  const name=myName(), lvl=engageState().lvl, sig=JSON.stringify([sc,name,lastSlim]);
   if(sig===last) return;
   try{
-    await Promise.all(BOARDS.map(b=>boardRef(b[0]).child(fbUser.uid).set({name,score:sc[b[0]],photo:safePhoto(fbUser.photoURL),ts:firebase.database.ServerValue.TIMESTAMP})));
+    await Promise.all(BOARDS.map(b=>boardRef(b[0]).child(fbUser.uid).set({name,score:sc[b[0]],lvl,photo:safePhoto(fbUser.photoURL),ts:firebase.database.ServerValue.TIMESTAMP})));
     localStorage.setItem(key,sig);
+    publishPublic().catch(cloudFail);
     if(curTab==="board") loadBoard();
   }catch(e){ console.warn("Leaderboard update failed.",e); }
 }
+
+// ---- cloud save: the map is stored against the Google account ----
+let cloudOk=null, syncReady=false, pushTimer=null;      // cloudOk: null = not known yet, false = database rules do not allow it
+function cloudFail(e){
+  console.warn("Cloud problem.",e);
+  if(/permission/i.test(String((e && (e.code||e.message))||""))) cloudOk=false;
+  renderCloudNote();
+}
+function syncKey(){ return "myIndiaSyncV2_"+fbUser.uid; }
+function markDirty(){
+  if(!fbUser) return;
+  const s=lsGet(syncKey(),{}); s.dirty=true; lsSet(syncKey(),s);
+  clearTimeout(pushTimer); pushTimer=setTimeout(cloudPush,3000);
+  renderCloudNote();
+}
+function photoSig(){ return places.map((p,i)=>p.photo?i+":"+p.photo.length:"").join(","); }
+async function cloudPush(){
+  if(!fbUser || !fbDb || cloudOk===false || !syncReady) return;
+  const s=lsGet(syncKey(),{}), t=Date.now(), sig=photoSig();
+  const data=JSON.parse(JSON.stringify(places.map(p=>{ const o=Object.assign({},p); delete o.photo; delete o.state; return o; })));
+  const up={data,meta:{updated:t,count:places.length,name:nameInput.value.trim().slice(0,24)}};
+  if(sig!==s.psig){ up.photos={}; places.forEach((p,i)=>{ if(p.photo) up.photos["p"+i]=p.photo; }); }   // photos only when they changed
+  try{ await uref().update(up); cloudOk=true; lsSet(syncKey(),{t,dirty:false,psig:sig}); }
+  catch(e){ cloudFail(e); }
+  renderCloudNote();
+}
+async function cloudPull(meta){
+  const v=(await uref().once("value")).val()||{}, ph=v.photos||{};
+  const raw=Array.isArray(v.data)?v.data:Object.keys(v.data||{}).map(k=>v.data[k]);
+  places=raw.map((x,i)=>x?cleanPlace(Object.assign({},x,{photo:ph["p"+i]})):null).filter(Boolean);
+  if(v.meta && typeof v.meta.name==="string" && v.meta.name && !nameInput.value.trim()){ nameInput.value=v.meta.name.slice(0,24); localStorage.setItem("myIndiaNameV2",nameInput.value); }
+  showEverything(); earnedBadges=null; quietCelebrate();
+  lastSlim=slimSig();
+  lsSet(syncKey(),{t:meta.updated,dirty:false,psig:photoSig()});
+  render();
+}
+async function cloudStart(){
+  syncReady=false;
+  if(!fbUser || !fbDb) return;
+  try{
+    const meta=(await uref().child("meta").once("value")).val();
+    cloudOk=true;
+    const s=lsGet(syncKey(),{});
+    if(!meta){ syncReady=true; if(places.length) await cloudPush(); }
+    else if(!places.length) await cloudPull(meta);
+    else if(meta.updated===s.t){ syncReady=true; if(s.dirty) await cloudPush(); }
+    else if(s.t && !s.dirty) await cloudPull(meta);                      // changed on another phone, nothing new here
+    else{
+      const pick=await kidChoice(T("Your account has a saved map with {0} places and this phone has {1}. Which one should I keep?",meta.count||0,places.length),"☁️",
+        [["cloud",T("Use the saved map ☁️"),"kid-yes"],["local",T("Keep this phone’s map 📱"),"kid-no"]]);
+      if(pick==="cloud") await cloudPull(meta); else{ syncReady=true; await cloudPush(); }
+    }
+    const gs=(await uref().child("groups").once("value")).val()||{};          // my friends groups follow me to a new phone
+    const mine=myGroups();
+    Object.keys(gs).forEach(code=>{ if(/^[A-Z0-9]{4,8}$/.test(code) && !mine.some(g=>g.code===code)) mine.push({code,name:String(gs[code]).slice(0,40)}); });
+    lsSet("myIndiaGroupsV2_"+fbUser.uid,mine);
+  }catch(e){ cloudFail(e); }
+  syncReady=true;
+  renderCloudNote();
+}
+function renderCloudNote(){
+  const n=document.getElementById("cloudNote"); if(!n) return;
+  n.hidden=!fbUser;
+  if(!fbUser) return;
+  n.textContent=cloudOk===false ? T("☁️ Cloud save is off. Publish the new database rules in Firebase to turn it on. Your places are still saved on this phone.")
+    : lsGet(syncKey(),{}).dirty ? T("☁️ Saving to your Google account…")
+    : T("☁️ Saved to your Google account. Sign in on another phone to get your map there.");
+}
+
+// ---- friends groups ----
+function myGroups(){ return fbUser?lsGet("myIndiaGroupsV2_"+fbUser.uid,[]):[]; }
+// What my friends can see: name, scores and place names (never notes or photos). Only published once I am in a group.
+async function publishPublic(){
+  if(!fbUser || !fbDb || cloudOk===false || !myGroups().length) return;
+  const es=engageState();
+  await pref(fbUser.uid).set({name:myName(),photo:safePhoto(fbUser.photoURL),lvl:es.lvl,stats:myScores(),updated:firebase.database.ServerValue.TIMESTAMP,
+    places:places.map(p=>({n:p.name,lat:p.lat,lon:p.lon,s:p.status,c:catOf(p),y:p.year||0,st:stateOf(p)||""}))});
+}
+function groupRulesMsg(e){
+  cloudFail(e);
+  kidSay(cloudOk===false?T("Friends groups need the new database rules. Publish the rules file that came with this version in Firebase."):T("That did not work: {0}",(e && e.message)||""),"👥");
+}
+async function createGroup(){
+  if(!fbUser) return;
+  const nm=await kidPrompt(T("Name your friends group"),"👥",T("{0}’s travel gang",myName().split(" ")[0]));
+  if(!nm) return;
+  const A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let code="";
+  for(let i=0;i<6;i++) code+=A[Math.floor(Math.random()*A.length)];
+  try{
+    await gref(code).child("name").set(nm.slice(0,40));
+    await gref(code).child("owner").set(fbUser.uid);
+    await joinGroup(code,true);
+  }catch(e){ groupRulesMsg(e); }
+}
+async function joinGroup(raw,isNew){
+  if(!fbUser) return;
+  const code=String(raw).toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,8);
+  if(code.length<4){ kidSay(T("I could not find a group with that code."),"🔍"); return; }
+  try{
+    const nm=(await gref(code).child("name").once("value")).val();
+    if(!nm){ kidSay(T("I could not find a group with that code."),"🔍"); return; }
+    await gref(code).child("members/"+fbUser.uid).set({name:myName(),joined:firebase.database.ServerValue.TIMESTAMP});
+    await uref().child("groups/"+code).set(String(nm).slice(0,40));
+    const g=myGroups().filter(x=>x.code!==code); g.push({code,name:String(nm).slice(0,40)});
+    lsSet("myIndiaGroupsV2_"+fbUser.uid,g);
+    lbGroup=code; lbScope="friends";
+    await publishPublic();
+    renderLbSeg(); showTab("board",true);
+    if(isNew) inviteGroup({code,name:String(nm)}); else toast("👥 "+T("You joined {0}!",String(nm).slice(0,40)));
+  }catch(e){ groupRulesMsg(e); }
+}
+async function leaveGroup(g){
+  if(!(await kidAsk(T("Leave the group {0}?",g.name),{emoji:"👋"}))) return;
+  try{ await gref(g.code).child("members/"+fbUser.uid).remove(); await uref().child("groups/"+g.code).remove(); }catch(e){ console.warn(e); }
+  lsSet("myIndiaGroupsV2_"+fbUser.uid,myGroups().filter(x=>x.code!==g.code));
+  lbGroup=""; loadBoard();
+}
+function pageUrl(extra){ return /^https?:$/.test(location.protocol) ? location.origin+location.pathname+(extra||"") : ""; }
+async function inviteGroup(g){
+  const text=T("Join my travel group “{0}” on My India Travel Map! Group code: {1}",g.name,g.code)+" "+pageUrl("?join="+g.code);
+  try{ if(navigator.share){ await navigator.share({text}); return; } }catch(e){ if(e.name==="AbortError") return; }
+  try{ await navigator.clipboard.writeText(text); }catch(e){}
+  kidSay(T("Send this code to your friends: {0} (the invite message is copied).",g.code),"📨");
+}
+let joinTried=false;
+function joinFromLink(){
+  const j=new URLSearchParams(location.search).get("join");
+  if(j && !joinTried){ joinTried=true; joinGroup(j); }
+}
+// Side-by-side comparison with a friend.
+function compareWith(r){
+  const ok=x=>x && typeof x.n==="string" && Number(x.lat)>=5 && Number(x.lat)<=38 && Number(x.lon)>=65 && Number(x.lon)<=100;
+  const theirs=(r.prof && Array.isArray(r.prof.places)?r.prof.places:[]).filter(x=>ok(x) && x.s==="visited").slice(0,400).map(x=>({name:x.n.slice(0,80),lat:Number(x.lat),lon:Number(x.lon),st:String(x.st||"")}));
+  const mine=places.filter(p=>p.status==="visited");
+  const has=(a,list)=>list.some(b=>norm(a.name)===norm(b.name) || haversine(a,b)<15);
+  const both=mine.filter(p=>has(p,theirs)), onlyMe=mine.filter(p=>!has(p,theirs)), onlyThem=theirs.filter(p=>!has(p,mine));
+  const myS=getStats().regions, extra=[...new Set(theirs.map(x=>x.st).filter(s=>s && HI_STATES[s] && !myS.has(s)))];
+  const card=kidCard('<div class="kid-emoji">🤝</div><h3></h3><div class="cmp"></div><div class="kid-btns" style="margin-top:12px"><button class="kid-yes"></button></div>');
+  card.box.querySelector("h3").textContent=T("You and {0}",r.name);
+  const add=(em,title,list)=>{ const row=mkEl("div","kid-row"); row.append(mkEl("span","em",em)); const d=mkEl("div"); d.append(mkEl("b","",title+" ("+list.length+")"),mkEl("small","",list.slice(0,12).join(", ")+(list.length>12?" …":"")||"—")); row.append(d); card.box.querySelector(".cmp").appendChild(row); };
+  add("🤝",T("You both visited"),both.map(p=>p.name));
+  add("🙋",T("Only you"),onlyMe.map(p=>p.name));
+  add("✨",T("Only {0}",r.name),onlyThem.map(p=>p.name));
+  add("🗺️",T("States {0} has and you do not",r.name),extra.map(stName));
+  const btn=card.box.querySelector(".kid-yes");
+  btn.textContent=T("👀 Show their places on my map");
+  btn.hidden=!theirs.length;
+  btn.onclick=()=>{ ghost={name:r.name,places:theirs}; card.close(); if(!isWide()) showTab("map",true); render(); };
+}
+
+// ---- leaderboard screen ----
+let lbScope="all", lbGroup="";
 function renderLbSeg(){
+  const sc=document.getElementById("lbScope");
+  sc.innerHTML="";
+  [["all",T("🌍 Everyone")],["friends",T("👥 Friends")]].forEach(d=>{
+    const b=mkEl("button",lbScope===d[0]?"on":"",d[1]); b.type="button";
+    b.onclick=()=>{ lbScope=d[0]; renderLbSeg(); loadBoard(); };
+    sc.appendChild(b);
+  });
   const seg=document.getElementById("lbSeg");
   seg.innerHTML="";
   BOARDS.forEach(b=>{
-    const el=document.createElement("button");
-    el.type="button"; el.className=lbCrit===b[0]?"on":""; el.textContent=b[1]+" "+T(b[2]);
+    const el=mkEl("button","chip"+(lbCrit===b[0]?" on":""),b[1]+" "+T(b[2])); el.type="button";
     el.onclick=()=>{ lbCrit=b[0]; renderLbSeg(); loadBoard(); };
     seg.appendChild(el);
   });
@@ -2271,71 +2620,507 @@ function renderLbSeg(){
 function renderLbMe(){
   const box=document.getElementById("lbMe");
   box.innerHTML="";
-  const line=document.createElement("div"), small=document.createElement("div");
-  small.className="small";
-  if(!fbUser){
-    line.textContent=T("Sign in with Google to put your name on the leaderboard.");
-    const btn=document.getElementById("gBtn").cloneNode(true);
-    btn.removeAttribute("id"); btn.onclick=googleSignIn;
-    box.append(line,btn);
-    return;
-  }
-  const i=lbRows?lbRows.findIndex(r=>r.k===fbUser.uid):-1;
+  const line=mkEl("div"), small=mkEl("div","small");
+  if(!fbUser){ line.textContent=T("Sign in with Google to put your name on the leaderboard."); box.append(line); return; }
+  const i=lbRows?lbRows.findIndex(r=>r.k===fbUser.uid):-1, es=engageState();
   line.textContent=i>=0 ? T("You are #{0} of {1} travellers",i+1,lbRows.length) : T("Add a visited place to join the leaderboard.");
-  small.textContent=T("Scores update by themselves when your map changes.");
+  small.textContent=LEVELS[es.lvl][1]+" "+T(LEVELS[es.lvl][2])+" · "+T("{0} points",es.xp)+" · "+T("Scores update by themselves when your map changes.");
   box.append(line,small);
 }
+function lbRowEl(r,i,id){
+  const me=fbUser && r.k===fbUser.uid, row=mkEl("div","lb-row"+(me?" me":""));
+  row.append(mkEl("span","lb-rank",["🥇","🥈","🥉"][i]||String(i+1)));
+  const av=mkEl("span","lb-av"), initial=(r.name||"?").charAt(0).toUpperCase();
+  if(r.photo){ const im=mkEl("img"); im.alt=""; im.referrerPolicy="no-referrer"; im.src=r.photo; im.onerror=()=>{ im.remove(); av.textContent=initial; }; av.appendChild(im); }
+  else av.textContent=initial;
+  const L=LEVELS[Number.isInteger(r.lvl) && r.lvl>=0 && r.lvl<LEVELS.length?r.lvl:0];
+  const nm=mkEl("span","lb-name"); nm.append(mkEl("span","",(r.name||T("Traveller"))+(me?" ("+T("You")+")":"")),mkEl("small","",L[1]+" "+T(L[2])));
+  row.append(av,nm,mkEl("span","lb-score",r.score.toLocaleString("en-IN")+(id==="km"?" km":"")));
+  return row;
+}
+function lbNote(box,text){ box.innerHTML=""; box.appendChild(mkEl("div","small lb-note",text)); }
 async function loadBoard(){
-  const box=document.getElementById("lbList"), id=lbCrit;
-  box.innerHTML='<div class="small lb-note">'+T("Loading…")+'</div>';
-  if(!(await fbReady)){ box.innerHTML='<div class="small lb-note">'+T("The leaderboard needs internet. Check your connection and tap Refresh.")+'</div>'; return; }
+  const box=document.getElementById("lbList"), tools=document.getElementById("lbTools"), id=lbCrit, scope=lbScope;
+  const stale=()=>id!==lbCrit || scope!==lbScope;
+  tools.innerHTML="";
+  lbNote(box,T("Loading…"));
+  if(!(await fbReady)){ lbNote(box,T("The leaderboard needs internet. Check your connection and tap Refresh.")); return; }
+  if(scope==="friends"){ await loadFriends(box,tools,id,stale); return; }
   try{
     const snap=await boardRef(id).orderByChild("score").limitToLast(100).once("value");
-    if(id!==lbCrit) return;                                     // the user switched to another list meanwhile
+    if(stale()) return;
     const rows=[];
-    snap.forEach(c=>{ const v=c.val()||{}; if(typeof v.score==="number" && v.score>0) rows.push({k:c.key,name:String(v.name||"").slice(0,40),score:v.score,photo:safePhoto(v.photo)}); });
+    snap.forEach(c=>{ const v=c.val()||{}; if(typeof v.score==="number" && v.score>0) rows.push({k:c.key,name:String(v.name||"").slice(0,40),score:v.score,photo:safePhoto(v.photo),lvl:v.lvl}); });
     rows.sort((a,b)=>b.score-a.score);
     lbRows=rows;
     box.innerHTML="";
-    if(!rows.length) box.innerHTML='<div class="small lb-note">'+T("No travellers here yet. Be the first!")+'</div>';
-    rows.forEach((r,i)=>{
-      const me=fbUser && r.k===fbUser.uid, row=document.createElement("div");
-      row.className="lb-row"+(me?" me":"");
-      row.innerHTML='<span class="lb-rank"></span><span class="lb-av"></span><span class="lb-name"></span><span class="lb-score"></span>';
-      row.querySelector(".lb-rank").textContent=["🥇","🥈","🥉"][i]||String(i+1);
-      const av=row.querySelector(".lb-av");
-      if(r.photo){ const im=document.createElement("img"); im.alt=""; im.referrerPolicy="no-referrer"; im.src=r.photo; im.onerror=()=>{ im.remove(); av.textContent=(r.name||"?").charAt(0).toUpperCase(); }; av.appendChild(im); }
-      else av.textContent=(r.name||"?").charAt(0).toUpperCase();
-      row.querySelector(".lb-name").textContent=(r.name||T("Traveller"))+(me?" ("+T("You")+")":"");
-      row.querySelector(".lb-score").textContent=r.score.toLocaleString("en-IN")+(id==="km"?" km":"");
-      box.appendChild(row);
-    });
+    if(!rows.length) lbNote(box,T("No travellers here yet. Be the first!"));
+    rows.forEach((r,i)=>box.appendChild(lbRowEl(r,i,id)));
     renderLbMe();
+  }catch(e){ console.warn("Leaderboard could not be loaded.",e); lbNote(box,T("Could not load the leaderboard: {0}",e.message||e.code||"")); }
+}
+async function loadFriends(box,tools,id,stale){
+  const mk=(txt,cls,fn)=>{ const b=mkEl("button",cls,txt); b.type="button"; b.onclick=fn; return b; };
+  const starters=()=>[mk(T("➕ Create a friends group"),"primary full",createGroup),
+    mk(T("🔑 Join with a code"),"gray full",async()=>{ const c=await kidPrompt(T("Type the group code your friend sent you"),"🔑",""); if(c) joinGroup(c); })];
+  if(!fbUser){ lbNote(box,T("Sign in with Google to put your name on the leaderboard.")); return; }
+  const groups=myGroups();
+  if(!groups.length){
+    lbRows=null; renderLbMe();
+    lbNote(box,T("Make a private leaderboard for your family and friends. People in a group can see each other’s place names and scores."));
+    tools.append.apply(tools,starters());
+    return;
+  }
+  const g=groups.find(x=>x.code===lbGroup)||groups[0]; lbGroup=g.code;
+  try{
+    const mem=(await gref(g.code).child("members").once("value")).val()||{};
+    const uids=Object.keys(mem).slice(0,60);
+    const profs=await Promise.all(uids.map(u=>pref(u).once("value").then(s=>s.val(),()=>null)));
+    if(stale()) return;
+    const rows=uids.map((u,i)=>{ const p=profs[i]||{}; return {k:u,name:String(p.name||(mem[u]&&mem[u].name)||"").slice(0,40),score:Number(p.stats && p.stats[id])||0,photo:safePhoto(p.photo),lvl:p.lvl,prof:p}; }).sort((a,b)=>b.score-a.score);
+    lbRows=rows;
+    box.innerHTML="";
+    if(groups.length>1){
+      const pick=mkEl("div","chips slide");
+      groups.forEach(x=>{ const c=mk(x.name,"chip"+(x.code===g.code?" on":""),()=>{ lbGroup=x.code; loadBoard(); }); pick.appendChild(c); });
+      box.appendChild(pick);
+    }
+    box.appendChild(mkEl("div","share-title","👥 "+g.name+" · "+g.code));
+    rows.forEach((r,i)=>{ const el=lbRowEl(r,i,id); if(r.k!==fbUser.uid){ el.classList.add("tap"); el.title=T("You and {0}",r.name); el.onclick=()=>compareWith(r); } box.appendChild(el); });
+    if(rows.length>1) box.appendChild(mkEl("div","small lb-note",T("Tap a friend to compare your maps.")));
+    renderLbMe();
+    tools.append(mk(T("📨 Invite friends · code {0}",g.code),"green full",()=>inviteGroup(g)));
+    tools.append.apply(tools,starters());
+    tools.append(mk(T("Leave this group"),"gray full danger",()=>leaveGroup(g)));
   }catch(e){
-    console.warn("Leaderboard could not be loaded.",e);
-    box.innerHTML=""; const n=document.createElement("div"); n.className="small lb-note"; n.textContent=T("Could not load the leaderboard: {0}",e.message||e.code||""); box.appendChild(n);
+    cloudFail(e);
+    lbNote(box,cloudOk===false?T("Friends groups need the new database rules. Publish the rules file that came with this version in Firebase."):T("Could not load the leaderboard: {0}",e.message||e.code||""));
   }
 }
 
-// ---- Share button on the home screen ----
-async function shareHome(){
-  if(!places.length){ kidSay(T("Add a place first, then share your map!"),"📤"); return; }
-  const blob=mapBlobCache || await mapBlob();
-  try{                                                // phones: the normal share sheet with the picture attached
-    const file=new File([blob],PNG_NAME,{type:"image/png"});
-    if(navigator.canShare && navigator.canShare({files:[file]})){
-      await navigator.share({files:[file],title:titleText(),text:T("My Visiting Places in India 🇮🇳 — {0} places!",places.length)});
-      return;
+// =====================================================================
+//  SHARING: map picture, story card, passport, journey video
+// =====================================================================
+function challengeText(){
+  const st=getStats(), url=pageUrl();
+  return T("I have visited {0} of 28 states and {1} places in India. Can you beat me?",st.states,st.v)+" 🇮🇳"+(url?" "+url:"");
+}
+async function shareBlob(blob,fileName,text){
+  try{
+    const file=new File([blob],fileName,{type:blob.type});
+    if(navigator.canShare && navigator.canShare({files:[file]})){ await navigator.share({files:[file],title:titleText(),text:text||""}); return; }
+  }catch(e){ if(e.name==="AbortError") return; console.warn("Share sheet failed; saving the file instead.",e); }
+  saveBlob(blob,fileName);
+  kidSay(T("Saved! Attach it in WhatsApp or Instagram."),"🎉");
+}
+// Tall 9:16 card for Instagram stories and WhatsApp status.
+async function storyCanvas(){
+  const es=engageState(), st=yearScope()?getStats(yearScope()):es.st, map=await buildCanvas(true), W=1080, H=1920;
+  const c=document.createElement("canvas"); c.width=W; c.height=H; const x=c.getContext("2d");
+  const g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,"#0b3b73"); g.addColorStop(.6,"#12448c"); g.addColorStop(1,"#082a55");
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.textAlign="center"; x.textBaseline="alphabetic";
+  x.fillStyle="#fff"; let fs=60; do{ x.font="bold "+fs+"px Arial"; fs-=4; }while(fs>30 && x.measureText(titleText()).width>W-100);
+  x.fillText(fitText(x,titleText(),W-100),W/2,118);
+  x.fillStyle="#ffd86b"; x.font="bold 36px Arial"; x.fillText(LEVELS[es.lvl][1]+" "+T(LEVELS[es.lvl][2])+" · "+T("{0} points",es.xp),W/2,178);
+  const mw=940, mh=Math.round(mw*MAP_H/MAP_W), mx=(W-mw)/2, my=214;
+  x.save(); roundRect(x,mx,my,mw,mh,36); x.clip(); x.drawImage(map,mx,my,mw,mh); x.restore();
+  const tiles=[[st.v,T("places")],[st.states+st.uts,T("states & UTs")],[st.km.toLocaleString("en-IN"),T("km travelled")]], ty=my+mh+30, tw=(mw-40)/3;
+  tiles.forEach((t,i)=>{
+    const tx=mx+i*(tw+20);
+    x.fillStyle="rgba(255,255,255,.13)"; roundRect(x,tx,ty,tw,160,22); x.fill();
+    x.fillStyle="#ffd86b"; x.font="bold 64px Arial"; x.fillText(String(t[0]),tx+tw/2,ty+82);
+    x.fillStyle="#fff"; x.font="24px Arial"; x.fillText(fitText(x,t[1],tw-16),tx+tw/2,ty+128);
+  });
+  let y=ty+160+62;
+  const best=topFive(yearScope());
+  if(best.length){ x.fillStyle="#cfe1f7"; x.font="bold 30px Arial"; x.fillText(fitText(x,T("⭐ Top picks: {0}",best.map(p=>p.name).join(" · ")),W-100),W/2,y); y+=84; }
+  x.fillStyle="#ffd86b"; x.font="bold 66px Arial"; x.fillText(T("Can you beat me?"),W/2,y+20);
+  x.fillStyle="#fff"; x.font="30px Arial"; x.fillText(T("{0} of 28 states visited",st.states),W/2,y+78);
+  x.fillStyle="#9fbbe0"; x.font="26px Arial"; x.fillText(fitText(x,"My India Travel Map"+(pageUrl()?" · "+pageUrl().replace(/^https?:\/\//,""):""),W-100),W/2,H-48);
+  return c;
+}
+// Records the journey replay as a short video.
+async function recordJourney(){
+  const list=journeyPlaces(yearScope());
+  if(list.length<2){ kidSay(T("Add at least 2 visited places to play your journey!"),"🎬"); return; }
+  const mime=window.MediaRecorder && HTMLCanvasElement.prototype.captureStream && ["video/mp4;codecs=avc1","video/mp4","video/webm;codecs=vp9","video/webm"].find(m=>MediaRecorder.isTypeSupported(m));
+  if(!mime){ kidSay(T("This browser cannot make videos. Try it in Chrome."),"🎬"); return; }
+  const card=kidCard('<div class="kid-emoji">🎬</div><h3>'+T("Making your video…")+'</h3><div class="sub">'+T("Keep this screen open for a few seconds.")+'</div>');
+  const line=document.getElementById("journey"), keep=line.getAttribute("d");
+  line.setAttribute("d",""); const base=await svgImage(); line.setAttribute("d",keep);
+  const W=720, H=790, c=document.createElement("canvas"); c.width=W; c.height=H; const x=c.getContext("2d");
+  const pts=list.map(p=>{ const q=project(p.lat,p.lon); return {x:q.x*W/100,y:q.y*H/100}; });
+  const draw=(n,head,caption)=>{                      // n = places reached, head = moving point
+    x.drawImage(base,0,0,W,H);
+    x.strokeStyle="#e6492d"; x.lineWidth=4; x.lineJoin="round"; x.setLineDash([2,9]); x.lineCap="round";
+    x.beginPath(); pts.slice(0,n).forEach((p,i)=>i?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y)); if(head) x.lineTo(head.x,head.y); x.stroke(); x.setLineDash([]);
+    pts.slice(0,n).forEach(p=>{ x.fillStyle="#fff"; x.beginPath(); x.arc(p.x,p.y,9,0,Math.PI*2); x.fill(); x.fillStyle="#1faa59"; x.beginPath(); x.arc(p.x,p.y,6.5,0,Math.PI*2); x.fill(); });
+    if(head){ x.font="26px serif"; x.textAlign="center"; x.textBaseline="middle"; x.fillText("✈️",head.x,head.y); }
+    x.fillStyle="rgba(11,59,115,.94)"; roundRect(x,30,H-84,W-60,56,28); x.fill();
+    x.fillStyle="#fff"; x.font="bold 24px Arial"; x.textAlign="center"; x.textBaseline="middle"; x.fillText(fitText(x,caption,W-110),W/2,H-55);
+  };
+  const run=(ms,fn)=>new Promise(res=>{ const t0=performance.now(); const f=t=>{ const k=Math.min(1,Math.max(0,(t-t0)/ms)); fn(k); if(k<1) requestAnimationFrame(f); else res(); }; requestAnimationFrame(f); });
+  const cap=i=>(list[i].year?list[i].year+" · ":"")+list[i].name+"  ("+(i+1)+"/"+list.length+")";
+  draw(0,null,titleText());
+  const chunks=[], rec=new MediaRecorder(c.captureStream(30),{mimeType:mime,videoBitsPerSecond:2500000});
+  rec.ondataavailable=e=>{ if(e.data && e.data.size) chunks.push(e.data); };
+  const stopped=new Promise(res=>{ rec.onstop=res; });
+  rec.start();
+  try{
+    await run(700,()=>draw(0,null,titleText()));
+    for(let i=0;i<list.length;i++){
+      if(i) await run(Math.min(1300,Math.max(550,haversine(list[i-1],list[i])*1.1)),k=>{ const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2, a=pts[i-1], b=pts[i]; draw(i,{x:a.x+(b.x-a.x)*e,y:a.y+(b.y-a.y)*e},cap(i-1)); });
+      await run(550,()=>draw(i+1,null,cap(i)));
     }
-  }catch(e){ if(e.name==="AbortError") return; console.warn("Share sheet failed; showing choices.",e); }
-  const pick=await kidChoice(T("Share my map"),"📤",[["whatsapp","🟢 WhatsApp","kid-yes"],["instagram","📸 Instagram","kid-no"],["png",T("⬇ Download PNG"),"kid-plain"],["",T("Cancel"),"kid-plain"]]);
-  if(pick==="png") downloadPNG(); else if(pick) shareMap(pick);
+    await run(1500,()=>draw(list.length,null,T("🎉 {0} places · {1} km!",list.length,getStats(yearScope()).km.toLocaleString("en-IN"))));
+  }finally{ rec.stop(); }
+  await stopped;
+  card.close();
+  const blob=new Blob(chunks,{type:mime.split(";")[0]});
+  shareBlob(blob,"india-journey."+(mime.includes("mp4")?"mp4":"webm"),challengeText());
+}
+// Share button on the home screen: pick what to share.
+function shareHome(){
+  if(!places.length){ kidSay(T("Add a place first, then share your map!"),"📤"); return; }
+  const card=kidCard('<div class="kid-emoji">📤</div><h3>'+T("Share my map")+'</h3><div class="tool-grid" id="shGrid"></div>');
+  const toBlob=c=>new Promise(r=>c.toBlob(r,"image/png"));
+  const opts=[
+    ["🗺️",T("Map picture"),async()=>shareBlob(mapBlobCache || await mapBlob(),PNG_NAME,challengeText())],
+    ["📱",T("Story card (tall)"),async()=>shareBlob(await toBlob(await storyCanvas()),"india-travel-story.png",challengeText())],
+    ["🛂",T("Passport stamps"),async()=>shareBlob(await toBlob(passportCanvas()),"india-state-passport.png",challengeText())],
+    ["🎬",T("Journey video"),()=>recordJourney()],
+    ["🟢","WhatsApp",()=>shareMap("whatsapp")],
+    ["📸","Instagram",()=>shareMap("instagram")]];
+  opts.forEach(o=>{
+    const b=mkEl("button","tool"); b.type="button";
+    b.append(mkEl("span","ic",o[0]),mkEl("span","",o[1]));
+    b.onclick=()=>{ card.close(); o[2](); };
+    card.box.querySelector("#shGrid").appendChild(b);
+  });
 }
 
 // ---- start-up ----
 showTab(isWide()?"places":"map",true);
 renderLbSeg();
 if(localStorage.getItem("myIndiaAuthV2")!=="user") welcome(true);   // nobody gets in without Google sign-in
+
+// =====================================================================
+//  ENGAGEMENT: levels, daily question, monthly challenge, memories,
+//  collections, passport stamps, celebrations
+// =====================================================================
+function ymd(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function todayStr(){ return ymd(new Date()); }
+function lsGet(k,def){ try{ const v=JSON.parse(localStorage.getItem(k)); return v==null?def:v; }catch(e){ return def; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ console.warn(e); } }
+function mkEl(tag,cls,text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!==undefined) e.textContent=text; return e; }
+
+// ---- celebrations ----
+function chime(){
+  if(lsGet("myIndiaSoundV2",true)===false) return;
+  try{
+    const A=chime.ctx || (chime.ctx=new (window.AudioContext||window.webkitAudioContext)());
+    [523,659,784,1047].forEach((f,i)=>{
+      const o=A.createOscillator(), g=A.createGain(), t=A.currentTime+i*0.09;
+      o.type="triangle"; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);
+      o.connect(g); g.connect(A.destination); o.start(t); o.stop(t+0.32);
+    });
+  }catch(e){}
+}
+function confetti(){
+  chime();
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c=mkEl("canvas","confetti"); c.width=innerWidth; c.height=innerHeight; document.body.appendChild(c);
+  const x=c.getContext("2d"), cols=["#ff9933","#138808","#1264d6","#f5b301","#e6492d","#b487de","#ffffff"];
+  const P=Array.from({length:120},()=>({x:c.width/2+(Math.random()-.5)*140,y:c.height*.38,vx:(Math.random()-.5)*15,vy:-Math.random()*14-4,s:5+Math.random()*7,c:cols[Math.floor(Math.random()*cols.length)],r:Math.random()*6}));
+  const t0=performance.now();
+  const frame=t=>{
+    const k=(t-t0)/1900;
+    x.clearRect(0,0,c.width,c.height);
+    P.forEach(p=>{ p.vy+=.38; p.x+=p.vx; p.y+=p.vy; p.r+=.2; x.save(); x.translate(p.x,p.y); x.rotate(p.r); x.globalAlpha=Math.max(0,1-k); x.fillStyle=p.c; x.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6); x.restore(); });
+    if(k<1) requestAnimationFrame(frame); else c.remove();
+  };
+  requestAnimationFrame(frame);
+}
+function toast(msg){
+  const t=mkEl("div","toast",msg); document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3200);
+}
+function kidPrompt(msg,emoji,def){
+  return new Promise(resolve=>{
+    const card=kidCard('<div class="kid-emoji"></div><div class="kid-msg"></div><input id="kpIn" maxlength="40" autocomplete="off"><div class="kid-btns" style="margin-top:12px"><button class="kid-yes">OK 👍</button></div>');
+    card.box.querySelector(".kid-emoji").textContent=emoji;
+    card.box.querySelector(".kid-msg").textContent=msg;
+    const inp=card.box.querySelector("#kpIn"); inp.value=def||"";
+    const ok=()=>{ const v=inp.value.trim(); card.close(); resolve(v); };
+    card.box.querySelector(".kid-yes").onclick=ok;
+    inp.addEventListener("keydown",e=>{ if(e.key==="Enter") ok(); });
+    inp.focus();
+  });
+}
+
+// ---- themed collections ----
+const NEAR_KM=35;
+const COLLECTIONS=[
+  {id:"jyoti",e:"🔱",n:"12 Jyotirlingas",items:[["Somnath",20.888,70.401],["Mallikarjuna (Srisailam)",16.074,78.868],["Mahakaleshwar (Ujjain)",23.183,75.768],["Omkareshwar",22.245,76.151],["Kedarnath",30.735,79.067],["Bhimashankar",19.072,73.536],["Kashi Vishwanath (Varanasi)",25.311,83.011],["Trimbakeshwar (Nashik)",19.932,73.531],["Baidyanath (Deoghar)",24.492,86.700],["Nageshwar (Dwarka)",22.336,69.087],["Rameswaram",9.288,79.317],["Grishneshwar (Ellora)",20.025,75.170]]},
+  {id:"dham",e:"🛕",n:"Char Dham",items:[["Badrinath",30.744,79.493],["Dwarka",22.238,68.968],["Puri",19.805,85.818],["Rameswaram",9.288,79.317]]},
+  {id:"golden",e:"🔺",n:"Golden Triangle",items:[["Delhi",28.614,77.209],["Agra",27.177,78.008],["Jaipur",26.912,75.787]]},
+  {id:"unesco",e:"🏛️",n:"World Heritage Wonders",items:[["Taj Mahal (Agra)",27.175,78.042],["Hampi",15.335,76.460],["Khajuraho",24.852,79.922],["Ajanta Caves",20.552,75.703],["Ellora Caves",20.026,75.179],["Konark Sun Temple",19.887,86.095],["Mahabalipuram",12.617,80.199],["Qutub Minar (Delhi)",28.524,77.185],["Kaziranga",26.578,93.171,60],["Sundarbans",21.95,88.90,70]]},
+  {id:"metro",e:"🏙️",n:"Big Six Cities",items:[["Delhi",28.614,77.209],["Mumbai",19.076,72.878],["Kolkata",22.573,88.364],["Chennai",13.083,80.270],["Bengaluru",12.972,77.595],["Hyderabad",17.385,78.487]]},
+  {id:"sisters",e:"🌄",n:"Seven Sisters",states:["Arunachal Pradesh","Assam","Meghalaya","Manipur","Mizoram","Nagaland","Tripura"]},
+  {id:"coast",e:"🌊",n:"Coastline States",states:["Gujarat","Maharashtra","Goa","Karnataka","Kerala","Tamil Nadu","Andhra Pradesh","Odisha","West Bengal"]},
+  {id:"himalaya",e:"🏔️",n:"Himalayan States",states:["Jammu and Kashmir","Ladakh","Himachal Pradesh","Uttarakhand","Sikkim","Arunachal Pradesh"]}
+];
+function collectionProgress(c,st){
+  if(c.states) return c.states.map(s=>({label:stName(s),done:st.regions.has(s)}));
+  const vis=places.filter(p=>p.status==="visited");
+  return c.items.map(it=>({label:it[0],lat:it[1],lon:it[2],done:vis.some(p=>haversine(p,{lat:it[1],lon:it[2]})<(it[3]||NEAR_KM))}));
+}
+
+// ---- points and levels ----
+const LEVELS=[[0,"🎒","Tourist"],[150,"🧭","Explorer"],[400,"🚶","Wanderer"],[800,"🛤️","Yatri"],[1500,"🦅","Ghumakkad"],[2500,"🏆","Bharat Yatri"],[4000,"👑","Bharat Champion"]];
+function engageState(){
+  const st=getStats();
+  const cols=COLLECTIONS.map(c=>{ const pr=collectionProgress(c,st); return {c,pr,done:pr.filter(x=>x.done).length}; });
+  const colDone=cols.filter(x=>x.done===x.pr.length).length;
+  const daily=lsGet("myIndiaDailyV2",{}), monthly=lsGet("myIndiaMonthlyV2",[]), badges=BADGES.filter(b=>b.t(st)).length;
+  const xp=st.v*10+st.states*50+st.uts*30+st.w*2+st.mem*5+st.rated*2+badges*20+colDone*100+monthly.length*50+(daily.best||0)*5;
+  let lvl=0; LEVELS.forEach((L,i)=>{ if(xp>=L[0]) lvl=i; });
+  return {st,cols,colDone,xp,lvl,badges,daily,monthly};
+}
+
+// ---- monthly challenge (a new one every month) ----
+const MONTHLY=[
+  {t:"new",n:2,txt:"Add 2 places you visited"},{t:"cat",cat:"hill",n:1,txt:"Add a hill station you visited"},{t:"wish",n:3,txt:"Put 3 dream places on your wishlist"},
+  {t:"cat",cat:"temple",n:1,txt:"Add a temple you visited"},{t:"state",n:1,txt:"Colour in 1 new state"},{t:"cat",cat:"beach",n:1,txt:"Add a beach you visited"},
+  {t:"new",n:3,txt:"Add 3 places you visited"},{t:"cat",cat:"fort",n:1,txt:"Add a fort or monument you visited"},{t:"wish",n:2,txt:"Put 2 dream places on your wishlist"},
+  {t:"cat",cat:"wildlife",n:1,txt:"Add a wildlife place you visited"},{t:"state",n:1,txt:"Colour in 1 new state"},{t:"new",n:2,txt:"Add 2 places you visited"}];
+function monthlyProgress(){
+  const d=new Date(), ch=MONTHLY[d.getMonth()], start=new Date(d.getFullYear(),d.getMonth(),1).getTime();
+  const fresh=places.filter(p=>p.added>=start), fv=fresh.filter(p=>p.status==="visited");
+  let have=0;
+  if(ch.t==="new") have=fv.length;
+  else if(ch.t==="cat") have=fv.filter(p=>catOf(p)===ch.cat).length;
+  else if(ch.t==="wish") have=fresh.filter(p=>p.status==="wish").length;
+  else{ const old=new Set(places.filter(p=>p.status==="visited" && !(p.added>=start)).map(stateOf)); have=new Set(fv.map(stateOf).filter(s=>s && !old.has(s))).size; }
+  return {key:ymd(d).slice(0,7),ch,have:Math.min(have,ch.n),done:have>=ch.n};
+}
+
+// ---- daily question: [English, Hindi, options (first = correct), Hindi options] ----
+const DAILY=[
+["Which is the largest state of India by area?","क्षेत्रफल में भारत का सबसे बड़ा राज्य कौन-सा है?",["Rajasthan","Madhya Pradesh","Maharashtra","Uttar Pradesh"],["राजस्थान","मध्य प्रदेश","महाराष्ट्र","उत्तर प्रदेश"]],
+["Which river is called the Ganga of the South?","किस नदी को दक्षिण की गंगा कहा जाता है?",["Godavari","Krishna","Narmada","Tapi"],["गोदावरी","कृष्णा","नर्मदा","तापी"]],
+["In which city is the Gateway of India?","गेटवे ऑफ़ इंडिया किस शहर में है?",["Mumbai","Delhi","Kolkata","Chennai"],["मुंबई","दिल्ली","कोलकाता","चेन्नई"]],
+["Which state is known as God's Own Country?","किस राज्य को 'ईश्वर का अपना देश' कहा जाता है?",["Kerala","Goa","Sikkim","Assam"],["केरल","गोवा","सिक्किम","असम"]],
+["In which state is the Sun Temple of Konark?","कोणार्क का सूर्य मंदिर किस राज्य में है?",["Odisha","Gujarat","Tamil Nadu","Karnataka"],["ओडिशा","गुजरात","तमिलनाडु","कर्नाटक"]],
+["Which is the highest mountain peak in India?","भारत की सबसे ऊँची पर्वत चोटी कौन-सी है?",["Kangchenjunga","Nanda Devi","Kamet","Anamudi"],["कंचनजंगा","नंदा देवी","कामेट","अनामुडी"]],
+["Which city is called the Pink City?","किस शहर को गुलाबी नगर कहा जाता है?",["Jaipur","Jodhpur","Udaipur","Bikaner"],["जयपुर","जोधपुर","उदयपुर","बीकानेर"]],
+["Which state has the longest coastline?","किस राज्य की तटरेखा सबसे लंबी है?",["Gujarat","Kerala","Tamil Nadu","Odisha"],["गुजरात","केरल","तमिलनाडु","ओडिशा"]],
+["Which city is called the City of Lakes?","किस शहर को झीलों का शहर कहा जाता है?",["Udaipur","Jaisalmer","Agra","Indore"],["उदयपुर","जैसलमेर","आगरा","इंदौर"]],
+["In which state is Kaziranga National Park?","काज़ीरंगा राष्ट्रीय उद्यान किस राज्य में है?",["Assam","West Bengal","Madhya Pradesh","Uttarakhand"],["असम","पश्चिम बंगाल","मध्य प्रदेश","उत्तराखंड"]],
+["Which is the smallest state of India by area?","क्षेत्रफल में भारत का सबसे छोटा राज्य कौन-सा है?",["Goa","Sikkim","Tripura","Kerala"],["गोवा","सिक्किम","त्रिपुरा","केरल"]],
+["In which city is the Charminar?","चारमीनार किस शहर में है?",["Hyderabad","Lucknow","Bhopal","Ahmedabad"],["हैदराबाद","लखनऊ","भोपाल","अहमदाबाद"]],
+["Which desert lies in Rajasthan?","राजस्थान में कौन-सा रेगिस्तान है?",["Thar","Sahara","Gobi","Kalahari"],["थार","सहारा","गोबी","कालाहारी"]],
+["Mawsynram, one of the wettest places on Earth, is in which state?","दुनिया की सबसे ज़्यादा बारिश वाली जगहों में से एक, मौसिनराम, किस राज्य में है?",["Meghalaya","Kerala","Assam","Mizoram"],["मेघालय","केरल","असम","मिज़ोरम"]],
+["In which city is the Golden Temple?","स्वर्ण मंदिर किस शहर में है?",["Amritsar","Chandigarh","Ludhiana","Patiala"],["अमृतसर","चंडीगढ़","लुधियाना","पटियाला"]],
+["Which river flows past Varanasi?","वाराणसी किस नदी के किनारे बसा है?",["Ganga","Yamuna","Gomti","Son"],["गंगा","यमुना","गोमती","सोन"]],
+["What is the southern tip of mainland India called?","भारत की मुख्य भूमि का सबसे दक्षिणी छोर क्या कहलाता है?",["Kanyakumari","Rameswaram","Kovalam","Puri"],["कन्याकुमारी","रामेश्वरम","कोवलम","पुरी"]],
+["In which state are the Ajanta caves?","अजंता की गुफाएँ किस राज्य में हैं?",["Maharashtra","Madhya Pradesh","Karnataka","Bihar"],["महाराष्ट्र","मध्य प्रदेश","कर्नाटक","बिहार"]],
+["The Asiatic lion lives in which national park?","एशियाई शेर किस राष्ट्रीय उद्यान में पाया जाता है?",["Gir","Kanha","Corbett","Periyar"],["गिर","कान्हा","कॉर्बेट","पेरियार"]],
+["Which city is called the Silicon Valley of India?","किस शहर को भारत की सिलिकॉन वैली कहा जाता है?",["Bengaluru","Pune","Hyderabad","Chennai"],["बेंगलुरु","पुणे","हैदराबाद","चेन्नई"]],
+["In which city is Dal Lake?","डल झील किस शहर में है?",["Srinagar","Shimla","Nainital","Leh"],["श्रीनगर","शिमला","नैनीताल","लेह"]]
+];
+function dayNum(){ const d=new Date(); return Math.floor((d.getTime()-d.getTimezoneOffset()*60000)/86400000); }
+function liveStreak(d){ return (d.last===todayStr() || d.last===ymd(new Date(Date.now()-86400000))) ? (d.streak||0) : 0; }
+function openDaily(){
+  const d=lsGet("myIndiaDailyV2",{});
+  if(d.last===todayStr()){ kidSay(T("You already answered today. Come back tomorrow to keep your streak going!"),"🔥"); return; }
+  const q=DAILY[dayNum()%DAILY.length], opts=LANG==="hi"?q[3]:q[2], right=opts[0], mixed=shuffle(opts.slice());
+  const card=kidCard('<div class="kid-emoji">🔥</div><h3>'+T("Daily question")+'</h3><div class="qz-q"></div><div class="qz-opts"></div><div class="kid-fact" hidden></div>');
+  card.box.querySelector(".qz-q").textContent=LANG==="hi"?q[1]:q[0];
+  mixed.forEach(o=>{
+    const b=mkEl("button","qz-opt",o); b.type="button";
+    b.onclick=()=>{
+      card.box.querySelectorAll(".qz-opt").forEach(x=>{ x.disabled=true; if(x.textContent===right) x.classList.add("right"); });
+      const ok=o===right, streak=ok?liveStreak(d)+1:0;
+      if(!ok) b.classList.add("wrong");
+      lsSet("myIndiaDailyV2",{last:todayStr(),streak,best:Math.max(d.best||0,streak)});
+      const f=card.box.querySelector(".kid-fact"); f.hidden=false;
+      f.textContent=ok?T("✅ Correct! Your streak is now {0}. Come back tomorrow!",streak):T("❌ Not quite! The answer is {0}. Try again tomorrow.",right);
+      if(ok) confetti();
+      render();
+    };
+    card.box.querySelector(".qz-opts").appendChild(b);
+  });
+}
+
+// ---- "On this day" memories (needs the exact date on a place) ----
+function memoryNow(){
+  const now=new Date(), m=now.getMonth()+1, day=now.getDate();
+  const hits=places.filter(p=>p.status==="visited" && /^\d{4}-\d\d-\d\d$/.test(p.date||"") && Number(p.date.slice(5,7))===m && Number(p.date.slice(0,4))<now.getFullYear());
+  hits.sort((a,b)=>Math.abs(Number(a.date.slice(8))-day)-Math.abs(Number(b.date.slice(8))-day));
+  return hits[0]||null;
+}
+
+// ---- state passport ----
+const ST_CODES="AN AP AR AS BR CH CG DD DL GA GJ HR HP JK JH KA KL LA LD MP MH MN ML MZ NL OD PY PB RJ SK TN TS TR UP UK WB".split(" ");
+function passportData(){
+  const names=statePaths.map(e=>e.dataset.n).sort();
+  return names.map((n,i)=>{
+    const vis=places.filter(p=>p.status==="visited" && stateOf(p)===n), years=vis.map(p=>p.year).filter(Boolean);
+    const el=statePaths.find(e=>e.dataset.n===n);
+    return {n,code:ST_CODES[i]||n.slice(0,2).toUpperCase(),done:vis.length>0,year:years.length?Math.min.apply(null,years):0,col:el.dataset.c};
+  });
+}
+function openPassport(){
+  const data=passportData(), got=data.filter(x=>x.done).length;
+  const card=kidCard('<div class="kid-emoji">🛂</div><h3>'+T("My state passport")+'</h3><div class="sub">'+T("{0} of 36 stamps collected",got)+'</div><div class="stamps"></div><div class="kid-btns" style="margin-top:12px"><button class="kid-yes">'+T("📤 Share my passport")+'</button></div>');
+  const grid=card.box.querySelector(".stamps");
+  data.forEach(x=>{
+    const s=mkEl("div","stamp"+(x.done?" on":"")); s.title=stName(x.n);
+    if(x.done) s.style.background=x.col;
+    s.append(mkEl("b","",x.code),mkEl("small","",x.done?(x.year||"✓"):"·"));
+    grid.appendChild(s);
+  });
+  card.box.querySelector(".kid-yes").onclick=async()=>{ const c=passportCanvas(); shareBlob(await new Promise(r=>c.toBlob(r,"image/png")),"india-state-passport.png",challengeText()); };
+}
+function passportCanvas(){
+  const data=passportData(), got=data.filter(x=>x.done).length, W=1080, H=1350;
+  const c=document.createElement("canvas"); c.width=W; c.height=H; const x=c.getContext("2d");
+  x.fillStyle="#0b3b73"; x.fillRect(0,0,W,H);
+  x.fillStyle="#fffbe8"; roundRect(x,36,36,W-72,H-72,36); x.fill();
+  x.textAlign="center"; x.textBaseline="alphabetic";
+  x.fillStyle="#0b3b73"; x.font="bold 56px Arial"; x.fillText(fitText(x,"🛂 "+titleText(),W-140),W/2,130);
+  x.fillStyle="#6a4a00"; x.font="bold 34px Arial"; x.fillText(T("{0} of 36 stamps collected",got),W/2,186);
+  data.forEach((s,i)=>{
+    const cx=150+(i%6)*156, cy=310+Math.floor(i/6)*166, R=64;
+    x.beginPath(); x.arc(cx,cy,R,0,Math.PI*2);
+    if(s.done){ x.fillStyle=s.col; x.fill(); x.lineWidth=6; x.strokeStyle="#0b3b73"; x.setLineDash([]); x.stroke(); }
+    else{ x.lineWidth=4; x.strokeStyle="#c9c2a8"; x.setLineDash([10,9]); x.stroke(); }
+    x.setLineDash([]);
+    x.fillStyle=s.done?"#172033":"#b9b29a"; x.font="bold 40px Arial"; x.fillText(s.code,cx,cy+(s.done?4:14));
+    if(s.done){ x.font="bold 22px Arial"; x.fillText(s.year?String(s.year):"✓",cx,cy+36); }
+  });
+  x.fillStyle="#475467"; x.font="26px Arial"; x.fillText("My India Travel Map",W/2,H-70);
+  return c;
+}
+
+// ---- Explore tab: level, daily, monthly, memory, collections ----
+function openCollection(x){
+  const card=kidCard('<div class="kid-emoji">'+x.c.e+'</div><h3>'+T(x.c.n)+'</h3><div class="sub">'+T("{0} of {1} done",x.done,x.pr.length)+(x.done===x.pr.length?" 🏆":"")+'</div><div class="col-list"></div>');
+  const list=card.box.querySelector(".col-list");
+  x.pr.forEach(it=>{
+    const row=mkEl("div","kid-row");
+    row.append(mkEl("span","em",it.done?"✅":"⬜"));
+    const mid=mkEl("div"); mid.append(mkEl("b","",it.label)); row.append(mid);
+    if(!it.done && it.lat && !findDuplicate(it.label,it.lat,it.lon)){
+      const b=mkEl("button","kid-mini",T("⭐ Add")); b.type="button";
+      b.onclick=()=>{ if(findDuplicate(it.label,it.lat,it.lon)) return; places.push({name:it.label,lat:it.lat,lon:it.lon,status:"wish",cat:guessCat(it.label)}); b.textContent=T("Added ✓"); b.disabled=true; showEverything(); render(); };
+      row.append(b);
+    }
+    list.appendChild(row);
+  });
+}
+function renderEngage(es,mp){
+  const box=document.getElementById("engage"); if(!box) return;
+  box.innerHTML="";
+  const L=LEVELS[es.lvl], N=LEVELS[es.lvl+1];
+  const lv=mkEl("div","lvl-card");
+  lv.innerHTML='<div class="lvl-em">'+L[1]+'</div><div class="lvl-txt"><b>'+T("Level {0}",es.lvl+1)+' · '+T(L[2])+'</b><div class="bar"><i style="width:'+(N?Math.round((es.xp-L[0])/(N[0]-L[0])*100):100)+'%"></i></div><small>'
+    +(N?T("{0} points · {1} more to become {2}",es.xp,N[0]-es.xp,T(N[2])):T("{0} points · top level!",es.xp))+'</small></div>';
+  box.appendChild(lv);
+
+  const row=mkEl("div","eg-row"), d=es.daily, dDone=d.last===todayStr();
+  const dc=mkEl("button","eg-card"+(dDone?" done":"")); dc.type="button";
+  dc.innerHTML='<span class="ic">🔥</span><b>'+T("Daily question")+'</b><small>'+(dDone?T("Done for today! Streak: {0}",d.streak||0):T("Answer now · streak {0}",liveStreak(d)))+'</small>';
+  dc.onclick=openDaily;
+  const mc=mkEl("div","eg-card"+(mp.done?" done":""));
+  mc.innerHTML='<span class="ic">🎯</span><b>'+T("{0} challenge",new Date().toLocaleString(LANG==="hi"?"hi-IN":"en-IN",{month:"long"}))+'</b><small>'+T(mp.ch.txt)+'</small><div class="bar"><i style="width:'+Math.round(mp.have/mp.ch.n*100)+'%"></i></div><small>'+(mp.done?T("Done! +50 points"):mp.have+" / "+mp.ch.n)+'</small>';
+  row.append(dc,mc); box.appendChild(row);
+  document.querySelectorAll('[data-go="fun"]').forEach(b=>b.classList.toggle("dot",!dDone));
+
+  const mem=memoryNow();
+  if(mem){
+    const m=mkEl("button","mem-card"); m.type="button";
+    const yrs=new Date().getFullYear()-Number(mem.date.slice(0,4));
+    if(mem.photo){ const im=mkEl("img"); im.alt=""; im.src=mem.photo; m.append(im); } else m.append(mkEl("span","ic","🕰️"));
+    const tx=mkEl("div"); tx.append(mkEl("b","",yrs===1?T("This month, 1 year ago: {0}",mem.name):T("This month, {0} years ago: {1}",yrs,mem.name)),mkEl("small","",mem.note||T("Tap to open this memory")));
+    m.append(tx); m.onclick=()=>openPlaceCard(mem);
+    box.appendChild(m);
+  }
+
+  box.appendChild(mkEl("div","share-title",T("Collections")));
+  const sl=mkEl("div","chips slide cols");
+  es.cols.forEach(x=>{
+    const full=x.done===x.pr.length, b=mkEl("button","col-chip"+(full?" full":"")); b.type="button";
+    b.innerHTML='<span class="ic">'+(full?"🏆":x.c.e)+'</span><b>'+T(x.c.n)+'</b><div class="bar"><i style="width:'+Math.round(x.done/x.pr.length*100)+'%"></i></div><small>'+x.done+' / '+x.pr.length+'</small>';
+    b.onclick=()=>openCollection(x);
+    sl.appendChild(b);
+  });
+  box.appendChild(sl);
+  const pb=mkEl("button","tool wide passport"); pb.type="button";
+  pb.innerHTML='<span class="ic">🛂</span><span>'+T("My state passport")+' · '+es.st.regions.size+' / 36</span>';
+  pb.onclick=openPassport;
+  box.appendChild(pb);
+}
+
+// ---- runs after every redraw: stamps new places, celebrates, keeps the cloud copy fresh ----
+let prevStates=null, quiet=true, lastSlim=null;       // quiet = no celebrations (page load, restore, cloud download)
+function quietCelebrate(){ quiet=true; prevStates=null; }
+function slimSig(){ return JSON.stringify(places.map(p=>[p.name,p.status,p.cat,p.year||0,p.date||"",p.note||"",p.rating||0,p.fav?1:0,p.photo?p.photo.length:0])); }
+function afterRender(st){
+  places.forEach(p=>{ if(typeof p.added!=="number") p.added=Date.now(); });
+  const names=[...st.regions];
+  if(prevStates && !quiet){
+    const fresh=names.filter(n=>!prevStates.has(n));
+    if(fresh.length){ confetti(); toast("🎉 "+T("New on your map: {0}!",fresh.map(stName).join(", "))); }
+  }
+  prevStates=new Set(names);
+  const mp=monthlyProgress();
+  let monthly=lsGet("myIndiaMonthlyV2",[]);
+  if(mp.done && !monthly.includes(mp.key)){
+    monthly.push(mp.key); lsSet("myIndiaMonthlyV2",monthly);
+    if(!quiet){ confetti(); badgeQueue=badgeQueue.then(()=>kidPopup(T("Monthly challenge done! +50 points"),{emoji:"🎯",yes:T("Woohoo! 🥳"),no:null})); }
+  }
+  const es=engageState();
+  const doneIds=es.cols.filter(x=>x.done===x.pr.length).map(x=>x.c.id), had=lsGet("myIndiaColsV2",null);
+  if(had && !quiet) es.cols.filter(x=>doneIds.includes(x.c.id) && !had.includes(x.c.id)).forEach(x=>{
+    confetti(); badgeQueue=badgeQueue.then(()=>kidPopup(T("Collection complete: {0}!",T(x.c.n)),{emoji:"🏆",yes:T("Woohoo! 🥳"),no:null}));
+  });
+  lsSet("myIndiaColsV2",doneIds);
+  const lv=lsGet("myIndiaLevelV2",null);
+  if(lv!==null && es.lvl>lv && !quiet){ confetti(); badgeQueue=badgeQueue.then(()=>kidPopup(T("Level up! You are now: {0}",T(LEVELS[es.lvl][2])),{emoji:LEVELS[es.lvl][1],yes:T("Woohoo! 🥳"),no:null})); }
+  lsSet("myIndiaLevelV2",es.lvl);
+  quiet=false;
+  renderEngage(es,mp);
+  document.getElementById("statPill").textContent=LEVELS[es.lvl][1]+" "+es.xp+"  ·  📍 "+st.v+"  ·  🗺️ "+st.states+"/28  ·  🛣️ "+st.km.toLocaleString("en-IN")+" km";
+  const sj=slimSig();
+  if(lastSlim!==null && sj!==lastSlim) markDirty();
+  lastSlim=sj;
+}
+
+// ---- a friend's places shown on my map ----
+let ghost=null;
+function drawGhost(layer){
+  const bar=document.getElementById("ghostBar"), was=bar.hidden;
+  bar.hidden=!ghost;
+  if(ghost){
+    document.getElementById("ghostTxt").textContent=T("Purple pins: {0}’s places",ghost.name);
+    ghost.places.forEach(g=>{
+      const q=project(g.lat,g.lon), el=mkEl("div","marker ghost");
+      el.style.left=q.x+"%"; el.style.top=q.y+"%";
+      el.append(mkEl("div","pin"),mkEl("div","marker-label",g.name));
+      layer.appendChild(el);
+    });
+  }
+  if(was!==bar.hidden) setTimeout(fitMap,0);
+}
+function clearGhost(){ ghost=null; render(); }
+
+const soundToggle=document.getElementById("soundToggle");
+soundToggle.checked=lsGet("myIndiaSoundV2",true)!==false;
+soundToggle.addEventListener("change",()=>{ lsSet("myIndiaSoundV2",soundToggle.checked); if(soundToggle.checked) chime(); });
 
 applyLang();
 render();

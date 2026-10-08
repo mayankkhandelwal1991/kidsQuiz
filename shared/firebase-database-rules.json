@@ -35,11 +35,54 @@
     },
     "leaderboards": {
       ".read": true,
+      "travel": {
+        "$gameId": {
+          "$player": {
+            ".write": "auth != null && auth.uid === $player",
+            ".validate": "newData.hasChildren(['name','score']) && newData.child('score').isNumber() && newData.child('score').val() >= 0 && newData.child('score').val() <= 10000000 && newData.child('name').isString() && newData.child('name').val().length <= 40"
+          }
+        }
+      },
       "$category": {
         "$gameId": {
           "$player": {
             ".write": true,
             ".validate": "newData.hasChildren(['name','score']) && newData.child('score').isNumber() && newData.child('name').isString() && newData.child('name').val().length <= 40"
+          }
+        }
+      }
+    },
+    "travel": {
+      "users": {
+        "$uid": {
+          ".read": "auth != null && auth.uid === $uid",
+          ".write": "auth != null && auth.uid === $uid"
+        }
+      },
+      "public": {
+        "$uid": {
+          ".read": "auth != null",
+          ".write": "auth != null && auth.uid === $uid",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length <= 40"
+          }
+        }
+      },
+      "groups": {
+        "$code": {
+          ".read": "auth != null",
+          "name": {
+            ".write": "auth != null && !data.exists()",
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 40"
+          },
+          "owner": {
+            ".write": "auth != null && !data.exists()",
+            ".validate": "newData.val() === auth.uid"
+          },
+          "members": {
+            "$uid": {
+              ".write": "auth != null && auth.uid === $uid"
+            }
           }
         }
       }

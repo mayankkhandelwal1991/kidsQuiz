@@ -14,6 +14,7 @@
 
   <!-- QUIZ SCREEN -->
   <div id="quizScreen" class="hidden">
+    <button class="modal-close-x quiz-quit-x" onclick="quitQuiz()" aria-label="Quit quiz">×</button>
     <div class="breadcrumb" id="quizBreadcrumb"></div>
     <div class="stats">
       <div class="summary-item">
@@ -32,9 +33,6 @@
     <div class="question" id="question"></div>
     <div class="options" id="options"></div>
     <div class="feedback" id="feedback"></div>
-    <div class="center" style="margin-top:12px;">
-      <button class="btn btn-secondary" onclick="quitQuiz()" style="font-size:12px; padding:7px 18px;">Quit Quiz</button>
-    </div>
   </div>
 
   <!-- END SCREEN -->
@@ -352,6 +350,27 @@ function pickFromPoolNoRepeat(pool) {
 /* ============================================
    QUIZ FLOW
    ============================================ */
+// Pictures only need fetching once per device (they're cached after), but
+// on that very first LKG round we make sure every picture the quiz could
+// possibly show is already downloaded BEFORE the first question appears —
+// no popping-in / broken-image flash mid-quiz. Capped so a slow connection
+// never blocks the quiz for long; it just starts with whatever landed.
+let __picoImagesPreloaded = false;
+function preloadPicoImages(maxWaitMs) {
+  if (__picoImagesPreloaded || typeof EMOJI_IMG !== 'object') return Promise.resolve();
+  const urls = Object.values(EMOJI_IMG).map(function (rel) { return '../' + rel; });
+  const loaders = urls.map(function (src) {
+    return new Promise(function (resolve) {
+      const img = new Image();
+      img.onload = img.onerror = function () { resolve(); };
+      img.src = src;
+    });
+  });
+  const allDone = Promise.all(loaders).then(function () { __picoImagesPreloaded = true; });
+  const timeout = new Promise(function (resolve) { setTimeout(resolve, maxWaitMs || 900); });
+  return Promise.race([allDone, timeout]);
+}
+
 function startQuiz(level) {
   if (typeof Android !== "undefined" && Android.showAd) {
     //Android.showAd("interstitial");
@@ -372,10 +391,21 @@ function startQuiz(level) {
   document.getElementById('quizBreadcrumb').textContent = cat.icon + ' ' + cat.title + ' • ' + classLabel(level);
 
   showScreen('quizScreen');
-  nextQuestion();
   quizInProgress = true;
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(updateTimer, 1000);
+
+  if (level === 0 && !__picoImagesPreloaded) {
+    const qEl = document.getElementById('question');
+    qEl.className = 'question pico pico-1';
+    qEl.textContent = '🖼️ Getting your pictures ready…';
+    const optionsEl = document.getElementById('options');
+    optionsEl.innerHTML = '';
+    optionsEl.className = 'options';
+    preloadPicoImages(900).then(nextQuestion);
+  } else {
+    nextQuestion();
+  }
 }
 
 function updateTimer() {
@@ -473,7 +503,7 @@ function nextQuestion() {
     // Real downloaded pictures instead of the OS/browser emoji font, so
     // LKG cards look the same (and don't come out tiny/monochrome) on
     // every device. Falls back to plain emoji text if images ever fail.
-    qTextSpan.innerHTML = emojiImgHtml(q.question, 44, '../');
+    qTextSpan.innerHTML = emojiImgHtml(q.question, 58, '../');
   } else {
     qTextSpan.textContent = q.question;
   }
@@ -497,7 +527,7 @@ function nextQuestion() {
   const optionsEl = document.getElementById('options');
   optionsEl.innerHTML = '';
   optionsEl.className = 'options' + (isPico ? ' pico' : '') + (isListen ? ' listen' : '');
-  const optPx = isListen ? 60 : 40;
+  const optPx = isListen ? 84 : 54;
   q.options.forEach((opt, i) => {
     const btn = document.createElement('button');
     btn.className = 'option-btn';

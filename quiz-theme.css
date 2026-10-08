@@ -234,8 +234,8 @@
     50% { box-shadow: 0 3px 8px rgba(0,0,0,.18), 0 0 0 8px rgba(124,92,252,0); }
   }
   .options.pico { grid-template-columns: 1fr 1fr; }
-  .options.pico .option-btn { font-size: 34px; min-height: 78px; border-radius: 18px; animation: opt-pop 0.4s cubic-bezier(.26,1.4,.44,1.15) both; }
-  .options.pico.listen .option-btn { font-size: 46px; min-height: 92px; }
+  .options.pico .option-btn { font-size: 34px; min-height: 94px; border-radius: 18px; animation: opt-pop 0.4s cubic-bezier(.26,1.4,.44,1.15) both; }
+  .options.pico.listen .option-btn { font-size: 46px; min-height: 120px; }
   @keyframes opt-pop {
     0% { transform: scale(.4); opacity: 0; }
     70% { transform: scale(1.08); opacity: 1; }
@@ -511,7 +511,8 @@
     .question.large { font-size: 32px; }
     .question.pico { font-size: 38px; }
     .option-btn { font-size: 14px; padding: 12px; min-height: 48px; }
-    .options.pico .option-btn { font-size: 26px; min-height: 64px; }
+    .options.pico .option-btn { font-size: 26px; min-height: 82px; }
+    .options.pico.listen .option-btn { min-height: 100px; }
     h1 { font-size: 20px; }
     .menu-card .icon { width: 36px; height: 36px; font-size: 19px; }
     .menu-card .title { font-size: 11px; }
@@ -772,6 +773,9 @@ button.mode-btn .mode-sub{font-size:12px;opacity:.95;font-weight:600;margin-top:
 }
 .modal-close-x:hover { background: #ffe3ea; color: #ff5a8a; }
 .modal-close-x:active { transform: scale(.88); }
+/* Quit button on the quiz screen itself — pinned to the viewport (not the
+   card) since the quiz screen isn't a popup, so it stays put on scroll. */
+.quiz-quit-x { position: fixed; top: 14px; right: 14px; z-index: 50; }
 
 /* ===== Category picker popup — playful "childish app" treatment ===== */
 .qcat-card {

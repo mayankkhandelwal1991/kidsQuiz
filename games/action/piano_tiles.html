@@ -1,105 +1,133 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Piano Tiles</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#1a1a3d);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
-.wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.4);padding:12px;max-width:380px;width:100%;display:flex;flex-direction:column;height:100%;max-height:800px;position:relative}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
-h1{font-size:19px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sc{font-size:14px;font-weight:800;color:#00f5ff}
-.stage{flex:1;min-height:0;position:relative;border-radius:14px;overflow:hidden;background:#0b0b1e}
-.lane{position:absolute;top:0;bottom:0;width:25%;border-right:1px solid rgba(255,255,255,.06)}
-.tile{position:absolute;width:100%;border-radius:8px;background:linear-gradient(135deg,#1a1a3d,#2d2b55);border:1px solid rgba(0,245,255,.4)}
-.hitline{position:absolute;left:0;right:0;bottom:15%;height:2px;background:rgba(0,245,255,.5)}
-.overlay{position:absolute;inset:0;background:rgba(15,12,41,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;border-radius:26px;z-index:10}
-.overlay.show{display:flex}
-.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-.starttxt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:#aaa;font-size:14px;padding:20px;z-index:5}
-</style><link rel="stylesheet" href="../game-theme.css"></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <h1>Piano Tiles</h1>
-    <div class="sc" id="score">0</div>
-  </div>
-  <div class="stage" id="stage">
-    <div class="lane" style="left:0"></div><div class="lane" style="left:25%"></div><div class="lane" style="left:50%"></div><div class="lane" style="left:75%"></div>
-    <div class="hitline"></div>
-    <div class="starttxt" id="starttxt">Tap the black tiles as they cross the line.<br>Tap anywhere to start!</div>
-  </div>
-  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">Game Over</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="startGame()">Play Again</button></div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const stage=document.getElementById('stage');
-let tiles,score,speed,over,started,spawnTimer,raf,running=false,best=+(localStorage.getItem('pianoBest')||0);
-function laneX(l){return l*25;}
-function startGame(){
-  document.getElementById('overlay').classList.remove('show');
-  document.getElementById('starttxt').style.display='none';
-  tiles=[];score=0;speed=2.6;over=false;started=true;
-  document.getElementById('score').textContent=0;
-  document.querySelectorAll('.tile').forEach(t=>t.remove());
-  spawnTile();
-  clearInterval(spawnTimer);
-  spawnTimer=setInterval(()=>{ if(!over) maybeSpawn(); },550);
-  if(!running){ running=true; raf=requestAnimationFrame(loop); }
+/* Piano Tiles — tap the tiles in order and play a real song! Each tile is the
+   next note. Missing a tile or tapping an empty spot costs a heart. */
+const SONGS = [
+  { icon: '⭐', name: 'Twinkle', notes: 'C4 C4 G4 G4 A4 A4 G4 F4 F4 E4 E4 D4 D4 C4 G4 G4 F4 F4 E4 E4 D4 G4 G4 F4 F4 E4 E4 D4 C4 C4 G4 G4 A4 A4 G4 F4 F4 E4 E4 D4 D4 C4' },
+  { icon: '🐑', name: 'Mary’s Lamb', notes: 'E4 D4 C4 D4 E4 E4 E4 D4 D4 D4 E4 G4 G4 E4 D4 C4 D4 E4 E4 E4 E4 D4 D4 E4 D4 C4' },
+  { icon: '🎵', name: 'Ode to Joy', notes: 'E4 E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 E4 D4 D4 E4 E4 F4 G4 G4 F4 E4 D4 C4 C4 D4 E4 D4 C4 C4' },
+  { icon: '🔔', name: 'Jingle Bells', notes: 'E4 E4 E4 E4 E4 E4 E4 G4 C4 D4 E4 F4 F4 F4 F4 F4 E4 E4 E4 E4 D4 D4 E4 D4 G4' },
+  { icon: '🎂', name: 'Birthday', notes: 'G4 G4 A4 G4 C5 B4 G4 G4 A4 G4 D5 C5 G4 G4 G5 E5 C5 B4 A4 F5 F5 E5 C5 D5 C5' }
+];
+const FREQ = { C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392, A4: 440, B4: 493.88, C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99 };
+const ORDER = Object.keys(FREQ);
+const LANE_COL = ['#f472b6', '#a78bfa', '#38bdf8', '#4ade80'];
+const G = KQ3D.init({
+  id: 'piano_tiles', title: 'Piano Tiles', bestKey: 'pianoBest',
+  hero: ['🎹', '🎵', '⭐'], colors: ['#7c3aed', '#db2777'],
+  how: [['👆', 'Tap the coloured tiles as they reach the bottom'], ['🎵', 'Every tile plays the next note of the song'], ['❤️', 'Missing a tile or tapping empty space costs a heart'], ['🔁', 'Finish the song — it plays again, faster!']],
+  hud: [{ id: 'lives', icon: '❤️' }], scoreIcon: '🎵', stars: [30, 80, 150],
+  pick: { label: 'Pick a song', options: SONGS },
+  onReset: (s) => reset(s)
+});
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+let lo = 0, hi = 11, song = G.choice || SONGS[0], notes, rows, idx, scroll, speed, score, lives, loops, flashes = [], wrongs = [], sparkle = [];
+
+// soft piano-like voice
+let AC = null;
+function note(n) {
+  try { if (localStorage.getItem('kq_muted') === '1') return; } catch (e) {}
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume();
+    const t = AC.currentTime, f = FREQ[n] || 440, out = AC.createGain();
+    out.gain.setValueAtTime(0.0001, t); out.gain.exponentialRampToValueAtTime(0.35, t + 0.01); out.gain.exponentialRampToValueAtTime(0.0001, t + 1.2);
+    out.connect(AC.destination);
+    [[1, 1], [2, 0.35], [3, 0.12]].forEach(([m, v]) => { const o = AC.createOscillator(), g = AC.createGain(); o.type = m === 1 ? 'triangle' : 'sine'; o.frequency.value = f * m; g.gain.value = v; o.connect(g); g.connect(out); o.start(t); o.stop(t + 1.25); });
+  } catch (e) {}
 }
-let lastSpawnLane=-1;
-function spawnTile(){
-  let lane=Math.floor(Math.random()*4);
-  const h=stage.clientHeight*0.22;
-  const el=document.createElement('div');
-  el.className='tile';
-  el.style.height=h+'px';
-  el.style.left=laneX(lane)+'%';
-  el.style.top=(-h)+'px';
-  stage.appendChild(el);
-  const tile={el,lane,y:-h,h,hit:false};
-  tiles.push(tile);
-  el.addEventListener('touchstart',ev=>{ev.preventDefault();hitTile(tile);},{passive:false});
-  el.addEventListener('mousedown',ev=>{hitTile(tile);});
+
+function laneFor(n, prevLane, prevNote) {
+  // map pitch to lane like a piano; nudge so the tune moves around the board
+  const i = ORDER.indexOf(n), base = Math.round(((i - lo) / Math.max(1, hi - lo)) * 3);
+  if (prevNote && n !== prevNote && base === prevLane) return (base + (ORDER.indexOf(n) > ORDER.indexOf(prevNote) ? 1 : 3)) % 4;
+  return base;
 }
-function maybeSpawn(){ spawnTile(); }
-function hitTile(tile){
-  if(tile.hit||over)return;
-  const hitLineY=stage.clientHeight*0.85;
-  if(tile.y+tile.h < hitLineY-stage.clientHeight*0.35){ endGame(); return; }
-  tile.hit=true;
-  tile.el.style.background='linear-gradient(135deg,#00f5ff,#7c3aed)';
-  tile.el.style.opacity='0';
-  if(window.KQFX)KQFX.play('tap');
-  score++;
-  document.getElementById('score').textContent=score;
-  speed=2.6+score*0.045;
-  setTimeout(()=>tile.el.remove(),120);
+function reset(s) {
+  song = s || SONGS[0]; notes = song.notes.split(' ');
+  const ix = notes.map((n) => ORDER.indexOf(n)); lo = Math.min(...ix); hi = Math.max(...ix);
+  rows = []; idx = 0; scroll = 0; speed = 1.6; score = 0; lives = 3; loops = 0;
+  G.hudSet('lives', lives); addRows();
 }
-function loop(){
-  if(!over){
-    const h=stage.clientHeight;
-    tiles.forEach(t=>{
-      t.y+=speed;
-      t.el.style.top=t.y+'px';
-      if(t.y>h && !t.hit){ endGame(); }
-    });
-    tiles=tiles.filter(t=>t.y<=h+50);
+function addRows() {
+  let pl = -1, pn = null;
+  if (rows.length) { const r = rows[rows.length - 1]; pl = r.lane; pn = r.note; }
+  notes.forEach((n) => { const lane = laneFor(n, pl, pn); rows.push({ note: n, lane, hit: false, missed: false }); pl = lane; pn = n; });
+}
+const rowH = () => C.h * 0.2;
+const laneW = () => Math.min(C.w, 520) / 4;
+const left = () => (C.w - laneW() * 4) / 2;
+const hitLine = () => C.h - 40;
+// row i bottom edge on screen
+const rowBottom = (i) => hitLine() - (i * rowH()) + scroll * rowH();
+
+G.scene.addEventListener('pointerdown', (e) => {
+  if (G.state !== 'play') return;
+  const r = C.cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  const lane = Math.floor((x - left()) / laneW()); if (lane < 0 || lane > 3) return;
+  const cur = rows[idx]; if (!cur) return;
+  const cb = rowBottom(idx);
+  // tap the current tile (generous: anywhere in its lane near it)
+  if (lane === cur.lane && y > cb - rowH() * 1.6 && y < cb + rowH() * 0.6) { hitRow(cur, lane, cb); return; }
+  // tapped somewhere else
+  wrongs.push({ x: left() + lane * laneW(), y: y - rowH() / 2, l: 0.4 }); KQ3D.sfx('wrong'); loseLife();
+});
+function hitRow(row, lane, cb) {
+  row.hit = true; idx++; score++; G.score(score); note(row.note);
+  flashes.push({ lane, y: cb - rowH(), l: 0.25 });
+  for (let k = 0; k < 4; k++) sparkle.push({ x: left() + (lane + 0.5) * laneW() + (Math.random() - 0.5) * 40, y: cb - rowH() / 2, vy: -80 - Math.random() * 80, l: 0.6 });
+  if (idx % notes.length === 0) {
+    loops++; speed += 0.35; KQ3D.sfx('levelup'); G.pop('Song done! 🎉 Faster!', null, C.h * 0.3, '#fde047');
+    try { if (window.KQFX) KQFX.celebrate({ power: 0.4 }); } catch (e) {}
+    addRows();
   }
-  if(running) raf=requestAnimationFrame(loop);
 }
-stage.addEventListener('touchstart',e=>{ if(!started){ startGame(); } },{passive:true});
-stage.addEventListener('click',e=>{ if(!started){ startGame(); } });
-function endGame(){
-  if(over)return;
-  over=true;started=false;
-  running=false;
-  if(window.KQFX)KQFX.play('blast');
-  clearInterval(spawnTimer);
-  if(score>best){best=score;localStorage.setItem('pianoBest',best);}
-  document.getElementById('finalScore').textContent='Score: '+score+'  •  Best: '+best;
-  document.getElementById('overlay').classList.add('show');
-  onGameComplete();
+function loseLife() {
+  lives--; G.hudSet('lives', Math.max(0, lives)); G.flash('#fecaca');
+  if (lives <= 0) G.over({ score, title: 'Nice playing! 🎹', lines: ['🎵 ' + score + ' notes', '🔁 ' + loops + ' songs'] });
 }
-</script></body></html>
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  const playing = G.state === 'play';
+  if (playing) {
+    // scroll in rows per second, waiting gently until the first tap
+    if (idx > 0) scroll += (speed + score * 0.01) * dt;
+    else scroll = Math.min(scroll + dt * 1.2, 0);
+    const cur = rows[idx];
+    if (cur && idx > 0 && rowBottom(idx) - rowH() > hitLine() + 4) { cur.missed = true; idx++; KQ3D.sfx('wrong'); loseLife(); if (idx % notes.length === 0) { loops++; addRows(); } }
+  } else if (G.state === 'menu') { scroll = 0; }
+  // keep row list short
+  // draw background
+  const g = ctx.createLinearGradient(0, 0, 0, C.h); g.addColorStop(0, '#1e1b4b'); g.addColorStop(1, '#4c1d95'); ctx.fillStyle = g; ctx.fillRect(0, 0, C.w, C.h);
+  for (let i = 0; i < 18; i++) { ctx.globalAlpha = 0.25; KQ3D.drawPic(ctx, i % 2 ? '🎵' : '✨', (i * 157) % C.w, ((i * 211 + now / 40) % C.h), 18); } ctx.globalAlpha = 1;
+  const L0 = left(), lw = laneW(), rh = rowH();
+  ctx.fillStyle = 'rgba(255,255,255,.92)'; ctx.fillRect(L0, 0, lw * 4, C.h);
+  ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 2; for (let i = 1; i < 4; i++) { ctx.beginPath(); ctx.moveTo(L0 + i * lw, 0); ctx.lineTo(L0 + i * lw, C.h); ctx.stroke(); }
+  ctx.fillStyle = 'rgba(124,58,237,.12)'; ctx.fillRect(L0, hitLine() - rh, lw * 4, rh);
+  // tiles
+  const first = Math.max(0, idx - 2);
+  for (let i = first; i < Math.min(rows.length, idx + 8); i++) {
+    const r = rows[i], b = rowBottom(i), top = b - rh;
+    if (top > C.h || b < 0) continue;
+    const x = L0 + r.lane * lw;
+    if (r.hit) { ctx.fillStyle = 'rgba(203,213,225,.6)'; KQ3D.roundRect(ctx, x + 4, top + 4, lw - 8, rh - 8, 12); ctx.fill(); continue; }
+    ctx.fillStyle = r.missed ? '#ef4444' : '#1f2937'; KQ3D.roundRect(ctx, x + 4, top + 4, lw - 8, rh - 8, 12); ctx.fill();
+    ctx.fillStyle = LANE_COL[r.lane]; KQ3D.roundRect(ctx, x + 4, b - 18, lw - 8, 14, 7); ctx.fill();
+    if (i === idx) { ctx.strokeStyle = LANE_COL[r.lane]; ctx.lineWidth = 4; KQ3D.roundRect(ctx, x + 4, top + 4, lw - 8, rh - 8, 12); ctx.stroke(); KQ3D.drawPic(ctx, idx === 0 ? '👆' : '🎵', x + lw / 2, top + rh / 2, Math.min(44, lw * 0.5)); }
+  }
+  flashes = flashes.filter((f) => (f.l -= dt) > 0); flashes.forEach((f) => { ctx.fillStyle = LANE_COL[f.lane]; ctx.globalAlpha = f.l * 3; ctx.fillRect(L0 + f.lane * lw, f.y, lw, rh); ctx.globalAlpha = 1; });
+  wrongs = wrongs.filter((w) => (w.l -= dt) > 0); wrongs.forEach((w) => { ctx.fillStyle = 'rgba(239,68,68,' + w.l * 2 + ')'; ctx.fillRect(w.x, w.y, lw, rh); });
+  sparkle = sparkle.filter((s) => (s.l -= dt) > 0); sparkle.forEach((s) => { s.y += s.vy * dt; KQ3D.drawPic(ctx, '🎵', s.x, s.y, 22); });
+  if (playing && idx === 0) { ctx.font = '800 22px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#4c1d95'; ctx.fillText('Tap the first tile to start 🎶', C.w / 2, C.h * 0.3); }
+}
+reset(song);
+requestAnimationFrame(frame);
+</script>
+</body></html>

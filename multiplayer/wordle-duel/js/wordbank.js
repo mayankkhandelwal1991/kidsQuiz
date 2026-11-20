@@ -13,8 +13,8 @@ export const MAX_GUESSES = 6;
 
 export const WORDS = [
   'APPLE', 'BEACH', 'BRAVE', 'BREAD', 'BRICK', 'CANDY', 'CHAIR', 'CHALK',
-  'CHESS', 'CLOCK', 'CLOUD', 'CORAL', 'CRANE', 'CRAYON'.slice(0, 5), 'DANCE',
-  'DIARY', 'DONUT', 'DRAGO'.slice(0, 5) + 'N'.slice(0, 0), 'EAGLE', 'EARTH',
+  'CHESS', 'CLOCK', 'CLOUD', 'CORAL', 'CRANE', 'CROWN', 'DANCE',
+  'DIARY', 'DONUT', 'DRESS', 'EAGLE', 'EARTH',
   'FAIRY', 'FEAST', 'FLAME', 'FLOOR', 'FLUTE', 'FRESH', 'FROST', 'FRUIT',
   'GHOST', 'GIANT', 'GLASS', 'GLOBE', 'GRAPE', 'GREEN', 'HAPPY', 'HEART',
   'HONEY', 'HORSE', 'HOUSE', 'HUMAN', 'JOLLY', 'JUICE', 'JUMPY', 'KOALA',

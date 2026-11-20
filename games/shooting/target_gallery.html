@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Target Gallery</title>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../ads.js"></script>
+<script>
+/* Target Gallery — a funfair shooting booth. Tap a target to shoot it.
+   Ducks 10, cans 15, balloons 5, stars 30. Clocks add time. Don't hit the bunnies! */
+const KINDS = [
+  { e: '🦆', pts: 10, s: 1, w: 30 }, { e: '🥫', pts: 15, s: 0.85, w: 20 }, { e: '🎈', pts: 5, s: 1, w: 25 },
+  { e: '⭐', pts: 30, s: 0.7, w: 8, fast: true }, { e: '⏰', pts: 0, s: 0.8, w: 5, clock: true }, { e: '🐰', pts: -10, s: 1, w: 12, friend: true }
+];
+const TIME = 45, AMMO = 8;
+const G = KQ3D.init({
+  id: 'target_gallery', title: 'Target Gallery', bestKey: 'galleryBest', music: true,
+  hero: ['🎯', '🦆', '⭐'], colors: ['#dc2626', '#f59e0b'],
+  how: [['👆', 'Tap a target to shoot it'], ['⭐', 'Stars are small and fast — 30 points!'], ['⏰', 'Hit a clock for +5 seconds'], ['🐰', 'Bunnies are friends — don’t hit them!'], ['🔄', '8 shots, then tap RELOAD (or wait)']],
+  hud: [{ id: 'ammo', icon: '🔫' }, { id: 'time', icon: '⏱️' }], scoreIcon: '🎯', stars: [200, 450, 750],
+  onReset: () => reset()
+});
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+let rows = [], marks = [], score, timeLeft, tick, ammo, reloadT, combo, aim = null, flash = 0, hits, shots;
+function lanes() { const top = 120, bot = C.h - 160, gap = (bot - top) / 3; return [0, 1, 2].map((k) => ({ y: top + gap * (k + 0.5), dir: k % 2 ? -1 : 1, speed: 70 + k * 25, items: [] })); }
+function pick() { const tot = KINDS.reduce((a, k) => a + k.w, 0); let r = Math.random() * tot; for (const k of KINDS) { r -= k.w; if (r <= 0) return k; } return KINDS[0]; }
+function reset() {
+  rows = lanes(); marks = []; score = 0; timeLeft = TIME; tick = TIME; ammo = AMMO; reloadT = 0; combo = 0; hits = 0; shots = 0;
+  rows.forEach((r) => { for (let x = 0; x < C.w + 200; x += 110 + Math.random() * 60) r.items.push(make(r, x)); });
+  G.score(0); G.hudSet('ammo', ammo); G.hudSet('time', TIME);
+}
+function make(r, x) { const k = pick(); return { k, x: r.dir > 0 ? x - 100 : C.w - x + 100, size: 58 * k.s, down: 0, bob: Math.random() * 6 }; }
+const reloadBtn = () => ({ x: C.w - 80, y: C.h - 110, r: 46 });
+function shoot(x, y) {
+  if (G.state !== 'play') return;
+  const rb = reloadBtn();
+  if (Math.hypot(x - rb.x, y - rb.y) < rb.r) { reload(); return; }
+  if (reloadT > 0) { KQ3D.sfx('tick'); return; }
+  if (ammo <= 0) { KQ3D.sfx('tick'); reload(); return; }
+  ammo--; shots++; G.hudSet('ammo', ammo); flash = 0.08; KQ3D.sfx('hit');
+  let hit = null;
+  rows.forEach((r) => r.items.forEach((it) => { if (!it.down && Math.hypot(it.x - x, r.y - y) < it.size * 0.55) hit = { it, r }; }));
+  if (!hit) { combo = 0; marks.push({ x, y, l: 0.6 }); if (ammo === 0) reload(); return; }
+  const { it, r } = hit; it.down = 0.001;
+  const k = it.k, rc = C.cv.getBoundingClientRect();
+  if (k.friend) { combo = 0; score = Math.max(0, score + k.pts); KQ3D.sfx('wrong'); G.flash('#fecaca'); G.pop('Ouch! Bunny −10', it.x + rc.left, r.y + rc.top - 40, '#fecaca'); }
+  else if (k.clock) { timeLeft += 5; KQ3D.sfx('chime'); G.pop('+5 s ⏰', it.x + rc.left, r.y + rc.top - 40, '#a5f3fc'); }
+  else { combo++; hits++; const pts = k.pts * (combo >= 5 ? 2 : 1); score += pts; KQ3D.sfx(k.fast ? 'coin' : 'pop'); G.pop('+' + pts + (combo >= 5 ? ' x2' : ''), it.x + rc.left, r.y + rc.top - 40, k.fast ? '#fde047' : '#fff'); if (combo === 5) G.pop('🔥 Hot shot! x2', null, C.h * 0.25, '#fb923c'); }
+  G.score(score); if (ammo === 0) reload();
+}
+function reload() { if (reloadT > 0 || ammo === AMMO) return; reloadT = 1; KQ3D.sfx('whoosh'); }
+G.scene.addEventListener('pointerdown', (e) => { const r = C.cv.getBoundingClientRect(); aim = { x: e.clientX - r.left, y: e.clientY - r.top }; shoot(aim.x, aim.y); });
+G.scene.addEventListener('pointermove', (e) => { const r = C.cv.getBoundingClientRect(); aim = { x: e.clientX - r.left, y: e.clientY - r.top }; });
+document.addEventListener('keydown', (e) => { if (e.key === 'r' || e.key === 'R') reload(); });
+
+function booth(t) {
+  const w = C.w, h = C.h;
+  const bg = ctx.createLinearGradient(0, 0, 0, h); bg.addColorStop(0, '#1e1b4b'); bg.addColorStop(1, '#7c2d12'); ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+  // striped awning
+  for (let i = 0; i < 12; i++) { ctx.fillStyle = i % 2 ? '#dc2626' : '#fef3c7'; ctx.fillRect(i * w / 12, 60, w / 12 + 1, 40); }
+  ctx.fillStyle = '#dc2626'; for (let x = 0; x < w; x += 26) { ctx.beginPath(); ctx.arc(x + 13, 100, 13, 0, Math.PI); ctx.fill(); }
+  // light bulbs
+  for (let x = 10; x < w; x += 34) { ctx.fillStyle = Math.floor(t / 300 + x / 34) % 2 ? '#fde047' : '#f59e0b'; ctx.beginPath(); ctx.arc(x, 112, 4, 0, 7); ctx.fill(); }
+  // shelves
+  rows.forEach((r) => { ctx.fillStyle = '#92400e'; ctx.fillRect(0, r.y + 30, w, 14); ctx.fillStyle = '#b45309'; ctx.fillRect(0, r.y + 30, w, 4); });
+  // counter
+  ctx.fillStyle = '#7c2d12'; ctx.fillRect(0, h - 150, w, 150); ctx.fillStyle = '#a16207'; ctx.fillRect(0, h - 150, w, 12);
+  ctx.fillStyle = 'rgba(255,255,255,.12)'; for (let x = 0; x < w; x += 40) ctx.fillRect(x, h - 138, 2, 138);
+}
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  const playing = G.state === 'play';
+  if (playing) {
+    timeLeft -= dt; const s = Math.max(0, Math.ceil(timeLeft)); if (s !== tick) { tick = s; G.hudSet('time', s); if (s <= 5 && s > 0) KQ3D.sfx('tick'); }
+    if (timeLeft <= 0) G.over({ score, title: 'Booth closed! 🎪', lines: ['🎯 ' + hits + ' hits', '🔫 ' + (shots ? Math.round(hits / shots * 100) : 0) + '% aim'] });
+    if (reloadT > 0) { reloadT -= dt; if (reloadT <= 0) { ammo = AMMO; G.hudSet('ammo', ammo); KQ3D.sfx('drop'); } }
+  }
+  if (!rows.length) return;
+  booth(now);
+  const lvl = playing ? Math.min(1, (TIME - timeLeft) / 60) : 0;
+  rows.forEach((r) => {
+    r.items.forEach((it) => {
+      if (G.state !== 'pause') it.x += r.dir * r.speed * (it.k.fast ? 1.8 : 1) * (1 + lvl) * dt;
+      it.bob += dt * 4;
+      if (it.down) it.down = Math.min(1, it.down + dt * 4);
+    });
+    r.items = r.items.filter((it) => (r.dir > 0 ? it.x < C.w + 80 : it.x > -80) && it.down < 1);
+    const edge = r.dir > 0 ? Math.min(...r.items.map((i) => i.x), C.w) : Math.max(...r.items.map((i) => i.x), 0);
+    if ((r.dir > 0 && edge > 40) || (r.dir < 0 && edge < C.w - 40)) r.items.push(make(r, 0 - Math.random() * 60 + (r.dir > 0 ? 40 : 40)));
+    r.items.forEach((it) => {
+      ctx.save(); ctx.translate(it.x, r.y + 30);
+      if (it.down) ctx.transform(1, 0, 0, Math.max(0.05, 1 - it.down), 0, 0);   // knocked flat
+      ctx.fillStyle = '#78350f'; ctx.fillRect(-3, -10, 6, 12);
+      KQ3D.drawPic(ctx, it.k.e, 0, -it.size / 2 - 6 + (it.k.e === '🎈' ? Math.sin(it.bob) * 4 : 0), it.size, it.k.e === '🦆' && r.dir < 0 ? 0 : 0);
+      ctx.restore();
+    });
+  });
+  marks = marks.filter((m) => (m.l -= dt) > 0); marks.forEach((m) => { ctx.globalAlpha = m.l; ctx.fillStyle = '#1f2937'; ctx.beginPath(); ctx.arc(m.x, m.y, 5, 0, 7); ctx.fill(); ctx.globalAlpha = 1; });
+  // reload button + ammo
+  const rb = reloadBtn(); ctx.fillStyle = reloadT > 0 ? '#64748b' : ammo < 3 ? '#ef4444' : '#16a34a';
+  ctx.beginPath(); ctx.arc(rb.x, rb.y, rb.r, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = '800 15px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(reloadT > 0 ? '…' : 'RELOAD', rb.x, rb.y);
+  for (let k = 0; k < AMMO; k++) { ctx.fillStyle = k < ammo ? '#fde047' : 'rgba(255,255,255,.2)'; KQ3D.roundRect(ctx, 20 + k * 22, C.h - 120, 14, 30, 6); ctx.fill(); }
+  // crosshair
+  if (aim && G.state === 'play') {
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(aim.x, aim.y, 22, 0, 7); ctx.moveTo(aim.x - 32, aim.y); ctx.lineTo(aim.x - 12, aim.y); ctx.moveTo(aim.x + 12, aim.y); ctx.lineTo(aim.x + 32, aim.y); ctx.moveTo(aim.x, aim.y - 32); ctx.lineTo(aim.x, aim.y - 12); ctx.moveTo(aim.x, aim.y + 12); ctx.lineTo(aim.x, aim.y + 32); ctx.stroke();
+    if (flash > 0) { flash -= dt; KQ3D.drawPic(ctx, '💥', aim.x, aim.y, 44); }
+  }
+}
+reset();
+requestAnimationFrame(frame);
+</script>
+</body></html>

@@ -15,7 +15,7 @@
       "title": "3D Games",
       "bg": "#7C5CFC",
       "shadow": "#5A3FD1",
-      "order": 2
+      "order": 4
     },
     {
       "id": "puzzle",
@@ -23,7 +23,7 @@
       "title": "Puzzle & Logic",
       "bg": "#22C55E",
       "shadow": "#158A3E",
-      "order": 3
+      "order": 5
     },
     {
       "id": "strategy",
@@ -31,7 +31,7 @@
       "title": "Classic & Strategy",
       "bg": "#3B82F6",
       "shadow": "#1D4ED8",
-      "order": 4
+      "order": 6
     },
     {
       "id": "word",
@@ -39,7 +39,7 @@
       "title": "Word & Vocabulary",
       "bg": "#FFC93C",
       "shadow": "#E0A800",
-      "order": 5
+      "order": 7
     },
     {
       "id": "brain",
@@ -47,7 +47,7 @@
       "title": "Brain & Speed",
       "bg": "#FF4FA3",
       "shadow": "#D6337F",
-      "order": 6
+      "order": 8
     },
     {
       "id": "ai",
@@ -55,7 +55,23 @@
       "title": "AI Games",
       "bg": "#16C2C2",
       "shadow": "#0E8F8F",
-      "order": 7
+      "order": 9
+    },
+    {
+      "id": "shooting",
+      "icon": "🎯",
+      "title": "Shooting & Aim",
+      "bg": "#EF4444",
+      "shadow": "#B91C1C",
+      "order": 2
+    },
+    {
+      "id": "funny",
+      "icon": "😂",
+      "title": "Funny Games",
+      "bg": "#A855F7",
+      "shadow": "#7E22CE",
+      "order": 3
     }
   ],
   "games": [
@@ -318,7 +334,7 @@
       "icon": "🚀",
       "title": "Space Shooter",
       "how": "Pick a ship and drag to fly — it shoots by itself! Zap aliens and meteors, and beat the big UFO boss. Grab ⚡ triple shot, 🛡️ shield and ❤️ extra lives.",
-      "category": "action",
+      "category": "shooting",
       "badge": null,
       "featured": false,
       "order": 27
@@ -351,7 +367,7 @@
       "icon": "🎯",
       "title": "Sling Blast",
       "how": "A funfair can toss! Drag back and let go to throw your ball — the dotted line shows where it goes. Knock every can off the shelves with 5 throws. Leftover throws give bonus points!",
-      "category": "action",
+      "category": "shooting",
       "badge": null,
       "featured": false,
       "order": 30
@@ -553,6 +569,28 @@
       "badge": null,
       "featured": false,
       "order": 56
+    },
+    {
+      "id": "target_gallery",
+      "file": "shooting/target_gallery.html",
+      "icon": "🎯",
+      "title": "Target Gallery",
+      "how": "A funfair shooting booth! Tap the moving ducks, cans, balloons and stars to knock them down — stars are worth 30. Hit clocks for extra time, but don’t hit the bunnies. 8 shots, then reload!",
+      "category": "shooting",
+      "badge": "🆕 New",
+      "featured": true,
+      "order": 57
+    },
+    {
+      "id": "feed_monster",
+      "file": "funny/feed_monster.html",
+      "icon": "👾",
+      "title": "Feed the Monster",
+      "how": "Flick yummy food up into the silly monster’s mouth — only when it’s open! It grows and BURPS. Socks and shoes? Swipe them down into the bin, or the monster goes BLEHH!",
+      "category": "funny",
+      "badge": "🆕 New",
+      "featured": true,
+      "order": 58
     }
   ]
 }

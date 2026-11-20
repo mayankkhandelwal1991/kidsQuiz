@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Feed the Monster</title>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../ads.js"></script>
+<script>
+/* Feed the Monster — flick yummy food UP into the monster's open mouth.
+   Socks and shoes? Swipe them DOWN into the bin — don't feed them! */
+const GOOD = ['🍕', '🍔', '🍩', '🍎', '🥕', '🍪', '🍌', '🧁', '🍉', '🌽', '🍇', '🍦'];
+const BAD = ['🧦', '👟', '🪨', '🧽', '🧸'];
+const MONS = [{ icon: '👾', name: 'Gloop', col: '#22c55e' }, { icon: '🐙', name: 'Wobbles', col: '#a855f7' }, { icon: '🦖', name: 'Chomp', col: '#f97316' }];
+const TIME = 60;
+const G = KQ3D.init({
+  id: 'feed_monster', title: 'Feed the Monster', bestKey: 'monsterBest', music: true,
+  hero: ['👾', '🍕', '🧦'], colors: ['#16a34a', '#a855f7'],
+  how: [['👆', 'Drag the food and flick it UP into the monster’s mouth'], ['😮', 'Only when the mouth is open!'], ['🧦', 'Socks & shoes? Swipe them DOWN into the bin'], ['🤢', 'Feed it yucky stuff 3 times and it’s over']],
+  hud: [{ id: 'lives', icon: '❤️' }, { id: 'time', icon: '⏱️' }], scoreIcon: '😋', stars: [100, 220, 380],
+  pick: { label: 'Pick your monster', options: MONS },
+  onReset: (m) => reset(m)
+});
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+let mon = G.choice || MONS[0], mx, mdir, mouth, mouthT, size, mood, moodT, item, flying, drag, score, lives, fed, timeLeft, tick, words = [], crumbs = [];
+const TRAY = () => ({ x: C.w / 2, y: C.h - 120 }), BIN = () => ({ x: 56, y: C.h - 60 });
+function reset(m) {
+  mon = m || MONS[0]; mx = C.w / 2; mdir = 1; mouth = 0; mouthT = 1.2; size = 1; mood = 'happy'; moodT = 0;
+  score = 0; lives = 3; fed = 0; timeLeft = TIME; tick = TIME; flying = null; drag = null; words = []; crumbs = [];
+  G.score(0); G.hudSet('lives', lives); G.hudSet('time', TIME); nextItem();
+}
+function nextItem() { const bad = Math.random() < Math.min(0.35, 0.15 + fed * 0.01); item = { e: bad ? BAD[Math.floor(Math.random() * BAD.length)] : GOOD[Math.floor(Math.random() * GOOD.length)], bad, x: TRAY().x, y: TRAY().y, in: 0 }; }
+const monY = () => 230 + size * 26, monR = () => Math.min(C.w * 0.2, 80) * size;
+G.scene.addEventListener('pointerdown', (e) => { if (G.state !== 'play' || flying || !item) return; const r = C.cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top; if (Math.hypot(x - item.x, y - item.y) < 70) drag = { x0: x, y0: y, x, y, t: performance.now() }; });
+window.addEventListener('pointermove', (e) => { if (!drag) return; const r = C.cv.getBoundingClientRect(); drag.x = e.clientX - r.left; drag.y = e.clientY - r.top; item.x = drag.x; item.y = drag.y; });
+window.addEventListener('pointerup', () => {
+  if (!drag) return; const d = drag; drag = null; const dy = d.y - d.y0, dx = d.x - d.x0, dt = Math.max(60, performance.now() - d.t);
+  if (dy > 50) { toBin(); return; }
+  if (dy < -40) { const sp = Math.min(1700, Math.hypot(dx, dy) / dt * 1000 * 0.9 + 600); const a = Math.atan2(dy, dx); flying = { x: item.x, y: item.y, vx: Math.cos(a) * sp * 0.9, vy: Math.sin(a) * sp, rot: 0 }; KQ3D.sfx('whoosh'); return; }
+  item.x = TRAY().x; item.y = TRAY().y;
+});
+function toBin() {
+  const b = BIN(); item.x = b.x; item.y = b.y;
+  if (item.bad) { score += 5; G.score(score); KQ3D.sfx('success'); say('Good choice! 🗑️'); }
+  else { KQ3D.sfx('drop'); say('Oh no, that was yummy! 😢'); }
+  setTimeout(nextItem, 250);
+}
+function say(t) { words.push({ t, x: Math.max(110, Math.min(C.w - 110, mx)), y: Math.max(130, monY() - monR() - 30), l: 1.4 }); }
+function eat() {
+  const it = flying; flying = null;
+  for (let k = 0; k < 10; k++) crumbs.push({ x: mx, y: monY() + 10, vx: (Math.random() - 0.5) * 300, vy: -Math.random() * 300, l: 0.6, e: item.e });
+  if (item.bad) {
+    lives--; G.hudSet('lives', Math.max(0, lives)); mood = 'yuck'; moodT = 1.6; KQ3D.sfx('wrong'); G.flash('#bbf7d0');
+    say(['BLEHH! 🤢', 'Yuck, a ' + (item.e === '🧦' ? 'sock' : 'shoe') + '!', 'Ewww! 🤮'][Math.floor(Math.random() * 3)]);
+    if (lives <= 0) { G.over({ score, title: mon.name + ' has a tummy ache! 🤢', lines: ['😋 ' + fed + ' yummy bites'] }); return; }
+  } else {
+    fed++; const pts = 10 + (size > 1.4 ? 5 : 0); score += pts; G.score(score); mood = 'yum'; moodT = 0.9; size = Math.min(1.8, size + 0.04);
+    KQ3D.sfx(fed % 5 ? 'pop' : 'boing');
+    say(fed % 5 === 0 ? 'BUUURRP! 😆' : ['Yum! 😋', 'Nom nom!', 'Delicious!', 'More please!', 'Mmmm!'][Math.floor(Math.random() * 5)]);
+    if (fed % 5 === 0) { G.shakeT = 0.4; }
+  }
+  nextItem();
+}
+function drawMonster(t) {
+  const x = mx, y = monY(), R = monR(), col = mon.col;
+  const wob = Math.sin(t / 220) * 4;
+  // body
+  ctx.fillStyle = col; ctx.beginPath(); ctx.ellipse(x, y + wob, R * 1.05, R, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.2)'; ctx.beginPath(); ctx.ellipse(x - R * 0.4, y - R * 0.45 + wob, R * 0.3, R * 0.18, -0.4, 0, 7); ctx.fill();
+  // feet + horns
+  ctx.fillStyle = col; [-1, 1].forEach((s) => { ctx.beginPath(); ctx.ellipse(x + s * R * 0.5, y + R * 0.95 + wob, R * 0.25, R * 0.15, 0, 0, 7); ctx.fill(); });
+  ctx.fillStyle = '#fef3c7'; [-1, 1].forEach((s) => { ctx.beginPath(); ctx.moveTo(x + s * R * 0.45, y - R * 0.8 + wob); ctx.lineTo(x + s * R * 0.62, y - R * 1.25 + wob); ctx.lineTo(x + s * R * 0.25, y - R * 0.88 + wob); ctx.fill(); });
+  // googly eyes
+  const look = (flying ? Math.atan2(flying.y - y, flying.x - x) : Math.sin(t / 900));
+  [-1, 1].forEach((s) => {
+    const ex = x + s * R * 0.35, ey = y - R * 0.35 + wob, er = R * 0.24;
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(ex, ey, er, 0, 7); ctx.fill();
+    if (mood === 'yuck') { ctx.strokeStyle = '#111827'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(ex - er * 0.5, ey - er * 0.3); ctx.lineTo(ex + er * 0.5, ey); ctx.lineTo(ex - er * 0.5, ey + er * 0.3); ctx.stroke(); }
+    else { ctx.fillStyle = '#111827'; ctx.beginPath(); ctx.arc(ex + Math.cos(look) * er * 0.4, ey + Math.sin(look) * er * 0.4, er * 0.45, 0, 7); ctx.fill(); }
+  });
+  // mouth
+  const mw = R * 0.75, mh = R * 0.55 * mouth;
+  if (mood === 'yuck') { ctx.strokeStyle = '#14532d'; ctx.lineWidth = 6; ctx.beginPath(); for (let k = 0; k <= 8; k++) ctx.lineTo(x - mw / 2 + k * mw / 8, y + R * 0.35 + wob + (k % 2 ? -6 : 6)); ctx.stroke(); ctx.fillStyle = '#84cc16'; ctx.beginPath(); ctx.ellipse(x + 10, y + R * 0.6 + wob, 8, 14, 0, 0, 7); ctx.fill(); }
+  else if (mouth > 0.05) {
+    ctx.fillStyle = '#7f1d1d'; ctx.beginPath(); ctx.ellipse(x, y + R * 0.35 + wob, mw / 2, Math.max(4, mh / 2), 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#f472b6'; ctx.beginPath(); ctx.ellipse(x, y + R * 0.35 + mh * 0.25 + wob, mw * 0.3, Math.max(2, mh * 0.2), 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#fff'; [-1, 1].forEach((s) => { ctx.beginPath(); ctx.moveTo(x + s * mw * 0.2, y + R * 0.35 - mh / 2 + wob); ctx.lineTo(x + s * mw * 0.12, y + R * 0.35 - mh / 2 + 10 + wob); ctx.lineTo(x + s * mw * 0.28, y + R * 0.35 - mh / 2 + wob); ctx.fill(); });
+  } else { ctx.strokeStyle = '#14532d'; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(x, y + R * 0.2 + wob, mw * 0.4, 0.2, Math.PI - 0.2); ctx.stroke(); }
+}
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.033, (now - last) / 1000); last = now;
+  const playing = G.state === 'play';
+  const bg = ctx.createLinearGradient(0, 0, 0, C.h); bg.addColorStop(0, '#fef9c3'); bg.addColorStop(1, '#fbcfe8'); ctx.fillStyle = bg; ctx.fillRect(0, 0, C.w, C.h);
+  ctx.fillStyle = 'rgba(255,255,255,.5)'; for (let k = 0; k < 14; k++) { ctx.beginPath(); ctx.arc((k * 137) % C.w, (k * 83) % C.h, 10 + k % 4 * 6, 0, 7); ctx.fill(); }
+  if (playing) {
+    timeLeft -= dt; const s = Math.max(0, Math.ceil(timeLeft)); if (s !== tick) { tick = s; G.hudSet('time', s); if (s <= 5 && s > 0) KQ3D.sfx('tick'); }
+    if (timeLeft <= 0) G.over({ score, title: mon.name + ' is so full! 😋', lines: ['😋 ' + fed + ' yummy bites', '❤️ ' + lives + ' lives left'] });
+  }
+  if (G.state !== 'pause') {
+    const sp = 60 + fed * 4;
+    mx += mdir * sp * dt; const R = monR(); if (mx > C.w - R - 10) mdir = -1; if (mx < R + 10) mdir = 1;
+    mouthT -= dt; if (mouthT <= 0) { mouth = mouth > 0.5 ? 0 : 1; mouthT = mouth ? 1.3 + Math.random() : 0.8 + Math.random() * 0.8; }
+    moodT -= dt; if (moodT <= 0) mood = 'happy';
+    if (flying) {
+      flying.vy += 1400 * dt; flying.x += flying.vx * dt; flying.y += flying.vy * dt; flying.rot += dt * 8; item.x = flying.x; item.y = flying.y;
+      const R2 = monR(), y = monY();
+      if (Math.abs(flying.x - mx) < R2 * 0.45 && Math.abs(flying.y - (y + R2 * 0.35)) < R2 * 0.4 && mouth > 0.5 && mood !== 'yuck') eat();
+      else if (flying && Math.hypot(flying.x - mx, flying.y - y) < R2 * 0.9 && flying.vy < 0) { flying.vy = Math.abs(flying.vy) * 0.4; flying.vx *= -0.5; KQ3D.sfx('boing'); say('Bonk! Mouth closed 🤐'); }
+      if (flying && (flying.y > C.h + 40 || flying.x < -60 || flying.x > C.w + 60)) { flying = null; KQ3D.sfx('drop'); nextItem(); }
+    }
+  }
+  drawMonster(now);
+  // tray + bin
+  const tr = TRAY(), b = BIN();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(tr.x, tr.y + 34, 80, 18, 0, 0, 7); ctx.fill();
+  KQ3D.drawPic(ctx, '🗑️', b.x, b.y, 64);
+  ctx.fillStyle = '#9d174d'; ctx.font = '800 14px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.fillText('swipe ⬆️ to feed · ⬇️ to bin', tr.x, C.h - 30);
+  if (item) KQ3D.drawPic(ctx, item.e, item.x, item.y, 62, flying ? flying.rot : Math.sin(now / 300) * 0.1);
+  if (drag) { ctx.strokeStyle = 'rgba(157,23,77,.35)'; ctx.setLineDash([6, 8]); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(drag.x0, drag.y0); ctx.lineTo(drag.x, drag.y); ctx.stroke(); ctx.setLineDash([]); }
+  crumbs = crumbs.filter((c) => (c.l -= dt) > 0); crumbs.forEach((c) => { c.vy += 700 * dt; c.x += c.vx * dt; c.y += c.vy * dt; ctx.globalAlpha = c.l / 0.6; KQ3D.drawPic(ctx, c.e, c.x, c.y, 18); ctx.globalAlpha = 1; });
+  words = words.filter((w) => (w.l -= dt) > 0); words.forEach((w) => { ctx.font = '800 22px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 5; ctx.strokeStyle = '#fff'; ctx.strokeText(w.t, w.x, w.y - (1.4 - w.l) * 30); ctx.fillStyle = '#7c2d12'; ctx.fillText(w.t, w.x, w.y - (1.4 - w.l) * 30); });
+}
+reset(mon);
+requestAnimationFrame(frame);
+</script>
+</body></html>

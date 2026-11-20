@@ -1,112 +1,142 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Connect Four</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#1a1a3d);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
-.wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.4);padding:14px;max-width:420px;width:100%;display:flex;flex-direction:column;height:100%;max-height:800px;position:relative}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
-h1{font-size:18px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent}
-.turn{font-size:12px;text-align:right}
-.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
-#board{background:#1155cc;border-radius:14px;padding:8px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;width:100%;max-width:380px;aspect-ratio:7/6}
-.cell{background:#0b0b1e;border-radius:50%;position:relative;cursor:pointer}
-.cell .disc{position:absolute;inset:6%;border-radius:50%;transition:transform .2s}
-.msg{text-align:center;font-size:12px;color:#aaa;margin-top:6px}
-.overlay{position:absolute;inset:0;background:rgba(15,12,41,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;border-radius:26px;z-index:10}
-.overlay.show{display:flex}
-.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-</style><link rel="stylesheet" href="../game-theme.css"></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <h1>Connect Four</h1>
-    <div class="turn" id="turn">Your Turn 🔴</div>
-  </div>
-  <div class="stage"><div id="board"></div></div>
-  <div class="msg">Tap a column to drop your disc. Get 4 in a row to win!</div>
-  <div class="overlay" id="overlay"><h2 id="overTitle" style="background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">You Win!</h2><button class="newbtn" onclick="init()">Play Again</button></div>
-</div>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Four in a Row</title>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const ROWS=6,COLS=7;
-let grid,turn,over,board=document.getElementById('board');
-function init(){
-  grid=Array.from({length:ROWS},()=>Array(COLS).fill(0));
-  turn=1; over=false;
-  document.getElementById('overlay').classList.remove('show');
-  document.getElementById('turn').textContent='Your Turn 🔴';
-  render();
+/* Four in a Row — drop discs; first to line up 4 (any direction) wins the round.
+   Best of 3 against an animal: Turtle (easy), Panda (medium), Fox (hard). */
+const FOES = [
+  { icon: '🐢', name: 'Turtle', depth: 0, mult: 1 },
+  { icon: '🐼', name: 'Panda', depth: 2, mult: 1.6 },
+  { icon: '🦊', name: 'Fox', depth: 4, mult: 2.4 }
+];
+const R = 6, Cn = 7;
+const G = KQ3D.init({
+  id: 'connect_four', title: 'Four in a Row', bestKey: 'fourBest', music: true,
+  hero: ['🟡', '🔴', '🦊'], colors: ['#2563eb', '#f59e0b'],
+  how: [['👆', 'Tap a column to drop your yellow disc'], ['🟡', 'Line up 4 in a row — across, down or slanting'], ['🛡️', 'Block your opponent’s lines too!'], ['🏆', 'Best of 3 rounds wins']],
+  scoreIcon: '🏆', stars: [100, 200, 300],
+  hud: [{ id: 'cpu', icon: '🤖' }],
+  pick: { label: 'Pick who to play', options: FOES },
+  onReset: (f) => reset(f)
+});
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+let foe = G.choice || FOES[0], b, turn, drops, winLine, myW, cpuW, round, busy, hover = -1;
+function reset(f) {
+  foe = f || FOES[0]; myW = 0; cpuW = 0; round = 1; G.score(0); G.hudSet('cpu', 0);
+  const hi = document.querySelector('#k3h_cpu img'); if (hi) hi.src = KQ3D.emojiFile(foe.icon);
+  newBoard();
 }
-function render(){
-  board.innerHTML='';
-  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
-    const cell=document.createElement('div');
-    cell.className='cell';
-    cell.onclick=()=>play(c);
-    const v=grid[r][c];
-    if(v){ const d=document.createElement('div'); d.className='disc'; d.style.background=v===1?'radial-gradient(circle at 35% 30%,#ff8fa8,#ff5a8a)':'radial-gradient(circle at 35% 30%,#ffe680,#ffcc33)'; cell.appendChild(d); }
-    board.appendChild(cell);
+function newBoard() { b = Array.from({ length: R }, () => Array(Cn).fill(0)); turn = round % 2 ? 1 : 2; drops = []; winLine = null; busy = false; if (turn === 2) setTimeout(cpuMove, 700); }
+const geo = () => { const s = Math.floor(Math.min((C.w - 24) / Cn, (C.h - 230) / (R + 0.6), 64)); return { s, x: (C.w - s * Cn) / 2, y: 150 }; };
+const rowFor = (bb, c) => { for (let r = R - 1; r >= 0; r--) if (!bb[r][c]) return r; return -1; };
+function lineAt(bb, r, c, p) {
+  for (const [dr, dc] of [[0, 1], [1, 0], [1, 1], [1, -1]]) {
+    const cells = [[r, c]];
+    for (const s of [1, -1]) { let rr = r + dr * s, cc = c + dc * s; while (rr >= 0 && rr < R && cc >= 0 && cc < Cn && bb[rr][cc] === p) { cells.push([rr, cc]); rr += dr * s; cc += dc * s; } }
+    if (cells.length >= 4) return cells;
   }
+  return null;
 }
-function lowestEmptyRow(c){
-  for(let r=ROWS-1;r>=0;r--) if(!grid[r][c]) return r;
-  return -1;
+function play(c, p) {
+  const r = rowFor(b, c); if (r < 0) return false;
+  b[r][c] = p; const g = geo(); drops.push({ r, c, p, y: g.y - g.s, vy: 0 });
+  KQ3D.sfx('drop');
+  const ln = lineAt(b, r, c, p);
+  if (ln) { winLine = ln; endRound(p); }
+  else if (b[0].every((v) => v)) endRound(0);
+  else { turn = 3 - p; if (turn === 2) setTimeout(cpuMove, 650); }
+  return true;
 }
-function play(c){
-  if(over||turn!==1)return;
-  const r=lowestEmptyRow(c);
-  if(r<0)return;
-  grid[r][c]=1; render();
-  if(window.KQFX)KQFX.play('drop');
-  if(checkWin(1)){ endGame('You Win! 🎉', 'win'); return; }
-  if(isFull()){ endGame("It's a Draw!", 'draw'); return; }
-  turn=2;
-  document.getElementById('turn').textContent="Computer's Turn 🟡";
-  setTimeout(aiMove,500);
+function endRound(p) {
+  busy = true;
+  if (p === 1) { myW++; G.score(myW); KQ3D.sfx('win'); G.pop('You win the round! 🎉', null, 110, '#bbf7d0'); }
+  else if (p === 2) { cpuW++; G.hudSet('cpu', cpuW); KQ3D.sfx('lose'); G.pop(foe.name + ' wins the round', null, 110, '#fecaca'); }
+  else { KQ3D.sfx('draw'); G.pop('A draw!', null, 110, '#fff'); }
+  setTimeout(() => {
+    if (G.state !== 'play') return;
+    if (myW === 2 || cpuW === 2 || round >= 3) {
+      const won = myW > cpuW, final = Math.round((myW * 40 + (won ? 100 : myW === cpuW ? 30 : 0)) * foe.mult);
+      G.over({ score: final, title: won ? 'You beat ' + foe.name + '! 🏆' : myW === cpuW ? 'It’s a tie!' : foe.name + ' won this time', lines: ['🟡 ' + myW + ' – ' + cpuW + ' ' + foe.icon] });
+    } else { round++; newBoard(); }
+  }, 1800);
 }
-function isFull(){ return grid[0].every(v=>v); }
-function aiMove(){
-  if(over)return;
-  const c=bestMove();
-  const r=lowestEmptyRow(c);
-  if(r>=0){ grid[r][c]=2; render(); if(window.KQFX)KQFX.play('drop'); }
-  if(checkWin(2)){ endGame('Computer Wins! 🤖', 'lose'); return; }
-  if(isFull()){ endGame("It's a Draw!", 'draw'); return; }
-  turn=1;
-  document.getElementById('turn').textContent='Your Turn 🔴';
-}
-function bestMove(){
-  // try win
-  for(let c=0;c<COLS;c++){ const r=lowestEmptyRow(c); if(r<0)continue; grid[r][c]=2; if(checkWin(2)){grid[r][c]=0;return c;} grid[r][c]=0; }
-  // block player win
-  for(let c=0;c<COLS;c++){ const r=lowestEmptyRow(c); if(r<0)continue; grid[r][c]=1; if(checkWin(1)){grid[r][c]=0;return c;} grid[r][c]=0; }
-  // prefer center columns
-  const order=[3,2,4,1,5,0,6].filter(c=>lowestEmptyRow(c)>=0);
-  return order[0];
-}
-function checkWin(p){
-  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
-    if(grid[r][c]!==p)continue;
-    if(c+3<COLS && grid[r][c+1]===p&&grid[r][c+2]===p&&grid[r][c+3]===p) return true;
-    if(r+3<ROWS && grid[r+1][c]===p&&grid[r+2][c]===p&&grid[r+3][c]===p) return true;
-    if(r+3<ROWS&&c+3<COLS && grid[r+1][c+1]===p&&grid[r+2][c+2]===p&&grid[r+3][c+3]===p) return true;
-    if(r+3<ROWS&&c-3>=0 && grid[r+1][c-1]===p&&grid[r+2][c-2]===p&&grid[r+3][c-3]===p) return true;
+// simple minimax with alpha-beta and a window-count heuristic
+function score(bb) {
+  let s = 0; const W4 = (a, p) => { const me = a.filter((v) => v === 2).length, you = a.filter((v) => v === 1).length; if (me && you) return 0; if (me === 3) return 6; if (me === 2) return 2; if (you === 3) return -8; if (you === 2) return -2; return 0; };
+  for (let r = 0; r < R; r++) for (let c = 0; c < Cn; c++) for (const [dr, dc] of [[0, 1], [1, 0], [1, 1], [1, -1]]) {
+    const cells = []; for (let k = 0; k < 4; k++) { const rr = r + dr * k, cc = c + dc * k; if (rr < 0 || rr >= R || cc < 0 || cc >= Cn) break; cells.push(bb[rr][cc]); }
+    if (cells.length === 4) s += W4(cells);
   }
-  return false;
+  for (let r = 0; r < R; r++) if (bb[r][3] === 2) s += 2;
+  return s;
 }
-function endGame(title, outcome){
-  over=true;
-  document.getElementById('overTitle').textContent=title;
-  document.getElementById('overlay').classList.add('show');
-  if(window.KQFX){
-    if(outcome==='win')KQFX.win();
-    else if(outcome==='lose')KQFX.lose();
-    else KQFX.play('draw');
+function minimax(bb, d, a, be, max) {
+  const moves = [3, 2, 4, 1, 5, 0, 6].filter((c) => rowFor(bb, c) >= 0);
+  if (!moves.length) return { s: 0 };
+  if (d === 0) return { s: score(bb) };
+  let best = { s: max ? -1e9 : 1e9, c: moves[0] };
+  for (const c of moves) {
+    const r = rowFor(bb, c), p = max ? 2 : 1; bb[r][c] = p;
+    const v = lineAt(bb, r, c, p) ? { s: (max ? 1e6 : -1e6) * (d + 1) } : minimax(bb, d - 1, a, be, !max);
+    bb[r][c] = 0;
+    if (max ? v.s > best.s : v.s < best.s) best = { s: v.s, c };
+    if (max) a = Math.max(a, v.s); else be = Math.min(be, v.s);
+    if (be <= a) break;
   }
-  onGameComplete();
+  return best;
 }
-init();
-</script></body></html>
+function cpuMove() {
+  if (G.state !== 'play' || busy || turn !== 2) return;
+  const open = [0, 1, 2, 3, 4, 5, 6].filter((c) => rowFor(b, c) >= 0);
+  let c;
+  if (foe.depth === 0) {
+    // turtle: takes a win, sometimes blocks, otherwise random
+    c = open.find((x) => { const r = rowFor(b, x); b[r][x] = 2; const w = lineAt(b, r, x, 2); b[r][x] = 0; return w; });
+    if (c == null && Math.random() < 0.5) c = open.find((x) => { const r = rowFor(b, x); b[r][x] = 1; const w = lineAt(b, r, x, 1); b[r][x] = 0; return w; });
+    if (c == null) c = open[Math.floor(Math.random() * open.length)];
+  } else c = minimax(b.map((r) => r.slice()), foe.depth, -1e9, 1e9, true).c;
+  play(c, 2);
+}
+G.scene.addEventListener('pointermove', (e) => { const g = geo(), r = C.cv.getBoundingClientRect(); const c = Math.floor((e.clientX - r.left - g.x) / g.s); hover = c >= 0 && c < Cn ? c : -1; });
+G.scene.addEventListener('pointerdown', (e) => {
+  if (G.state !== 'play' || busy || turn !== 1) return;
+  const g = geo(), r = C.cv.getBoundingClientRect(), c = Math.floor((e.clientX - r.left - g.x) / g.s);
+  if (c < 0 || c >= Cn) return; if (!play(c, 1)) KQ3D.sfx('tick');
+});
+document.addEventListener('keydown', (e) => { const n = parseInt(e.key, 10); if (n >= 1 && n <= 7 && G.state === 'play' && turn === 1 && !busy) play(n - 1, 1); });
+function disc(x, y, s, p, glow) {
+  const col = p === 1 ? ['#fde047', '#eab308'] : ['#f87171', '#dc2626'];
+  if (glow) { ctx.fillStyle = 'rgba(255,255,255,.8)'; ctx.beginPath(); ctx.arc(x, y, s * 0.5, 0, 7); ctx.fill(); }
+  const g = ctx.createRadialGradient(x - s * 0.12, y - s * 0.12, s * 0.05, x, y, s * 0.42); g.addColorStop(0, '#fff'); g.addColorStop(0.3, col[0]); g.addColorStop(1, col[1]);
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, s * 0.4, 0, 7); ctx.fill();
+  KQ3D.drawPic(ctx, p === 1 ? '🐥' : foe.icon, x, y, s * 0.5);
+}
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.033, (now - last) / 1000); last = now;
+  const bg = ctx.createLinearGradient(0, 0, 0, C.h); bg.addColorStop(0, '#bfdbfe'); bg.addColorStop(1, '#fde68a'); ctx.fillStyle = bg; ctx.fillRect(0, 0, C.w, C.h);
+  if (!b) return;
+  const g = geo();
+  ctx.font = '800 18px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#1e3a8a';
+  ctx.fillText('Round ' + round + ' of 3 · ' + (busy ? '' : turn === 1 ? 'Your turn 🐥' : foe.name + ' is thinking…'), C.w / 2, 100);
+  if (turn === 1 && hover >= 0 && !busy && G.state === 'play') disc(g.x + hover * g.s + g.s / 2, g.y - g.s * 0.55, g.s, 1);
+  // discs (with fall animation) behind the board
+  drops.forEach((d) => { const ty = g.y + d.r * g.s + g.s / 2; if (d.y < ty) { d.vy += 3000 * dt; d.y = Math.min(ty, d.y + d.vy * dt); } });
+  const placed = new Set(drops.map((d) => d.r + ',' + d.c));
+  for (let r = 0; r < R; r++) for (let c = 0; c < Cn; c++) if (b[r][c] && !placed.has(r + ',' + c)) disc(g.x + c * g.s + g.s / 2, g.y + r * g.s + g.s / 2, g.s, b[r][c]);
+  drops.forEach((d) => disc(g.x + d.c * g.s + g.s / 2, d.y, g.s, d.p, winLine && winLine.some(([r, c]) => r === d.r && c === d.c) && Math.floor(now / 250) % 2));
+  // board with holes
+  ctx.save(); ctx.beginPath(); KQ3D.roundRect(ctx, g.x - 8, g.y - 8, g.s * Cn + 16, g.s * R + 16, 18);
+  for (let r = 0; r < R; r++) for (let c = 0; c < Cn; c++) { ctx.moveTo(g.x + c * g.s + g.s / 2 + g.s * 0.42, g.y + r * g.s + g.s / 2); ctx.arc(g.x + c * g.s + g.s / 2, g.y + r * g.s + g.s / 2, g.s * 0.42, 0, Math.PI * 2, true); }
+  ctx.fillStyle = '#2563eb'; ctx.fill('evenodd'); ctx.restore();
+  ctx.fillStyle = '#1d4ed8'; ctx.fillRect(g.x - 14, g.y + g.s * R + 8, 12, 30); ctx.fillRect(g.x + g.s * Cn + 2, g.y + g.s * R + 8, 12, 30);
+  KQ3D.drawPic(ctx, foe.icon, C.w - 40, 100, 40); KQ3D.drawPic(ctx, '🐥', 40, 100, 40);
+}
+reset(foe);
+requestAnimationFrame(frame);
+</script>
+</body></html>

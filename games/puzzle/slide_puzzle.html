@@ -1,68 +1,102 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Slide Puzzle</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#06b6d4,#ffd166);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:380px;width:100%;text-align:center}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:290px;margin:0 auto}
-.tile{aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#ffb703,#ff7a59);color:#fff;font-size:34px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:transform .1s;box-shadow:0 4px 10px rgba(0,0,0,.15)}
-.tile:active{transform:scale(.94)}
-.tile.blank{background:transparent;box-shadow:none;cursor:default}
-.msg{color:#ff5a8a;font-weight:800;font-size:18px;min-height:26px;margin-top:14px}
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">Moves: <span id="mv">0</span> &nbsp; 🏆 Best: <span id="best">—</span></div>
-    <button onclick="shuffleBoard()">↻ Shuffle</button>
-  </div>
-  <div class="grid" id="grid"></div>
-  <div class="msg" id="msg">Put 1–8 in order!</div>
-</div>
+.sp { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 12px 16px; font-family: 'Baloo 2', sans-serif; background: linear-gradient(160deg, #fde68a, #fca5a5 55%, #c4b5fd); }
+.sp-info { font-weight: 800; color: #7c2d12; margin-bottom: 8px; display: flex; gap: 12px; align-items: center; }
+.sp-board { position: relative; background: rgba(255,255,255,.6); border-radius: 22px; padding: 6px; box-shadow: 0 8px 0 rgba(0,0,0,.12); }
+.sp-t { position: absolute; border-radius: 12px; border: 3px solid #fff; background-repeat: no-repeat; box-shadow: 0 3px 0 rgba(0,0,0,.18); transition: left .15s, top .15s; cursor: pointer; }
+.sp-t i { position: absolute; top: 3px; left: 5px; font-style: normal; font-size: 13px; font-weight: 800; color: #fff; background: rgba(0,0,0,.35); border-radius: 8px; padding: 0 5px; }
+.sp-t.right { border-color: #86efac; }
+.sp-peek { margin-top: 12px; border: none; border-radius: 16px; padding: 8px 16px; font: 800 15px 'Baloo 2', sans-serif; background: #fff; color: #7c2d12; box-shadow: 0 4px 0 rgba(0,0,0,.15); cursor: pointer; }
+.sp-full { position: absolute; inset: 6px; border-radius: 16px; background-size: cover; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 3; }
+.sp-full.on { opacity: 1; }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-let board,moves,solvedOnce=false,best=localStorage.getItem('slideBest');
-document.getElementById('best').textContent=best||'—';
-function render(){
-  const g=document.getElementById('grid');g.innerHTML='';
-  board.forEach((v,i)=>{
-    const t=document.createElement('div');
-    t.className='tile'+(v===0?' blank':'');
-    t.textContent=v===0?'':v;
-    t.onclick=()=>tap(i);
-    g.appendChild(t);
-  });
+/* Slide Puzzle — slide the picture pieces back into place. Tap a piece next to the gap
+   (or anywhere in the same row/column) to slide. 3×3 then 4×4. */
+const PICS = [
+  { icon: '🦁', name: 'Lion', bg: ['#fde047', '#f97316'], deco: ['🌳', '☀️'] },
+  { icon: '🚀', name: 'Rocket', bg: ['#1e1b4b', '#7c3aed'], deco: ['⭐', '🪐'] },
+  { icon: '🦄', name: 'Unicorn', bg: ['#f9a8d4', '#a78bfa'], deco: ['🌈', '✨'] },
+  { icon: '🐼', name: 'Panda', bg: ['#86efac', '#16a34a'], deco: ['🎋', '🌸'] }
+];
+const SIZES = [3, 4];
+const G = KQ3D.init({
+  id: 'slide_puzzle', title: 'Slide Puzzle', bestKey: 'slidePtsBest', music: true,
+  hero: ['🧩', '🦁', '🚀'], colors: ['#f97316', '#a855f7'],
+  how: [['👆', 'Tap a piece next to the empty gap to slide it'], ['🖼️', 'Put the picture back together — numbers help!'], ['👀', 'Hold “Peek” to see the whole picture'], ['⭐', 'Fewer moves and less time = more points']],
+  scoreIcon: '🧩', stars: [300, 600, 800],
+  hud: [{ id: 'moves', icon: '👆' }],
+  pick: { label: 'Pick a picture', options: PICS },
+  onReset: (p) => reset(p)
+});
+const box = document.createElement('div'); box.className = 'sp'; G.scene.appendChild(box);
+let pic, stage, N, tiles, blank, moves, score, t0, url, S;
+function picture(p, size, cb) {
+  const c = document.createElement('canvas'); c.width = c.height = size; const x = c.getContext('2d');
+  const g = x.createLinearGradient(0, 0, size, size); g.addColorStop(0, p.bg[0]); g.addColorStop(1, p.bg[1]); x.fillStyle = g; x.fillRect(0, 0, size, size);
+  x.fillStyle = 'rgba(255,255,255,.18)'; for (let i = 0; i < 6; i++) { x.beginPath(); x.arc((i * 97) % size, (i * 151) % size, size * 0.12, 0, 7); x.fill(); }
+  const imgs = [p.icon, p.deco[0], p.deco[1]].map((e) => KQ3D.img(e));
+  let n = 0; const done = () => { if (++n < 3) return;
+    x.drawImage(imgs[1], size * 0.02, size * 0.6, size * 0.34, size * 0.34); x.drawImage(imgs[2], size * 0.68, size * 0.04, size * 0.28, size * 0.28);
+    x.drawImage(imgs[0], size * 0.18, size * 0.16, size * 0.64, size * 0.64); cb(c.toDataURL()); };
+  imgs.forEach((im) => { if (im.complete && im.naturalWidth) done(); else { im.addEventListener('load', done, { once: true }); im.addEventListener('error', done, { once: true }); } });
 }
-function tap(i){
-  const b=board.indexOf(0);
-  const r1=Math.floor(i/3),c1=i%3,r2=Math.floor(b/3),c2=b%3;
-  if(Math.abs(r1-r2)+Math.abs(c1-c2)!==1)return;
-  [board[i],board[b]]=[board[b],board[i]];
-  moves++;document.getElementById('mv').textContent=moves;
-  if(window.KQFX)KQFX.play('tick');
-  render();
-  if(board.join()==='1,2,3,4,5,6,7,8,0'){
-    document.getElementById('msg').textContent='🎉 Solved in '+moves+' moves!';if(window.KQFX)KQFX.win();onGameComplete();
-    if(!best||moves<+best){best=moves;localStorage.setItem('slideBest',best);document.getElementById('best').textContent=best;}
+function reset(p) { pic = p || PICS[0]; stage = 0; score = 0; G.score(0); start(); }
+function start() {
+  N = SIZES[stage]; moves = 0; G.hudSet('moves', 0);
+  S = Math.floor(Math.min(innerWidth - 40, innerHeight - 260, 460));
+  tiles = []; for (let i = 0; i < N * N - 1; i++) tiles.push(i); tiles.push(-1);
+  blank = N * N - 1;
+  let last = -1; for (let k = 0; k < N * N * 30; k++) { const nb = neighbors(blank).filter((q) => q !== last); const q = nb[Math.floor(Math.random() * nb.length)]; last = blank; swap(q); }
+  if (solved()) swap(neighbors(blank)[0]);
+  moves = 0; t0 = performance.now();
+  box.innerHTML = '<div class="sp-info">Puzzle ' + (stage + 1) + ' of ' + SIZES.length + ' · ' + N + '×' + N + '</div><div class="sp-board" id="spB" style="width:' + (S + 12) + 'px;height:' + (S + 12) + 'px"><div class="sp-full" id="spF"></div></div><button type="button" class="sp-peek" id="spP">👀 Hold to peek</button>';
+  const pk = document.getElementById('spP');
+  pk.onpointerdown = () => document.getElementById('spF').classList.add('on');
+  pk.onpointerup = pk.onpointerleave = () => document.getElementById('spF').classList.remove('on');
+  picture(pic, S, (u) => { url = u; document.getElementById('spF').style.backgroundImage = 'url(' + u + ')'; draw(true); });
+}
+function neighbors(i) { const r = Math.floor(i / N), c = i % N, out = []; if (r > 0) out.push(i - N); if (r < N - 1) out.push(i + N); if (c > 0) out.push(i - 1); if (c < N - 1) out.push(i + 1); return out; }
+function swap(i) { tiles[blank] = tiles[i]; tiles[i] = -1; blank = i; }
+function solved() { for (let i = 0; i < N * N - 1; i++) if (tiles[i] !== i) return false; return true; }
+function draw(first) {
+  const B = document.getElementById('spB'); if (!B || !url) return;
+  const t = S / N;
+  if (first) {
+    B.querySelectorAll('.sp-t').forEach((e) => e.remove());
+    for (let id = 0; id < N * N - 1; id++) {
+      const d = document.createElement('div'); d.className = 'sp-t'; d.id = 'spT' + id;
+      d.style.cssText += 'width:' + (t - 4) + 'px;height:' + (t - 4) + 'px;background-image:url(' + url + ');background-size:' + S + 'px ' + S + 'px;background-position:-' + (id % N) * t + 'px -' + Math.floor(id / N) * t + 'px';
+      d.innerHTML = '<i>' + (id + 1) + '</i>'; d.onclick = () => tap(tiles.indexOf(id)); B.appendChild(d);
+    }
   }
+  tiles.forEach((id, i) => { if (id < 0) return; const d = document.getElementById('spT' + id); d.style.left = (6 + (i % N) * t + 2) + 'px'; d.style.top = (6 + Math.floor(i / N) * t + 2) + 'px'; d.classList.toggle('right', id === i); });
 }
-function shuffleBoard(){
-  board=[1,2,3,4,5,6,7,8,0];
-  // random valid moves so it is always solvable
-  for(let k=0;k<200;k++){
-    const b=board.indexOf(0),r=Math.floor(b/3),c=b%3,opts=[];
-    if(r>0)opts.push(b-3);if(r<2)opts.push(b+3);
-    if(c>0)opts.push(b-1);if(c<2)opts.push(b+1);
-    const s=opts[Math.floor(Math.random()*opts.length)];
-    [board[b],board[s]]=[board[s],board[b]];
-  }
-  moves=0;document.getElementById('mv').textContent=0;
-  document.getElementById('msg').textContent='Put 1–8 in order!';
-  render();
+function tap(i) {
+  if (G.state !== 'play') return;
+  const r = Math.floor(i / N), c = i % N, br = Math.floor(blank / N), bc = blank % N;
+  if (r !== br && c !== bc) { KQ3D.sfx('tick'); return; }
+  // slide every piece between the tapped one and the gap
+  while (blank !== i) { const step = r === br ? (c > bc ? 1 : -1) : (r > br ? N : -N); swap(blank + step); moves++; }
+  G.hudSet('moves', moves); KQ3D.sfx('drop'); draw();
+  if (solved()) win();
 }
-shuffleBoard();
-</script></body></html>
+function win() {
+  const secs = (performance.now() - t0) / 1000, par = N === 3 ? 40 : 120;
+  const pts = Math.max(50, 300 - Math.max(0, moves - par) * 2 - Math.round(secs / 2));
+  score += pts; G.score(score); KQ3D.sfx('win');
+  const f = document.getElementById('spF'); f.classList.add('on');
+  G.pop('Solved! +' + pts, null, innerHeight * 0.35, '#bbf7d0');
+  try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {}
+  stage++;
+  if (stage >= SIZES.length) setTimeout(() => G.over({ score, title: 'Puzzle pro! 🧩', lines: [pic.icon + ' ' + pic.name, '👆 ' + moves + ' moves on 4×4'] }), 1400);
+  else setTimeout(() => { if (G.state === 'play') start(); }, 1800);
+}
+reset(G.choice);
+</script>
+</body></html>

@@ -1,132 +1,122 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Sudoku Mini</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#1a1a3d);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
-.wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.4);padding:14px;max-width:420px;width:100%;display:flex;flex-direction:column;height:100%;max-height:800px;position:relative}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
-h1{font-size:18px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent}
-.timer{font-size:14px;font-weight:800;color:#00f5ff}
-.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
-#grid{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);width:100%;max-width:340px;aspect-ratio:1/1;background:#0b0b1e;border-radius:10px;padding:4px;gap:2px}
-.g-cell{display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;border-radius:4px;background:rgba(255,255,255,.05);cursor:pointer;color:#00f5ff}
-.g-cell.fixed{color:#fff;background:rgba(255,255,255,.1);cursor:default}
-.g-cell.sel{outline:2px solid #ff00e5}
-.g-cell.err{color:#ff5a8a}
-.g-cell.b-right{border-right:2px solid #444}
-.g-cell.b-bottom{border-bottom:2px solid #444}
-.numpad{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px}
-.numpad button{padding:10px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#00d4ff);color:#fff;font-weight:800;font-size:15px;cursor:pointer}
-.overlay{position:absolute;inset:0;background:rgba(15,12,41,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;border-radius:26px;z-index:10}
-.overlay.show{display:flex}
-.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-</style><link rel="stylesheet" href="../game-theme.css"></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <h1>Sudoku Mini</h1>
-    <div class="timer" id="timer">0:00</div>
-  </div>
-  <div class="stage"><div id="grid"></div></div>
-  <div class="numpad" id="numpad"></div>
-  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">🎉 Solved!</h2><p id="finalTime" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="init()">New Puzzle</button></div>
-</div>
+.sd { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 12px 16px; font-family: 'Baloo 2', sans-serif; background: linear-gradient(160deg, #dcfce7, #e0f2fe 60%, #ede9fe); }
+.sd-info { font-weight: 800; color: #1e3a8a; margin-bottom: 8px; }
+.sd-grid { display: grid; background: #1e3a8a; gap: 2px; padding: 4px; border-radius: 18px; box-shadow: 0 8px 0 rgba(30,58,138,.25); }
+.sd-c { background: #fff; display: grid; place-items: center; font-weight: 800; color: #2563eb; cursor: pointer; position: relative; }
+.sd-c img { width: 70%; height: 70%; }
+.sd-c.fixed { background: #e0e7ff; color: #1e1b4b; cursor: default; }
+.sd-c.sel { background: #fef08a; } .sd-c.same { background: #fef9c3; }
+.sd-c.bad { background: #fecaca; animation: sdShake .35s; }
+.sd-c.br { margin-right: 2px; } .sd-c.bb { margin-bottom: 2px; }
+@keyframes sdShake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.sd-c.pop { animation: sdPop .3s; } @keyframes sdPop { 50% { transform: scale(1.15); } }
+.sd-pad { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; justify-content: center; }
+.sd-k { width: 58px; height: 58px; border: none; border-radius: 16px; background: linear-gradient(180deg, #60a5fa, #2563eb); color: #fff; font: 800 28px 'Baloo 2', sans-serif; box-shadow: 0 5px 0 #1e40af; cursor: pointer; display: grid; place-items: center; }
+.sd-k img { width: 40px; height: 40px; } .sd-k.erase { background: #fff; color: #1e3a8a; box-shadow: 0 5px 0 #cbd5e1; font-size: 22px; } .sd-k.hint { background: #fde68a; color: #92400e; box-shadow: 0 5px 0 #d97706; font-size: 22px; }
+.sd-k:active { transform: translateY(3px); box-shadow: none; }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const N=6, BR=2, BC=3;
-let solution,puzzle,fixed,sel,seconds,timerId,over;
-function makeSolved(){
-  // base pattern generator for 6x6 (2 rows x 3 cols boxes)
-  const base=[];
-  for(let r=0;r<N;r++){
-    base.push([]);
-    for(let c=0;c<N;c++){
-      base[r].push(((c + r*BC + Math.floor(r/BR)) % N) + 1);
+/* Sudoku Mini — every row, column and box must have each picture/number once. */
+const MODES = [
+  { icon: '🍎', name: 'Pictures 4×4', n: 4, pics: ['🍎', '🍌', '🍇', '🍓'], br: 2, bc: 2, holes: 8 },
+  { icon: '🔢', name: 'Numbers 4×4', n: 4, br: 2, bc: 2, holes: 10 },
+  { icon: '🧠', name: 'Numbers 6×6', n: 6, br: 2, bc: 3, holes: 18 }
+];
+const G = KQ3D.init({
+  id: 'sudoku_mini', title: 'Sudoku Mini', bestKey: 'sudokuBest', music: true,
+  hero: ['🍎', '🔢', '🧠'], colors: ['#16a34a', '#2563eb'],
+  how: [['👆', 'Tap an empty square, then tap a picture or number'], ['➡️', 'Each row and column has every one just once'], ['🟦', 'Each thick-lined box has every one too'], ['💡', '3 hints per puzzle · 3 puzzles to finish']],
+  scoreIcon: '🧩', stars: [150, 300, 400],
+  pick: { label: 'Pick a puzzle', options: MODES },
+  onReset: (m) => reset(m)
+});
+const box = document.createElement('div'); box.className = 'sd'; G.scene.appendChild(box);
+let mode, sol, puz, cur, sel, mistakes, hints, score, idx, t0;
+const shuffle = (a) => a.slice().sort(() => Math.random() - 0.5);
+function solved(n, br, bc) {
+  // pattern-based valid grid, then shuffled within bands/stacks and symbols
+  const base = (r, c) => (bc * (r % br) + Math.floor(r / br) + c) % n;
+  const rows = [].concat(...shuffle([...Array(n / br).keys()]).map((b) => shuffle([...Array(br).keys()]).map((r) => b * br + r)));
+  const cols = [].concat(...shuffle([...Array(n / bc).keys()]).map((b) => shuffle([...Array(bc).keys()]).map((c) => b * bc + c)));
+  const sym = shuffle([...Array(n).keys()].map((x) => x + 1));
+  return rows.map((r) => cols.map((c) => sym[base(r, c)]));
+}
+function countSolutions(g, n, br, bc, limit) {
+  let cnt = 0;
+  (function go() {
+    if (cnt >= limit) return;
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (!g[r][c]) {
+      for (let v = 1; v <= n; v++) if (ok(g, r, c, v, n, br, bc)) { g[r][c] = v; go(); g[r][c] = 0; }
+      return;
     }
-  }
-  return base;
+    cnt++;
+  })();
+  return cnt;
 }
-function shuffle(arr){ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]];} return arr; }
-function randomize(base){
-  let grid=base.map(r=>r.slice());
-  // permute digit labels
-  const perm=shuffle([1,2,3,4,5,6]);
-  grid=grid.map(row=>row.map(v=>perm[v-1]));
-  // swap rows within band, bands
-  for(let band=0;band<N/BR;band++){
-    const rows=shuffle([0,1].map(i=>band*BR+i));
-    // no-op simplification: just shuffle row order within band by swapping
-    if(Math.random()<0.5){ const tmp=grid[band*BR]; grid[band*BR]=grid[band*BR+1]; grid[band*BR+1]=tmp; }
-  }
-  for(let stack=0;stack<N/BC;stack++){
-    if(Math.random()<0.5){
-      for(let r=0;r<N;r++){ const tmp=grid[r][stack*BC]; grid[r][stack*BC]=grid[r][stack*BC+1]; grid[r][stack*BC+1]=grid[r][stack*BC+2]; grid[r][stack*BC+2]=tmp; }
-    }
-  }
-  return grid;
+function ok(g, r, c, v, n, br, bc) {
+  for (let k = 0; k < n; k++) if (g[r][k] === v || g[k][c] === v) return false;
+  const r0 = r - r % br, c0 = c - c % bc;
+  for (let a = 0; a < br; a++) for (let b = 0; b < bc; b++) if (g[r0 + a][c0 + b] === v) return false;
+  return true;
 }
-function init(){
-  solution=randomize(makeSolved());
-  puzzle=solution.map(r=>r.slice());
-  fixed=solution.map(r=>r.map(()=>true));
-  let toRemove=18;
-  while(toRemove>0){
-    const r=Math.floor(Math.random()*N), c=Math.floor(Math.random()*N);
-    if(fixed[r][c]){ fixed[r][c]=false; puzzle[r][c]=0; toRemove--; }
-  }
-  sel=null; over=false; seconds=0;
-  document.getElementById('overlay').classList.remove('show');
-  clearInterval(timerId);
-  timerId=setInterval(()=>{ seconds++; document.getElementById('timer').textContent=fmt(seconds); },1000);
-  renderNumpad();
-  render();
+function reset(m) { mode = m || MODES[0]; score = 0; idx = 0; G.score(0); make(); }
+function make() {
+  const { n, br, bc } = mode;
+  sol = solved(n, br, bc); puz = sol.map((r) => r.slice());
+  const cells = shuffle([...Array(n * n).keys()]); let removed = 0;
+  for (const k of cells) { if (removed >= mode.holes + idx) break; const r = Math.floor(k / n), c = k % n, v = puz[r][c]; puz[r][c] = 0; if (countSolutions(puz.map((x) => x.slice()), n, br, bc, 2) !== 1) puz[r][c] = v; else removed++; }
+  cur = puz.map((r) => r.slice()); sel = null; mistakes = 0; hints = 3; t0 = performance.now();
+  draw();
 }
-function fmt(s){ const m=Math.floor(s/60), ss=s%60; return m+':'+(ss<10?'0':'')+ss; }
-function render(){
-  const g=document.getElementById('grid');
-  g.innerHTML='';
-  for(let r=0;r<N;r++)for(let c=0;c<N;c++){
-    const cell=document.createElement('div');
-    cell.className='g-cell'+(fixed[r][c]?' fixed':'')+(sel&&sel[0]===r&&sel[1]===c?' sel':'');
-    if((c+1)%BC===0 && c!==N-1) cell.classList.add('b-right');
-    if((r+1)%BR===0 && r!==N-1) cell.classList.add('b-bottom');
-    const v=puzzle[r][c];
-    cell.textContent=v||'';
-    if(v && !fixed[r][c] && v!==solution[r][c]) cell.classList.add('err');
-    cell.onclick=()=>{ if(!fixed[r][c]){ sel=[r,c]; render(); } };
-    g.appendChild(cell);
-  }
+const face = (v, sz) => !v ? '' : mode.pics ? '<img src="' + KQ3D.emojiFile(mode.pics[v - 1]) + '" alt="">' : '<span style="font-size:' + sz + 'px">' + v + '</span>';
+function draw(bad, pop) {
+  const { n, br, bc } = mode, cs = Math.floor(Math.min(innerWidth - 40, innerHeight - 330, 420) / n);
+  const sv = sel ? cur[sel[0]][sel[1]] : 0;
+  box.innerHTML = '<div class="sd-info">Puzzle ' + (idx + 1) + ' of 3 · ' + mode.name + ' · ❌ ' + mistakes + '</div>' +
+    '<div class="sd-grid" style="grid-template-columns:repeat(' + n + ',' + cs + 'px);grid-auto-rows:' + cs + 'px">' +
+    cur.map((row, r) => row.map((v, c) => {
+      const cls = ['sd-c']; if (puz[r][c]) cls.push('fixed'); if (sel && sel[0] === r && sel[1] === c) cls.push('sel'); else if (sv && v === sv) cls.push('same');
+      if ((c + 1) % bc === 0 && c < n - 1) cls.push('br'); if ((r + 1) % br === 0 && r < n - 1) cls.push('bb');
+      if (bad && bad[0] === r && bad[1] === c) cls.push('bad'); if (pop && pop[0] === r && pop[1] === c) cls.push('pop');
+      return '<div class="' + cls.join(' ') + '" data-r="' + r + '" data-c="' + c + '">' + face(v, cs * 0.55) + '</div>';
+    }).join('')).join('') + '</div>' +
+    '<div class="sd-pad">' + [...Array(n).keys()].map((k) => '<button type="button" class="sd-k" data-v="' + (k + 1) + '">' + face(k + 1, 28) + '</button>').join('') +
+    '<button type="button" class="sd-k erase" data-v="0">⌫</button><button type="button" class="sd-k hint" id="sdH">💡' + hints + '</button></div>';
+  box.querySelectorAll('.sd-c').forEach((el) => el.onclick = () => { if (G.state !== 'play') return; const r = +el.dataset.r, c = +el.dataset.c; sel = [r, c]; KQ3D.sfx('tap'); draw(); });
+  box.querySelectorAll('.sd-k[data-v]').forEach((el) => el.onclick = () => put(+el.dataset.v));
+  document.getElementById('sdH').onclick = hint;
 }
-function renderNumpad(){
-  const np=document.getElementById('numpad');
-  np.innerHTML='';
-  for(let n=1;n<=6;n++){
-    const b=document.createElement('button'); b.textContent=n;
-    b.onclick=()=>setNum(n);
-    np.appendChild(b);
-  }
-  const clr=document.createElement('button'); clr.textContent='✕'; clr.style.gridColumn='span 6';
-  clr.onclick=()=>setNum(0);
-  np.appendChild(clr);
+function put(v) {
+  if (G.state !== 'play' || !sel) return;
+  const [r, c] = sel; if (puz[r][c]) { KQ3D.sfx('tick'); return; }
+  if (v === 0) { cur[r][c] = 0; draw(); return; }
+  if (sol[r][c] !== v) { mistakes++; KQ3D.sfx('wrong'); cur[r][c] = 0; draw([r, c]); return; }
+  cur[r][c] = v; KQ3D.sfx('pop'); draw(null, [r, c]);
+  if (cur.every((row, a) => row.every((x, b) => x === sol[a][b]))) win();
 }
-function setNum(n){
-  if(!sel||over)return;
-  const [r,c]=sel;
-  if(fixed[r][c])return;
-  puzzle[r][c]=n;
-  render();
-  checkWin();
+function hint() {
+  if (G.state !== 'play' || !hints) return;
+  const empty = []; cur.forEach((row, r) => row.forEach((v, c) => { if (!v) empty.push([r, c]); }));
+  const [r, c] = sel && !cur[sel[0]][sel[1]] ? sel : empty[Math.floor(Math.random() * empty.length)];
+  hints--; cur[r][c] = sol[r][c]; sel = [r, c]; KQ3D.sfx('chime'); draw(null, [r, c]);
+  if (cur.every((row, a) => row.every((x, b) => x === sol[a][b]))) win();
 }
-function checkWin(){
-  for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(puzzle[r][c]!==solution[r][c]) return;
-  over=true; clearInterval(timerId);
-  if(window.KQFX)KQFX.win();
-  document.getElementById('finalTime').textContent='Time: '+fmt(seconds);
-  document.getElementById('overlay').classList.add('show');
-  onGameComplete();
+function win() {
+  const secs = (performance.now() - t0) / 1000;
+  const pts = Math.max(30, 100 + (mode.n === 6 ? 60 : 0) - mistakes * 10 - (3 - hints) * 10 + Math.max(0, Math.round(60 - secs / 2)));
+  score += pts; G.score(score); KQ3D.sfx('levelup'); G.pop('Solved! +' + pts, null, innerHeight * 0.3, '#bbf7d0');
+  try { if (window.KQFX) KQFX.celebrate({ power: 0.5 }); } catch (e) {}
+  idx++;
+  if (idx >= 3) setTimeout(() => G.over({ score, title: 'Sudoku star! 🧩', lines: [mode.icon + ' ' + mode.name] }), 1200);
+  else setTimeout(() => { if (G.state === 'play') make(); }, 1400);
 }
-init();
-</script></body></html>
+document.addEventListener('keydown', (e) => { const n = parseInt(e.key, 10); if (n >= 1 && n <= mode.n) put(n); if (e.key === 'Backspace') put(0); });
+reset(G.choice);
+</script>
+</body></html>

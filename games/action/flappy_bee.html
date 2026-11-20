@@ -1,87 +1,121 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Flappy Bee</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#ffd166,#6ee7ff);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:420px;width:100%}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
-canvas{width:100%;border-radius:18px;display:block;background:linear-gradient(180deg,#aee8ff,#e8fbff 80%,#c8f7c5 80%)}
-.hint{text-align:center;color:#888;font-size:12px;margin-top:6px;font-weight:600}
-
-/* mobile fit */
-.wrap{display:flex;flex-direction:column;height:100%;max-height:820px}
-.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0}
-canvas{max-height:100%}
-
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">🐝 <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
-    <button onclick="reset()">↻</button>
-  </div>
-  <div class="stage"><canvas id="cv" width="380" height="560"></canvas></div>
-  <div class="hint">Tap or press SPACE to flap</div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-const GAP=150,PW=56,G=0.42,FLAP=-7.2;
-let by,vy,pipes,score,playing,dead,frame,best=+(localStorage.getItem('beeBest')||0);
-document.getElementById('best').textContent=best;
-function reset(){by=cv.height/2;vy=0;pipes=[];score=0;playing=false;dead=false;frame=0;
-  document.getElementById('score').textContent=0;}
-function flap(){
-  if(dead){reset();return;}
-  playing=true;vy=FLAP;
+/* Flappy Bee — tap to flap through the gaps between vines and sunflowers. Honey = +2. */
+const FLYERS = [{ icon: '🐝', name: 'Bee' }, { icon: '🐦', name: 'Birdie' }, { icon: '🦋', name: 'Flutter' }, { icon: '🐞', name: 'Dotty' }];
+const G = KQ3D.init({
+  id: 'flappy_bee', title: 'Flappy Bee', bestKey: 'beeBest', music: true,
+  hero: ['🐝', '🌻', '🍯'], colors: ['#facc15', '#0ea5e9'],
+  how: [['👆', 'Tap (or press Space) to flap up'], ['🌻', 'Fly through the gaps — don’t touch the plants'], ['🍯', 'Grab honey for +2 points']],
+  scoreIcon: '🌻', stars: [5, 15, 30],
+  pick: { label: 'Pick your flyer', options: FLYERS },
+  onReset: (f) => reset(f)
+});
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+let flyer = G.choice || FLYERS[0], waiting = true, y, vy, posts, honey, score, dist, nextPost, dead, flapT, bits = [], hillOff = 0, cloudOff = 0;
+const GRAV = 1100, FLAP = -360, BX = () => Math.min(C.w * 0.3, 140), SIZE = 46;
+
+function reset(f) { flyer = f || FLYERS[0]; y = C.h * 0.45; vy = 0; posts = []; honey = []; score = 0; dist = 0; nextPost = C.w * 0.7; dead = false; flapT = 0; bits = []; waiting = true; }
+function flap() {
+  if (G.state !== 'play' || dead) return;
+  waiting = false; vy = FLAP; flapT = 0.18; KQ3D.sfx('whoosh');
 }
-cv.addEventListener('pointerdown',e=>{e.preventDefault();flap();});
-document.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();flap();}});
-function update(){
-  frame++;
-  if(playing&&!dead){
-    vy+=G;by+=vy;
-    if(frame%110===0){
-      const top=60+Math.random()*(cv.height-GAP-180);
-      pipes.push({x:cv.width,top,passed:false});
-    }
-    pipes.forEach(p=>p.x-=2.4);
-    if(pipes.length&&pipes[0].x<-PW)pipes.shift();
-    for(const p of pipes){
-      if(!p.passed&&p.x+PW<70){p.passed=true;score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('whoosh');}
-      if(70+16>p.x&&70-16<p.x+PW&&(by-14<p.top||by+14>p.top+GAP))die();
-    }
-    if(by>cv.height-46||by<10)die();
+G.scene.addEventListener('pointerdown', flap);
+document.addEventListener('keydown', (e) => { if ((e.key === ' ' || e.key === 'ArrowUp') && G.state === 'play') { e.preventDefault(); flap(); } });
+
+function addPost(x) {
+  const lvl = Math.min(1, score / 40), top = 90, bottom = C.h - 70;
+  const gap = Math.max(165, 235 - lvl * 70) * Math.min(1, C.h / 800 + 0.15);
+  const gy = top + gap / 2 + Math.random() * (bottom - top - gap);
+  posts.push({ x, gy, gap, w: 64, passed: false, kind: Math.random() < 0.5 ? 'vine' : 'tree' });
+  if (Math.random() < 0.55) honey.push({ x: x + 150 + Math.random() * 40, y: gy + (Math.random() - 0.5) * gap * 0.4, got: false });
+}
+function hit() {
+  if (dead) return; dead = true; KQ3D.sfx('hit'); G.flash('#fecaca');
+  for (let k = 0; k < 12; k++) bits.push({ x: BX(), y, vx: (Math.random() - 0.5) * 300, vy: -Math.random() * 300, l: 0.7 });
+  G.over({ score, title: 'Bonk!', lines: ['🌻 ' + score + ' points', '📏 ' + Math.round(dist / 50) + ' m'] });
+}
+
+function drawStalk(p) {
+  const { x, gy, gap, w } = p, topEnd = gy - gap / 2, botStart = gy + gap / 2, gnd = C.h - 60;
+  // top: hanging vine / branch
+  ctx.fillStyle = '#15803d'; KQ3D.roundRect(ctx, x + w * 0.3, -20, w * 0.4, topEnd + 20, 10); ctx.fill();
+  for (let yy = 20; yy < topEnd - 20; yy += 34) { ctx.fillStyle = '#22c55e'; ctx.beginPath(); ctx.ellipse(x + w * 0.3 - 10, yy, 16, 8, -0.5, 0, 7); ctx.fill(); ctx.beginPath(); ctx.ellipse(x + w * 0.7 + 10, yy + 17, 16, 8, 0.5, 0, 7); ctx.fill(); }
+  ctx.fillStyle = '#166534'; ctx.beginPath(); ctx.arc(x + w / 2, topEnd - 4, w * 0.48, 0, Math.PI); ctx.fill();
+  KQ3D.drawPic(ctx, p.kind === 'vine' ? '🌸' : '🍄', x + w / 2, topEnd + 6, 38, Math.PI);
+  // bottom: sunflower stalk / tree trunk
+  if (p.kind === 'vine') {
+    ctx.fillStyle = '#16a34a'; KQ3D.roundRect(ctx, x + w * 0.35, botStart + 20, w * 0.3, gnd - botStart, 8); ctx.fill();
+    for (let yy = botStart + 60; yy < gnd - 10; yy += 40) { ctx.fillStyle = '#4ade80'; ctx.beginPath(); ctx.ellipse(x + w * 0.35 - 12, yy, 18, 8, 0.5, 0, 7); ctx.fill(); }
+    KQ3D.drawPic(ctx, '🌻', x + w / 2, botStart + 14, 74);
+  } else {
+    ctx.fillStyle = '#92400e'; KQ3D.roundRect(ctx, x + 6, botStart + 26, w - 12, gnd - botStart, 10); ctx.fill();
+    ctx.strokeStyle = '#78350f'; ctx.lineWidth = 3; for (let yy = botStart + 50; yy < gnd; yy += 30) { ctx.beginPath(); ctx.moveTo(x + 14, yy); ctx.quadraticCurveTo(x + w / 2, yy + 8, x + w - 14, yy); ctx.stroke(); }
+    ctx.fillStyle = '#22c55e'; [[0, 0, 40], [-24, 10, 26], [24, 10, 26]].forEach(([dx, dy, r]) => { ctx.beginPath(); ctx.arc(x + w / 2 + dx, botStart + 22 + dy, r, 0, 7); ctx.fill(); });
   }
-  draw();requestAnimationFrame(update);
 }
-function die(){
-  if(dead)return;dead=true;if(window.KQFX)KQFX.play('blast');onGameComplete();
-  if(score>best){best=score;localStorage.setItem('beeBest',best);document.getElementById('best').textContent=best;}
-}
-function draw(){
-  cx.clearRect(0,0,cv.width,cv.height);
-  cx.font='24px serif';
-  cx.fillText('☁️',(300-frame*0.4%700+400)%700-50,60);
-  cx.fillText('☁️',(100-frame*0.3%700+400)%700-50,110);
-  pipes.forEach(p=>{
-    cx.fillStyle='#5cb85c';
-    cx.beginPath();cx.roundRect(p.x,0,PW,p.top,[0,0,10,10]);cx.fill();
-    cx.beginPath();cx.roundRect(p.x,p.top+GAP,PW,cv.height-p.top-GAP-36,[10,10,0,0]);cx.fill();
-    cx.fillStyle='#4a9d4a';
-    cx.fillRect(p.x-4,p.top-14,PW+8,14);
-    cx.fillRect(p.x-4,p.top+GAP,PW+8,14);
+function background(dt) {
+  const w = C.w, h = C.h;
+  const sky = ctx.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#60a5fa'); sky.addColorStop(1, '#e0f2fe');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
+  KQ3D.drawPic(ctx, '🌞', w - 70, 110, 70);
+  ctx.fillStyle = 'rgba(255,255,255,.9)';
+  for (let i = 0; i < 5; i++) { const cx = ((i * 230 - cloudOff * 0.2) % (w + 300) + w + 300) % (w + 300) - 150, cy = 150 + (i % 3) * 70; [[0, 0, 24], [26, -10, 20], [50, 0, 22]].forEach(([a, b, r]) => { ctx.beginPath(); ctx.arc(cx + a, cy + b, r, 0, 7); ctx.fill(); }); }
+  [['#a7f3d0', 0.35, h - 150, 60], ['#6ee7b7', 0.6, h - 110, 40]].forEach(([col, sp, base, amp]) => {
+    ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(0, h);
+    for (let x = 0; x <= w + 20; x += 20) ctx.lineTo(x, base - Math.abs(Math.sin((x + hillOff * sp) / 160)) * amp);
+    ctx.lineTo(w, h); ctx.fill();
   });
-  cx.fillStyle='#8bc34a';cx.fillRect(0,cv.height-36,cv.width,36);
-  cx.save();cx.translate(70,by);cx.rotate(Math.max(-.4,Math.min(.6,vy*0.06)));
-  cx.font='30px serif';cx.fillText('🐝',-16,10);cx.restore();
-  cx.textAlign='center';cx.fillStyle='#ff5a8a';cx.font='bold 22px sans-serif';
-  if(!playing&&!dead)cx.fillText('Tap to fly!',cv.width/2,200);
-  if(dead){cx.fillText('💥 Score: '+score,cv.width/2,200);cx.font='bold 14px sans-serif';cx.fillText('Tap to play again',cv.width/2,230);}
-  cx.textAlign='left';
 }
-reset();update();
-</script></body></html>
+function ground() {
+  const w = C.w, h = C.h;
+  ctx.fillStyle = '#65a30d'; ctx.fillRect(0, h - 60, w, 60);
+  ctx.fillStyle = '#84cc16'; ctx.fillRect(0, h - 60, w, 12);
+  ctx.fillStyle = '#4d7c0f'; for (let x = -((hillOff) % 30); x < w; x += 30) { ctx.beginPath(); ctx.moveTo(x, h - 48); ctx.lineTo(x + 8, h - 60); ctx.lineTo(x + 16, h - 48); ctx.fill(); }
+}
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.033, (now - last) / 1000); last = now;
+  const playing = G.state === 'play' && !dead;
+  const speed = 150 + Math.min(90, score * 2.5);
+  if (playing && waiting) { y = C.h * 0.45 + Math.sin(now / 300) * 14; hillOff += 60 * dt; cloudOff += 60 * dt; }
+  else if (playing) {
+    vy += GRAV * dt; y += vy * dt; dist += speed * dt;
+    hillOff += speed * dt; cloudOff += speed * dt;
+    nextPost -= speed * dt; if (nextPost <= 0) { addPost(C.w + 20); nextPost = 260 + Math.random() * 60; }
+    posts.forEach((p) => {
+      p.x -= speed * dt;
+      if (!p.passed && p.x + p.w < BX()) { p.passed = true; score++; G.score(score); KQ3D.sfx('ding'); }
+      const r = SIZE * 0.36;
+      if (BX() + r > p.x + 14 && BX() - r < p.x + p.w - 14 && (y - r < p.gy - p.gap / 2 || y + r > p.gy + p.gap / 2)) hit();
+    });
+    posts = posts.filter((p) => p.x > -100);
+    honey.forEach((hn) => { hn.x -= speed * dt; if (!hn.got && Math.hypot(hn.x - BX(), hn.y - y) < 36) { hn.got = true; score += 2; G.score(score); KQ3D.sfx('coin'); G.pop('+2 🍯', hn.x, hn.y - 20, '#fde047'); } });
+    honey = honey.filter((hn) => hn.x > -40 && !hn.got);
+    if (y > C.h - 60 - SIZE * 0.35 || y < 10) hit();
+  } else if (G.state === 'menu') { y = C.h * 0.45 + Math.sin(now / 300) * 20; hillOff += 60 * dt; cloudOff += 60 * dt; }
+  else if (dead && G.state !== 'pause') { vy += GRAV * dt; y = Math.min(C.h - 70, y + vy * dt); }
+  flapT -= dt;
+  background(dt);
+  posts.forEach(drawStalk);
+  honey.forEach((hn) => KQ3D.drawPic(ctx, '🍯', hn.x, hn.y + Math.sin(now / 200 + hn.x) * 4, 34));
+  ground();
+  // flyer: tilt with speed, squash when flapping
+  const tilt = dead ? 1.2 : Math.max(-0.5, Math.min(1.0, vy / 600));
+  ctx.save(); ctx.translate(BX(), y); ctx.rotate(tilt);
+  const sq = flapT > 0 ? 1 + flapT : 1; ctx.scale(-1, 1);
+  ctx.scale(1, 1 / sq); KQ3D.drawPic(ctx, flyer.icon, 0, 0, SIZE * (flapT > 0 ? 1.1 : 1));
+  ctx.restore();
+  bits = bits.filter((b) => (b.l -= dt) > 0); bits.forEach((b) => { b.vy += 600 * dt; b.x += b.vx * dt; b.y += b.vy * dt; KQ3D.drawPic(ctx, '✨', b.x, b.y, 18); });
+  if (playing && waiting) { ctx.font = '800 22px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = 4; ctx.strokeText('Tap to flap! 👆', C.w / 2, C.h * 0.3); ctx.fillText('Tap to flap! 👆', C.w / 2, C.h * 0.3); }
+}
+reset(flyer);
+requestAnimationFrame(frame);
+</script>
+</body></html>

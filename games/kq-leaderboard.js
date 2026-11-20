@@ -76,7 +76,7 @@
     flappy_bee:"Flappy Bee", brick_breaker:"Brick Breaker", ping_pong:"Ping Pong",
     maze_run:"Maze Run", slide_puzzle:"Slide Puzzle", word_scramble:"Word Scramble",
     rock_paper:"Rock Paper Scissors", odd_one_out:"Odd One Out", color_tap:"Color Tap",
-    number_order:"Number Rush", car_race_3d:"Car Race 3D", game_2048:"2048", tetris:"Tetris",
+    number_order:"Number Rush", car_race_3d:"Car Race 3D", game_2048:"2048", tetris:"Block Drop",
     piano_tiles:"Piano Tiles", stack_tower:"Stack Tower", bubble_shooter:"Bubble Shooter",
     space_shooter:"Space Shooter", doodle_jump:"Sky Hopper", water_sort:"Water Sort",
     slingshot:"Sling Blast", connect_four:"Connect Four", sudoku_mini:"Sudoku Mini",

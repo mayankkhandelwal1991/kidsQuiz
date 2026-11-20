@@ -1,118 +1,94 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Typing Speed</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#1a1a3d);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;color:#fff}
-.wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.4);padding:16px;max-width:460px;width:100%;display:flex;flex-direction:column;height:100%;max-height:760px}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
-h1{font-size:18px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent}
-.timerbox{font-size:14px;font-weight:800;color:#ffe066}
-.textbox{background:rgba(255,255,255,.05);border-radius:16px;padding:16px;font-size:17px;line-height:1.7;margin:10px 0;min-height:110px}
-.textbox span.correct{color:#38f9a1}
-.textbox span.wrong{color:#ff5a8a;text-decoration:underline}
-.textbox span.current{background:rgba(0,245,255,.3);border-radius:3px}
-textarea{width:100%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.2);border-radius:14px;color:#fff;font-family:inherit;font-size:16px;padding:12px;resize:none;height:70px}
-textarea:focus{outline:none;border-color:#00f5ff}
-.stats{display:flex;justify-content:space-around;margin-top:12px}
-.stat{text-align:center;font-size:11px;color:#aaa}
-.stat b{display:block;font-size:22px;color:#00f5ff}
-.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;margin-top:12px;align-self:center}
-</style><link rel="stylesheet" href="../game-theme.css"></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <h1>Typing Speed</h1>
-    <div class="timerbox" id="timer">30s</div>
-  </div>
-  <div class="textbox" id="textbox"></div>
-  <textarea id="input" placeholder="Start typing here..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
-  <div class="stats">
-    <div class="stat">WPM<b id="wpm">0</b></div>
-    <div class="stat">ACCURACY<b id="acc">100%</b></div>
-    <div class="stat">BEST WPM<b id="best">0</b></div>
-  </div>
-  <button class="newbtn" onclick="init()">New Text</button>
-</div>
+.ty { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; padding: 76px 14px 16px; font-family: 'Baloo 2', sans-serif; background: linear-gradient(170deg, #ecfeff, #e0e7ff 60%, #fae8ff); overflow-y: auto; }
+.ty-time { width: 100%; max-width: 520px; height: 12px; border-radius: 6px; background: #c7d2fe; overflow: hidden; }
+.ty-time i { display: block; height: 100%; background: linear-gradient(90deg, #06b6d4, #6366f1); border-radius: 6px; }
+.ty-card { width: 100%; max-width: 520px; background: #fff; border-radius: 28px; padding: 16px; margin-top: 14px; text-align: center; box-shadow: 0 8px 0 rgba(99,102,241,.2); }
+.ty-pic { width: 96px; height: 96px; }
+.ty-text { font-size: 34px; font-weight: 800; letter-spacing: .04em; line-height: 1.35; word-break: break-word; }
+.ty-text.long { font-size: 24px; letter-spacing: .02em; }
+.ty-text span { color: #94a3b8; } .ty-text span.ok { color: #16a34a; } .ty-text span.cur { color: #1e1b4b; border-bottom: 4px solid #f59e0b; } .ty-text span.bad { color: #fff; background: #ef4444; border-radius: 4px; }
+.ty-in { margin-top: 12px; width: 100%; max-width: 520px; font: 800 24px 'Baloo 2', sans-serif; padding: 10px 14px; border-radius: 18px; border: 3px solid #a5b4fc; outline: none; text-align: center; background: #fff; color: #1e1b4b; }
+.ty-in:focus { border-color: #6366f1; }
+.ty-stats { display: flex; gap: 10px; margin-top: 12px; }
+.ty-stats span { background: #fff; border-radius: 999px; padding: 4px 14px; font-weight: 800; color: #4338ca; box-shadow: 0 3px 0 rgba(0,0,0,.08); }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const SENTS=[
-"The quick brown fox jumps over the lazy dog while the sun sets slowly behind the hills.",
-"Success is not final, failure is not fatal, it is the courage to continue that truly counts.",
-"Practice makes perfect, and every keystroke brings you one step closer to mastering the keyboard.",
-"Video games and coding both reward patience, quick thinking, and a willingness to keep trying.",
-"The best way to predict the future is to create it with hard work and determination.",
-"A journey of a thousand miles begins with a single step, so start typing and do not stop.",
-"Technology moves fast, but the fundamentals of focus and practice never really change at all.",
-"Believe you can and you are halfway there, so keep your fingers moving across the keys.",
-"Great things are done by a series of small things brought together with consistent effort.",
-"Stay curious, stay hungry for knowledge, and never stop learning new skills every single day."
-];
-let target,started,startTime,timeLeft,timerId,best=+(localStorage.getItem('typingBest')||0),over;
-document.getElementById('best').textContent=best;
-function init(){
-  target=SENTS[Math.floor(Math.random()*SENTS.length)];
-  started=false; over=false; timeLeft=30;
-  document.getElementById('timer').textContent=timeLeft+'s';
-  document.getElementById('wpm').textContent=0;
-  document.getElementById('acc').textContent='100%';
-  document.getElementById('input').value='';
-  document.getElementById('input').disabled=false;
-  clearInterval(timerId);
-  renderText('');
-}
-function renderText(typed){
-  const box=document.getElementById('textbox');
-  let html='';
-  for(let i=0;i<target.length;i++){
-    const ch=target[i];
-    if(i<typed.length){
-      html += '<span class="'+(typed[i]===ch?'correct':'wrong')+'">'+escapeHtml(ch)+'</span>';
-    } else if(i===typed.length){
-      html += '<span class="current">'+escapeHtml(ch)+'</span>';
-    } else {
-      html += escapeHtml(ch);
-    }
-  }
-  box.innerHTML=html;
-}
-function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-document.getElementById('input').addEventListener('input',e=>{
-  if(over)return;
-  const typed=e.target.value;
-  if(!started){
-    started=true; startTime=Date.now();
-    timerId=setInterval(()=>{
-      timeLeft--;
-      document.getElementById('timer').textContent=timeLeft+'s';
-      updateStats(document.getElementById('input').value);
-      if(timeLeft<=0) endGame();
-    },1000);
-  }
-  renderText(typed);
-  updateStats(typed);
-  if(typed===target) endGame();
+/* Typing Speed — type what you see. Words mode (with pictures) or Sentences mode. 60 s. */
+const WORDS = [['cat', '🐱'], ['dog', '🐶'], ['sun', '☀️'], ['bus', '🚌'], ['cake', '🎂'], ['fish', '🐟'], ['frog', '🐸'], ['star', '⭐'], ['tree', '🌳'], ['moon', '🌙'], ['book', '📚'], ['duck', '🦆'], ['lion', '🦁'], ['bear', '🐻'], ['kite', '🪁'], ['apple', '🍎'], ['mango', '🥭'], ['zebra', '🦓'], ['tiger', '🐯'], ['panda', '🐼'], ['house', '🏠'], ['train', '🚂'], ['robot', '🤖'], ['snake', '🐍'], ['pizza', '🍕'], ['rocket', '🚀'], ['banana', '🍌'], ['rabbit', '🐰'], ['turtle', '🐢'], ['flower', '🌸']];
+const SENT = ['The cat sat on the mat.', 'I like to play with my ball.', 'The sun is hot and yellow.', 'A big red bus goes to school.', 'Birds can fly up in the sky.', 'I can read a book with mom.', 'The frog jumps into the pond.', 'We eat mango in the summer.', 'My kite flies very high.', 'The moon shines at night.', 'Fish swim in the blue sea.', 'I brush my teeth every day.'];
+const MODES = [{ icon: '🐱', name: 'Picture words', key: 'w' }, { icon: '📝', name: 'Sentences', key: 's' }];
+const TIME = 60;
+const G = KQ3D.init({
+  id: 'typing_speed', title: 'Typing Speed', bestKey: 'typeBest', music: false,
+  hero: ['⌨️', '🐱', '⚡'], colors: ['#6366f1', '#06b6d4'],
+  how: [['⌨️', 'Type exactly what you see in the box'], ['🟩', 'Letters turn green when they are right'], ['🟥', 'A red letter means a mistake — fix it!'], ['⏱️', '60 seconds — every correct letter scores']],
+  scoreIcon: '⌨️', stars: [60, 140, 220],
+  hud: [{ id: 'time', icon: '⏱️' }],
+  pick: { label: 'Pick a mode', options: MODES },
+  onReset: (m) => reset(m)
 });
-function updateStats(typed){
-  const elapsedMin=Math.max((Date.now()-startTime)/60000,1/60);
-  const wordsTyped=typed.length/5;
-  const wpm=Math.round(wordsTyped/elapsedMin);
-  document.getElementById('wpm').textContent=isFinite(wpm)?wpm:0;
-  let correct=0;
-  for(let i=0;i<typed.length;i++) if(typed[i]===target[i]) correct++;
-  const acc=typed.length? Math.round(correct/typed.length*100) : 100;
-  document.getElementById('acc').textContent=acc+'%';
+const box = document.createElement('div'); box.className = 'ty'; G.scene.appendChild(box);
+let mode, target, pic, typedOk, mistakes, done, timeLeft, tick, timer, list, li;
+function reset(m) {
+  mode = m || MODES[0]; typedOk = 0; mistakes = 0; done = 0; timeLeft = TIME; tick = TIME; G.score(0); G.hudSet('time', TIME);
+  list = (mode.key === 'w' ? WORDS : SENT.map((s) => [s, null])).slice().sort(() => Math.random() - 0.5); li = 0;
+  box.innerHTML = '<div class="ty-time"><i id="tyT" style="width:100%"></i></div><div class="ty-card"><div id="tyP"></div><div class="ty-text' + (mode.key === 's' ? ' long' : '') + '" id="tyX"></div></div>' +
+    '<input class="ty-in" id="tyI" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type here…">' +
+    '<div class="ty-stats"><span id="tyS1">✅ 0 done</span><span id="tyS2">❌ 0 oops</span></div>';
+  const inp = document.getElementById('tyI');
+  inp.oninput = () => check(inp);
+  inp.onkeydown = (e) => { if (e.key === 'Enter') e.preventDefault(); };
+  G.scene.onclick = () => inp.focus();
+  clearInterval(timer); timer = setInterval(step, 100);
+  next();
 }
-function endGame(){
-  if(over)return;
-  over=true; clearInterval(timerId);
-  if(window.KQFX)KQFX.play('whoosh');
-  document.getElementById('input').disabled=true;
-  const wpm=+document.getElementById('wpm').textContent;
-  if(wpm>best){ best=wpm; localStorage.setItem('typingBest',best); document.getElementById('best').textContent=best; }
-  onGameComplete();
+function next() { [target, pic] = list[li++ % list.length]; document.getElementById('tyP').innerHTML = pic ? '<img class="ty-pic" src="' + KQ3D.emojiFile(pic) + '" alt="">' : ''; const i = document.getElementById('tyI'); i.value = ''; render(''); }
+function render(v) {
+  let h = '';
+  for (let k = 0; k < target.length; k++) {
+    const c = target[k], t = v[k];
+    const cls = t == null ? (k === v.length ? 'cur' : '') : t === c ? 'ok' : 'bad';
+    h += '<span class="' + cls + '">' + (c === ' ' ? '&nbsp;' : c.replace(/[<>&]/g, '')) + '</span>';
+  }
+  document.getElementById('tyX').innerHTML = h;
 }
-init();
-</script></body></html>
+let lastLen = 0;
+function check(inp) {
+  if (G.state !== 'play') { inp.value = ''; return; }
+  const v = inp.value;
+  if (v.length > lastLen) {
+    const k = v.length - 1;
+    if (v[k] === target[k] && v.slice(0, k) === target.slice(0, k)) { typedOk++; KQ3D.sfx('tap'); }
+    else { mistakes++; KQ3D.sfx('wrong'); }
+  }
+  lastLen = v.length;
+  render(v);
+  if (v === target) {
+    done++; const bonus = mode.key === 's' ? 10 : 3; typedOk += bonus; KQ3D.sfx('success');
+    G.pop('+' + (target.length + bonus), innerWidth / 2, 200, '#16a34a');
+    lastLen = 0; next();
+  }
+  G.score(typedOk);
+  document.getElementById('tyS1').textContent = '✅ ' + done + ' done'; document.getElementById('tyS2').textContent = '❌ ' + mistakes + ' oops';
+}
+function step() {
+  if (G.state === 'pause' || G.state === 'count') return;
+  if (G.state !== 'play') { clearInterval(timer); return; }
+  const inp = document.getElementById('tyI'); if (inp && document.activeElement !== inp && timeLeft === TIME) inp.focus();
+  timeLeft -= 0.1; const s = Math.max(0, Math.ceil(timeLeft)); const t = document.getElementById('tyT'); if (t) t.style.width = Math.max(0, timeLeft / TIME * 100) + '%';
+  if (s !== tick) { tick = s; G.hudSet('time', s); if (s <= 5 && s > 0) KQ3D.sfx('tick'); }
+  if (timeLeft <= 0) {
+    clearInterval(timer); if (inp) inp.blur();
+    const acc = typedOk + mistakes ? Math.round(typedOk / (typedOk + mistakes) * 100) : 0;
+    G.over({ score: typedOk, title: 'Typing star! ⌨️', lines: ['✅ ' + done + (mode.key === 'w' ? ' words' : ' sentences'), '🎯 ' + acc + '% right', '⚡ ' + Math.round(typedOk) + ' letters/min'] });
+  }
+}
+reset(G.choice);
+</script>
+</body></html>

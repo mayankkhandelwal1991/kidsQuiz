@@ -238,6 +238,7 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
     G.pause = pause;
     document.addEventListener('visibilitychange', function () { if (document.hidden && G.state === 'play') pause(true); });
     window.addEventListener('keydown', function (e) {
+      if (e.target && /^(INPUT|TEXTAREA)$/.test(e.target.tagName) && e.key !== 'Escape') return;   // typing games
       if (e.key === 'Escape' || e.key === 'p' || e.key === 'P') { if (G.state === 'play') pause(true); else if (G.state === 'pause') pause(false); }
       else if ((e.key === 'Enter' || e.key === ' ') && (G.state === 'menu' || G.state === 'over')) { e.preventDefault(); begin(); }
     });

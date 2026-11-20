@@ -1,91 +1,131 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Ping Pong</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#34d399,#06b6d4);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:440px;width:100%}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
-canvas{width:100%;border-radius:18px;display:block;background:#0e5c3f;touch-action:none}
-.hint{text-align:center;color:#888;font-size:12px;margin-top:6px;font-weight:600}
-
-/* mobile fit */
-.wrap{display:flex;flex-direction:column;height:100%;max-height:820px}
-.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0}
-canvas{max-height:100%}
-
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">You <span id="ps">0</span> — <span id="cs">0</span> 🤖 (first to 5)</div>
-    <button onclick="reset()">↻</button>
-  </div>
-  <div class="stage"><canvas id="cv" width="400" height="560"></canvas></div>
-  <div class="hint">Drag / move mouse / ← → to move your paddle (bottom)</div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-let px,ax,ball,ps,cs,playing,over,msg='',keys={};
-function newBall(dir){ball={x:cv.width/2,y:cv.height/2,vx:(Math.random()<.5?-1:1)*3,vy:4.2*dir};}
-function reset(){px=cv.width/2;ax=cv.width/2;ps=0;cs=0;playing=false;over=false;msg='';newBall(1);
-  document.getElementById('ps').textContent=0;document.getElementById('cs').textContent=0;}
-function setX(clientX){
-  const r=cv.getBoundingClientRect();
-  px=Math.max(45,Math.min(cv.width-45,(clientX-r.left)/r.width*cv.width));
-  if(over)reset();playing=true;
+/* Ping Pong — you (bottom) vs an animal (top). First to 7. */
+const FOES = [
+  { icon: '🐢', name: 'Turtle', speed: 220, err: 60, mult: 1 },
+  { icon: '🐼', name: 'Panda', speed: 320, err: 38, mult: 1.5 },
+  { icon: '🦊', name: 'Fox', speed: 430, err: 22, mult: 2 },
+  { icon: '🤖', name: 'Robo', speed: 560, err: 10, mult: 3 }
+];
+const WIN = 7;
+const G = KQ3D.init({
+  id: 'ping_pong', title: 'Ping Pong', bestKey: 'pongBest', music: true,
+  hero: ['🏓', '🐼', '🏆'], colors: ['#0ea5e9', '#1d4ed8'],
+  how: [['👆', 'Drag (or use ⬅️ ➡️) to move your paddle'], ['🏓', 'Hit the ball near the paddle edge to aim it'], ['🏆', 'First to ' + WIN + ' points wins!'], ['🦊', 'Tougher animals give more points']],
+  hud: [{ id: 'cpu', icon: '🤖' }], scoreIcon: '🧒', stars: [100, 250, 450],
+  pick: { label: 'Pick who to play', options: FOES },
+  onReset: (f) => reset(f)
+});
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+let foe = G.choice || FOES[0], me, cpu, ball, ps, cs, serveT, keyDir = 0, trail = [], rally, cheer = 0;
+const T = () => { const w = Math.min(C.w - 24, 460), h = Math.min(C.h - 250, w * 1.75); return { x: (C.w - w) / 2, y: 135 + (C.h - 250 - h) / 2, w, h }; };
+const PW = () => T().w * 0.24, PH = 14, BR = 9;
+
+function reset(f) {
+  foe = f || FOES[0]; ps = 0; cs = 0; me = C.w / 2; cpu = C.w / 2; rally = 0;
+  G.score(0); G.hudSet('cpu', 0); serve(1);
+  const hi = document.querySelector('#k3h_cpu img'); if (hi) hi.src = KQ3D.emojiFile(foe.icon);
 }
-cv.addEventListener('pointerdown',e=>{e.preventDefault();setX(e.clientX);});
-cv.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch')setX(e.clientX);});
-cv.addEventListener('touchmove',e=>{e.preventDefault();setX(e.touches[0].clientX);},{passive:false});
-document.addEventListener('keydown',e=>{keys[e.key]=true;if(over)reset();playing=true;});
-document.addEventListener('keyup',e=>{keys[e.key]=false;});
-function update(){
-  if(keys['ArrowLeft'])px=Math.max(45,px-8);
-  if(keys['ArrowRight'])px=Math.min(cv.width-45,px+8);
-  if(playing&&!over){
-    ball.x+=ball.vx;ball.y+=ball.vy;
-    if(ball.x<10||ball.x>cv.width-10)ball.vx*=-1;
-    // AI follows with limited speed
-    ax+=Math.max(-3.3,Math.min(3.3,ball.x-ax));
-    ax=Math.max(45,Math.min(cv.width-45,ax));
-    // player paddle
-    if(ball.y>cv.height-34&&ball.y<cv.height-20&&Math.abs(ball.x-px)<48&&ball.vy>0){
-      ball.vy=-Math.abs(ball.vy)*1.03;ball.vx=(ball.x-px)*0.13;if(window.KQFX)KQFX.play('hit');
-    }
-    // AI paddle
-    if(ball.y<34&&ball.y>20&&Math.abs(ball.x-ax)<48&&ball.vy<0){
-      ball.vy=Math.abs(ball.vy)*1.03;ball.vx=(ball.x-ax)*0.13;if(window.KQFX)KQFX.play('tap');
-    }
-    if(ball.y>cv.height+10){cs++;point();}
-    if(ball.y<-10){ps++;point();}
+function serve(towards) {
+  const t = T(); ball = { x: t.x + t.w / 2, y: t.y + t.h / 2, vx: 0, vy: 0, dir: towards }; serveT = 0.9; trail = []; rally = 0;
+}
+let dragging = false;
+G.scene.addEventListener('pointerdown', (e) => { if (G.state === 'play') { dragging = true; me = e.clientX - C.cv.getBoundingClientRect().left; } });
+window.addEventListener('pointermove', (e) => { if (dragging) me = e.clientX - C.cv.getBoundingClientRect().left; });
+window.addEventListener('pointerup', () => { dragging = false; });
+document.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' || e.key === 'a') keyDir = -1; if (e.key === 'ArrowRight' || e.key === 'd') keyDir = 1; });
+document.addEventListener('keyup', (e) => { if (['ArrowLeft', 'ArrowRight', 'a', 'd'].includes(e.key)) keyDir = 0; });
+
+function point(mine) {
+  const t = T();
+  if (mine) { ps++; G.score(ps); KQ3D.sfx('success'); cheer = 1; G.pop('Point! 🎉', C.w / 2, t.y + t.h * 0.3, '#bbf7d0'); }
+  else { cs++; G.hudSet('cpu', cs); KQ3D.sfx('wrong'); G.pop(foe.icon + ' scores', C.w / 2, t.y + t.h * 0.7, '#fecaca'); }
+  if (ps >= WIN || cs >= WIN) {
+    const won = ps >= WIN, final = Math.round((ps * 10 + (won ? 100 + (ps - cs) * 10 : 0)) * foe.mult);
+    G.over({ score: final, title: won ? 'You beat ' + foe.name + '! 🏆' : foe.name + ' wins this time', lines: ['🧒 ' + ps + ' – ' + cs + ' ' + foe.icon] });
+    return;
   }
-  draw();requestAnimationFrame(update);
+  serve(mine ? -1 : 1);
 }
-function point(){
-  document.getElementById('ps').textContent=ps;
-  document.getElementById('cs').textContent=cs;
-  if(ps>=5){over=true;msg='🎉 You win '+ps+'-'+cs+'!';if(window.KQFX)KQFX.win();onGameComplete();}
-  else if(cs>=5){over=true;msg='🤖 Computer wins '+cs+'-'+ps+'!';if(window.KQFX)KQFX.lose();onGameComplete();}
-  else{if(window.KQFX)KQFX.play('tick');newBall(ps+cs%2?1:-1);}
+function paddleHit(px, py, up) {
+  const pw = PW(), off = Math.max(-1, Math.min(1, (ball.x - px) / (pw / 2)));
+  const sp = Math.min(900, Math.hypot(ball.vx, ball.vy) * 1.05 + 8);
+  const a = (up ? -Math.PI / 2 : Math.PI / 2) + off * (up ? 0.9 : -0.9);
+  ball.vx = Math.cos(a) * sp; ball.vy = Math.sin(a) * sp; rally++;
+  KQ3D.sfx(up ? 'hit' : 'tap');
+  if (rally === 8) G.pop('Super rally! 🔥', C.w / 2, C.h / 2, '#fde047');
 }
-function draw(){
-  cx.clearRect(0,0,cv.width,cv.height);
-  cx.strokeStyle='rgba(255,255,255,.5)';cx.setLineDash([10,10]);cx.lineWidth=2;
-  cx.beginPath();cx.moveTo(0,cv.height/2);cx.lineTo(cv.width,cv.height/2);cx.stroke();cx.setLineDash([]);
-  cx.fillStyle='#ffe066';
-  cx.beginPath();cx.roundRect(px-48,cv.height-26,96,12,6);cx.fill();
-  cx.fillStyle='#ff8fb0';
-  cx.beginPath();cx.roundRect(ax-48,16,96,12,6);cx.fill();
-  cx.font='24px serif';cx.textAlign='center';
-  cx.fillText('🏓',ball.x,ball.y+8);
-  cx.fillStyle='#fff';cx.font='bold 20px sans-serif';
-  if(!playing)cx.fillText('Touch or press arrows to start!',cv.width/2,cv.height/2-40);
-  if(over){cx.fillText(msg,cv.width/2,cv.height/2-40);cx.font='bold 14px sans-serif';cx.fillText('Touch to play again',cv.width/2,cv.height/2-14);}
-  cx.textAlign='left';
+
+function drawPaddle(x, y, col, up) {
+  const pw = PW();
+  ctx.fillStyle = 'rgba(0,0,0,.2)'; KQ3D.roundRect(ctx, x - pw / 2 + 3, y + 4, pw, PH, 7); ctx.fill();
+  ctx.fillStyle = '#92400e'; ctx.fillRect(x - 6, up ? y + PH - 2 : y - 22, 12, 24);
+  ctx.fillStyle = col; KQ3D.roundRect(ctx, x - pw / 2, y, pw, PH, 7); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.4)'; KQ3D.roundRect(ctx, x - pw / 2 + 6, y + 3, pw * 0.5, 4, 2); ctx.fill();
 }
-reset();update();
-</script></body></html>
+function draw(now) {
+  const t = T();
+  const bg = ctx.createLinearGradient(0, 0, 0, C.h); bg.addColorStop(0, '#fde68a'); bg.addColorStop(1, '#fb923c');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, C.w, C.h);
+  ctx.fillStyle = 'rgba(255,255,255,.18)'; for (let i = 0; i < 12; i++) { ctx.beginPath(); ctx.arc((i * 173) % C.w, (i * 71) % C.h, 30 + (i % 4) * 10, 0, 7); ctx.fill(); }
+  // table
+  ctx.fillStyle = 'rgba(0,0,0,.2)'; KQ3D.roundRect(ctx, t.x + 6, t.y + 10, t.w, t.h, 16); ctx.fill();
+  ctx.fillStyle = '#1d4ed8'; KQ3D.roundRect(ctx, t.x, t.y, t.w, t.h, 16); ctx.fill();
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; KQ3D.roundRect(ctx, t.x + 8, t.y + 8, t.w - 16, t.h - 16, 10); ctx.stroke();
+  ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(t.x + t.w / 2, t.y + 8); ctx.lineTo(t.x + t.w / 2, t.y + t.h - 8); ctx.stroke();
+  // net
+  ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.fillRect(t.x - 10, t.y + t.h / 2 - 3, t.w + 20, 6);
+  ctx.fillStyle = '#334155'; ctx.fillRect(t.x - 14, t.y + t.h / 2 - 8, 8, 16); ctx.fillRect(t.x + t.w + 6, t.y + t.h / 2 - 8, 8, 16);
+  // opponent + player faces
+  const jump = Math.abs(Math.sin(now / 150)) * 8 * cheer;
+  KQ3D.drawPic(ctx, foe.icon, cpu, t.y - 30, 50);
+  KQ3D.drawPic(ctx, '🧒', me, t.y + t.h + 38 - jump, 50);
+  drawPaddle(cpu, t.y + 26, '#ef4444', false);
+  drawPaddle(me, t.y + t.h - 26 - PH, '#22c55e', true);
+  // ball
+  trail.forEach((p, i) => { ctx.globalAlpha = i / trail.length * 0.4; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(p.x, p.y, BR * (i / trail.length), 0, 7); ctx.fill(); });
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.ellipse(ball.x + 6, ball.y + 8, BR, BR * 0.6, 0, 0, 7); ctx.fill();
+  const bgr = ctx.createRadialGradient(ball.x - 3, ball.y - 3, 1, ball.x, ball.y, BR); bgr.addColorStop(0, '#fff'); bgr.addColorStop(1, '#fdba74');
+  ctx.fillStyle = bgr; ctx.beginPath(); ctx.arc(ball.x, ball.y, BR, 0, 7); ctx.fill();
+  if (G.state === 'play' && serveT > 0) { ctx.font = '800 26px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.fillText(ps + ' – ' + cs, C.w / 2, t.y + t.h / 2 - 26); }
+}
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.025, (now - last) / 1000); last = now;
+  const t = T(), pw = PW();
+  cheer = Math.max(0, cheer - dt);
+  if (G.state === 'play') {
+    if (keyDir) me += keyDir * 650 * dt;
+    me = Math.max(t.x + pw / 2, Math.min(t.x + t.w - pw / 2, me));
+    if (serveT > 0) { serveT -= dt; if (serveT <= 0) { const a = (ball.dir > 0 ? Math.PI / 2 : -Math.PI / 2) + (Math.random() - 0.5) * 0.7; const sp = 300 + t.h * 0.12; ball.vx = Math.cos(a) * sp; ball.vy = Math.sin(a) * sp; KQ3D.sfx('whoosh'); } }
+    else {
+      for (let s = 0; s < 2; s++) {
+        const h = dt / 2; ball.x += ball.vx * h; ball.y += ball.vy * h;
+        if (ball.x < t.x + BR) { ball.x = t.x + BR; ball.vx = Math.abs(ball.vx); }
+        if (ball.x > t.x + t.w - BR) { ball.x = t.x + t.w - BR; ball.vx = -Math.abs(ball.vx); }
+        const myY = t.y + t.h - 26 - PH, cpY = t.y + 26 + PH;
+        if (ball.vy > 0 && ball.y + BR >= myY && ball.y < myY + PH && Math.abs(ball.x - me) < pw / 2 + BR) { ball.y = myY - BR; paddleHit(me, myY, true); }
+        if (ball.vy < 0 && ball.y - BR <= cpY && ball.y > cpY - PH && Math.abs(ball.x - cpu) < pw / 2 + BR) { ball.y = cpY + BR; paddleHit(cpu, cpY, false); }
+      }
+      if (ball.y > t.y + t.h + 20) point(false); else if (ball.y < t.y - 20) point(true);
+    }
+    // opponent AI: follows the ball (with a little aim error) when it comes its way
+    const aim = ball.vy < 0 ? ball.x + Math.sin(now / 400) * foe.err : t.x + t.w / 2;
+    const d = aim - cpu; cpu += Math.sign(d) * Math.min(Math.abs(d), foe.speed * dt);
+    cpu = Math.max(t.x + pw / 2, Math.min(t.x + t.w - pw / 2, cpu));
+    trail.push({ x: ball.x, y: ball.y }); if (trail.length > 10) trail.shift();
+  }
+  if (ball) draw(now);
+}
+reset(foe);
+requestAnimationFrame(frame);
+</script>
+</body></html>

@@ -299,6 +299,7 @@
 
     // Try to sit inside the leaderboard widget (top-right). Poll briefly since
     // that widget injects asynchronously; fall back to a floating button.
+    if (window.KQFX_NO_MUTE) return; // page draws its own sound button
     var tries = 0;
     (function place() {
       var fab = document.querySelector(".kqlb-fab");

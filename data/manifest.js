@@ -66,7 +66,7 @@ window.KQData = (function () {
           }
         } catch (e) {}
         // bundled file that ships with the app
-        return fetch(localUrl, { cache: "force-cache" })
+        return fetch(localUrl, { cache: "no-cache" })
           .then(function (r) { return r.json(); })
           .then(function (d) { return { data: d, source: "local" }; });
       });

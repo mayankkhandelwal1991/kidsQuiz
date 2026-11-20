@@ -310,6 +310,18 @@ const EMOJI_IMG = {
   "🖼️": "images/emoji/1f5bc.svg",
   "🔵": "images/emoji/1f535.svg",
   "➖": "images/emoji/2796.svg",
+  /* game hub icons */
+  "🕹️": "images/emoji/1f579.svg",
+  "🏹": "images/emoji/1f3f9.svg",
+  "🔲": "images/emoji/1f532.svg",
+  "🫧": "images/emoji/1fae7.svg",
+  "▶️": "images/emoji/25b6.svg",
+  "🆕": "images/emoji/1f195.svg",
+  "🔨": "images/emoji/1f528.svg",
+  "🚦": "images/emoji/1f6a6.svg",
+  "👥": "images/emoji/1f465.svg",
+  "❌": "images/emoji/274c.svg",
+  "🔫": "images/emoji/1f52b.svg",
 };
 
 /* Several entries (family, astronaut, flags) are multi-codepoint

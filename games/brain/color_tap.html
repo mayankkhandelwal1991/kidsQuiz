@@ -1,78 +1,75 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Color Tap</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#ff7ac6,#06b6d4);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:400px;width:100%;text-align:center}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:14px}
-.word{font-size:52px;font-weight:800;background:linear-gradient(135deg,#fff8cc,#fff0f6);border:4px dashed #ffb703;border-radius:22px;padding:26px;margin-bottom:8px;min-height:120px;display:flex;align-items:center;justify-content:center}
-.tip{color:#888;font-size:12px;font-weight:700;margin-bottom:10px}
-.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.btns button{padding:16px;font-size:17px;font-weight:800;border:none;border-radius:16px;cursor:pointer;color:#fff;font-family:inherit}
-.msg{color:#ff5a8a;font-weight:800;font-size:17px;min-height:24px;margin-top:12px}
-.start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 34px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px}
-
-/* mobile fit */
-.wrap{display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
-
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">⏱ <span id="time">30</span>s &nbsp; ⭐ <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
-    <button onclick="start()">↻</button>
-  </div>
-  <div class="word" id="word">READY?</div>
-  <div class="tip">Tap the button matching the COLOR of the word, not the word!</div>
-  <div class="btns" id="btns"></div>
-  <div class="msg" id="msg"></div>
-  <button class="start" id="sb" onclick="start()">▶ Start (30s)</button>
-</div>
+.ct { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 14px 16px; font-family: 'Baloo 2', sans-serif; background: #fdf4ff; background-image: radial-gradient(circle at 10% 20%, #fecdd3 0 60px, transparent 61px), radial-gradient(circle at 90% 30%, #bfdbfe 0 80px, transparent 81px), radial-gradient(circle at 20% 90%, #bbf7d0 0 90px, transparent 91px), radial-gradient(circle at 85% 85%, #fde68a 0 70px, transparent 71px); }
+.ct-time { width: 100%; max-width: 440px; height: 12px; border-radius: 6px; background: #ede9fe; overflow: hidden; margin-bottom: 18px; }
+.ct-time i { display: block; height: 100%; background: linear-gradient(90deg, #a855f7, #ec4899); border-radius: 6px; }
+.ct-ask { font-weight: 800; color: #6b21a8; font-size: 17px; margin-bottom: 8px; text-align: center; }
+.ct-card { width: 100%; max-width: 360px; height: 170px; background: #fff; border-radius: 30px; display: grid; place-items: center; box-shadow: 0 8px 0 rgba(107,33,168,.15); margin-bottom: 18px; animation: ctIn .25s cubic-bezier(.34,1.56,.64,1); }
+@keyframes ctIn { from { transform: scale(.6); } }
+.ct-word { font-size: 64px; font-weight: 800; letter-spacing: .04em; }
+.ct-blob { width: 120px; height: 110px; border-radius: 48% 52% 45% 55% / 55% 45% 55% 45%; box-shadow: inset -10px -12px 0 rgba(0,0,0,.12); }
+.ct-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 380px; }
+.ct-o { border: none; border-radius: 20px; height: 72px; font: 800 22px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; box-shadow: 0 6px 0 rgba(0,0,0,.2); text-shadow: 0 2px 0 rgba(0,0,0,.25); }
+.ct-o:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.2); }
+.ct-o.ok { outline: 5px solid #22c55e; } .ct-o.no { animation: ctShake .3s; outline: 5px solid #ef4444; }
+@keyframes ctShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const COLORS=[['RED','#ff4d4d'],['BLUE','#3b82f6'],['GREEN','#22a55b'],['YELLOW','#eab308']];
-let ans,score,time,timer,playing=false,best=+(localStorage.getItem('colorBest')||0);
-document.getElementById('best').textContent=best;
-const btns=document.getElementById('btns');
-COLORS.forEach((c,i)=>{
-  const b=document.createElement('button');
-  b.textContent=c[0];b.style.background=c[1];
-  b.onclick=()=>pick(i);btns.appendChild(b);
+/* Color Tap — Easy: tap the colour of the paint splash. Tricky: tap the INK colour
+   of the word, not what the word says! 45 seconds. */
+const COLORS = [['RED', '#ef4444'], ['BLUE', '#3b82f6'], ['GREEN', '#22c55e'], ['YELLOW', '#eab308'], ['PINK', '#ec4899'], ['PURPLE', '#8b5cf6'], ['ORANGE', '#f97316']];
+const MODES = [{ icon: '🎨', name: 'Easy', tricky: false }, { icon: '🧠', name: 'Tricky', tricky: true }];
+const TIME = 45;
+const G = KQ3D.init({
+  id: 'color_tap', title: 'Color Tap', bestKey: 'colorBest', music: true,
+  hero: ['🎨', '🌈', '🧠'], colors: ['#a855f7', '#ec4899'],
+  how: [['🎨', 'Easy: tap the colour of the paint splash'], ['🧠', 'Tricky: tap the colour of the INK, not the word!'], ['⚡', 'Quick right answers = bonus points'], ['⏱️', '45 seconds — wrong taps cost 2 seconds']],
+  scoreIcon: '🎨', stars: [100, 220, 350],
+  hud: [{ id: 'time', icon: '⏱️' }],
+  pick: { label: 'Pick a mode', options: MODES },
+  onReset: (m) => reset(m)
 });
-function round(){
-  const word=Math.floor(Math.random()*4);
-  let ink=Math.floor(Math.random()*4);
-  if(Math.random()<0.7)while(ink===word)ink=Math.floor(Math.random()*4);
-  ans=ink;
-  const w=document.getElementById('word');
-  w.textContent=COLORS[word][0];
-  w.style.color=COLORS[ink][1];
+const box = document.createElement('div'); box.className = 'ct'; G.scene.appendChild(box);
+let mode, score, right, timeLeft, tick, timer, q, t0, lock, streak;
+const say = (t) => { try { if (localStorage.getItem('kq_muted') === '1') return; if (window.Android && Android.speak) { Android.speak(t, 'en'); return; } const u = new SpeechSynthesisUtterance(t); u.rate = 1; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {} };
+function reset(m) {
+  mode = m || MODES[0]; score = 0; right = 0; streak = 0; timeLeft = TIME; tick = TIME; G.score(0); G.hudSet('time', TIME);
+  box.innerHTML = '<div class="ct-time"><i id="ctT" style="width:100%"></i></div><div class="ct-ask">' + (mode.tricky ? 'Tap the colour of the <u>INK</u>!' : 'What colour is the paint?') + '</div><div id="ctC" style="width:100%;display:flex;justify-content:center"></div><div class="ct-opts" id="ctO"></div>';
+  clearInterval(timer); timer = setInterval(step, 100); next();
 }
-function pick(i){
-  if(!playing)return;
-  if(i===ans){score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('ding');round();}
-  else{score=Math.max(0,score-1);document.getElementById('score').textContent=score;
-    document.getElementById('msg').textContent='❌ Oops!';if(window.KQFX)KQFX.play('wrong');
-    setTimeout(()=>document.getElementById('msg').textContent='',400);round();}
+function next() {
+  lock = false; t0 = performance.now();
+  const pool = COLORS.slice().sort(() => Math.random() - 0.5).slice(0, 4), ink = pool[0];
+  let word = pool[Math.floor(Math.random() * 4)]; if (mode.tricky && word === ink && Math.random() < 0.8) word = pool[1];
+  q = { ink };
+  document.getElementById('ctC').innerHTML = '<div class="ct-card">' + (mode.tricky ? '<span class="ct-word" style="color:' + ink[1] + '">' + word[0] + '</span>' : '<div class="ct-blob" style="background:' + ink[1] + '"></div>') + '</div>';
+  const opts = pool.slice().sort(() => Math.random() - 0.5);
+  const O = document.getElementById('ctO');
+  // tricky mode: button text colour is neutral so the name has to be read
+  O.innerHTML = opts.map((c) => '<button type="button" class="ct-o" data-n="' + c[0] + '" style="background:' + (mode.tricky ? '#475569' : c[1]) + '">' + c[0] + '</button>').join('');
+  O.querySelectorAll('.ct-o').forEach((b) => b.onclick = () => answer(b));
 }
-function start(){
-  clearInterval(timer);score=0;time=30;playing=true;
-  document.getElementById('score').textContent=0;
-  document.getElementById('time').textContent=30;
-  document.getElementById('msg').textContent='';
-  document.getElementById('sb').style.display='none';
-  round();
-  timer=setInterval(()=>{
-    time--;document.getElementById('time').textContent=time;
-    if(time<=0){
-      clearInterval(timer);playing=false;onGameComplete();
-      if(score>best){best=score;localStorage.setItem('colorBest',best);document.getElementById('best').textContent=best;}
-      const w=document.getElementById('word');w.textContent='⏰ '+score+' points!';w.style.color='#ff5a8a';
-      const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';
-    }
-  },1000);
+function answer(b) {
+  if (G.state !== 'play' || lock) return;
+  if (b.dataset.n === q.ink[0]) {
+    lock = true; right++; streak++; const secs = (performance.now() - t0) / 1000, pts = 10 + (secs < 1.5 ? 5 : 0) + (streak >= 5 ? 5 : 0);
+    score += pts; G.score(score); b.classList.add('ok'); KQ3D.sfx(secs < 1.5 ? 'coin' : 'success'); if (!mode.tricky) say(q.ink[0].toLowerCase());
+    const r = b.getBoundingClientRect(); G.pop('+' + pts + (secs < 1.5 ? ' ⚡' : ''), r.left + r.width / 2, r.top, '#a855f7');
+    setTimeout(() => { if (G.state === 'play') next(); }, 300);
+  } else { streak = 0; b.classList.remove('no'); void b.offsetWidth; b.classList.add('no'); KQ3D.sfx('wrong'); timeLeft = Math.max(0, timeLeft - 2); }
 }
-</script></body></html>
+function step() {
+  if (G.state === 'pause' || G.state === 'count') return;
+  if (G.state !== 'play') { clearInterval(timer); return; }
+  timeLeft -= 0.1; const s = Math.max(0, Math.ceil(timeLeft)); const t = document.getElementById('ctT'); if (t) t.style.width = Math.max(0, timeLeft / TIME * 100) + '%';
+  if (s !== tick) { tick = s; G.hudSet('time', s); if (s <= 5 && s > 0) KQ3D.sfx('tick'); }
+  if (timeLeft <= 0) { clearInterval(timer); G.over({ score, title: 'Colour champ! 🎨', lines: ['✅ ' + right + ' right', mode.icon + ' ' + mode.name] }); }
+}
+reset(G.choice);
+</script>
+</body></html>

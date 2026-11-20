@@ -1,0 +1,29 @@
+# Build outputs and caches
+*.iml
+.gradle/
+.kotlin/
+/build/
+/app/build/
+/app/release/
+/app/debug/
+/captures
+.externalNativeBuild
+.cxx
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Machine-specific / IDE
+local.properties
+/.idea/
+.DS_Store
+
+# Signing keys and secrets (never commit)
+*.jks
+*.keystore
+keystore.properties
+
+# Logs / dumps
+*.log
+logcat*.txt

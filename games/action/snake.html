@@ -1,109 +1,142 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Snake</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#34d399,#ffd166);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:420px;width:100%}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
-canvas{width:100%;border-radius:16px;display:block;background:#eafbe7}
-.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:190px;margin:10px auto 0}
-.pad button{font-size:20px;padding:10px;border:none;border-radius:12px;background:linear-gradient(135deg,#34d399,#06b6d4);color:#fff;cursor:pointer}
-.pad .e{visibility:hidden}
-
-/* mobile fit */
-.wrap{display:flex;flex-direction:column;height:100%;max-height:820px}
-.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0}
-canvas{max-height:100%}
-
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">🍎 <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
-    <button onclick="reset()">↻</button>
-  </div>
-  <div class="stage"><canvas id="cv" width="380" height="380"></canvas></div>
-  <div class="pad">
-    <button class="e"></button><button onclick="dir(0,-1)">⬆️</button><button class="e"></button>
-    <button onclick="dir(-1,0)">⬅️</button><button onclick="dir(0,1)">⬇️</button><button onclick="dir(1,0)">➡️</button>
-  </div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-const N=19,S=20;
-let snake,d,nd,food,score,dead,started,timer,best=+(localStorage.getItem('snakeBest')||0);
-document.getElementById('best').textContent=best;
-const START_SPEED=240,MIN_SPEED=160,SPEED_STEP=4;
-function speedFor(s){return Math.max(MIN_SPEED,START_SPEED-s*SPEED_STEP);}
-function setSpeed(){clearInterval(timer);timer=setInterval(tick,speedFor(score));}
-function reset(){
-  snake=[{x:9,y:9},{x:8,y:9},{x:7,y:9}];d={x:1,y:0};nd=d;score=0;dead=false;started=false;
-  document.getElementById('score').textContent=0;
-  placeFood();setSpeed();draw();
+/* Snake — eat fruit to grow. Golden apple = +5 (disappears soon). Rocks appear as you grow. */
+const SKINS = [
+  { icon: '🐍', name: 'Sunny', cols: ['#22c55e', '#16a34a'], head: '#15803d' },
+  { icon: '🌈', name: 'Rainbow', rainbow: true, head: '#7c3aed' },
+  { icon: '🐛', name: 'Wiggly', cols: ['#a3e635', '#facc15'], head: '#65a30d', bug: true },
+  { icon: '🤖', name: 'Robo', cols: ['#94a3b8', '#64748b'], head: '#475569' }
+];
+const FRUIT = ['🍎', '🍌', '🍓', '🍇', '🍊', '🍉', '🍒'];
+const G = KQ3D.init({
+  id: 'snake', title: 'Snake', bestKey: 'snakeBest', music: true,
+  hero: ['🐍', '🍎', '🪨'], colors: ['#22c55e', '#0f766e'],
+  how: [['👆', 'Swipe, use arrow keys, or tap the buttons to turn'], ['🍓', 'Eat fruit to grow longer'], ['🍎', 'Golden apples = +5 — be quick!'], ['🪨', 'Don’t bump walls, rocks or your own tail']],
+  scoreIcon: '🍎', stars: [10, 25, 45],
+  pick: { label: 'Pick your snake', options: SKINS },
+  buttons: [{ icon: '⬅️', label: 'Left', down: () => turn(-1, 0) }, { icon: '⬆️', label: 'Up', down: () => turn(0, -1) }, { icon: '⬇️', label: 'Down', down: () => turn(0, 1) }, { icon: '➡️', label: 'Right', down: () => turn(1, 0) }],
+  onReset: (s) => reset(s)
+});
+let skin = G.choice || SKINS[0], COLS = 15, ROWS = 20, cell = 24, ox = 0, oy = 0;
+let snake, prev, dir, queue, food, gold, rocks, score, stepT, stepLen, dead, grow, eatFx = [];
+const C = KQ3D.canvas(G.scene, () => layout()), ctx = C.ctx;
+
+function layout() {
+  const top = 74, bottom = 118;
+  cell = Math.floor(Math.min((C.w - 16) / COLS, 40));
+  ROWS = Math.max(12, Math.min(24, Math.floor((C.h - top - bottom) / cell)));
+  ox = Math.floor((C.w - cell * COLS) / 2); oy = Math.floor(top + (C.h - top - bottom - cell * ROWS) / 2);
 }
-function placeFood(){
-  do{food={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)};}
-  while(snake.some(s=>s.x===food.x&&s.y===food.y));
+function reset(s) {
+  skin = s || SKINS[0]; layout();
+  const cy = Math.floor(ROWS / 2);
+  snake = [{ x: 5, y: cy }, { x: 4, y: cy }, { x: 3, y: cy }]; prev = snake.map((p) => ({ ...p }));
+  dir = { x: 1, y: 0 }; queue = []; rocks = []; gold = null; score = 0; stepT = 0; stepLen = 0.2; dead = false; grow = 0; eatFx = [];
+  placeFood();
 }
-function dir(x,y){
-  if(dead){reset();return;}
-  started=true;
-  if(x===-d.x&&y===-d.y)return;
-  nd={x,y};
+const occupied = (x, y) => snake.some((p) => p.x === x && p.y === y) || rocks.some((r) => r.x === x && r.y === y) || (food && food.x === x && food.y === y) || (gold && gold.x === x && gold.y === y);
+function freeCell() { let x, y, n = 0; do { x = Math.floor(Math.random() * COLS); y = Math.floor(Math.random() * ROWS); n++; } while (occupied(x, y) && n < 500); return { x, y }; }
+function placeFood() { food = freeCell(); food.e = FRUIT[Math.floor(Math.random() * FRUIT.length)]; }
+function turn(dx, dy) {
+  if (G.state !== 'play') return;
+  const lastDir = queue.length ? queue[queue.length - 1] : dir;
+  if (dx === -lastDir.x && dy === -lastDir.y) return;
+  if (dx === lastDir.x && dy === lastDir.y) return;
+  if (queue.length < 3) queue.push({ x: dx, y: dy });
 }
-document.addEventListener('keydown',e=>{
-  const keys=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
-  if(keys.includes(e.key))e.preventDefault();
-  if(e.key==='ArrowUp')dir(0,-1);if(e.key==='ArrowDown')dir(0,1);
-  if(e.key==='ArrowLeft')dir(-1,0);if(e.key==='ArrowRight')dir(1,0);
-},{passive:false});
-let tx,ty;
-cv.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
-cv.addEventListener('touchend',e=>{
-  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
-  if(Math.abs(dx)>Math.abs(dy))dir(dx>0?1:-1,0);else dir(0,dy>0?1:-1);
-},{passive:true});
-function tick(){
-  if(!started||dead){draw();return;}
-  d=nd;
-  const h={x:snake[0].x+d.x,y:snake[0].y+d.y};
-  if(h.x<0||h.y<0||h.x>=N||h.y>=N||snake.some(s=>s.x===h.x&&s.y===h.y)){
-    dead=true;if(window.KQFX)KQFX.play('blast');if(typeof onGameComplete==='function')onGameComplete();
-    if(score>best){best=score;localStorage.setItem('snakeBest',best);document.getElementById('best').textContent=best;}
-    draw();return;
+document.addEventListener('keydown', (e) => {
+  const k = e.key; const m = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1], a: [-1, 0], d: [1, 0], w: [0, -1], s: [0, 1] }[k];
+  if (m) { e.preventDefault(); turn(m[0], m[1]); }
+});
+KQ3D.swipe(G.scene, (d) => { if (d === 'left') turn(-1, 0); else if (d === 'right') turn(1, 0); else if (d === 'up') turn(0, -1); else if (d === 'down') turn(0, 1); });
+
+function step() {
+  if (queue.length) dir = queue.shift();
+  prev = snake.map((p) => ({ ...p }));
+  const h = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+  const hitsSelf = snake.slice(0, snake.length - (grow ? 0 : 1)).some((p) => p.x === h.x && p.y === h.y);
+  if (h.x < 0 || h.y < 0 || h.x >= COLS || h.y >= ROWS || hitsSelf || rocks.some((r) => r.x === h.x && r.y === h.y)) {
+    dead = true; KQ3D.sfx('hit'); G.flash('#fecaca');
+    G.over({ score, title: h.x < 0 || h.y < 0 || h.x >= COLS || h.y >= ROWS ? 'Bumped the fence!' : hitsSelf ? 'Tied in a knot!' : 'Ouch, a rock!', lines: ['🐍 ' + snake.length + ' long'] });
+    return;
   }
   snake.unshift(h);
-  if(h.x===food.x&&h.y===food.y){score++;document.getElementById('score').textContent=score;placeFood();setSpeed();}
-  else snake.pop();
-  draw();
+  if (grow) { grow--; prev.push(prev[prev.length - 1]); } else snake.pop();
+  if (h.x === food.x && h.y === food.y) {
+    score++; grow += 1; G.score(score); KQ3D.sfx('pop'); fx(food, '+1');
+    placeFood();
+    if (score % 5 === 0 && !gold) { gold = freeCell(); gold.t = 7; }
+    if (score >= 8 && score % 4 === 0 && rocks.length < 10) { const r = freeCell(); if (Math.abs(r.x - h.x) + Math.abs(r.y - h.y) > 3) rocks.push(r); }
+    stepLen = Math.max(0.085, 0.2 - score * 0.004);
+  } else if (gold && h.x === gold.x && h.y === gold.y) {
+    score += 5; grow += 2; G.score(score); KQ3D.sfx('coin'); fx(gold, '+5'); gold = null;
+  }
 }
-function roundRectPath(ctx,x,y,w,h,r){
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.arcTo(x+w,y,x+w,y+h,r);
-  ctx.arcTo(x+w,y+h,x,y+h,r);
-  ctx.arcTo(x,y+h,x,y,r);
-  ctx.arcTo(x,y,x+w,y,r);
-  ctx.closePath();
+function fx(c, t) { const x = ox + (c.x + 0.5) * cell + C.cv.getBoundingClientRect().left, y = oy + (c.y + 0.5) * cell + C.cv.getBoundingClientRect().top; G.pop(t, x, y - 10, t === '+5' ? '#fde047' : '#fff'); eatFx.push({ x: c.x, y: c.y, l: 0.4 }); }
+
+function segColor(i) {
+  if (skin.rainbow) return 'hsl(' + ((i * 28) % 360) + ',85%,58%)';
+  return skin.cols[Math.floor(i / 1) % 2];
 }
-function draw(){
-  cx.clearRect(0,0,cv.width,cv.height);
-  cx.fillStyle='rgba(124,197,118,.15)';
-  for(let i=0;i<N;i++)for(let j=0;j<N;j++)if((i+j)%2===0)cx.fillRect(i*S,j*S,S,S);
-  cx.font='18px serif';
-  cx.fillText('🍎',food.x*S,food.y*S+16);
-  snake.forEach((s,i)=>{
-    cx.fillStyle=i===0?'#2e7d32':'#66bb6a';
-    roundRectPath(cx,s.x*S+1,s.y*S+1,S-2,S-2,6);cx.fill();
+function draw(t, k) {
+  const w = C.w, h = C.h;
+  ctx.fillStyle = '#86efac'; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#4ade80'; for (let i = 0; i < 30; i++) { const gx = (i * 137) % w, gy = (i * 89) % h; ctx.beginPath(); ctx.arc(gx, gy, 3, 0, 7); ctx.fill(); }
+  // fence
+  ctx.fillStyle = '#a16207'; KQ3D.roundRect(ctx, ox - 8, oy - 8, cell * COLS + 16, cell * ROWS + 16, 14); ctx.fill();
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) { ctx.fillStyle = (x + y) % 2 ? '#bef264' : '#a3e635'; ctx.fillRect(ox + x * cell, oy + y * cell, cell, cell); }
+  rocks.forEach((r) => KQ3D.drawPic(ctx, '🪨', ox + (r.x + 0.5) * cell, oy + (r.y + 0.5) * cell, cell * 1.05));
+  const bob = Math.sin(t / 200) * cell * 0.06;
+  KQ3D.drawPic(ctx, food.e, ox + (food.x + 0.5) * cell, oy + (food.y + 0.5) * cell + bob, cell * 1.05);
+  if (gold) {
+    ctx.save(); ctx.globalAlpha = gold.t < 2 && Math.floor(t / 150) % 2 ? 0.3 : 1;
+    ctx.fillStyle = 'rgba(250,204,21,.45)'; ctx.beginPath(); ctx.arc(ox + (gold.x + 0.5) * cell, oy + (gold.y + 0.5) * cell, cell * 0.7 + Math.sin(t / 120) * 3, 0, 7); ctx.fill();
+    KQ3D.drawPic(ctx, '🍎', ox + (gold.x + 0.5) * cell, oy + (gold.y + 0.5) * cell, cell * 1.1); KQ3D.drawPic(ctx, '⭐', ox + (gold.x + 0.85) * cell, oy + (gold.y + 0.15) * cell, cell * 0.5);
+    ctx.restore();
+  }
+  // snake (interpolated between steps)
+  const pts = snake.map((p, i) => { const q = prev[i] || p; return { x: ox + (q.x + (p.x - q.x) * k + 0.5) * cell, y: oy + (q.y + (p.y - q.y) * k + 0.5) * cell }; });
+  for (let i = pts.length - 1; i >= 1; i--) {
+    const r = cell * (0.42 - Math.min(0.14, i * 0.006));
+    ctx.fillStyle = segColor(i); ctx.beginPath(); ctx.arc(pts[i].x, pts[i].y, r, 0, 7); ctx.fill();
+    // join to previous segment
+    ctx.strokeStyle = segColor(i); ctx.lineWidth = r * 2; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[i - 1].x, pts[i - 1].y); ctx.stroke();
+    if (skin.bug && i % 2 === 0) { ctx.fillStyle = '#65a30d'; ctx.beginPath(); ctx.arc(pts[i].x, pts[i].y + r * 0.9, r * 0.25, 0, 7); ctx.fill(); }
+    if (skin.icon === '🤖') { ctx.fillStyle = '#e2e8f0'; ctx.beginPath(); ctx.arc(pts[i].x, pts[i].y, r * 0.3, 0, 7); ctx.fill(); }
+  }
+  const hd = pts[0], hr = cell * 0.5;
+  ctx.fillStyle = skin.head; ctx.beginPath(); ctx.arc(hd.x, hd.y, hr, 0, 7); ctx.fill();
+  const fx = dir.x, fy = dir.y, sx = -fy, sy = fx;
+  // tongue
+  if (!dead && Math.sin(t / 140) > 0.4) { ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(hd.x + fx * hr, hd.y + fy * hr); ctx.lineTo(hd.x + fx * hr * 1.6, hd.y + fy * hr * 1.6); ctx.stroke(); }
+  [-1, 1].forEach((s) => {
+    const ex = hd.x + fx * hr * 0.35 + sx * s * hr * 0.45, ey = hd.y + fy * hr * 0.35 + sy * s * hr * 0.45;
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(ex, ey, hr * 0.32, 0, 7); ctx.fill();
+    if (dead) { ctx.strokeStyle = '#111'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(ex - 4, ey - 4); ctx.lineTo(ex + 4, ey + 4); ctx.moveTo(ex + 4, ey - 4); ctx.lineTo(ex - 4, ey + 4); ctx.stroke(); }
+    else { ctx.fillStyle = '#111827'; ctx.beginPath(); ctx.arc(ex + fx * hr * 0.12, ey + fy * hr * 0.12, hr * 0.16, 0, 7); ctx.fill(); }
   });
-  cx.textAlign='center';cx.fillStyle='#ff5a8a';cx.font='bold 20px sans-serif';
-  if(!started&&!dead)cx.fillText('Swipe or press arrows to start',cv.width/2,180);
-  if(dead){cx.fillText('💥 Game over! Score: '+score,cv.width/2,170);cx.font='bold 14px sans-serif';cx.fillText('Press any arrow to restart',cv.width/2,200);}
-  cx.textAlign='left';
+  if (skin.bug) { [-1, 1].forEach((s) => { ctx.strokeStyle = '#3f6212'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(hd.x - fx * hr * 0.2 + sx * s * hr * 0.4, hd.y - fy * hr * 0.2 + sy * s * hr * 0.4); ctx.lineTo(hd.x - fx * hr * 0.7 + sx * s * hr * 0.9, hd.y - fy * hr * 0.7 + sy * s * hr * 0.9); ctx.stroke(); }); }
+  eatFx = eatFx.filter((e) => (e.l -= 1 / 60) > 0);
+  eatFx.forEach((e) => { ctx.strokeStyle = 'rgba(255,255,255,' + e.l * 2 + ')'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(ox + (e.x + 0.5) * cell, oy + (e.y + 0.5) * cell, cell * (1.2 - e.l), 0, 7); ctx.stroke(); });
 }
-reset();
-</script></body></html>
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (G.state === 'play' && !dead) {
+    stepT += dt;
+    while (stepT >= stepLen && !dead) { stepT -= stepLen; step(); }
+    if (gold) { gold.t -= dt; if (gold.t <= 0) gold = null; }
+  }
+  draw(now, dead ? 1 : Math.min(1, stepT / stepLen));
+}
+reset(skin);
+requestAnimationFrame(frame);
+</script>
+</body></html>

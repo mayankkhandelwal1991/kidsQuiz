@@ -1,482 +1,279 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Neon Runner 3D</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:#05050f;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
-.wrap{width:100%;height:100%;max-width:480px;max-height:900px;position:relative;background:#05050f;overflow:hidden;margin:auto}
-.bar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px;z-index:5;pointer-events:none;gap:6px}
-.bar button{pointer-events:auto;background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
-.bar .right{display:flex;align-items:center;gap:8px;pointer-events:auto}
-#muteBtn{background:linear-gradient(135deg,#7c3aed,#00d4ff);border:none;color:#fff;border-radius:10px;width:30px;height:30px;font-size:14px;cursor:pointer}
-h1{font-size:16px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 12px rgba(0,245,255,.3)}
-.sc{font-size:14px;font-weight:800;color:#00f5ff;display:flex;align-items:center;gap:4px}
-.sc .coin{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff2a8,#ffcf33 60%,#b8860b);display:inline-block;box-shadow:0 0 6px rgba(255,215,0,.7)}
-#scene{position:absolute;inset:0}
-.overlay{position:absolute;inset:0;background:rgba(5,5,20,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;z-index:10}
-.overlay.show{display:flex}
-.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-.hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.5);z-index:5}
-.startCard{position:absolute;inset:0;background:rgba(5,5,20,.7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:8;text-align:center;padding:20px}
-.flash{position:absolute;inset:0;background:#ff3355;opacity:0;pointer-events:none;z-index:9;transition:opacity .08s}
-.flash.on{opacity:.45}
-.loadbar{position:absolute;left:20%;right:20%;bottom:40%;height:6px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden;z-index:1;pointer-events:none}
-.loadbar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#00f5ff,#ff00e5)}
-</style><link rel="stylesheet" href="../../game-theme.css"></head><body>
-<div class="wrap">
-  <div id="scene"></div>
-  <div class="flash" id="flash"></div>
-  <div class="loadbar" id="loadbar"><i id="loadbarFill"></i></div>
-  <div class="bar">
-    <button onclick="location.href='../../index.html'">← Games</button>
-    <h1>Neon Runner 3D</h1>
-    <div class="right">
-      <div class="sc"><span class="coin"></span><span id="score">0</span></div>
-      <button id="muteBtn" onclick="toggleMute()">🔊</button>
-    </div>
-  </div>
-  <div class="hint">Swipe left/right to change lane • swipe up to jump • grab the coins!</div>
-  <div class="startCard" id="startCard">
-    <h2 style="font-size:22px;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">Neon Runner 3D</h2>
-    <p style="font-size:13px;color:#ccc;max-width:260px">Swipe left/right to switch lanes, swipe up to jump over barriers, and scoop up shiny coins along the way!</p>
-    <button class="newbtn" onclick="startGame()">▶ Start Run</button>
-  </div>
-  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">Oops!</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="startGame()">Run Again</button></div>
-</div>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Jungle Runner 3D</title>
+</head><body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="../../ads.js"></script>
+<script src="kq3d.js?v=20261120j"></script>
+<script src="../ads.js"></script>
 <script>
-const ASSETS = "endless_runner_3d_assets/";
-const container=document.getElementById('scene');
-let scene,camera,renderer,camBase;
-let lanes=[-2.2,0,2.2],curLane=1;
-let player,rig={};
-let obstacles=[],coins=[],scenery=[],ticks=[],particles=[];
-let score=0,bonus=0,best=+(localStorage.getItem('runner3dBest')||0);
-let over=false,speed=0.16,jumpVel=0,jumping=false,started=false;
-let runPhase=0,shakeT=0,scaleTarget=1;
-let muted=false;
-
-/* ================= REAL AUDIO FILES ================= */
-const sfxFiles={jump:'jump.mp3',switch:'switch.mp3',coin:'coin.mp3',crash:'crash.mp3'};
-const sfxPool={};
-let bgAudio=null;
-function loadAudio(){
-  Object.keys(sfxFiles).forEach(k=>{
-    const a=new Audio(ASSETS+'sounds/'+sfxFiles[k]);
-    a.preload='auto';
-    sfxPool[k]=a;
-  });
-  bgAudio=new Audio(ASSETS+'sounds/bgmusic.mp3');
-  bgAudio.loop=true; bgAudio.volume=0.35;
-}
-function playSfx(name){
-  if(muted) return;
-  const base=sfxPool[name];
-  if(!base) return;
-  const node=base.cloneNode(true);
-  node.volume=name==='crash'?0.7:0.6;
-  node.play().catch(()=>{});
-}
-function toggleMute(){
-  muted=!muted;
-  document.getElementById('muteBtn').textContent=muted?'🔇':'🔊';
-  if(bgAudio){ if(muted) bgAudio.pause(); else bgAudio.play().catch(()=>{}); }
-}
-
-/* ================= TEXTURES ================= */
-const texLoader=new THREE.TextureLoader();
-function tex(name,repeatX,repeatY){
-  const t=texLoader.load(ASSETS+'textures/'+name+'.png');
-  t.wrapS=t.wrapT=THREE.RepeatWrapping;
-  if(repeatX) t.repeat.set(repeatX,repeatY||repeatX);
-  return t;
-}
-let T={};
-function loadTextures(){
-  T.sky=texLoader.load(ASSETS+'textures/sky.png');
-  T.road=tex('road',2,40);
-  T.crate=texLoader.load(ASSETS+'textures/crate_wood.png');
-  T.coin=texLoader.load(ASSETS+'textures/coin_gold.png');
-  T.bark=tex('bark',1,2);
-  T.leaves=tex('leaves',2,2);
-  T.brick=tex('brick',2,4);
-  T.window=texLoader.load(ASSETS+'textures/window_glow.png');
-}
-
-/* ================= OPTIONAL REAL 3D MODELS =================
-   Drop matching .glb files into assets/models/ (character.glb, tree.glb,
-   crate.glb, coin.glb, building.glb — e.g. from Kenney.nl or Poly Pizza,
-   both free/CC0) and the game will automatically use them instead of the
-   built-in textured low-poly shapes. Nothing breaks if they're absent. */
-const modelFiles={character:'character.glb',tree:'tree.glb',crate:'crate.glb',coin:'coin.glb',building:'building.glb'};
-let modelTemplates={};
-function loadModels(){
-  return new Promise(resolve=>{
-    if(typeof THREE.GLTFLoader==='undefined'){ resolve(); return; }
-    const loader=new THREE.GLTFLoader();
-    const keys=Object.keys(modelFiles);
-    let remaining=keys.length;
-    keys.forEach(k=>{
-      loader.load(ASSETS+'models/'+modelFiles[k],
-        gltf=>{ modelTemplates[k]=gltf.scene; if(--remaining<=0) resolve(); },
-        undefined,
-        ()=>{ if(--remaining<=0) resolve(); }
-      );
-    });
-  });
-}
-
-/* ================= PARTICLES (juice) ================= */
-function burst(pos,color,count,spread,life){
-  for(let i=0;i<count;i++){
-    const m=new THREE.Mesh(new THREE.BoxGeometry(0.09,0.09,0.09),new THREE.MeshBasicMaterial({color,transparent:true}));
-    m.position.copy(pos);
-    scene.add(m);
-    particles.push({
-      mesh:m,
-      vel:new THREE.Vector3((Math.random()-0.5)*spread,Math.random()*spread*0.8+0.05,(Math.random()-0.5)*spread),
-      life, t:0
-    });
-  }
-}
-function updateParticles(){
-  particles.forEach(p=>{
-    p.t++;
-    p.vel.y-=0.012;
-    p.mesh.position.add(p.vel);
-    p.mesh.material.opacity=Math.max(0,1-p.t/p.life);
-    p.mesh.rotation.x+=0.2; p.mesh.rotation.y+=0.2;
-  });
-  particles=particles.filter(p=>{
-    if(p.t>=p.life){ scene.remove(p.mesh); return false; }
-    return true;
-  });
-}
-
-/* ================= scenery builders ================= */
-function addStars(){
-  const cnt=150,pos=new Float32Array(cnt*3);
-  for(let i=0;i<cnt;i++){ pos[i*3]=(Math.random()-0.5)*90; pos[i*3+1]=Math.random()*35+8; pos[i*3+2]=-Math.random()*90-10; }
-  const geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-  scene.add(new THREE.Points(geo,new THREE.PointsMaterial({color:0xffffff,size:0.3,transparent:true,opacity:0.85})));
-}
-function addMountains(){
-  const mat=new THREE.MeshBasicMaterial({color:0x2b1750});
-  for(let i=0;i<6;i++){
-    const w=14+Math.random()*10,h=8+Math.random()*10;
-    const m=new THREE.Mesh(new THREE.ConeGeometry(w/2,h,4),mat);
-    m.position.set((i-2.5)*16+(Math.random()-0.5)*6,h/2-1,-70-Math.random()*15);
-    m.rotation.y=Math.random()*Math.PI; scene.add(m);
-  }
-}
-function makeTree(){
-  if(modelTemplates.tree){ const c=modelTemplates.tree.clone(); c.scale.setScalar(1.1); return c; }
-  const g=new THREE.Group();
-  const trunk=new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,1.4,6),new THREE.MeshStandardMaterial({map:T.bark}));
-  trunk.position.y=0.7; g.add(trunk);
-  const leaves=new THREE.Mesh(new THREE.ConeGeometry(1,2,8),new THREE.MeshStandardMaterial({map:T.leaves,emissive:0x0a3d1f,emissiveIntensity:0.15}));
-  leaves.position.y=2.1; g.add(leaves);
-  return g;
-}
-function makeBuilding(){
-  if(modelTemplates.building){ const c=modelTemplates.building.clone(); return c; }
-  const g=new THREE.Group(); const h=3+Math.random()*4;
-  const box=new THREE.Mesh(new THREE.BoxGeometry(2.2,h,2.2),new THREE.MeshStandardMaterial({map:T.brick}));
-  box.position.y=h/2; g.add(box);
-  for(let i=0;i<4;i++){
-    const win=new THREE.Mesh(new THREE.PlaneGeometry(0.32,0.32),new THREE.MeshBasicMaterial({map:T.window,transparent:true}));
-    win.position.set((Math.random()-0.5)*1.6,0.6+i*(h/5),1.11); g.add(win);
-  }
-  return g;
-}
-function addScenery(){
-  for(let i=0;i<10;i++){
-    const side=i%2===0?-1:1;
-    const item=Math.random()<0.5?makeTree():makeBuilding();
-    item.position.set(side*(5.5+Math.random()*2.5),0,-10-i*9);
-    scene.add(item); scenery.push(item);
-  }
-}
-function addRoadTicks(){
-  for(let i=0;i<14;i++){
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(6.6,0.35),new THREE.MeshBasicMaterial({color:0x30306a,transparent:true,opacity:0.5}));
-    m.rotation.x=-Math.PI/2; m.position.set(0,0.012,-i*7);
-    scene.add(m); ticks.push(m);
-  }
-}
-
-/* ================= player ================= */
-function buildPlayer(){
-  if(modelTemplates.character){
-    const c=modelTemplates.character.clone();
-    c.position.set(lanes[1],0.8,2);
-    rig={legL:null,legR:null,armL:null,armR:null,isModel:true,node:c};
-    return c;
-  }
-  const g=new THREE.Group();
-  const body=new THREE.Mesh(new THREE.CylinderGeometry(0.38,0.46,0.95,12),new THREE.MeshStandardMaterial({color:0xff5a8a}));
-  g.add(body);
-  const head=new THREE.Mesh(new THREE.SphereGeometry(0.34,16,16),new THREE.MeshStandardMaterial({color:0xffd8b0}));
-  head.position.y=0.78; g.add(head);
-  const eyeGeo=new THREE.SphereGeometry(0.055,8,8), eyeMat=new THREE.MeshBasicMaterial({color:0x111111});
-  [-0.13,0.13].forEach(x=>{ const e=new THREE.Mesh(eyeGeo,eyeMat); e.position.set(x,0.8,0.29); g.add(e); });
-  const cap=new THREE.Mesh(new THREE.SphereGeometry(0.36,16,16,0,Math.PI*2,0,Math.PI/2),new THREE.MeshStandardMaterial({color:0x00d4ff}));
-  cap.position.y=0.9; g.add(cap);
-  const pack=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.42,0.2),new THREE.MeshStandardMaterial({color:0x7c3aed}));
-  pack.position.set(0,0.05,-0.34); g.add(pack);
-  const legMat=new THREE.MeshStandardMaterial({color:0x2b2f6b});
-  const legL=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.14,0.62,8),legMat); legL.position.set(-0.19,-0.75,0); g.add(legL);
-  const legR=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.14,0.62,8),legMat); legR.position.set(0.19,-0.75,0); g.add(legR);
-  const armMat=new THREE.MeshStandardMaterial({color:0xffd8b0});
-  const armL=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.1,0.58,8),armMat); armL.position.set(-0.5,0.05,0); g.add(armL);
-  const armR=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.1,0.58,8),armMat); armR.position.set(0.5,0.05,0); g.add(armR);
-  rig={legL,legR,armL,armR};
-  g.position.set(lanes[1],0.8,2);
-  return g;
-}
-
-/* ================= scene init ================= */
-function initScene(){
-  scene=new THREE.Scene();
-  scene.background=T.sky;
-  scene.fog=new THREE.Fog(0x2b1750,14,60);
-  camera=new THREE.PerspectiveCamera(65,container.clientWidth/container.clientHeight,0.1,100);
-  camera.position.set(0,4.2,8); camBase=camera.position.clone();
-  camera.lookAt(0,1,-6);
-  renderer=new THREE.WebGLRenderer({antialias:true});
-  renderer.setSize(container.clientWidth,container.clientHeight);
-  container.innerHTML=''; container.appendChild(renderer.domElement);
-
-  scene.add(new THREE.AmbientLight(0x8080ff,0.65));
-  const dir=new THREE.DirectionalLight(0x00f5ff,0.75); dir.position.set(2,6,3); scene.add(dir);
-
-  const road=new THREE.Mesh(new THREE.PlaneGeometry(8,200),new THREE.MeshStandardMaterial({map:T.road}));
-  road.rotation.x=-Math.PI/2; road.position.z=-80; scene.add(road);
-  for(let i=-1;i<=1;i+=2){
-    const line=new THREE.Mesh(new THREE.PlaneGeometry(0.08,200),new THREE.MeshBasicMaterial({color:0x00f5ff}));
-    line.rotation.x=-Math.PI/2; line.position.set(i*1.1,0.011,-80); scene.add(line);
-  }
-  addStars(); addMountains(); addScenery(); addRoadTicks();
-  player=buildPlayer(); scene.add(player);
-}
-
-/* ================= obstacles & coins ================= */
-function spawnObstacleRow(z){
-  const lane=Math.floor(Math.random()*3);
-  const type=Math.random()<0.35?'jump':'block';
-  let group;
-  if(type==='jump'){
-    group=new THREE.Group();
-    const log=new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.28,1.8,12),new THREE.MeshStandardMaterial({map:T.crate,emissive:0x332200,emissiveIntensity:0.2}));
-    log.rotation.z=Math.PI/2; log.position.y=0.32; group.add(log); group.userData.spin=log;
-    [-1,1].forEach(i=>{
-      const stripe=new THREE.Mesh(new THREE.CylinderGeometry(0.285,0.285,0.22,12),new THREE.MeshStandardMaterial({color:0xffe066,emissive:0x554400,emissiveIntensity:0.4}));
-      stripe.rotation.z=Math.PI/2; stripe.position.set(i*0.55,0.32,0); group.add(stripe);
-    });
-  } else if(modelTemplates.crate){
-    group=modelTemplates.crate.clone();
-  } else {
-    group=new THREE.Group();
-    const crate=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.3,0.6),new THREE.MeshStandardMaterial({map:T.crate}));
-    crate.position.y=0.65; group.add(crate);
-    const eyeGeo=new THREE.SphereGeometry(0.08,8,8), eyeMat=new THREE.MeshBasicMaterial({color:0x111111});
-    [-0.28,0.28].forEach(x=>{ const e=new THREE.Mesh(eyeGeo,eyeMat); e.position.set(x,0.85,0.32); group.add(e); });
-    [-0.28,0.28].forEach((x,i)=>{
-      const brow=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.04,0.04),new THREE.MeshBasicMaterial({color:0x111111}));
-      brow.position.set(x,0.97,0.34); brow.rotation.z=i===0?0.3:-0.3; group.add(brow);
-    });
-  }
-  group.position.set(lanes[lane],0,z);
-  scene.add(group);
-  obstacles.push({mesh:group,lane,type,passed:false});
-  return lane;
-}
-function spawnCoin(z,lane){
-  let coin;
-  if(modelTemplates.coin){ coin=modelTemplates.coin.clone(); }
-  else{
-    coin=new THREE.Mesh(new THREE.CylinderGeometry(0.32,0.32,0.08,20),[
-      new THREE.MeshStandardMaterial({color:0xb8860b}),
-      new THREE.MeshStandardMaterial({map:T.coin,emissive:0x332200,emissiveIntensity:0.3}),
-      new THREE.MeshStandardMaterial({map:T.coin,emissive:0x332200,emissiveIntensity:0.3})
-    ]);
-    coin.rotation.x=Math.PI/2;
-  }
-  coin.position.set(lanes[lane],1.1,z);
-  scene.add(coin); coins.push({mesh:coin,collected:false});
-}
-function maybeSpawn(){
-  let minZ=-14;
-  obstacles.forEach(o=>{ if(o.mesh.position.z<minZ) minZ=o.mesh.position.z; });
-  if(minZ<-70) return;
-  const gap=speed*95+Math.random()*8; // keeps the *time* between obstacles roughly constant as speed rises
-  const newZ=minZ-gap;
-  const usedLane=spawnObstacleRow(newZ);
-  if(Math.random()<0.55){
-    let coinLane=Math.floor(Math.random()*3);
-    if(coinLane===usedLane) coinLane=(coinLane+1)%3;
-    spawnCoin(newZ-gap/2,coinLane);
-  }
-}
-
-/* ================= game flow ================= */
-function resetGame(){
-  obstacles.forEach(o=>scene.remove(o.mesh)); obstacles=[];
-  coins.forEach(c=>scene.remove(c.mesh)); coins=[];
-  particles.forEach(p=>scene.remove(p.mesh)); particles=[];
-  score=0; bonus=0; over=false; speed=0.16; curLane=1; jumping=false; jumpVel=0; runPhase=0; scaleTarget=1; shakeT=0;
-  document.getElementById('score').textContent='0';
-  document.getElementById('overlay').classList.remove('show');
-  document.getElementById('flash').classList.remove('on');
-  player.position.set(lanes[1],0.8,2); player.scale.set(1,1,1);
-  if(camera && camBase) camera.position.copy(camBase);
-  for(let i=0;i<8;i++) maybeSpawn();
-  if(bgAudio && !muted){ bgAudio.currentTime=0; bgAudio.play().catch(()=>{}); }
-}
-async function startGame(){
-  document.getElementById('startCard').style.display='none';
-  const loadbar=document.getElementById('loadbar');
-  if(!scene){
-    loadbar.style.display='block';
-    loadAudio(); loadTextures();
-    document.getElementById('loadbarFill').style.width='40%';
-    try{
-      await Promise.race([loadModels(), new Promise(r=>setTimeout(r,4000))]);
-    }catch(err){ console.error('Model load error (using fallback shapes):',err); }
-    document.getElementById('loadbarFill').style.width='100%';
-    initScene();
-    loadbar.style.display='none';
-  }
-  resetGame();
-  if(!started){ started=true; requestAnimationFrame(loop); }
-}
-let touchStartX=0,touchStartY=0;
-container.addEventListener('touchstart',e=>{ touchStartX=e.touches[0].clientX; touchStartY=e.touches[0].clientY; },{passive:true});
-container.addEventListener('touchend',e=>{
-  const dx=e.changedTouches[0].clientX-touchStartX, dy=e.changedTouches[0].clientY-touchStartY;
-  if(Math.abs(dx)>Math.abs(dy) && Math.abs(dx)>30){ changeLane(dx>0?1:-1); }
-  else if(dy<-30){ doJump(); }
-},{passive:true});
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowLeft')changeLane(-1);
-  if(e.key==='ArrowRight')changeLane(1);
-  if(e.key==='ArrowUp'||e.key===' ')doJump();
+/* Jungle Runner 3D — run through the jungle: jump logs, slide under branches,
+   dodge crates, collect fruit, grab a magnet. */
+const HEROES = [
+  { icon: '👧', name: 'Mia', shirt: 0xec4899, pants: 0x1e3a8a, skin: 0xf5c39b, hat: 0xfacc15, hair: 0x5b3716, kind: 'kid' },
+  { icon: '🧒', name: 'Leo', shirt: 0x3b82f6, pants: 0x374151, skin: 0xd9a066, hat: 0xef4444, hair: 0x1f1308, kind: 'kid' },
+  { icon: '🤖', name: 'Robo', shirt: 0x94a3b8, pants: 0x64748b, skin: 0xcbd5e1, hat: 0x22d3ee, kind: 'robot' },
+  { icon: '🐼', name: 'Panda', shirt: 0xffffff, pants: 0x111827, skin: 0xffffff, hat: 0x111827, kind: 'panda' }
+];
+const FRUITS = ['🍎', '🍌', '🍓', '🍉', '🍇', '🍍'];
+const G = KQ3D.init({
+  id: 'endless_runner_3d', title: 'Jungle Runner 3D', bestKey: 'runner3dBest', music: true,
+  hero: ['🏃', '🍌', '🪵'], colors: ['#22c55e', '#0d9488'],
+  how: [['👆', 'Swipe ⬅️ ➡️ to change lanes'], ['⬆️', 'Swipe up to JUMP over logs'], ['⬇️', 'Swipe down to SLIDE under branches'], ['🍓', 'Collect fruit — the 🧲 magnet pulls them in!']],
+  hud: [{ id: 'fruit', icon: '🍎' }], scoreIcon: '🏃', stars: [150, 400, 800],
+  hint: 'Swipe ⬆️ jump  •  ⬇️ slide',
+  pick: { label: 'Pick your runner', options: HEROES },
+  buttons: [{ icon: '⬅️', label: 'Left', down: () => lane(-1) }, { icon: '⬆️', label: 'Jump', down: () => jump() }, { icon: '⬇️', label: 'Slide', down: () => slide() }, { icon: '➡️', label: 'Right', down: () => lane(1) }],
+  onPick: (h) => buildHero(h),
+  onReset: (h) => reset(h)
 });
-function changeLane(d){
-  if(over)return;
-  const nl=Math.max(0,Math.min(2,curLane+d));
-  if(nl!==curLane){ curLane=nl; playSfx('switch'); }
-}
-function doJump(){
-  if(over||jumping)return;
-  jumping=true; jumpVel=0.2; playSfx('jump');
-}
 
-function loop(){
-  try{
-    if(!over) update();
-    updateParticles();
-    if(shakeT>0){
-      camera.position.x=camBase.x+(Math.random()-0.5)*0.3;
-      camera.position.y=camBase.y+(Math.random()-0.5)*0.2;
-      shakeT--;
-      if(shakeT===0) camera.position.copy(camBase);
-    }
-    renderer.render(scene,camera);
-  }catch(err){
-    console.error('Neon Runner frame error (recovered):',err);
-  }
-  requestAnimationFrame(loop);
+const R = KQ3D.renderer(G.scene, { fov: 60, far: 200, shadows: true });
+const { scene, camera, renderer } = R || {};
+const LANES = [-2.2, 0, 2.2];
+const L = (c, o) => new THREE.MeshLambertMaterial(Object.assign({ color: c }, o || {}));
+const texL = new THREE.TextureLoader();
+const T = {
+  crate: texL.load('endless_runner_3d_assets/textures/crate_wood.png'),
+  bark: texL.load('endless_runner_3d_assets/textures/bark.png'),
+  leaves: texL.load('endless_runner_3d_assets/textures/leaves.png')
+};
+
+/* ---------------- world ---------------- */
+scene.background = new THREE.Color(0x9be7ff);
+scene.fog = new THREE.Fog(0x9be7ff, 45, 110);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x5a8f3c, 0.8));
+const sun = new THREE.DirectionalLight(0xfff4d6, 0.7);
+sun.position.set(6, 16, 8); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
+Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 1, far: 40 });
+scene.add(sun, sun.target);
+
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(160, 300), L(0x6cc04a)); ground.rotation.x = -Math.PI / 2; ground.position.z = -100; ground.receiveShadow = true; scene.add(ground);
+const path = new THREE.Mesh(new THREE.PlaneGeometry(7.2, 300), L(0xd9a65e)); path.rotation.x = -Math.PI / 2; path.position.set(0, 0.01, -100); path.receiveShadow = true; scene.add(path);
+
+const scrollers = [];
+function addS(m, span) { m.userData.span = span; scrollers.push(m); scene.add(m); }
+// path stones and edges
+for (let i = 0; i < 40; i++) {
+  const st = new THREE.Mesh(new THREE.CylinderGeometry(0.25 + Math.random() * 0.2, 0.3, 0.06, 7), L(0xb7843f)); st.position.set((Math.random() - 0.5) * 6, 0.02, 10 - i * 3); addS(st, 120);
+  [-3.75, 3.75].forEach((x) => { const e = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.35, 3), L(i % 2 ? 0x8b5a2b : 0xa16207)); e.position.set(x, 0.17, 10 - i * 3); addS(e, 120); });
 }
-function update(){
-  speed=Math.min(0.4,speed+0.00007);
-  score++;
-  document.getElementById('score').textContent=Math.floor(score/6)+bonus;
-
-  const targetX=lanes[curLane];
-  player.position.x += (targetX-player.position.x)*0.25;
-
-  if(jumping){
-    player.position.y += jumpVel;
-    jumpVel -= 0.012;
-    scaleTarget=1.12;
-    if(player.position.y<=0.8){ player.position.y=0.8; jumping=false; scaleTarget=0.9; }
+function jungleTree(x, z) {
+  const g = new THREE.Group(); const palm = Math.random() < 0.45;
+  if (palm) {
+    const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.32, 4, 7), new THREE.MeshLambertMaterial({ map: T.bark })); tr.position.y = 2; tr.rotation.z = (Math.random() - 0.5) * 0.25; tr.castShadow = true; g.add(tr);
+    for (let k = 0; k < 6; k++) { const leaf = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.06, 2.6), L(0x16a34a)); leaf.position.set(0, 4, 0); leaf.rotation.set(-0.5, k * Math.PI / 3, 0); leaf.translateZ(1.1); g.add(leaf); }
   } else {
-    scaleTarget += (1-scaleTarget)*0.2;
+    const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.45, 2.4, 7), new THREE.MeshLambertMaterial({ map: T.bark })); tr.position.y = 1.2; g.add(tr);
+    [[0, 3, 0, 1.8], [0.9, 2.6, 0.2, 1.2], [-0.8, 2.8, -0.2, 1.3]].forEach(([a, b, c, r]) => { const s = new THREE.Mesh(new THREE.IcosahedronGeometry(r, 0), new THREE.MeshLambertMaterial({ map: T.leaves, color: 0x7ee08a })); s.position.set(a, b, c); s.castShadow = true; g.add(s); });
   }
-  player.scale.y += (scaleTarget-player.scale.y)*0.3;
-  player.scale.x += ((2-player.scale.y*0.9)-player.scale.x)*0.15;
-  player.scale.z=player.scale.x;
-  player.rotation.y=Math.sin(Date.now()*0.01)*0.05;
+  g.position.set(x, 0, z); g.scale.setScalar(0.9 + Math.random() * 0.5); return g;
+}
+function bush(x, z) {
+  const g = new THREE.Group();
+  for (let k = 0; k < 3; k++) { const b = new THREE.Mesh(new THREE.SphereGeometry(0.6 + Math.random() * 0.3, 8, 6), L(0x22a33a)); b.position.set(k * 0.6 - 0.6, 0.4, Math.random() * 0.3); g.add(b); }
+  const fl = KQ3D.emojiSprite(['🌸', '🌻', '🍄'][Math.floor(Math.random() * 3)], 0.7); fl.position.set(0.2, 1.1, 0.4); g.add(fl);
+  g.position.set(x, 0, z); return g;
+}
+for (let i = 0; i < 22; i++) {
+  const z = 10 - i * 5.5;
+  [-1, 1].forEach((s) => { addS(jungleTree(s * (6 + Math.random() * 7), z + Math.random() * 2), 121); if (Math.random() < 0.6) addS(bush(s * (4.6 + Math.random() * 1.2), z + 2.5), 121); });
+}
+// sky: sun + clouds
+const sunBall = new THREE.Mesh(new THREE.SphereGeometry(6, 16, 12), new THREE.MeshBasicMaterial({ color: 0xfde047, fog: false })); sunBall.position.set(28, 34, -110); scene.add(sunBall);
+const clouds = [];
+for (let i = 0; i < 8; i++) {
+  const c = new THREE.Group();
+  for (let k = 0; k < 4; k++) { const p = new THREE.Mesh(new THREE.SphereGeometry(1.6 + Math.random(), 8, 6), new THREE.MeshBasicMaterial({ color: 0xffffff, fog: false })); p.position.set(k * 1.7, Math.random() * 0.7, Math.random()); c.add(p); }
+  c.position.set(-45 + Math.random() * 90, 18 + Math.random() * 10, -70 - Math.random() * 40); scene.add(c); clouds.push(c);
+}
+// distant hills + butterflies
+for (let i = 0; i < 6; i++) { const h = new THREE.Mesh(new THREE.SphereGeometry(18 + Math.random() * 10, 12, 8), L(0x4ade80)); h.position.set(-70 + i * 28, -8, -120 - Math.random() * 20); scene.add(h); }
+const flies = [];
+for (let i = 0; i < 5; i++) { const b = KQ3D.emojiSprite('🦋', 0.8); b.position.set((Math.random() - 0.5) * 14, 2 + Math.random() * 2, -10 - Math.random() * 40); b.userData.ph = Math.random() * 6; addS(b, 60); flies.push(b); }
 
-  runPhase += 0.35+speed*1.4;
-  if(!rig.isModel){
-    if(jumping){
-      rig.legL.rotation.x=0.6; rig.legR.rotation.x=-0.3;
-      rig.armL.rotation.x=-0.5; rig.armR.rotation.x=0.5;
-    } else {
-      rig.legL.rotation.x=Math.sin(runPhase)*0.9;
-      rig.legR.rotation.x=-Math.sin(runPhase)*0.9;
-      rig.armL.rotation.x=-Math.sin(runPhase)*0.7;
-      rig.armR.rotation.x=Math.sin(runPhase)*0.7;
-    }
+/* ---------------- hero ---------------- */
+let hero, rig = {};
+function limb(r1, r2, h, mat) { const pivot = new THREE.Group(); const m = new THREE.Mesh(new THREE.CylinderGeometry(r1, r2, h, 8), mat); m.position.y = -h / 2; m.castShadow = true; pivot.add(m); return pivot; }
+function buildHero(h) {
+  h = h || HEROES[0];
+  const old = hero; const g = new THREE.Group();
+  const shirt = L(h.shirt), pants = L(h.pants), skin = L(h.skin);
+  const torso = new THREE.Mesh(h.kind === 'robot' ? new THREE.BoxGeometry(0.75, 0.8, 0.5) : new THREE.CylinderGeometry(0.33, 0.4, 0.8, 12), shirt); torso.position.y = 1.15; torso.castShadow = true; g.add(torso);
+  const head = new THREE.Mesh(h.kind === 'robot' ? new THREE.BoxGeometry(0.62, 0.55, 0.55) : new THREE.SphereGeometry(0.36, 16, 12), skin); head.position.y = 1.85; head.castShadow = true; g.add(head);
+  if (h.kind === 'kid') {
+    const hat = new THREE.Mesh(new THREE.SphereGeometry(0.38, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2), L(h.hat)); hat.position.y = 1.9; g.add(hat);
+    const brim = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.05, 0.35), L(h.hat)); brim.position.set(0, 1.92, -0.4); g.add(brim);
+    if (h.name === 'Mia') { const pony = new THREE.Mesh(new THREE.SphereGeometry(0.17, 10, 8), L(h.hair)); pony.position.set(0, 1.8, 0.42); pony.scale.set(1, 1.6, 1); g.add(pony); rig.pony = pony; }
+    const pack = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.25), L(0xf97316)); pack.position.set(0, 1.2, 0.42); g.add(pack);
+  } else if (h.kind === 'robot') {
+    const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.35), L(0x475569)); ant.position.y = 2.25; g.add(ant);
+    const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.09, 10, 8), new THREE.MeshBasicMaterial({ color: h.hat })); bulb.position.y = 2.45; g.add(bulb); rig.bulb = bulb;
+    const panel = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.3, 0.05), new THREE.MeshBasicMaterial({ color: 0x22d3ee })); panel.position.set(0, 1.2, 0.27); g.add(panel);
+  } else {
+    [-0.27, 0.27].forEach((x) => { const ear = new THREE.Mesh(new THREE.SphereGeometry(0.13, 10, 8), L(0x111827)); ear.position.set(x, 2.17, 0); g.add(ear); });
+    const belly = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.41, 0.4, 12), L(0x111827)); belly.position.y = 1.35; g.add(belly);
   }
-
-  ticks.forEach(t=>{ t.position.z+=speed; if(t.position.z>10) t.position.z-=14*7; });
-  scenery.forEach(s=>{ s.position.z+=speed*0.6; if(s.position.z>14) s.position.z-=10*9; });
-
-  obstacles.forEach(o=>{
-    o.mesh.position.z += speed;
-    if(o.mesh.userData.spin) o.mesh.userData.spin.rotation.x += 0.2;
-    if(!o.passed && o.mesh.position.z>2 && o.mesh.position.z<3){
-      o.passed=true;
-      const sameLane=Math.abs(o.mesh.position.x-player.position.x)<0.9;
-      if(sameLane){
-        const clearedByJump=o.type==='jump' && player.position.y>0.95;
-        if(!clearedByJump) endGame();
-      }
-    }
-  });
-  obstacles=obstacles.filter(o=>{ if(o.mesh.position.z>10){ scene.remove(o.mesh); return false; } return true; });
-
-  coins.forEach(c=>{
-    if(c.collected)return;
-    c.mesh.position.z+=speed; c.mesh.rotation.z+=0.15;
-    if(c.mesh.position.z>1.4 && c.mesh.position.z<3.4){
-      const sameLane=Math.abs(c.mesh.position.x-player.position.x)<0.85;
-      if(sameLane){
-        c.collected=true;
-        burst(c.mesh.position.clone(),0xffd700,10,0.12,22);
-        scene.remove(c.mesh); bonus+=5; playSfx('coin');
-      }
-    }
-  });
-  coins=coins.filter(c=>{ if(c.collected) return false; if(c.mesh.position.z>10){ scene.remove(c.mesh); return false; } return true; });
-
-  maybeSpawn();
+  const armM = h.kind === 'panda' ? L(0x111827) : (h.kind === 'robot' ? L(0x64748b) : skin);
+  rig.armL = limb(0.09, 0.08, 0.6, armM); rig.armL.position.set(-0.45, 1.45, 0); g.add(rig.armL);
+  rig.armR = limb(0.09, 0.08, 0.6, armM); rig.armR.position.set(0.45, 1.45, 0); g.add(rig.armR);
+  rig.legL = limb(0.12, 0.1, 0.75, pants); rig.legL.position.set(-0.17, 0.78, 0); g.add(rig.legL);
+  rig.legR = limb(0.12, 0.1, 0.75, pants); rig.legR.position.set(0.17, 0.78, 0); g.add(rig.legR);
+  [rig.legL, rig.legR].forEach((lg) => { const shoe = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.12, 0.34), L(0xffffff)); shoe.position.set(0, -0.78, -0.06); lg.add(shoe); });
+  g.position.copy(old ? old.position : new THREE.Vector3(0, 0, 2));
+  if (old) scene.remove(old);
+  hero = g; scene.add(g);
 }
-function endGame(){
-  over=true;
-  shakeT=18;
-  playSfx('crash');
-  burst(player.position.clone(),0xff5a8a,16,0.16,30);
-  if(bgAudio) bgAudio.pause();
-  if(window.KQFX)KQFX.play('blast');
-  const flash=document.getElementById('flash');
-  flash.classList.add('on'); setTimeout(()=>flash.classList.remove('on'),150);
-  const finalScore=Math.floor(score/6)+bonus;
-  if(finalScore>best){ best=finalScore; localStorage.setItem('runner3dBest',best); }
-  document.getElementById('finalScore').textContent='Score: '+finalScore+'  •  Best: '+best;
-  document.getElementById('overlay').classList.add('show');
-  onGameComplete();
+buildHero(G.choice);
+const magnetRing = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.06, 6, 30), new THREE.MeshBasicMaterial({ color: 0xf43f5e, transparent: true, opacity: 0.6 }));
+magnetRing.rotation.x = Math.PI / 2; magnetRing.visible = false; scene.add(magnetRing);
+
+/* ---------------- obstacles & pickups ---------------- */
+function makeLog() {
+  const g = new THREE.Group();
+  const lg = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 1.9, 12), new THREE.MeshLambertMaterial({ map: T.bark, color: 0xc08a5a })); lg.rotation.z = Math.PI / 2; lg.position.y = 0.35; lg.castShadow = true; g.add(lg);
+  [-1, 1].forEach((s) => { const ring = new THREE.Mesh(new THREE.CircleGeometry(0.34, 12), L(0xf5d0a0)); ring.position.set(s * 0.951, 0.35, 0); ring.rotation.y = s * Math.PI / 2; g.add(ring); });
+  return g;
 }
-window.addEventListener('resize',()=>{
-  if(!camera||!renderer)return;
-  camera.aspect=container.clientWidth/container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth,container.clientHeight);
+function makeCrate() {
+  const g = new THREE.Group();
+  const c = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.5, 1.2), new THREE.MeshLambertMaterial({ map: T.crate })); c.position.y = 0.75; c.castShadow = true; g.add(c);
+  if (Math.random() < 0.5) { const c2 = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.9, 0.9), new THREE.MeshLambertMaterial({ map: T.crate })); c2.position.set(0.1, 1.95, 0); c2.rotation.y = 0.4; c2.castShadow = true; g.add(c2); }
+  const m = KQ3D.emojiSprite(Math.random() < 0.5 ? '🐒' : '🦜', 0.9); m.position.set(-0.2, Math.random() < 0.5 ? 2.0 : 2.8, 0); g.add(m);
+  return g;
+}
+function makeBranch() {
+  const g = new THREE.Group();
+  [-0.95, 0.95].forEach((x) => { const p = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.12, 2.4, 6), new THREE.MeshLambertMaterial({ map: T.bark })); p.position.set(x, 1.2, 0); g.add(p); });
+  const b = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 2.2, 8), new THREE.MeshLambertMaterial({ map: T.bark, color: 0xb07a4a })); b.rotation.z = Math.PI / 2; b.position.y = 1.85; b.castShadow = true; g.add(b);
+  for (let k = 0; k < 5; k++) { const lf = new THREE.Mesh(new THREE.SphereGeometry(0.28, 6, 5), L(0x22c55e)); lf.position.set(-0.9 + k * 0.45, 1.6 + Math.random() * 0.15, 0.05); lf.scale.y = 1.4; g.add(lf); }
+  const v = KQ3D.emojiSprite('🐍', 0.7); v.position.set(0.4, 1.5, 0.2); g.add(v);
+  return g;
+}
+function makeFruit(e) { const s = KQ3D.emojiSprite(e, 0.95); s.position.y = 1.1; const g = new THREE.Group(); g.add(s); return g; }
+function makeMagnet() { const g = new THREE.Group(); const s = KQ3D.emojiSprite('🧲', 1.2); s.position.y = 1.3; g.add(s); const r = new THREE.Mesh(new THREE.TorusGeometry(0.75, 0.06, 6, 22), new THREE.MeshBasicMaterial({ color: 0xf43f5e })); r.position.y = 1.3; g.add(r); return g; }
+
+let things = [], dust = [];
+let dist, fruit, speed, ln, y, vy, sliding, nextRow, magnet, dead, runPh, lastMile, combo;
+
+function reset(h) {
+  things.forEach((t) => scene.remove(t.mesh)); things = [];
+  buildHero(h);
+  dist = 0; fruit = 0; speed = 11; ln = 1; y = 0; vy = 0; sliding = 0; nextRow = 22; magnet = 0; dead = false; runPh = 0; lastMile = 0; combo = 0;
+  hero.position.set(0, 0, 2); hero.rotation.set(0, 0, 0); hero.scale.set(1, 1, 1);
+  for (let z = -22; z > -90; z -= 17) row(z, true);
+}
+function row(z, easy) {
+  const free = Math.floor(Math.random() * 3);
+  const n = easy ? 1 : (Math.random() < Math.min(0.6, 0.2 + dist / 2500) ? 2 : 1);
+  const lanes = [0, 1, 2].filter((l) => l !== free).sort(() => Math.random() - 0.5).slice(0, n);
+  const allJump = !easy && Math.random() < 0.15; // full-width log: everyone must jump
+  if (allJump) { [0, 1, 2].forEach((l) => add('log', makeLog(), l, z)); }
+  else lanes.forEach((l) => { const r = Math.random(); if (r < 0.35) add('log', makeLog(), l, z); else if (r < 0.65) add('branch', makeBranch(), l, z); else add('crate', makeCrate(), l, z); });
+  if (Math.random() < 0.05 && !magnet) add('magnet', makeMagnet(), free, z - 4);
+  else if (Math.random() < 0.8) { const e = FRUITS[Math.floor(Math.random() * FRUITS.length)]; for (let k = 0; k < 5; k++) add('fruit', makeFruit(e), allJump ? 1 : free, z - 3 - k * 1.8, allJump ? 1.5 : 0); }
+}
+function add(type, mesh, l, z, lift) { mesh.position.set(LANES[l], lift || 0, z); scene.add(mesh); things.push({ type, mesh, lane: l }); }
+
+function lane(d) { if (G.state !== 'play' || dead) return; const n = Math.max(0, Math.min(2, ln + d)); if (n !== ln) { ln = n; KQ3D.sfx('whoosh'); } }
+function jump() { if (G.state !== 'play' || dead) return; if (y <= 0.001) { vy = 9.5; sliding = 0; KQ3D.sfx('jump'); } }
+function slide() { if (G.state !== 'play' || dead) return; if (y > 0.001) vy = -14; sliding = 0.75; KQ3D.sfx('boing'); }
+document.addEventListener('keydown', (e) => {
+  const k = e.key;
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') lane(-1);
+  else if (k === 'ArrowRight' || k === 'd' || k === 'D') lane(1);
+  else if (k === 'ArrowUp' || k === 'w' || k === 'W' || (k === ' ' && G.state === 'play')) { e.preventDefault(); jump(); }
+  else if (k === 'ArrowDown' || k === 's' || k === 'S') slide();
 });
-</script></body></html>
+KQ3D.swipe(G.scene, (dir) => { if (dir === 'left') lane(-1); else if (dir === 'right') lane(1); else if (dir === 'up' || dir === 'tap') jump(); else if (dir === 'down') slide(); });
+
+function puff(pos, color, n, up) {
+  for (let i = 0; i < n; i++) {
+    const p = new THREE.Mesh(new THREE.SphereGeometry(0.12, 6, 5), new THREE.MeshBasicMaterial({ color, transparent: true }));
+    p.position.copy(pos); p.userData.v = new THREE.Vector3((Math.random() - 0.5) * 4, (up || 2) * Math.random() + 1, (Math.random() - 0.5) * 3); p.userData.life = 0.7;
+    scene.add(p); dust.push(p);
+  }
+}
+function hit(t) {
+  dead = true; KQ3D.sfx('hit'); G.flash('#f97316');
+  puff(hero.position.clone().setY(1), 0xfde68a, 16, 5);
+  G.over({ score: Math.floor(dist) + fruit * 5, title: t.type === 'branch' ? 'Bonk! 🌿' : t.type === 'log' ? 'Tripped!' : 'Oops!', lines: ['🏃 ' + Math.floor(dist) + ' m', '🍎 ' + fruit + ' fruit'] });
+}
+
+/* ---------------- loop ---------------- */
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  const playing = G.state === 'play' && !dead;
+  const v = playing ? speed : (G.state === 'menu' ? 5 : 0);
+  if (playing) {
+    speed = Math.min(26, 11 + dist / 60);
+    dist += v * dt; G.score(Math.floor(dist) + fruit * 5);
+    const m = Math.floor(dist / 200); if (m > lastMile) { lastMile = m; KQ3D.sfx('levelup'); G.pop(m * 200 + ' m! 🎉', null, innerHeight * 0.3, '#bbf7d0'); }
+    nextRow -= v * dt; if (nextRow <= 0) { row(-95); nextRow = Math.max(12, 19 - dist / 150); }
+    // jump physics
+    vy -= 28 * dt; y = Math.max(0, y + vy * dt); if (y === 0) vy = 0;
+    sliding = Math.max(0, sliding - dt);
+    magnet = Math.max(0, magnet - dt);
+  }
+  scrollers.forEach((s) => { s.position.z += v * dt; if (s.position.z > 14) s.position.z -= s.userData.span; });
+  clouds.forEach((c) => { c.position.x += dt * 0.8; if (c.position.x > 55) c.position.x = -55; });
+  flies.forEach((b) => { b.userData.ph += dt * 3; b.position.y += Math.sin(b.userData.ph) * 0.02; b.position.x += Math.cos(b.userData.ph * 0.5) * 0.02; });
+
+  // hero pose
+  if (!dead) {
+    hero.position.x += (LANES[ln] - hero.position.x) * Math.min(1, dt * 14);
+    hero.position.y = y;
+    runPh += dt * (v * 0.9 + 3);
+    const sw = Math.sin(runPh) * (y > 0 ? 0.2 : 0.9);
+    rig.legL.rotation.x = y > 0 ? -0.8 : sw; rig.legR.rotation.x = y > 0 ? 0.5 : -sw;
+    rig.armL.rotation.x = y > 0 ? 2.6 : -sw * 0.8; rig.armR.rotation.x = y > 0 ? 2.6 : sw * 0.8;
+    if (rig.pony) rig.pony.rotation.x = Math.sin(runPh * 2) * 0.3;
+    if (rig.bulb) rig.bulb.material.color.setHSL((now / 1000) % 1, 0.9, 0.6);
+    const sl = sliding > 0;
+    const sy = sl ? 0.55 : 1;                          // crouch for the slide
+    hero.scale.y += (sy - hero.scale.y) * Math.min(1, dt * 20); hero.scale.x = hero.scale.z = 1 + (1 - hero.scale.y) * 0.4;
+    hero.rotation.x = sl ? -0.25 : 0;
+    hero.position.y = y + Math.abs(Math.sin(runPh)) * 0.08 * (v > 0 && y === 0 && !sl ? 1 : 0);
+    if (playing && y === 0 && Math.random() < dt * 8) puff(new THREE.Vector3(hero.position.x, 0.1, 2.4), 0xe8c07a, 1, 0.5);
+  } else {
+    hero.rotation.x = Math.min(1.5, hero.rotation.x + dt * 5); hero.position.y = Math.max(0.25, hero.position.y);
+  }
+  magnetRing.visible = magnet > 0; magnetRing.position.set(hero.position.x, 1.2, 2); magnetRing.scale.setScalar(1 + Math.sin(now / 120) * 0.1);
+
+  for (let i = things.length - 1; i >= 0; i--) {
+    const t = things[i], p = t.mesh.position;
+    p.z += v * dt;
+    if (t.type === 'fruit' || t.type === 'magnet') { t.mesh.rotation.y += dt * 3; t.mesh.children[0].position.y = 1.1 + Math.sin(now / 200 + p.z) * 0.12; }
+    if (p.z > 12) { scene.remove(t.mesh); things.splice(i, 1); continue; }
+    if (!playing) continue;
+    const dz = Math.abs(p.z - 2), dx = Math.abs(p.x - hero.position.x);
+    if (t.type === 'fruit') {
+      if (magnet > 0 && dz < 12 && p.z < 2.5) { p.x += (hero.position.x - p.x) * Math.min(1, dt * 8); p.y += (y - p.y) * Math.min(1, dt * 8); }
+      if (dx < 1 && dz < 0.9 && Math.abs(p.y - y) < 1.6) {
+        fruit++; combo++; G.hudSet('fruit', fruit); KQ3D.sfx(combo % 5 ? 'pop' : 'coin');
+        const s = KQ3D.toScreen(new THREE.Vector3(p.x, 1.5, p.z), camera, G.scene); G.pop(combo % 5 ? '+5' : '+5 🔥', s.x, s.y);
+        scene.remove(t.mesh); things.splice(i, 1);
+      }
+    } else if (t.type === 'magnet') {
+      if (dx < 1.1 && dz < 1) { magnet = 8; KQ3D.sfx('chime'); G.pop('🧲 Magnet!', null, innerHeight * 0.35, '#fecdd3'); scene.remove(t.mesh); things.splice(i, 1); }
+    } else if (dx < 1.05 && dz < (t.type === 'crate' ? 0.95 : 0.6)) {
+      if (t.type === 'log' && y > 0.55) continue;        // jumped over
+      if (t.type === 'branch' && sliding > 0) continue;  // slid under
+      if (t.type === 'log' || t.type === 'branch' || t.type === 'crate') { combo = 0; hit(t); }
+    }
+  }
+  for (let i = dust.length - 1; i >= 0; i--) {
+    const d = dust[i]; d.userData.life -= dt; d.userData.v.y -= 6 * dt; d.position.addScaledVector(d.userData.v, dt); d.position.z += v * dt;
+    d.material.opacity = Math.max(0, d.userData.life / 0.7);
+    if (d.userData.life <= 0) { scene.remove(d); dust.splice(i, 1); }
+  }
+  const wide = innerWidth > innerHeight;
+  camera.position.set(hero.position.x * 0.5, (wide ? 4.2 : 5) + y * 0.25, 2 + (wide ? 6.5 : 7.8));
+  camera.lookAt(hero.position.x * 0.35, 1.2, -6);
+  sun.position.set(hero.position.x + 6, 16, 10); sun.target.position.set(hero.position.x, 0, 0);
+  renderer.render(scene, camera);
+}
+if (R) { reset(G.choice); requestAnimationFrame(frame); }
+</script>
+</body></html>

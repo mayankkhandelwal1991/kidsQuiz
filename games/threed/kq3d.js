@@ -117,7 +117,7 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
 .k3flash{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;transition:opacity .35s}\
 .k3hint{position:absolute;left:50%;bottom:calc(110px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:5;background:rgba(15,23,42,.6);border-radius:999px;padding:4px 14px;font-weight:800;font-size:14px;white-space:nowrap;pointer-events:none;transition:opacity .5s}\
 .k3nogl{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;font-size:18px;font-weight:800;background:#1e1b4b}\
-@media (min-width:700px){.k3pad{justify-content:center;gap:40vw}.k3pill{font-size:22px}}\
+@media (min-width:700px){.k3pad{justify-content:center;gap:28px}.k3pill{font-size:22px}}\
 ';
 
   function init(cfg) {
@@ -146,10 +146,13 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
     if (cfg.pick && cfg.pick.options[pickIdx]) choice = cfg.pick.options[pickIdx]; else if (cfg.pick) { pickIdx = 0; choice = cfg.pick.options[0]; }
 
     var G = { state: 'menu', root: root, scene: $('k3scene'), best: best, choice: choice, _score: 0 };
+    var music = null;
+    if (cfg.music) { try { music = new Audio(ROOT + 'games/sounds/' + (cfg.music === true ? 'bgm-loop.mp3' : cfg.music)); music.preload = 'none'; music.loop = true; music.volume = 0.22; } catch (e) {} }
+    G.music = function (on) { if (!music) return; try { if (on && !muted()) music.play().catch(function () {}); else music.pause(); } catch (e) {} };
 
     function renderMute() { $('k3mute').textContent = muted() ? '🔇' : '🔊'; }
     renderMute();
-    $('k3mute').onclick = function () { try { localStorage.setItem('kq_muted', muted() ? '0' : '1'); } catch (e) {} renderMute(); sfx('tap'); };
+    $('k3mute').onclick = function () { try { localStorage.setItem('kq_muted', muted() ? '0' : '1'); } catch (e) {} renderMute(); sfx('tap'); G.music(G.state === 'play' && !muted()); };
     $('k3back').onclick = function () { location.href = '../index.html'; };
     $('k3pause').onclick = function () { if (G.state === 'play') pause(true); else if (G.state === 'pause') pause(false); };
 
@@ -207,7 +210,7 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
         sfx(n > 0 ? 'countdown' : 'levelup');
         if (n-- > 0) setTimeout(tick, 700);
         else setTimeout(function () {
-          c.classList.remove('on'); G.state = 'play'; G.t0 = performance.now();
+          c.classList.remove('on'); if (G.state !== 'count') return; G.state = 'play'; G.t0 = performance.now(); G.music(true);
           var hint = $('k3hint'); if (hint) { hint.style.opacity = 1; setTimeout(function () { hint.style.opacity = 0; }, 3500); }
           if (cfg.onPlay) cfg.onPlay();
         }, 500);
@@ -228,6 +231,7 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
         $('k3rst').onclick = begin;
         $('k3home').onclick = function () { location.href = '../index.html'; };
       } else show(null);
+      G.music(!on);
       if (cfg.onPause) cfg.onPause(on);
     }
     G.pause = pause;
@@ -250,7 +254,7 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
 
     G.over = function (o) {
       if (G.state === 'over') return;
-      G.state = 'over';
+      G.state = 'over'; G.music(false);
       var score = o.score != null ? o.score : G._score;
       var rec = score > best && score > 0;
       if (rec) { best = G.best = score; try { localStorage.setItem(cfg.bestKey, best); } catch (e) {} }

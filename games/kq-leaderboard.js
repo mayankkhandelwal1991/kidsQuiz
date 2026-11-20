@@ -80,7 +80,7 @@
     piano_tiles:"Piano Tiles", stack_tower:"Stack Tower", bubble_shooter:"Bubble Shooter",
     space_shooter:"Space Shooter", doodle_jump:"Sky Hopper", water_sort:"Water Sort",
     slingshot:"Sling Blast", connect_four:"Connect Four", sudoku_mini:"Sudoku Mini",
-    reaction_test:"Reaction Test", typing_speed:"Typing Speed", endless_runner_3d:"Neon Runner 3D",
+    reaction_test:"Reaction Test", typing_speed:"Typing Speed", endless_runner_3d:"Jungle Runner 3D",
     crossy_road_3d:"Lane Hopper 3D", basketball_3d:"Hoops 3D", ball_maze_3d:"Gravity Maze 3D",
     drift_racer_3d:"Neon Drift 3D", platform_runner:"Platform Runner", neon_lane_dash:"Neon Lane Dash",
     word_search:"Word Search", spelling_bee:"Spelling Bee", hangman:"Hangman",

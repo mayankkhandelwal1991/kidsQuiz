@@ -1,70 +1,79 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Simon Says</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Copy Cat</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#8b5cf6,#ff7ac6);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:380px;width:100%;text-align:center}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:300px;margin:0 auto}
-.pad{aspect-ratio:1;border-radius:22px;cursor:pointer;opacity:.55;transition:opacity .1s,transform .1s;border:4px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.15)}
-.pad.lit{opacity:1;transform:scale(1.06)}
-#p0{background:#ff5a5a}#p1{background:#4caf50}#p2{background:#2196f3}#p3{background:#ffca28}
-.msg{color:#ff5a8a;font-weight:800;font-size:17px;min-height:26px;margin-top:14px}
-.start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 34px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;margin-top:10px}
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">Round: <span id="round">0</span> &nbsp; 🏆 <span id="best">0</span></div>
-    <button onclick="start()">↻</button>
-  </div>
-  <div class="grid">
-    <div class="pad" id="p0"></div><div class="pad" id="p1"></div>
-    <div class="pad" id="p2"></div><div class="pad" id="p3"></div>
-  </div>
-  <div class="msg" id="msg">Press Start and watch carefully!</div>
-  <button class="start" id="sb" onclick="start()">▶ Start</button>
-</div>
+.cc { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 14px 16px; font-family: 'Baloo 2', sans-serif; background: linear-gradient(170deg, #312e81, #6d28d9 55%, #db2777); }
+.cc-cat { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.cc-cat img { width: 64px; height: 64px; animation: ccBob 2.4s ease-in-out infinite; }
+@keyframes ccBob { 50% { transform: translateY(-6px) rotate(-5deg); } }
+.cc-say { background: #fff; border-radius: 18px 18px 18px 4px; padding: 6px 14px; font-weight: 800; color: #4c1d95; font-size: 17px; }
+.cc-pads { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cc-pad { border: none; border-radius: 34px; display: grid; place-items: center; cursor: pointer; transition: transform .1s, filter .1s, box-shadow .1s; filter: saturate(.75) brightness(.85); box-shadow: 0 8px 0 rgba(0,0,0,.3); }
+.cc-pad img { width: 58%; height: 58%; pointer-events: none; transition: transform .15s; }
+.cc-pad.lit { filter: saturate(1.2) brightness(1.15); transform: scale(1.05); box-shadow: 0 0 0 6px #fff, 0 0 40px 10px rgba(255,255,255,.7); }
+.cc-pad.lit img { transform: scale(1.18) rotate(-6deg); }
+.cc-dots { display: flex; gap: 5px; margin-top: 16px; flex-wrap: wrap; justify-content: center; max-width: 340px; }
+.cc-dots i { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,.3); } .cc-dots i.ok { background: #fde047; }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const pads=[0,1,2,3].map(i=>document.getElementById('p'+i));
-let seq=[],pos=0,accepting=false,round=0,best=+(localStorage.getItem('simonBest')||0);
-document.getElementById('best').textContent=best;
-pads.forEach((p,i)=>p.onpointerdown=()=>tap(i));
-function flash(i,d=350){return new Promise(r=>{pads[i].classList.add('lit');setTimeout(()=>{pads[i].classList.remove('lit');setTimeout(r,120);},d);});}
-async function playSeq(){
-  accepting=false;
-  document.getElementById('msg').textContent='Watch... 👀';
-  await new Promise(r=>setTimeout(r,600));
-  for(const i of seq)await flash(i,Math.max(200,400-round*15));
-  document.getElementById('msg').textContent='Your turn! 🎨';
-  pos=0;accepting=true;
+/* Copy Cat — watch the animals light up and sing, then copy the pattern.
+   It grows by one each round and speeds up. You get 2 tries. */
+const PADS = [['🐸', '#22c55e', 392], ['🐥', '#facc15', 523.25], ['🐳', '#3b82f6', 659.25], ['🦊', '#f97316', 783.99]];
+const G = KQ3D.init({
+  id: 'simon_says', title: 'Copy Cat', bestKey: 'simonBest', music: false,
+  hero: ['🐱', '🐸', '🎵'], colors: ['#7c3aed', '#db2777'],
+  how: [['👀', 'Watch the animals light up and sing'], ['👆', 'Copy the pattern in the same order'], ['➕', 'Each round adds one more — and gets faster!'], ['❤️', 'You have 2 tries']],
+  scoreIcon: '🎵', stars: [5, 10, 15],
+  hud: [{ id: 'lives', icon: '❤️' }],
+  onReset: () => reset()
+});
+const box = document.createElement('div'); box.className = 'cc'; G.scene.appendChild(box);
+let seq, pos, listening, lives, best, AC;
+function tone(f, d) {
+  try { if (localStorage.getItem('kq_muted') === '1') return; } catch (e) {}
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume();
+    const t = AC.currentTime, o = AC.createOscillator(), g = AC.createGain(); o.type = 'triangle'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.3, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t + d + 0.05);
+  } catch (e) {}
 }
-function start(){
-  seq=[];round=0;
-  document.getElementById('sb').style.display='none';
-  next();
+function reset() {
+  seq = []; pos = 0; listening = false; lives = 2; best = 0; G.score(0); G.hudSet('lives', lives);
+  const S = Math.min(innerWidth - 50, innerHeight - 330, 340), ps = (S - 14) / 2;
+  box.innerHTML = '<div class="cc-cat"><img src="' + KQ3D.emojiFile('🐱') + '" alt=""><div class="cc-say" id="ccS">Watch me!</div></div>' +
+    '<div class="cc-pads">' + PADS.map((p, i) => '<button type="button" class="cc-pad" data-i="' + i + '" style="width:' + ps + 'px;height:' + ps + 'px;background:' + p[1] + '"><img src="' + KQ3D.emojiFile(p[0]) + '" alt=""></button>').join('') + '</div><div class="cc-dots" id="ccD"></div>';
+  box.querySelectorAll('.cc-pad').forEach((el) => el.addEventListener('pointerdown', () => press(+el.dataset.i)));
 }
-function next(){
-  round++;document.getElementById('round').textContent=round;
-  seq.push(Math.floor(Math.random()*4));
-  playSeq();
+const say = (t) => { const s = document.getElementById('ccS'); if (s) s.textContent = t; };
+function light(i, ms) { const el = box.querySelector('.cc-pad[data-i="' + i + '"]'); if (!el) return; el.classList.add('lit'); tone(PADS[i][2], ms / 1000 + 0.1); setTimeout(() => el.classList.remove('lit'), ms); }
+function dots() { document.getElementById('ccD').innerHTML = seq.map((_, k) => '<i class="' + (k < pos ? 'ok' : '') + '"></i>').join(''); }
+function addAndPlay() { seq.push(Math.floor(Math.random() * 4)); playSeq(); }
+function playSeq() {
+  listening = false; pos = 0; dots(); say('Watch me! 👀');
+  const gap = Math.max(260, 650 - seq.length * 25), on = gap * 0.7;
+  seq.forEach((i, k) => setTimeout(() => { if (G.state === 'play') light(i, on); }, 700 + k * gap));
+  setTimeout(() => { if (G.state !== 'play') return; listening = true; say('Your turn! 👆'); }, 700 + seq.length * gap);
 }
-async function tap(i){
-  if(!accepting)return;
-  await flash(i,180);
-  if(i===seq[pos]){
-    pos++;
-    if(window.KQFX)KQFX.play('tap');
-    if(pos===seq.length){accepting=false;if(window.KQFX)KQFX.play('success');setTimeout(next,500);}
-  }else{
-    accepting=false;if(window.KQFX)KQFX.lose();onGameComplete();
-    if(round-1>best){best=round-1;localStorage.setItem('simonBest',best);document.getElementById('best').textContent=best;}
-    document.getElementById('msg').textContent='❌ Wrong! You reached round '+round;
-    const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';
+function press(i) {
+  if (G.state !== 'play' || !listening) return;
+  light(i, 220);
+  if (i !== seq[pos]) {
+    listening = false; lives--; G.hudSet('lives', Math.max(0, lives)); KQ3D.sfx('wrong'); G.flash('#fecaca');
+    if (lives <= 0) { say('Oh no! 🙀'); G.over({ score: best, title: 'Great memory! 🐱', lines: ['🎵 ' + best + ' notes long'] }); return; }
+    say('Oops! Watch again 🙈'); setTimeout(() => { if (G.state === 'play') playSeq(); }, 1100); return;
+  }
+  pos++; dots();
+  if (pos === seq.length) {
+    listening = false; best = seq.length; G.score(best); KQ3D.sfx(best % 5 ? 'success' : 'levelup');
+    say(best % 5 ? 'Yay! 🎉' : best + ' in a row! 🌟'); setTimeout(() => { if (G.state === 'play') addAndPlay(); }, 900);
   }
 }
-</script></body></html>
+// start the first pattern when play begins (after the countdown)
+(function wait() { if (G.state === 'play' && seq && !seq.length) addAndPlay(); setTimeout(wait, 200); })();
+reset();
+</script>
+</body></html>

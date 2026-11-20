@@ -72,7 +72,7 @@
   var GAME_NAMES = {
     egg_jump:"Egg Jump", car_race:"Car Race", memory_match:"Memory Match", snake:"Snake",
     whack_mole:"Whack-a-Mole", tic_tac_toe:"Tic Tac Toe", balloon_pop:"Balloon Pop",
-    fruit_catch:"Fruit Catch", simon_says:"Simon Says", quick_math:"Quick Math",
+    fruit_catch:"Fruit Catch", simon_says:"Copy Cat", quick_math:"Quick Math",
     flappy_bee:"Flappy Bee", brick_breaker:"Brick Breaker", ping_pong:"Ping Pong",
     maze_run:"Maze Run", slide_puzzle:"Slide Puzzle", word_scramble:"Word Scramble",
     rock_paper:"Rock Paper Scissors", odd_one_out:"Odd One Out", color_tap:"Color Tap",

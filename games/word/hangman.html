@@ -1,162 +1,109 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Hangman</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Balloon Rescue</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#a18cd1,#fbc2eb);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:16px;max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#7c3aed;font-size:15px}
-.stage{font-size:56px;margin:6px 0;transition:transform .25s}
-.stage.hit{animation:shake .35s}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px) rotate(-4deg)}75%{transform:translateX(6px) rotate(4deg)}}
-.hintline{color:#7c3aed;font-weight:700;font-size:13px;margin-bottom:4px}
-.word{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0}
-.wl{width:30px;height:40px;border-bottom:4px solid #c084fc;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#5b21b6;background:#f5f0ff;border-radius:8px 8px 0 0}
-.wl.reveal{animation:fillpop .3s ease}
-@keyframes fillpop{0%{transform:scale(.6)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
-.keyboard{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:10px 0}
-.key{aspect-ratio:1/1;border-radius:9px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:transform .1s}
-.key:active{transform:scale(.88)}
-.key.good{background:linear-gradient(135deg,#34d399,#06b6d4)}
-.key.bad{background:linear-gradient(135deg,#94a3b8,#64748b);animation:shake .35s}
-.key.used{pointer-events:none;opacity:.55}
-.msg{color:#7c3aed;font-weight:800;font-size:15px;min-height:22px;margin-top:4px}
-.end{display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);align-items:center;justify-content:center;z-index:20}
-.end.show{display:flex}
-.end .card{background:#fff;border-radius:24px;padding:26px 22px;text-align:center;max-width:300px;animation:winpop .4s cubic-bezier(.34,1.56,.64,1)}
-@keyframes winpop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-.end .big{font-size:50px}
-.end h2{color:#7c3aed;margin:8px 0}
-.end button{margin-top:10px;background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 26px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-.confetti{position:fixed;top:-10px;width:8px;height:14px;border-radius:2px;z-index:30;animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">🟣 <span id="score">0</span>/<span id="totalW">10</span></div>
-    <button onclick="restart()">↻</button>
-  </div>
-  <div class="hintline" id="hintline">Guess the word!</div>
-  <div class="stage" id="stage">🙂</div>
-  <div class="word" id="word"></div>
-  <div class="keyboard" id="keyboard"></div>
-  <div class="msg" id="msg"></div>
-</div>
-<div class="end" id="end">
-  <div class="card">
-    <div class="big" id="endIcon">🏆</div>
-    <h2 id="endTitle">Round Complete!</h2>
-    <p id="endMsg">Nice guessing!</p>
-    <button onclick="restart()">Play Again</button>
-  </div>
-</div>
+.br { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: 70px 10px 16px; font-family: 'Baloo 2', sans-serif;
+  background: linear-gradient(180deg, #7dd3fc, #e0f2fe 70%, #bbf7d0 70.2%, #86efac); }
+.br-sky { position: relative; width: 100%; max-width: 420px; height: 230px; }
+.br-grp { position: absolute; left: 0; right: 0; height: 220px; transition: bottom .6s cubic-bezier(.34,1.4,.64,1); }
+.br-pup { position: absolute; left: 50%; bottom: 0; width: 70px; margin-left: -35px; }
+.br-pup img { width: 70px; height: 70px; display: block; }
+.br-b { position: absolute; width: 46px; height: 56px; border-radius: 50% 50% 46% 46%; bottom: 120px; transition: transform .3s, opacity .3s; }
+.br-b::before { content: ''; position: absolute; left: 50%; top: 100%; width: 2px; height: var(--len); background: rgba(60,60,60,.5); transform-origin: top; transform: rotate(var(--rot)); }
+.br-b::after { content: ''; position: absolute; left: 22%; top: 16%; width: 9px; height: 14px; border-radius: 50%; background: rgba(255,255,255,.6); }
+.br-b.pop { transform: scale(1.6); opacity: 0; }
+.br-b { animation: brSway 3s ease-in-out infinite; } .br-b:nth-child(even) { animation-delay: -1.5s; }
+@keyframes brSway { 50% { margin-top: -6px; } }
+.br-card { width: 100%; max-width: 480px; background: #fff; border-radius: 26px; padding: 12px; text-align: center; box-shadow: 0 8px 0 rgba(0,0,0,.12); }
+.br-top { display: flex; justify-content: space-between; align-items: center; font-weight: 800; color: #0369a1; font-size: 14px; }
+.br-hint { display: inline-flex; align-items: center; gap: 6px; background: #f0f9ff; border-radius: 999px; padding: 2px 12px; }
+.br-hint img { width: 28px; height: 28px; }
+.br-word { display: flex; justify-content: center; gap: 6px; margin: 10px 0 12px; flex-wrap: wrap; }
+.br-word span { width: 38px; height: 46px; border-bottom: 4px solid #0ea5e9; font-size: 30px; font-weight: 800; color: #0c4a6e; display: grid; place-items: center; }
+.br-word span.got { animation: brPop .3s; color: #16a34a; }
+@keyframes brPop { 50% { transform: scale(1.3); } }
+.br-keys { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.br-k { border: none; border-radius: 12px; height: 44px; font: 800 20px 'Baloo 2', sans-serif; color: #fff; background: linear-gradient(180deg, #a78bfa, #7c3aed); box-shadow: 0 4px 0 #5b21b6; cursor: pointer; }
+.br-k:active { transform: translateY(3px); box-shadow: 0 1px 0 #5b21b6; }
+.br-k.ok { background: #22c55e; box-shadow: 0 4px 0 #15803d; } .br-k.no { background: #cbd5e1; box-shadow: none; color: #64748b; }
+.br-k:disabled { cursor: default; }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const POOL=[
-['CAT','🐱'],['DOG','🐶'],['FISH','🐟'],['BIRD','🐦'],['FROG','🐸'],
-['APPLE','🍎'],['MANGO','🥭'],['GRAPE','🍇'],['LEMON','🍋'],['TIGER','🐯'],['ZEBRA','🦓'],
-['HOUSE','🏠'],['TRAIN','🚂'],['PLANE','✈️'],['CLOCK','⏰'],['STAR','⭐'],['MOON','🌙'],
-['FLOWER','🌸'],['MONKEY','🐵'],['RABBIT','🐰'],['ROCKET','🚀'],['GUITAR','🎸'],['CAMERA','📷'],
-['BANANA','🍌'],['ORANGE','🍊'],['SCHOOL','🏫'],['PENCIL','✏️'],['BUTTER','🧈'],['CHEESE','🧀'],
-['SHARK','🦈'],['WHALE','🐳'],['MOUSE','🐭'],['PANDA','🐼'],['SNAKE','🐍'],['HORSE','🐴']
+/* Balloon Rescue — guess the word letter by letter. Each wrong letter pops a balloon;
+   if all 6 pop the puppy lands softly (no word). 5 words per game. */
+const TOPICS = [
+  { icon: '🐾', name: 'Animals', words: [['TIGER', '🐯'], ['RABBIT', '🐰'], ['MONKEY', '🐒'], ['ZEBRA', '🦓'], ['PANDA', '🐼'], ['TURTLE', '🐢'], ['PARROT', '🦜'], ['CAMEL', '🐫'], ['WHALE', '🐳'], ['SNAKE', '🐍'], ['HORSE', '🐴'], ['GIRAFFE', '🦒']] },
+  { icon: '🍎', name: 'Food', words: [['APPLE', '🍎'], ['BANANA', '🍌'], ['MANGO', '🥭'], ['PIZZA', '🍕'], ['CARROT', '🥕'], ['GRAPES', '🍇'], ['CHERRY', '🍒'], ['BREAD', '🍞'], ['CHEESE', '🧀'], ['COOKIE', '🍪'], ['LEMON', '🍋'], ['POTATO', '🥔']] },
+  { icon: '🏫', name: 'School', words: [['PENCIL', '✏️'], ['BOOK', '📚'], ['TEACHER', '🧑‍🏫'], ['CLOCK', '⏰'], ['RULER', '📏'], ['CRAYON', '🖍️'], ['SCHOOL', '🏫'], ['GLOBE', '🌍'], ['PAINT', '🎨'], ['BELL', '🔔'], ['MUSIC', '🎵'], ['ROBOT', '🤖']] },
+  { icon: '🚀', name: 'Things that go', words: [['ROCKET', '🚀'], ['TRAIN', '🚂'], ['TRUCK', '🚚'], ['PLANE', '✈️'], ['BICYCLE', '🚲'], ['TRACTOR', '🚜'], ['HELICOPTER', '🚁'], ['BOAT', '⛵'], ['SCOOTER', '🛵'], ['BUS', '🚌'], ['TAXI', '🚕'], ['SHIP', '🚢']] }
 ];
-const STAGES=['🙂','😐','😟','😨','😰','😱','💀'];
-const MAX_WRONG=6, ROUND_LEN=10;
-let round=[],idx=0,score=0,cur=null,revealed=[],wrong=0;
-
-function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-
-function restart(){
-  round=shuffleArr([...POOL]).slice(0,ROUND_LEN);
-  idx=0;score=0;
-  document.getElementById('score').textContent=0;
-  document.getElementById('totalW').textContent=round.length;
-  document.getElementById('end').classList.remove('show');
-  loadWord();
+const BAL = ['#ef4444', '#f97316', '#facc15', '#22c55e', '#3b82f6', '#a855f7'];
+const ROUNDS = 5;
+const G = KQ3D.init({
+  id: 'hangman', title: 'Balloon Rescue', bestKey: 'hangBest', music: true,
+  hero: ['🎈', '🐶', '🔤'], colors: ['#0ea5e9', '#a855f7'],
+  how: [['🔤', 'Guess the hidden word one letter at a time'], ['🎈', 'Each wrong letter pops a balloon — keep the puppy flying!'], ['💡', 'After 2 wrong letters you get a picture hint'], ['⭐', 'Fewer pops = more points. 5 words!']],
+  scoreIcon: '🎈', stars: [100, 200, 270],
+  pick: { label: 'Pick a topic', options: TOPICS },
+  onReset: (t) => reset(t)
+});
+const box = document.createElement('div'); box.className = 'br'; G.scene.appendChild(box);
+let topic, words, r, score, word, pic, got, wrong, saved, done;
+function reset(t) { topic = t || TOPICS[0]; words = topic.words.slice().sort(() => Math.random() - 0.5).slice(0, ROUNDS); r = 0; score = 0; saved = 0; G.score(0); round(); }
+function round() {
+  [word, pic] = words[r]; got = new Set(); wrong = 0; done = false;
+  const bals = BAL.map((c, k) => {
+    const dx = (k - 2.5) * 40, h = 110 + (k % 2) * 28, len = h - 64;            // string from balloon down to the puppy's head
+    const ang = Math.atan2(dx, len) * 180 / Math.PI, sl = Math.hypot(dx, len);
+    return '<div class="br-b" id="brB' + k + '" style="left:calc(50% + ' + (dx - 23) + 'px);background:' + c + ';bottom:' + h + 'px;--len:' + sl + 'px;--rot:' + ang + 'deg"></div>';
+  }).join('');
+  box.innerHTML = '<div class="br-sky" id="brSky"><div class="br-grp" id="brPup" style="bottom:10px">' + bals + '<div class="br-pup"><img src="' + KQ3D.emojiFile('🐶') + '" alt=""></div></div></div>' +
+    '<div class="br-card"><div class="br-top"><span>Word ' + (r + 1) + ' of ' + ROUNDS + ' · ' + topic.name + '</span><span class="br-hint" id="brHint">💡 hint after 2 misses</span></div>' +
+    '<div class="br-word" id="brW">' + [...word].map(() => '<span></span>').join('') + '</div>' +
+    '<div class="br-keys">' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((c) => '<button type="button" class="br-k" data-c="' + c + '">' + c + '</button>').join('') + '</div></div>';
+  box.querySelectorAll('.br-k').forEach((b) => b.onclick = () => guess(b.dataset.c, b));
 }
-
-function loadWord(){
-  if(idx>=round.length){finish();return;}
-  cur=round[idx];wrong=0;
-  revealed=cur[0].split('').map(()=>false);
-  document.getElementById('hintline').textContent='Word '+(idx+1)+' of '+round.length+'  '+cur[1];
-  document.getElementById('stage').textContent=STAGES[0];
-  document.getElementById('stage').classList.remove('hit');
-  document.getElementById('msg').textContent='';
-  renderWord();renderKeyboard();
-}
-
-function renderWord(){
-  const w=document.getElementById('word');w.innerHTML='';
-  cur[0].split('').forEach((ch,i)=>{
-    const d=document.createElement('div');d.className='wl';d.id='wl_'+i;
-    d.textContent=revealed[i]?ch:'';
-    w.appendChild(d);
-  });
-}
-
-function renderKeyboard(){
-  const kb=document.getElementById('keyboard');kb.innerHTML='';
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(ch=>{
-    const k=document.createElement('div');k.className='key';k.textContent=ch;
-    k.onclick=()=>guess(ch,k);
-    kb.appendChild(k);
-  });
-}
-
-function guess(ch,el){
-  el.classList.add('used');
-  if(cur[0].includes(ch)){
-    el.classList.add('good');
-    if(window.KQFX)KQFX.play('ding');
-    cur[0].split('').forEach((c,i)=>{ if(c===ch){revealed[i]=true; const wl=document.getElementById('wl_'+i); wl.textContent=c; wl.classList.add('reveal');} });
-    if(revealed.every(r=>r)){
-      score++;document.getElementById('score').textContent=score;
-      document.getElementById('msg').textContent='🎉 You saved the day! It was '+cur[0];
-      if(window.KQFX)KQFX.win();
-      burstConfetti();
-      idx++;
-      setTimeout(loadWord,1100);
-    }
-  }else{
-    el.classList.add('bad');
-    if(window.KQFX)KQFX.play('wrong');
-    wrong++;
-    document.getElementById('stage').textContent=STAGES[Math.min(wrong,STAGES.length-1)];
-    document.getElementById('stage').classList.remove('hit');void document.getElementById('stage').offsetWidth;document.getElementById('stage').classList.add('hit');
-    if(wrong>=MAX_WRONG){
-      revealed=revealed.map(()=>true);renderWord();
-      document.getElementById('msg').textContent='😢 It was '+cur[0]+' — next word!';
-      if(window.KQFX)KQFX.lose();
-      idx++;
-      setTimeout(loadWord,1300);
-    }
+function guess(c, b) {
+  if (G.state !== 'play' || done || got.has(c)) return;
+  got.add(c); b.disabled = true;
+  if (word.includes(c)) {
+    b.classList.add('ok'); KQ3D.sfx('pop');
+    [...word].forEach((ch, k) => { if (ch === c) { const s = document.getElementById('brW').children[k]; s.textContent = c; s.classList.add('got'); } });
+    if ([...word].every((ch) => got.has(ch))) win();
+  } else {
+    b.classList.add('no'); wrong++; KQ3D.sfx('blast');
+    const bal = document.getElementById('brB' + (BAL.length - wrong)); if (bal) bal.classList.add('pop');
+    document.getElementById('brPup').style.bottom = (10 - wrong * 6) + 'px';
+    if (wrong === 2) { document.getElementById('brHint').innerHTML = '<img src="' + KQ3D.emojiFile(pic) + '" alt=""> Hint!'; KQ3D.sfx('chime'); }
+    if (wrong >= BAL.length) lose();
   }
 }
-
-function finish(){
-  document.getElementById('endIcon').textContent=score>=round.length*0.7?'🏆':'🎈';
-  document.getElementById('endTitle').textContent='Round Complete!';
-  document.getElementById('endMsg').textContent='You guessed '+score+' out of '+round.length+' words!';
-  document.getElementById('end').classList.add('show');
-  onGameComplete();
+function win() {
+  done = true; saved++;
+  const pts = 20 + (BAL.length - wrong) * 5 + (wrong < 2 ? 10 : 0); score += pts; G.score(score);
+  KQ3D.sfx('success'); document.getElementById('brPup').style.bottom = '40px';
+  document.getElementById('brHint').innerHTML = '<img src="' + KQ3D.emojiFile(pic) + '" alt=""> Saved!';
+  G.pop('Saved! +' + pts, innerWidth / 2, 200, '#fde047');
+  setTimeout(nextRound, 1600);
 }
-
-function burstConfetti(){
-  const colors=['#ff5a8a','#ffd166','#34d399','#60a5fa','#c084fc'];
-  for(let i=0;i<20;i++){
-    const d=document.createElement('div');
-    d.className='confetti';
-    d.style.left=(Math.random()*100)+'vw';
-    d.style.background=colors[Math.floor(Math.random()*colors.length)];
-    d.style.animationDuration=(1+Math.random()*0.8)+'s';
-    document.body.appendChild(d);
-    setTimeout(()=>d.remove(),2000);
-  }
+function lose() {
+  done = true; KQ3D.sfx('lose');
+  [...word].forEach((ch, k) => { const s = document.getElementById('brW').children[k]; if (!s.textContent) { s.textContent = ch; s.style.color = '#ef4444'; } });
+  document.getElementById('brPup').style.bottom = '-40px';
+  document.getElementById('brHint').innerHTML = '<img src="' + KQ3D.emojiFile(pic) + '" alt=""> It was ' + word;
+  G.pop('Soft landing! 🐶', innerWidth / 2, 220, '#fff');
+  setTimeout(nextRound, 2400);
 }
-
-restart();
-</script></body></html>
+function nextRound() {
+  if (G.state !== 'play') return;
+  r++;
+  if (r >= ROUNDS) G.over({ score, title: saved >= 4 ? 'Hero rescuer! 🎈' : 'Nice try!', lines: ['🐶 ' + saved + ' / ' + ROUNDS + ' saved', topic.icon + ' ' + topic.name] });
+  else round();
+}
+document.addEventListener('keydown', (e) => { const c = (e.key || '').toUpperCase(); if (/^[A-Z]$/.test(c)) { const b = box.querySelector('.br-k[data-c="' + c + '"]'); if (b) guess(c, b); } });
+reset(G.choice);
+</script>
+</body></html>

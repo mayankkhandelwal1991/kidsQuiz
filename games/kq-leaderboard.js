@@ -83,7 +83,7 @@
     reaction_test:"Reaction Test", typing_speed:"Typing Speed", endless_runner_3d:"Jungle Runner 3D",
     crossy_road_3d:"Lane Hopper 3D", basketball_3d:"Hoops 3D", ball_maze_3d:"Gravity Maze 3D",
     drift_racer_3d:"Neon Drift 3D", platform_runner:"Platform Runner", neon_lane_dash:"Neon Lane Dash",
-    word_search:"Word Search", spelling_bee:"Spelling Bee", hangman:"Hangman",
+    word_search:"Word Search", spelling_bee:"Spelling Bee", hangman:"Balloon Rescue",
     missing_letter:"Letter Fun", word_match:"Word Match", rhyme_time:"Word Wizard",
     first_letter_find:"First Letter Find", category_sort:"Category Sort", word_ladder:"Word Ladder",
     synonym_match:"Synonym Match", word_builder:"Word Builder", speed_spell:"Speed Spell",

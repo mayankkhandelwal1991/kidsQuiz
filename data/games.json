@@ -480,9 +480,9 @@
     {
       "id": "missing_letter",
       "file": "word/missing_letter.html",
-      "icon": "🌱",
-      "title": "Missing Letter",
-      "how": "A letter is missing from the word — pick the right one from 4 choices!",
+      "icon": "🔤",
+      "title": "Letter Fun",
+      "how": "Pick Missing letter (fill the gap in the word) or First letter (find the picture that starts with the letter) — or Mixed! Every word is read aloud. 10 rounds.",
       "category": "word",
       "badge": null,
       "featured": false,
@@ -491,24 +491,13 @@
     {
       "id": "rhyme_time",
       "file": "word/rhyme_time.html",
-      "icon": "🎵",
-      "title": "Rhyme Time",
-      "how": "Pick the word that rhymes with the one shown. Ten rounds of rhyming fun!",
+      "icon": "🧙",
+      "title": "Word Wizard",
+      "how": "Pick a spell book: Rhymes, Same meaning or Opposites. Choose the right word from 4 picture cards — answer fast for bonus points. 10 rounds!",
       "category": "word",
       "badge": null,
       "featured": false,
       "order": 47
-    },
-    {
-      "id": "first_letter_find",
-      "file": "word/first_letter_find.html",
-      "icon": "🔠",
-      "title": "First Letter Find",
-      "how": "A letter is shown — tap the word from the options that starts with it!",
-      "category": "word",
-      "badge": null,
-      "featured": false,
-      "order": 48
     },
     {
       "id": "category_sort",
@@ -531,17 +520,6 @@
       "badge": null,
       "featured": false,
       "order": 50
-    },
-    {
-      "id": "synonym_match",
-      "file": "word/synonym_match.html",
-      "icon": "🧠",
-      "title": "Synonym Match",
-      "how": "Pick the word that means the same thing. Ten rounds of vocabulary fun!",
-      "category": "word",
-      "badge": null,
-      "featured": false,
-      "order": 51
     },
     {
       "id": "word_builder",

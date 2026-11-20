@@ -1,147 +1,95 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Rhyme Time</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Word Wizard</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#89f7fe,#66a6ff);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#1d4ed8;font-size:15px}
-.progwrap{background:#dbeafe;border-radius:20px;height:10px;overflow:hidden;margin-bottom:10px}
-.progbar{height:100%;background:linear-gradient(135deg,#3b82f6,#06b6d4);width:0%;transition:width .4s ease}
-.target{margin:10px 0}
-.target .em{font-size:60px;animation:bob 2s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.target .wd{font-size:26px;font-weight:800;color:#1d4ed8;margin-top:4px}
-.sub{font-size:13px;color:#64748b;margin-bottom:8px}
-.options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
-.opt{padding:16px 6px;border-radius:16px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:#fff;font-size:18px;font-weight:800;cursor:pointer;transition:transform .1s}
-.opt:active{transform:scale(.92)}
-.opt .oe{font-size:26px;display:block;margin-bottom:2px}
-.opt.correct{background:linear-gradient(135deg,#34d399,#06b6d4);animation:pop .4s ease}
-.opt.wrong{background:linear-gradient(135deg,#f87171,#fb923c);animation:shake .35s}
-@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.msg{color:#1d4ed8;font-weight:800;font-size:15px;min-height:22px}
-.end{display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);align-items:center;justify-content:center;z-index:20}
-.end.show{display:flex}
-.end .card{background:#fff;border-radius:24px;padding:26px 22px;text-align:center;max-width:300px;animation:winpop .4s cubic-bezier(.34,1.56,.64,1)}
-@keyframes winpop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-.end .big{font-size:50px}
-.end h2{color:#1d4ed8;margin:8px 0}
-.end button{margin-top:10px;background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 26px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-.confetti{position:fixed;top:-10px;width:8px;height:14px;border-radius:2px;z-index:30;animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">🎵 <span id="score">0</span>/<span id="totalW">10</span></div>
-    <button onclick="restart()">↻</button>
-  </div>
-  <div class="progwrap"><div class="progbar" id="prog"></div></div>
-  <div class="sub">Which word rhymes with...</div>
-  <div class="target"><div class="em" id="em"></div><div class="wd" id="wd"></div></div>
-  <div class="options" id="options"></div>
-  <div class="msg" id="msg"></div>
-</div>
-<div class="end" id="end">
-  <div class="card">
-    <div class="big">🏆</div>
-    <h2>Round Complete!</h2>
-    <p id="endMsg">Nice rhyming!</p>
-    <button onclick="restart()">Play Again</button>
-  </div>
-</div>
+.ww { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: 74px 14px 24px; font-family: 'Baloo 2', sans-serif;
+  background: radial-gradient(circle at 80% 20%, rgba(255,255,255,.18) 0 2px, transparent 3px) 0 0 / 40px 40px, radial-gradient(circle at 30% 70%, rgba(255,255,255,.14) 0 2px, transparent 3px) 0 0 / 56px 56px, linear-gradient(170deg, #4c1d95, #7c3aed 60%, #c026d3); }
+.ww-top { width: 100%; max-width: 480px; display: flex; align-items: flex-end; gap: 8px; }
+.ww-wiz { width: 84px; flex: 0 0 auto; animation: wwBob 3s ease-in-out infinite; filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+@keyframes wwBob { 50% { transform: translateY(-6px) rotate(-4deg); } }
+.ww-say { flex: 1; background: #fff; color: #4c1d95; border-radius: 20px 20px 20px 4px; padding: 8px 12px; font-size: 15px; font-weight: 800; line-height: 1.25; margin-bottom: 30px; box-shadow: 0 4px 0 rgba(0,0,0,.15); }
+.ww-card { width: 100%; max-width: 480px; background: #fff; border-radius: 28px; padding: 14px; text-align: center; box-shadow: 0 8px 0 rgba(0,0,0,.18); }
+.ww-prog { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; }
+.ww-prog i { width: 22px; height: 8px; border-radius: 4px; background: #ede9fe; } .ww-prog i.ok { background: #22c55e; } .ww-prog i.no { background: #f87171; } .ww-prog i.cur { background: #a78bfa; }
+.ww-q { display: inline-flex; align-items: center; gap: 10px; background: #f5f3ff; border-radius: 22px; padding: 8px 18px; margin: 4px 0 12px; animation: wwIn .4s cubic-bezier(.34,1.56,.64,1); }
+.ww-q img { width: 60px; height: 60px; } .ww-q b { font-size: 36px; color: #6d28d9; letter-spacing: .02em; }
+@keyframes wwIn { from { transform: scale(.4); opacity: 0; } }
+.ww-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ww-o { border: none; border-radius: 20px; padding: 10px 6px; min-height: 92px; font: 800 20px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; box-shadow: 0 5px 0 rgba(0,0,0,.2); }
+.ww-o img { width: 44px; height: 44px; }
+.ww-o:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,.2); }
+.ww-o.ok { background: #22c55e !important; animation: wwPop .4s; } .ww-o.no { background: #ef4444 !important; animation: wwShake .4s; } .ww-o.dim { opacity: .45; }
+@keyframes wwPop { 50% { transform: scale(1.08); } } @keyframes wwShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const GROUPS=[
- {suffix:'AT',words:[['CAT','🐱'],['HAT','🎩'],['BAT','🦇'],['MAT','🟫'],['RAT','🐀']]},
- {suffix:'OG',words:[['DOG','🐶'],['FROG','🐸'],['LOG','🪵']]},
- {suffix:'UN',words:[['SUN','☀️'],['BUN','🥐'],['FUN','🎉'],['RUN','🏃']]},
- {suffix:'ISH',words:[['FISH','🐟'],['DISH','🍽️'],['WISH','🌠']]},
- {suffix:'OON',words:[['MOON','🌙'],['SPOON','🥄'],['BALLOON','🎈']]},
- {suffix:'AR',words:[['STAR','⭐'],['CAR','🚗'],['JAR','🫙']]},
- {suffix:'EE',words:[['BEE','🐝'],['TREE','🌳'],['KEY','🔑']]},
- {suffix:'AKE',words:[['CAKE','🎂'],['SNAKE','🐍'],['LAKE','🏞️']]},
- {suffix:'OCK',words:[['CLOCK','⏰'],['ROCK','🪨'],['SOCK','🧦']]},
- {suffix:'ING',words:[['KING','👑'],['RING','💍'],['WING','🪽']]}
-];
-const ROUND_LEN=10;
-let round=[],idx=0,score=0,cur=null;
-
-function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-
-function restart(){
-  round=shuffleArr([...GROUPS]).filter(g=>g.words.length>=2).slice(0,ROUND_LEN);
-  idx=0;score=0;
-  document.getElementById('score').textContent=0;
-  document.getElementById('totalW').textContent=round.length;
-  document.getElementById('end').classList.remove('show');
-  loadRound();
+/* Word Wizard — rhymes, same-meaning words and opposites. 10 rounds. */
+const RHYMES = [['cat', '🐱', 'hat', '🎩'], ['dog', '🐶', 'frog', '🐸'], ['bee', '🐝', 'tree', '🌳'], ['car', '🚗', 'star', '⭐'], ['cake', '🎂', 'snake', '🐍'], ['moon', '🌙', 'spoon', '🥄'], ['king', '👑', 'ring', '💍'], ['bear', '🐻', 'pear', '🍐'], ['goat', '🐐', 'boat', '⛵'], ['house', '🏠', 'mouse', '🐭'], ['bell', '🔔', 'shell', '🐚'], ['rain', '🌧️', 'train', '🚂'], ['fox', '🦊', 'box', '📦'], ['sock', '🧦', 'clock', '⏰'], ['bed', '🛏️', 'bread', '🍞'], ['mug', '☕', 'bug', '🐛'], ['kite', '🪁', 'light', '💡'], ['fish', '🐟', 'dish', '🍽️']];
+const SAME = [['big', 'large'], ['small', 'tiny'], ['happy', 'glad'], ['fast', 'quick'], ['begin', 'start'], ['shut', 'close'], ['smart', 'clever'], ['scared', 'afraid'], ['pretty', 'lovely'], ['angry', 'cross'], ['jump', 'leap'], ['look', 'see'], ['shout', 'yell'], ['end', 'finish'], ['sick', 'ill'], ['gift', 'present'], ['kind', 'nice'], ['chat', 'talk']];
+const OPP = [['hot', 'cold', '🔥', '🧊'], ['big', 'small', '🐘', '🐭'], ['up', 'down', '⬆️', '⬇️'], ['happy', 'sad', '😀', '😢'], ['fast', 'slow', '🐇', '🐢'], ['day', 'night', '☀️', '🌙'], ['open', 'shut', null, null], ['tall', 'short', '🦒', '🐁'], ['full', 'empty', null, null], ['wet', 'dry', '💧', '🏜️'], ['old', 'new', null, null], ['in', 'out', null, null], ['push', 'pull', null, null], ['hard', 'soft', '🪨', '🧸'], ['loud', 'quiet', '📢', '🤫'], ['first', 'last', '🥇', null]];
+const MODES = [{ icon: '🎵', name: 'Rhymes', key: 'r' }, { icon: '🤝', name: 'Same meaning', key: 's' }, { icon: '🔄', name: 'Opposites', key: 'o' }];
+const COLS = ['#f43f5e', '#f59e0b', '#06b6d4', '#8b5cf6'];
+const G = KQ3D.init({
+  id: 'rhyme_time', title: 'Word Wizard', bestKey: 'rhymeBest', music: true,
+  hero: ['🧙', '🎵', '✨'], colors: ['#7c3aed', '#c026d3'],
+  how: [['🎵', 'Rhymes: find the word that sounds the same at the end'], ['🤝', 'Same meaning: find the word that means the same'], ['🔄', 'Opposites: find the word that means the opposite'], ['⚡', 'Answer fast for bonus points — 10 rounds!']],
+  scoreIcon: '✨', stars: [60, 110, 150],
+  pick: { label: 'Pick a spell book', options: MODES },
+  onReset: (m) => reset(m)
+});
+const box = document.createElement('div'); box.className = 'ww'; G.scene.appendChild(box);
+let mode, qs, i, score, results, streak, t0, locked;
+const shuffle = (a) => a.slice().sort(() => Math.random() - 0.5);
+function say(t) {
+  try { if (localStorage.getItem('kq_muted') === '1') return; } catch (e) {}
+  try { if (window.Android && Android.speak) { Android.speak(t, 'en'); return; } } catch (e) {}
+  try { const u = new SpeechSynthesisUtterance(t); u.rate = 0.9; u.pitch = 1.15; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}
 }
-
-function loadRound(){
-  if(idx>=round.length){finish();return;}
-  const grp=round[idx];
-  const picks=shuffleArr([...grp.words]).slice(0,2);
-  cur={target:picks[0],correct:picks[1]};
-  document.getElementById('em').textContent=cur.target[1];
-  document.getElementById('wd').textContent=cur.target[0];
-  document.getElementById('prog').style.width=Math.round(idx/round.length*100)+'%';
-  document.getElementById('msg').textContent='Round '+(idx+1)+' of '+round.length;
-  const others=shuffleArr(GROUPS.filter(g=>g.suffix!==grp.suffix));
-  const decoys=[];
-  for(const g of others){
-    if(decoys.length>=3)break;
-    const w=g.words[Math.floor(Math.random()*g.words.length)];
-    if(w[0]!==cur.correct[0]) decoys.push(w);
-  }
-  const opts=shuffleArr([cur.correct,...decoys.slice(0,3)]);
-  const box=document.getElementById('options');box.innerHTML='';
-  opts.forEach(w=>{
-    const d=document.createElement('div');d.className='opt';
-    d.innerHTML='<span class="oe">'+w[1]+'</span>'+w[0];
-    d.onclick=()=>pick(w,d);
-    box.appendChild(d);
+function build() {
+  if (mode.key === 'r') return shuffle(RHYMES).slice(0, 10).map((r) => {
+    const wrong = shuffle(RHYMES.filter((x) => x !== r)).slice(0, 3).map((x) => ({ w: x[0], e: x[1] }));
+    return { word: r[0], pic: r[1], ask: 'Which word rhymes with “' + r[0] + '”?', right: { w: r[2], e: r[3] }, opts: shuffle([{ w: r[2], e: r[3] }].concat(wrong)) };
+  });
+  if (mode.key === 's') return shuffle(SAME).slice(0, 10).map((r) => {
+    const wrong = shuffle(SAME.filter((x) => x !== r)).slice(0, 3).map((x) => ({ w: x[Math.random() < 0.5 ? 0 : 1] }));
+    return { word: r[0], ask: 'Which word means the same as “' + r[0] + '”?', right: { w: r[1] }, opts: shuffle([{ w: r[1] }].concat(wrong)) };
+  });
+  return shuffle(OPP).slice(0, 10).map((r) => {
+    const wrong = shuffle(OPP.filter((x) => x !== r)).slice(0, 3).map((x) => ({ w: x[0], e: x[2] }));
+    return { word: r[0], pic: r[2], ask: 'What is the opposite of “' + r[0] + '”?', right: { w: r[1], e: r[3] }, opts: shuffle([{ w: r[1], e: r[3] }].concat(wrong)) };
   });
 }
-
-function pick(w,el){
-  document.querySelectorAll('.opt').forEach(o=>o.style.pointerEvents='none');
-  if(w[0]===cur.correct[0]){
-    el.classList.add('correct');if(window.KQFX)KQFX.play('ding');
-    score++;document.getElementById('score').textContent=score;
-    document.getElementById('msg').textContent='🎉 '+cur.correct[0]+' rhymes with '+cur.target[0]+'!';
-    burstConfetti();
-  }else{
-    el.classList.add('wrong');if(window.KQFX)KQFX.play('wrong');
-    document.getElementById('msg').textContent='❌ '+cur.correct[0]+' was the rhyme!';
+function reset(m) { mode = m || MODES[0]; qs = build(); i = 0; score = 0; results = []; streak = 0; G.score(0); show(); }
+function show() {
+  const q = qs[i]; locked = false; t0 = performance.now();
+  box.innerHTML = '<div class="ww-top"><img class="ww-wiz" src="' + KQ3D.emojiFile('🧙') + '" alt=""><div class="ww-say">' + q.ask + '</div></div>' +
+    '<div class="ww-card"><div class="ww-prog">' + qs.map((_, k) => '<i class="' + (results[k] === true ? 'ok' : results[k] === false ? 'no' : k === i ? 'cur' : '') + '"></i>').join('') + '</div>' +
+    '<div class="ww-q">' + (q.pic ? '<img src="' + KQ3D.emojiFile(q.pic) + '" alt="">' : '') + '<b>' + q.word + '</b></div>' +
+    '<div class="ww-opts">' + q.opts.map((o, k) => '<button type="button" class="ww-o" data-k="' + k + '" style="background:' + COLS[k] + '">' + (o.e ? '<img src="' + KQ3D.emojiFile(o.e) + '" alt="">' : '') + o.w + '</button>').join('') + '</div></div>';
+  box.querySelectorAll('.ww-o').forEach((b) => b.onclick = () => answer(b, q.opts[+b.dataset.k], q));
+  setTimeout(() => say(q.word), 250);
+}
+function answer(b, o, q) {
+  if (G.state !== 'play' || locked) return; locked = true;
+  const ok = o.w === q.right.w, secs = (performance.now() - t0) / 1000;
+  results[i] = ok;
+  if (ok) {
+    streak++; const pts = 10 + (secs < 4 ? 5 : 0) + (streak >= 3 ? 5 : 0); score += pts; G.score(score);
+    b.classList.add('ok'); KQ3D.sfx(streak >= 3 ? 'coin' : 'success'); say(q.word + ', ' + o.w);
+    const r = b.getBoundingClientRect(); G.pop('+' + pts + (secs < 4 ? ' ⚡' : '') + (streak >= 3 ? ' 🔥' : ''), r.left + r.width / 2, r.top, '#fde047');
+  } else {
+    streak = 0; b.classList.add('no'); KQ3D.sfx('wrong');
+    box.querySelectorAll('.ww-o').forEach((x) => { const oo = q.opts[+x.dataset.k]; if (oo.w === q.right.w) x.classList.add('ok'); else if (x !== b) x.classList.add('dim'); });
+    say(q.word + ', ' + q.right.w);
   }
-  idx++;
-  setTimeout(loadRound,1000);
+  setTimeout(() => { if (G.state !== 'play') return; i++; if (i >= qs.length) finish(); else show(); }, ok ? 1000 : 1800);
 }
-
-function finish(){
-  document.getElementById('prog').style.width='100%';
-  document.getElementById('endMsg').textContent='You found '+score+' out of '+round.length+' rhymes!';
-  document.getElementById('end').classList.add('show');
-  onGameComplete();
+function finish() {
+  const right = results.filter(Boolean).length;
+  G.over({ score, title: right >= 9 ? 'Word Wizard! 🧙' : right >= 6 ? 'Great spells!' : 'Keep practising!', lines: ['✅ ' + right + ' / 10 right', mode.icon + ' ' + mode.name] });
 }
-
-function burstConfetti(){
-  const colors=['#ff5a8a','#ffd166','#34d399','#60a5fa','#c084fc'];
-  for(let i=0;i<20;i++){
-    const d=document.createElement('div');
-    d.className='confetti';
-    d.style.left=(Math.random()*100)+'vw';
-    d.style.background=colors[Math.floor(Math.random()*colors.length)];
-    d.style.animationDuration=(1+Math.random()*0.8)+'s';
-    document.body.appendChild(d);
-    setTimeout(()=>d.remove(),2000);
-  }
-}
-
-restart();
-</script></body></html>
+reset(G.choice);
+</script>
+</body></html>

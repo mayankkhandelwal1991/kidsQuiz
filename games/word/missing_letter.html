@@ -1,153 +1,97 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Missing Letter</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Letter Fun</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#43e97b,#38f9d7);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#0d9488;font-size:15px}
-.progwrap{background:#d9fbe9;border-radius:20px;height:10px;overflow:hidden;margin-bottom:10px}
-.progbar{height:100%;background:linear-gradient(135deg,#34d399,#06b6d4);width:0%;transition:width .4s ease}
-.hintbox{font-size:64px;margin:8px 0;animation:bob 2s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.word{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:14px 0;font-size:0}
-.wl{display:inline-flex;align-items:center;justify-content:center;width:38px;height:48px;font-size:26px;font-weight:800;color:#0d9488;background:#f0fdf9;border-radius:10px;margin:2px}
-.wl.blank{background:linear-gradient(135deg,#fff8cc,#fff0f6);border:3px dashed #ffb703;color:#ffb703}
-.options{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
-.opt{padding:14px 0;border-radius:14px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:#fff;font-size:22px;font-weight:800;cursor:pointer;transition:transform .1s}
-.opt:active{transform:scale(.9)}
-.opt.correct{background:linear-gradient(135deg,#34d399,#06b6d4);animation:pop .4s ease}
-.opt.wrong{background:linear-gradient(135deg,#f87171,#fb923c);animation:shake .35s}
-@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.msg{color:#0d9488;font-weight:800;font-size:15px;min-height:22px}
-.end{display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);align-items:center;justify-content:center;z-index:20}
-.end.show{display:flex}
-.end .card{background:#fff;border-radius:24px;padding:26px 22px;text-align:center;max-width:300px;animation:winpop .4s cubic-bezier(.34,1.56,.64,1)}
-@keyframes winpop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-.end .big{font-size:50px}
-.end h2{color:#0d9488;margin:8px 0}
-.end button{margin-top:10px;background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 26px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-.confetti{position:fixed;top:-10px;width:8px;height:14px;border-radius:2px;z-index:30;animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">🌱 <span id="score">0</span>/<span id="totalW">10</span></div>
-    <button onclick="restart()">↻</button>
-  </div>
-  <div class="progwrap"><div class="progbar" id="prog"></div></div>
-  <div class="hintbox" id="hint"></div>
-  <div class="word" id="word"></div>
-  <div class="options" id="options"></div>
-  <div class="msg" id="msg">Pick the missing letter!</div>
-</div>
-<div class="end" id="end">
-  <div class="card">
-    <div class="big">🏆</div>
-    <h2>Round Complete!</h2>
-    <p id="endMsg">Nice work!</p>
-    <button onclick="restart()">Play Again</button>
-  </div>
-</div>
+.ww { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: 74px 14px 24px; font-family: 'Baloo 2', sans-serif;
+  background: radial-gradient(circle at 80% 20%, rgba(255,255,255,.18) 0 2px, transparent 3px) 0 0 / 40px 40px, radial-gradient(circle at 30% 70%, rgba(255,255,255,.14) 0 2px, transparent 3px) 0 0 / 56px 56px, linear-gradient(170deg, #065f46, #10b981 60%, #84cc16); }
+.ww-top { width: 100%; max-width: 480px; display: flex; align-items: flex-end; gap: 8px; }
+.ww-wiz { width: 84px; flex: 0 0 auto; animation: wwBob 3s ease-in-out infinite; filter: drop-shadow(0 6px 6px rgba(0,0,0,.25)); }
+@keyframes wwBob { 50% { transform: translateY(-6px) rotate(-4deg); } }
+.ww-say { flex: 1; background: #fff; color: #065f46; border-radius: 20px 20px 20px 4px; padding: 8px 12px; font-size: 15px; font-weight: 800; line-height: 1.25; margin-bottom: 30px; box-shadow: 0 4px 0 rgba(0,0,0,.15); }
+.ww-card { width: 100%; max-width: 480px; background: #fff; border-radius: 28px; padding: 14px; text-align: center; box-shadow: 0 8px 0 rgba(0,0,0,.18); }
+.ww-prog { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; }
+.ww-prog i { width: 22px; height: 8px; border-radius: 4px; background: #ede9fe; } .ww-prog i.ok { background: #22c55e; } .ww-prog i.no { background: #f87171; } .ww-prog i.cur { background: #a78bfa; }
+.ww-q { display: inline-flex; align-items: center; gap: 10px; background: #f5f3ff; border-radius: 22px; padding: 8px 18px; margin: 4px 0 12px; animation: wwIn .4s cubic-bezier(.34,1.56,.64,1); }
+.ww-q img { width: 60px; height: 60px; } .ww-q b { font-size: 36px; color: #047857; letter-spacing: .12em; } .ww-q b u { text-decoration: none; display: inline-block; min-width: 30px; border-bottom: 4px solid #f59e0b; color: #f59e0b; }
+.ww-o.big { font-size: 40px; }
+@keyframes wwIn { from { transform: scale(.4); opacity: 0; } }
+.ww-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ww-o { border: none; border-radius: 20px; padding: 10px 6px; min-height: 92px; font: 800 20px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; box-shadow: 0 5px 0 rgba(0,0,0,.2); }
+.ww-o img { width: 44px; height: 44px; }
+.ww-o:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,.2); }
+.ww-o.ok { background: #22c55e !important; animation: wwPop .4s; } .ww-o.no { background: #ef4444 !important; animation: wwShake .4s; } .ww-o.dim { opacity: .45; }
+@keyframes wwPop { 50% { transform: scale(1.08); } } @keyframes wwShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const POOL=[
-['CAT','🐱'],['DOG','🐶'],['SUN','☀️'],['FISH','🐟'],['BIRD','🐦'],['FROG','🐸'],
-['APPLE','🍎'],['MANGO','🥭'],['GRAPE','🍇'],['LEMON','🍋'],['TIGER','🐯'],['ZEBRA','🦓'],
-['HOUSE','🏠'],['TRAIN','🚂'],['PLANE','✈️'],['CLOCK','⏰'],['STAR','⭐'],['MOON','🌙'],
-['FLOWER','🌸'],['MONKEY','🐵'],['RABBIT','🐰'],['ROCKET','🚀'],['GUITAR','🎸'],['CAMERA','📷'],
-['BANANA','🍌'],['ORANGE','🍊'],['SCHOOL','🏫'],['PENCIL','✏️'],['BUTTER','🧈'],['CHEESE','🧀'],
-['SHARK','🦈'],['WHALE','🐳'],['MOUSE','🐭'],['PANDA','🐼'],['SNAKE','🐍'],['HORSE','🐴']
-];
-const ROUND_LEN=10;
-let round=[],idx=0,score=0,cur=null,blankPos=0;
-
-function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-
-function restart(){
-  round=shuffleArr([...POOL]).slice(0,ROUND_LEN);
-  idx=0;score=0;
-  document.getElementById('score').textContent=0;
-  document.getElementById('totalW').textContent=round.length;
-  document.getElementById('end').classList.remove('show');
-  loadWord();
+/* Letter Fun — missing letters and first letters. 10 rounds. */
+const WORDS = [['CAT', '🐱'], ['DOG', '🐶'], ['SUN', '☀️'], ['BUS', '🚌'], ['PIG', '🐷'], ['HEN', '🐔'], ['EGG', '🥚'], ['CAR', '🚗'], ['HAT', '🎩'], ['KEY', '🔑'], ['BALL', '⚽'], ['CAKE', '🎂'], ['FISH', '🐟'], ['FROG', '🐸'], ['STAR', '⭐'], ['TREE', '🌳'], ['MOON', '🌙'], ['BOOK', '📚'], ['DUCK', '🦆'], ['LION', '🦁'], ['BEAR', '🐻'], ['KITE', '🪁'], ['APPLE', '🍎'], ['MANGO', '🥭'], ['LEMON', '🍋'], ['HORSE', '🐴'], ['ZEBRA', '🦓'], ['TIGER', '🐯'], ['PANDA', '🐼'], ['HOUSE', '🏠'], ['TRAIN', '🚂'], ['ROBOT', '🤖'], ['SNAKE', '🐍'], ['WHALE', '🐳'], ['UMBRELLA', '☂️'], ['IGLOO', '🧊'], ['OWL', '🦉'], ['VAN', '🚐'], ['YO-YO', '🪀'], ['QUEEN', '👸'], ['NEST', '🪺'], ['JAM', '🍯'], ['GIFT', '🎁'], ['RABBIT', '🐰'], ['ROCKET', '🚀'], ['CARROT', '🥕'], ['ORANGE', '🍊'], ['MONKEY', '🐒'], ['PENGUIN', '🐧'], ['ELEPHANT', '🐘']];
+const MODES = [{ icon: '❓', name: 'Missing letter', key: 'm' }, { icon: '🅰️', name: 'First letter', key: 'f' }, { icon: '🎲', name: 'Mixed', key: 'x' }];
+const COLS = ['#f43f5e', '#f59e0b', '#06b6d4', '#8b5cf6'];
+const G = KQ3D.init({
+  id: 'missing_letter', title: 'Letter Fun', bestKey: 'letterBest', music: true,
+  hero: ['🔤', '🦉', '🍎'], colors: ['#10b981', '#65a30d'],
+  how: [['❓', 'Missing letter: pick the letter that fills the gap'], ['🅰️', 'First letter: find the picture that starts with the letter'], ['🔊', 'Listen — every word is read out loud'], ['⚡', 'Answer fast for bonus points — 10 rounds!']],
+  scoreIcon: '🔤', stars: [60, 110, 150],
+  pick: { label: 'Pick a game', options: MODES },
+  onReset: (m) => reset(m)
+});
+const box = document.createElement('div'); box.className = 'ww'; G.scene.appendChild(box);
+let mode, qs, i, score, results, streak, t0, locked;
+const shuffle = (a) => a.slice().sort(() => Math.random() - 0.5);
+const ABC = 'ABCDEFGHIJKLMNOPRSTUVWYZ';
+function say(t) {
+  try { if (localStorage.getItem('kq_muted') === '1') return; } catch (e) {}
+  try { if (window.Android && Android.speak) { Android.speak(t, 'en'); return; } } catch (e) {}
+  try { const u = new SpeechSynthesisUtterance(t.toLowerCase()); u.rate = 0.85; u.pitch = 1.15; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}
 }
-
-function loadWord(){
-  if(idx>=round.length){finish();return;}
-  cur=round[idx];
-  blankPos=Math.floor(Math.random()*cur[0].length);
-  document.getElementById('hint').textContent=cur[1];
-  document.getElementById('msg').textContent='Word '+(idx+1)+' of '+round.length;
-  document.getElementById('prog').style.width=Math.round(idx/round.length*100)+'%';
-  renderWord();renderOptions();
+function missing(w) {
+  const word = w[0], letters = [...word].map((c, k) => k).filter((k) => /[A-Z]/.test(word[k]));
+  const k = letters[Math.floor(Math.random() * letters.length)], right = word[k];
+  const opts = new Set([right]); while (opts.size < 4) opts.add(ABC[Math.floor(Math.random() * ABC.length)]);
+  return { kind: 'm', word, pic: w[1], show: word.slice(0, k) + '<u>?</u>' + word.slice(k + 1), ask: 'Which letter is missing?', right: { w: right }, opts: shuffle([...opts].map((c) => ({ w: c }))), sayAfter: word };
 }
-
-function renderWord(){
-  const w=document.getElementById('word');w.innerHTML='';
-  cur[0].split('').forEach((ch,i)=>{
-    const d=document.createElement('div');
-    d.className='wl'+(i===blankPos?' blank':'');
-    d.id='wl_'+i;
-    d.textContent=i===blankPos?'?':ch;
-    w.appendChild(d);
-  });
+function first(w) {
+  const L = w[0][0], wrong = shuffle(WORDS.filter((x) => x[0][0] !== L)).slice(0, 3);
+  return { kind: 'f', word: L, show: L + ' ' + L.toLowerCase(), ask: 'Which picture starts with “' + L + '”?', right: { w: w[0] }, opts: shuffle([{ w: w[0], e: w[1] }].concat(wrong.map((x) => ({ w: x[0], e: x[1] })))), sayAfter: L + ' is for ' + w[0] };
 }
-
-function renderOptions(){
-  const correct=cur[0][blankPos];
-  const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(c=>c!==correct);
-  const decoys=shuffleArr(alphabet).slice(0,3);
-  const opts=shuffleArr([correct,...decoys]);
-  const box=document.getElementById('options');box.innerHTML='';
-  opts.forEach(ch=>{
-    const b=document.createElement('div');b.className='opt';b.textContent=ch;
-    b.onclick=()=>pick(ch,b,correct);
-    box.appendChild(b);
-  });
+function reset(m) {
+  mode = m || MODES[0]; i = 0; score = 0; results = []; streak = 0; G.score(0);
+  const ws = shuffle(WORDS).slice(0, 10);
+  qs = ws.map((w, k) => (mode.key === 'm' || (mode.key === 'x' && k % 2)) ? missing(w) : first(w));
+  show();
 }
-
-function pick(ch,el,correct){
-  document.querySelectorAll('.opt').forEach(o=>o.style.pointerEvents='none');
-  if(ch===correct){
-    el.classList.add('correct');if(window.KQFX)KQFX.play('ding');
-    const wl=document.getElementById('wl_'+blankPos);wl.textContent=ch;wl.classList.add('reveal');
-    score++;document.getElementById('score').textContent=score;
-    document.getElementById('msg').textContent='🎉 Correct! '+cur[0];
-    burstConfetti();
-    idx++;
-    setTimeout(loadWord,900);
-  }else{
-    el.classList.add('wrong');if(window.KQFX)KQFX.play('wrong');
-    document.getElementById('msg').textContent='❌ It was "'+correct+'" — '+cur[0];
-    idx++;
-    setTimeout(loadWord,1100);
+function show() {
+  const q = qs[i]; locked = false; t0 = performance.now();
+  box.innerHTML = '<div class="ww-top"><img class="ww-wiz" src="' + KQ3D.emojiFile('🦉') + '" alt=""><div class="ww-say">' + q.ask + '</div></div>' +
+    '<div class="ww-card"><div class="ww-prog">' + qs.map((_, k) => '<i class="' + (results[k] === true ? 'ok' : results[k] === false ? 'no' : k === i ? 'cur' : '') + '"></i>').join('') + '</div>' +
+    '<div class="ww-q">' + (q.pic ? '<img src="' + KQ3D.emojiFile(q.pic) + '" alt="">' : '') + '<b>' + q.show + '</b></div>' +
+    '<div class="ww-opts">' + q.opts.map((o, k) => '<button type="button" class="ww-o' + (q.kind === 'm' ? ' big' : '') + '" data-k="' + k + '" style="background:' + COLS[k] + '">' + (o.e ? '<img src="' + KQ3D.emojiFile(o.e) + '" alt="">' : '') + (q.kind === 'm' ? o.w : o.w.toLowerCase()) + '</button>').join('') + '</div></div>';
+  box.querySelectorAll('.ww-o').forEach((b) => b.onclick = () => answer(b, q.opts[+b.dataset.k], q));
+  setTimeout(() => say(q.kind === 'f' ? q.word : 'Find the missing letter'), 250);
+}
+function answer(b, o, q) {
+  if (G.state !== 'play' || locked) return; locked = true;
+  const ok = o.w === q.right.w, secs = (performance.now() - t0) / 1000;
+  results[i] = ok;
+  if (ok) {
+    streak++; const pts = 10 + (secs < 4 ? 5 : 0) + (streak >= 3 ? 5 : 0); score += pts; G.score(score);
+    b.classList.add('ok'); KQ3D.sfx(streak >= 3 ? 'coin' : 'success');
+    if (q.kind === 'm') { const qb = box.querySelector('.ww-q b'); qb.textContent = q.word; }
+    const r = b.getBoundingClientRect(); G.pop('+' + pts + (secs < 4 ? ' ⚡' : '') + (streak >= 3 ? ' 🔥' : ''), r.left + r.width / 2, r.top, '#fde047');
+  } else {
+    streak = 0; b.classList.add('no'); KQ3D.sfx('wrong');
+    box.querySelectorAll('.ww-o').forEach((x) => { const oo = q.opts[+x.dataset.k]; if (oo.w === q.right.w) x.classList.add('ok'); else if (x !== b) x.classList.add('dim'); });
   }
+  say(q.sayAfter);
+  setTimeout(() => { if (G.state !== 'play') return; i++; if (i >= qs.length) finish(); else show(); }, ok ? 1100 : 1900);
 }
-
-function finish(){
-  document.getElementById('prog').style.width='100%';
-  document.getElementById('endMsg').textContent='You got '+score+' out of '+round.length+' correct!';
-  document.getElementById('end').classList.add('show');
-  onGameComplete();
+function finish() {
+  const right = results.filter(Boolean).length;
+  G.over({ score, title: right >= 9 ? 'Letter Champion! 🔤' : right >= 6 ? 'Great job!' : 'Keep practising!', lines: ['✅ ' + right + ' / 10 right', mode.icon + ' ' + mode.name] });
 }
-
-function burstConfetti(){
-  const colors=['#ff5a8a','#ffd166','#34d399','#60a5fa','#c084fc'];
-  for(let i=0;i<20;i++){
-    const d=document.createElement('div');
-    d.className='confetti';
-    d.style.left=(Math.random()*100)+'vw';
-    d.style.background=colors[Math.floor(Math.random()*colors.length)];
-    d.style.animationDuration=(1+Math.random()*0.8)+'s';
-    document.body.appendChild(d);
-    setTimeout(()=>d.remove(),2000);
-  }
-}
-
-restart();
-</script></body></html>
+reset(G.choice);
+</script>
+</body></html>

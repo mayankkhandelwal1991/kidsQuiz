@@ -20,7 +20,8 @@ quiz/
   ... (16 content subjects; math topics are generated)
 ```
 
-`class1.js` = Class 1 questions, `class2.js` = Class 2, and so on up to Class 10.
+`class0.js` = LKG, `ukg.js` = UKG (registered as level -1), `class1.js` = Class 1, and so on up to Class 10.
+Only LKG, UKG and Class 1–5 are shown for now — change `VISIBLE_MAX_CLASS` in `quiz-shared.js` to show more.
 
 ## To change the questions for a subject + class
 

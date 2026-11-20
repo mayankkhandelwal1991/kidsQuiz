@@ -1,0 +1,8 @@
+# Make browsers re-check pages and data on every visit, so updates show up
+# immediately (no "old version" mixing new and cached files).
+# Scripts/styles are versioned with ?v=… in the HTML, so they can still cache.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|json)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>

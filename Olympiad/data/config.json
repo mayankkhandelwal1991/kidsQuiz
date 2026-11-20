@@ -22,23 +22,28 @@
     },
     {
       "id": "class6",
-      "name": "Class 6"
+      "name": "Class 6",
+      "hidden": true
     },
     {
       "id": "class7",
-      "name": "Class 7"
+      "name": "Class 7",
+      "hidden": true
     },
     {
       "id": "class8",
-      "name": "Class 8"
+      "name": "Class 8",
+      "hidden": true
     },
     {
       "id": "class9",
-      "name": "Class 9"
+      "name": "Class 9",
+      "hidden": true
     },
     {
       "id": "class10",
-      "name": "Class 10"
+      "name": "Class 10",
+      "hidden": true
     }
   ],
   "subjects": [
@@ -71,6 +76,46 @@
       "name": "General Knowledge",
       "papers": 5,
       "durationMinutes": 30
+    },
+    {
+      "id": "socialstudies",
+      "name": "Social Studies",
+      "papers": 5,
+      "durationMinutes": 20,
+      "classes": [
+        "class1",
+        "class2",
+        "class3",
+        "class4",
+        "class5"
+      ]
+    },
+    {
+      "id": "reasoning",
+      "name": "Reasoning",
+      "papers": 5,
+      "durationMinutes": 20,
+      "classes": [
+        "class1",
+        "class2",
+        "class3",
+        "class4",
+        "class5"
+      ]
+    },
+    {
+      "id": "creativearts",
+      "name": "Creative Arts",
+      "papers": 5,
+      "durationMinutes": 20,
+      "classes": [
+        "class1",
+        "class2",
+        "class3",
+        "class4",
+        "class5"
+      ]
     }
-  ]
+  ],
+  "_note": "Classes with \"hidden\": true are kept but not shown. Subjects with a \"classes\" list only appear for those classes."
 }

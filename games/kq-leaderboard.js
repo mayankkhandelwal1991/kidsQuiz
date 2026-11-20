@@ -21,7 +21,19 @@
                                    -> keep this player's BEST score for a level
                                       opts = { lowerIsBetter:false, meta:{} }
      KQ.addWin(cat, gameId, opts)  -> +1 win (atomic) — for win/lose games
-     KQ.open(cat, gameId, title)   -> open the leaderboard viewer modal
+     KQ.open(cat, gameId, title)   -> go to the full leaderboard PAGE
+                                      (leaderboard.html, not a popup)
+     KQ.openModal(cat, gameId, title) -> old popup viewer (kept, unused)
+     KQ.fetchAll()                 -> every board: {cat:{gameId:{player:row}}}
+     KQ.fetchAttempts(userKey)     -> that player's dated attempt history
+
+   Every submit()/addWin() also appends a dated row to
+   attempts/<playerKey>/<pushId>  so the leaderboard page can show a
+   per-player history. That path needs a Firebase rule — see
+   LEADERBOARD rules note in leaderboard.html.
+
+   Set  window.KQ_NO_WIDGET = true  before loading to skip the floating
+   login/🏆 widget (used by leaderboard.html and the Olympiad).
      KQ.gameName(gameId)           -> pretty display name for a game id
 
    CONTEXT
@@ -255,6 +267,23 @@
     return db.ref("leaderboards/" + cat + "/" + gameId + "/" + u.key);
   }
 
+  /* Append one dated attempt to attempts/<player>. Fire-and-forget: if the
+     Firebase rules don't allow it yet, the best-score board still works. */
+  function logAttempt(cat, gameId, score, extra) {
+    try {
+      if (!db) return;
+      var u = currentUser();
+      var ctx = window.KQ_CONTEXT;
+      var row = {
+        cat: cat, gameId: String(gameId), score: Number(score) || 0,
+        name: u.name, at: firebase.database.ServerValue.TIMESTAMP
+      };
+      if (ctx && ctx.gameId === gameId && ctx.title) row.title = String(ctx.title).slice(0, 80);
+      if (extra) for (var k in extra) if (extra[k] != null) row[k] = extra[k];
+      db.ref("attempts/" + u.key).push(row).catch(function () {});
+    } catch (e) {}
+  }
+
   function submit(cat, gameId, score, opts) {
     opts = opts || {};
     score = Number(score);
@@ -263,6 +292,7 @@
       if (!db) return false;
       var u = currentUser();
       var lower = !!opts.lowerIsBetter;
+      logAttempt(cat, gameId, score, { meta: opts.meta || null, lowerIsBetter: lower || null });
       var ref = playerRef(cat, gameId);
       return ref.transaction(function (cur) {
         if (cur && typeof cur.score === "number") {
@@ -285,6 +315,7 @@
     return ready.then(function () {
       if (!db) return false;
       var u = currentUser();
+      logAttempt(cat, gameId, 1, { result: "win" });
       var ref = playerRef(cat, gameId);
       return ref.transaction(function (cur) {
         cur = cur || { name: u.name, photo: u.photo, uid: u.uid || null, guest: u.isGuest, score: 0 };
@@ -316,6 +347,27 @@
         rows.sort(function (a, b) { return lower ? a.score - b.score : b.score - a.score; });
         return rows.slice(0, limit);
       });
+    });
+  }
+
+  /* Whole leaderboard tree (all categories/boards) — used by leaderboard.html */
+  function fetchAll() {
+    return ready.then(function () {
+      if (!db) return {};
+      return db.ref("leaderboards").once("value").then(function (snap) { return snap.val() || {}; });
+    });
+  }
+  /* A player's dated attempts, newest first. Empty if rules block it. */
+  function fetchAttempts(userKey, limit) {
+    return ready.then(function () {
+      if (!db || !userKey) return [];
+      return db.ref("attempts/" + userKey).orderByChild("at").limitToLast(limit || 300).once("value")
+        .then(function (snap) {
+          var rows = [];
+          snap.forEach(function (c) { var v = c.val(); if (v) { v.id = c.key; rows.push(v); } });
+          rows.sort(function (a, b) { return (b.at || 0) - (a.at || 0); });
+          return rows;
+        }).catch(function () { return []; });
     });
   }
 
@@ -465,6 +517,7 @@
   var widgetEl = null, menuEl = null, overlayEl = null;
 
   function injectWidget() {
+    if (window.KQ_NO_WIDGET) return;
     if (document.getElementById("kqlb-style")) { renderWidget(); return; }
     if (!document.body) { document.addEventListener("DOMContentLoaded", injectWidget); return; }
     var st = document.createElement("style");
@@ -549,8 +602,21 @@
     '</div>';
   }
 
+  /* Leaderboards open as a full PAGE (leaderboard.html at the app root),
+     never a popup. The page lives one folder above this script. */
   function open(cat, gameId, title) {
+    var url = SELF_BASE + "../leaderboard.html";
+    var q = [];
+    if (cat) q.push("cat=" + encodeURIComponent(cat));
+    if (gameId) q.push("game=" + encodeURIComponent(gameId));
+    if (title) q.push("title=" + encodeURIComponent(title));
+    window.location.href = url + (q.length ? "?" + q.join("&") : "");
+  }
+
+  /* Old popup viewer — kept for reference / fallback, not used by open(). */
+  function openModal(cat, gameId, title) {
     if (!overlayEl) injectWidget();
+    if (!overlayEl) return;
     var meKey = currentUser().key;
     var nice = title || prettify(gameId);
     var catLabel = { single: "Single Player", multi: "Multiplayer", quiz: "Quiz" }[cat] || cat;
@@ -599,7 +665,10 @@
     submit: submit,
     addWin: addWin,
     fetchBoard: fetchBoard,
+    fetchAll: fetchAll,
+    fetchAttempts: fetchAttempts,
     open: open,
+    openModal: openModal,
     gameName: prettify
   };
 })();

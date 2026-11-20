@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kids Quiz - Leaderboard</title>
+<!--
+  Full-page leaderboard (replaces the old popup).
+  Reads Firebase:  leaderboards/<cat>/<gameId>/<player>   (best score per board)
+                   attempts/<player>/<pushId>              (every attempt, dated)
+
+  FIREBASE RULES NOTE — add this next to "leaderboards" in the Realtime
+  Database rules so per-attempt history can be saved and read:
+      "attempts": {
+        ".read": true,
+        "$player": { "$id": { ".write": "!data.exists()",
+          ".validate": "newData.hasChildren(['cat','gameId','score']) && newData.child('score').isNumber()" } }
+      }
+  Without it, the page still works from best scores; only the dated
+  attempt timeline stays empty.
+-->
+<style>
+  :root {
+    --ink: #1e1b4b;
+    --muted: #6b7280;
+    --line: #e9e7fb;
+    --card: #ffffff;
+    --bg: #f3f1ff;
+    --violet: #6d28d9;
+    --indigo: #4f46e5;
+    --gold: #f59e0b;
+    --silver: #94a3b8;
+    --bronze: #c2410c;
+    --quiz: #6366f1;
+    --single: #f97316;
+    --multi: #0ea5e9;
+    --olympiad: #10b981;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button, input, select { font-family: inherit; }
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 0 40px; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 14px 16px 64px;
+    color: #fff;
+    background: linear-gradient(150deg, #7c3aed 0%, #4f46e5 55%, #0ea5e9 100%);
+    border-radius: 0 0 32px 32px;
+  }
+  .hero::before, .hero::after {
+    content: ''; position: absolute; border-radius: 50%; pointer-events: none;
+    background: rgba(255,255,255,.12);
+  }
+  .hero::before { width: 220px; height: 220px; right: -70px; top: -90px; }
+  .hero::after { width: 140px; height: 140px; left: -50px; bottom: -60px; }
+  .topbar { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    border: none; cursor: pointer; width: 38px; height: 38px; border-radius: 13px;
+    background: rgba(255,255,255,.2); color: #fff; font-size: 18px; font-weight: 900;
+    display: grid; place-items: center;
+  }
+  .hero h1 { margin: 0; font-size: 22px; font-weight: 900; letter-spacing: -.02em; flex: 1; }
+  .hero .sub { position: relative; z-index: 1; margin: 6px 0 0 48px; font-size: 13px; font-weight: 700; opacity: .9; }
+  .sparkle { position: absolute; color: rgba(255,255,255,.75); font-size: 14px; animation: tw 2.4s ease-in-out infinite; }
+  .sparkle.a { top: 18px; right: 70px; }
+  .sparkle.b { top: 54px; right: 24px; font-size: 10px; animation-delay: .8s; }
+  .sparkle.c { top: 70px; left: 40%; font-size: 9px; animation-delay: 1.5s; }
+  @keyframes tw { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.6); opacity: .4; } }
+
+  /* ---------- tabs ---------- */
+  .tabs {
+    position: relative; z-index: 2;
+    margin: -44px 16px 0;
+    background: #fff; border-radius: 18px; padding: 5px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5px;
+    box-shadow: 0 10px 26px rgba(79,70,229,.18);
+  }
+  .tab {
+    border: none; cursor: pointer; padding: 11px 6px; border-radius: 14px;
+    background: transparent; color: var(--muted); font-weight: 900; font-size: 14px;
+  }
+  .tab.on { background: linear-gradient(135deg, #7c3aed, #4f46e5); color: #fff; box-shadow: 0 4px 0 #3730a3; }
+
+  /* ---------- filters ---------- */
+  .panel { margin: 14px 16px 0; background: var(--card); border-radius: 20px; padding: 12px; box-shadow: 0 4px 16px rgba(30,27,75,.06); }
+  .flabel { font-size: 11px; font-weight: 900; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin: 2px 2px 6px; }
+  .flabel + .chips, .chips + .flabel, .row + .flabel, .chips + .row { margin-top: 0; }
+  .fgroup + .fgroup { margin-top: 12px; }
+  .chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: 0 0 auto; border: 2px solid var(--line); background: #fff; color: var(--ink);
+    padding: 7px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 800; cursor: pointer; white-space: nowrap;
+  }
+  .chip.on { border-color: transparent; color: #fff; background: var(--indigo); box-shadow: 0 3px 0 #3730a3; }
+  .chip[data-sec="quiz"].on { background: var(--quiz); box-shadow: 0 3px 0 #4338ca; }
+  .chip[data-sec="single"].on { background: var(--single); box-shadow: 0 3px 0 #c2410c; }
+  .chip[data-sec="multi"].on { background: var(--multi); box-shadow: 0 3px 0 #0369a1; }
+  .chip[data-sec="olympiad"].on { background: var(--olympiad); box-shadow: 0 3px 0 #047857; }
+  .row { display: flex; gap: 8px; }
+  .row > * { flex: 1; min-width: 0; }
+  select, input[type="date"], input[type="search"] {
+    width: 100%; border: 2px solid var(--line); border-radius: 12px; padding: 9px 10px;
+    font-size: 13.5px; font-weight: 700; color: var(--ink); background: #fff; outline: none;
+  }
+  select:focus, input:focus { border-color: #a5b4fc; }
+  .search { position: relative; }
+  .search input { padding-left: 34px; }
+  .search::before { content: '🔍'; position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 14px; }
+  .custom-range { margin-top: 8px; }
+  .gcheck { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; font-weight: 800; color: var(--ink); cursor: pointer; user-select: none; }
+  .gcheck input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .gcheck .box { width: 22px; height: 22px; border-radius: 7px; border: 2px solid #c4b5fd; background: #fff; display: grid; place-items: center; transition: background .15s; }
+  .gcheck input:checked + .box { background: var(--violet); border-color: var(--violet); }
+  .gcheck input:checked + .box::after { content: '✓'; color: #fff; font-size: 14px; font-weight: 900; }
+  .gcheck input:focus-visible + .box { outline: 3px solid #c4b5fd; outline-offset: 2px; }
+  .custom-range[hidden] { display: none; }
+
+  /* ---------- podium ---------- */
+  .podium { margin: 16px 16px 0; display: grid; grid-template-columns: 1fr 1.15fr 1fr; align-items: end; gap: 8px; }
+  .pod { text-align: center; cursor: pointer; }
+  .pod .av { margin: 0 auto 6px; position: relative; }
+  .pod .crown { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 22px; animation: bob 2s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translate(-50%,0); } 50% { transform: translate(-50%,-4px); } }
+  .pod .pname { font-size: 13px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 2px; }
+  .pod .pscore { font-size: 12px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .pod .block { border-radius: 16px 16px 8px 8px; color: #fff; font-weight: 900; font-size: 26px; display: grid; place-items: center; text-shadow: 0 2px 0 rgba(0,0,0,.15); }
+  .pod.p1 .block { height: 96px; background: linear-gradient(180deg, #fcd34d, #f59e0b); box-shadow: 0 6px 0 #b45309; }
+  .pod.p2 .block { height: 70px; background: linear-gradient(180deg, #e2e8f0, #94a3b8); box-shadow: 0 6px 0 #64748b; }
+  .pod.p3 .block { height: 54px; background: linear-gradient(180deg, #fdba74, #ea580c); box-shadow: 0 6px 0 #9a3412; }
+  .pod.empty { visibility: hidden; }
+
+  /* ---------- avatars ---------- */
+  .av { width: 40px; height: 40px; border-radius: 50%; flex: 0 0 auto; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 14px; overflow: hidden; }
+  .av img { width: 100%; height: 100%; object-fit: cover; }
+  .av.lg { width: 58px; height: 58px; font-size: 20px; border: 3px solid #fff; box-shadow: 0 6px 14px rgba(0,0,0,.15); }
+  .av.xl { width: 72px; height: 72px; font-size: 26px; border: 4px solid rgba(255,255,255,.7); }
+
+  /* ---------- lists ---------- */
+  .list { margin: 14px 16px 0; display: flex; flex-direction: column; gap: 8px; }
+  .item {
+    display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 16px; padding: 10px 12px;
+    box-shadow: 0 2px 10px rgba(30,27,75,.05); cursor: pointer; border: 2px solid transparent;
+    animation: rise .3s ease both;
+  }
+  .item:active { transform: scale(.985); }
+  .item.me { border-color: #fcd34d; background: linear-gradient(135deg, #fffbeb, #fff); }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .rk { width: 28px; text-align: center; font-weight: 900; color: var(--violet); font-size: 14px; flex: 0 0 auto; }
+  .info { flex: 1; min-width: 0; }
+  .nm { font-weight: 900; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tag { font-size: 10px; font-weight: 800; color: #9ca3af; margin-left: 4px; }
+  .meta { font-size: 11.5px; font-weight: 700; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sc { text-align: right; flex: 0 0 auto; }
+  .sc b { display: block; font-size: 17px; font-weight: 900; color: var(--ink); }
+  .sc small { font-size: 10.5px; font-weight: 800; color: var(--muted); }
+  .badges { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+  .bdg { font-size: 10.5px; font-weight: 900; padding: 2px 7px; border-radius: 999px; color: #fff; }
+  .bdg.quiz { background: var(--quiz); } .bdg.single { background: var(--single); }
+  .bdg.multi { background: var(--multi); } .bdg.olympiad { background: var(--olympiad); }
+  .go { color: #c4c1e8; font-size: 20px; font-weight: 900; flex: 0 0 auto; }
+
+  .summary { margin: 14px 16px 0; font-size: 12.5px; font-weight: 800; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+  .empty { text-align: center; padding: 40px 16px; color: var(--muted); font-weight: 800; }
+  .empty .big { font-size: 46px; display: block; margin-bottom: 8px; }
+  .loading { text-align: center; padding: 50px 16px; color: var(--muted); font-weight: 800; }
+  .spinner { width: 36px; height: 36px; margin: 0 auto 10px; border-radius: 50%; border: 4px solid #ddd6fe; border-top-color: var(--violet); animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- profile ---------- */
+  .profile-hero { position: relative; z-index: 1; display: flex; align-items: center; gap: 14px; margin: 12px 0 0 4px; }
+  .profile-hero .pn { font-size: 21px; font-weight: 900; }
+  .profile-hero .ps { font-size: 12.5px; font-weight: 700; opacity: .9; margin-top: 2px; }
+  .stats { position: relative; z-index: 2; margin: -44px 16px 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .stat { background: #fff; border-radius: 16px; padding: 10px 4px; text-align: center; box-shadow: 0 8px 20px rgba(79,70,229,.14); }
+  .stat b { display: block; font-size: 20px; font-weight: 900; }
+  .stat span { font-size: 10.5px; font-weight: 800; color: var(--muted); }
+  .stat.quiz b { color: var(--quiz); } .stat.single b { color: var(--single); }
+  .stat.olympiad b { color: var(--olympiad); } .stat.total b { color: var(--violet); }
+  .sec-title { margin: 18px 18px 0; font-size: 15px; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+  .sec-title::after { content: ''; flex: 1; height: 2px; border-radius: 2px; background: linear-gradient(90deg, #ddd6fe, transparent); }
+  .hist .ico { width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; font-size: 19px; flex: 0 0 auto; }
+  .hist .ico.quiz { background: #eef2ff; } .hist .ico.single { background: #fff7ed; }
+  .hist .ico.multi { background: #e0f2fe; } .hist .ico.olympiad { background: #ecfdf5; }
+  .hist { cursor: default; }
+
+  .flabel .hint { text-transform: none; letter-spacing: 0; font-weight: 700; opacity: .7; }
+
+  /* ---------- desktop: filters left, results right ---------- */
+  @media (min-width: 900px) {
+    .wrap { max-width: 1180px; padding: 20px 24px 48px; }
+    .hero { border-radius: 32px; padding: 22px 32px 74px; }
+    .hero h1 { font-size: 28px; }
+    .hero .sub { font-size: 14px; }
+    .lb-body { display: grid; grid-template-columns: 370px 1fr; gap: 24px; align-items: start; }
+    .lb-side { position: sticky; top: 16px; }
+    .lb-side .tabs, .lb-side .stats { margin-left: 0; margin-right: 0; }
+    .lb-side .panel { margin-left: 0; margin-right: 0; }
+    .chips { flex-wrap: wrap; overflow: visible; }
+    .lb-main { margin-top: 18px; }
+    .lb-main .podium, .lb-main .list, .lb-main .summary, .lb-main .sec-title { margin-left: 0; margin-right: 0; }
+    .lb-main .sec-title:first-child { margin-top: 0; }
+    .lb-main .podium { max-width: 560px; margin: 8px auto 0; }
+    .item:hover { border-color: #ddd6fe; transform: translateY(-1px); }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1200px) {
+    .lb-main .list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="loading"><div class="spinner"></div>Loading leaderboard…</div>
+</div>
+
+<script src="quiz-shared.js?v=20261120d" charset="utf-8"></script>
+<script>window.KQ_NO_WIDGET = true;</script>
+<script src="games/kq-leaderboard.js?v=20261120d"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ---------------- helpers ---------------- */
+  const $app = document.getElementById('app');
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const DAY = 86400000;
+  const SECTIONS = [
+    { id: 'all', label: '✨ All' },
+    { id: 'quiz', label: '🎯 Quiz' },
+    { id: 'single', label: '🎮 Games' },
+    { id: 'multi', label: '👥 Multiplayer' },
+    { id: 'olympiad', label: '🏅 Olympiad' },
+  ];
+  const SEC_ICON = { quiz: '🎯', single: '🎮', multi: '👥', olympiad: '🏅' };
+  const SEC_NAME = { quiz: 'Quiz', single: 'Game', multi: 'Multiplayer', olympiad: 'Olympiad' };
+  const OLY_SUBJECTS = {
+    mathematics: 'Mathematics', science: 'Science', english: 'English', computer: 'Computer',
+    gk: 'General Knowledge', socialstudies: 'Social Studies', reasoning: 'Reasoning', creativearts: 'Creative Arts',
+  };
+  const AV_COLORS = [['#f97316', '#f43f5e'], ['#6366f1', '#a855f7'], ['#10b981', '#0ea5e9'], ['#f59e0b', '#ef4444'], ['#ec4899', '#8b5cf6'], ['#14b8a6', '#22c55e']];
+  const QUIZ_LEVELS = (typeof quizLevels === 'function') ? quizLevels() : [0, -1, 1, 2, 3, 4, 5];
+  const lvlLabel = (n) => (typeof classLabel === 'function' ? classLabel(n) : 'Class ' + n);
+
+  function hash(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
+  function initials(n) { const p = String(n || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + (p[1] ? p[1][0] : '')).toUpperCase(); }
+  function avatar(u, cls) {
+    const c = AV_COLORS[hash(u.key || u.name || '') % AV_COLORS.length];
+    const inner = u.photo ? '<img src="' + esc(u.photo) + '" referrerpolicy="no-referrer" alt="">' : esc(initials(u.name));
+    return '<div class="av ' + (cls || '') + '" style="background:linear-gradient(135deg,' + c[0] + ',' + c[1] + ')">' + inner + '</div>';
+  }
+  function fmtDate(ts) {
+    if (!ts) return '—';
+    const d = new Date(ts), now = new Date();
+    const sameDay = d.toDateString() === now.toDateString();
+    const yest = new Date(now.getTime() - DAY).toDateString() === d.toDateString();
+    const time = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    if (sameDay) return 'Today, ' + time;
+    if (yest) return 'Yesterday, ' + time;
+    return d.toLocaleDateString([], { day: 'numeric', month: 'short', year: d.getFullYear() === now.getFullYear() ? undefined : 'numeric' });
+  }
+  const fmtScore = (n) => (Math.round(Number(n) * 100) / 100).toLocaleString();
+
+  /* What a board id means, for display + filtering. */
+  function describe(cat, gameId, meta) {
+    const d = { cat, gameId, title: '', sub: '', subject: '', level: null };
+    if (cat === 'quiz') {
+      const m = String(gameId).match(/^(.+)__(-?\d+)$/);
+      const info = m && typeof getCatInfo === 'function' ? getCatInfo(m[1]) : null;
+      if (m) {
+        d.subject = m[1]; d.level = +m[2];
+        d.title = (info ? info.icon + ' ' + info.title : (KQ.gameName ? KQ.gameName(m[1]) : m[1]));
+        d.sub = lvlLabel(d.level);
+      } else { d.subject = gameId; d.title = '🤖 ' + (KQ.gameName ? KQ.gameName(gameId) : gameId); d.sub = 'Quiz game'; }
+    } else if (cat === 'olympiad') {
+      const m = String(gameId).match(/^class(\d+)__([a-z]+)__p(\d+)$/);
+      if (m) {
+        d.level = +m[1]; d.subject = m[2];
+        d.title = '🏅 ' + (OLY_SUBJECTS[m[2]] || m[2]);
+        d.sub = 'Class ' + m[1] + ' • Paper ' + m[3] + (meta && meta.totalMarks ? ' • out of ' + meta.totalMarks : '');
+      } else { d.title = '🏅 Olympiad'; d.sub = gameId; }
+    } else {
+      d.subject = gameId;
+      d.title = (KQ.gameName ? KQ.gameName(gameId) : gameId);
+      d.sub = cat === 'multi' ? 'Multiplayer • wins' : 'Single player';
+    }
+    return d;
+  }
+
+  /* ---------------- state (mirrors the URL) ---------------- */
+  const P = new URLSearchParams(location.search);
+  const S = {
+    tab: P.get('tab') === 'players' ? 'players' : 'rank',
+    user: P.get('user') || '',
+    sec: ['quiz', 'single', 'multi', 'olympiad'].includes(P.get('cat')) ? P.get('cat') : 'all',
+    subject: '', level: 'all', game: '',
+    range: 'all', from: '', to: '', q: '',
+    profSec: 'all',
+    guests: false,   // "Show guest players" checkbox — off by default
+    rSort: 'rank', rDir: 1,      // Rankings tab sort: rank | points | recent
+    pSort: 'recent', pDir: 1,    // Players tab sort
+  };
+  // Deep link from a game/quiz: preselect that exact board.
+  (function () {
+    const g = P.get('game');
+    if (!g) return;
+    if (S.sec === 'quiz') {
+      const m = g.match(/^(.+)__(-?\d+)$/);
+      if (m) { S.subject = m[1]; S.level = String(+m[2]); } else S.subject = g;
+    } else if (S.sec === 'single' || S.sec === 'multi') S.game = g;
+  })();
+  try { const r = localStorage.getItem('kq_lb_range'); if (r && !P.get('game')) S.range = r; } catch (e) {}
+  try { S.guests = localStorage.getItem('kq_lb_guests') === '1'; } catch (e) {}
+
+  function syncUrl() {
+    const q = new URLSearchParams();
+    if (S.tab === 'players') q.set('tab', 'players');
+    if (S.user) q.set('user', S.user);
+    if (S.sec !== 'all') q.set('cat', S.sec);
+    const qs = q.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : ''));
+  }
+
+  /* ---------------- data ---------------- */
+  let ROWS = [];          // every best-score entry
+  let USERS = new Map();  // key -> { key, name, photo, guest, last }
+
+  function load() {
+    KQ.fetchAll().then((tree) => {
+      ROWS = [];
+      Object.keys(tree || {}).forEach((cat) => {
+        if (!SEC_ICON[cat]) return; // only this app's sections (DB also holds e.g. "travel")
+        const boards = tree[cat] || {};
+        Object.keys(boards).forEach((gameId) => {
+          const players = boards[gameId] || {};
+          Object.keys(players).forEach((key) => {
+            const v = players[key] || {};
+            if (typeof v.score !== 'number') return;
+            const row = {
+              cat, gameId, key, name: v.name || 'Player', photo: v.photo || '', guest: !!v.guest,
+              score: v.score, lower: !!v.lowerIsBetter, at: v.updatedAt || 0, meta: v.meta || null,
+            };
+            row.d = describe(cat, gameId, row.meta);
+            if (row.guest) GUEST_KEYS.add(key);
+            ROWS.push(row);
+            const u = USERS.get(key);
+            if (!u || row.at > u.last) USERS.set(key, { key, name: row.name, photo: row.photo || (u && u.photo) || '', guest: row.guest, last: Math.max(row.at, u ? u.last : 0) });
+          });
+        });
+      });
+      render();
+    }).catch(() => {
+      $app.innerHTML = heroHtml('🏆 Leaderboard', '') + '<div class="empty"><span class="big">📡</span>Could not load the leaderboard.<br>Check your internet connection.</div>';
+      bindHero();
+    });
+  }
+
+  /* ---------------- filtering ---------------- */
+  function rangeBounds() {
+    const now = Date.now();
+    const startOfToday = new Date(); startOfToday.setHours(0, 0, 0, 0);
+    switch (S.range) {
+      case 'today': return [startOfToday.getTime(), Infinity];
+      case '7d': return [now - 7 * DAY, Infinity];
+      case '30d': return [now - 30 * DAY, Infinity];
+      case 'custom': {
+        const a = S.from ? new Date(S.from + 'T00:00:00').getTime() : -Infinity;
+        const b = S.to ? new Date(S.to + 'T23:59:59').getTime() : Infinity;
+        return [a, b];
+      }
+      default: return [-Infinity, Infinity];
+    }
+  }
+  function inRange(ts) { const [a, b] = rangeBounds(); return S.range === 'all' || (ts >= a && ts <= b); }
+  function matchesBoard(r) {
+    if (S.sec !== 'all' && r.cat !== S.sec) return false;
+    if (S.sec === 'quiz') {
+      if (S.subject && r.d.subject !== S.subject) return false;
+      if (S.level !== 'all' && String(r.d.level) !== S.level) return false;
+    } else if (S.sec === 'olympiad') {
+      if (S.subject && r.d.subject !== S.subject) return false;
+      if (S.level !== 'all' && String(r.d.level) !== S.level) return false;
+    } else if (S.sec === 'single' || S.sec === 'multi') {
+      if (S.game && r.gameId !== S.game) return false;
+    }
+    return true;
+  }
+  const nameOk = (name) => !S.q || String(name).toLowerCase().includes(S.q.toLowerCase());
+  // A player is a guest if their id is a device guest id (g_…) or any of
+  // their scores was saved as a guest.
+  const GUEST_KEYS = new Set();
+  const isGuest = (key) => /^g_/.test(key) || GUEST_KEYS.has(key);
+  const guestOk = (r) => S.guests || !isGuest(r.key);
+
+  /* A single exact board is selected → rank raw scores; else total points. */
+  function singleBoard() {
+    if (S.sec === 'quiz') return S.subject && S.level !== 'all' ? 'quiz/' + S.subject + '__' + S.level : null;
+    if (S.sec === 'single' || S.sec === 'multi') return S.game ? S.sec + '/' + S.game : null;
+    return null;
+  }
+
+  function ranking() {
+    const rows = ROWS.filter((r) => matchesBoard(r) && inRange(r.at) && guestOk(r));
+    if (singleBoard()) {
+      const lower = rows.length && rows[0].lower;
+      return { mode: 'board', lower, list: rows.filter((r) => nameOk(r.name)).sort((a, b) => (lower ? a.score - b.score : b.score - a.score) || a.at - b.at) };
+    }
+    const agg = new Map();
+    rows.forEach((r) => {
+      if (r.lower) return; // time-based boards (lower = better) can't be added up
+      let a = agg.get(r.key);
+      if (!a) { a = { key: r.key, name: r.name, photo: r.photo, guest: r.guest, score: 0, n: 0, at: 0 }; agg.set(r.key, a); }
+      a.score += r.score; a.n++;
+      if (r.at > a.at) { a.at = r.at; a.name = r.name; if (r.photo) a.photo = r.photo; }
+    });
+    return { mode: 'total', list: [...agg.values()].filter((a) => nameOk(a.name)).sort((a, b) => b.score - a.score || b.n - a.n) };
+  }
+
+  /* Sort a ranked list for display. Every item already has its true .rank.
+     dir 1 = natural order (rank 1 first / most points / newest), -1 = reversed. */
+  function sortView(list, by, dir, pointsKey, dateKey) {
+    const out = list.slice();
+    const cmp = {
+      rank: (a, b) => a.rank - b.rank,
+      points: (a, b) => (b[pointsKey] - a[pointsKey]) || (a.rank - b.rank),
+      recent: (a, b) => (b[dateKey] - a[dateKey]) || (a.rank - b.rank),
+    }[by] || ((a, b) => a.rank - b.rank);
+    out.sort((a, b) => cmp(a, b) * dir);
+    return out;
+  }
+  function sortHtml(cur, dir, attr) {
+    const opts = [{ id: 'rank', label: '🏆 Rank' }, { id: 'points', label: '⭐ Points' }, { id: 'recent', label: '🕒 Last active' }];
+    const arrow = (id) => id !== cur ? '' : (dir === 1 ? (id === 'rank' ? ' ↑' : ' ↓') : (id === 'rank' ? ' ↓' : ' ↑'));
+    return '<div class="fgroup"><div class="flabel">Sort by <span class="hint">(tap again to reverse)</span></div><div class="chips">' + opts.map((o) =>
+      '<button type="button" class="chip' + (o.id === cur ? ' on' : '') + '" data-' + attr + '="' + o.id + '">' + o.label + arrow(o.id) + '</button>').join('') + '</div></div>';
+  }
+  const SORT_NOTE = { rank: 'Sorted by rank', points: 'Sorted by points', recent: 'Most recent first' };
+
+  /* ---------------- rendering ---------------- */
+  function heroHtml(title, sub, extra) {
+    return '<div class="hero"><span class="sparkle a">✦</span><span class="sparkle b">✦</span><span class="sparkle c">✦</span>' +
+      '<div class="topbar"><button class="icon-btn" id="backBtn" aria-label="Back">‹</button><h1>' + title + '</h1></div>' +
+      (sub ? '<div class="sub">' + sub + '</div>' : '') + (extra || '') + '</div>';
+  }
+  function bindHero() {
+    const b = document.getElementById('backBtn');
+    if (b) b.onclick = () => {
+      if (S.user) { S.user = ''; syncUrl(); render(); window.scrollTo(0, 0); return; }
+      if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) history.back();
+      else location.href = 'quiz-home.html';
+    };
+  }
+  function chipsHtml(items, cur, attr) {
+    return '<div class="chips">' + items.map((it) =>
+      '<button type="button" class="chip' + (String(it.id) === String(cur) ? ' on' : '') + '" data-' + attr + '="' + esc(it.id) + '"' +
+      (attr === 'sec' ? ' data-sec="' + esc(it.id) + '"' : '') + '>' + esc(it.label) + '</button>').join('') + '</div>';
+  }
+  function dateFilterHtml() {
+    const ranges = [{ id: 'all', label: 'All time' }, { id: 'today', label: 'Today' }, { id: '7d', label: 'Last 7 days' }, { id: '30d', label: 'Last 30 days' }, { id: 'custom', label: '📅 Custom' }];
+    return '<div class="fgroup"><div class="flabel">Date range</div>' + chipsHtml(ranges, S.range, 'range') +
+      '<div class="row custom-range"' + (S.range === 'custom' ? '' : ' hidden') + '>' +
+      '<input type="date" id="fromDate" value="' + esc(S.from) + '" aria-label="From date">' +
+      '<input type="date" id="toDate" value="' + esc(S.to) + '" aria-label="To date"></div></div>';
+  }
+  function searchHtml(ph) {
+    return '<div class="fgroup"><div class="search"><input type="search" id="nameSearch" placeholder="' + ph + '" value="' + esc(S.q) + '" autocomplete="off"></div>' +
+      '<label class="gcheck"><input type="checkbox" id="guestChk"' + (S.guests ? ' checked' : '') + '><span class="box"></span>Show guest players</label></div>';
+  }
+  function boardFilterHtml() {
+    let h = '<div class="fgroup"><div class="flabel">Section</div>' + chipsHtml(SECTIONS, S.sec, 'sec') + '</div>';
+    if (S.sec === 'quiz') {
+      const subs = [...new Set(ROWS.filter((r) => r.cat === 'quiz').map((r) => r.d.subject))];
+      const cats = (typeof CATEGORIES !== 'undefined' ? CATEGORIES.map((c) => c.id) : []).concat(subs.filter((s) => !(typeof getCatInfo === 'function' && getCatInfo(s))));
+      h += '<div class="fgroup"><div class="flabel">Subject</div><select id="subjectSel"><option value="">All subjects</option>' +
+        cats.map((id) => { const c = typeof getCatInfo === 'function' && getCatInfo(id); return '<option value="' + esc(id) + '"' + (S.subject === id ? ' selected' : '') + '>' + esc(c ? c.icon + ' ' + c.title : (KQ.gameName ? KQ.gameName(id) : id)) + '</option>'; }).join('') + '</select></div>';
+      h += '<div class="fgroup"><div class="flabel">Level</div>' + chipsHtml([{ id: 'all', label: 'All levels' }].concat(QUIZ_LEVELS.map((n) => ({ id: String(n), label: lvlLabel(n) }))), S.level, 'level') + '</div>';
+    } else if (S.sec === 'olympiad') {
+      h += '<div class="fgroup"><div class="flabel">Subject</div><select id="subjectSel"><option value="">All subjects</option>' +
+        Object.keys(OLY_SUBJECTS).map((id) => '<option value="' + id + '"' + (S.subject === id ? ' selected' : '') + '>' + esc(OLY_SUBJECTS[id]) + '</option>').join('') + '</select></div>';
+      h += '<div class="fgroup"><div class="flabel">Class</div>' + chipsHtml([{ id: 'all', label: 'All classes' }].concat([1, 2, 3, 4, 5].map((n) => ({ id: String(n), label: 'Class ' + n }))), S.level, 'level') + '</div>';
+    } else if (S.sec === 'single' || S.sec === 'multi') {
+      const games = [...new Set(ROWS.filter((r) => r.cat === S.sec).map((r) => r.gameId))]
+        .map((id) => ({ id, nm: KQ.gameName ? KQ.gameName(id) : id })).sort((a, b) => a.nm.localeCompare(b.nm));
+      if (S.game && !games.some((g) => g.id === S.game)) games.unshift({ id: S.game, nm: P.get('title') || (KQ.gameName ? KQ.gameName(S.game) : S.game) });
+      h += '<div class="fgroup"><div class="flabel">Game</div><select id="gameSel"><option value="">All games</option>' +
+        games.map((g) => '<option value="' + esc(g.id) + '"' + (S.game === g.id ? ' selected' : '') + '>' + esc(g.nm) + '</option>').join('') + '</select></div>';
+    }
+    return h;
+  }
+
+  function podiumHtml(list, unit) {
+    const top = [list[1], list[0], list[2]];
+    const cls = ['p2', 'p1', 'p3'], num = [2, 1, 3];
+    return '<div class="podium">' + top.map((r, i) => r
+      ? '<div class="pod ' + cls[i] + '" data-user="' + esc(r.key) + '"><div class="av-wrap">' +
+        '<div style="position:relative;display:inline-block">' + (num[i] === 1 ? '<span class="crown">👑</span>' : '') + avatar(r, 'lg') + '</div></div>' +
+        '<div class="pname">' + esc(r.name) + '</div><div class="pscore">' + fmtScore(r.score) + ' ' + unit + '</div>' +
+        '<div class="block">' + num[i] + '</div></div>'
+      : '<div class="pod ' + cls[i] + ' empty"><div class="block"></div></div>').join('') + '</div>';
+  }
+
+  function renderRankings() {
+    const me = KQ.user ? KQ.user().key : '';
+    const res = ranking();
+    const board = singleBoard();
+    const unit = res.mode === 'total' ? 'pts' : (S.sec === 'multi' ? 'wins' : '');
+    let title = '🏆 Leaderboard', sub = 'Top players across Kids Quiz';
+    if (board) {
+      const parts = board.split('/');
+      const d = describe(parts[0], parts[1]);
+      title = '🏆 ' + esc(d.title);
+      sub = esc(SEC_NAME[parts[0]] + (d.sub ? ' • ' + d.sub : ''));
+    } else if (S.sec !== 'all') sub = esc(SECTIONS.find((s) => s.id === S.sec).label.replace(/^\S+\s/, '')) + ' • total points';
+
+    let h = heroHtml(title, sub) + tabsHtml();
+    h += '<div class="panel">' + boardFilterHtml() + dateFilterHtml() + sortHtml(S.rSort, S.rDir, 'rsort') + searchHtml('Search player name…') + '</div>';
+    res.list.forEach((r, i) => { r.rank = i + 1; });
+    const list = sortView(res.list, S.rSort, S.rDir, 'score', 'at');
+    const natural = S.rSort === 'rank' && S.rDir === 1;
+    if (!list.length) {
+      h += '<div class="empty"><span class="big">🎈</span>No scores for these filters yet.<br>' + (S.guests ? 'Play now and be the first!' : 'Tick “Show guest players” to include guests.') + '</div>';
+    } else {
+      if (!S.q && natural) h += podiumHtml(list, unit);
+      h += '<div class="summary"><span>' + list.length + ' player' + (list.length === 1 ? '' : 's') + '</span><span>' +
+        SORT_NOTE[S.rSort] + ' • ' + (res.mode === 'total' ? 'total of best scores' : (res.lower ? 'lower is better' : 'best score')) + '</span></div>';
+      h += '<div class="list">' + list.slice(0, 200).map((r, i) => {
+        const rank = r.rank === 1 ? '🥇' : r.rank === 2 ? '🥈' : r.rank === 3 ? '🥉' : r.rank;
+        const meta = (res.mode === 'total' ? r.n + ' board' + (r.n === 1 ? '' : 's') + ' • ' : '') + 'Last active ' + fmtDate(r.at);
+        return '<div class="item' + (r.key === me ? ' me' : '') + '" data-user="' + esc(r.key) + '" style="animation-delay:' + Math.min(i, 15) * 25 + 'ms">' +
+          '<div class="rk">' + rank + '</div>' + avatar(r) +
+          '<div class="info"><div class="nm">' + esc(r.name) + (isGuest(r.key) ? '<span class="tag">guest</span>' : '') + (r.key === me ? '<span class="tag">you</span>' : '') + '</div>' +
+          '<div class="meta">' + esc(meta) + '</div></div>' +
+          '<div class="sc"><b>' + fmtScore(r.score) + '</b><small>' + unit + '</small></div></div>';
+      }).join('') + '</div>';
+    }
+    $app.innerHTML = h;
+  }
+
+  function renderPlayers() {
+    const me = KQ.user ? KQ.user().key : '';
+    const per = new Map();
+    ROWS.forEach((r) => {
+      if (!inRange(r.at) || !guestOk(r)) return;
+      if (S.sec !== 'all' && r.cat !== S.sec) return;
+      let p = per.get(r.key);
+      if (!p) { const u = USERS.get(r.key) || r; p = { key: r.key, name: u.name, photo: u.photo, guest: u.guest, quiz: 0, single: 0, multi: 0, olympiad: 0, last: 0, points: 0 }; per.set(r.key, p); }
+      p[r.cat] = (p[r.cat] || 0) + 1;
+      if (!r.lower) p.points += r.score;
+      if (r.at > p.last) p.last = r.at;
+    });
+    const all = [...per.values()].sort((a, b) => b.points - a.points || b.last - a.last);
+    all.forEach((p, i) => { p.rank = i + 1; });          // rank by total points
+    const list = sortView(all.filter((p) => nameOk(p.name)), S.pSort, S.pDir, 'points', 'last');
+    let h = heroHtml('👥 Players', 'Tap a player to see everything they played') + tabsHtml();
+    h += '<div class="panel"><div class="fgroup"><div class="flabel">Played in</div>' + chipsHtml(SECTIONS, S.sec, 'sec') + '</div>' + dateFilterHtml() + sortHtml(S.pSort, S.pDir, 'psort') + searchHtml('Search player name…') + '</div>';
+    if (!list.length) h += '<div class="empty"><span class="big">🔎</span>No players found.' + (S.guests ? '' : '<br>Tick “Show guest players” to include guests.') + '</div>';
+    else {
+      h += '<div class="summary"><span>' + list.length + ' player' + (list.length === 1 ? '' : 's') + '</span><span>' + SORT_NOTE[S.pSort] + '</span></div>';
+      h += '<div class="list">' + list.slice(0, 300).map((p, i) => {
+        const b = ['quiz', 'single', 'multi', 'olympiad'].filter((c) => p[c]).map((c) => '<span class="bdg ' + c + '">' + SEC_ICON[c] + ' ' + p[c] + '</span>').join('');
+        const rk = p.rank === 1 ? '🥇' : p.rank === 2 ? '🥈' : p.rank === 3 ? '🥉' : p.rank;
+        return '<div class="item' + (p.key === me ? ' me' : '') + '" data-user="' + esc(p.key) + '" style="animation-delay:' + Math.min(i, 15) * 25 + 'ms">' +
+          '<div class="rk">' + rk + '</div>' + avatar(p) +
+          '<div class="info"><div class="nm">' + esc(p.name) + (isGuest(p.key) ? '<span class="tag">guest</span>' : '') + (p.key === me ? '<span class="tag">you</span>' : '') + '</div>' +
+          '<div class="meta">Last active ' + esc(fmtDate(p.last)) + '</div><div class="badges">' + b + '</div></div>' +
+          '<div class="sc"><b>' + fmtScore(p.points) + '</b><small>pts</small></div><div class="go">›</div></div>';
+      }).join('') + '</div>';
+    }
+    $app.innerHTML = h;
+  }
+
+  let attemptsCache = {};
+  function renderProfile() {
+    const key = S.user;
+    const u = USERS.get(key) || { key, name: 'Player', photo: '' };
+    const mine = ROWS.filter((r) => r.key === key);
+    const count = (c) => mine.filter((r) => r.cat === c).length;
+    const points = mine.filter((r) => !r.lower).reduce((s, r) => s + r.score, 0);
+    const extra = '<div class="profile-hero">' + avatar(u, 'xl') + '<div><div class="pn">' + esc(u.name) + '</div>' +
+      '<div class="ps">' + (u.guest ? 'Guest player • ' : '') + 'Last played ' + esc(fmtDate(u.last)) + '</div></div></div>';
+    let h = heroHtml('Player history', '', extra);
+    h += '<div class="stats">' +
+      '<div class="stat quiz"><b>' + count('quiz') + '</b><span>Quizzes</span></div>' +
+      '<div class="stat single"><b>' + (count('single') + count('multi')) + '</b><span>Games</span></div>' +
+      '<div class="stat olympiad"><b>' + count('olympiad') + '</b><span>Olympiad</span></div>' +
+      '<div class="stat total"><b>' + fmtScore(points) + '</b><span>Points</span></div></div>';
+    h += '<div class="panel"><div class="fgroup"><div class="flabel">Show</div>' + chipsHtml(SECTIONS, S.profSec, 'psec') + '</div>' + dateFilterHtml() + '</div>';
+
+    const filt = (r) => (S.profSec === 'all' || r.cat === S.profSec) && inRange(r.at);
+    const best = mine.filter(filt).sort((a, b) => b.at - a.at);
+    const histItem = (cat, d, score, at, small) =>
+      '<div class="item hist"><div class="ico ' + cat + '">' + SEC_ICON[cat] + '</div>' +
+      '<div class="info"><div class="nm">' + esc(d.title) + '</div><div class="meta">' + esc(SEC_NAME[cat] + (d.sub ? ' • ' + d.sub : '') + ' • ' + fmtDate(at)) + '</div></div>' +
+      '<div class="sc"><b>' + score + '</b><small>' + small + '</small></div></div>';
+
+    const att = attemptsCache[key];
+    h += '<div class="sec-title">🕒 Recent attempts</div>';
+    if (att === undefined) h += '<div class="loading" style="padding:20px"><div class="spinner"></div>Loading…</div>';
+    else {
+      const rows = att.filter((a) => (S.profSec === 'all' || a.cat === S.profSec) && inRange(a.at || 0));
+      if (!rows.length) h += '<div class="empty" style="padding:18px 16px">No attempts recorded in this range yet.</div>';
+      else h += '<div class="list">' + rows.slice(0, 100).map((a) => {
+        const d = describe(a.cat, a.gameId, a.meta);
+        if (a.title && a.cat !== 'quiz' && a.cat !== 'olympiad') d.title = a.title;
+        const sc = a.result === 'win' ? '🏆' : fmtScore(a.score);
+        const small = a.result === 'win' ? 'win' : (a.meta && a.meta.totalMarks ? '/ ' + a.meta.totalMarks : 'score');
+        return histItem(a.cat, d, sc, a.at, small);
+      }).join('') + '</div>';
+    }
+
+    h += '<div class="sec-title">⭐ Best scores</div>';
+    if (!best.length) h += '<div class="empty" style="padding:18px 16px">Nothing here for these filters.</div>';
+    else h += '<div class="list">' + best.map((r) => histItem(r.cat, r.d, fmtScore(r.score), r.at, r.cat === 'multi' ? 'wins' : (r.lower ? 'best (low)' : 'best'))).join('') + '</div>';
+    $app.innerHTML = h;
+
+    if (att === undefined) {
+      KQ.fetchAttempts(key).then((rows) => { attemptsCache[key] = rows || []; if (S.user === key) render(); });
+    }
+  }
+
+  function tabsHtml() {
+    return '<div class="tabs"><button type="button" class="tab' + (S.tab === 'rank' ? ' on' : '') + '" data-tab="rank">🏆 Rankings</button>' +
+      '<button type="button" class="tab' + (S.tab === 'players' ? ' on' : '') + '" data-tab="players">👥 Players</button></div>';
+  }
+
+  function render() {
+    const scroll = window.scrollY;
+    const focusedId = document.activeElement && document.activeElement.id;
+    const caret = focusedId === 'nameSearch' ? document.activeElement.selectionStart : null;
+    if (S.user) renderProfile();
+    else if (S.tab === 'players') renderPlayers();
+    else renderRankings();
+    splitColumns();
+    bindHero();
+    bind();
+    window.scrollTo(0, scroll);
+    if (focusedId) {
+      const el = document.getElementById(focusedId);
+      if (el) { el.focus(); if (caret != null && el.setSelectionRange) try { el.setSelectionRange(caret, caret); } catch (e) {} }
+    }
+  }
+
+  /* Put tabs/stats/filters in a left column and results in a right column.
+     On phones both columns simply stack (same order as before). */
+  function splitColumns() {
+    const kids = [...$app.children];
+    const hero = kids.find((k) => k.classList.contains('hero'));
+    const body = document.createElement('div'); body.className = 'lb-body';
+    const side = document.createElement('aside'); side.className = 'lb-side';
+    const main = document.createElement('main'); main.className = 'lb-main';
+    kids.forEach((k) => {
+      if (k === hero) return;
+      if (k.classList.contains('tabs') || k.classList.contains('stats') || k.classList.contains('panel')) side.appendChild(k);
+      else main.appendChild(k);
+    });
+    body.appendChild(side); body.appendChild(main);
+    $app.appendChild(body);
+  }
+
+  function bind() {
+    $app.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => { S.tab = b.dataset.tab; syncUrl(); render(); });
+    $app.querySelectorAll('.chip[data-sec]').forEach((b) => b.onclick = () => { S.sec = b.dataset.sec; S.subject = ''; S.level = 'all'; S.game = ''; syncUrl(); render(); });
+    $app.querySelectorAll('[data-psec]').forEach((b) => b.onclick = () => { S.profSec = b.dataset.psec; render(); });
+    $app.querySelectorAll('[data-rsort]').forEach((b) => b.onclick = () => { const v = b.dataset.rsort; S.rDir = S.rSort === v ? -S.rDir : 1; S.rSort = v; render(); });
+    $app.querySelectorAll('[data-psort]').forEach((b) => b.onclick = () => { const v = b.dataset.psort; S.pDir = S.pSort === v ? -S.pDir : 1; S.pSort = v; render(); });
+    $app.querySelectorAll('[data-level]').forEach((b) => b.onclick = () => { S.level = b.dataset.level; render(); });
+    $app.querySelectorAll('[data-range]').forEach((b) => b.onclick = () => {
+      S.range = b.dataset.range;
+      try { localStorage.setItem('kq_lb_range', S.range); } catch (e) {}
+      render();
+    });
+    $app.querySelectorAll('[data-user]').forEach((el) => el.onclick = () => { S.user = el.dataset.user; S.profSec = 'all'; syncUrl(); render(); window.scrollTo(0, 0); });
+    const sub = document.getElementById('subjectSel'); if (sub) sub.onchange = () => { S.subject = sub.value; render(); };
+    const gs = document.getElementById('gameSel'); if (gs) gs.onchange = () => { S.game = gs.value; render(); };
+    const f = document.getElementById('fromDate'); if (f) f.onchange = () => { S.from = f.value; render(); };
+    const t = document.getElementById('toDate'); if (t) t.onchange = () => { S.to = t.value; render(); };
+    const gc = document.getElementById('guestChk');
+    if (gc) gc.onchange = () => { S.guests = gc.checked; try { localStorage.setItem('kq_lb_guests', S.guests ? '1' : '0'); } catch (e) {} render(); };
+    const q = document.getElementById('nameSearch');
+    if (q) q.oninput = () => { S.q = q.value; clearTimeout(bind._t); bind._t = setTimeout(render, 180); };
+  }
+
+  window.addEventListener('popstate', () => location.reload());
+  if (!window.KQ || !KQ.fetchAll) {
+    $app.innerHTML = '<div class="empty"><span class="big">⚠️</span>Leaderboard is unavailable right now.</div>';
+  } else {
+    load();
+  }
+})();
+</script>
+</body>
+</html>

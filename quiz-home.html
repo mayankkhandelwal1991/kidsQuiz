@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kids Quiz - Home</title>
-<link rel="stylesheet" href="quiz-theme.css">
+<link rel="stylesheet" href="quiz-theme.css?v=20261120d">
 </head>
-<body>
+<body class="pg-home">
 
 <div class="bg-decor" id="bgDecor"></div>
 
@@ -26,10 +26,10 @@
       </div>
       <div class="kh-bar">
         <div class="kh-logo">
-          <span class="kh-logo-mark">🎯</span>
+          <span class="kh-logo-mark"><img src="images/app-logo.png" alt="Kids Quiz logo"></span>
           <div>
-            <div class="kh-logo-name">Quiz Master</div>
-            <div class="kh-logo-tag">LKG – Class 10</div>
+            <div class="kh-logo-name">Kids Quiz</div>
+            <div class="kh-logo-tag">LKG – Class 5</div>
           </div>
         </div>
         <div class="kh-bar-right">
@@ -80,12 +80,34 @@
 
       <button type="button" class="daily-card kh-daily" id="dailyCard" onclick="startDailyChallenge()"></button>
 
-      <div class="kh-h kh-h2">More</div>
-      <div class="kh-row">
-        <button type="button" class="kh-chip" onclick="rateApp()"><i>⭐</i>Rate</button>
-        <button type="button" class="kh-chip" onclick="shareApp()"><i>📤</i>Share</button>
-        <button type="button" class="kh-chip" onclick="moreGames()"><i>🕹️</i>Apps</button>
-        <button type="button" class="kh-chip" onclick="openInstagram()"><i>📷</i>Insta</button>
+      <div class="kh-h kh-h2">Love the app?</div>
+      <div class="kh-love">
+        <button type="button" class="kh-promo p-rate" onclick="rateApp()">
+          <span class="kp-spark s1">✦</span><span class="kp-spark s2">✦</span><span class="kp-spark s3">✦</span>
+          <span class="kp-ico"><img class="emoji-img" src="images/emoji/2b50.svg" alt=""></span>
+          <span class="kp-ttl">Rate Us</span>
+          <span class="kp-stars" aria-hidden="true"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span>
+          <span class="kp-cta">Tap to rate</span>
+        </button>
+        <button type="button" class="kh-promo p-share" onclick="shareApp()">
+          <span class="kp-spark s1">✦</span><span class="kp-spark s2">✦</span><span class="kp-spark s3">✦</span>
+          <span class="kp-ico"><img class="emoji-img" src="images/emoji/1f680.svg" alt=""></span>
+          <span class="kp-ttl">Share</span>
+          <span class="kp-sub">Play with friends!</span>
+          <span class="kp-cta">Invite now</span>
+        </button>
+      </div>
+      <div class="kh-pills">
+        <button type="button" class="kh-pill p-apps" onclick="moreGames()">
+          <span class="kpl-ico"><img class="emoji-img" src="images/emoji/1f3ae.svg" alt=""></span>
+          <span class="kpl-txt"><b>More Apps</b><small>On Google Play</small></span>
+          <span class="kpl-go">›</span>
+        </button>
+        <button type="button" class="kh-pill p-insta" onclick="openInstagram()">
+          <span class="kpl-ico"><img class="emoji-img" src="images/emoji/1f4f7.svg" alt=""></span>
+          <span class="kpl-txt"><b>Instagram</b><small>Follow us</small></span>
+          <span class="kpl-go">›</span>
+        </button>
       </div>
     </div>
 
@@ -121,7 +143,7 @@
   <div id="levelScreen" class="hidden">
     <div class="breadcrumb" id="levelBreadcrumb"></div>
     <h2 id="levelTitle">Select Class Level</h2>
-    <p class="subtitle" id="levelSubtitle" style="margin-top:-6px;margin-bottom:12px;">Class 1 – 10 · NCERT-aligned difficulty</p>
+    <p class="subtitle" id="levelSubtitle" style="margin-top:-6px;margin-bottom:12px;">Class 1 – 5 · NCERT-aligned difficulty</p>
     <div id="levelGrid" class="level-grid"></div>
     <div class="info-box">
       <strong>Rules:</strong> 3-minute timer • +1 for correct • −1 for wrong • 4 options per question • Random questions every time
@@ -195,8 +217,8 @@
   </div>
 </div>
 
-<script src="quiz-shared.js" charset="utf-8"></script>
-<script src="emoji-images.js" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261120d" charset="utf-8"></script>
+<script src="emoji-images.js?v=20261120d" charset="utf-8"></script>
 <script>
 /* ============================================================
    AUTH GUARD
@@ -314,15 +336,20 @@ function selectCategory(catId) {
   showLevelScreen();
 }
 
-/* n = 0 is LKG — a bouncy pastel button with a chick icon instead of a
-   number, so pre-readers (helped by a parent) can spot it at a glance. */
+/* n = 0 is LKG, n = UKG_LEVEL is UKG — bouncy pastel buttons with a chick
+   icon instead of a number, so pre-readers (helped by a parent) can spot
+   them at a glance. */
 function buildLevelBtn(n, colors) {
   const isLkg = n === 0;
-  const pair = isLkg ? ['#FFD166', '#E8964A'] : (colors[(n - 1) % colors.length] || ['#7C5CFC', '#5A3FD1']);
+  const isUkg = typeof UKG_LEVEL === 'number' && n === UKG_LEVEL;
+  const isPre = isLkg || isUkg;
+  const pair = isLkg ? ['#FFD166', '#E8964A']
+    : isUkg ? ['#7DD3FC', '#38A3D1']
+    : (colors[(n - 1) % colors.length] || ['#7C5CFC', '#5A3FD1']);
   const bg = pair[0], sh = pair[1];
   const btn = document.createElement('button');
   btn.type = 'button';
-  btn.className = 'level-btn' + (isLkg ? ' level-btn-lkg' : '');
+  btn.className = 'level-btn' + (isPre ? ' level-btn-lkg' : '');
   btn.style.background = bg;
   btn.style.boxShadow = '0 6px 0 ' + sh + ', 0 10px 16px rgba(0,0,0,.18)';
   btn.style.opacity = '1';
@@ -330,7 +357,7 @@ function buildLevelBtn(n, colors) {
   btn.setAttribute('data-class', String(n));
   btn.setAttribute('aria-label', classLabel(n));
   btn.onclick = (function (level) { return function () { goToQuiz(level); }; })(n);
-  btn.innerHTML = (isLkg ? '<span class="num">🐣</span>' : '<span class="num">' + n + '</span>') +
+  btn.innerHTML = (isLkg ? '<span class="num">🐣</span>' : isUkg ? '<span class="num">🐥</span>' : '<span class="num">' + n + '</span>') +
     '<span class="label">' + classLabel(n) + '</span>';
   return btn;
 }
@@ -348,34 +375,24 @@ function showLevelScreen() {
   ];
   const grid = document.getElementById('levelGrid');
   if (grid) {
-    // LKG only shows for subjects with pictorial LKG content — otherwise
-    // it's Class 1…10 as before (never fall back to a 5-class build).
-    const showLkg = (typeof hasLkg === 'function') && hasLkg(currentCategory);
-    const minClass = showLkg ? (typeof MIN_CLASS === 'number' ? MIN_CLASS : 0) : 1;
+    // LKG/UKG only show for subjects with pictorial pre-primary content.
+    // Only Class 1…VISIBLE_MAX_CLASS (5) are shown for now — Class 6–10
+    // content is kept, just hidden (see VISIBLE_MAX_CLASS in quiz-shared.js).
+    const showPre = (typeof hasLkg === 'function') && hasLkg(currentCategory);
+    const maxShown = (typeof VISIBLE_MAX_CLASS === 'number' ? VISIBLE_MAX_CLASS : 5);
     const subtitleEl = document.getElementById('levelSubtitle');
     if (subtitleEl) {
-      subtitleEl.textContent = showLkg
-        ? 'LKG – Class 10 · Pictures for LKG, NCERT-aligned after'
-        : 'Class 1 – 10 · NCERT-aligned difficulty';
+      subtitleEl.textContent = showPre
+        ? 'LKG, UKG & Class 1 – ' + maxShown + ' · Pictures for little ones'
+        : 'Class 1 – ' + maxShown + ' · NCERT-aligned difficulty';
     }
-    const maxClass = Math.max(10, (typeof MAX_CLASS === 'number' ? MAX_CLASS : 10));
+    const levels = (typeof quizLevels === 'function') ? quizLevels(currentCategory) : [1, 2, 3, 4, 5];
     grid.innerHTML = '';
-    for (let n = minClass; n <= maxClass; n++) {
-      grid.appendChild(buildLevelBtn(n, colors));
-    }
-    // Safety: never leave the picker stuck on Class 1–5 only
-    const expected = maxClass - minClass + 1;
-    if (grid.children.length < expected) {
-      console.warn('[kidsQuiz] level grid only built', grid.children.length, 'buttons — forcing full range');
-      grid.innerHTML = '';
-      for (let n = minClass; n <= 10; n++) {
-        grid.appendChild(buildLevelBtn(n, colors));
-      }
-    }
+    levels.forEach(function (n) { grid.appendChild(buildLevelBtn(n, colors)); });
     if (typeof attachRipple === 'function') attachRipple('.level-btn');
   }
   showScreen('levelScreen');
-  // Short phones: scroll so Class 6–10 (2nd row) are on screen
+  // Short phones: scroll so the whole level grid is on screen
   try {
     requestAnimationFrame(function () {
       var gridEl = document.getElementById('levelGrid');
@@ -517,16 +534,15 @@ function renderBestScores() {
   CATEGORIES.forEach(cat => {
     if (!grouped[cat.id]) return;
     html += '<div style="margin-top:10px; font-weight:600; color:#555; font-size:13px;">' + cat.icon + ' ' + cat.title + '</div>';
-    const maxC = (typeof MAX_CLASS === 'number' ? MAX_CLASS : 10);
-    const minC = (typeof MIN_CLASS === 'number' ? MIN_CLASS : 0);
-    for (let lvl = minC; lvl <= maxC; lvl++) {
-      if (grouped[cat.id][lvl] === undefined) continue;
+    // Show every level that has a saved score (incl. hidden Class 6–10).
+    allQuizLevels().forEach(function (lvl) {
+      if (grouped[cat.id][lvl] === undefined) return;
       html += '<div class="best-item">' +
         '<div>' + classLabel(lvl) + '</div>' +
         '<div class="lvl"></div>' +
         '<div class="best-score">' + grouped[cat.id][lvl] + '</div>' +
       '</div>';
-    }
+    });
   });
   html += '</div>';
   return html;
@@ -592,20 +608,44 @@ function getQuizStats() {
   const acc = (c + w) ? Math.round(c / (c + w) * 100) : 0;
   return { games: h.length, best: best, accuracy: acc };
 }
+/* Name shown to the player: Google name when signed in; for guests, the
+   name they typed (local history is still stored under 'Guest'). */
+function displayName() {
+  if (window.isGuestUser) return kqGetNick() || 'Guest';
+  return currentUser;
+}
+function editGuestName() {
+  if (!window.isGuestUser) return;
+  kqAskName({ canCancel: true, title: 'Change your name' }).then(function (n) { if (n) renderHomeProfile(); });
+}
 function renderHomeProfile() {
-  document.getElementById('currentUserDisplay').textContent = currentUser;
-  var _hu = document.getElementById('historyUserDisplay'); if (_hu) _hu.textContent = currentUser;
+  const nameEl = document.getElementById('currentUserDisplay');
+  nameEl.textContent = displayName();
+  if (window.isGuestUser) {
+    nameEl.innerHTML = '';
+    nameEl.appendChild(document.createTextNode(displayName() + ' '));
+    const pen = document.createElement('button');
+    pen.type = 'button'; pen.className = 'pf-edit'; pen.textContent = '✏️';
+    pen.setAttribute('aria-label', 'Change your name');
+    pen.onclick = editGuestName;
+    nameEl.appendChild(pen);
+  }
+  var _hu = document.getElementById('historyUserDisplay'); if (_hu) _hu.textContent = displayName();
   // Google sign-in is currently hidden; keep the sign-out control for signed-in users.
   const authBtn = document.getElementById('pfAuthBtn');
   if (authBtn) {
-    authBtn.textContent = 'Out';
-    authBtn.style.display = window.isGuestUser ? 'none' : '';
+    // Signed in: "Out". Guest on the website: "Sign in" (takes them to the
+    // Google sign-in gate). Guest inside the Android app: hidden.
+    const webGuest = window.isGuestUser && !kqIsAndroidApp();
+    authBtn.textContent = window.isGuestUser ? 'Sign in' : 'Out';
+    authBtn.setAttribute('aria-label', window.isGuestUser ? 'Sign in with Google' : 'Sign out');
+    authBtn.style.display = (!window.isGuestUser || webGuest) ? '' : 'none';
   }
   const av = document.getElementById('pfAvatar');
   if (av) {
     let photo = '';
     try { if (window.KQ && KQ.user) photo = KQ.user().photo || ''; } catch (e) {}
-    const nm = (currentUser || 'Player').trim();
+    const nm = (displayName() || 'Player').trim();
     const ini = nm.charAt(0).toUpperCase() || '🙂';
     av.classList.add('kh-av');
     av.innerHTML = photo
@@ -647,7 +687,12 @@ function startDailyChallenge() {
    LEADERBOARD HUB
    ============================================ */
 let lbhubLevel = 1;
+/* Leaderboards are a full page now (leaderboard.html), not a popup.
+   The old hub modal below is kept but no longer opened. */
 function openLeaderboardHub() {
+  window.location.href = 'leaderboard.html';
+}
+function openLeaderboardHubModal() {
   const sel = document.getElementById('lbhubCat');
   if (sel) {
     sel.innerHTML = CATEGORIES.map(c => '<option value="' + c.id + '">' + c.icon + ' ' + c.title + '</option>').join('');
@@ -656,10 +701,7 @@ function openLeaderboardHub() {
   lbhubLevel = 1;
   const lv = document.getElementById('lbhubLevels');
   if (lv) {
-    const maxC = (typeof MAX_CLASS === 'number' ? MAX_CLASS : 10);
-    const minC = (typeof MIN_CLASS === 'number' ? MIN_CLASS : 0);
-    const nums = [];
-    for (let n = minC; n <= maxC; n++) nums.push(n);
+    const nums = quizLevels();   // LKG, UKG, Class 1–5 (6–10 hidden for now)
     lv.innerHTML = nums.map(n =>
       '<button type="button" class="lbhub-lv' + (n === 1 ? ' active' : '') + '" data-level="' + n + '" onclick="selectHubLevel(' + n + ')">' + classLabel(n) + '</button>').join('');
   }
@@ -689,10 +731,9 @@ function viewSelectedBoard() {
 function viewQuizBoard() { viewSelectedBoard(); }
 function viewOlympiadBoard() {
   closeLeaderboardHub();
-  if (window.KQ && KQ.open) KQ.open('olympiad', 'overall', '🎓 Olympiad');
-  else window.location.href = 'Olympiad/index.html';
+  window.location.href = 'leaderboard.html?cat=olympiad';
 }
-function viewMultiBoard() { closeLeaderboardHub(); if (window.KQ && KQ.open) KQ.open('multi', 'tic-tac-toe', 'Tic Tac Toe'); }
+function viewMultiBoard() { closeLeaderboardHub(); window.location.href = 'leaderboard.html?cat=multi'; }
 
 /* ============================================
    INIT
@@ -701,6 +742,8 @@ initBackgroundDecor();
 function initRipples() {
   attachRipple('.play-card');
   attachRipple('.android-action-btn');
+  attachRipple('.kh-promo');
+  attachRipple('.kh-pill');
   attachRipple('.menu-card');
   attachRipple('.level-btn');
   attachRipple('.mode-card');
@@ -768,7 +811,11 @@ getOrCreateUser(currentUser);
 
 renderHomeProfile();
 renderDailyCard();
+// Guests who never gave a name (older sessions) are asked once.
+if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
+  setTimeout(function () { kqAskName().then(renderHomeProfile); }, 400);
+}
 </script>
-<script src="games/kq-leaderboard.js"></script>
+<script src="games/kq-leaderboard.js?v=20261120d"></script>
 </body>
 </html>

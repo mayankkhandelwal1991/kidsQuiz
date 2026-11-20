@@ -219,15 +219,46 @@ function dateKeyOffset(days) {
 const MAX_CLASS = 10;
 /** Lowest class level offered — 0 is LKG (pre-Class-1, pictorial questions). */
 const MIN_CLASS = 0;
-/** Display label for a level: 0 -> "LKG", otherwise "Class N". */
+/** UKG level id. Levels are plain numbers everywhere (URL, history,
+    leaderboard keys), and 0 is already LKG, so UKG uses -1 as its ID.
+    It is only an id — display order comes from quizLevels(), which puts
+    UKG between LKG and Class 1. Questions live in quiz/<subject>/ukg.js. */
+const UKG_LEVEL = -1;
+/** Highest class currently SHOWN in pickers. Class 6–10 content and code
+    are kept; raise this back to MAX_CLASS to show them again. */
+const VISIBLE_MAX_CLASS = 5;
+/** Display label for a level: 0 -> "LKG", -1 -> "UKG", otherwise "Class N". */
 function classLabel(n) {
   n = parseInt(n, 10);
-  return n === 0 ? 'LKG' : 'Class ' + n;
+  if (n === 0) return 'LKG';
+  if (n === UKG_LEVEL) return 'UKG';
+  return 'Class ' + n;
 }
 /** Subjects with pictorial LKG (level 0) content — everything else only
     goes down to Class 1, since LKG-age content doesn't exist for them yet. */
 const LKG_SUBJECTS = ['addsub', 'english', 'hindi', 'gk', 'science', 'animals', 'plants', 'humanbody', 'space', 'geography', 'computers', 'sports'];
 function hasLkg(catId) { return LKG_SUBJECTS.indexOf(catId) !== -1; }
+/** UKG is offered for the same subjects as LKG. */
+const UKG_SUBJECTS = LKG_SUBJECTS;
+function hasUkg(catId) { return UKG_SUBJECTS.indexOf(catId) !== -1; }
+/** Pre-primary levels (LKG/UKG) use the big picture cards + read-aloud. */
+function isPicoLevel(n) { n = parseInt(n, 10); return n === 0 || n === UKG_LEVEL; }
+/** Levels to show for a subject, in display order: LKG, UKG, Class 1…5.
+    Pass no catId to get every pre-primary level (e.g. leaderboard hub). */
+function quizLevels(catId) {
+  const out = [];
+  if (!catId || hasLkg(catId)) out.push(0);
+  if (!catId || hasUkg(catId)) out.push(UKG_LEVEL);
+  for (let n = 1; n <= VISIBLE_MAX_CLASS; n++) out.push(n);
+  return out;
+}
+/** Every level that may have saved scores (incl. hidden Class 6–10),
+    in display order — used for showing past history. */
+function allQuizLevels() {
+  const out = [0, UKG_LEVEL];
+  for (let n = 1; n <= MAX_CLASS; n++) out.push(n);
+  return out;
+}
 
 /* ============================================
    READ-ALOUD (LKG) — speaks questions/prompts so pre-readers don't need
@@ -271,7 +302,7 @@ function dailyHash(str) {
 function getDailyChallenge() {
   const seed = dailyHash(todayKey());
   const cat = CATEGORIES[seed % CATEGORIES.length];
-  const level = (Math.floor(seed / 7) % MAX_CLASS) + 1;
+  const level = (Math.floor(seed / 7) % VISIBLE_MAX_CLASS) + 1;
   return { catId: cat.id, level: level, title: cat.title, icon: cat.icon };
 }
 function loadDaily() {
@@ -324,38 +355,100 @@ function initBackgroundDecor() {
 /* ============================================
    SHARE & RATE (used on the landing page and the end screen)
    ============================================ */
+const KQ_LINKS = {
+  play: 'https://play.google.com/store/apps/details?id=com.mk.kidsquiz',
+  rate: 'https://play.google.com/store/apps/details?id=com.mk.kidsquiz&showAllReviews=true',
+  dev: 'https://play.google.com/store/apps/developer?id=Mayank+Logic',
+  insta: 'https://www.instagram.com/kidsgames_quiz?igsh=dHVkdWVtNnFleXV1'
+};
+/* Open an external link: Android app bridge first, then a new browser tab,
+   and if the browser blocks the tab, the same tab. */
+function kqOpenExternal(url) {
+  try {
+    if (typeof Android !== "undefined" && Android.openUrl) { Android.openUrl(url); return; }
+  } catch (e) {}
+  var w = null;
+  try { w = window.open(url, '_blank', 'noopener'); } catch (e) {}
+  if (!w) window.location.href = url;
+}
+
 async function shareApp() {
-  const playStoreLink = 'https://play.google.com/store/apps/details?id=com.mk.kidsquiz';
-  const instagramLink = 'https://www.instagram.com/kidsgames_quiz?igsh=dHVkdWVtNnFleXV1';
-  const previewUrl = new URL('share-preview.png', window.location.href).href;
+  const playStoreLink = KQ_LINKS.play;
   const shareText = '🧠✨ Turn screen time into fun learning!\n\n' +
     '🎮 Kids Quiz — Play, Learn & Grow\n' +
     'Fun quizzes and mini-games made for curious kids.\n\n' +
     '▶️ Get it on Google Play:\n' + playStoreLink + '\n\n' +
-    '📸 Follow us on Instagram for fun updates:\n' + instagramLink;
+    '📸 Follow us on Instagram for fun updates:\n' + KQ_LINKS.insta;
 
   if (typeof Android !== "undefined" && Android.shareAppContent) {
-    Android.shareAppContent('Kids Quiz', shareText + '\n\n🖼️ App preview:\n' + previewUrl);
+    Android.shareAppContent('Kids Quiz', shareText);
     return;
   }
   if (typeof Android !== "undefined" && Android.shareApp) {
     Android.shareApp();
     return;
   }
-  try {
-    const response = await fetch(previewUrl);
-    const blob = await response.blob();
-    const file = new File([blob], 'kids-quiz-preview.png', { type: blob.type || 'image/png' });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({ title: 'Kids Quiz', text: shareText, url: playStoreLink, files: [file] });
-      return;
-    }
-  } catch (e) {}
+  // Phones / browsers with a native share sheet.
   if (navigator.share) {
-    navigator.share({ title: 'Kids Quiz', text: shareText + '\n\n🖼️ App preview:\n' + previewUrl, url: playStoreLink }).catch(function(){});
-    return;
+    try {
+      await navigator.share({ title: 'Kids Quiz', text: shareText, url: playStoreLink });
+      return;
+    } catch (e) {
+      if (e && e.name === 'AbortError') return; // user closed the sheet
+    }
   }
-  alert('Sharing is available inside the Kids Quiz app.');
+  // Desktop browsers: our own share panel.
+  kqShowSharePanel(shareText, playStoreLink);
+}
+
+function kqShowSharePanel(text, link) {
+  var old = document.getElementById('kqSharePanel');
+  if (old) old.remove();
+  var enc = encodeURIComponent;
+  var items = [
+    { ic: '💬', nm: 'WhatsApp', bg: '#25D366', url: 'https://wa.me/?text=' + enc(text) },
+    { ic: '📘', nm: 'Facebook', bg: '#1877F2', url: 'https://www.facebook.com/sharer/sharer.php?u=' + enc(link) },
+    { ic: '✖️', nm: 'X', bg: '#111827', url: 'https://twitter.com/intent/tweet?text=' + enc('Kids Quiz — Play, Learn & Grow 🎮🧠') + '&url=' + enc(link) },
+    { ic: '✈️', nm: 'Telegram', bg: '#229ED9', url: 'https://t.me/share/url?url=' + enc(link) + '&text=' + enc('Kids Quiz — Play, Learn & Grow 🎮🧠') },
+    { ic: '✉️', nm: 'Email', bg: '#F97316', url: 'mailto:?subject=' + enc('Kids Quiz — fun learning for kids') + '&body=' + enc(text) }
+  ];
+  var wrap = document.createElement('div');
+  wrap.id = 'kqSharePanel';
+  wrap.setAttribute('role', 'dialog');
+  wrap.style.cssText = 'position:fixed;inset:0;z-index:2147483646;background:rgba(15,10,40,.55);display:flex;align-items:center;justify-content:center;padding:16px;font-family:inherit';
+  wrap.innerHTML =
+    '<div style="background:#fff;color:#1e1b4b;border-radius:24px;padding:20px 18px 16px;width:100%;max-width:380px;box-shadow:0 24px 60px rgba(0,0,0,.35);text-align:center;position:relative">' +
+      '<button type="button" data-x aria-label="Close" style="position:absolute;top:10px;right:10px;width:32px;height:32px;border:none;border-radius:50%;background:#f1f0fb;font-size:16px;font-weight:900;cursor:pointer">✕</button>' +
+      '<div style="font-size:34px">🚀</div>' +
+      '<div style="font-size:19px;font-weight:900;margin:4px 0 2px">Share Kids Quiz</div>' +
+      '<div style="font-size:13px;color:#6b7280;font-weight:700;margin-bottom:14px">Invite friends to play and learn!</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px">' +
+        items.map(function (it, i) {
+          return '<button type="button" data-i="' + i + '" style="border:none;background:none;cursor:pointer;padding:0;font-family:inherit">' +
+            '<span style="display:grid;place-items:center;width:48px;height:48px;margin:0 auto 4px;border-radius:16px;background:' + it.bg + ';font-size:22px;box-shadow:0 4px 0 rgba(0,0,0,.15)">' + it.ic + '</span>' +
+            '<span style="font-size:11px;font-weight:800;color:#374151">' + it.nm + '</span></button>';
+        }).join('') +
+      '</div>' +
+      '<div style="display:flex;gap:6px;background:#f5f3ff;border-radius:14px;padding:6px">' +
+        '<input readonly value="' + link.replace(/"/g, '&quot;') + '" style="flex:1;min-width:0;border:none;background:transparent;font-size:12.5px;font-weight:700;color:#4c1d95;padding:0 6px;outline:none">' +
+        '<button type="button" data-copy style="border:none;border-radius:10px;background:#6d28d9;color:#fff;font-weight:900;font-size:12.5px;padding:9px 14px;cursor:pointer">Copy link</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(wrap);
+  function close() { wrap.remove(); document.removeEventListener('keydown', onKey); }
+  function onKey(e) { if (e.key === 'Escape') close(); }
+  document.addEventListener('keydown', onKey);
+  wrap.addEventListener('click', function (e) {
+    if (e.target === wrap || e.target.closest('[data-x]')) return close();
+    var b = e.target.closest('[data-i]');
+    if (b) { kqOpenExternal(items[+b.getAttribute('data-i')].url); return close(); }
+    var c = e.target.closest('[data-copy]');
+    if (c) {
+      var done = function () { c.textContent = 'Copied! ✓'; c.style.background = '#16a34a'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () { wrap.querySelector('input').select(); document.execCommand('copy'); done(); });
+      else { wrap.querySelector('input').select(); try { document.execCommand('copy'); } catch (x) {} done(); }
+    }
+  });
 }
 
 function rateApp() {
@@ -363,21 +456,83 @@ function rateApp() {
     Android.rateApp();
     return;
   }
-  alert('Rating is available inside the Kids Quiz app.');
+  // Browsers: open the Play Store page where reviews are written.
+  kqOpenExternal(KQ_LINKS.rate);
 }
 
-function moreGames() {
-  var url = 'https://play.google.com/store/apps/developer?id=Mayank+Logic';
-  try {
-    if (typeof Android !== "undefined" && Android.openUrl) { Android.openUrl(url); return; }
-  } catch (e) {}
-  try { window.open(url, '_blank'); } catch (e) { window.location.href = url; }
-}
+function moreGames() { kqOpenExternal(KQ_LINKS.dev); }
 
-function openInstagram() {
-  var url = 'https://www.instagram.com/kidsgames_quiz?igsh=dHVkdWVtNnFleXV1';
-  window.open(url, '_blank');
-}
+function openInstagram() { kqOpenExternal(KQ_LINKS.insta); }
 
 function onRewardEarned(type, amount) { console.log(type, amount); }
 function onAdClosed(type) { console.log(type + " closed"); }
+
+/* ============================================
+   ANDROID APP DETECTION
+   The same pages run inside the Android app's WebView. Google blocks its
+   web sign-in there, so Google sign-in is offered on the WEBSITE only.
+   We're "in the app" if the app's JS bridge (window.Android) exists or the
+   browser reports itself as an Android WebView ("; wv)").
+   ============================================ */
+function kqIsAndroidApp() {
+  try { if (typeof Android !== 'undefined' && Android) return true; } catch (e) {}
+  var ua = navigator.userAgent || '';
+  return /; wv\)/.test(ua);
+}
+
+/* ============================================
+   PLAYER NAME (guests)
+   Google users get their Google name automatically (kq-leaderboard.js
+   stores it as kq_nick). Guests are asked once; the name is shown on the
+   home screen and used for their leaderboard profile.
+   ============================================ */
+function kqGetNick() {
+  try { return (localStorage.getItem('kq_nick') || '').trim(); } catch (e) { return ''; }
+}
+function kqSetNick(name) {
+  name = String(name || '').replace(/\s+/g, ' ').trim().slice(0, 20);
+  if (!name) return '';
+  if (window.KQ && KQ.setNick) KQ.setNick(name);
+  else { try { localStorage.setItem('kq_nick', name); } catch (e) {} }
+  return name;
+}
+/** Shows a friendly "What's your name?" box. Resolves with the saved name.
+    opts.canCancel: show a Cancel button (resolves with '' if cancelled). */
+function kqAskName(opts) {
+  opts = opts || {};
+  return new Promise(function (resolve) {
+    var old = document.getElementById('kqNameBox');
+    if (old) old.remove();
+    var cur = kqGetNick();
+    if (cur === 'Guest' || cur === 'Player') cur = '';
+    var box = document.createElement('div');
+    box.id = 'kqNameBox';
+    box.style.cssText = 'position:fixed;inset:0;z-index:2147483646;background:rgba(15,10,40,.6);display:flex;align-items:center;justify-content:center;padding:16px';
+    box.innerHTML =
+      '<form style="background:#fff;color:#1e1b4b;border-radius:26px;padding:22px 18px 18px;width:100%;max-width:360px;box-shadow:0 24px 60px rgba(0,0,0,.35);text-align:center;font-family:inherit">' +
+        '<div style="font-size:42px;line-height:1">🧒</div>' +
+        '<div style="font-size:20px;font-weight:900;margin:8px 0 2px">' + (opts.title || 'What’s your name?') + '</div>' +
+        '<div style="font-size:13px;color:#6b7280;font-weight:700;margin-bottom:14px">It will show on the leaderboard 🏆</div>' +
+        '<input name="nm" maxlength="20" autocomplete="nickname" placeholder="Type your name" style="width:100%;box-sizing:border-box;border:2px solid #ddd6fe;border-radius:14px;padding:12px 14px;font-size:17px;font-weight:800;color:#1e1b4b;outline:none;text-align:center;font-family:inherit">' +
+        '<div data-err style="color:#dc2626;font-size:12px;font-weight:800;min-height:16px;margin-top:6px"></div>' +
+        '<div style="display:flex;gap:8px;margin-top:4px">' +
+          (opts.canCancel ? '<button type="button" data-cancel style="flex:1;border:none;border-radius:14px;padding:12px;font-size:15px;font-weight:900;background:#f1f0fb;color:#4c1d95;cursor:pointer;font-family:inherit">Cancel</button>' : '') +
+          '<button type="submit" style="flex:2;border:none;border-radius:14px;padding:12px;font-size:15px;font-weight:900;color:#fff;background:linear-gradient(135deg,#7c3aed,#4f46e5);box-shadow:0 4px 0 #3730a3;cursor:pointer;font-family:inherit">Let’s go! 🚀</button>' +
+        '</div>' +
+      '</form>';
+    document.body.appendChild(box);
+    var form = box.querySelector('form'), input = box.querySelector('input'), err = box.querySelector('[data-err]');
+    input.value = cur;
+    setTimeout(function () { try { input.focus(); } catch (e) {} }, 50);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = input.value.replace(/\s+/g, ' ').trim();
+      if (v.length < 2) { err.textContent = 'Please type at least 2 letters'; input.focus(); return; }
+      var saved = kqSetNick(v);
+      box.remove();
+      resolve(saved);
+    });
+    var c = box.querySelector('[data-cancel]');
+    if (c) c.onclick = function () { box.remove(); resolve(''); };
+  });
+}

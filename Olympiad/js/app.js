@@ -90,10 +90,12 @@ function normalizeLoadedQuestions(list) {
 }
 
 function init() {
-  fetch("data/config.json")
+  fetch("data/config.json", { cache: "no-cache" })
     .then((r) => r.json())
     .then((cfg) => {
+      // Classes marked "hidden" in config.json are kept (data + code) but not shown.
       $("classGrid").innerHTML = cfg.classes
+        .filter((c) => !c.hidden)
         .map(
           (c) =>
             `<button type="button" class="card selection-card class-card" data-class="${c.id}" data-name="${c.name}"><span class="badge">Class</span><strong>${c.name}</strong></button>`
@@ -105,7 +107,9 @@ function init() {
         state.classId = btn.dataset.class;
         state.className = btn.dataset.name;
         $("classTitle").textContent = state.className;
+        // A subject with a "classes" list only shows for those classes.
         $("subjectGrid").innerHTML = cfg.subjects
+          .filter((s) => !Array.isArray(s.classes) || s.classes.includes(state.classId))
           .map(
             (s) =>
               `<button type="button" class="card selection-card subject-card subject-${s.id}" data-subject="${s.id}" data-name="${s.name}"><strong>${s.name}</strong><span>${s.short || s.name}</span></button>`
@@ -175,7 +179,7 @@ function loadPapers() {
   $("paperGrid").innerHTML = `<div class="muted">Loading papers…</div>`;
   Promise.all(
     [1, 2, 3, 4, 5].map((p) =>
-      fetch(`data/${state.classId}/${state.subjectId}/questions/paper${p}.json`)
+      fetch(`data/${state.classId}/${state.subjectId}/questions/paper${p}.json`, { cache: "no-cache" })
         .then((r) => r.json())
         .then((paper) => ({ p, paper }))
         .catch(() => null)
@@ -206,10 +210,10 @@ function loadPapers() {
 
 async function startSelected(p) {
   try {
-    const qp = await fetch(`data/${state.classId}/${state.subjectId}/questions/paper${p}.json`).then((r) =>
+    const qp = await fetch(`data/${state.classId}/${state.subjectId}/questions/paper${p}.json`, { cache: "no-cache" }).then((r) =>
       r.json()
     );
-    const ap = await fetch(`data/${state.classId}/${state.subjectId}/answers/paper${p}.json`).then((r) =>
+    const ap = await fetch(`data/${state.classId}/${state.subjectId}/answers/paper${p}.json`, { cache: "no-cache" }).then((r) =>
       r.json()
     );
     const details = paperDetails(qp);
@@ -409,6 +413,16 @@ function submitTest() {
   h.push(attempt);
   saveHistory(h);
   state.lastResult = attempt;
+
+  // Shared leaderboard + player history (leaderboard.html). Board id:
+  // class3__reasoning__p2 — keeps this player's best score per paper.
+  try {
+    if (window.KQ && KQ.submit) {
+      KQ.submit("olympiad", `${state.classId}__${state.subjectId}__p${state.paper}`, score, {
+        meta: { className: state.className, subjectName: state.subjectName, paper: Number(state.paper), totalMarks: attempt.totalMarks, correct },
+      });
+    }
+  } catch (e) {}
 
   $("resultCard").innerHTML = `<div class="muted">${attempt.className} • ${attempt.subjectName} • Paper ${attempt.paper}</div><div class="score">${score}/${attempt.totalMarks}</div><p><b>${correct}</b> of ${attempt.totalQuestions} correct • ${attempt.answered} answered</p><p>Percentage: <b>${Math.round((score / attempt.totalMarks) * 100)}%</b></p>`;
   $("reviewList").classList.add("hidden");

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Olympiad Test Portal — Class 1 to 10</title>
-<link rel="stylesheet" href="css/style.css">
+<title>Olympiad Test Portal — Class 1 to 5</title>
+<link rel="stylesheet" href="css/style.css?v=20261120d">
 <style>
   /* Compact navigation is kept in the same position on every Olympiad screen. */
   .back {
@@ -66,6 +66,12 @@
   .subject-computer { background: linear-gradient(135deg,#2563eb,#06b6d4) !important; }
   .subject-card.subject-gk,
   .subject-gk { background: linear-gradient(135deg,#d97706,#ef4444) !important; }
+  .subject-card.subject-socialstudies,
+  .subject-socialstudies { background: linear-gradient(135deg,#0d9488,#65a30d) !important; }
+  .subject-card.subject-reasoning,
+  .subject-reasoning { background: linear-gradient(135deg,#7c3aed,#db2777) !important; }
+  .subject-card.subject-creativearts,
+  .subject-creativearts { background: linear-gradient(135deg,#f59e0b,#ec4899) !important; }
   .class-card:nth-child(5n+1) { background: linear-gradient(135deg,#667eea,#764ba2) !important; }
   .class-card:nth-child(5n+2) { background: linear-gradient(135deg,#f97316,#f43f5e) !important; }
   .class-card:nth-child(5n+3) { background: linear-gradient(135deg,#0f766e,#14b8a6) !important; }
@@ -82,7 +88,7 @@
 </head>
 <body>
 <header class="topbar">
-  <div><div class="brand">🏆 Olympiad Test Portal</div><div class="tag">Class 1–10 • Practice • History • Retakes</div></div>
+  <div><div class="brand">🏆 Olympiad Test Portal</div><div class="tag">Class 1–5 • Practice • History • Retakes</div></div>
   <button id="historyBtn" class="ghost">📜 History</button>
 </header>
 <main class="container">
@@ -166,6 +172,8 @@
   </div>
 </div>
 <div id="toast" class="toast"></div>
-<script src="js/app.js"></script>
+<script>window.KQ_NO_WIDGET = true;</script>
+<script src="../games/kq-leaderboard.js?v=20261120d"></script>
+<script src="js/app.js?v=20261120d"></script>
 </body>
 </html>

@@ -37,7 +37,8 @@ let files = 0;
 for (const subj of fs.readdirSync(QUIZ_DIR).sort()) {
   const dir = path.join(QUIZ_DIR, subj);
   if (!fs.statSync(dir).isDirectory()) continue;
-  for (const f of fs.readdirSync(dir).filter(f => /^class\d+\.js$/.test(f)).sort()) {
+  // classN.js = Class N (class0.js = LKG); ukg.js = UKG (registers level -1)
+  for (const f of fs.readdirSync(dir).filter(f => /^(class\d+|ukg)\.js$/.test(f)).sort()) {
     try {
       vm.runInContext(fs.readFileSync(path.join(dir, f), 'utf8'), sandbox, { filename: f });
       files++;

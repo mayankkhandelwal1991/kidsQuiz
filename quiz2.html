@@ -212,7 +212,7 @@
   </div>
 </div>
 
-<script src="quiz-shared.js?v=20261120n"></script>
+<script src="quiz-shared.js?v=20261120o"></script>
 <script>
 /* ============================================
    INIT
@@ -288,6 +288,14 @@ function showGate() {
     });
   }
 }
+
+/* The Android app calls this when the Google account chooser is closed or
+   sign-in fails — sign-in is optional, so just let them try again or play as Guest. */
+window.onGoogleSignInCancelled = function () {
+  const btn = document.getElementById('googleGateBtn'); if (btn) btn.disabled = false;
+  const msg = document.getElementById('gateMsg');
+  if (msg) msg.textContent = 'No problem! Tap "Continue as Guest" to play, or try Google again.';
+};
 
 /* ---- Gate button handlers ------------------------------------------------ */
 function gateSignIn() {

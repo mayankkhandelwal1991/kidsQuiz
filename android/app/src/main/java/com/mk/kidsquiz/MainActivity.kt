@@ -11,7 +11,10 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.Uri
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.webkit.JavascriptInterface
+import android.widget.Toast
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -20,7 +23,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.lifecycleScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -47,12 +56,13 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback
-// --- Google Sign-In imports (ADDED) ---
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.mk.kidsquiz.ui.theme.KidsQuizTheme
+import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
 
@@ -64,44 +74,20 @@ class MainActivity : ComponentActivity() {
             RewardedInterstitialAd? = null
 
     // ==================================================
-    // GOOGLE SIGN-IN  (ADDED)
+    // GOOGLE SIGN-IN (optional — kids can always "Continue as Guest")
     // ==================================================
-    // Paste your Firebase "Web client ID" here
-    // (Firebase console -> Authentication -> Google ->
-    //  Web SDK configuration -> Web client ID). It ends
-    // with .apps.googleusercontent.com
+    // Firebase "Web client ID" (OAuth client type 3 in google-services.json).
+    // The ID token is handed to the web page, which signs in to Firebase with it.
+    // Only the basic Google profile is requested: name + email (no extra scopes).
     private val WEB_CLIENT_ID =
-        "YOUR_WEB_CLIENT_ID.apps.googleusercontent.com"
+        "851797718600-rn0qdbngmlq66gmvu624fll5eh34l9qi.apps.googleusercontent.com"
 
-    private lateinit var googleSignInClient: GoogleSignInClient
+    private val credentialManager by lazy { CredentialManager.create(this) }
+    private var signInInProgress = false
 
-    // Receives the result of the Google account chooser and
-    // forwards the ID token to the web page.
-    private val signInLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            try {
-                val account = GoogleSignIn
-                    .getSignedInAccountFromIntent(result.data)
-                    .getResult(ApiException::class.java)
-
-                val idToken = account?.idToken
-
-                if (idToken != null && ::webView.isInitialized) {
-                    runOnUiThread {
-                        webView.evaluateJavascript(
-                            "window.onGoogleIdToken && " +
-                                    "window.onGoogleIdToken('$idToken')",
-                            null
-                        )
-                    }
-                }
-            } catch (e: ApiException) {
-                // 12501 = user cancelled the chooser; ignore.
-                // Any other code -> check e.statusCode + SHA-1 / Web client ID.
-            }
-        }
+    // Text-to-speech for read-aloud in quizzes/games (WebView has no speechSynthesis).
+    private var tts: TextToSpeech? = null
+    private var ttsReady = false
 
     // ==================================================
     // true = TEST ADS
@@ -193,16 +179,11 @@ class MainActivity : ComponentActivity() {
 
         MobileAds.setRequestConfiguration(requestConfiguration)
 
-        // ==================================================
-        // GOOGLE SIGN-IN CLIENT  (ADDED)
-        // ==================================================
-        val gso = GoogleSignInOptions
-            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(WEB_CLIENT_ID)
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        // Read-aloud voice for the web pages (Android.speak)
+        tts = TextToSpeech(this) { status ->
+            ttsReady = status == TextToSpeech.SUCCESS
+            if (ttsReady) tts?.language = Locale.US
+        }
 
         loadInterstitialAd()
         loadRewardedAd()
@@ -327,13 +308,91 @@ class MainActivity : ComponentActivity() {
     }
 
     // ==================================================
-    // START GOOGLE SIGN-IN  (ADDED)
-    // Signs out first so the account chooser always shows.
+    // START GOOGLE SIGN-IN
+    // Shows the "Sign in with Google" account chooser. On success the ID
+    // token goes to the page (window.onGoogleIdToken) which signs in to
+    // Firebase; the player's Google name is then used on the leaderboard.
+    // Cancel / failure just leaves the child on the screen, where
+    // "Continue as Guest" still works — sign-in is never required.
     // ==================================================
     private fun startGoogleSignIn() {
-        googleSignInClient.signOut().addOnCompleteListener {
-            signInLauncher.launch(googleSignInClient.signInIntent)
+        if (signInInProgress) return
+        signInInProgress = true
+
+        val option = GetSignInWithGoogleOption.Builder(WEB_CLIENT_ID).build()
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(option)
+            .build()
+
+        lifecycleScope.launch {
+            try {
+                val credential = credentialManager.getCredential(this@MainActivity, request).credential
+                if (credential is CustomCredential &&
+                    credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+                ) {
+                    val google = GoogleIdTokenCredential.createFrom(credential.data)
+                    sendToPage(
+                        "window.onGoogleIdToken && window.onGoogleIdToken(" +
+                                JSONObject.quote(google.idToken) + ")"
+                    )
+                } else {
+                    onSignInFailed("unexpected credential type")
+                }
+            } catch (e: GetCredentialCancellationException) {
+                sendToPage("window.onGoogleSignInCancelled && window.onGoogleSignInCancelled()")
+            } catch (e: GetCredentialException) {
+                onSignInFailed(e.type + ": " + e.message)
+            } catch (e: GoogleIdTokenParsingException) {
+                onSignInFailed("token parse: " + e.message)
+            } finally {
+                signInInProgress = false
+            }
         }
+    }
+
+    private fun onSignInFailed(reason: String) {
+        Log.w("KidsQuizLogin", "Google sign-in failed: $reason")
+        Toast.makeText(
+            this,
+            "Google sign-in didn't work. You can play as Guest.",
+            Toast.LENGTH_LONG
+        ).show()
+        sendToPage("window.onGoogleSignInCancelled && window.onGoogleSignInCancelled()")
+    }
+
+    private fun signOutGoogle() {
+        lifecycleScope.launch {
+            try {
+                credentialManager.clearCredentialState(ClearCredentialStateRequest())
+            } catch (e: Exception) {
+                Log.w("KidsQuizLogin", "clearCredentialState failed", e)
+            }
+        }
+    }
+
+    private fun sendToPage(js: String) {
+        if (!::webView.isInitialized) return
+        runOnUiThread { webView.evaluateJavascript(js, null) }
+    }
+
+    // ==================================================
+    // READ ALOUD (Android.speak)
+    // ==================================================
+    private fun speakText(text: String?, lang: String?) {
+        if (!ttsReady || text.isNullOrBlank()) return
+        val locale = when (lang?.lowercase()?.take(2)) {
+            "hi" -> Locale("hi", "IN")
+            else -> Locale.US
+        }
+        tts?.language = locale
+        tts?.setSpeechRate(0.9f)
+        tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "kq")
+    }
+
+    override fun onDestroy() {
+        tts?.stop()
+        tts?.shutdown()
+        super.onDestroy()
     }
 
     // ==================================================
@@ -798,16 +857,25 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        // Clears the cached Google account (so the chooser shows
+        // Clears the remembered Google account (so the chooser shows
         // again next time). Called from the page's Sign out button.
         // Usage in JS:  Android.googleSignOut();
         @JavascriptInterface
         fun googleSignOut() {
-            runOnUiThread {
-                if (::googleSignInClient.isInitialized) {
-                    googleSignInClient.signOut()
-                }
-            }
+            runOnUiThread { signOutGoogle() }
+        }
+
+        // The web page only shows "Sign in with Google" inside the app when
+        // this returns true (older app builds had a broken sign-in bridge).
+        // Usage in JS:  Android.isGoogleSignInReady();
+        @JavascriptInterface
+        fun isGoogleSignInReady(): Boolean = true
+
+        // Read text aloud with the device voice.
+        // Usage in JS:  Android.speak("Well done!", "en");
+        @JavascriptInterface
+        fun speak(text: String?, lang: String?) {
+            runOnUiThread { speakText(text, lang) }
         }
 
         // ==================================================

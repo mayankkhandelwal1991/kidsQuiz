@@ -530,7 +530,12 @@ function kqIsAndroidApp() {
    hands the ID token back via window.onGoogleIdToken(token). Older app versions
    don't have it, so they keep the guest-only screen. */
 function kqHasNativeGoogle() {
-  try { return typeof Android !== 'undefined' && Android && typeof Android.googleSignIn === 'function'; } catch (e) { return false; }
+  // Needs the new app build (1.0.11+): it exposes isGoogleSignInReady(). Older builds
+  // had a googleSignIn bridge without a valid client ID, so we don't offer it there.
+  try {
+    return typeof Android !== 'undefined' && Android && typeof Android.googleSignIn === 'function' &&
+      typeof Android.isGoogleSignInReady === 'function' && !!Android.isGoogleSignInReady();
+  } catch (e) { return false; }
 }
 /* Google sign-in can be offered here: a normal browser, or the app with native sign-in. */
 function kqCanGoogleSignIn() { return !kqIsAndroidApp() || kqHasNativeGoogle(); }

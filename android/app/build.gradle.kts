@@ -15,8 +15,8 @@ android {
         applicationId = "com.mk.kidsquiz"
         minSdk = 24
         targetSdk = 36
-        versionCode = 11
-        versionName = "1.0.10"
+        versionCode = 12
+        versionName = "1.0.11"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,7 +55,11 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-ads:24.3.0")
 
-    implementation("com.google.android.gms:play-services-auth:21.3.0")
+    // Google Sign-In (Credential Manager + Sign in with Google). Replaces the
+    // deprecated play-services-auth GoogleSignIn API.
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:34.16.0"))

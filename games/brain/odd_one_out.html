@@ -1,76 +1,73 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Odd One Out</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#ffd166);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:16px;max-width:420px;width:100%;text-align:center}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:14px}
-.grid{display:grid;gap:6px}
-.cell{position:relative;height:0;padding-bottom:100%;cursor:pointer;border-radius:12px;background:#f5f8ff;user-select:none;transition:.1s}
-.cell span{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
-.cell:active{transform:scale(.9)}
-.msg{color:#ff5a8a;font-weight:800;font-size:17px;min-height:24px;margin-top:10px}
-.start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 34px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px}
-
-/* mobile fit */
-.wrap{display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
-
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">⏱ <span id="time">30</span>s &nbsp; ⭐ <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
-    <button onclick="start()">↻</button>
-  </div>
-  <div class="grid" id="grid"></div>
-  <div class="msg" id="msg">Find the different emoji!</div>
-  <button class="start" id="sb" onclick="start()">▶ Start (30s)</button>
-</div>
+.oo { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 12px 16px; font-family: 'Baloo 2', sans-serif; background: radial-gradient(circle at 50% 40%, #fef9c3, #fde68a 40%, #fb923c); }
+.oo-info { font-weight: 800; color: #7c2d12; margin-bottom: 10px; font-size: 18px; }
+.oo-time { width: 100%; max-width: 440px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.6); overflow: hidden; margin-bottom: 14px; }
+.oo-time i { display: block; height: 100%; background: linear-gradient(90deg, #22c55e, #f59e0b, #ef4444); border-radius: 6px; transition: width .1s linear; }
+.oo-grid { display: grid; gap: 8px; background: rgba(255,255,255,.55); padding: 10px; border-radius: 24px; box-shadow: 0 8px 0 rgba(124,45,18,.18); }
+.oo-c { border: none; background: #fff; border-radius: 16px; display: grid; place-items: center; cursor: pointer; padding: 0; box-shadow: 0 3px 0 rgba(0,0,0,.08); animation: ooIn .25s both; }
+.oo-c img { width: 78%; height: 78%; pointer-events: none; }
+.oo-c.ok { background: #bbf7d0; animation: ooPop .35s; } .oo-c.no { background: #fecaca; animation: ooShake .3s; }
+@keyframes ooIn { from { transform: scale(.4); opacity: 0; } } @keyframes ooPop { 50% { transform: scale(1.2); } } @keyframes ooShake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const PAIRS=[['🐶','🐺'],['🍎','🍅'],['😀','😃'],['🌝','🌚'],['🐱','🦁'],['🟢','🟩'],['⭐','🌟'],['🐤','🐥'],['🍩','🍪'],['⚽','🏐'],['🐸','🐢'],['💛','⭐'],['🌸','🌺'],['🦆','🐧']];
-let score,time,timer,playing=false,best=+(localStorage.getItem('oddBest')||0);
-document.getElementById('best').textContent=best;
-function round(){
-  const size=Math.min(7,3+Math.floor(score/3));
-  const [a,b]=PAIRS[Math.floor(Math.random()*PAIRS.length)];
-  const odd=Math.floor(Math.random()*size*size);
-  const grid=document.getElementById('grid');
-  grid.style.gridTemplateColumns='repeat('+size+',1fr)';
-  grid.innerHTML='';
-  const fs=Math.max(20,44-size*3);
-  for(let i=0;i<size*size;i++){
-    const c=document.createElement('div');c.className='cell';
-    c.style.fontSize=fs+'px';
-    c.innerHTML='<span>'+(i===odd?b:a)+'</span>';
-    c.onclick=()=>{
-      if(!playing)return;
-      if(i===odd){score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('ding');round();}
-      else{c.style.background='#ffd6d6';setTimeout(()=>c.style.background='',300);if(window.KQFX)KQFX.play('wrong');}
-    };
-    grid.appendChild(c);
+/* Odd One Out — one picture is different. Find it fast! Grids grow every 3 finds. */
+const PAIRS = [['🐱', '🐯'], ['🐻', '🐼'], ['🍋', '🍌'], ['🌞', '🌕'], ['⭐', '🌟'], ['🐸', '🐢'], ['🍊', '🍑'], ['🚗', '🚕'], ['🐥', '🐣'], ['🍇', '🫐'], ['🐰', '🐭'], ['🍓', '🍒'], ['🌳', '🌲'], ['🐟', '🐠'], ['⚽', '🏀'], ['🌸', '🌷'], ['🎈', '🎁'], ['🍎', '🍅'], ['🦁', '🐯'], ['🚌', '🚂']];
+const TIME = 40;
+const G = KQ3D.init({
+  id: 'odd_one_out', title: 'Odd One Out', bestKey: 'oddBest', music: true,
+  hero: ['🔎', '🐱', '🐯'], colors: ['#f59e0b', '#ea580c'],
+  how: [['🔎', 'All pictures look the same — except ONE'], ['👆', 'Tap the odd one out as fast as you can'], ['⏱️', 'Each find adds 2 seconds to the clock'], ['🧠', 'The grid gets bigger and trickier!']],
+  scoreIcon: '🔎', stars: [100, 220, 350],
+  onReset: () => reset()
+});
+const box = document.createElement('div'); box.className = 'oo'; G.scene.appendChild(box);
+let found, score, timeLeft, timer, lock, t0;
+function reset() {
+  found = 0; score = 0; timeLeft = TIME; G.score(0);
+  box.innerHTML = '<div class="oo-info" id="ooI"></div><div class="oo-time"><i id="ooT" style="width:100%"></i></div><div class="oo-grid" id="ooG"></div>';
+  clearInterval(timer); timer = setInterval(step, 100); next();
+}
+function next() {
+  lock = false; t0 = performance.now();
+  const n = Math.min(6, 2 + Math.floor(found / 3)), cells = n * n, odd = Math.floor(Math.random() * cells);
+  let [a, b] = PAIRS[Math.floor(Math.random() * PAIRS.length)].slice().sort(() => Math.random() - 0.5);
+  // later levels: same (lopsided) picture but flipped/turned
+  const twist = found >= 12 && Math.random() < 0.4 ? (Math.random() < 0.5 ? 'scaleX(-1)' : 'rotate(180deg)') : null;
+  if (twist) { const ASYM = ['🐱', '🐻', '🍌', '🐸', '🚗', '🐥', '🐰', '🐟', '🦁', '🚌', '🎈', '🐢', '🚕', '🐠']; a = ASYM[Math.floor(Math.random() * ASYM.length)]; }
+  const size = Math.floor(Math.min(innerWidth - 60, innerHeight - 260, 440) / n) - 8;
+  document.getElementById('ooI').textContent = 'Found: ' + found + ' · ' + n + '×' + n;
+  const Gd = document.getElementById('ooG'); Gd.style.gridTemplateColumns = 'repeat(' + n + ',' + size + 'px)'; Gd.style.gridAutoRows = size + 'px';
+  Gd.innerHTML = Array.from({ length: cells }, (_, k) => {
+    const isOdd = k === odd, e = twist ? a : isOdd ? b : a, tf = twist && isOdd ? ' style="transform:' + twist + '"' : '';
+    return '<button type="button" class="oo-c" data-k="' + k + '" style="animation-delay:' + (k * 12) + 'ms"><img src="' + KQ3D.emojiFile(e) + '" alt=""' + tf + '></button>';
+  }).join('');
+  Gd.querySelectorAll('.oo-c').forEach((el) => el.onclick = () => tap(el, +el.dataset.k === odd, odd));
+}
+function tap(el, ok, odd) {
+  if (G.state !== 'play' || lock) return;
+  if (ok) {
+    lock = true; found++; const secs = (performance.now() - t0) / 1000, pts = 10 + Math.max(0, Math.round(8 - secs * 2)); score += pts; G.score(score);
+    timeLeft = Math.min(TIME, timeLeft + 2); el.classList.add('ok'); KQ3D.sfx(secs < 1.5 ? 'coin' : 'success');
+    const r = el.getBoundingClientRect(); G.pop('+' + pts + (secs < 1.5 ? ' ⚡' : ''), r.left + r.width / 2, r.top, '#fde047');
+    if (found % 3 === 0 && found <= 12) KQ3D.sfx('levelup');
+    setTimeout(() => { if (G.state === 'play') next(); }, 380);
+  } else {
+    el.classList.remove('no'); void el.offsetWidth; el.classList.add('no'); KQ3D.sfx('wrong'); timeLeft = Math.max(0, timeLeft - 2);
   }
 }
-function start(){
-  clearInterval(timer);score=0;time=30;playing=true;
-  document.getElementById('score').textContent=0;
-  document.getElementById('time').textContent=30;
-  document.getElementById('msg').textContent='Find the different emoji!';
-  document.getElementById('sb').style.display='none';
-  round();
-  timer=setInterval(()=>{
-    time--;document.getElementById('time').textContent=time;
-    if(time<=0){
-      clearInterval(timer);playing=false;onGameComplete();
-      if(score>best){best=score;localStorage.setItem('oddBest',best);document.getElementById('best').textContent=best;}
-      document.getElementById('grid').innerHTML='';
-      document.getElementById('msg').textContent='⏰ Time up! You found '+score+'!';
-      const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';
-    }
-  },1000);
+function step() {
+  if (G.state === 'pause' || G.state === 'count') return;
+  if (G.state !== 'play') { clearInterval(timer); return; }
+  timeLeft -= 0.1; const t = document.getElementById('ooT'); if (t) t.style.width = Math.max(0, timeLeft / TIME * 100) + '%';
+  if (timeLeft <= 5 && Math.abs(timeLeft - Math.round(timeLeft)) < 0.05) KQ3D.sfx('tick');
+  if (timeLeft <= 0) { clearInterval(timer); G.over({ score, title: 'Sharp eyes! 🔎', lines: ['🔎 ' + found + ' found'] }); }
 }
-round();playing=false;
-</script></body></html>
+reset();
+</script>
+</body></html>

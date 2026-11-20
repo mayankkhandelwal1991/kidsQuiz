@@ -530,7 +530,7 @@ function loop(now) {
 
 function draw(now) {
   ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-  ctx.fillStyle = '#05060f';
+  ctx.fillStyle = '#1e3a8a';
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   ctx.strokeStyle = 'rgba(255,255,255,0.08)';

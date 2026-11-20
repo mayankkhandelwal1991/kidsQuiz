@@ -25,7 +25,7 @@
   width: min(480px, 92vw);
   max-width: 480px;
   aspect-ratio: 480 / 300;
-  background: #05060f;
+  background: #1d4ed8;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-glow);
   box-shadow: 0 0 50px rgba(51, 229, 255, 0.12);

@@ -25,7 +25,7 @@
   display: grid;
   grid-template-columns: 10px 32px 10px 32px 10px 32px 10px 32px 10px;
   grid-template-rows: 10px 32px 10px 32px 10px 32px 10px 32px 10px;
-  background: rgba(255,255,255,0.02);
+  background: rgba(37,99,235,0.05);
   padding: 8px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-glow);
@@ -39,7 +39,7 @@
 }
 
 .dab-hline, .dab-vline {
-  background: rgba(255,255,255,0.08);
+  background: rgba(37,99,235,0.19);
   border-radius: 3px;
   cursor: pointer;
   transition: background 0.15s;

@@ -197,6 +197,7 @@ function timerLoop() {
     timerFill.style.width = `${Math.round((remaining / ROUND_TIME_MS) * 100)}%`;
   }
   timerRaf = requestAnimationFrame(timerLoop);
+}
 
 function attachListeners() {
   roomRef.on('value', (snap) => {

@@ -424,7 +424,7 @@ async function handleLeave() {
 
 function draw() {
   ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#05060f';
+  ctx.fillStyle = '#1d4ed8';
   ctx.fillRect(0, 0, W, H);
 
   ctx.strokeStyle = 'rgba(255,255,255,0.15)';

@@ -1,7 +1,7 @@
 @import url('../common/theme.css');
 
 .select-input {
-  background: rgba(6, 10, 26, 0.75);
+  background: rgba(255,255,255,0.92);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: var(--radius-md);
   padding: 12px 14px;
@@ -37,7 +37,7 @@
   width: min(360px, 88vw);
   height: 6px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(37,99,235,0.19);
   overflow: hidden;
 }
 .timer-fill {

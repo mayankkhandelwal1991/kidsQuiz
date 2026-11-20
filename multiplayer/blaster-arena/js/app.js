@@ -508,7 +508,7 @@ function loop(now) {
 
 function draw(now) {
   ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#05060f';
+  ctx.fillStyle = '#166534';
   ctx.fillRect(0, 0, W, H);
 
   ctx.fillStyle = 'rgba(255,255,255,0.04)';

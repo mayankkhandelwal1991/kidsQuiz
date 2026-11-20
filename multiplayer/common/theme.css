@@ -6,7 +6,7 @@
    specific rules on top.
    ========================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rubik:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Orbitron:wght@600;800&family=Rubik:wght@400;500;700&display=swap');
 
 :root {
   --bg-void: #05060f;
@@ -487,3 +487,76 @@ button { font-family: 'Rubik', sans-serif; cursor: pointer; border: none; outlin
   .game-title { font-size: 17px; }
   .player-card { min-width: 88px; padding: 8px 14px; }
 }
+
+/* =========================================================================
+   KIDS THEME (matches the Game Zone hubs + single-player games)
+   Bright sky, white rounded cards, chunky 3D buttons, Baloo 2 font.
+   Overrides the old dark "neon arena" look; layout rules above stay.
+   ========================================================================= */
+:root {
+  --bg-void: #e0f2fe;
+  --bg-panel: rgba(255, 255, 255, 0.92);
+  --cyan: #0ea5e9;
+  --magenta: #ec4899;
+  --amber: #f59e0b;
+  --danger: #ef4444;
+  --success: #16a34a;
+  --text-main: #1e1b4b;
+  --text-dim: #64748b;
+  --border-glow: rgba(14, 165, 233, 0.35);
+  --radius-lg: 30px;
+  --radius-md: 18px;
+}
+html, body { font-family: 'Baloo 2', 'Rubik', system-ui, sans-serif; background: linear-gradient(180deg, #7dd3fc 0%, #bae6fd 45%, #ecfccb 100%); color: var(--text-main); }
+button { font-family: 'Baloo 2', 'Rubik', sans-serif; }
+.landing-bg, .arena-bg {
+  background:
+    radial-gradient(ellipse 120px 40px at 18% 16%, rgba(255,255,255,.95) 60%, transparent 62%),
+    radial-gradient(ellipse 90px 30px at 74% 10%, rgba(255,255,255,.9) 60%, transparent 62%),
+    radial-gradient(circle at 88% 12%, #fde047 0 42px, rgba(253,224,71,0) 60px),
+    radial-gradient(ellipse 80% 22% at 20% 100%, #86efac 60%, transparent 61%),
+    radial-gradient(ellipse 70% 18% at 85% 100%, #4ade80 60%, transparent 61%),
+    linear-gradient(180deg, #38bdf8 0%, #bae6fd 60%, #dcfce7 100%) !important;
+  animation: none !important;
+}
+.landing-bg::after, .arena-bg::after { display: none !important; }
+.landing-card {
+  background: #fff; border: 4px solid #fff; border-radius: 30px; backdrop-filter: none;
+  box-shadow: 0 10px 0 rgba(3,105,161,.18), 0 24px 50px rgba(3,105,161,.25);
+  padding: 26px 22px 22px;
+}
+.logo-icon { font-size: 54px; filter: drop-shadow(0 6px 4px rgba(0,0,0,.18)); display: inline-block; animation: kqLogoBob 2.6s ease-in-out infinite; }
+@keyframes kqLogoBob { 50% { transform: translateY(-6px) rotate(-6deg); } }
+.logo-row { flex-direction: column; align-items: center; gap: 2px; }
+.game-title { font-family: 'Baloo 2', sans-serif; font-size: 30px; letter-spacing: 0; background: linear-gradient(135deg, #0284c7, #7c3aed); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.game-subtitle { color: #475569; font-size: 15px; font-weight: 700; margin-bottom: 18px; }
+.field label { color: #0369a1; font-weight: 800; letter-spacing: .5px; font-size: 13px; }
+.field input { background: #f0f9ff; border: 3px solid #bae6fd; border-radius: 16px; color: #1e1b4b; font-size: 17px; font-weight: 700; font-family: 'Baloo 2', sans-serif; }
+.field input#roomcode-input { font-family: 'Baloo 2', sans-serif; }
+.field input:focus { border-color: #0ea5e9; box-shadow: 0 0 0 4px rgba(14,165,233,.18); }
+.btn { border-radius: 20px; font-size: 19px; font-weight: 800; letter-spacing: 0; padding: 13px 12px; }
+.btn:active { transform: translateY(4px); }
+.btn-primary { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; box-shadow: 0 6px 0 #15803d; text-shadow: 0 2px 0 rgba(0,0,0,.15); }
+.btn-primary:active { box-shadow: 0 2px 0 #15803d; }
+.btn-secondary { background: linear-gradient(135deg, #a78bfa, #7c3aed); color: #fff; box-shadow: 0 6px 0 #5b21b6; }
+.btn-secondary:active { box-shadow: 0 2px 0 #5b21b6; }
+.landing-error { color: #dc2626; font-weight: 700; }
+.landing-footnote { color: #64748b; font-size: 12.5px; opacity: 1; font-weight: 600; }
+.multiplayer-hub-btn { border: 3px solid #e0f2fe; color: #0369a1; background: #f0f9ff; font-size: 14px; border-radius: 16px; }
+.advanced-toggle { color: #0369a1; font-weight: 700; font-size: 13px; }
+.advanced-panel { border-top: 2px dashed #e0f2fe; }
+.room-pill { background: rgba(255,255,255,.92); border: 3px solid #fff; color: #1e1b4b; font-family: 'Baloo 2', sans-serif; font-weight: 800; letter-spacing: 1px; box-shadow: 0 4px 0 rgba(3,105,161,.18); }
+.room-pill .label { font-family: 'Baloo 2', sans-serif; color: #0369a1; }
+.icon-btn { width: 44px; height: 44px; border-radius: 15px; background: #fff; border: none; color: #1e1b4b; box-shadow: 0 4px 0 rgba(3,105,161,.22); }
+.icon-btn:hover { background: #f0f9ff; }
+.waiting-bar { color: #b45309; font-weight: 800; font-size: 13px; }
+.toast { background: #fff; border: 3px solid #bae6fd; color: #1e1b4b; font-weight: 700; box-shadow: 0 4px 0 rgba(0,0,0,.08); }
+.toast-warn { border-color: #fecaca; color: #b91c1c; } .toast-success { border-color: #bbf7d0; color: #15803d; }
+.status-bar { font-family: 'Baloo 2', sans-serif; font-size: 19px; font-weight: 800; letter-spacing: 0; color: #1e1b4b; background: rgba(255,255,255,.85); border-radius: 999px; padding: 2px 16px; display: inline-block; margin: 0 auto; }
+.status-bar.status-won { color: #15803d; text-shadow: none; } .status-bar.status-lost { color: #dc2626; } .status-bar.status-draw { color: #b45309; }
+.player-card { background: #fff; border: 3px solid #fff; border-radius: 20px; box-shadow: 0 5px 0 rgba(3,105,161,.18); color: #1e1b4b; }
+.player-card.active-turn { box-shadow: 0 5px 0 rgba(3,105,161,.18), 0 0 0 4px currentColor; }
+.player-card.card-win { box-shadow: 0 0 0 4px #22c55e, 0 5px 0 rgba(3,105,161,.18); }
+.player-name { font-weight: 800; }
+.player-score { font-family: 'Baloo 2', sans-serif !important; font-weight: 800; }
+.vs-label { font-family: 'Baloo 2', sans-serif !important; color: #7c3aed !important; font-weight: 800; text-shadow: 0 2px 0 #fff; }

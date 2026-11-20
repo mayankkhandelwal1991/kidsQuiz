@@ -541,7 +541,7 @@ function drawLoop() {
 function draw(room) {
   const cell = canvas.width / GRID;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#05060f';
+  ctx.fillStyle = '#15803d';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.strokeStyle = 'rgba(255,255,255,0.05)';

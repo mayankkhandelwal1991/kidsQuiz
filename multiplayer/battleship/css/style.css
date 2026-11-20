@@ -50,14 +50,14 @@
   gap: 2px;
   width: min(240px, 42vw);
   aspect-ratio: 1 / 1;
-  background: rgba(255,255,255,0.03);
+  background: rgba(37,99,235,0.07);
   padding: 6px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-glow);
 }
 
 .bs-cell {
-  background: rgba(10, 20, 45, 0.8);
+  background: rgba(255,255,255,0.92);
   border-radius: 3px;
   display: flex;
   align-items: center;
@@ -71,7 +71,7 @@
 
 .bs-cell.ship { background: rgba(147,160,201,0.35); }
 .bs-cell.hit { background: rgba(255,77,94,0.55); color: #fff; }
-.bs-cell.miss { background: rgba(255,255,255,0.08); color: var(--text-dim); }
+.bs-cell.miss { background: rgba(37,99,235,0.19); color: var(--text-dim); }
 .bs-cell.sunk { background: rgba(255,77,94,0.85); color: #fff; }
 
 .spectator-count { font-size: 12px; color: var(--text-dim); min-height: 16px; }

@@ -38,16 +38,16 @@
 }
 
 .c4-cell {
-  background: rgba(5,8,20,0.85);
+  background: rgba(255,255,255,0.92);
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(37,99,235,0.14);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background 0.15s;
 }
 
-.c4-board.clickable .c4-cell:hover { background: rgba(255,255,255,0.08); cursor: pointer; }
+.c4-board.clickable .c4-cell:hover { background: rgba(37,99,235,0.19); cursor: pointer; }
 
 .c4-disc {
   width: 82%;

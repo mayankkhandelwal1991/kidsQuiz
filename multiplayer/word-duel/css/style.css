@@ -44,7 +44,7 @@
   width: min(320px, 80vw);
   height: 8px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(37,99,235,0.19);
   overflow: hidden;
 }
 
@@ -64,7 +64,7 @@
 
 .guess-form input {
   flex: 1;
-  background: rgba(6, 10, 26, 0.75);
+  background: rgba(255,255,255,0.92);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: var(--radius-md);
   padding: 12px 14px;

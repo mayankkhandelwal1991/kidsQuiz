@@ -390,7 +390,7 @@ function drawLoop(now) {
 function draw(now) {
   const W = canvas.width, H = canvas.height;
   ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#0a0e1e';
+  ctx.fillStyle = '#ea580c';
   ctx.fillRect(0, 0, W, H);
 
   // backboard + rim

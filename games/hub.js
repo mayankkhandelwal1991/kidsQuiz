@@ -61,19 +61,47 @@
   .h-card .nm { display:block; padding:8px 8px 10px; font-size:15px; font-weight:800; line-height:1.1; }
   .h-card .bdg { position:absolute; top:8px; left:8px; z-index:2; background:#fff; color:#e11d48; font-size:11px; font-weight:800; border-radius:999px; padding:2px 8px; box-shadow:0 2px 0 rgba(0,0,0,.1); }
   .h-card .pl { position:absolute; top:8px; right:8px; z-index:2; background:rgba(0,0,0,.25); color:#fff; font-size:11px; font-weight:800; border-radius:999px; padding:2px 8px; }
-  .h-sheet-bg { position:fixed; inset:0; z-index:40; background:rgba(20,10,50,.45); display:none; }
-  .h-sheet-bg.on { display:block; }
-  .h-sheet { position:fixed; left:50%; bottom:0; z-index:41; width:100%; max-width:520px; transform:translate(-50%,110%); transition:transform .35s cubic-bezier(.34,1.3,.64,1); background:#fff; border-radius:30px 30px 0 0; padding:14px 18px calc(18px + env(safe-area-inset-bottom)); text-align:center; box-shadow:0 -10px 40px rgba(0,0,0,.25); }
+  .h-sheet-bg { position:fixed; inset:0; z-index:40; background:rgba(20,10,50,.5); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity .25s; }
+  .h-sheet-bg.on { opacity:1; pointer-events:auto; }
+  .h-sheet { position:fixed; left:50%; bottom:0; z-index:41; width:100%; max-width:520px; max-height:92dvh; overflow-y:auto; transform:translate(-50%,110%); transition:transform .4s cubic-bezier(.34,1.3,.64,1); background:#fff; border-radius:32px 32px 0 0; text-align:center; box-shadow:0 -10px 40px rgba(0,0,0,.3); scrollbar-width:none; }
+  .h-sheet::-webkit-scrollbar { display:none; }
   .h-sheet.on { transform:translate(-50%,0); }
-  .h-sheet .grab { width:48px; height:6px; border-radius:3px; background:#e5e7eb; margin:0 auto 8px; }
-  .h-sheet .big { width:116px; height:116px; margin:4px auto 6px; border-radius:34px; display:grid; place-items:center; box-shadow:inset 0 -8px 0 rgba(0,0,0,.12); }
-  .h-sheet h2 { margin:4px 0; font-size:26px; }
-  .h-sheet .how { margin:6px 0 14px; color:var(--muted); font-weight:700; line-height:1.4; font-size:15px; }
-  .h-sheet .how b { color:var(--ink); }
-  .h-play { width:100%; border:none; border-radius:22px; padding:15px; font-size:22px; font-weight:800; color:#fff; background:linear-gradient(135deg,#22c55e,#16a34a); box-shadow:0 6px 0 #15803d; animation:hpulse 1.6s ease-in-out infinite; }
+  .h-hero { position:relative; height:150px; border-radius:32px 32px 0 0; z-index:1; }
+  .h-hero::before { content:''; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.35) 0 40px,transparent 41px),radial-gradient(circle at 88% 70%,rgba(255,255,255,.22) 0 60px,transparent 61px),radial-gradient(circle at 60% 110%,rgba(255,255,255,.18) 0 80px,transparent 81px); }
+  .h-hero .grab { position:absolute; top:8px; left:50%; transform:translateX(-50%); width:48px; height:6px; border-radius:3px; background:rgba(255,255,255,.6); }
+  .h-hero .spark { position:absolute; font-size:18px; animation:htwinkle 2.4s ease-in-out infinite; }
+  @keyframes htwinkle { 0%,100% { transform:scale(.6) rotate(0); opacity:.5; } 50% { transform:scale(1.15) rotate(20deg); opacity:1; } }
+  .h-hero .bub { position:absolute; left:50%; bottom:-34px; width:132px; height:132px; margin-left:-66px; border-radius:50%; background:#fff; display:grid; place-items:center; box-shadow:0 10px 0 rgba(0,0,0,.08),0 14px 30px rgba(0,0,0,.18); animation:hfloat 2.6s ease-in-out infinite; }
+  @keyframes hfloat { 50% { transform:translateY(-8px) rotate(-4deg); } }
+  .h-x { position:absolute; top:12px; right:12px; z-index:2; width:40px; height:40px; border-radius:50%; border:none; background:rgba(255,255,255,.9); color:var(--ink); font-size:20px; font-weight:800; box-shadow:0 3px 0 rgba(0,0,0,.12); }
+  .h-tagrow { position:absolute; top:14px; left:14px; z-index:2; display:flex; gap:6px; flex-wrap:wrap; max-width:70%; }
+  .h-tag { background:rgba(255,255,255,.92); color:var(--ink); border-radius:999px; padding:3px 10px 3px 6px; font-size:12px; font-weight:800; display:flex; align-items:center; gap:4px; box-shadow:0 2px 0 rgba(0,0,0,.1); }
+  .h-tag.hot { color:#e11d48; padding-left:10px; }
+  .h-body { padding:44px 18px calc(18px + env(safe-area-inset-bottom)); }
+  .h-body h2 { margin:4px 0 2px; font-size:30px; line-height:1.05; }
+  .h-meta { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin:8px 0 12px; }
+  .h-meta span { background:#f5f3ff; border-radius:999px; padding:4px 12px; font-size:13px; font-weight:800; color:#6d28d9; }
+  .h-meta span.on { background:#ecfdf5; color:#047857; } .h-meta span.net { background:#e0f2fe; color:#0369a1; }
+  .h-steps { margin:0 0 14px; padding:12px; background:#faf8ff; border:2px dashed #ddd6fe; border-radius:22px; text-align:left; }
+  .h-steps h3 { margin:0 0 6px; font-size:15px; display:flex; align-items:center; gap:6px; }
+  .h-steps li { display:flex; gap:10px; align-items:flex-start; padding:5px 0; font-weight:700; font-size:15px; line-height:1.35; color:#3f3a5a; }
+  .h-steps li i { flex:0 0 26px; height:26px; border-radius:50%; display:grid; place-items:center; font-style:normal; font-weight:800; font-size:14px; color:#fff; box-shadow:0 2px 0 rgba(0,0,0,.15); }
+  .h-play { width:100%; border:none; border-radius:24px; padding:15px; font-size:24px; font-weight:800; color:#fff; background:linear-gradient(135deg,#22c55e,#16a34a); box-shadow:0 7px 0 #15803d; animation:hpulse 1.6s ease-in-out infinite; display:flex; align-items:center; justify-content:center; gap:10px; }
+  .h-play:active { transform:translateY(5px); box-shadow:0 2px 0 #15803d; animation:none; }
   @keyframes hpulse { 50% { transform:scale(1.03); } }
-  .h-row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
-  .h-alt { border:none; border-radius:18px; padding:12px; font-size:16px; font-weight:800; background:#f1f0fb; color:var(--ink); box-shadow:0 4px 0 #ddd6fe; }
+  .h-row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+  .h-alt { border:none; border-radius:18px; padding:11px; font-size:16px; font-weight:800; background:#f1f0fb; color:var(--ink); box-shadow:0 4px 0 #ddd6fe; display:flex; align-items:center; justify-content:center; gap:6px; }
+  .h-alt:active { transform:translateY(3px); box-shadow:0 1px 0 #ddd6fe; }
+  .h-like { margin-top:16px; text-align:left; }
+  .h-like h3 { margin:0 0 8px; font-size:15px; display:flex; align-items:center; gap:6px; }
+  .h-like .lr { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .h-mini { border:none; border-radius:18px; padding:8px 4px 6px; color:#fff; font-weight:800; font-size:12px; line-height:1.1; display:flex; flex-direction:column; align-items:center; gap:4px; box-shadow:0 4px 0 rgba(0,0,0,.12); }
+  .h-mini:active { transform:translateY(3px); box-shadow:0 1px 0 rgba(0,0,0,.12); }
+  @media (min-width:700px) {
+    .h-sheet { top:50%; bottom:auto; border-radius:32px; transform:translate(-50%,-40%) scale(.85); opacity:0; pointer-events:none; transition:transform .35s cubic-bezier(.34,1.4,.64,1),opacity .2s; }
+    .h-sheet.on { transform:translate(-50%,-50%) scale(1); opacity:1; pointer-events:auto; }
+    .h-hero .grab { display:none; }
+  }
   .h-empty { text-align:center; color:var(--muted); font-weight:800; padding:30px; }
   @media (min-width:640px) { .h-grid { grid-template-columns:repeat(3,1fr); } }
   @media (min-width:900px) { .h-grid { grid-template-columns:repeat(5,1fr); } .h-card .top { height:110px; } .h-owl { width:110px; height:110px; } .h-bar h1 { font-size:32px; } }
@@ -141,26 +169,53 @@
     const sheet = document.getElementById('hSheet'), bg = document.getElementById('hBg');
     function close() { sheet.classList.remove('on'); bg.classList.remove('on'); }
     bg.onclick = close;
+    const PLAYS_KEY = 'kq_plays_' + cfg.mode;
+    const plays = () => { try { return JSON.parse(localStorage.getItem(PLAYS_KEY) || '{}'); } catch (e) { return {}; } };
+    const STEP_COL = ['#f43f5e', '#f59e0b', '#22c55e', '#3b82f6', '#a855f7'];
+    function steps(how) {
+      const parts = (String(how || '').match(/[^.!?]+[.!?]*(\s+|$)/g) || []).map((x) => x.trim()).filter(Boolean);
+      return parts.length ? parts : [String(how || '')];
+    }
     function open(id) {
       const i = cfg.games.findIndex((g) => g.id === id); const g = cfg.games[i]; if (!g) return;
       const c = colorOf(g, i);
-      sheet.innerHTML = '<div class="grab"></div><div class="big" style="background:linear-gradient(135deg,' + c[0] + ',' + c[1] + ')">' + img(g.icon, 80) + '</div>' +
-        '<h2>' + esc(g.title) + '</h2>' + (g.players ? '<div style="font-weight:800;color:#0284c7">👥 ' + esc(g.players) + ' players • online</div>' : '') +
-        '<p class="how"><b>How to play:</b> ' + esc(g.how) + '</p>' +
-        '<button class="h-play" id="hPlay">▶ Play!</button>' +
-        '<div class="h-row2"><button class="h-alt" id="hLb">🏆 Leaderboard</button><button class="h-alt" id="hClose">✕ Close</button></div>';
+      const t = (cfg.tabs || []).find((x) => x.id === g.tab);
+      const n = plays()[g.id] || 0;
+      const like = cfg.games.filter((x) => x.tab === g.tab && x.id !== g.id).sort(() => Math.random() - 0.5).slice(0, 3);
+      sheet.innerHTML =
+        '<div class="h-hero" style="background:linear-gradient(135deg,' + c[0] + ',' + c[1] + ')"><span class="grab"></span>' +
+          '<span class="spark" style="left:12%;top:58%">✨</span><span class="spark" style="right:16%;top:34%;animation-delay:.8s">⭐</span><span class="spark" style="left:30%;top:22%;animation-delay:1.5s">✨</span>' +
+          '<div class="h-tagrow">' + (t ? '<span class="h-tag">' + img(t.icon, 18) + esc(t.label) + '</span>' : '') + (g.badge ? '<span class="h-tag hot">' + esc(g.badge) + '</span>' : '') + '</div>' +
+          '<button class="h-x" id="hClose" aria-label="Close">✕</button>' +
+          '<div class="bub">' + img(g.icon, 84) + '</div></div>' +
+        '<div class="h-body"><h2>' + esc(g.title) + '</h2>' +
+          '<div class="h-meta">' + (g.players ? '<span class="net">👥 ' + esc(g.players) + ' players • online</span>' : '<span>🧒 1 player</span>') +
+          (n ? '<span class="on">🎮 Played ' + n + (n === 1 ? ' time' : ' times') + '</span>' : '<span class="on">🌟 New for you!</span>') + '</div>' +
+          '<div class="h-steps"><h3>' + img('📖', 20) + ' How to play</h3><ul style="list-style:none;margin:0;padding:0">' +
+            steps(g.how).map((s, k) => '<li><i style="background:' + STEP_COL[k % STEP_COL.length] + '">' + (k + 1) + '</i><span>' + esc(s) + '</span></li>').join('') + '</ul></div>' +
+          '<button class="h-play" id="hPlay">' + img('▶️', 30) + ' Play now!</button>' +
+          '<div class="h-row2"><button class="h-alt" id="hLb">' + img('🏆', 22) + ' Top players</button><button class="h-alt" id="hRand">' + img('🎲', 22) + ' Surprise me</button></div>' +
+          (like.length ? '<div class="h-like"><h3>' + img('💡', 20) + ' You may also like</h3><div class="lr">' +
+            like.map((x) => { const cc = colorOf(x, cfg.games.indexOf(x)); return '<button class="h-mini" data-id="' + esc(x.id) + '" style="background:linear-gradient(135deg,' + cc[0] + ',' + cc[1] + ')">' + img(x.icon, 34) + '<span>' + esc(x.title) + '</span></button>'; }).join('') + '</div></div>' : '') +
+        '</div>';
+      sheet.scrollTop = 0;
       sheet.classList.add('on'); bg.classList.add('on');
-      document.getElementById('hClose').onclick = close;
+      document.getElementById('hClose').onclick = () => { snd.tap(); close(); };
       document.getElementById('hLb').onclick = () => { if (window.KQ && KQ.open) KQ.open(cfg.boardCat, g.boardId || g.id, g.title); else location.href = base + 'leaderboard.html?cat=' + cfg.boardCat; };
+      document.getElementById('hRand').onclick = () => { snd.tap(); const o = cfg.games.filter((x) => x.id !== g.id); open(o[Math.floor(Math.random() * o.length)].id); };
+      sheet.querySelectorAll('.h-mini').forEach((b) => b.onclick = () => { snd.tap(); open(b.dataset.id); });
       document.getElementById('hPlay').onclick = () => {
         snd.correct();
         try { const r = recent().filter((x) => x !== g.id); r.unshift(g.id); localStorage.setItem(RECENT_KEY, JSON.stringify(r.slice(0, 12))); } catch (e) {}
+        try { const p = plays(); p[g.id] = (p[g.id] || 0) + 1; localStorage.setItem(PLAYS_KEY, JSON.stringify(p)); } catch (e) {}
         setTimeout(() => { location.href = g.file; }, 250);
       };
     }
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
     draw();
-    return { redraw: draw };
+    const deep = /[#&]g=([^&]+)/.exec(location.hash || '');
+    if (deep) setTimeout(() => open(decodeURIComponent(deep[1])), 50);
+    return { redraw: draw, open };
   }
   window.KQHub = { render };
 })();

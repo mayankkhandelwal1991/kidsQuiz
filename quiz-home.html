@@ -55,7 +55,7 @@ body.pg-home { background: linear-gradient(180deg, #e0f2fe 0%, #f5f3ff 45%, #fdf
 .hm-stats .pf-stat img { width: 24px; height: 24px; display: block; margin: 0 auto 2px; }
 .hm-stats .pf-stat b { display: block; font-size: 19px; font-weight: 800; color: #1e1b4b; line-height: 1.1; }
 .hm-stats .pf-stat span { font-size: 10.5px; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: .03em; }
-.hm-goal { margin-top: 12px; background: #fff; border-radius: 20px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 6px 18px rgba(30,27,75,.07); }
+.hm-goal { margin-top: 14px; background: #fff; border-radius: 20px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 6px 18px rgba(30,27,75,.07); }
 .hm-goal:empty { display: none; }
 .hm-goal img { width: 38px; height: 38px; flex: 0 0 auto; }
 .hm-goal .g { flex: 1; min-width: 0; }
@@ -65,11 +65,16 @@ body.pg-home { background: linear-gradient(180deg, #e0f2fe 0%, #f5f3ff 45%, #fdf
 .hm-h { display: flex; align-items: center; gap: 8px; margin: 18px 4px 10px; font-size: 20px; font-weight: 800; color: #4c1d95; }
 .hm-h img { width: 26px; height: 26px; }
 .hm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.hm-tile { position: relative; overflow: hidden; border: none; border-radius: 26px; padding: 14px 14px 12px; min-height: 150px; text-align: left; color: #fff; cursor: pointer; display: flex; flex-direction: column; font-family: inherit; box-shadow: 0 7px 0 var(--sh), 0 14px 24px rgba(30,27,75,.14); transition: transform .12s; }
+.hm-tile { position: relative; overflow: hidden; border: none; border-radius: 26px; padding: 12px 12px 12px; min-height: 132px; text-align: left; color: #fff; cursor: pointer; display: flex; flex-direction: column; font-family: inherit; box-shadow: 0 7px 0 var(--sh), 0 14px 24px rgba(30,27,75,.14); transition: transform .12s; }
 .hm-tile:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--sh), 0 6px 12px rgba(30,27,75,.14); }
 .hm-tile::before { content: ''; position: absolute; width: 150px; height: 150px; right: -50px; top: -60px; border-radius: 50%; background: rgba(255,255,255,.18); }
 .hm-tile::after { content: ''; position: absolute; width: 90px; height: 90px; left: -30px; bottom: -40px; border-radius: 50%; background: rgba(255,255,255,.12); }
-.t-quiz { background: linear-gradient(140deg, #818cf8, #6366f1); --sh: #4338ca; grid-row: span 2; min-height: 312px; }
+.t-quiz { background: linear-gradient(140deg, #818cf8, #6366f1); --sh: #4338ca; grid-column: 1 / -1; min-height: 0; display: grid !important; grid-template-columns: auto 1fr; grid-template-rows: auto auto auto; column-gap: 14px; align-items: center; }
+.t-quiz .hm-art { grid-row: 1 / 4; }
+.t-quiz .hm-subj { grid-column: 2; margin-top: 0; }
+.t-quiz .hm-tt, .t-quiz .hm-ts, .t-quiz .hm-go { grid-column: 2; }
+.t-quiz .hm-tt { padding-top: 4px; margin-top: 0; }
+.t-quiz .hm-go { justify-self: start; margin-top: 6px; }
 .t-games { background: linear-gradient(140deg, #fb923c, #f43f5e); --sh: #be123c; }
 .t-multi { background: linear-gradient(140deg, #38bdf8, #0284c7); --sh: #075985; }
 .t-olym { background: linear-gradient(140deg, #34d399, #0d9488); --sh: #0f766e; }
@@ -83,12 +88,12 @@ body.pg-home { background: linear-gradient(180deg, #e0f2fe 0%, #f5f3ff 45%, #fdf
 .hm-tt { position: relative; z-index: 1; margin-top: auto; padding-top: 10px; font-size: 22px; font-weight: 800; line-height: 1.05; text-shadow: 0 2px 0 rgba(0,0,0,.15); }
 .hm-ts { position: relative; z-index: 1; font-size: 12.5px; font-weight: 700; opacity: .95; line-height: 1.25; margin-top: 2px; }
 .hm-go { position: relative; z-index: 1; align-self: flex-start; margin-top: 8px; background: rgba(255,255,255,.95); color: #1e1b4b; border-radius: 999px; padding: 2px 12px; font-size: 13px; font-weight: 800; }
-.t-quiz .hm-art { width: 86px; height: 86px; border-radius: 26px; } .t-quiz .hm-art > img { width: 58px; height: 58px; }
-.t-quiz .hm-tt { font-size: 30px; } .t-quiz .hm-ts { font-size: 14px; }
+.t-quiz .hm-art { width: 78px; height: 78px; border-radius: 24px; } .t-quiz .hm-art > img { width: 52px; height: 52px; }
+.t-quiz .hm-tt { font-size: 26px; } .t-quiz .hm-ts { font-size: 13px; }
 .t-quiz .hm-go { font-size: 16px; padding: 4px 16px; animation: hmPulse 1.6s ease-in-out infinite; }
 body.pg-home .container { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; background: transparent !important; box-shadow: none !important; border: 0 !important; border-radius: 0 !important; }
 .hm-subj { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
-.hm-subj img { width: 34px; height: 34px; padding: 5px; border-radius: 12px; background: rgba(255,255,255,.25); }
+.hm-subj img { width: 28px; height: 28px; padding: 4px; border-radius: 10px; background: rgba(255,255,255,.25); }
 .hm-subj img:nth-child(odd) { animation: hmBob 3s ease-in-out infinite; } .hm-subj img:nth-child(even) { animation: hmBob 3s ease-in-out infinite .8s; }
 .hm-row2 { display: grid; gap: 12px; margin-top: 14px; }
 .hm-daily { margin: 0 !important; }
@@ -110,12 +115,30 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   .hm-sky { border-radius: 0 0 44px 44px; padding: 18px 40px 80px; }
   .hm-sky > * { max-width: 1040px; margin-left: auto; margin-right: auto; }
   .hm-owl { width: 130px; } .hm-owl svg { width: 130px; height: 130px; } .hm-bubble { right: 120px; top: 0; width: 200px; font-size: 14px; }
-  .hm-grid { grid-template-columns: 1.3fr 1fr 1fr; }
-  .t-quiz { grid-row: span 2; }
-  .hm-subj img { width: 44px; height: 44px; padding: 7px; }
+  .hm-grid { grid-template-columns: repeat(4, 1fr); }
+  .t-quiz { grid-template-columns: auto auto 1fr; }
+  .t-quiz .hm-subj { grid-column: 3; grid-row: 1 / 4; justify-content: flex-end; }
+  .hm-subj img { width: 40px; height: 40px; padding: 6px; }
   .hm-row2 { grid-template-columns: 1fr 1fr; align-items: stretch; }
   .hm-love { grid-template-columns: repeat(4, 1fr); }
   .hm-stats .pf-stat b { font-size: 24px; }
+}
+@media (max-width: 380px) {
+  .hm-sky { padding: max(10px, env(safe-area-inset-top)) 12px 54px; }
+  .hm-logo img { width: 40px; height: 40px; } .hm-logo b { font-size: 19px; } .hm-logo small { display: none; }
+  .hm-ibtn { height: 38px; min-width: 38px; padding: 0 10px; font-size: 13px; }
+  .hm-av { width: 52px; height: 52px; } .hm-name { font-size: 22px !important; }
+  .hm-owl { width: 72px; } .hm-owl svg { width: 72px; height: 72px; } .hm-bubble { width: 118px; font-size: 11px; top: -40px; }
+  .hm-level .lv { font-size: 11px; } .hm-level .nx { display: none; }
+  .hm-stats { gap: 6px; } .hm-stats .pf-stat img { width: 20px; height: 20px; } .hm-stats .pf-stat b { font-size: 16px; } .hm-stats .pf-stat span { font-size: 9px; }
+  .hm-tt { font-size: 19px; } .hm-ts { font-size: 11.5px; } .hm-tile { min-height: 118px; padding: 10px; }
+  .hm-art { width: 54px; height: 54px; border-radius: 16px; } .hm-art > img { width: 36px; height: 36px; }
+  .t-quiz .hm-art { width: 64px; height: 64px; } .t-quiz .hm-tt { font-size: 22px; } .t-quiz .hm-subj img { width: 24px; height: 24px; }
+  .hm-chip { padding: 8px 10px; } .hm-chip b { font-size: 13px; } .hm-chip img { width: 28px; height: 28px; }
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  .hm-sky { padding-bottom: 46px; } .hm-hello { margin-top: 6px; } .hm-owl { width: 70px; } .hm-owl svg { width: 70px; height: 70px; }
+  .hm-av { width: 48px; height: 48px; } .hm-level .nx { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .hm *, .hm *::before, .hm *::after { animation: none !important; } }
 </style>
@@ -158,8 +181,6 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
     <main class="hm-body">
       <div class="pf-stats hm-stats" id="pfStats"></div>
 
-      <div class="hm-goal" id="hmGoal"></div>
-
       <div class="hm-h"><img src="images/emoji/1f3ae.svg" alt=""> Let’s play!</div>
       <div class="hm-grid">
         <button type="button" class="hm-tile t-quiz" onclick="openQuizFlow()">
@@ -189,6 +210,8 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
         <button type="button" class="daily-card kh-daily hm-daily" id="dailyCard" onclick="startDailyChallenge()"></button>
         <div id="hmContinue"></div>
       </div>
+
+      <div class="hm-goal" id="hmGoal"></div>
 
       <div class="hm-h"><img src="images/emoji/2764.svg" alt=""> Love the app?</div>
       <div class="hm-love">

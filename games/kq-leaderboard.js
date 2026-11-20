@@ -387,6 +387,11 @@
     if (!document.hidden) {
       var d = Math.min(SES_TICK * 2, Math.max(0, now - lastTick));
       s.act += d; var sec = section(); s.t[sec] = (s.t[sec] || 0) + d;
+      try {   // today's total play time on this device (home page goal bar)
+        var day = new Date().toDateString(), td = JSON.parse(localStorage.getItem("kq_today") || "null");
+        if (!td || td.day !== day) td = { day: day, ms: 0 };
+        td.ms += d; localStorage.setItem("kq_today", JSON.stringify(td));
+      } catch (e) {}
     }
     lastTick = now; s.last = now; sesSave(s);
     if (push || now - sesPushed > 60000) sesPush(s);
@@ -749,6 +754,7 @@
     fetchSessions: fetchSessions,
     fetchAllAttempts: fetchAllAttempts,
     markStart: markStart,
+    todaySeconds: function () { try { var td = JSON.parse(localStorage.getItem("kq_today") || "null"); return td && td.day === new Date().toDateString() ? Math.round(td.ms / 1000) : 0; } catch (e) { return 0; } },
     open: open,
     openModal: openModal,
     gameName: prettify

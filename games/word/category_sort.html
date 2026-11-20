@@ -1,138 +1,114 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Category Sort</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#ff9a9e,#fecfef);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#be185d;font-size:15px}
-.progwrap{background:#fce7f3;border-radius:20px;height:10px;overflow:hidden;margin-bottom:10px}
-.progbar{height:100%;background:linear-gradient(135deg,#ec4899,#f472b6);width:0%;transition:width .4s ease}
-.card{margin:10px auto 16px;width:130px;padding:14px 0;border-radius:18px;background:linear-gradient(135deg,#fff8e6,#fff);border:3px dashed #ffb703;transition:transform .25s, opacity .25s}
-.card.fly{transform:scale(.2) translateY(-40px);opacity:0}
-.card .em{font-size:44px}
-.card .wd{font-size:18px;font-weight:800;color:#be185d;margin-top:2px}
-.buckets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
-.bucket{border-radius:16px;padding:12px 4px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-weight:800;font-size:12px;cursor:pointer;transition:transform .1s}
-.bucket:active{transform:scale(.92)}
-.bucket .be{font-size:24px;display:block;margin-bottom:2px}
-.bucket.correct{background:linear-gradient(135deg,#34d399,#06b6d4);animation:pop .4s ease}
-.bucket.wrong{background:linear-gradient(135deg,#f87171,#fb923c);animation:shake .35s}
-@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.msg{color:#be185d;font-weight:800;font-size:15px;min-height:22px}
-.end{display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);align-items:center;justify-content:center;z-index:20}
-.end.show{display:flex}
-.end .card2{background:#fff;border-radius:24px;padding:26px 22px;text-align:center;max-width:300px;animation:winpop .4s cubic-bezier(.34,1.56,.64,1)}
-@keyframes winpop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-.end .big{font-size:50px}
-.end h2{color:#be185d;margin:8px 0}
-.end button{margin-top:10px;background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 26px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-.confetti{position:fixed;top:-10px;width:8px;height:14px;border-radius:2px;z-index:30;animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">🗂️ <span id="score">0</span>/<span id="totalW">10</span></div>
-    <button onclick="restart()">↻</button>
-  </div>
-  <div class="progwrap"><div class="progbar" id="prog"></div></div>
-  <div class="card" id="card"><div class="em" id="em"></div><div class="wd" id="wd"></div></div>
-  <div class="buckets" id="buckets"></div>
-  <div class="msg" id="msg">Tap the bucket it belongs to!</div>
-</div>
-<div class="end" id="end">
-  <div class="card2">
-    <div class="big">🏆</div>
-    <h2>Round Complete!</h2>
-    <p id="endMsg">Great sorting!</p>
-    <button onclick="restart()">Play Again</button>
-  </div>
-</div>
+.cs { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; padding: 74px 12px 18px; font-family: 'Baloo 2', sans-serif;
+  background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 55%, #86efac 55.2%, #4ade80 100%); overflow: hidden; }
+.cs-prog { width: 100%; max-width: 480px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.7); overflow: hidden; }
+.cs-prog i { display: block; height: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 6px; transition: width .3s; }
+.cs-stage { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+.cs-item { position: relative; width: 150px; height: 170px; border-radius: 30px; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 8px 0 rgba(0,0,0,.12), 0 14px 26px rgba(0,0,0,.12); touch-action: none; cursor: grab; animation: csIn .45s cubic-bezier(.34,1.56,.64,1); }
+.cs-item img { width: 96px; height: 96px; pointer-events: none; }
+.cs-item b { font-size: 22px; color: #1e1b4b; pointer-events: none; }
+.cs-item.drag { cursor: grabbing; transition: none; z-index: 5; }
+.cs-item.fly { transition: transform .45s ease-in, opacity .45s; opacity: 0; }
+.cs-item.no { animation: csShake .4s; }
+@keyframes csIn { from { transform: translateY(-120px) scale(.5); opacity: 0; } }
+@keyframes csShake { 25% { transform: translateX(-10px) rotate(-4deg); } 75% { transform: translateX(10px) rotate(4deg); } }
+.cs-bins { width: 100%; max-width: 560px; display: grid; gap: 10px; }
+.cs-bin { border: none; border-radius: 22px 22px 30px 30px; padding: 8px 4px 10px; color: #fff; font: 800 16px 'Baloo 2', sans-serif; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; box-shadow: 0 6px 0 rgba(0,0,0,.2); position: relative; }
+.cs-bin img { width: 46px; height: 46px; }
+.cs-bin .n { position: absolute; top: -8px; right: -4px; background: #fff; color: #1e1b4b; border-radius: 999px; font-size: 13px; padding: 0 8px; box-shadow: 0 2px 0 rgba(0,0,0,.15); }
+.cs-bin.hot { transform: translateY(-6px) scale(1.05); box-shadow: 0 10px 0 rgba(0,0,0,.2); }
+.cs-bin.ok { animation: csPop .4s; }
+@keyframes csPop { 50% { transform: scale(1.12); } }
+.cs-hint { font-weight: 800; color: #065f46; margin: 6px 0 10px; text-align: center; }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const CATS=[
- {name:'Animals',icon:'🐾',words:[['CAT','🐱'],['DOG','🐶'],['TIGER','🐯'],['ZEBRA','🦓'],['RABBIT','🐰'],['SHARK','🦈'],['WHALE','🐳'],['MOUSE','🐭'],['PANDA','🐼'],['SNAKE','🐍'],['HORSE','🐴'],['FROG','🐸'],['BIRD','🐦'],['MONKEY','🐵']]},
- {name:'Fruits',icon:'🍎',words:[['APPLE','🍎'],['MANGO','🥭'],['GRAPE','🍇'],['LEMON','🍋'],['BANANA','🍌'],['ORANGE','🍊']]},
- {name:'Things',icon:'🏠',words:[['HOUSE','🏠'],['TRAIN','🚂'],['PLANE','✈️'],['CLOCK','⏰'],['GUITAR','🎸'],['CAMERA','📷'],['SCHOOL','🏫'],['PENCIL','✏️'],['ROCKET','🚀']]}
+/* Category Sort — tap (or drag) the picture into the right basket. 15 items. */
+const SETS = [
+  { icon: '🐾', name: 'Animals · Fruits · Vehicles', bins: [['Animals', '🐾', '#f97316'], ['Fruits', '🍎', '#ef4444'], ['Vehicles', '🚗', '#3b82f6']],
+    items: [['Lion', '🦁', 0], ['Cat', '🐱', 0], ['Cow', '🐄', 0], ['Panda', '🐼', 0], ['Frog', '🐸', 0], ['Rabbit', '🐰', 0], ['Elephant', '🐘', 0], ['Apple', '🍎', 1], ['Banana', '🍌', 1], ['Grapes', '🍇', 1], ['Mango', '🥭', 1], ['Pear', '🍐', 1], ['Cherries', '🍒', 1], ['Melon', '🍉', 1], ['Bus', '🚌', 2], ['Train', '🚂', 2], ['Plane', '✈️', 2], ['Bike', '🚲', 2], ['Ship', '🚢', 2], ['Tractor', '🚜', 2], ['Rocket', '🚀', 2]] },
+  { icon: '🌊', name: 'Land · Water · Sky', bins: [['Land', '🌳', '#16a34a'], ['Water', '🌊', '#0284c7'], ['Sky', '☁️', '#8b5cf6']],
+    items: [['Lion', '🦁', 0], ['Horse', '🐴', 0], ['Tiger', '🐯', 0], ['Camel', '🐫', 0], ['Giraffe', '🦒', 0], ['Snake', '🐍', 0], ['Fish', '🐟', 1], ['Whale', '🐳', 1], ['Octopus', '🐙', 1], ['Crab', '🦀', 1], ['Dolphin', '🐬', 1], ['Turtle', '🐢', 1], ['Eagle', '🦅', 2], ['Parrot', '🦜', 2], ['Butterfly', '🦋', 2], ['Bee', '🐝', 2], ['Owl', '🦉', 2], ['Duck', '🦆', 2]] },
+  { icon: '🌱', name: 'Living · Non-living', bins: [['Living', '🌱', '#22c55e'], ['Non-living', '🪨', '#64748b']],
+    items: [['Tree', '🌳', 0], ['Dog', '🐶', 0], ['Flower', '🌸', 0], ['Baby', '🧒', 0], ['Fish', '🐟', 0], ['Bird', '🐦', 0], ['Mushroom', '🍄', 0], ['Cactus', '🌵', 0], ['Rock', '🪨', 1], ['Chair', '🪑', 1], ['Ball', '⚽', 1], ['Car', '🚗', 1], ['Book', '📚', 1], ['Clock', '⏰', 1], ['Pencil', '✏️', 1], ['Robot', '🤖', 1], ['Teddy', '🧸', 1]] },
+  { icon: '🔥', name: 'Hot · Cold', bins: [['Hot', '🔥', '#ef4444'], ['Cold', '❄️', '#0ea5e9']],
+    items: [['Sun', '☀️', 0], ['Fire', '🔥', 0], ['Tea', '☕', 0], ['Desert', '🏜️', 0], ['Pizza', '🍕', 0], ['Volcano', '🌋', 0], ['Ice', '🧊', 1], ['Ice cream', '🍦', 1], ['Snowman', '⛄', 1], ['Penguin', '🐧', 1], ['Snowflake', '❄️', 1], ['Mittens', '🧤', 1], ['Scarf', '🧣', 1]] }
 ];
-const ROUND_LEN=10;
-let round=[],idx=0,score=0,cur=null;
-
-function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-
-function restart(){
-  let all=[];
-  CATS.forEach(c=>c.words.forEach(w=>all.push({word:w,cat:c.name})));
-  round=shuffleArr(all).slice(0,ROUND_LEN);
-  idx=0;score=0;
-  document.getElementById('score').textContent=0;
-  document.getElementById('totalW').textContent=round.length;
-  document.getElementById('end').classList.remove('show');
-  renderBuckets();
-  loadRound();
+const N = 15;
+const G = KQ3D.init({
+  id: 'category_sort', title: 'Category Sort', bestKey: 'sortBest', music: true,
+  hero: ['🧺', '🐾', '🍎'], colors: ['#16a34a', '#0ea5e9'],
+  how: [['🖼️', 'A picture pops up — where does it belong?'], ['👆', 'Tap the right basket, or drag the picture into it'], ['🔥', 'Get a streak of right answers for bonus points'], ['🧺', 'Sort 15 pictures to finish']],
+  scoreIcon: '🧺', stars: [100, 180, 240],
+  pick: { label: 'Pick what to sort', options: SETS },
+  onReset: (s) => reset(s)
+});
+const box = document.createElement('div'); box.className = 'cs'; G.scene.appendChild(box);
+let set, queue, i, score, streak, right, counts, busy;
+function say(t) {
+  try { if (localStorage.getItem('kq_muted') === '1') return; } catch (e) {}
+  try { if (window.Android && Android.speak) { Android.speak(t, 'en'); return; } } catch (e) {}
+  try { const u = new SpeechSynthesisUtterance(t); u.rate = 0.9; u.pitch = 1.15; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}
 }
-
-function renderBuckets(){
-  const b=document.getElementById('buckets');b.innerHTML='';
-  CATS.forEach(c=>{
-    const d=document.createElement('div');d.className='bucket';
-    d.innerHTML='<span class="be">'+c.icon+'</span>'+c.name;
-    d.onclick=()=>pick(c.name,d);
-    b.appendChild(d);
+function reset(s) {
+  set = s || SETS[0]; i = 0; score = 0; streak = 0; right = 0; counts = set.bins.map(() => 0); G.score(0);
+  let pool = []; while (pool.length < N) pool = pool.concat(set.items.slice().sort(() => Math.random() - 0.5));
+  queue = pool.slice(0, N);
+  box.innerHTML = '<div class="cs-prog"><i id="csP" style="width:0"></i></div><div class="cs-hint" id="csH">Where does it go?</div><div class="cs-stage" id="csS"></div>' +
+    '<div class="cs-bins" style="grid-template-columns:repeat(' + set.bins.length + ',1fr)">' + set.bins.map((b, k) => '<button type="button" class="cs-bin" data-k="' + k + '" style="background:' + b[2] + '"><span class="n" id="csN' + k + '">0</span><img src="' + KQ3D.emojiFile(b[1]) + '" alt="">' + b[0] + '</button>').join('') + '</div>';
+  box.querySelectorAll('.cs-bin').forEach((b) => b.onclick = () => choose(+b.dataset.k, b));
+  next();
+}
+function next() {
+  busy = false;
+  if (i >= queue.length) return finish();
+  const it = queue[i];
+  document.getElementById('csP').style.width = (i / N * 100) + '%';
+  const st = document.getElementById('csS');
+  st.innerHTML = '<div class="cs-item" id="csI"><img src="' + KQ3D.emojiFile(it[1]) + '" alt=""><b>' + it[0] + '</b></div>';
+  dragify(document.getElementById('csI'));
+  setTimeout(() => say(it[0]), 200);
+}
+function dragify(el) {
+  let sx, sy, on = false;
+  el.addEventListener('pointerdown', (e) => { if (G.state !== 'play' || busy) return; on = true; sx = e.clientX; sy = e.clientY; el.classList.add('drag'); el.setPointerCapture(e.pointerId); });
+  el.addEventListener('pointermove', (e) => {
+    if (!on) return; el.style.transform = 'translate(' + (e.clientX - sx) + 'px,' + (e.clientY - sy) + 'px) rotate(' + (e.clientX - sx) / 20 + 'deg)';
+    box.querySelectorAll('.cs-bin').forEach((b) => { const r = b.getBoundingClientRect(); b.classList.toggle('hot', e.clientX > r.left && e.clientX < r.right && e.clientY > r.top - 40 && e.clientY < r.bottom); });
+  });
+  el.addEventListener('pointerup', (e) => {
+    if (!on) return; on = false; el.classList.remove('drag');
+    const hot = box.querySelector('.cs-bin.hot'); box.querySelectorAll('.cs-bin').forEach((b) => b.classList.remove('hot'));
+    if (hot) choose(+hot.dataset.k, hot); else el.style.transform = '';
   });
 }
-
-function loadRound(){
-  if(idx>=round.length){finish();return;}
-  cur=round[idx];
-  const card=document.getElementById('card');
-  card.classList.remove('fly');
-  document.getElementById('em').textContent=cur.word[1];
-  document.getElementById('wd').textContent=cur.word[0];
-  document.getElementById('prog').style.width=Math.round(idx/round.length*100)+'%';
-  document.getElementById('msg').textContent='Round '+(idx+1)+' of '+round.length;
-  document.querySelectorAll('.bucket').forEach(x=>{x.classList.remove('correct','wrong');x.style.pointerEvents='auto';});
-}
-
-function pick(catName,el){
-  document.querySelectorAll('.bucket').forEach(o=>o.style.pointerEvents='none');
-  if(catName===cur.cat){
-    el.classList.add('correct');if(window.KQFX)KQFX.play('ding');
-    score++;document.getElementById('score').textContent=score;
-    document.getElementById('msg').textContent='🎉 '+cur.word[0]+' is a '+cur.cat.slice(0,-1)+'!';
-    document.getElementById('card').classList.add('fly');
-    burstConfetti();
-  }else{
-    el.classList.add('wrong');if(window.KQFX)KQFX.play('wrong');
-    document.getElementById('msg').textContent='❌ '+cur.word[0]+' belongs in '+cur.cat+'!';
-  }
-  idx++;
-  setTimeout(loadRound,1000);
-}
-
-function finish(){
-  document.getElementById('prog').style.width='100%';
-  document.getElementById('endMsg').textContent='You sorted '+score+' out of '+round.length+' correctly!';
-  document.getElementById('end').classList.add('show');
-  onGameComplete();
-}
-
-function burstConfetti(){
-  const colors=['#ff5a8a','#ffd166','#34d399','#60a5fa','#c084fc'];
-  for(let i=0;i<20;i++){
-    const d=document.createElement('div');
-    d.className='confetti';
-    d.style.left=(Math.random()*100)+'vw';
-    d.style.background=colors[Math.floor(Math.random()*colors.length)];
-    d.style.animationDuration=(1+Math.random()*0.8)+'s';
-    document.body.appendChild(d);
-    setTimeout(()=>d.remove(),2000);
+function choose(k, bin) {
+  if (G.state !== 'play' || busy || i >= queue.length) return;
+  const it = queue[i], el = document.getElementById('csI');
+  if (it[2] === k) {
+    busy = true; streak++; right++; counts[k]++; document.getElementById('csN' + k).textContent = counts[k];
+    const pts = 10 + (streak >= 3 ? 5 : 0); score += pts; G.score(score);
+    KQ3D.sfx(streak >= 3 ? 'coin' : 'success'); bin.classList.remove('ok'); void bin.offsetWidth; bin.classList.add('ok');
+    const r = bin.getBoundingClientRect(), e = el.getBoundingClientRect();
+    el.style.transform = 'translate(' + ((r.left + r.width / 2) - (e.left + e.width / 2)) + 'px,' + ((r.top + r.height / 2) - (e.top + e.height / 2)) + 'px) scale(.2)'; el.classList.add('fly');
+    G.pop('+' + pts + (streak >= 3 ? ' 🔥' : ''), r.left + r.width / 2, r.top - 10, '#fde047');
+    i++; setTimeout(next, 480);
+  } else {
+    streak = 0; KQ3D.sfx('wrong'); el.style.transform = ''; el.classList.remove('no'); void el.offsetWidth; el.classList.add('no');
+    document.getElementById('csH').textContent = 'Hmm, not ' + set.bins[k][0] + '. Try again!';
+    score = Math.max(0, score - 3); G.score(score);
+    setTimeout(() => { const h = document.getElementById('csH'); if (h) h.textContent = 'Where does it go?'; }, 1400);
   }
 }
-
-restart();
-</script></body></html>
+function finish() {
+  document.getElementById('csP').style.width = '100%';
+  G.over({ score, title: 'All sorted! 🧺', lines: ['✅ ' + right + ' sorted', set.icon + ' ' + set.name.split(' · ').length + ' baskets'] });
+}
+reset(G.choice);
+</script>
+</body></html>

@@ -3,427 +3,247 @@
   "subject": "Mathematics",
   "paper": 2,
   "title": "Class 3 Mathematics — Paper 2",
-  "durationMinutes": 30,
-  "totalMarks": 40,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 3 pattern & syllabus. Not an official SOF paper.",
+  "durationMinutes": 25,
+  "totalMarks": 25,
+  "patternNote": "Olympiad-style practice for Class 3, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Find the missing letter: B, D, F, H, ?",
+      "question": "869 − 733 = ?",
       "options": [
-        "K",
-        "G",
-        "J",
-        "I"
+        "162",
+        "142",
+        "136",
+        "139"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Select the right answer: odd one: Red, Blue, Green, Chair",
+      "question": "A pencil costs ₹5. What is the cost of 3 pencils?",
       "options": [
-        "Green",
-        "Chair",
-        "Red",
-        "Blue"
+        "₹22",
+        "₹20",
+        "₹14",
+        "₹15"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Find the next number: 2, 4, 6, 8, ?",
+      "question": "405 − 184 = ?",
       "options": [
-        "10",
-        "9",
-        "12",
-        "7"
+        "211",
+        "222",
+        "232",
+        "221"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Select the right answer: which comes next in the pattern: △ ○ △ ○ △ ?",
+      "question": "Half of 28 is…",
       "options": [
-        "△",
-        "□",
-        "☆",
-        "○"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 5,
-      "question": "Select the right answer: which shape has 3 sides?",
-      "options": [
-        "Circle",
-        "Rectangle",
-        "Triangle",
-        "Square"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 6,
-      "question": "Select the right answer: how many triangles in a triangle divided into 2 by one line from a vertex to the base?",
-      "options": [
-        "4",
-        "2",
-        "1",
-        "3"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 7,
-      "question": "Find the next number: 5, 10, 15, 20, ?",
-      "options": [
-        "25",
-        "22",
-        "30",
-        "18"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 8,
-      "question": "Select the right answer: if ★ = 3 and ● = 5, then ★ + ● = ?",
-      "options": [
+        "17",
         "15",
-        "2",
-        "35",
-        "8"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 9,
-      "question": "Select the right answer: mirror of letter 'A' looks most like:",
-      "options": [
-        "C",
-        "D",
-        "A",
-        "B"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 10,
-      "question": "Select the right answer: if ☆ means 2, then ☆☆☆ means:",
-      "options": [
-        "5",
-        "6",
-        "3",
-        "8"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 11,
-      "question": "What is 1222 + 2174?",
-      "options": [
-        "3376",
-        "3496",
-        "3396",
-        "3406"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 12,
-      "question": "What is 2174 − 1222?",
-      "options": [
-        "1222",
-        "952",
-        "3396",
-        "1002"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 13,
-      "question": "14 × 7 = ?",
-      "options": [
-        "98",
-        "21",
-        "103",
-        "112"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 14,
-      "question": "80 ÷ 8 = ?",
-      "options": [
-        "11",
-        "72",
-        "8",
-        "10"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 15,
-      "question": "In 3458, the digit in the thousands place is:",
-      "options": [
-        "8",
-        "5",
-        "3",
-        "4"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 16,
-      "question": "In 3458, the place value of digit 3 is:",
-      "options": [
-        "30",
-        "3000",
-        "300",
-        "3"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 17,
-      "question": "Which is the largest number: 3458, 3347, 3480, 3453?",
-      "options": [
-        "3347",
-        "3453",
-        "3480",
-        "3458"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 18,
-      "question": "Round 48 to the nearest 10.",
-      "options": [
-        "40",
-        "48",
-        "50",
-        "60"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 19,
-      "question": "254 × 5 = ?",
-      "options": [
-        "1270",
-        "1524",
-        "1265",
-        "259"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 20,
-      "question": "84 ÷ 6 = ?",
-      "options": [
-        "6",
-        "78",
         "14",
-        "15"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "Which fraction is equal to one-half?",
-      "options": [
-        "1/2",
-        "1/3",
-        "1/4",
-        "2/3"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "What fraction of the shape is shaded if 1 of 4 equal parts is shaded?",
-      "options": [
-        "1/2",
-        "3/4",
-        "1/3",
-        "1/4"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 23,
-      "question": "Riya has ₹70. She spends ₹21. How much is left?",
-      "options": [
-        "21",
-        "54",
-        "49",
-        "91"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 24,
-      "question": "A chocolate costs ₹12. Cost of 3 such chocolates is:",
-      "options": [
-        "15",
-        "48",
-        "36",
-        "24"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "A film starts at 4:00 and lasts 2 hours. It ends at:",
-      "options": [
-        "4:30",
-        "7:00",
-        "6:00",
-        "5:00"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "How many minutes are there in 2 hours?",
-      "options": [
-        "90",
-        "45",
-        "120",
-        "100"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "Length of a pencil is 12 cm and an eraser is 10 cm. Total length is:",
-      "options": [
-        "24",
-        "3",
-        "22",
-        "2"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "Perimeter of a square of side 8 cm is:",
-      "options": [
-        "64",
-        "24",
-        "32",
         "16"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
-      "id": 29,
-      "question": "A bag has mass 700 g. How many grams in 4 kg? (1 kg = 1000 g)",
+      "id": 5,
+      "question": "1 metre = ___ centimetres",
       "options": [
-        "700",
-        "500",
-        "4000",
-        "400"
+        "10",
+        "100",
+        "1000",
+        "1"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
-      "id": 30,
-      "question": "20 ÷ 2 = ?",
+      "id": 6,
+      "question": "538 + 381 = ?",
       "options": [
-        "18",
-        "12",
-        "10",
+        "919",
+        "926",
+        "938",
+        "915"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 7,
+      "question": "3 metre = ___ centimetres",
+      "options": [
+        "3000",
+        "300",
+        "30",
+        "3"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 8,
+      "question": "2 kilogram = ___ grams",
+      "options": [
+        "20000",
+        "200",
+        "2000",
         "20"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
-      "id": 31,
-      "question": "A triangle has how many angles?",
+      "id": 9,
+      "question": "544 + 338 = ?",
+      "options": [
+        "856",
+        "880",
+        "882",
+        "873"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 10,
+      "question": "5 × 9 = ?",
+      "options": [
+        "45",
+        "42",
+        "44",
+        "39"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 11,
+      "question": "2 × 8 = ?",
+      "options": [
+        "22",
+        "16",
+        "21",
+        "15"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 12,
+      "question": "Half of 24 is…",
+      "options": [
+        "13",
+        "11",
+        "10",
+        "12"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 13,
+      "question": "48 sweets are shared equally among 8 children. Each child gets…",
       "options": [
         "5",
-        "2",
-        "3",
-        "4"
+        "8",
+        "4",
+        "6"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 14,
+      "question": "The place value of 7 in 739 is…",
+      "options": [
+        "7000",
+        "70",
+        "7",
+        "700"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 15,
+      "question": "The place value of 7 in 723 is…",
+      "options": [
+        "700",
+        "7",
+        "70",
+        "7000"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 16,
+      "question": "A square has sides of 6 cm. How many 1-cm squares cover it?",
+      "options": [
+        "36",
+        "34",
+        "35",
+        "37"
       ],
       "section": "Achievers Section",
       "marks": 2
     },
     {
-      "id": 32,
-      "question": "Which is true?",
+      "id": 17,
+      "question": "27 × 13 = ?",
       "options": [
-        "A right angle measures 0°",
-        "A right angle measures 90°",
-        "A right angle measures 180°",
-        "A right angle measures 45°"
+        "362",
+        "351",
+        "365",
+        "338"
       ],
       "section": "Achievers Section",
       "marks": 2
     },
     {
-      "id": 33,
-      "question": "Cost of 1 pen is ₹10. Cost of 4 pens is:",
+      "id": 18,
+      "question": "Diya had ₹300. She spent ₹44. How much is left?",
       "options": [
-        "20",
-        "Option-3-40",
-        "40",
-        "14"
+        "₹236",
+        "₹253",
+        "₹256",
+        "₹240"
       ],
       "section": "Achievers Section",
       "marks": 2
     },
     {
-      "id": 34,
-      "question": "Find the missing number: 22 + ___ = 52",
+      "id": 19,
+      "question": "Sara had ₹800. She spent ₹26. How much is left?",
       "options": [
-        "52",
-        "10",
+        "₹774",
+        "₹757",
+        "₹758",
+        "₹762"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 20,
+      "question": "144 ÷ 4 = ?",
+      "options": [
+        "42",
         "30",
-        "22"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 35,
-      "question": "A pictograph shows each ☺ = 2 books. If there are 5 smileys, books =",
-      "options": [
-        "15",
-        "2",
-        "10",
-        "5"
+        "40",
+        "36"
       ],
       "section": "Achievers Section",
       "marks": 2

@@ -3,490 +3,238 @@
   "subject": "Mathematics",
   "paper": 2,
   "title": "Class 5 Mathematics — Paper 2",
-  "durationMinutes": 30,
-  "totalMarks": 50,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 5 pattern & syllabus. Not an official SOF paper.",
+  "durationMinutes": 25,
+  "totalMarks": 23,
+  "patternNote": "Olympiad-style practice for Class 5, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Find the next term: 9, 18, 36, 72, __.",
+      "question": "Area of a rectangle 5 m long and 6 m wide is…",
       "options": [
-        "126",
-        "144",
-        "180",
-        "135"
+        "30 sq m",
+        "40 sq m",
+        "11 sq m",
+        "22 sq m"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Find the next number: 7, 10, 15, 22, __.",
+      "question": "A straight angle measures…",
       "options": [
-        "33",
-        "29",
-        "31",
-        "35"
+        "45°",
+        "180°",
+        "360°",
+        "90°"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Complete the series: 4, 9, 16, 25, __.",
+      "question": "Which of these is a factor of 20?",
       "options": [
-        "37",
-        "35",
-        "49",
-        "36"
+        "8",
+        "9",
+        "10",
+        "11"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Which number does not belong: 2, 3, 5, 7, 9, 11?",
+      "question": "How many 1-cm cubes make a bigger cube with 2 cm sides?",
       "options": [
-        "9",
-        "2",
-        "5",
-        "11"
+        "6",
+        "4",
+        "10",
+        "8"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Odd one out: Square, Cube, Rectangle, Triangle.",
+      "question": "The digit in the lakhs place of 1,61,300 is…",
       "options": [
-        "Cube",
-        "Square",
-        "Rectangle",
-        "Triangle"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 6,
-      "question": "If CAT → DBU (each letter +1), then SUN → ?",
-      "options": [
-        "TVO",
-        "RTO",
-        "TVM",
-        "TVP"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 7,
-      "question": "If APPLE is written as ELPPA, how is MANGO written?",
-      "options": [
-        "OGNAM",
-        "AMGNO",
-        "ONGAM",
-        "MAGNO"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 8,
-      "question": "Pen : Write :: Knife : ?",
-      "options": [
-        "Cut",
-        "Eat",
-        "Draw",
-        "Run"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 9,
-      "question": "Bird : Nest :: Bee : ?",
-      "options": [
-        "Hive",
-        "Den",
-        "Stable",
-        "Burrow"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 10,
-      "question": "In a row of 14 students, Maya is 5th from the left. Her position from the right is:",
-      "options": [
-        "9th",
-        "11th",
-        "10th",
-        "5th"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 11,
-      "question": "If 5th of a month is Wednesday, what day is 12th of the same month?",
-      "options": [
-        "Wednesday",
-        "Thursday",
-        "Tuesday",
-        "Friday"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 12,
-      "question": "Amit faces North, turns 90° right, then 180° left. He now faces:",
-      "options": [
-        "West",
-        "East",
-        "South",
-        "North"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 13,
-      "question": "Find the next letters: A C F J O __",
-      "options": [
-        "U",
-        "T",
-        "S",
-        "V"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 14,
-      "question": "All roses are flowers. Some flowers fade quickly. Which is definitely true?",
-      "options": [
-        "Some roses may fade quickly",
-        "No rose fades",
-        "All flowers are roses",
-        "Roses are not flowers"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 15,
-      "question": "A regular polygon has 5 sides. How many sides does it have?",
-      "options": [
-        "6",
-        "4",
-        "7",
-        "5"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 16,
-      "question": "In 32452, the place value of the thousands digit is:",
-      "options": [
-        "2000",
-        "2100",
-        "2010",
-        "2001"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 17,
-      "question": "What is 267 + 392?",
-      "options": [
-        "669",
-        "659",
-        "649",
-        "679"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 18,
-      "question": "What is 930 − 462?",
-      "options": [
-        "473",
-        "463",
-        "468",
-        "483"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 19,
-      "question": "26 × 17 = ?",
-      "options": [
-        "468",
-        "425",
-        "452",
-        "442"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 20,
-      "question": "112 ÷ 8 = ?",
-      "options": [
-        "14",
-        "15",
-        "13",
-        "16"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "Which of the following is a factor of 24?",
-      "options": [
-        "6",
-        "7",
-        "11",
-        "13"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "The 5th multiple of 11 is:",
-      "options": [
-        "66",
-        "44",
-        "55",
-        "57"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 23,
-      "question": "LCM of 6 and 6 is:",
-      "options": [
-        "12",
-        "4",
-        "8",
+        "1",
+        "3",
+        "0",
         "6"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
-      "id": 24,
-      "question": "HCF of 24 and 36 is:",
+      "id": 6,
+      "question": "2/7 + 4/7 = ?",
+      "options": [
+        "7/7",
+        "6/7",
+        "6/14",
+        "8/7"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 7,
+      "question": "Which of these is a factor of 36?",
+      "options": [
+        "7",
+        "2",
+        "13",
+        "5"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 8,
+      "question": "Area of a rectangle 5 m long and 10 m wide is…",
+      "options": [
+        "30 sq m",
+        "15 sq m",
+        "50 sq m",
+        "60 sq m"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 9,
+      "question": "137 × 18 = ?",
+      "options": [
+        "2279",
+        "2466",
+        "2450",
+        "2606"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 10,
+      "question": "The digit in the lakhs place of 4,45,699 is…",
+      "options": [
+        "6",
+        "4",
+        "5",
+        "9"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 11,
+      "question": "Which fraction is equal to 1/2?",
+      "options": [
+        "9/11",
+        "9/18",
+        "18/9",
+        "1/11"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 12,
+      "question": "205 × 21 = ?",
+      "options": [
+        "4416",
+        "4305",
+        "4439",
+        "4248"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 13,
+      "question": "630 ÷ 18 = ?",
+      "options": [
+        "40",
+        "33",
+        "35",
+        "30"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 14,
+      "question": "8/10 written as a decimal is…",
+      "options": [
+        "8.0",
+        "0.08",
+        "80",
+        "0.8"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 15,
+      "question": "722 ÷ 19 = ?",
+      "options": [
+        "34",
+        "43",
+        "37",
+        "38"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 16,
+      "question": "How many 1-cm cubes make a bigger cube with 4 cm sides?",
       "options": [
         "12",
-        "14",
+        "64",
+        "68",
+        "16"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 17,
+      "question": "1/5 + 2/5 = ?",
+      "options": [
+        "3/10",
+        "4/5",
+        "2/5",
+        "3/5"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 18,
+      "question": "1/10 written as a decimal is…",
+      "options": [
+        "0.1",
+        "0.01",
         "10",
-        "18"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "1/3 + 1/6 = ?",
-      "options": [
-        "1/2",
-        "1/3",
-        "2/9",
-        "1/9"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "0.4 + 0.7 = ?",
-      "options": [
-        "0.4",
-        "1.7",
-        "1.1",
-        "0.05"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "20% of 200 is:",
-      "options": [
-        "50",
-        "30",
-        "60",
-        "40"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "Perimeter of a rectangle 14 cm by 8 cm is:",
-      "options": [
-        "44",
-        "66",
-        "156",
-        "42"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 29,
-      "question": "Area of a square of side 10 cm is:",
-      "options": [
-        "140",
-        "100",
-        "110",
-        "90"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 30,
-      "question": "Area of a triangle with base 14 cm and height 10 cm is:",
-      "options": [
-        "210",
-        "94",
-        "70",
-        "65"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "120 minutes = ?",
-      "options": [
-        "2 h 0 min",
-        "120 h",
-        "2 h",
-        "0 h 2 min"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 32,
-      "question": "₹35 = how many paise?",
-      "options": [
-        "3500",
-        "3535",
-        "3400",
-        "3550"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 33,
-      "question": "Average of 12, 14, 16, 18 is:",
-      "options": [
-        "16",
-        "15",
-        "14",
-        "17"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 34,
-      "question": "If 3 pens cost ₹57, cost of 5 such pens is:",
-      "options": [
-        "114",
-        "152",
-        "95",
-        "92"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 35,
-      "question": "Roman numeral for 19 is:",
-      "options": [
-        "XIX",
-        "XVI",
-        "XII",
-        "XXI"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 36,
-      "question": "A number is divided by 4 and then 15 is added. If the original number is 56, the result is:",
-      "options": [
-        "29",
-        "34",
-        "24",
-        "39"
+        "1.0"
       ],
       "section": "Achievers Section",
-      "marks": 3
+      "marks": 2
     },
     {
-      "id": 37,
-      "question": "What is 3/5 of 160?",
+      "id": 19,
+      "question": "A right angle measures…",
       "options": [
-        "128",
-        "96",
-        "99",
-        "86"
+        "360°",
+        "180°",
+        "90°",
+        "45°"
       ],
       "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 38,
-      "question": "A square has side 12 cm. By how much does its area (cm²) exceed its perimeter (cm) numerically?",
-      "options": [
-        "240",
-        "144",
-        "96",
-        "288"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 39,
-      "question": "A car covers 240 km at 50 km/h. Time taken is how many hours?",
-      "options": [
-        "5.8",
-        "3.8",
-        "6.8",
-        "4.8"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 40,
-      "question": "An article bought for ₹300 is sold for ₹360. Profit is:",
-      "options": [
-        "60",
-        "420",
-        "360",
-        "50"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
+      "marks": 2
     }
   ]
 }

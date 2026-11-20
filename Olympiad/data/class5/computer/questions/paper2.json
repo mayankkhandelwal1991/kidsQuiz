@@ -1,612 +1,252 @@
 {
   "class": 5,
-  "subject": "Computer",
+  "subject": "Computer Science",
   "paper": 2,
-  "title": "Class 5 Computer — Paper 2",
-  "durationMinutes": 30,
-  "totalMarks": 60,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 5 pattern & syllabus. Not an official SOF paper.",
+  "title": "Class 5 Computer Science — Paper 2",
+  "durationMinutes": 25,
+  "totalMarks": 25,
+  "patternNote": "Olympiad-style practice for Class 5, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "If CPU is brain of computer, which is similar for humans?",
+      "question": "The tiny dots that make up a picture on the screen are called…",
       "options": [
-        "Brain",
-        "Shoe",
-        "Chair",
-        "Window"
+        "Bytes",
+        "Pixels",
+        "Keys",
+        "Icons"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Pen : Paper :: Keyboard : ?",
+      "question": "Data is stored in units like KB, MB and…",
       "options": [
-        "Computer/screen input",
-        "River",
-        "Tree",
-        "Cloud rain"
+        "ML",
+        "KG",
+        "KM",
+        "GB"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Which does not belong: Input, Output, Storage, Cooking.",
+      "question": "A computer network connects…",
       "options": [
-        "Cooking",
-        "Input",
-        "Output",
-        "Storage"
+        "Only one keyboard",
+        "A fan and a light",
+        "Many computers together",
+        "Two mice"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Arrange steps: Idea → Program → Output (best order start):",
+      "question": "A search engine helps us to…",
       "options": [
-        "Start with clear steps/algorithm",
-        "Delete OS first",
-        "Break monitor",
-        "Ignore problem"
+        "Print",
+        "Draw",
+        "Find information on the Internet",
+        "Type fast"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "A is taller than B, B taller than C. Who is shortest?",
+      "question": "The full form of CPU is…",
       "options": [
-        "C",
-        "A",
-        "B",
-        "All equal"
+        "Computer Personal Unit",
+        "Control Power Unit",
+        "Central Processing Unit",
+        "Central Print Unit"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "Binary uses digits:",
+      "question": "A program for making slides for a presentation is…",
       "options": [
-        "0 and 1",
-        "0 to 9 only",
-        "A to Z only",
-        "2 and 3 only"
+        "Calculator",
+        "Notepad",
+        "Paint",
+        "PowerPoint"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "Find next: A1, B2, C3, __.",
+      "question": "A robot follows instructions given by a…",
       "options": [
-        "D4",
-        "E5",
-        "C4",
-        "D3"
+        "Plant",
+        "Program",
+        "Pillow",
+        "Pet"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "Mirror of 8:00 on a clock face-like reasoning: opposite hour idea — 8 opposite is near:",
+      "question": "A mistake in a computer program is called a…",
       "options": [
-        "2",
-        "12",
-        "6",
-        "10"
+        "Pixel",
+        "Loop",
+        "Mouse",
+        "Bug"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "Odd one out: Keyboard, Mouse, Monitor, Banana.",
+      "question": "Which of these is an operating system?",
       "options": [
-        "Banana",
-        "Keyboard",
-        "Mouse",
-        "Monitor"
+        "Paint",
+        "Chrome",
+        "Windows",
+        "Excel"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "Complete: 5, 10, 15, 20, __.",
+      "question": "E-mail is used to…",
       "options": [
-        "25",
-        "22",
-        "30",
-        "18"
+        "Store water",
+        "Cook food",
+        "Send messages over the Internet",
+        "Draw pictures"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "Which stores data permanently among these? Select the best answer.",
+      "question": "Wi-Fi lets devices connect to the Internet…",
       "options": [
-        "Hard disk",
-        "RAM only",
-        "Cache only",
-        "Registers only"
+        "Using paper",
+        "Only with long wires",
+        "Using water",
+        "Without wires"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "RAM is a type of:",
+      "question": "Which of these is a search engine?",
       "options": [
-        "Volatile memory",
-        "Permanent paper",
-        "Output device",
-        "Input only device"
+        "Paint",
+        "Google",
+        "Windows",
+        "Excel"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "The brain of the computer is the:",
+      "question": "Which of these is an example of AI we use?",
       "options": [
-        "CPU",
-        "Monitor",
-        "UPS",
-        "Speaker"
+        "A paper boat",
+        "A spoon",
+        "A pencil",
+        "A voice assistant answering questions"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "MS Word is mainly used for:",
+      "question": "A strong password has…",
       "options": [
-        "Word processing",
-        "Only calculations",
-        "Only drawing maps",
-        "Only playing CDs"
+        "Only your name",
+        "Only 123",
+        "Your birthday",
+        "Letters, numbers and symbols"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "MS Excel is mainly used for:",
+      "question": "1 kilobyte (KB) is about…",
       "options": [
-        "Spreadsheets and calculations",
-        "Only painting",
-        "Only email",
-        "Only antivirus"
+        "100 bytes",
+        "10 bytes",
+        "1000 bytes",
+        "1 byte"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "MS PowerPoint is used to create:",
+      "question": "Which device turns the computer’s output into sound?",
       "options": [
-        "Presentations",
-        "Only databases of banks",
-        "Only music albums",
-        "Only CPU chips"
+        "Keyboard",
+        "Speaker",
+        "Webcam",
+        "Scanner"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 17,
-      "question": "A file extension .jpg usually denotes a:",
+      "question": "Which is the most common way to protect a computer from viruses?",
       "options": [
-        "Image file",
-        "Sound only file",
-        "Excel sheet",
-        "Python program"
+        "Turning the screen upside down",
+        "Using a bigger mouse",
+        "Typing faster",
+        "Antivirus software"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 18,
-      "question": "Which key erases character to the left of the cursor?",
+      "question": "Downloading means…",
       "options": [
-        "Backspace",
-        "Enter",
-        "Shift",
-        "Ctrl only"
+        "Printing a file",
+        "Drawing a file",
+        "Deleting a file",
+        "Copying a file from the Internet to our computer"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 19,
-      "question": "Ctrl + C is commonly used to:",
+      "question": "A program for making tables and doing sums with rows and columns is a…",
       "options": [
-        "Copy",
-        "Paste",
-        "Cut only",
-        "Save"
+        "Paint",
+        "Media player",
+        "Browser",
+        "Spreadsheet (e.g. Excel)"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 20,
-      "question": "Ctrl + V is commonly used to:",
+      "question": "Windows is an example of an…",
       "options": [
-        "Paste",
-        "Copy",
-        "Undo",
-        "Print"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "Ctrl + S is commonly used to:",
-      "options": [
-        "Save",
-        "Sleep computer only",
-        "Shut down",
-        "Select all fonts"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "The blinking symbol on the screen showing typing position is the:",
-      "options": [
-        "Cursor",
-        "Icon only",
-        "Wallpaper",
-        "Folder"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 23,
-      "question": "An operating system example is:",
-      "options": [
-        "Windows",
-        "MS Word only",
-        "Google Chrome only",
-        "Photoshop only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 24,
-      "question": "Google Chrome is a:",
-      "options": [
-        "Web browser",
+        "Web page",
         "Operating system",
-        "Printer driver",
-        "Antivirus only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "The Internet is:",
-      "options": [
-        "A global network of networks",
-        "A single computer in a bag",
-        "Only a keyboard",
-        "Only a pen drive"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "Email is used to:",
-      "options": [
-        "Send electronic messages",
-        "Print only books",
-        "Cool the CPU",
-        "Charge batteries"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "A strong password should be:",
-      "options": [
-        "Long and hard to guess",
-        "Your name only",
-        "1234 only",
-        "blank"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "You should not share your passwords with:",
-      "options": [
-        "Strangers",
-        "Your own password manager only",
-        "Your locked offline notebook only",
-        "A saved browser profile only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 29,
-      "question": "A virus in computers is a type of:",
-      "options": [
-        "Malicious software",
-        "Hardware fan",
-        "Monitor colour",
-        "Keyboard key"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 30,
-      "question": "Software is:",
-      "options": [
-        "Set of programs/instructions",
-        "Only metal box",
-        "Only wires",
-        "Only screen glass"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "Hardware is:",
-      "options": [
-        "Physical parts of a computer",
-        "Only apps",
-        "Only passwords",
-        "Only websites"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 32,
-      "question": "Which is storage device?",
-      "options": [
-        "Pen drive",
-        "Mouse",
-        "Speaker",
-        "Projector"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 33,
-      "question": "In a URL, https suggests:",
-      "options": [
-        "A secure web connection (generally)",
-        "A broken link always",
-        "Offline mode only",
-        "A printer error"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 34,
-      "question": "Icons on the desktop are:",
-      "options": [
-        "Shortcuts/symbols to open items",
-        "Viruses always",
-        "Only photos printed",
-        "Speakers"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 35,
-      "question": "To shut down Windows properly you should use:",
-      "options": [
-        "Start menu shut down option",
-        "Pull plug only always",
-        "Remove RAM",
-        "Break the CD"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 36,
-      "question": "A folder is used to:",
-      "options": [
-        "Organize files",
-        "Cool the CPU",
-        "Replace the mouse",
-        "Print colours only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 37,
-      "question": "QWERTY refers to:",
-      "options": [
-        "A keyboard layout",
-        "A printer ink",
-        "A monitor size",
-        "A type of virus only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 38,
-      "question": "The device that produces sound is a:",
-      "options": [
-        "Speaker",
-        "Scanner",
-        "Mouse",
-        "Webcam only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 39,
-      "question": "Scanner is mainly an:",
-      "options": [
-        "Input device",
-        "Output only",
-        "Storage only",
-        "OS"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 40,
-      "question": "In Excel, a cell is the intersection of a:",
-      "options": [
-        "Row and a column",
-        "File and folder",
-        "CPU and RAM",
-        "Two speakers"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 41,
-      "question": "Bold, italic and underline are:",
-      "options": [
-        "Text formatting options",
-        "Input devices",
-        "Network cables",
-        "Programming languages"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 42,
-      "question": "Which is a search engine?",
-      "options": [
-        "Google",
-        "MS Word",
-        "Windows Paint",
-        "Notepad only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 43,
-      "question": "Bluetooth is commonly used for:",
-      "options": [
-        "Short-range wireless connection",
-        "Cooking food",
-        "Printing only books always",
-        "Cooling water"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 44,
-      "question": "A byte is made of:",
-      "options": [
-        "8 bits",
-        "2 bits",
-        "100 bits",
-        "1 bit only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 45,
-      "question": "Which unit is larger?",
-      "options": [
-        "Gigabyte",
-        "Kilobyte",
-        "Byte",
-        "Bit"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 46,
-      "question": "RAM is cleared when power goes off, but documents you need later should be saved to:",
-      "options": [
-        "Hard disk/SSD or drive storage",
-        "Only the CPU fan",
-        "Only the screen pixels",
-        "Only the speakers"
+        "Printer",
+        "Input device"
       ],
       "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 47,
-      "question": "In a spreadsheet, formula to add cells A1 and B1 often starts with:",
-      "options": [
-        "=A1+B1",
-        "A1+B1 without =",
-        "Add A1 B1 words only",
-        "#A1B1"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 48,
-      "question": "Phishing is best described as:",
-      "options": [
-        "Tricking people to reveal secrets online",
-        "A type of printer ink",
-        "A keyboard brand",
-        "A cooling method"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 49,
-      "question": "Which is the best backup habit?",
-      "options": [
-        "Keep copies of important files in another safe place",
-        "Never save anything",
-        "Delete all weekly",
-        "Share passwords as backup"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
-    },
-    {
-      "id": 50,
-      "question": "IP address basically identifies a:",
-      "options": [
-        "Device on a network",
-        "Type of mouse colour",
-        "Font style",
-        "Speaker volume only"
-      ],
-      "section": "Achievers Section",
-      "marks": 3
+      "marks": 2
     }
   ]
 }

@@ -61,6 +61,8 @@ The included questions are **original SOF-pattern practice** aligned to the 2023
 
 **Social Studies, Reasoning, Creative Arts (Class 1–5)** — original practice papers, 20 questions / 25 marks each (15 × 1 + 5 Achievers × 2), 25 minutes. Social Studies and Creative Arts come from editable banks in `tools/banks/*.txt` (one line per question); Reasoning questions (series, odd one out, analogies, coding, directions, ranking, calendar, blood relations) are generated. Regenerate with `node tools/generate-new-subjects-c1-5.js`.
 
+**Class 1–5 Mathematics, Science, English, Computer and GK** are rebuilt by `tools/generate-core-subjects-c1-5.js` from the class-checked, NCERT-level Quiz content (Science = EVS/body/plants/animals/space banks, GK = GK/geography/history/capitals/sports, English = English bank + grammar generator, Computer = computers bank) and a Maths generator that follows NCERT Math-Magic topics per class (place value, money, time, fractions, decimals, area, factors…). Achievers questions come from the next class's content. Answer positions are shuffled evenly. Earlier versions had every Class 5 answer at option A and many trick options — re-run the script after editing the Quiz banks.
+
 **Visible classes:** only Class 1–5 are shown for now. Class 6–10 are marked `"hidden": true` in `data/config.json` (data kept) — remove that flag to show them again. A subject with a `"classes"` list in config only appears for those classes.
 
 To replace any paper, edit its questions JSON and answer JSON. The HTML/JS does not need to change as long as the JSON schema remains the same.

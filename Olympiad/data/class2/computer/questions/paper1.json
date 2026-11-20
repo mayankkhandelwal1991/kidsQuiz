@@ -1,429 +1,249 @@
 {
   "class": 2,
-  "subject": "Computer",
+  "subject": "Computer Science",
   "paper": 1,
-  "title": "Class 2 Computer — Paper 1",
-  "durationMinutes": 30,
-  "totalMarks": 40,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 2 pattern & syllabus. Not an official SOF paper.",
+  "title": "Class 2 Computer Science — Paper 1",
+  "durationMinutes": 25,
+  "totalMarks": 25,
+  "patternNote": "Olympiad-style practice for Class 2, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Odd one out:",
+      "question": "Clicking two times quickly is called…",
       "options": [
-        "Keyboard",
-        "Mouse",
-        "Apple fruit",
-        "Monitor"
+        "Dragging",
+        "Typing",
+        "Scrolling",
+        "Double-click"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Which comes first to start work on a PC?",
+      "question": "Which of these is a computer game we play with a mouse or keys?",
       "options": [
-        "Break it",
-        "Remove all wires always",
-        "Shut down only",
-        "Switch on / power on"
+        "Kabaddi",
+        "A puzzle game",
+        "Hide and seek",
+        "Kho-kho"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Pen : Paper :: Keyboard : ?",
+      "question": "Holding the mouse button and moving it is called…",
       "options": [
-        "Ball",
-        "Chair",
-        "Computer",
-        "Fan"
+        "Printing",
+        "Typing",
+        "Dragging",
+        "Saving"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Find the next: Click, type, save, ?",
+      "question": "We should handle a computer…",
       "options": [
-        "Throw PC",
-        "Print / open later",
-        "Eat mouse",
-        "Water the CPU"
+        "With our feet",
+        "Roughly",
+        "Gently",
+        "With wet hands"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Which does not belong to computer parts?",
+      "question": "Which key removes a letter?",
       "options": [
-        "Monitor",
-        "Banana",
-        "Mouse",
-        "CPU"
+        "Backspace",
+        "Enter",
+        "Shift",
+        "Alt"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "The full form of CPU is:",
+      "question": "A pen drive is used to…",
       "options": [
-        "Computer Power Umbrella",
-        "Control Print USB",
-        "Central Pen Unit",
-        "Central Processing Unit"
+        "Write on paper",
+        "Clean the screen",
+        "Draw lines",
+        "Store and carry files"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "A monitor is used to:",
+      "question": "In Paint, which tool rubs out mistakes?",
       "options": [
-        "Scan food",
-        "Type letters",
-        "Show display / output",
-        "Print on paper only"
+        "Fill",
+        "Brush",
+        "Text",
+        "Eraser"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "A keyboard is an _____ device.",
+      "question": "Which key starts a new line?",
       "options": [
-        "output",
-        "input",
-        "storage only",
-        "cooking"
+        "Space bar",
+        "Tab",
+        "Shift",
+        "Enter"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "The mouse is used to:",
+      "question": "A small picture on the screen that opens a program is an…",
       "options": [
-        "Cool the CPU",
-        "Wash the screen",
-        "Print books only",
-        "Move the pointer"
+        "Icon",
+        "Book",
+        "Wire",
+        "Key"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "MS Paint is used for:",
+      "question": "A keyboard has letters, numbers and…",
       "options": [
-        "Only sending rockets",
-        "Only cooking",
-        "Drawing and colouring",
-        "Only calculating sums"
+        "Special keys",
+        "Pictures of animals",
+        "Fruits",
+        "Colours only"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "To draw a straight line in Paint, we use the:",
+      "question": "A machine that gives information is called a…",
       "options": [
-        "Only text never",
-        "Eraser only",
-        "Line tool",
-        "Only fill always"
+        "Computer",
+        "Chair",
+        "Spoon",
+        "Table"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "The Enter key is used to:",
+      "question": "We should use a computer for a ___ time.",
       "options": [
-        "Delete a letter",
-        "Start a new line / confirm",
-        "Turn off sun",
-        "Open fridge"
+        "Whole day",
+        "Short, limited",
+        "Very long",
+        "Whole night"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "A printer gives:",
+      "question": "A computer can do sums very…",
       "options": [
-        "Hard copy on paper",
-        "Only sound",
-        "Only heat",
-        "Soft copy only on screen"
+        "Sleepily",
+        "Fast",
+        "Lazily",
+        "Slowly"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "We should keep liquids _____ the computer.",
+      "question": "A printer prints on…",
       "options": [
-        "inside",
-        "under keys always",
-        "on",
-        "away from"
+        "Air",
+        "Water",
+        "Glass",
+        "Paper"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "A pen drive is used for:",
+      "question": "In Paint, which tool fills colour?",
       "options": [
-        "Only cooling tea",
-        "Cooking",
-        "Storing and carrying files",
-        "Only drawing lines on wall"
+        "Select",
+        "Pencil",
+        "Eraser",
+        "Fill with colour"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "Speakers are used for:",
+      "question": "In Paint, which tool fills a shape with colour?",
       "options": [
-        "Showing pictures only",
-        "Hearing sound",
-        "Typing only",
-        "Printing only"
+        "Text",
+        "Eraser",
+        "Pencil",
+        "Fill with colour (bucket)"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 17,
-      "question": "The spacebar is the _____ key on the keyboard.",
+      "question": "Which key removes the letter on the left of the cursor?",
       "options": [
-        "longest",
-        "round only",
-        "hidden",
-        "smallest"
+        "Backspace",
+        "Enter",
+        "Tab",
+        "Shift"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 18,
-      "question": "Turning off the computer properly is called:",
+      "question": "The blinking line where we type is called the…",
       "options": [
-        "Delete forever OS",
-        "Paint",
-        "Crash",
-        "Shut down"
+        "Mouse",
+        "Window",
+        "Icon",
+        "Cursor"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 19,
-      "question": "A laptop is a computer that is:",
+      "question": "A computer works with…",
       "options": [
-        "Only a phone tower",
-        "Only as big as a room",
-        "Portable",
-        "Unable to show display"
+        "Water",
+        "Petrol",
+        "Electricity",
+        "Wind only"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 20,
-      "question": "Icons on the desktop are:",
+      "question": "A printer is used to…",
       "options": [
-        "Small pictures to open things",
-        "Only foods",
-        "Only viruses always",
-        "Only books paper"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "The eraser tool in Paint is used to:",
-      "options": [
-        "Remove parts of drawing",
-        "Save file",
-        "Print",
-        "Add colour always"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "QWERTY is a type of:",
-      "options": [
-        "Mouse shape only",
-        "Printer ink only",
-        "Monitor brand only",
-        "Keyboard layout"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 23,
-      "question": "We should not share our _____ with strangers.",
-      "options": [
-        "school bag colour only",
-        "drawings of trees",
-        "passwords",
-        "favourite colour only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 24,
-      "question": "A scanner is used to:",
-      "options": [
-        "Cook rice",
-        "Copy paper photos/docs into computer",
-        "Cool CPU with water",
-        "Only play music"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "The brain of the computer is the:",
-      "options": [
-        "CPU",
-        "Mouse pad",
-        "Speaker",
-        "Monitor"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "Clicking the left mouse button once is a:",
-      "options": [
-        "Drag only",
-        "Scroll only always",
-        "Double-click",
-        "Single click"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "Files can be stored in a:",
-      "options": [
-        "Only pencil sharpener",
-        "Folder",
-        "Only river",
-        "Only cloud rain drop"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "UPS helps when:",
-      "options": [
-        "There is power cut (backup idea)",
-        "We paint",
-        "We type only letters A",
-        "Mouse is lost forever"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 29,
-      "question": "The delete key is used to:",
-      "options": [
-        "Remove characters / items",
-        "Draw circles",
-        "Increase volume only",
-        "Add space"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 30,
-      "question": "A good computer habit is:",
-      "options": [
-        "Hit the screen",
-        "Pull wires hard",
-        "Eat on the keyboard",
-        "Sit straight and take breaks"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "You typed a story and the power went off without saving. What should you do next time?",
-      "options": [
-        "Delete the keyboard",
-        "Never type again",
-        "Save your work often",
-        "Pour water on UPS"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 32,
-      "question": "Monitor shows output. Keyboard gives input. Which pair is correct?",
-      "options": [
-        "Printer – input only always",
-        "Mouse – input; Speaker – output",
-        "Speaker – input only; Mouse – output only",
-        "CPU – only a cable"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 33,
-      "question": "Why should children ask adults before downloading apps?",
-      "options": [
-        "Some apps can be unsafe or paid wrongly",
-        "Adults dislike fun",
-        "Downloads grow plants",
-        "Apps are always safe forever"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 34,
-      "question": "In Paint, which steps best make a simple house?",
-      "options": [
-        "Only smash keys",
-        "Only open Recycle Bin",
-        "Only shut down twice",
-        "Draw shapes, colour, then save"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 35,
-      "question": "A pen drive is full. A good next step is:",
-      "options": [
-        "Hammer the USB",
-        "Force more files until break",
-        "Delete unneeded files or use another storage",
-        "Put it in water"
+        "Type",
+        "Play sounds",
+        "Click",
+        "Print on paper"
       ],
       "section": "Achievers Section",
       "marks": 2

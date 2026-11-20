@@ -3,427 +3,247 @@
   "subject": "Computer Science",
   "paper": 1,
   "title": "Class 4 Computer Science — Paper 1",
-  "durationMinutes": 30,
-  "totalMarks": 40,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 4 pattern & syllabus. Not an official SOF paper.",
+  "durationMinutes": 25,
+  "totalMarks": 25,
+  "patternNote": "Olympiad-style practice for Class 4, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Odd one out: Monitor, Keyboard, Mouse, Chair",
+      "question": "Deleted files first go to the…",
       "options": [
-        "Monitor",
-        "Keyboard",
-        "Mouse",
-        "Chair"
+        "Recycle Bin",
+        "Printer",
+        "Desktop",
+        "Keyboard"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Analogy: Keyboard : Type :: Mouse : ?",
+      "question": "Moving a file from one place to another is called…",
       "options": [
+        "Save and close",
+        "Cut and paste",
         "Print",
-        "Click/Point",
-        "Scan",
-        "Speak"
+        "Copy and delete"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Next in order: Input → Process → ?",
+      "question": "Which of these is a web browser?",
       "options": [
-        "Delete",
-        "Output",
-        "Ignore",
-        "Break"
+        "Notepad",
+        "Calculator",
+        "Google Chrome",
+        "MS Paint"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "If all computers need electricity and a laptop is a computer, then a laptop:",
+      "question": "Ctrl + V is used to…",
       "options": [
-        "Needs no power",
-        "Needs electricity",
-        "Is not electronic",
-        "Cannot process data"
+        "Paste",
+        "Undo",
+        "Save",
+        "Copy"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Pattern: 2, 4, 8, 16, __ (think doubling like binary growth)",
+      "question": "Which key moves the cursor to the next tab space?",
       "options": [
-        "18",
-        "20",
-        "32",
-        "24"
+        "Enter",
+        "Alt",
+        "Tab",
+        "Shift"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "Which is an input device?",
+      "question": "Before shutting down, we should…",
       "options": [
-        "Monitor",
-        "Printer",
-        "Keyboard",
-        "Speaker"
+        "Save our work",
+        "Pull the wire",
+        "Hit the keyboard",
+        "Close the eyes"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "CPU stands for:",
+      "question": "The Internet connects…",
       "options": [
-        "Central Processing Unit",
-        "Computer Personal Unit",
-        "Central Print Unit",
-        "Control Program Utility"
+        "Only two rooms",
+        "Only phones in one house",
+        "Trees",
+        "Computers all over the world"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "Which stores data permanently until erased?",
+      "question": "Software means the programs that…",
       "options": [
-        "RAM",
-        "Hard disk / SSD",
-        "Cache only",
-        "Register only"
+        "We can touch",
+        "Tell the computer what to do",
+        "Are cables",
+        "Are made of metal"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "MS Paint is used mainly for:",
+      "question": "The Shift key with a letter types a…",
       "options": [
-        "Calculations",
-        "Drawing and editing images",
-        "Sending email only",
-        "Making slides only"
+        "Space",
+        "Number",
+        "Capital letter",
+        "New line"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "To copy selected text in Windows, press:",
+      "question": "Ctrl + C is used to…",
       "options": [
-        "Ctrl + X",
-        "Ctrl + C",
-        "Ctrl + V",
-        "Ctrl + Z"
+        "Copy",
+        "Cut",
+        "Print",
+        "Paste"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "Which is software?",
+      "question": "A program used to open websites is a…",
       "options": [
-        "Mouse",
-        "MS Word",
-        "Monitor",
-        "Printer cable"
+        "Paint",
+        "Web browser",
+        "Notepad",
+        "Calculator"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "The blinking symbol on the screen that shows typing position is the:",
+      "question": "We should not share our ___ with strangers online.",
       "options": [
-        "Icon",
-        "Cursor",
-        "Menu",
-        "Folder"
+        "Favourite colour",
+        "Password",
+        "Drawing",
+        "Smile"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "www stands for:",
+      "question": "Which shape tool in Paint draws a circle?",
       "options": [
-        "World Wide Web",
-        "World Web Wide",
-        "Wide World Web",
-        "Web World Wide"
+        "Text tool",
+        "Eraser",
+        "Oval / ellipse tool",
+        "Line tool"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "Which key erases character to the left of the cursor?",
+      "question": "Which of these is a way to keep our eyes safe at the computer?",
       "options": [
-        "Enter",
-        "Backspace",
-        "Shift",
-        "Ctrl"
+        "Stare without blinking",
+        "Use it in the dark",
+        "Take breaks and blink",
+        "Sit very close"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "A collection of 8 bits is called a:",
+      "question": "Which of these is an output device?",
       "options": [
-        "Nibble",
-        "Byte",
-        "Word",
-        "Megabit"
+        "Monitor",
+        "Mouse",
+        "Keyboard",
+        "Microphone"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "Which is an example of an operating system?",
+      "question": "A search engine helps us to…",
       "options": [
-        "MS Excel",
-        "Windows",
-        "Google Chrome only",
-        "Photoshop only"
+        "Find information on the Internet",
+        "Type fast",
+        "Draw",
+        "Print"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 17,
-      "question": "To paste, we use:",
+      "question": "If someone online is rude or scary, you should…",
       "options": [
-        "Ctrl + C",
-        "Ctrl + V",
-        "Ctrl + X",
-        "Ctrl + S"
+        "Tell a parent or teacher",
+        "Keep it a secret",
+        "Share your address",
+        "Reply rudely"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 18,
-      "question": "A pen drive is used to:",
+      "question": "A program for making tables and doing sums with rows and columns is a…",
       "options": [
-        "Cool the CPU",
-        "Store and carry data",
-        "Display images only",
-        "Print pages"
+        "Paint",
+        "Spreadsheet (e.g. Excel)",
+        "Media player",
+        "Browser"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 19,
-      "question": "Which device produces hard copy?",
+      "question": "Bold, Italic and Underline are used to change the look of…",
       "options": [
-        "Monitor",
-        "Printer",
+        "Mouse",
+        "Keyboard",
         "Speaker",
-        "Scanner"
+        "Text"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 20,
-      "question": "In MS Word, Bold makes text:",
+      "question": "An e-mail address always has the symbol…",
       "options": [
-        "Larger",
-        "Darker/thicker",
-        "Italic",
-        "Underlined only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "The brain of the computer is the:",
-      "options": [
-        "Monitor",
-        "CPU",
-        "Keyboard",
-        "UPS"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "Which is a storage device?",
-      "options": [
-        "Speaker",
-        "DVD / USB drive",
-        "Mouse",
-        "Webcam"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 23,
-      "question": "Email is used to:",
-      "options": [
-        "Cook food",
-        "Send electronic messages",
-        "Wash clothes",
-        "Draw only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 24,
-      "question": "Which should you NOT share online?",
-      "options": [
-        "Your favourite colour",
-        "Your password and OTP",
-        "A drawing",
-        "A joke"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "Icons on the desktop are:",
-      "options": [
-        "Small pictures representing programs/files",
-        "Viruses",
-        "Hardware parts",
-        "Only games"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "Scanner is used to:",
-      "options": [
-        "Print paper",
-        "Convert paper documents into digital form",
-        "Play music",
-        "Cool the PC"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "Which is application software?",
-      "options": [
-        "Linux kernel only",
-        "Tux Paint / MS Word",
-        "BIOS only",
-        "Device driver only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "Full form of USB:",
-      "options": [
-        "Universal Serial Bus",
-        "United System Board",
-        "Ultra Speed Bit",
-        "User Software Base"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 29,
-      "question": "To undo the last action:",
-      "options": [
-        "Ctrl + Y",
-        "Ctrl + Z",
-        "Ctrl + A",
-        "Ctrl + P"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 30,
-      "question": "A network of networks across the world is the:",
-      "options": [
-        "Intranet only",
-        "Internet",
-        "Bluetooth only",
-        "LAN only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "RAM is called temporary memory because:",
-      "options": [
-        "It is very small always",
-        "Data is lost when power is off",
-        "It cannot store numbers",
-        "It is outside the PC"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 32,
-      "question": "Which sequence is correct for starting a PC?",
-      "options": [
-        "Monitor on → Power on CPU → Login",
-        "Remove RAM first",
-        "Open CPU box first always",
-        "Unplug keyboard"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 33,
-      "question": "If a file is in Recycle Bin, it means:",
-      "options": [
-        "It is permanently destroyed always",
-        "It can often be restored",
-        "It is emailed",
-        "It is printed"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 34,
-      "question": "Why do we use antivirus software?",
-      "options": [
-        "To draw pictures",
-        "To detect and help remove malware",
-        "To increase font size",
-        "To cool the laptop"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 35,
-      "question": "In a QWERTY keyboard, the keys Q W E R T Y are on the:",
-      "options": [
-        "Bottom row",
-        "Top letter row",
-        "Number pad only",
-        "Function row only"
+        "%",
+        "@",
+        "#",
+        "&"
       ],
       "section": "Achievers Section",
       "marks": 2

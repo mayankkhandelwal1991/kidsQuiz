@@ -3,427 +3,247 @@
   "subject": "General Knowledge",
   "paper": 4,
   "title": "Class 4 General Knowledge — Paper 4",
-  "durationMinutes": 30,
-  "totalMarks": 40,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 4 pattern & syllabus. Not an official SOF paper.",
+  "durationMinutes": 25,
+  "totalMarks": 25,
+  "patternNote": "Olympiad-style practice for Class 4, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Which is the smallest state of India by area?",
+      "question": "How many states are there in India?",
       "options": [
-        "Rajasthan",
-        "Goa",
-        "MP",
-        "UP"
+        "28",
+        "18",
+        "35",
+        "30"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Mount Everest lies in the:",
+      "question": "The capital of the Union Territory of Andaman and Nicobar Islands is…",
       "options": [
-        "Alps",
-        "Himalayas",
-        "Andes",
-        "Rockies"
+        "Puducherry",
+        "Daman",
+        "Kavaratti",
+        "Port Blair"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Currency of China is the:",
+      "question": "Capital of Chhattisgarh?",
       "options": [
-        "Yen",
-        "Yuan (Renminbi)",
-        "Won",
-        "Dong"
+        "Durg",
+        "Bilaspur",
+        "Raipur",
+        "Bhilai"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Wright brothers are known for:",
+      "question": "The Khel Ratna award is given for excellence in…",
       "options": [
-        "Telephone",
-        "Aeroplane",
-        "Bulb only",
-        "Penicillin"
+        "Music",
+        "Science",
+        "Sports",
+        "Painting"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Hawa Mahal is in:",
+      "question": "Kolkata is the capital of…",
       "options": [
-        "Delhi",
-        "Jaipur",
-        "Agra",
-        "Mumbai"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 6,
-      "question": "Which is the largest planet?",
-      "options": [
-        "Earth",
-        "Jupiter",
-        "Mars",
-        "Venus"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 7,
-      "question": "How many hours are in a day?",
-      "options": [
-        "12",
-        "24",
-        "48",
-        "60"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 8,
-      "question": "Chilika Lake is in:",
-      "options": [
-        "Rajasthan",
+        "West Bengal",
         "Odisha",
-        "Punjab",
-        "Gujarat"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 9,
-      "question": "National aquatic animal of India:",
-      "options": [
-        "Shark",
-        "River dolphin",
-        "Starfish",
-        "Octopus"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 10,
-      "question": "Meenakshi Temple is in:",
-      "options": [
-        "Madurai",
-        "Delhi",
-        "Amritsar",
-        "Puri"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 11,
-      "question": "Who is known as Nightingale of India?",
-      "options": [
-        "Indira Gandhi",
-        "Sarojini Naidu",
-        "Lata Mangeshkar only as singer title varies",
-        "Mother Teresa"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 12,
-      "question": "Republic Day of India is on:",
-      "options": [
-        "15 August",
-        "26 January",
-        "2 October",
-        "14 November"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 13,
-      "question": "Statue of Liberty is in:",
-      "options": [
-        "UK",
-        "USA",
-        "France only original smaller",
-        "Canada"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 14,
-      "question": "Iodine deficiency can cause:",
-      "options": [
-        "Scurvy",
-        "Goitre",
-        "Rickets",
-        "Night blindness"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 15,
-      "question": "Hockey is India’s:",
-      "options": [
-        "National game (traditionally taught)",
-        "Only Olympic sport",
-        "Only village game",
-        "Not a sport"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 16,
-      "question": "A century in cricket means:",
-      "options": [
-        "50 runs",
-        "100 runs",
-        "200 runs",
-        "10 wickets"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 17,
-      "question": "Which is a union territory of India?",
-      "options": [
-        "Kerala",
-        "Ladakh",
-        "Punjab",
+        "Bihar",
         "Assam"
       ],
       "section": "General Awareness",
       "marks": 1
     },
     {
-      "id": 18,
-      "question": "Bihu is a festival of:",
+      "id": 6,
+      "question": "Who founded the Mughal Empire in India?",
       "options": [
-        "Punjab",
-        "Assam",
-        "Kerala",
-        "Goa"
+        "Shah Jahan",
+        "Babur",
+        "Humayun",
+        "Akbar"
       ],
       "section": "General Awareness",
       "marks": 1
+    },
+    {
+      "id": 7,
+      "question": "People in Ladakh make clothes from the wool of…",
+      "options": [
+        "Camels",
+        "Cows",
+        "Fish",
+        "Yak and goats (pashmina)"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 8,
+      "question": "National Sports Day in India is celebrated on the birthday of…",
+      "options": [
+        "Milkha Singh",
+        "Major Dhyan Chand",
+        "Sachin Tendulkar",
+        "Kapil Dev"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 9,
+      "question": "Who was the brave queen of Jhansi?",
+      "options": [
+        "Rani Padmini",
+        "Razia Sultana",
+        "Rani Lakshmibai",
+        "Ahilyabai"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 10,
+      "question": "Who was Gautama Buddha?",
+      "options": [
+        "A sailor",
+        "A king who loved war",
+        "A cricketer",
+        "A prince who taught peace and kindness"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 11,
+      "question": "Which is the longest river in the world?",
+      "options": [
+        "Nile",
+        "Ganga",
+        "Amazon",
+        "Yamuna"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 12,
+      "question": "The Taj Mahal is in…",
+      "options": [
+        "Agra",
+        "Jaipur",
+        "Delhi",
+        "Mumbai"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 13,
+      "question": "The Ganga starts from the…",
+      "options": [
+        "Gangotri glacier",
+        "Thar Desert",
+        "Arabian Sea",
+        "Deccan"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 14,
+      "question": "Gandhiji’s Dandi March was to protest against the tax on…",
+      "options": [
+        "Salt",
+        "Cloth",
+        "Sugar",
+        "Tea"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 15,
+      "question": "How many players are there in a kabaddi team on the court?",
+      "options": [
+        "9",
+        "7",
+        "5",
+        "11"
+      ],
+      "section": "General Awareness",
+      "marks": 1
+    },
+    {
+      "id": 16,
+      "question": "Who was the first President of free India?",
+      "options": [
+        "Zakir Husain",
+        "Dr Rajendra Prasad",
+        "Jawaharlal Nehru",
+        "Dr Radhakrishnan"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 17,
+      "question": "In the old days, people stored water in step-wells called…",
+      "options": [
+        "Tanks of plastic",
+        "Baolis (bawdis)",
+        "Pipes",
+        "Swimming pools"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 18,
+      "question": "World Water Day is on…",
+      "options": [
+        "14 November",
+        "22 March",
+        "5 June",
+        "1 May"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 19,
-      "question": "RBI is the central bank of:",
+      "question": "Capital of Brazil?",
       "options": [
-        "USA",
-        "India",
-        "UK",
-        "Japan"
+        "Buenos Aires",
+        "Rio de Janeiro",
+        "São Paulo",
+        "Brasília"
       ],
-      "section": "General Awareness",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 20,
-      "question": "Shehnai is associated with:",
+      "question": "Capital of the Philippines?",
       "options": [
-        "Bismillah Khan",
-        "Ravi Shankar",
-        "Zakir Hussain only tabla",
-        "Lata Mangeshkar"
-      ],
-      "section": "General Awareness",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "Artificial Intelligence (AI) is about:",
-      "options": [
-        "Machines performing smart tasks",
-        "Only farming tools",
-        "Only bicycles",
-        "Only chalk"
-      ],
-      "section": "Current Affairs",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "Swachh Bharat Abhiyan promotes:",
-      "options": [
-        "Dirtiness",
-        "Cleanliness",
-        "Wasting plastic",
-        "Open drains"
-      ],
-      "section": "Current Affairs",
-      "marks": 1
-    },
-    {
-      "id": 23,
-      "question": "The United Nations HQ is in:",
-      "options": [
-        "London",
-        "New York",
-        "Paris",
-        "Tokyo"
-      ],
-      "section": "Current Affairs",
-      "marks": 1
-    },
-    {
-      "id": 24,
-      "question": "World Health Organization deals with:",
-      "options": [
-        "Global health",
-        "Only space",
-        "Only sports",
-        "Only films"
-      ],
-      "section": "Current Affairs",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "A marathon race is about:",
-      "options": [
-        "100 m",
-        "42.195 km",
-        "1 km only",
-        "5 m"
-      ],
-      "section": "Current Affairs",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "If you receive a hurtful message online, you should:",
-      "options": [
-        "Reply with more hate",
-        "Block/report and tell a trusted adult",
-        "Share your password",
-        "Meet the sender alone"
-      ],
-      "section": "Life Skills",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "Exercise daily helps to:",
-      "options": [
-        "Weaken bones only",
-        "Keep body fit",
-        "Avoid all food",
-        "Skip sleep forever"
-      ],
-      "section": "Life Skills",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "Teamwork means:",
-      "options": [
-        "Only one works",
-        "Working together towards a goal",
-        "Fighting teammates",
-        "Hiding information always"
-      ],
-      "section": "Life Skills",
-      "marks": 1
-    },
-    {
-      "id": 29,
-      "question": "First aid for a minor burn (after safety) often includes:",
-      "options": [
-        "Applying ice directly for hours without care",
-        "Cooling with clean running water",
-        "Rubbing butter always",
-        "Ignoring pain"
-      ],
-      "section": "Life Skills",
-      "marks": 1
-    },
-    {
-      "id": 30,
-      "question": "Being honest means:",
-      "options": [
-        "Always lying",
-        "Telling the truth",
-        "Cheating in tests",
-        "Hiding mistakes forever"
-      ],
-      "section": "Life Skills",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "Which line divides Earth into Northern and Southern Hemispheres?",
-      "options": [
-        "Tropic of Cancer",
-        "Equator",
-        "Prime Meridian",
-        "Arctic Circle"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 32,
-      "question": "The Indian national flag was adopted on:",
-      "options": [
-        "15 August 1947",
-        "22 July 1947",
-        "26 January 1950",
-        "2 October 1947"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 33,
-      "question": "Who gave the slogan ‘Jai Jawan Jai Kisan’?",
-      "options": [
-        "Nehru",
-        "Lal Bahadur Shastri",
-        "Gandhi",
-        "Patel"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 34,
-      "question": "Jim Corbett National Park is in:",
-      "options": [
-        "Kerala",
-        "Uttarakhand",
-        "Goa",
-        "Punjab"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 35,
-      "question": "Which gas is most abundant in Earth’s atmosphere?",
-      "options": [
-        "Oxygen",
-        "Nitrogen",
-        "Carbon dioxide",
-        "Hydrogen"
+        "Bangkok",
+        "Jakarta",
+        "Hanoi",
+        "Manila"
       ],
       "section": "Achievers Section",
       "marks": 2

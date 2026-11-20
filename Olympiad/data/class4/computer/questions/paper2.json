@@ -3,427 +3,247 @@
   "subject": "Computer Science",
   "paper": 2,
   "title": "Class 4 Computer Science — Paper 2",
-  "durationMinutes": 30,
-  "totalMarks": 40,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 4 pattern & syllabus. Not an official SOF paper.",
+  "durationMinutes": 25,
+  "totalMarks": 25,
+  "patternNote": "Olympiad-style practice for Class 4, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Odd one: Input, Output, Process, Furniture",
+      "question": "To keep a file for later, we ___ it.",
       "options": [
-        "Input",
-        "Output",
-        "Process",
-        "Furniture"
+        "Save",
+        "Shake",
+        "Close",
+        "Delete"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Analogy: Printer : Output :: Scanner : ?",
+      "question": "Which of these is an input device?",
       "options": [
-        "Output",
-        "Input",
-        "Storage only",
-        "Software"
+        "Speaker",
+        "Printer",
+        "Keyboard",
+        "Monitor"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Order: Create file → Save → ?",
+      "question": "A computer program to watch videos and play songs is a…",
       "options": [
-        "Delete OS",
-        "Open later / Close",
-        "Break disk",
-        "Remove CPU"
+        "Calculator",
+        "Paint",
+        "Word processor",
+        "Media player"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "If software needs hardware to run, then MS Paint needs a:",
+      "question": "Which program helps us do sums?",
       "options": [
-        "Only paper",
-        "Computer system",
-        "Only pencil",
-        "Only eraser"
+        "Calculator",
+        "Paint",
+        "Recycle Bin",
+        "Notepad"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Find next: Click, Double-click, ___",
+      "question": "A webcam is used to…",
       "options": [
-        "Triple sleep",
-        "Right-click / Drag (user actions)",
-        "Unplug",
-        "Format only"
+        "Take pictures and videos",
+        "Play music",
+        "Type",
+        "Print"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "Which is an output device?",
+      "question": "A scanner is used to…",
       "options": [
-        "Mic",
-        "Joystick",
-        "Speaker",
-        "Keyboard"
+        "Print",
+        "Copy pictures from paper into the computer",
+        "Type",
+        "Make sound"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "ALU stands for:",
+      "question": "Hardware means the parts of a computer we can…",
       "options": [
-        "Arithmetic Logic Unit",
-        "Application Logic Utility",
-        "Advanced Linux Unit",
-        "Array Large Unit"
+        "Only dream",
+        "Touch",
+        "Smell",
+        "Only hear"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "Which memory is faster but smaller usually?",
+      "question": "Ctrl + S is used to…",
       "options": [
-        "Hard disk",
-        "Cache memory",
-        "DVD",
-        "Pen drive only"
+        "Select all",
+        "Shut down",
+        "Search",
+        "Save"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "In Tux Paint / Paint, the tool to fill colour is often called:",
+      "question": "Memory that stores our files for a long time is the…",
       "options": [
-        "Eraser",
-        "Fill / Paint bucket",
-        "Text only",
-        "Crop only"
+        "Hard disk",
+        "Keyboard",
+        "Mouse pad",
+        "Speaker"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "Ctrl + A is used to:",
+      "question": "A file is stored inside a…",
       "options": [
-        "Save",
-        "Select all",
-        "Copy",
-        "Print"
+        "Monitor",
+        "Mouse",
+        "Folder",
+        "Speaker"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "Hardware is:",
+      "question": "Ctrl + Z is used to…",
       "options": [
-        "Physical parts of computer",
-        "Only programs",
-        "Only internet",
-        "Only games"
+        "Save",
+        "Undo",
+        "Copy",
+        "Print"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "A folder is used to:",
+      "question": "To remove a file we don’t need, we ___ it.",
       "options": [
-        "Cool CPU",
-        "Organise files",
-        "Print faster",
-        "Charge battery"
+        "Copy",
+        "Print",
+        "Save",
+        "Delete"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "HTTP is related to:",
+      "question": "A microphone is used to…",
       "options": [
-        "Cooking",
-        "Web pages on the internet",
-        "Printing only",
-        "Keyboard layout"
+        "Record sound",
+        "Draw",
+        "Show pictures",
+        "Print"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "Function keys are:",
+      "question": "Which program is used for typing letters and stories?",
       "options": [
-        "F1 to F12 generally",
-        "Only Enter",
-        "Only Space",
-        "Only Shift"
+        "Calculator",
+        "Paint",
+        "A word processor (e.g. MS Word)",
+        "Media player"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "1 KB is equal to:",
+      "question": "A computer virus is a…",
       "options": [
-        "1000 bytes exactly always in binary",
-        "1024 bytes",
-        "100 bytes",
-        "10 bytes"
+        "Mouse",
+        "Cable",
+        "Germ that makes us sick",
+        "Harmful program"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "Which is system software?",
+      "question": "1 kilobyte (KB) is about…",
       "options": [
-        "MS PowerPoint",
-        "Operating system",
-        "MS Excel",
-        "Media player only"
+        "10 bytes",
+        "100 bytes",
+        "1000 bytes",
+        "1 byte"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 17,
-      "question": "To cut text use:",
+      "question": "E-mail is used to…",
       "options": [
-        "Ctrl + C",
-        "Ctrl + X",
-        "Ctrl + V",
-        "Ctrl + B"
+        "Cook food",
+        "Store water",
+        "Send messages over the Internet",
+        "Draw pictures"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 18,
-      "question": "Webcam is mainly used for:",
+      "question": "Wi-Fi lets devices connect to the Internet…",
       "options": [
-        "Printing",
-        "Capturing video/images",
-        "Cooling",
-        "Storing OS only"
+        "Using water",
+        "Only with long wires",
+        "Without wires",
+        "Using paper"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 19,
-      "question": "Soft copy means:",
+      "question": "A set of step-by-step instructions to do a task is an…",
       "options": [
-        "Printed paper",
-        "Digital display on screen",
-        "Handmade copy",
-        "Carbon copy only"
+        "Algorithm",
+        "Input",
+        "Image",
+        "Icon"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 20,
-      "question": "In Word, italic makes text:",
+      "question": "Artificial Intelligence (AI) helps computers to…",
       "options": [
-        "Thicker",
-        "Slanted",
-        "Underlined only",
-        "Bigger only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "UPS helps to:",
-      "options": [
-        "Provide backup power for short time",
-        "Increase RAM forever",
-        "Print colours",
-        "Browse faster always"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "CD/DVD is a:",
-      "options": [
-        "Input-only device always",
-        "Storage media",
-        "Type of virus",
-        "Operating system"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 23,
-      "question": "A search engine example is:",
-      "options": [
-        "MS Word",
-        "Google",
-        "Paint",
-        "Notepad only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 24,
-      "question": "Cyber safety tip:",
-      "options": [
-        "Share OTP with friends",
-        "Do not share passwords",
-        "Click all unknown links",
-        "Use same password everywhere"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "Desktop is:",
-      "options": [
-        "The main screen area after login",
-        "A type of virus",
-        "Only a furniture item in software",
-        "A printer"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "Microphone is an:",
-      "options": [
-        "Output device",
-        "Input device",
-        "Storage device",
-        "Operating system"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "Spreadsheet software example:",
-      "options": [
-        "MS Excel",
-        "MS Paint",
-        "VLC only",
-        "Notepad only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "GUI stands for:",
-      "options": [
-        "Graphical User Interface",
-        "General Utility Input",
-        "Guided User Internet",
-        "Global Unique Icon"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 29,
-      "question": "To save a file:",
-      "options": [
-        "Ctrl + S",
-        "Ctrl + P",
-        "Ctrl + N only",
-        "Alt + F4 only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 30,
-      "question": "LAN means:",
-      "options": [
-        "Local Area Network",
-        "Large Access Node",
-        "Long Antenna Net",
-        "Logical Application Name"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "Why is shutdown better than just switching off power?",
-      "options": [
-        "It looks nice",
-        "It closes programs safely and saves data",
-        "It deletes files",
-        "It increases viruses"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 32,
-      "question": "Difference between Save and Save As:",
-      "options": [
-        "No difference",
-        "Save As lets you choose new name/location",
-        "Save As deletes file",
-        "Save prints the file"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 33,
-      "question": "Phishing emails try to:",
-      "options": [
-        "Help you study",
-        "Trick you into giving personal information",
-        "Charge your battery",
-        "Fix hardware"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 34,
-      "question": "Bits are 0 and 1 because computers use:",
-      "options": [
-        "Decimal only",
-        "Binary system",
-        "Roman system",
-        "Only words"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 35,
-      "question": "Which device is both input and output?",
-      "options": [
-        "Keyboard only",
-        "Touch screen",
-        "Mouse only",
-        "Speaker only"
+        "Grow taller",
+        "Eat",
+        "Learn and make smart choices",
+        "Sleep"
       ],
       "section": "Achievers Section",
       "marks": 2

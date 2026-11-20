@@ -3,427 +3,247 @@
   "subject": "Science",
   "paper": 1,
   "title": "Class 3 Science — Paper 1",
-  "durationMinutes": 30,
-  "totalMarks": 40,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 3 pattern & syllabus. Not an official SOF paper.",
+  "durationMinutes": 25,
+  "totalMarks": 25,
+  "patternNote": "Olympiad-style practice for Class 3, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Find the odd one out: Rose, Lily, Mango, Jasmine",
+      "question": "We should wash fruits and vegetables before eating to…",
       "options": [
-        "Rose",
-        "Lily",
-        "Jasmine",
-        "Mango"
+        "Change their colour",
+        "Remove dirt and germs",
+        "Make them bigger",
+        "Make them sweet"
       ],
-      "section": "Logical Reasoning",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Complete: Day → Sun :: Night → ?",
+      "question": "Which thread is used to make cloth?",
       "options": [
-        "Rainbow only",
-        "Soil",
-        "Moon",
-        "Cloud only"
+        "Plastic",
+        "Wire",
+        "Cotton",
+        "Rubber"
       ],
-      "section": "Logical Reasoning",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Next in pattern: Seed → Plant → Flower → ?",
+      "question": "Which of these animals eats only plants?",
       "options": [
-        "Sun only",
-        "Fruit",
-        "Root only",
-        "Soil only"
+        "Tiger",
+        "Wolf",
+        "Lion",
+        "Cow"
       ],
-      "section": "Logical Reasoning",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Which is different: Milk, Juice, Water, Stone",
+      "question": "The Moon does not have its own…",
       "options": [
-        "Stone",
-        "Milk",
-        "Juice",
-        "Water"
+        "Light",
+        "Shape",
+        "Colour",
+        "Size"
       ],
-      "section": "Logical Reasoning",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Which does not belong: Eye, Ear, Nose, Shoe",
+      "question": "Which bird cannot fly?",
       "options": [
-        "Eye",
-        "Ear",
-        "Nose",
-        "Shoe"
+        "Ostrich",
+        "Pigeon",
+        "Sparrow",
+        "Crow"
       ],
-      "section": "Logical Reasoning",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "Which part of the plant absorbs water from the soil?",
+      "question": "Playing and exercise make our body…",
       "options": [
-        "Flowers",
-        "Fruits",
-        "Petals only",
-        "Roots"
+        "Tired forever",
+        "Strong",
+        "Weak",
+        "Sad"
       ],
-      "section": "Science",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "We should brush our teeth:",
+      "question": "Which animal moves by hopping?",
       "options": [
-        "Never",
-        "Only on birthdays",
-        "Twice a day",
-        "Once a year"
+        "Frog",
+        "Cow",
+        "Fish",
+        "Snake"
       ],
-      "section": "Science",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "Soil helps plants by providing:",
+      "question": "A baby sheep is called a…",
       "options": [
-        "Only glass",
-        "Water and minerals",
-        "Only plastic",
-        "Only metal"
+        "Lamb",
+        "Chick",
+        "Foal",
+        "Cub"
       ],
-      "section": "Science",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "The Moon is a:",
+      "question": "A group of stars that makes a picture in the sky is called a…",
       "options": [
-        "Natural satellite of Earth",
-        "Star like the Sun",
-        "Planet with rings like Saturn only",
-        "Comet only"
+        "Constellation",
+        "Comet",
+        "Cloud",
+        "Rainbow"
       ],
-      "section": "Science",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "We must not waste water because:",
+      "question": "Which body part has five fingers?",
       "options": [
-        "Water has no use",
-        "Oceans are tiny cups",
-        "Rain never falls",
-        "Fresh water is precious"
+        "Knee",
+        "Hand",
+        "Nose",
+        "Ear"
       ],
-      "section": "Science",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "Which is a source of vitamin C?",
+      "question": "Which part of the body helps us think?",
       "options": [
-        "Water only",
-        "Oil only",
-        "Orange",
-        "Salt only"
+        "Stomach",
+        "Knee",
+        "Heart",
+        "Brain"
       ],
-      "section": "Science",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "Fish breathe with:",
+      "question": "Which food helps us grow strong?",
       "options": [
-        "Feathers",
-        "Gills",
-        "Lungs like humans only",
-        "Leaves"
+        "Chips",
+        "Milk, pulses and eggs",
+        "Candy",
+        "Cold drinks"
       ],
-      "section": "Science",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "Cotton clothes are comfortable in summer because they:",
+      "question": "Which bird has a strong beak to crack nuts?",
       "options": [
-        "Absorb sweat and keep us cool",
-        "Always make us colder than ice",
-        "Are made of metal",
-        "Block all air forever"
+        "Duck",
+        "Crane",
+        "Hen",
+        "Parrot"
       ],
-      "section": "Science",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "Animals that eat only plants are called:",
+      "question": "Which season comes with lots of rain?",
       "options": [
-        "Carnivores",
-        "Omnivores",
-        "Producers",
-        "Herbivores"
+        "Summer",
+        "Winter",
+        "Monsoon",
+        "Spring"
       ],
-      "section": "Science",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "A balanced diet includes:",
+      "question": "We feel hot and cold with our…",
       "options": [
-        "Only fried snacks",
-        "Only soft drinks",
-        "Different types of healthy food",
-        "Only sweets"
+        "Teeth",
+        "Skin",
+        "Hair",
+        "Nails"
       ],
-      "section": "Science",
+      "section": "Science (EVS)",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "We see objects because of:",
+      "question": "Which planet is the biggest?",
       "options": [
-        "Only taste",
-        "Light",
-        "Only sound",
-        "Only smell"
+        "Mercury",
+        "Earth",
+        "Jupiter",
+        "Mars"
       ],
-      "section": "Science",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 17,
-      "question": "Which planet is known as the Red Planet?",
+      "question": "Mangroves grow near…",
       "options": [
-        "Mars",
-        "Earth",
-        "Venus",
-        "Mercury"
+        "Snow mountains",
+        "Deserts",
+        "Sea coasts",
+        "Inside houses"
       ],
-      "section": "Science",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 18,
-      "question": "Air pollution can be reduced by:",
+      "question": "Which of these is a sign of a cold?",
       "options": [
-        "Burning more plastic always",
-        "Cutting all trees",
-        "Using more smoke factories only",
-        "Planting more trees"
+        "Sneezing and runny nose",
+        "Good sleep",
+        "Long hair",
+        "Strong bones"
       ],
-      "section": "Science",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 19,
-      "question": "Germs can make us:",
+      "question": "Chemical fertilisers used too much can…",
       "options": [
-        "A planet",
-        "A cloud",
-        "Ill / sick",
-        "Taller instantly always"
+        "Harm the soil",
+        "Stop rain",
+        "Make plants sing",
+        "Make soil healthy forever"
       ],
-      "section": "Science",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 20,
-      "question": "The hardest part of our body is often the:",
+      "question": "Saliva in our mouth helps to…",
       "options": [
-        "Soft tongue only",
-        "Tooth enamel",
-        "Eyelash only",
-        "Hair tip only"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "The green colour of leaves is due to:",
-      "options": [
-        "Chlorophyll",
-        "Iron nails",
-        "Plastic",
-        "Salt only"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "A lion is a:",
-      "options": [
-        "Herbivore",
-        "Producer",
-        "Decomposer only",
-        "Carnivore"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 23,
-      "question": "Water changes into water vapour on heating. This is:",
-      "options": [
-        "Melting of iron",
-        "Condensation only",
-        "Evaporation",
-        "Freezing"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 24,
-      "question": "Sound is produced by:",
-      "options": [
-        "Taste only",
-        "Vibrations",
-        "Silence only",
-        "Colour only"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "Birds have:",
-      "options": [
-        "Feathers and wings",
-        "Gills like fish always",
-        "Scales only like snakes always",
-        "No bones ever"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "Safety on the road includes:",
-      "options": [
-        "Playing on the highway",
-        "Ignoring traffic lights",
-        "Running between cars",
-        "Using a zebra crossing"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "Washing hands with soap helps to:",
-      "options": [
-        "Stop rain",
-        "Change seasons",
-        "Remove germs",
-        "Create germs"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "Plants need sunlight, water and:",
-      "options": [
-        "Only darkness always",
-        "Air (carbon dioxide)",
-        "Only plastic bags",
-        "Only noise"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 29,
-      "question": "Living things can:",
-      "options": [
-        "Grow and reproduce",
-        "Never move or grow",
-        "Only shine like stars",
-        "Stay unchanged forever always"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 30,
-      "question": "Humans breathe in:",
-      "options": [
-        "Only nitrogen to live",
-        "Only smoke",
-        "Only carbon dioxide to live",
-        "Oxygen"
-      ],
-      "section": "Science",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "Pollution of water can harm:",
-      "options": [
-        "Only stars",
-        "Only the Moon’s craters",
-        "Only distant galaxies",
-        "Fish and people who drink it"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 32,
-      "question": "Which sense organs help you cross a road safely?",
-      "options": [
-        "Only skin hair",
-        "Only nose tip always",
-        "Eyes and ears",
-        "Only tongue"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 33,
-      "question": "Which group has only living things?",
-      "options": [
-        "Plastic, glass, metal",
-        "Tree, dog, human",
-        "Stone, water, air",
-        "Car, book, pen"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 34,
-      "question": "Earth is called the blue planet mainly because of:",
-      "options": [
-        "Water on its surface",
-        "Only red dust",
-        "Only pure gold oceans",
-        "No air at all"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 35,
-      "question": "Photosynthesis needs:",
-      "options": [
-        "Only darkness and plastic",
-        "Only salt and sand",
-        "Only noise and metal",
-        "Sunlight, water and carbon dioxide"
+        "Soften and digest food",
+        "Hear",
+        "See",
+        "Smell"
       ],
       "section": "Achievers Section",
       "marks": 2

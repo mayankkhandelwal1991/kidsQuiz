@@ -3,427 +3,247 @@
   "subject": "Mathematics",
   "paper": 4,
   "title": "Class 4 Mathematics — Paper 4",
-  "durationMinutes": 30,
-  "totalMarks": 40,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 4 pattern & syllabus. Not an official SOF paper.",
+  "durationMinutes": 25,
+  "totalMarks": 25,
+  "patternNote": "Olympiad-style practice for Class 4, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Find the next number: 4, 9, 16, 25, __.",
+      "question": "30 × 19 = ?",
       "options": [
-        "30",
-        "36",
-        "49",
-        "32"
+        "575",
+        "570",
+        "592",
+        "555"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "If A=1, B=2, C=3, … then value of FACE is:",
+      "question": "Today is Saturday. What day will it be after 16 days?",
       "options": [
-        "15",
-        "16",
-        "14",
-        "20"
+        "Monday",
+        "Thursday",
+        "Saturday",
+        "Sunday"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Which is the odd one: January, March, June, August",
+      "question": "Today is Saturday. What day will it be after 19 days?",
       "options": [
-        "January",
-        "March",
-        "June",
-        "August"
+        "Friday",
+        "Wednesday",
+        "Thursday",
+        "Saturday"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "In a certain code, 2 means Blue, 5 means Red. What does 25 mean?",
+      "question": "5291 + 2281 = ?",
       "options": [
-        "Blue Red",
-        "Red Blue",
-        "Purple",
-        "Cannot say"
+        "7505",
+        "7622",
+        "7534",
+        "7572"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Complete the analogy: Bird : Nest :: Bee : ?",
+      "question": "A square has sides of 4 cm. How many 1-cm squares cover it?",
       "options": [
-        "Hive",
-        "Honey",
-        "Flower",
-        "Wing"
+        "10",
+        "22",
+        "16",
+        "17"
       ],
-      "section": "Logical Reasoning",
+      "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "How many straight lines are needed to draw letter 'N'?",
-      "options": [
-        "2",
-        "3",
-        "4",
-        "5"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 7,
-      "question": "If today is the 5th of a month, what will be the date after 10 days?",
-      "options": [
-        "14th",
-        "15th",
-        "16th",
-        "13th"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 8,
-      "question": "Series: Z, X, V, T, __.",
-      "options": [
-        "S",
-        "R",
-        "Q",
-        "U"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 9,
-      "question": "A cube has how many faces?",
-      "options": [
-        "4",
-        "6",
-        "8",
-        "12"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 10,
-      "question": "If all even numbers from 1 to 20 are removed, how many numbers remain?",
-      "options": [
-        "8",
-        "9",
-        "10",
-        "11"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 11,
-      "question": "Compare: 7,089 __ 7,809",
-      "options": [
-        ">",
-        "<",
-        "=",
-        "≥"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 12,
-      "question": "Round 5,550 to nearest thousand.",
-      "options": [
-        "5,000",
-        "6,000",
-        "5,500",
-        "5,600"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 13,
-      "question": "6,000 + 450 + 8 = ?",
-      "options": [
-        "6,458",
-        "6,548",
-        "6,408",
-        "6,450"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 14,
-      "question": "What is 1/5 of 250?",
-      "options": [
-        "40",
-        "45",
-        "50",
-        "55"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 15,
-      "question": "36 × 25 = ?",
-      "options": [
-        "800",
-        "900",
-        "850",
-        "950"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 16,
-      "question": "A bottle has 750 ml water. How many such bottles make 3 litres?",
-      "options": [
-        "2",
-        "3",
-        "4",
-        "5"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 17,
-      "question": "The sum of angles in a triangle is:",
-      "options": [
-        "90°",
-        "180°",
-        "270°",
-        "360°"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 18,
-      "question": "Which is a multiple of both 3 and 4?",
+      "question": "90 ÷ 5 = ?",
       "options": [
         "16",
         "18",
-        "24",
-        "28"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 19,
-      "question": "Convert 2 hours 15 minutes into minutes.",
-      "options": [
-        "125",
-        "135",
-        "145",
-        "150"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 20,
-      "question": "A rectangle is 10 cm long and 6 cm wide. Area is:",
-      "options": [
-        "16 cm²",
-        "32 cm²",
-        "60 cm²",
-        "40 cm²"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "0.07 is equal to which fraction?",
-      "options": [
-        "7/10",
-        "7/100",
-        "7/1000",
-        "70/100"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "Find the missing number: 8 × __ = 96",
-      "options": [
-        "10",
-        "11",
-        "12",
+        "19",
         "13"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
     },
     {
-      "id": 23,
-      "question": "How many paise make ₹7.50?",
+      "id": 7,
+      "question": "440 ÷ 8 = ?",
       "options": [
-        "750",
-        "75",
-        "7,500",
-        "700"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 24,
-      "question": "The number of edges in a cuboid is:",
-      "options": [
-        "8",
-        "10",
-        "12",
-        "6"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "Greatest 3-digit number divisible by 5 is:",
-      "options": [
-        "995",
-        "999",
-        "990",
-        "985"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "3/4 − 1/4 = ?",
-      "options": [
-        "1/4",
-        "1/2",
-        "2/4",
-        "1"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "A year has how many months with 31 days?",
-      "options": [
-        "6",
-        "7",
-        "5",
-        "8"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "If unit digit of a number is 0, it is divisible by:",
-      "options": [
-        "2 and 5",
-        "Only 2",
-        "Only 5",
-        "3"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 29,
-      "question": "Temperature rose from 18°C to 27°C. Rise is:",
-      "options": [
-        "7°C",
-        "8°C",
-        "9°C",
-        "10°C"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 30,
-      "question": "Share ₹360 equally among 9 children. Each gets:",
-      "options": [
-        "₹30",
-        "₹40",
-        "₹45",
-        "₹35"
-      ],
-      "section": "Mathematical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "A number is 5 more than thrice another number. If the smaller is 12, the larger is:",
-      "options": [
-        "41",
-        "36",
-        "31",
-        "46"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 32,
-      "question": "A rectangular park is 80 m long and 50 m wide. Cost of fencing at ₹20 per metre is:",
-      "options": [
-        "₹5,200",
-        "₹4,000",
-        "₹2,600",
-        "₹5,000"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 33,
-      "question": "What least number must be added to 523 to make it divisible by 9?",
-      "options": [
-        "2",
-        "5",
-        "8",
-        "1"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 34,
-      "question": "A man walks 4 km/h. Distance covered in 2 hours 30 minutes is:",
-      "options": [
-        "8 km",
-        "9 km",
-        "10 km",
-        "12 km"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 35,
-      "question": "If 2/7 of a number is 18, the number is:",
-      "options": [
-        "56",
-        "63",
+        "50",
+        "51",
         "49",
-        "72"
+        "55"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 8,
+      "question": "One-fourth (1/4) of 72 is…",
+      "options": [
+        "15",
+        "18",
+        "22",
+        "16"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 9,
+      "question": "Perimeter of a rectangle 11 cm long and 8 cm wide is…",
+      "options": [
+        "88 cm",
+        "38 cm",
+        "40 cm",
+        "19 cm"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 10,
+      "question": "20:00 in the 24-hour clock is the same as…",
+      "options": [
+        "10:00 p.m.",
+        "8:00 a.m.",
+        "20:00 a.m.",
+        "8:00 p.m."
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 11,
+      "question": "Arjun had ₹300. She spent ₹52. How much is left?",
+      "options": [
+        "₹233",
+        "₹255",
+        "₹263",
+        "₹248"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 12,
+      "question": "14:00 in the 24-hour clock is the same as…",
+      "options": [
+        "2:00 a.m.",
+        "4:00 p.m.",
+        "14:00 a.m.",
+        "2:00 p.m."
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 13,
+      "question": "28 × 18 = ?",
+      "options": [
+        "487",
+        "480",
+        "504",
+        "517"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 14,
+      "question": "Perimeter of a rectangle 11 cm long and 7 cm wide is…",
+      "options": [
+        "36 cm",
+        "77 cm",
+        "38 cm",
+        "18 cm"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 15,
+      "question": "3990 + 794 = ?",
+      "options": [
+        "4689",
+        "4784",
+        "4698",
+        "4690"
+      ],
+      "section": "Mathematical Reasoning",
+      "marks": 1
+    },
+    {
+      "id": 16,
+      "question": "Which of these is a factor of 36?",
+      "options": [
+        "11",
+        "5",
+        "12",
+        "7"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 17,
+      "question": "Which of these is a factor of 30?",
+      "options": [
+        "10",
+        "11",
+        "13",
+        "9"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 18,
+      "question": "Which fraction is equal to 1/2?",
+      "options": [
+        "8/4",
+        "1/6",
+        "4/6",
+        "4/8"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 19,
+      "question": "8/10 written as a decimal is…",
+      "options": [
+        "80",
+        "8.0",
+        "0.8",
+        "0.08"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 20,
+      "question": "Area of a rectangle 15 m long and 10 m wide is…",
+      "options": [
+        "50 sq m",
+        "160 sq m",
+        "150 sq m",
+        "25 sq m"
       ],
       "section": "Achievers Section",
       "marks": 2

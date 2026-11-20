@@ -1,429 +1,249 @@
 {
   "class": 2,
-  "subject": "Computer",
+  "subject": "Computer Science",
   "paper": 2,
-  "title": "Class 2 Computer — Paper 2",
-  "durationMinutes": 30,
-  "totalMarks": 40,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 2 pattern & syllabus. Not an official SOF paper.",
+  "title": "Class 2 Computer Science — Paper 2",
+  "durationMinutes": 25,
+  "totalMarks": 25,
+  "patternNote": "Olympiad-style practice for Class 2, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "Find: odd one out:",
+      "question": "Which key makes capital letters?",
       "options": [
-        "Word idea",
-        "Cricket bat",
-        "Paint",
-        "Notepad idea"
+        "Backspace",
+        "Enter",
+        "Space bar",
+        "Caps Lock / Shift"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Input is to keyboard as output is to:",
+      "question": "The ‘brain’ of a computer is the…",
       "options": [
-        "Table",
-        "Mouse only",
+        "CPU",
+        "Speaker",
         "Monitor",
-        "Wire only"
+        "Mouse"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Light : Bulb :: Information : ?",
+      "question": "The first screen we see is the…",
       "options": [
-        "Computer",
-        "Chair",
-        "Shoe",
-        "Cloud rain only"
+        "Desktop",
+        "Printer",
+        "Keyboard",
+        "Mouse pad"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Order: Open app → Work → ?",
+      "question": "A tablet works by touching its…",
       "options": [
-        "Save and close",
-        "Break screen",
-        "Pour water",
-        "Never save"
+        "Back",
+        "Screen",
+        "Charger",
+        "Cover"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Choose: which is a pointing device?",
+      "question": "The mouse has a left button and a ___ button.",
       "options": [
-        "Speaker only",
-        "UPS only",
-        "Monitor",
-        "Mouse"
+        "Bottom",
+        "Top",
+        "Middle only",
+        "Right"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 6,
-      "question": "Which device shows pictures and text?",
+      "question": "Clicking two times quickly is called…",
       "options": [
-        "CPU fan only",
-        "Keyboard",
-        "Monitor",
-        "Mouse only"
+        "Double-click",
+        "Dragging",
+        "Typing",
+        "Scrolling"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 7,
-      "question": "Microphone is used to:",
+      "question": "Which of these is a computer game we play with a mouse or keys?",
       "options": [
-        "Show video only",
-        "Input sound / voice",
-        "Print pages",
-        "Store only photos forever"
+        "Kabaddi",
+        "Hide and seek",
+        "A puzzle game",
+        "Kho-kho"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 8,
-      "question": "Hardware means:",
+      "question": "Holding the mouse button and moving it is called…",
       "options": [
-        "Only games ideas",
-        "Only internet clouds",
-        "Only passwords",
-        "Parts you can touch"
+        "Dragging",
+        "Saving",
+        "Printing",
+        "Typing"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 9,
-      "question": "Software means:",
+      "question": "We should handle a computer…",
       "options": [
-        "Only wires",
-        "Only tables",
-        "Plastic box only",
-        "Programs / instructions"
+        "Gently",
+        "Roughly",
+        "With wet hands",
+        "With our feet"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 10,
-      "question": "In Paint, the brush tool is for:",
+      "question": "Which key removes a letter?",
       "options": [
-        "Shutting down",
-        "Typing essays only",
-        "Freehand drawing",
-        "Only erasing text files"
+        "Alt",
+        "Backspace",
+        "Shift",
+        "Enter"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 11,
-      "question": "Fill-with-colour tool is often called:",
+      "question": "A pen drive is used to…",
       "options": [
-        "Bucket / fill",
-        "Scissors only",
-        "Zoom only",
-        "Save as only"
+        "Clean the screen",
+        "Store and carry files",
+        "Write on paper",
+        "Draw lines"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 12,
-      "question": "Caps Lock is used for:",
+      "question": "In Paint, which tool rubs out mistakes?",
       "options": [
-        "Typing capital letters",
-        "Only shutting PC",
-        "Only volume",
-        "Only numbers"
+        "Text",
+        "Eraser",
+        "Brush",
+        "Fill"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 13,
-      "question": "Select: a webcam is used to:",
+      "question": "Which key starts a new line?",
       "options": [
-        "Cool tea",
-        "Water plants",
-        "Capture video/images of you",
-        "Print books"
+        "Shift",
+        "Enter",
+        "Space bar",
+        "Tab"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 14,
-      "question": "We should wash hands _____ using a shared computer if dirty.",
+      "question": "A small picture on the screen that opens a program is an…",
       "options": [
-        "after breaking it",
-        "never",
-        "before (good hygiene)",
-        "with oil on keys"
+        "Wire",
+        "Book",
+        "Key",
+        "Icon"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 15,
-      "question": "CD/DVD idea is a type of:",
+      "question": "A keyboard has letters, numbers and…",
       "options": [
-        "Storage media (older)",
-        "Monitor",
-        "Keyboard key",
-        "Only mouse"
+        "Pictures of animals",
+        "Colours only",
+        "Special keys",
+        "Fruits"
       ],
-      "section": "Computers and IT",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 16,
-      "question": "Headphones help us hear without:",
+      "question": "Arrow keys are used to…",
       "options": [
-        "Disturbing others much",
-        "Using electricity ever",
-        "A computer",
-        "Sound ever"
+        "Shut down",
+        "Charge",
+        "Move the cursor",
+        "Print"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 17,
-      "question": "Pick the correct option. backspace key removes letters to the:",
+      "question": "We should keep food and drinks ___ the computer.",
       "options": [
-        "Only whole file forever no undo",
-        "Only desktop wallpaper",
-        "Right only always",
-        "Left of the cursor"
+        "Inside",
+        "Away from",
+        "Under the keyboard of",
+        "On top of"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 18,
-      "question": "Restart means:",
+      "question": "Which is a drawing program on a computer?",
       "options": [
-        "Only sleep forever",
-        "Paint a wall",
-        "Start the computer again",
-        "Delete all schools"
+        "Clock",
+        "Calculator",
+        "Paint",
+        "Music player"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 19,
-      "question": "A tablet is:",
+      "question": "A computer is a…",
       "options": [
-        "Only a medicine always",
-        "A touch-screen computing device",
-        "Only a stone",
-        "Only a printer"
+        "Machine",
+        "Animal",
+        "Plant",
+        "Toy only"
       ],
-      "section": "Computers and IT",
-      "marks": 1
+      "section": "Achievers Section",
+      "marks": 2
     },
     {
       "id": 20,
-      "question": "The desktop is the:",
+      "question": "We should sit at the computer with…",
       "options": [
-        "Only CPU inside",
-        "Only keyboard tray",
-        "Only mouse tail",
-        "Main screen area with icons"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "Find: to select a part of drawing we may use:",
-      "options": [
-        "Only speakers",
-        "Only UPS",
-        "Selection tool",
-        "Only shut down"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "Number keys are used to type:",
-      "options": [
-        "Only spaces",
-        "Only letters",
-        "Numbers",
-        "Only smileys forced"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 23,
-      "question": "If a website asks for home address and you are a child, you should:",
-      "options": [
-        "Tell everyone",
-        "Ask a parent/teacher first",
-        "Post it publicly",
-        "Ignore safety"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 24,
-      "question": "A joystick is often used for:",
-      "options": [
-        "Playing games",
-        "Washing",
-        "Only printing essays",
-        "Cooking"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "Choose: processing means the computer is:",
-      "options": [
-        "Only broken",
-        "Only off forever",
-        "Sleeping only",
-        "Working on data"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "Dragging with mouse means:",
-      "options": [
-        "Unplugging",
-        "Throwing the mouse",
-        "Hold button and move",
-        "Only double right forever"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "A file name helps us to:",
-      "options": [
-        "Forget work",
-        "Find our work later",
-        "Break folders",
-        "Hide from teachers always"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "Do not use computers with:",
-      "options": [
-        "Wet hands near power",
-        "A chair",
-        "Soft light",
-        "Dry hands and care"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 29,
-      "question": "Arrow keys move the:",
-      "options": [
-        "Sun",
-        "Only printer ink",
-        "House",
-        "Cursor / pointer position in text"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 30,
-      "question": "Sitting too close to the screen for long is:",
-      "options": [
-        "Needed for mouse",
-        "Always best",
-        "Not good for eyes",
-        "Required by CPU"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "You receive a message: 'You won a prize, share OTP'. You should:",
-      "options": [
-        "Share OTP at once",
-        "Not share OTP; tell an adult",
-        "Forward to all friends to share too",
-        "Post OTP on board"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 32,
-      "question": "Which sequence is safer for leaving the computer?",
-      "options": [
-        "Save → close apps → shut down",
-        "Delete Windows first",
-        "Remove CPU fan running",
-        "Pull plug while working"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 33,
-      "question": "Select: double-click opens a folder. Single click usually:",
-      "options": [
-        "Prints ten pages forced",
-        "Calls police",
-        "Formats disk always",
-        "Selects an item"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 34,
-      "question": "Why is a mouse pad useful?",
-      "options": [
-        "It stores cloud rain",
-        "It cooks food",
-        "Smoother mouse movement / surface",
-        "It cools tea"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 35,
-      "question": "Icons are small because they:",
-      "options": [
-        "Hide viruses only",
-        "Represent programs/files quickly",
-        "Replace the CPU",
-        "Are only stickers offline"
+        "A straight back",
+        "Our face very close",
+        "Feet on the table",
+        "Food in hand"
       ],
       "section": "Achievers Section",
       "marks": 2

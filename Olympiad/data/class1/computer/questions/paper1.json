@@ -3,427 +3,247 @@
   "subject": "Computer Science",
   "paper": 1,
   "title": "Class 1 Computer Science — Paper 1",
-  "durationMinutes": 30,
-  "totalMarks": 40,
-  "patternNote": "Original practice paper aligned to SOF 2023–2025 Class 1 pattern & syllabus. Not an official SOF paper.",
+  "durationMinutes": 25,
+  "totalMarks": 25,
+  "patternNote": "Olympiad-style practice for Class 1, built from NCERT-level content: 15 × 1 mark + 5 Achievers × 2 marks. Not an official exam paper.",
   "yearStyle": "2023-2025",
   "questions": [
     {
       "id": 1,
-      "question": "What comes next? 1, 2, 3, 4, __",
+      "question": "We click with the…",
       "options": [
-        "5",
-        "6",
-        "0",
-        "9"
+        "Speaker",
+        "Monitor",
+        "Printer",
+        "Mouse"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 2,
-      "question": "Pattern: click, type, click, type, __",
+      "question": "A computer is a…",
       "options": [
-        "sleep",
-        "eat",
-        "run",
-        "click"
+        "Animal",
+        "Fruit",
+        "Plant",
+        "Machine"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 3,
-      "question": "Next: A, B, C, D, __",
+      "question": "We should sit ___ from the screen.",
       "options": [
-        "Z",
-        "A",
-        "E",
-        "F"
+        "Very close",
+        "On top of it",
+        "Under the table",
+        "At a safe distance"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 4,
-      "question": "Pattern: on, off, on, off, __",
+      "question": "The small arrow we move on the screen is the…",
       "options": [
-        "run",
-        "on",
-        "paint",
-        "eat"
+        "Monitor",
+        "Mouse pointer",
+        "Key",
+        "Speaker"
       ],
-      "section": "Logical Reasoning",
+      "section": "Computers",
       "marks": 1
     },
     {
       "id": 5,
-      "question": "Next number: 2, 4, 6, 8, __",
+      "question": "Letters A, B, C are on the…",
       "options": [
-        "9",
-        "10",
-        "12",
-        "7"
-      ],
-      "section": "Logical Reasoning",
-      "marks": 1
-    },
-    {
-      "id": 6,
-      "question": "We see things on the:",
-      "options": [
-        "Monitor / screen",
-        "Only mouse under table",
-        "Only wire",
-        "Only speaker always"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 7,
-      "question": "A mouse helps us to:",
-      "options": [
-        "Only cook food",
-        "Only wash clothes",
-        "Only fly",
-        "Point and click"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 8,
-      "question": "CPU is often called the __ of the computer.",
-      "options": [
-        "Shoe",
-        "Tail",
-        "Brain",
-        "Eye only"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 9,
-      "question": "Paint (drawing program) is used to:",
-      "options": [
-        "Only sleep",
-        "Draw and colour",
-        "Only wash cars",
-        "Only cook"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 10,
-      "question": "Speakers help us to hear:",
-      "options": [
-        "Sound from the computer",
-        "Only smell",
-        "Only taste",
-        "Only touch"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 11,
-      "question": "We should sit __ while using a computer.",
-      "options": [
-        "Too close nose to screen",
-        "On the table top always",
-        "With wet hands",
-        "Straight and comfortably"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 12,
-      "question": "Turning the computer off the right way is called:",
-      "options": [
-        "Only unplug roughly always",
-        "Paint",
-        "Proper power-off / shutdown",
-        "Only kick"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 13,
-      "question": "We use computers in:",
-      "options": [
-        "Nowhere",
-        "Schools, homes and many places",
-        "Only underwater always",
-        "Only space never on Earth"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 14,
-      "question": "The blinking mark where we type is the:",
-      "options": [
-        "Cursor",
-        "Printer",
-        "Speaker",
-        "UPS"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 15,
-      "question": "A tablet is a:",
-      "options": [
-        "Only a medicine always here",
-        "Only a chair",
-        "Only a pen",
-        "Touch-screen computer device"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 16,
-      "question": "We should take breaks so our eyes:",
-      "options": [
-        "Touch the screen",
-        "Close forever",
-        "Get rest",
-        "Get more tired always"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 17,
-      "question": "Computer works on:",
-      "options": [
-        "Only sunlight as plant",
-        "Electricity / power",
-        "Only water",
-        "Only wind inside always"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 18,
-      "question": "To open a program we can click its:",
-      "options": [
-        "Icon",
-        "Only wall",
-        "Only floor",
-        "Only bag"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 19,
-      "question": "A file is a collection of:",
-      "options": [
-        "Only real paper always here",
-        "Only water",
-        "Only sand",
-        "Information saved on computer"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 20,
-      "question": "A folder is used to:",
-      "options": [
-        "Only cook rice",
-        "Only wash hands",
-        "Keep files organised",
-        "Only keep real clothes always here"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 21,
-      "question": "Caps Lock is used for:",
-      "options": [
-        "Only mouse speed",
-        "Typing capital letters",
-        "Only drawing",
-        "Only volume"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 22,
-      "question": "Smartphone is a kind of:",
-      "options": [
-        "Small computer / smart device",
-        "Only a book always",
-        "Only a fruit",
-        "Only a shoe"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 23,
-      "question": "Parts of a computer work:",
-      "options": [
-        "Never",
-        "Only on Moon",
-        "Only underwater always",
-        "Together"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 24,
-      "question": "A program / software tells the computer:",
-      "options": [
-        "Only to melt",
-        "Only to fly alone",
-        "What to do",
-        "Only to become a plant"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 25,
-      "question": "Internet safety for kids: talk to __ about problems online.",
-      "options": [
-        "No one ever",
-        "Parents / teachers",
-        "Only strangers always",
-        "Only unknown chat friends"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 26,
-      "question": "Restart means:",
-      "options": [
-        "Start the computer again",
-        "Only paint red",
-        "Only remove keyboard",
-        "Only sleep under table"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 27,
-      "question": "Software means:",
-      "options": [
-        "Only the plastic box",
-        "Only the wire copper",
-        "Only the table",
-        "Programs and apps"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 28,
-      "question": "If you see something scary online, you should:",
-      "options": [
-        "Click more unknown links",
-        "Share with all strangers",
-        "Tell a trusted adult",
-        "Keep it secret always"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 29,
-      "question": "A browser is a program to:",
-      "options": [
-        "Only cut paper",
-        "Open websites (with guidance)",
-        "Only wash clothes",
-        "Only fry food"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 30,
-      "question": "Backspace removes letters to the:",
-      "options": [
-        "Left of the cursor",
-        "Only right always never left",
-        "Only printer tray",
-        "Only moon"
-      ],
-      "section": "Computers and IT",
-      "marks": 1
-    },
-    {
-      "id": 31,
-      "question": "CPU often means:",
-      "options": [
-        "Central Processing Unit",
-        "Cat Play Unit",
-        "Cool Pen Umbrella",
-        "Cup Plate Under"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 32,
-      "question": "Which device prints on paper?",
-      "options": [
-        "Mouse",
-        "Keyboard",
-        "Speaker",
-        "Printer"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 33,
-      "question": "Which stores a lot of data inside the computer box?",
-      "options": [
-        "Only screen glass",
-        "Only speaker cloth",
-        "Hard disk / storage",
-        "Only mouse pad"
-      ],
-      "section": "Achievers Section",
-      "marks": 2
-    },
-    {
-      "id": 34,
-      "question": "Which is mostly an output device?",
-      "options": [
-        "Microphone",
+        "Monitor",
         "Speaker",
         "Keyboard",
         "Mouse"
       ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 6,
+      "question": "The part that looks like a TV is the…",
+      "options": [
+        "Monitor",
+        "Mouse",
+        "Speaker",
+        "Keyboard"
+      ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 7,
+      "question": "Which of these is NOT a part of a computer?",
+      "options": [
+        "Monitor",
+        "Keyboard",
+        "Pillow",
+        "Mouse"
+      ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 8,
+      "question": "A computer works with…",
+      "options": [
+        "Sand",
+        "Petrol",
+        "Electricity",
+        "Water"
+      ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 9,
+      "question": "We should not eat or drink near the…",
+      "options": [
+        "Kitchen",
+        "Computer",
+        "Dining table",
+        "Garden"
+      ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 10,
+      "question": "We can draw pictures on a computer using…",
+      "options": [
+        "Calculator",
+        "Paint",
+        "Clock",
+        "Notepad"
+      ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 11,
+      "question": "A laptop is a computer we can…",
+      "options": [
+        "Plant",
+        "Wear",
+        "Carry",
+        "Eat"
+      ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 12,
+      "question": "Which is a computer we hold in our hand?",
+      "options": [
+        "Fridge",
+        "Fan",
+        "Mobile phone (smartphone)",
+        "Chair"
+      ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 13,
+      "question": "Before leaving, we should ___ the computer.",
+      "options": [
+        "Switch off",
+        "Wash",
+        "Hit",
+        "Throw"
+      ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 14,
+      "question": "We switch on the computer with the…",
+      "options": [
+        "Speaker",
+        "Mouse wheel",
+        "Space bar",
+        "Power button"
+      ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 15,
+      "question": "We hear sounds through the…",
+      "options": [
+        "Monitor",
+        "Keyboard",
+        "Mouse",
+        "Speakers"
+      ],
+      "section": "Computers",
+      "marks": 1
+    },
+    {
+      "id": 16,
+      "question": "A tablet works by touching its…",
+      "options": [
+        "Back",
+        "Charger",
+        "Screen",
+        "Cover"
+      ],
       "section": "Achievers Section",
       "marks": 2
     },
     {
-      "id": 35,
-      "question": "Which device is mainly for pointing?",
+      "id": 17,
+      "question": "Which key removes a letter?",
       "options": [
-        "Mouse",
-        "Monitor",
-        "Speaker",
-        "Printer"
+        "Backspace",
+        "Enter",
+        "Alt",
+        "Shift"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 18,
+      "question": "Which key makes capital letters?",
+      "options": [
+        "Backspace",
+        "Enter",
+        "Caps Lock / Shift",
+        "Space bar"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 19,
+      "question": "A computer can do sums very…",
+      "options": [
+        "Lazily",
+        "Fast",
+        "Slowly",
+        "Sleepily"
+      ],
+      "section": "Achievers Section",
+      "marks": 2
+    },
+    {
+      "id": 20,
+      "question": "Which key starts a new line?",
+      "options": [
+        "Space bar",
+        "Tab",
+        "Enter",
+        "Shift"
       ],
       "section": "Achievers Section",
       "marks": 2

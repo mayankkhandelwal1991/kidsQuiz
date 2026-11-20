@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Kids Quiz Admin – Instagram Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ink: #1e1b4b; --muted: #64748b; --line: #e2e8f0; --brand: #7c3aed; --bg: #f5f3ff; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Baloo 2', system-ui, sans-serif; background: var(--bg); color: var(--ink); }
+  header { display: flex; align-items: center; gap: 12px; padding: 12px 18px; background: linear-gradient(135deg, #7c3aed, #0ea5e9); color: #fff; }
+  header img { width: 44px; height: 44px; border-radius: 12px; background: #fff; }
+  header h1 { margin: 0; font-size: 22px; flex: 1; }
+  header a { color: #fff; font-weight: 800; text-decoration: none; background: rgba(255,255,255,.2); padding: 4px 12px; border-radius: 999px; }
+  .wrap { display: grid; grid-template-columns: 380px 1fr; gap: 18px; padding: 18px; max-width: 1280px; margin: 0 auto; }
+  @media (max-width: 900px) { .wrap { grid-template-columns: 1fr; } }
+  .card { background: #fff; border-radius: 22px; padding: 16px; box-shadow: 0 6px 20px rgba(30,27,75,.08); }
+  .card + .card { margin-top: 14px; }
+  h2 { margin: 0 0 8px; font-size: 18px; }
+  label { display: block; font-size: 13px; font-weight: 800; color: var(--muted); margin: 10px 0 4px; }
+  select, input[type=text], input[type=password], textarea { width: 100%; font: 700 15px 'Baloo 2', sans-serif; padding: 8px 10px; border: 2px solid var(--line); border-radius: 12px; color: var(--ink); background: #fff; }
+  textarea { min-height: 150px; resize: vertical; font-weight: 600; font-size: 14px; line-height: 1.35; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { border: 2px solid var(--line); background: #fff; border-radius: 999px; padding: 4px 12px; font: 800 14px 'Baloo 2', sans-serif; cursor: pointer; color: var(--ink); }
+  .chip.on { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .btn { border: none; border-radius: 14px; padding: 9px 16px; font: 800 15px 'Baloo 2', sans-serif; cursor: pointer; color: #fff; background: var(--brand); box-shadow: 0 4px 0 #5b21b6; }
+  .btn.alt { background: #0ea5e9; box-shadow: 0 4px 0 #0369a1; } .btn.ok { background: #16a34a; box-shadow: 0 4px 0 #15803d; } .btn.gray { background: #64748b; box-shadow: 0 4px 0 #334155; }
+  .btn:active { transform: translateY(3px); box-shadow: none; } .btn:disabled { opacity: .5; }
+  .stage { display: flex; justify-content: center; align-items: flex-start; }
+  canvas { width: 100%; max-width: 540px; height: auto; border-radius: 18px; box-shadow: 0 10px 30px rgba(30,27,75,.18); background: #fff; }
+  .note { font-size: 13px; color: var(--muted); font-weight: 600; line-height: 1.35; }
+  .status { padding: 8px 12px; border-radius: 12px; font-weight: 700; font-size: 14px; margin-top: 10px; background: #f1f5f9; }
+  .status.good { background: #dcfce7; color: #166534; } .status.bad { background: #fee2e2; color: #991b1b; } .status.info { background: #e0f2fe; color: #075985; }
+  .preview-own { max-width: 100%; border-radius: 14px; margin-top: 8px; display: none; }
+</style>
+</head>
+<body>
+<header>
+  <img src="../images/app-logo.png" alt="">
+  <h1>Kids Quiz · Instagram Studio</h1>
+  <a href="../quiz-home.html">← App</a>
+</header>
+
+<div class="wrap">
+  <aside>
+    <div class="card">
+      <h2>1 · Make a post</h2>
+      <label>Post type</label>
+      <div class="chips" id="types"></div>
+      <div id="opts"></div>
+      <label>Size</label>
+      <div class="chips" id="sizes"></div>
+      <label>Colours</label>
+      <div class="chips" id="themes"></div>
+      <div class="row"><button class="btn alt" id="shuffle">🎲 New idea</button><button class="btn" id="download">⬇️ Download PNG</button></div>
+    </div>
+
+    <div class="card">
+      <h2>…or use your own photo / video</h2>
+      <input type="file" id="ownFile" accept="image/png,image/jpeg,video/mp4,video/quicktime">
+      <img class="preview-own" id="ownPreview" alt="">
+      <p class="note">Your file replaces the generated image when you publish. Reels: MP4, 3–90 s, vertical 9:16 works best.</p>
+    </div>
+
+    <div class="card">
+      <h2>2 · Caption</h2>
+      <textarea id="caption"></textarea>
+      <div class="row"><button class="btn gray" id="copyCap">📋 Copy caption</button></div>
+    </div>
+
+    <div class="card">
+      <h2>3 · Publish to Instagram</h2>
+      <label>Admin password</label>
+      <input type="password" id="pw" placeholder="from admin/config.php" autocomplete="current-password">
+      <div class="row"><button class="btn gray" id="checkBtn">🔌 Check connection</button><button class="btn ok" id="publishBtn">📤 Publish now</button></div>
+      <div class="status info" id="status">Publishing needs the PHP server with admin/config.php. You can always download the image and post it from the Instagram app.</div>
+    </div>
+  </aside>
+
+  <main class="stage"><canvas id="cv" width="1080" height="1350"></canvas></main>
+</div>
+
+<script>
+'use strict';
+/* ------------------------------------------------------------------ data */
+const LEVELS = [[0, 'LKG'], [-1, 'UKG'], [1, 'Class 1'], [2, 'Class 2'], [3, 'Class 3'], [4, 'Class 4'], [5, 'Class 5']];
+const CAT_ICON = { animals: '🐾', brainteasers: '🧩', capitals: '🏛️', computers: '💻', english: '🔤', geography: '🗺️', gk: '🌍', hindi: '🇮🇳', history: '📜', humanbody: '🧠', inventions: '💡', plants: '🌱', riddles: '❓', science: '🔬', space: '🚀', sports: '🏏' };
+const FACTS = [
+  ['🐙', 'An octopus has three hearts and blue blood!'], ['🦒', 'A giraffe’s tongue is so long it can clean its own ears.'], ['🐝', 'Bees talk to each other by dancing!'],
+  ['🌞', 'The Sun is so big that about one million Earths could fit inside it.'], ['🐘', 'Elephants can’t jump — but they are great swimmers!'], ['🦋', 'Butterflies taste with their feet.'],
+  ['🐌', 'A snail can sleep for up to three years.'], ['🍯', 'Honey never goes bad — even 3,000-year-old honey is still eatable!'], ['🦚', 'The peacock is India’s national bird.'],
+  ['🐯', 'No two tigers have the same stripes — like our fingerprints!'], ['🌍', 'Earth is the only planet not named after a god.'], ['🦈', 'Sharks were around before dinosaurs.'],
+  ['🌧️', 'Cherrapunji in India is one of the rainiest places on Earth.'], ['🐫', 'A camel’s hump stores fat, not water.'], ['🧠', 'Your brain uses about 20% of your body’s energy.'],
+];
+const TAGS = '#kidsquiz #kidslearning #quizforkids #funlearning #kidsgames #learningisfun #parenting #studentsofindia #gkquiz #kidsactivities #homeschool #brainteaser';
+const THEMES = { sky: ['#38bdf8', '#6366f1'], sunset: ['#fb923c', '#ec4899'], jungle: ['#22c55e', '#0d9488'], grape: ['#a855f7', '#4f46e5'], sun: ['#facc15', '#f97316'] };
+const SIZES = { 'Portrait 4:5': [1080, 1350], 'Square 1:1': [1080, 1080], 'Story 9:16': [1080, 1920] };
+
+let QUIZ = null, GAMES = [];
+const S = { type: 'quiz', size: 'Portrait 4:5', theme: 'sky', showAnswer: false, cat: 'gk', level: 2, item: null, game: null, fact: null, custom: { title: 'Did you know?', body: 'Write anything here — tips, news, a quiz challenge…', emoji: '🌟' } };
+
+/* ------------------------------------------------------------------ helpers */
+const $ = (id) => document.getElementById(id);
+function emojiFile(e) { const cps = []; for (const ch of e) { const c = ch.codePointAt(0); if (c !== 0xfe0f) cps.push(c.toString(16)); } return '../images/emoji/' + cps.join('-') + '.svg'; }
+const imgCache = {};
+function img(src) { return imgCache[src] || (imgCache[src] = new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; })); }
+const pick = (a) => a[Math.floor(Math.random() * a.length)];
+function wrap(ctx, text, maxW) { const words = String(text).split(/\s+/); const lines = []; let cur = ''; for (const w of words) { const t = cur ? cur + ' ' + w : w; if (ctx.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; } if (cur) lines.push(cur); return lines; }
+function rr(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+const stripEmoji = (s) => String(s).replace(/^[\p{Extended_Pictographic}‍️\s]+/u, '').trim();
+const leadEmoji = (s) => { const m = String(s).match(/^([\p{Extended_Pictographic}][‍️\p{Extended_Pictographic}]*)/u); return m ? m[1] : null; };
+
+/* ------------------------------------------------------------------ content pickers */
+function pickQuiz() {
+  const lv = QUIZ[S.cat] && QUIZ[S.cat][String(S.level)]; if (!lv || !lv.length) { S.item = null; return; }
+  S.item = pick(lv.filter((q) => q.options && q.options.length >= 2 && String(q.question).length < 140) || lv);
+}
+function pickAll() {
+  if (QUIZ) pickQuiz();
+  S.game = pick(GAMES.filter((g) => g.badge) .concat(GAMES)) || null;
+  S.fact = pick(FACTS);
+}
+
+/* ------------------------------------------------------------------ drawing */
+async function draw() {
+  const [W, H] = SIZES[S.size]; const cv = $('cv'); cv.width = W; cv.height = H; const ctx = cv.getContext('2d');
+  const [c1, c2] = THEMES[S.theme];
+  const g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, c1); g.addColorStop(1, c2); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = 'rgba(255,255,255,.12)'; [[0.1, 0.12, 160], [0.92, 0.3, 220], [0.2, 0.85, 200], [0.85, 0.92, 140]].forEach(([x, y, r]) => { ctx.beginPath(); ctx.arc(x * W, y * H, r, 0, 7); ctx.fill(); });
+  const pad = 70, top = H === 1920 ? 200 : 60;
+  // header: logo + name
+  const logo = await img('../images/app-logo.png');
+  ctx.fillStyle = '#fff'; rr(ctx, pad, top, 96, 96, 26); ctx.fill(); if (logo) ctx.drawImage(logo, pad + 6, top + 6, 84, 84);
+  ctx.fillStyle = '#fff'; ctx.font = '800 50px "Baloo 2"'; ctx.textBaseline = 'middle'; ctx.fillText('Kids Quiz', pad + 116, top + 34);
+  ctx.font = '700 28px "Baloo 2"'; ctx.globalAlpha = .9; ctx.fillText('Learn • Play • Grow', pad + 116, top + 76); ctx.globalAlpha = 1;
+  const y0 = top + 140, footH = 120, cardH = H - y0 - footH - (H === 1920 ? 200 : 40);
+  ctx.fillStyle = '#fff'; rr(ctx, pad - 20, y0, W - 2 * (pad - 20), cardH, 48); ctx.fill();
+  ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'center';
+  const cx = W / 2, inner = W - 2 * pad - 40;
+  if (S.type === 'quiz' && S.item) await drawQuiz(ctx, cx, y0, inner, cardH);
+  else if (S.type === 'game' && S.game) await drawGame(ctx, cx, y0, inner, cardH);
+  else if (S.type === 'fact') await drawBig(ctx, cx, y0, inner, cardH, S.fact[0], 'Fun Fact! 🤩', S.fact[1]);
+  else if (S.type === 'custom') await drawBig(ctx, cx, y0, inner, cardH, S.custom.emoji || '🌟', S.custom.title, S.custom.body);
+  // footer
+  const fy = H - footH - (H === 1920 ? 160 : 0);
+  ctx.fillStyle = '#fff'; ctx.font = '800 40px "Baloo 2"'; ctx.textAlign = 'center';
+  ctx.fillText(S.type === 'quiz' && !S.showAnswer ? '💬 Comment your answer!' : '▶ Play free: Kids Quiz on Google Play', cx, fy + 52);
+  ctx.font = '700 28px "Baloo 2"'; ctx.globalAlpha = .9; ctx.fillText('@kidsgames_quiz', cx, fy + 96); ctx.globalAlpha = 1;
+  ctx.textAlign = 'left';
+  writeCaption();
+}
+async function pic(ctx, e, x, y, s) { const i = e ? await img(emojiFile(e)) : null; if (i) ctx.drawImage(i, x - s / 2, y - s / 2, s, s); else if (e) { ctx.font = s * 0.8 + 'px sans-serif'; ctx.fillText(e, x, y + s * 0.3); } }
+async function drawQuiz(ctx, cx, y0, inner, cardH) {
+  const q = S.item, lvl = LEVELS.find((l) => l[0] === S.level)[1];
+  ctx.fillStyle = '#ede9fe'; rr(ctx, cx - 250, y0 + 34, 500, 64, 32); ctx.fill();
+  ctx.fillStyle = '#6d28d9'; ctx.font = '800 34px "Baloo 2"'; ctx.fillText('Quiz of the Day · ' + lvl, cx, y0 + 78);
+  const e = leadEmoji(q.question) || CAT_ICON[S.cat]; await pic(ctx, e, cx, y0 + 180, 130);
+  ctx.fillStyle = '#1e1b4b'; ctx.font = '800 54px "Baloo 2"';
+  const lines = wrap(ctx, stripEmoji(q.question), inner); let y = y0 + 300;
+  lines.slice(0, 4).forEach((l) => { ctx.fillText(l, cx, y); y += 64; });
+  const opts = q.options.slice(0, 4), cols = ['#f43f5e', '#f59e0b', '#06b6d4', '#8b5cf6'];
+  const bw = (inner - 30) / 2, bh = 104, optsH = (opts.length > 2 ? 2 : 1) * (bh + 22), bottom = y0 + cardH - optsH - 30, oy = Math.max(y + 10, Math.round((y + 30 + bottom) / 2));
+  opts.forEach((o, k) => {
+    const x = cx - inner / 2 + (k % 2) * (bw + 30), yy = oy + Math.floor(k / 2) * (bh + 22), right = S.showAnswer && o === q.answer;
+    ctx.fillStyle = S.showAnswer ? (right ? '#16a34a' : '#cbd5e1') : cols[k]; rr(ctx, x, yy, bw, bh, 30); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = '800 40px "Baloo 2"'; ctx.textAlign = 'left'; ctx.fillText('ABCD'[k] + ')', x + 28, yy + 66);
+    ctx.textAlign = 'center'; let t = stripEmoji(o); ctx.font = '800 ' + (t.length > 16 ? 32 : 40) + 'px "Baloo 2"'; ctx.fillText((right ? '✓ ' : '') + t, x + bw / 2 + 24, yy + 66);
+  });
+}
+async function drawGame(ctx, cx, y0, inner, cardH) {
+  const g = S.game;
+  ctx.fillStyle = '#dcfce7'; rr(ctx, cx - 220, y0 + 34, 440, 64, 32); ctx.fill();
+  ctx.fillStyle = '#15803d'; ctx.font = '800 34px "Baloo 2"'; ctx.fillText(g.badge ? '🆕 New game!' : '🎮 Game spotlight', cx, y0 + 78);
+  await pic(ctx, g.icon, cx, y0 + 260, 280);
+  ctx.fillStyle = '#1e1b4b'; ctx.font = '800 76px "Baloo 2"'; ctx.fillText(g.title, cx, y0 + 490);
+  ctx.fillStyle = '#475569'; ctx.font = '700 38px "Baloo 2"'; let y = y0 + 560;
+  wrap(ctx, g.how, inner).slice(0, Math.floor((cardH - 600) / 50)).forEach((l) => { ctx.fillText(l, cx, y); y += 50; });
+}
+async function drawBig(ctx, cx, y0, inner, cardH, e, title, body) {
+  await pic(ctx, e, cx, y0 + 200, 260);
+  ctx.fillStyle = '#6d28d9'; ctx.font = '800 70px "Baloo 2"'; ctx.fillText(title, cx, y0 + 420);
+  ctx.fillStyle = '#1e1b4b'; ctx.font = '700 50px "Baloo 2"'; let y = y0 + 510;
+  wrap(ctx, body, inner).slice(0, Math.floor((cardH - 540) / 64)).forEach((l) => { ctx.fillText(l, cx, y); y += 64; });
+}
+
+/* ------------------------------------------------------------------ caption */
+let captionEdited = false;
+function writeCaption() {
+  if (captionEdited) return;
+  let c = '';
+  if (S.type === 'quiz' && S.item) {
+    const lvl = LEVELS.find((l) => l[0] === S.level)[1], q = S.item;
+    c = S.showAnswer
+      ? '✅ Answer time! ' + stripEmoji(q.question) + '\n\nThe answer is: ' + stripEmoji(q.answer) + ' 🎉\nDid you get it right? Tell us below 👇'
+      : '🧠 Quiz of the Day (' + lvl + ')\n\n' + stripEmoji(q.question) + '\n\n' + q.options.slice(0, 4).map((o, k) => 'ABCD'[k] + ') ' + stripEmoji(o)).join('\n') + '\n\n💬 Comment your answer! Answer tomorrow ⏰';
+  } else if (S.type === 'game' && S.game) c = '🎮 ' + (S.game.badge ? 'NEW GAME: ' : 'Have you played ') + S.game.title + (S.game.badge ? '!' : '?') + '\n\n' + S.game.how;
+  else if (S.type === 'fact') c = '🤩 Fun Fact!\n\n' + S.fact[1] + '\n\nShare this with a friend who loves facts! 💡';
+  else c = S.custom.title + '\n\n' + S.custom.body;
+  c += '\n\n📲 Play free: Kids Quiz on Google Play (link in bio)\n\n' + TAGS;
+  $('caption').value = c;
+}
+
+/* ------------------------------------------------------------------ controls */
+function chips(el, items, cur, on) { $(el).innerHTML = items.map(([v, l]) => '<button class="chip' + (v === cur ? ' on' : '') + '" data-v="' + v + '">' + l + '</button>').join(''); $(el).querySelectorAll('.chip').forEach((b) => b.onclick = () => { on(b.dataset.v); }); }
+function controls() {
+  chips('types', [['quiz', '🧠 Quiz of the Day'], ['game', '🎮 Game promo'], ['fact', '🤩 Fun fact'], ['custom', '✏️ Custom']], S.type, (v) => { S.type = v; captionEdited = false; controls(); draw(); });
+  chips('sizes', Object.keys(SIZES).map((k) => [k, k]), S.size, (v) => { S.size = v; controls(); draw(); });
+  chips('themes', Object.keys(THEMES).map((k) => [k, '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px;background:linear-gradient(135deg,' + THEMES[k][0] + ',' + THEMES[k][1] + ')"></span> ' + k]), S.theme, (v) => { S.theme = v; controls(); draw(); });
+  let h = '';
+  if (S.type === 'quiz' && QUIZ) {
+    h += '<label>Category</label><select id="selCat">' + Object.keys(QUIZ).map((c) => '<option value="' + c + '"' + (c === S.cat ? ' selected' : '') + '>' + (CAT_ICON[c] || '') + ' ' + c + '</option>').join('') + '</select>';
+    h += '<label>Class</label><select id="selLvl">' + LEVELS.filter((l) => QUIZ[S.cat] && QUIZ[S.cat][String(l[0])]).map((l) => '<option value="' + l[0] + '"' + (l[0] === S.level ? ' selected' : '') + '>' + l[1] + '</option>').join('') + '</select>';
+    h += '<label><input type="checkbox" id="ans"' + (S.showAnswer ? ' checked' : '') + '> Show the answer (for the next-day post)</label>';
+  } else if (S.type === 'game') {
+    h += '<label>Game</label><select id="selGame">' + GAMES.map((g, i) => '<option value="' + i + '"' + (g === S.game ? ' selected' : '') + '>' + g.title + '</option>').join('') + '</select>';
+  } else if (S.type === 'custom') {
+    h += '<label>Emoji</label><input type="text" id="cE" value="' + S.custom.emoji + '"><label>Title</label><input type="text" id="cT" value="' + S.custom.title.replace(/"/g, '&quot;') + '"><label>Text</label><textarea id="cB" style="min-height:80px">' + S.custom.body + '</textarea>';
+  }
+  $('opts').innerHTML = h;
+  const sc = $('selCat'); if (sc) sc.onchange = () => { S.cat = sc.value; if (!QUIZ[S.cat][String(S.level)]) S.level = +Object.keys(QUIZ[S.cat])[0]; pickQuiz(); captionEdited = false; controls(); draw(); };
+  const sl = $('selLvl'); if (sl) sl.onchange = () => { S.level = +sl.value; pickQuiz(); captionEdited = false; draw(); };
+  const an = $('ans'); if (an) an.onchange = () => { S.showAnswer = an.checked; captionEdited = false; draw(); };
+  const sg = $('selGame'); if (sg) sg.onchange = () => { S.game = GAMES[+sg.value]; captionEdited = false; draw(); };
+  ['cE', 'cT', 'cB'].forEach((id) => { const el = $(id); if (el) el.oninput = () => { S.custom = { emoji: $('cE').value, title: $('cT').value, body: $('cB').value }; captionEdited = false; draw(); }; });
+}
+$('shuffle').onclick = () => { if (S.type === 'quiz') pickQuiz(); else if (S.type === 'game') S.game = pick(GAMES); else if (S.type === 'fact') S.fact = pick(FACTS); captionEdited = false; controls(); draw(); };
+$('download').onclick = () => { const a = document.createElement('a'); a.download = 'kidsquiz-' + S.type + '-' + Date.now() + '.png'; a.href = $('cv').toDataURL('image/png'); a.click(); };
+$('caption').oninput = () => { captionEdited = true; };
+$('copyCap').onclick = () => { navigator.clipboard && navigator.clipboard.writeText($('caption').value); setStatus('Caption copied ✅', 'good'); };
+
+/* ------------------------------------------------------------------ own media */
+let ownFile = null;
+$('ownFile').onchange = () => {
+  ownFile = $('ownFile').files[0] || null; const p = $('ownPreview');
+  if (ownFile && ownFile.type.startsWith('image/')) { p.src = URL.createObjectURL(ownFile); p.style.display = 'block'; } else p.style.display = 'none';
+  setStatus(ownFile ? 'Using your file: ' + ownFile.name + (ownFile.type.startsWith('video/') ? ' (Reel)' : '') : 'Using the generated image.', 'info');
+};
+
+/* ------------------------------------------------------------------ publishing */
+function setStatus(t, k) { const s = $('status'); s.textContent = t; s.className = 'status ' + (k || 'info'); }
+try { $('pw').value = sessionStorage.getItem('kq_admin_pw') || ''; } catch (e) {}
+async function api(action, opts) {
+  const pw = $('pw').value; try { sessionStorage.setItem('kq_admin_pw', pw); } catch (e) {}
+  opts = opts || {}; opts.headers = Object.assign({ 'X-Admin-Key': pw }, opts.headers || {});
+  let r; try { r = await fetch('api.php?action=' + action + (opts.qs || ''), opts); } catch (e) { throw new Error('Cannot reach api.php — open this page from the PHP server (not GitHub Pages).'); }
+  const t = await r.text(); let j; try { j = JSON.parse(t); } catch (e) { throw new Error('api.php did not answer (is PHP running here?).'); }
+  if (!j.ok) throw new Error(j.error || 'Failed');
+  return j;
+}
+$('checkBtn').onclick = async () => {
+  try {
+    const j = await api('status');
+    if (!j.instagram) return setStatus('Server OK, but Instagram is not connected yet. Add ig_user_id and ig_access_token in admin/config.php.', 'bad');
+    if (j.account && j.account.error) return setStatus('Instagram error: ' + j.account.error, 'bad');
+    setStatus('Connected to @' + (j.account && j.account.username) + ' · ' + (j.account && j.account.followers_count) + ' followers' + (j.publicMedia ? '' : ' · ⚠️ photos need public_base_url (https)'), 'good');
+  } catch (e) { setStatus(e.message, 'bad'); }
+};
+$('publishBtn').onclick = async () => {
+  const btn = $('publishBtn'); btn.disabled = true;
+  try {
+    setStatus('Uploading…', 'info');
+    const fd = new FormData();
+    if (ownFile) fd.append('file', ownFile);
+    else fd.append('file', await new Promise((res) => $('cv').toBlob(res, 'image/png')), 'post.png');
+    const up = await api('upload', { method: 'POST', body: fd });
+    setStatus('Sending to Instagram…', 'info');
+    const pub = await api('publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ file: up.file, kind: up.kind, caption: $('caption').value }) });
+    for (let k = 0; k < 60; k++) {
+      const c = await api('check', { qs: '&id=' + encodeURIComponent(pub.containerId) });
+      if (c.status === 'published') { setStatus('Published! 🎉 ' + (c.permalink || ''), 'good'); return; }
+      setStatus('Instagram is processing… (' + (k + 1) * 5 + ' s)', 'info');
+      await new Promise((r) => setTimeout(r, 5000));
+    }
+    setStatus('Still processing — check Instagram in a few minutes.', 'info');
+  } catch (e) { setStatus(e.message, 'bad'); } finally { btn.disabled = false; }
+};
+
+/* ------------------------------------------------------------------ boot */
+(async function boot() {
+  try { QUIZ = await (await fetch('../data/quizzes.json', { cache: 'no-cache' })).json(); } catch (e) { QUIZ = null; }
+  try { GAMES = ((await (await fetch('../data/games.json', { cache: 'no-cache' })).json()).games || []).sort((a, b) => (b.order || 0) - (a.order || 0)); } catch (e) { GAMES = []; }
+  if (QUIZ && !QUIZ[S.cat]) S.cat = Object.keys(QUIZ)[0];
+  pickAll(); controls();
+  try { await document.fonts.load('800 40px "Baloo 2"'); } catch (e) {}
+  draw();
+})();
+</script>
+</body>
+</html>

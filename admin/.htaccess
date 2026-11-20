@@ -1,0 +1,5 @@
+# Never serve the settings file or list uploaded media.
+<Files "config.php">
+  Require all denied
+</Files>
+Options -Indexes

@@ -212,7 +212,7 @@
   </div>
 </div>
 
-<script src="quiz-shared.js?v=20261120i"></script>
+<script src="quiz-shared.js?v=20261120n"></script>
 <script>
 /* ============================================
    INIT
@@ -268,8 +268,9 @@ function showGate() {
   document.getElementById('nameScreen').classList.remove('hidden');
   try { attachRipple('.android-action-btn'); } catch (e) {}
 
-  // Website only: offer Google sign-in. Inside the Android app it stays hidden.
-  if (!kqIsAndroidApp()) {
+  // Offer Google sign-in on the website, and inside the Android app only when
+  // the app supports native Google Sign-In (Google blocks web login in WebViews).
+  if (kqCanGoogleSignIn()) {
     const gw = document.getElementById('googleGateWrap');
     if (gw) { gw.style.display = ''; gw.removeAttribute('aria-hidden'); }
     const orEl = document.getElementById('gateOr');
@@ -292,7 +293,7 @@ function showGate() {
 function gateSignIn() {
   const msg = document.getElementById('gateMsg');
   if (msg) msg.textContent = '';
-  if (kqIsAndroidApp()) return; // never start Google sign-in inside the app
+  if (!kqCanGoogleSignIn()) return; // app without native sign-in: web login is blocked by Google
   const btn = document.getElementById('googleGateBtn');
   if (btn) { btn.disabled = true; setTimeout(function () { btn.disabled = false; }, 4000); }
   if (!window.KQ || !KQ.signIn) {

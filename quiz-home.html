@@ -305,7 +305,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   </div>
 </div>
 
-<script src="quiz-shared.js?v=20261120i" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261120n" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
 <script src="quiz/kids-engine.js?v=20261120i" charset="utf-8"></script>
 <script>
@@ -732,7 +732,7 @@ function renderHomeProfile() {
   if (authBtn) {
     // Signed in: "Out". Guest on the website: "Sign in" (takes them to the
     // Google sign-in gate). Guest inside the Android app: hidden.
-    const webGuest = window.isGuestUser && !kqIsAndroidApp();
+    const webGuest = window.isGuestUser && kqCanGoogleSignIn();
     authBtn.textContent = window.isGuestUser ? 'Sign in' : 'Out';
     authBtn.setAttribute('aria-label', window.isGuestUser ? 'Sign in with Google' : 'Sign out');
     authBtn.style.display = (!window.isGuestUser || webGuest) ? '' : 'none';

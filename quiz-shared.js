@@ -525,6 +525,15 @@ function kqIsAndroidApp() {
   var ua = navigator.userAgent || '';
   return /; wv\)/.test(ua);
 }
+/* True when the Android app provides native Google Sign-In (Android.googleSignIn).
+   Then Google login is offered inside the app too: the app signs in natively and
+   hands the ID token back via window.onGoogleIdToken(token). Older app versions
+   don't have it, so they keep the guest-only screen. */
+function kqHasNativeGoogle() {
+  try { return typeof Android !== 'undefined' && Android && typeof Android.googleSignIn === 'function'; } catch (e) { return false; }
+}
+/* Google sign-in can be offered here: a normal browser, or the app with native sign-in. */
+function kqCanGoogleSignIn() { return !kqIsAndroidApp() || kqHasNativeGoogle(); }
 
 /* ============================================
    PLAYER NAME (guests)

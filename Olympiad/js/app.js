@@ -249,6 +249,7 @@ async function startSelected(p) {
 }
 
 function startTest() {
+  if (window.KQ && KQ.markStart) KQ.markStart();
   if (state.paper) startSelected(state.paper);
 }
 

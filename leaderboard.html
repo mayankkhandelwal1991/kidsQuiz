@@ -16,8 +16,14 @@
         "$player": { "$id": { ".write": "!data.exists()",
           ".validate": "newData.hasChildren(['cat','gameId','score']) && newData.child('score').isNumber()" } }
       }
-  Without it, the page still works from best scores; only the dated
-  attempt timeline stays empty.
+      "sessions": {
+        ".read": true,
+        "$player": { "$sid": { ".write": true,
+          ".validate": "newData.hasChildren(['start','dur']) && newData.child('dur').isNumber()" } }
+      }
+  attempts = every play (with "dur" = seconds played); sessions = every visit
+  (active seconds, per-section split). Without them, the page still works
+  from best scores; the timeline, time played and Stats charts stay empty.
 -->
 <style>
   :root {
@@ -167,6 +173,7 @@
   .badges { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
   .bdg { font-size: 10.5px; font-weight: 900; padding: 2px 7px; border-radius: 999px; color: #fff; }
   .bdg.quiz { background: var(--quiz); } .bdg.single { background: var(--single); }
+  .bdg.time { background: #0e7490; }
   .bdg.multi { background: var(--multi); } .bdg.olympiad { background: var(--olympiad); }
   .go { color: #c4c1e8; font-size: 20px; font-weight: 900; flex: 0 0 auto; }
 
@@ -193,6 +200,36 @@
   .hist .ico.quiz { background: #eef2ff; } .hist .ico.single { background: #fff7ed; }
   .hist .ico.multi { background: #e0f2fe; } .hist .ico.olympiad { background: #ecfdf5; }
   .hist { cursor: default; }
+
+  .tabs.three { grid-template-columns: 1fr 1fr 1fr; }
+  .stats.six { grid-template-columns: repeat(3, 1fr); }
+  .tm { color: #0e7490; font-weight: 900; }
+  .ses .ico { background: #ecfeff; }
+  .split { display: flex; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 5px; gap: 2px; background: #f1f5f9; }
+  .split i { display: block; height: 100%; border-radius: 3px; }
+  /* ---------- stats tab ---------- */
+  .kpis { margin: 16px 16px 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .kpi { background: #fff; border-radius: 18px; padding: 12px 14px; box-shadow: 0 4px 16px rgba(30,27,75,.06); }
+  .kpi span { display: block; font-size: 11px; font-weight: 900; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .kpi b { display: block; font-size: 22px; font-weight: 900; margin-top: 2px; white-space: nowrap; }
+  .kpi small { font-size: 11.5px; font-weight: 700; color: var(--muted); }
+  .chart-card { margin: 12px 16px 0; background: #fff; border-radius: 20px; padding: 14px 14px 10px; box-shadow: 0 4px 16px rgba(30,27,75,.06); }
+  .chart-card h3 { margin: 0; font-size: 15px; font-weight: 900; }
+  .chart-card p { margin: 2px 0 8px; font-size: 12px; font-weight: 700; color: var(--muted); }
+  .chart-box { position: relative; height: 230px; }
+  .chart-box.tall { height: 320px; }
+  .tbl-toggle { border: none; background: none; color: var(--indigo); font-weight: 800; font-size: 12px; cursor: pointer; padding: 6px 0 2px; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 6px; }
+  .tbl th, .tbl td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line); }
+  .tbl td.n, .tbl th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .note { margin: 12px 16px 0; padding: 10px 12px; border-radius: 14px; background: #fff7ed; color: #9a3412; font-size: 12.5px; font-weight: 800; }
+  @media (min-width: 700px) { .kpis { grid-template-columns: repeat(5, 1fr); } }
+  @media (min-width: 900px) {
+    .lb-main .kpis, .lb-main .chart-card, .lb-main .note { margin-left: 0; margin-right: 0; }
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .charts-grid .chart-card { margin: 12px 0 0; }
+    .charts-grid .wide { grid-column: 1 / -1; }
+  }
 
   .flabel .hint { text-transform: none; letter-spacing: 0; font-weight: 700; opacity: .7; }
 
@@ -229,7 +266,7 @@
 <script src="quiz-shared.js?v=20261120i" charset="utf-8"></script>
 <script>window.KQ_NO_WIDGET = true;</script>
 <script src="quiz/kids-engine.js?v=20261120i"></script>
-<script src="games/kq-leaderboard.js?v=20261120i"></script>
+<script src="games/kq-leaderboard.js?v=20261120k"></script>
 <script src="web-ads.js?v=20261120i"></script>
 <script>
 (function () {
@@ -247,7 +284,9 @@
     { id: 'olympiad', label: '🏅 Olympiad' },
   ];
   const SEC_ICON = { quiz: '🎯', single: '🎮', multi: '👥', olympiad: '🏅' };
-  const SEC_NAME = { quiz: 'Quiz', single: 'Game', multi: 'Multiplayer', olympiad: 'Olympiad' };
+  const SEC_NAME = { quiz: 'Quiz', single: 'Game', multi: 'Multiplayer', olympiad: 'Olympiad', home: 'Home' };
+  // chart palette (validated reference categorical slots 1-4 + neutral for "Home")
+  const SEC_COL = { quiz: '#2a78d6', single: '#eb6834', multi: '#1baf7a', olympiad: '#eda100', home: '#a8a29e' };
   const OLY_SUBJECTS = {
     mathematics: 'Mathematics', science: 'Science', english: 'English', computer: 'Computer',
     gk: 'General Knowledge', socialstudies: 'Social Studies', reasoning: 'Reasoning', creativearts: 'Creative Arts',
@@ -305,7 +344,7 @@
   /* ---------------- state (mirrors the URL) ---------------- */
   const P = new URLSearchParams(location.search);
   const S = {
-    tab: P.get('tab') === 'players' ? 'players' : 'rank',
+    tab: ['players', 'stats'].includes(P.get('tab')) ? P.get('tab') : 'rank',
     user: P.get('user') || '',
     sec: ['quiz', 'single', 'multi', 'olympiad'].includes(P.get('cat')) ? P.get('cat') : 'all',
     subject: '', level: 'all', game: '',
@@ -329,7 +368,7 @@
 
   function syncUrl() {
     const q = new URLSearchParams();
-    if (S.tab === 'players') q.set('tab', 'players');
+    if (S.tab !== 'rank') q.set('tab', S.tab);
     if (S.user) q.set('user', S.user);
     if (S.sec !== 'all') q.set('cat', S.sec);
     const qs = q.toString();
@@ -340,7 +379,37 @@
   let ROWS = [];          // every best-score entry
   let USERS = new Map();  // key -> { key, name, photo, guest, last }
 
+  let SES = new Map();     // key -> [{start,last,dur,t,pages}]
+  let SES_OK = false;      // false when the sessions node is empty / blocked
+  const fmtDur = (sec) => {
+    sec = Math.round(sec || 0);
+    if (sec < 60) return sec + 's';
+    const m = Math.floor(sec / 60), h = Math.floor(m / 60);
+    if (h) return h + 'h ' + String(m % 60).padStart(2, '0') + 'm';
+    return m + 'm' + (m < 10 && sec % 60 ? ' ' + (sec % 60) + 's' : '');
+  };
+  // Active time of a player inside the selected date range.
+  function timeOf(key) {
+    const list = SES.get(key) || [];
+    let t = 0, n = 0, last = 0;
+    list.forEach((x) => { if (inRange(x.start)) { t += x.dur || 0; n++; if ((x.dur || 0) && x.start > last) last = x.start; } });
+    const lastSes = list.filter((x) => inRange(x.start)).sort((a, b) => b.start - a.start)[0];
+    return { t, n, lastDur: lastSes ? lastSes.dur || 0 : 0 };
+  }
   function load() {
+    KQ.fetchSessions().then((tree) => {
+      Object.keys(tree || {}).forEach((key) => {
+        const list = Object.values(tree[key] || {}).filter((x) => x && x.start);
+        if (!list.length) return;
+        SES.set(key, list); SES_OK = true;
+        const nm = list.reduce((a, b) => (b.last > a.last ? b : a));
+        if (nm.guest) GUEST_KEYS.add(key);
+        const u = USERS.get(key);
+        if (!u) USERS.set(key, { key, name: nm.name || 'Player', photo: '', guest: !!nm.guest, last: nm.last || 0 });
+        else if ((nm.last || 0) > u.last) u.last = nm.last;
+      });
+      if (ROWS.length || SES_OK) render();
+    });
     KQ.fetchAll().then((tree) => {
       ROWS = [];
       Object.keys(tree || {}).forEach((cat) => {
@@ -439,17 +508,18 @@
       rank: (a, b) => a.rank - b.rank,
       points: (a, b) => (b[pointsKey] - a[pointsKey]) || (a.rank - b.rank),
       recent: (a, b) => (b[dateKey] - a[dateKey]) || (a.rank - b.rank),
+      time: (a, b) => ((b.time || 0) - (a.time || 0)) || (a.rank - b.rank),
     }[by] || ((a, b) => a.rank - b.rank);
     out.sort((a, b) => cmp(a, b) * dir);
     return out;
   }
   function sortHtml(cur, dir, attr) {
-    const opts = [{ id: 'rank', label: '🏆 Rank' }, { id: 'points', label: '⭐ Points' }, { id: 'recent', label: '🕒 Last active' }];
+    const opts = [{ id: 'rank', label: '🏆 Rank' }, { id: 'points', label: '⭐ Points' }, { id: 'recent', label: '🕒 Last active' }, { id: 'time', label: '⏱️ Time played' }];
     const arrow = (id) => id !== cur ? '' : (dir === 1 ? (id === 'rank' ? ' ↑' : ' ↓') : (id === 'rank' ? ' ↓' : ' ↑'));
     return '<div class="fgroup"><div class="flabel">Sort by <span class="hint">(tap again to reverse)</span></div><div class="chips">' + opts.map((o) =>
       '<button type="button" class="chip' + (o.id === cur ? ' on' : '') + '" data-' + attr + '="' + o.id + '">' + o.label + arrow(o.id) + '</button>').join('') + '</div></div>';
   }
-  const SORT_NOTE = { rank: 'Sorted by rank', points: 'Sorted by points', recent: 'Most recent first' };
+  const SORT_NOTE = { rank: 'Sorted by rank', points: 'Sorted by points', recent: 'Most recent first', time: 'Most time played first' };
 
   /* ---------------- rendering ---------------- */
   function heroHtml(title, sub, extra) {
@@ -529,7 +599,7 @@
 
     let h = heroHtml(title, sub) + tabsHtml();
     h += '<div class="panel">' + boardFilterHtml() + dateFilterHtml() + sortHtml(S.rSort, S.rDir, 'rsort') + searchHtml('Search player name…') + '</div>';
-    res.list.forEach((r, i) => { r.rank = i + 1; });
+    res.list.forEach((r, i) => { r.rank = i + 1; const tm = timeOf(r.key); r.time = tm.t; r.sessions = tm.n; });
     const list = sortView(res.list, S.rSort, S.rDir, 'score', 'at');
     const natural = S.rSort === 'rank' && S.rDir === 1;
     if (!list.length) {
@@ -540,7 +610,7 @@
         SORT_NOTE[S.rSort] + ' • ' + (res.mode === 'total' ? 'total of best scores' : (res.lower ? 'lower is better' : 'best score')) + '</span></div>';
       h += '<div class="list">' + list.slice(0, 200).map((r, i) => {
         const rank = r.rank === 1 ? '🥇' : r.rank === 2 ? '🥈' : r.rank === 3 ? '🥉' : r.rank;
-        const meta = (res.mode === 'total' ? r.n + ' board' + (r.n === 1 ? '' : 's') + ' • ' : '') + 'Last active ' + fmtDate(r.at);
+        const meta = (res.mode === 'total' ? r.n + ' board' + (r.n === 1 ? '' : 's') + ' • ' : '') + (r.time ? '⏱ ' + fmtDur(r.time) + ' • ' : '') + 'Last active ' + fmtDate(r.at);
         return '<div class="item' + (r.key === me ? ' me' : '') + '" data-user="' + esc(r.key) + '" style="animation-delay:' + Math.min(i, 15) * 25 + 'ms">' +
           '<div class="rk">' + rank + '</div>' + avatar(r) +
           '<div class="info"><div class="nm">' + esc(r.name) + (isGuest(r.key) ? '<span class="tag">guest</span>' : '') + (r.key === me ? '<span class="tag">you</span>' : '') + '</div>' +
@@ -563,8 +633,15 @@
       if (!r.lower) p.points += r.score;
       if (r.at > p.last) p.last = r.at;
     });
+    // players with sessions but no scores yet still count as players
+    SES.forEach((list, key) => {
+      if (per.has(key) || (!S.guests && isGuest(key)) || S.sec !== 'all') return;
+      const inR = list.filter((x) => inRange(x.start)); if (!inR.length) return;
+      const u = USERS.get(key) || { name: 'Player' };
+      per.set(key, { key, name: u.name, photo: u.photo, guest: u.guest, quiz: 0, single: 0, multi: 0, olympiad: 0, last: Math.max(...inR.map((x) => x.last || x.start)), points: 0 });
+    });
     const all = [...per.values()].sort((a, b) => b.points - a.points || b.last - a.last);
-    all.forEach((p, i) => { p.rank = i + 1; });          // rank by total points
+    all.forEach((p, i) => { p.rank = i + 1; const tm = timeOf(p.key); p.time = tm.t; p.sessions = tm.n; p.lastDur = tm.lastDur; });          // rank by total points
     const list = sortView(all.filter((p) => nameOk(p.name)), S.pSort, S.pDir, 'points', 'last');
     let h = heroHtml('👥 Players', 'Tap a player to see everything they played') + tabsHtml();
     h += '<div class="panel"><div class="fgroup"><div class="flabel">Played in</div>' + chipsHtml(SECTIONS, S.sec, 'sec') + '</div>' + dateFilterHtml() + sortHtml(S.pSort, S.pDir, 'psort') + searchHtml('Search player name…') + '</div>';
@@ -577,7 +654,7 @@
         return '<div class="item' + (p.key === me ? ' me' : '') + '" data-user="' + esc(p.key) + '" style="animation-delay:' + Math.min(i, 15) * 25 + 'ms">' +
           '<div class="rk">' + rk + '</div>' + avatar(p) +
           '<div class="info"><div class="nm">' + esc(p.name) + (isGuest(p.key) ? '<span class="tag">guest</span>' : '') + (p.key === me ? '<span class="tag">you</span>' : '') + '</div>' +
-          '<div class="meta">Last active ' + esc(fmtDate(p.last)) + '</div><div class="badges">' + b + '</div></div>' +
+          '<div class="meta">Last active ' + esc(fmtDate(p.last)) + '</div><div class="badges">' + (p.time ? '<span class="bdg time" title="' + p.sessions + ' sessions' + (p.lastDur ? ', last ' + fmtDur(p.lastDur) : '') + '">⏱ ' + fmtDur(p.time) + ' • ' + p.sessions + '×</span>' : '') + b + '</div></div>' +
           '<div class="sc"><b>' + fmtScore(p.points) + '</b><small>pts</small></div><div class="go">›</div></div>';
       }).join('') + '</div>';
     }
@@ -594,11 +671,14 @@
     const extra = '<div class="profile-hero">' + avatar(u, 'xl') + '<div><div class="pn">' + esc(u.name) + '</div>' +
       '<div class="ps">' + (u.guest ? 'Guest player • ' : '') + 'Last played ' + esc(fmtDate(u.last)) + '</div></div></div>';
     let h = heroHtml('Player history', '', extra);
-    h += '<div class="stats">' +
+    const tm = timeOf(key);
+    h += '<div class="stats six">' +
       '<div class="stat quiz"><b>' + count('quiz') + '</b><span>Quizzes</span></div>' +
       '<div class="stat single"><b>' + (count('single') + count('multi')) + '</b><span>Games</span></div>' +
       '<div class="stat olympiad"><b>' + count('olympiad') + '</b><span>Olympiad</span></div>' +
-      '<div class="stat total"><b>' + fmtScore(points) + '</b><span>Points</span></div></div>';
+      '<div class="stat total"><b>' + fmtScore(points) + '</b><span>Points</span></div>' +
+      '<div class="stat"><b class="tm">' + fmtDur(tm.t) + '</b><span>Time played</span></div>' +
+      '<div class="stat"><b class="tm">' + tm.n + (tm.n ? ' <small style="font-size:11px">• avg ' + fmtDur(tm.t / tm.n) + '</small>' : '') + '</b><span>Sessions</span></div></div>';
     h += '<div class="panel"><div class="fgroup"><div class="flabel">Show</div>' + chipsHtml(SECTIONS, S.profSec, 'psec') + '</div>' + dateFilterHtml() + '</div>';
 
     const filt = (r) => (S.profSec === 'all' || r.cat === S.profSec) && inRange(r.at);
@@ -614,15 +694,42 @@
     else {
       const rows = att.filter((a) => (S.profSec === 'all' || a.cat === S.profSec) && inRange(a.at || 0));
       if (!rows.length) h += '<div class="empty" style="padding:18px 16px">No attempts recorded in this range yet.</div>';
-      else h += '<div class="list">' + rows.slice(0, 100).map((a) => {
+      else h += '<div class="list">' + rows.slice(0, S.attAll ? 100 : 12).map((a) => {
         const d = describe(a.cat, a.gameId, a.meta);
         if (a.title && a.cat !== 'quiz' && a.cat !== 'olympiad') d.title = a.title;
         const sc = a.result === 'win' ? '🏆' : fmtScore(a.score);
         const small = a.result === 'win' ? 'win' : (a.meta && a.meta.totalMarks ? '/ ' + a.meta.totalMarks : 'score');
+        if (a.dur) d.sub = (d.sub ? d.sub + ' • ' : '') + '⏱ ' + fmtDur(a.dur);
         return histItem(a.cat, d, sc, a.at, small);
-      }).join('') + '</div>';
+      }).join('') + '</div>' + (rows.length > 12 && !S.attAll ? '<div style="text-align:center;margin-top:8px"><button type="button" class="chip" id="attMore">Show all ' + Math.min(rows.length, 100) + ' plays ▾</button></div>' : '');
     }
 
+    // time per game (from timed attempts)
+    if (att && att.length) {
+      const per = new Map();
+      att.filter((a) => a.dur && (S.profSec === 'all' || a.cat === S.profSec) && inRange(a.at || 0)).forEach((a) => {
+        const k = a.cat + '/' + a.gameId; const o = per.get(k) || { a, n: 0, t: 0 }; o.n++; o.t += a.dur; per.set(k, o);
+      });
+      const top = [...per.values()].sort((x, y) => y.t - x.t).slice(0, 8);
+      if (top.length) {
+        h += '<div class="sec-title">⏱️ Time per game</div><div class="list">' + top.map((o) => {
+          const d = describe(o.a.cat, o.a.gameId, o.a.meta); if (o.a.title && o.a.cat !== 'quiz' && o.a.cat !== 'olympiad') d.title = o.a.title;
+          return '<div class="item hist"><div class="ico ' + o.a.cat + '">' + SEC_ICON[o.a.cat] + '</div><div class="info"><div class="nm">' + esc(d.title) + '</div><div class="meta">' + o.n + ' play' + (o.n === 1 ? '' : 's') + ' • avg ' + fmtDur(o.t / o.n) + '</div></div><div class="sc"><b class="tm">' + fmtDur(o.t) + '</b><small>total</small></div></div>';
+        }).join('') + '</div>';
+      }
+    }
+    // sessions
+    const sess = (SES.get(key) || []).filter((x) => inRange(x.start)).sort((a, b) => b.start - a.start).slice(0, 20);
+    if (sess.length) {
+      h += '<div class="sec-title">🗓️ Sessions</div><div class="list">' + sess.map((x) => {
+        const t = x.t || {}, tot = Object.values(t).reduce((a, b) => a + b, 0) || 1;
+        const parts = ['quiz', 'single', 'multi', 'olympiad', 'home'].filter((k) => t[k]).map((k) => '<i title="' + (SEC_NAME[k] || 'Home') + ' ' + fmtDur(t[k]) + '" style="width:' + (t[k] / tot * 100) + '%;background:' + SEC_COL[k] + '"></i>').join('');
+        const where = ['quiz', 'single', 'multi', 'olympiad'].filter((k) => t[k] >= 5).map((k) => SEC_ICON[k] + ' ' + fmtDur(t[k])).join('  ');
+        return '<div class="item hist ses"><div class="ico">🗓️</div><div class="info"><div class="nm">' + esc(fmtDate(x.start)) + ' • ' + new Date(x.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '</div>' +
+          '<div class="meta">' + (where || 'Browsing') + (x.pages ? ' • ' + x.pages + ' page' + (x.pages === 1 ? '' : 's') : '') + '</div><div class="split">' + parts + '</div></div>' +
+          '<div class="sc"><b class="tm">' + fmtDur(x.dur) + '</b><small>played</small></div></div>';
+      }).join('') + '</div>';
+    }
     h += '<div class="sec-title">⭐ Best scores</div>';
     if (!best.length) h += '<div class="empty" style="padding:18px 16px">Nothing here for these filters.</div>';
     else h += '<div class="list">' + best.map((r) => histItem(r.cat, r.d, fmtScore(r.score), r.at, r.cat === 'multi' ? 'wins' : (r.lower ? 'best (low)' : 'best'))).join('') + '</div>';
@@ -633,9 +740,148 @@
     }
   }
 
+  /* ---------------- 📊 stats tab ---------------- */
+  let ALLATT = null, STATS = null, CHARTS = [];
+  function statsData() {
+    const [a0, b0] = rangeBounds();
+    const end = new Date(); end.setHours(0, 0, 0, 0);
+    let start = S.range === 'all' ? new Date(end.getTime() - 29 * DAY) : new Date(Math.max(a0, end.getTime() - 89 * DAY));
+    start.setHours(0, 0, 0, 0);
+    if (S.range === 'today') start = new Date(end.getTime() - 6 * DAY);
+    const days = []; for (let t = start.getTime(); t <= end.getTime(); t += DAY) days.push(t);
+    const dayIdx = (ts) => { const d = new Date(ts); d.setHours(0, 0, 0, 0); return days.indexOf(d.getTime()); };
+    const secOk = (c) => S.sec === 'all' || c === S.sec;
+    const gOk = (k) => S.guests || !isGuest(k);
+    const ses = [], att = [];
+    SES.forEach((list, k) => { if (gOk(k)) list.forEach((x) => { if (inRange(x.start)) ses.push(Object.assign({ key: k }, x)); }); });
+    (ALLATT || []).forEach((a) => { if (gOk(a.key) && inRange(a.at || 0) && secOk(a.cat)) att.push(a); });
+    const players = new Set(), secs = ['quiz', 'single', 'multi', 'olympiad', 'home'];
+    let total = 0;
+    const dayPlayers = days.map(() => new Set()), dayTime = {}; secs.forEach((k) => { dayTime[k] = days.map(() => 0); });
+    const secTotal = {}; secs.forEach((k) => { secTotal[k] = 0; });
+    ses.forEach((x) => {
+      players.add(x.key);
+      const t = x.t || {}, i = dayIdx(x.start);
+      secs.forEach((k) => { if (!t[k] || (S.sec !== 'all' && k !== S.sec)) return; secTotal[k] += t[k]; if (i >= 0) dayTime[k][i] += t[k] / 60; });
+      total += S.sec === 'all' ? (x.dur || 0) : (t[S.sec] || 0);
+      if (i >= 0) dayPlayers[i].add(x.key);
+    });
+    att.forEach((a) => { players.add(a.key); const i = dayIdx(a.at || 0); if (i >= 0) dayPlayers[i].add(a.key); });
+    const games = new Map();
+    att.forEach((a) => {
+      const k = a.cat + '/' + a.gameId; const g = games.get(k) || { a, n: 0, t: 0, tn: 0 };
+      g.n++; if (a.dur) { g.t += a.dur; g.tn++; } games.set(k, g);
+    });
+    const topGames = [...games.values()].sort((x, y) => y.n - x.n).slice(0, 10).map((g) => {
+      const d = describe(g.a.cat, g.a.gameId, g.a.meta); if (g.a.title && g.a.cat !== 'quiz' && g.a.cat !== 'olympiad') d.title = g.a.title;
+      return { name: (d.title + (g.a.cat === 'quiz' || g.a.cat === 'olympiad' ? ' (' + d.sub.split(' • ')[0] + ')' : '')).replace(/^\S+\s/, (m) => (/\p{Extended_Pictographic}/u.test(m) ? '' : m)), cat: g.a.cat, n: g.n, avg: g.tn ? g.t / g.tn : 0 };
+    });
+    const hours = Array(24).fill(0);
+    (att.length ? att.map((a) => a.at) : ses.map((x) => x.start)).forEach((ts) => { if (ts) hours[new Date(ts).getHours()]++; });
+    return { days, dayPlayers: dayPlayers.map((s) => s.size), dayTime, secTotal, players: players.size, sessions: ses.length, total, plays: att.length, topGames, hours, hourBasis: att.length ? 'plays' : 'sessions' };
+  }
+  function tableHtml(id, head, rows) {
+    return '<button type="button" class="tbl-toggle" data-tbl="' + id + '">Show table</button><table class="tbl" id="' + id + '" hidden><thead><tr>' +
+      head.map((h, i) => '<th' + (i ? ' class="n"' : '') + '>' + esc(h) + '</th>').join('') + '</tr></thead><tbody>' +
+      rows.map((r) => '<tr>' + r.map((c, i) => '<td' + (i ? ' class="n"' : '') + '>' + esc(c) + '</td>').join('') + '</tr>').join('') + '</tbody></table>';
+  }
+  function renderStats() {
+    let h = heroHtml('📊 Statistics', 'How much kids play, when, and what they love') + tabsHtml();
+    h += '<div class="panel"><div class="fgroup"><div class="flabel">Section</div>' + chipsHtml(SECTIONS, S.sec, 'sec') + '</div>' + dateFilterHtml() +
+      '<label class="gcheck"><input type="checkbox" id="guestChk"' + (S.guests ? ' checked' : '') + '><span class="box"></span>Show guest players</label></div>';
+    if (ALLATT === null) {
+      h += '<div class="loading"><div class="spinner"></div>Crunching the numbers…</div>';
+      $app.innerHTML = h;
+      KQ.fetchAllAttempts().then((tree) => {
+        ALLATT = [];
+        Object.keys(tree || {}).forEach((k) => Object.values(tree[k] || {}).forEach((a) => { if (a && a.cat) ALLATT.push(Object.assign({ key: k }, a)); }));
+        if (S.tab === 'stats') render();
+      });
+      return;
+    }
+    const D = STATS = statsData();
+    const fmtDay = (t) => new Date(t).toLocaleDateString([], { day: 'numeric', month: 'short' });
+    h += '<div class="kpis">' +
+      '<div class="kpi"><span>Players</span><b>' + D.players + '</b><small>active</small></div>' +
+      '<div class="kpi"><span>Sessions</span><b>' + D.sessions + '</b><small>visits</small></div>' +
+      '<div class="kpi"><span>Time played</span><b class="tm">' + fmtDur(D.total) + '</b><small>total</small></div>' +
+      '<div class="kpi"><span>Avg session</span><b class="tm">' + (D.sessions ? fmtDur(D.total / D.sessions) : '—') + '</b><small>per visit</small></div>' +
+      '<div class="kpi"><span>Plays</span><b>' + D.plays + '</b><small>games &amp; quizzes</small></div></div>';
+    if (!SES_OK && !ALLATT.length) h += '<div class="note">⚠️ No session or attempt data yet. Time tracking starts now — check back after kids play. (Firebase rules must allow the <b>sessions</b> and <b>attempts</b> nodes.)</div>';
+    const secs = S.sec === 'all' ? ['quiz', 'single', 'multi', 'olympiad', 'home'] : [S.sec];
+    h += '<div class="charts-grid">' +
+      '<div class="chart-card wide"><h3>⏱️ Time played per day</h3><p>Minutes, by section</p><div class="chart-box"><canvas id="cTime"></canvas></div>' +
+        tableHtml('tTime', ['Day'].concat(secs.map((k) => SEC_NAME[k])), D.days.map((t, i) => [fmtDay(t)].concat(secs.map((k) => Math.round(D.dayTime[k][i]))))) + '</div>' +
+      '<div class="chart-card"><h3>👧 Active players per day</h3><p>Kids who played at least once</p><div class="chart-box"><canvas id="cPlayers"></canvas></div>' +
+        tableHtml('tPlayers', ['Day', 'Players'], D.days.map((t, i) => [fmtDay(t), D.dayPlayers[i]])) + '</div>' +
+      '<div class="chart-card"><h3>🧭 Time by section</h3><p>Where the playing time goes</p><div class="chart-box"><canvas id="cSec"></canvas></div>' +
+        tableHtml('tSec', ['Section', 'Time'], secs.map((k) => [SEC_NAME[k], fmtDur(D.secTotal[k])])) + '</div>' +
+      '<div class="chart-card"><h3>🔥 Most played</h3><p>Top games &amp; quizzes by number of plays</p><div class="chart-box tall"><canvas id="cTop"></canvas></div>' +
+        tableHtml('tTop', ['Game', 'Plays', 'Avg time'], D.topGames.map((g) => [g.name, g.n, g.avg ? fmtDur(g.avg) : '—'])) + '</div>' +
+      '<div class="chart-card"><h3>🕒 When kids play</h3><p>' + (D.hourBasis === 'plays' ? 'Plays' : 'Sessions') + ' by hour of the day</p><div class="chart-box tall"><canvas id="cHour"></canvas></div>' +
+        tableHtml('tHour', ['Hour', D.hourBasis === 'plays' ? 'Plays' : 'Sessions'], D.hours.map((n, i) => [i + ':00', n])) + '</div>' +
+      '</div>';
+    $app.innerHTML = h;
+  }
+  function loadChartJs() {
+    if (window.Chart) return Promise.resolve();
+    if (loadChartJs.p) return loadChartJs.p;
+    loadChartJs.p = new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js'; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+    return loadChartJs.p;
+  }
+  function drawCharts() {
+    if (!STATS || !document.getElementById('cTime')) return;
+    loadChartJs().then(() => {
+      CHARTS.forEach((c) => c.destroy()); CHARTS = [];
+      const D = STATS, ink2 = '#52514e', grid = '#eeedf5';
+      Chart.defaults.font.family = "'Nunito', system-ui, sans-serif"; Chart.defaults.font.weight = 700; Chart.defaults.color = ink2;
+      const labels = D.days.map((t) => new Date(t).toLocaleDateString([], { day: 'numeric', month: 'short' }));
+      const axes = (stacked, yTitle) => ({
+        x: { stacked, grid: { display: false }, border: { color: '#d6d3e8' }, ticks: { maxRotation: 0, autoSkipPadding: 10 } },
+        y: { stacked, beginAtZero: true, grid: { color: grid }, border: { display: false }, ticks: { precision: 0 }, title: yTitle ? { display: true, text: yTitle } : undefined }
+      });
+      const tip = { backgroundColor: '#1e1b4b', padding: 10, cornerRadius: 10, boxPadding: 4 };
+      const bar = { borderRadius: 4, borderSkipped: 'start', maxBarThickness: 26 };
+      const secs = S.sec === 'all' ? ['quiz', 'single', 'multi', 'olympiad', 'home'] : [S.sec];
+      CHARTS.push(new Chart(document.getElementById('cTime'), {
+        type: 'bar',
+        data: { labels, datasets: secs.map((k) => Object.assign({ label: SEC_NAME[k], data: D.dayTime[k].map((v) => Math.round(v * 10) / 10), backgroundColor: SEC_COL[k], borderColor: '#fff', borderWidth: { top: 2 } }, bar)) },
+        options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: axes(true, 'minutes'),
+          plugins: { legend: { display: secs.length > 1, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rectRounded', boxWidth: 10 } },
+            tooltip: Object.assign({ callbacks: { label: (c) => ' ' + c.dataset.label + ': ' + fmtDur(c.parsed.y * 60) } }, tip) } }
+      }));
+      CHARTS.push(new Chart(document.getElementById('cPlayers'), {
+        type: 'line',
+        data: { labels, datasets: [{ label: 'Players', data: D.dayPlayers, borderColor: '#6250d6', backgroundColor: 'rgba(98,80,214,.12)', fill: true, borderWidth: 2, tension: 0,  pointRadius: 3, pointHoverRadius: 6, pointBackgroundColor: '#6250d6' }] },
+        options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: axes(false), plugins: { legend: { display: false }, tooltip: tip } }
+      }));
+      const secVals = secs.map((k) => Math.round(D.secTotal[k] / 60));
+      CHARTS.push(new Chart(document.getElementById('cSec'), {
+        type: 'bar',
+        data: { labels: secs.map((k) => SEC_NAME[k]), datasets: [Object.assign({ label: 'Minutes', data: secVals, backgroundColor: secs.map((k) => SEC_COL[k]) }, bar)] },
+        options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: { color: grid }, border: { display: false }, ticks: { precision: 0 }, title: { display: true, text: 'minutes' } }, y: { grid: { display: false } } },
+          plugins: { legend: { display: false }, tooltip: Object.assign({ callbacks: { label: (c) => ' ' + fmtDur(D.secTotal[secs[c.dataIndex]]) } }, tip) } }
+      }));
+      CHARTS.push(new Chart(document.getElementById('cTop'), {
+        type: 'bar',
+        data: { labels: D.topGames.map((g) => g.name.length > 26 ? g.name.slice(0, 25) + '…' : g.name), datasets: [Object.assign({ label: 'Plays', data: D.topGames.map((g) => g.n), backgroundColor: D.topGames.map((g) => SEC_COL[g.cat] || '#2a78d6') }, bar)] },
+        options: { indexAxis: 'y', maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: { color: grid }, border: { display: false }, ticks: { precision: 0 } }, y: { grid: { display: false } } },
+          plugins: { legend: { display: false }, tooltip: Object.assign({ callbacks: { title: (c) => D.topGames[c[0].dataIndex].name, label: (c) => { const g = D.topGames[c.dataIndex]; return ' ' + g.n + ' plays' + (g.avg ? ' • avg ' + fmtDur(g.avg) : '') + ' • ' + SEC_NAME[g.cat]; } } }, tip) } }
+      }));
+      CHARTS.push(new Chart(document.getElementById('cHour'), {
+        type: 'bar',
+        data: { labels: D.hours.map((_, i) => (i % 12 || 12) + (i < 12 ? 'am' : 'pm')), datasets: [Object.assign({ label: D.hourBasis === 'plays' ? 'Plays' : 'Sessions', data: D.hours, backgroundColor: '#1baf7a' }, bar)] },
+        options: { maintainAspectRatio: false, scales: axes(false), plugins: { legend: { display: false }, tooltip: tip } }
+      }));
+    }).catch(() => {
+      document.querySelectorAll('.chart-box').forEach((b) => { b.innerHTML = '<div class="empty" style="padding:30px">Charts need an internet connection.</div>'; });
+    });
+  }
+
   function tabsHtml() {
-    return '<div class="tabs"><button type="button" class="tab' + (S.tab === 'rank' ? ' on' : '') + '" data-tab="rank">🏆 Rankings</button>' +
-      '<button type="button" class="tab' + (S.tab === 'players' ? ' on' : '') + '" data-tab="players">👥 Players</button></div>';
+    return '<div class="tabs three"><button type="button" class="tab' + (S.tab === 'rank' ? ' on' : '') + '" data-tab="rank">🏆 Ranks</button>' +
+      '<button type="button" class="tab' + (S.tab === 'players' ? ' on' : '') + '" data-tab="players">👥 Players</button>' +
+      '<button type="button" class="tab' + (S.tab === 'stats' ? ' on' : '') + '" data-tab="stats">📊 Stats</button></div>';
   }
 
   function render() {
@@ -644,10 +890,12 @@
     const caret = focusedId === 'nameSearch' ? document.activeElement.selectionStart : null;
     if (S.user) renderProfile();
     else if (S.tab === 'players') renderPlayers();
+    else if (S.tab === 'stats') renderStats();
     else renderRankings();
     splitColumns();
     bindHero();
     bind();
+    if (S.tab === 'stats' && !S.user) drawCharts();
     window.scrollTo(0, scroll);
     if (focusedId) {
       const el = document.getElementById(focusedId);
@@ -665,7 +913,7 @@
     const main = document.createElement('main'); main.className = 'lb-main';
     kids.forEach((k) => {
       if (k === hero) return;
-      if (k.classList.contains('tabs') || k.classList.contains('stats') || k.classList.contains('panel')) side.appendChild(k);
+      if (k.classList.contains('tabs') || (k.classList.contains('stats')) || k.classList.contains('panel')) side.appendChild(k);
       else main.appendChild(k);
     });
     body.appendChild(side); body.appendChild(main);
@@ -684,13 +932,15 @@
       try { localStorage.setItem('kq_lb_range', S.range); } catch (e) {}
       render();
     });
-    $app.querySelectorAll('[data-user]').forEach((el) => el.onclick = () => { S.user = el.dataset.user; S.profSec = 'all'; syncUrl(); render(); window.scrollTo(0, 0); });
+    $app.querySelectorAll('[data-user]').forEach((el) => el.onclick = () => { S.user = el.dataset.user; S.profSec = 'all'; S.attAll = false; syncUrl(); render(); window.scrollTo(0, 0); });
     const sub = document.getElementById('subjectSel'); if (sub) sub.onchange = () => { S.subject = sub.value; render(); };
     const gs = document.getElementById('gameSel'); if (gs) gs.onchange = () => { S.game = gs.value; render(); };
     const f = document.getElementById('fromDate'); if (f) f.onchange = () => { S.from = f.value; render(); };
     const t = document.getElementById('toDate'); if (t) t.onchange = () => { S.to = t.value; render(); };
     const gc = document.getElementById('guestChk');
     if (gc) gc.onchange = () => { S.guests = gc.checked; try { localStorage.setItem('kq_lb_guests', S.guests ? '1' : '0'); } catch (e) {} render(); };
+    const am = document.getElementById('attMore'); if (am) am.onclick = () => { S.attAll = true; render(); };
+    $app.querySelectorAll('[data-tbl]').forEach((b) => b.onclick = () => { const t = document.getElementById(b.dataset.tbl); t.hidden = !t.hidden; b.textContent = t.hidden ? 'Show table' : 'Hide table'; });
     const q = document.getElementById('nameSearch');
     if (q) q.oninput = () => { S.q = q.value; clearTimeout(bind._t); bind._t = setTimeout(render, 180); };
   }

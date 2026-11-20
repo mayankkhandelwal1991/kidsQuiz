@@ -384,6 +384,7 @@ function preloadPicoImages(maxWaitMs) {
 }
 
 function startQuiz(level) {
+  if (window.KQ && KQ.markStart) KQ.markStart();
   if (typeof Android !== "undefined" && Android.showAd) {
     //Android.showAd("interstitial");
   }
@@ -749,7 +750,7 @@ attachRipple('.android-action-btn');
 
 startQuiz(currentLevel);
 </script>
-<script src="../games/kq-leaderboard.js?v=20261120i"></script>
+<script src="../games/kq-leaderboard.js?v=20261120k"></script>
 <script src="../web-ads.js?v=20261120i"></script>
 </body>
 </html>

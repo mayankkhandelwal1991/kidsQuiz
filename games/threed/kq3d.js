@@ -197,6 +197,7 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
 
     function begin() {
       sfx('click');
+      try { if (window.KQ && KQ.markStart) KQ.markStart(); } catch (e) {}
       G._score = 0; setText('k3score', 0);
       (cfg.hud || []).forEach(function (h) { G.hudSet(h.id, 0); });
       if (cfg.onReset) cfg.onReset(choice);

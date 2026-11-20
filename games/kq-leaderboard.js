@@ -269,6 +269,20 @@
 
   /* Append one dated attempt to attempts/<player>. Fire-and-forget: if the
      Firebase rules don't allow it yet, the best-score board still works. */
+  /* ---- play time: each attempt carries how long it took (seconds) ----
+     Measured from KQ.markStart() (called when a game/quiz starts), or from
+     page load / the previous attempt when a game doesn't call it. */
+  var playStart = Date.now(), hiddenMs = 0, hiddenAt = 0;
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) hiddenAt = Date.now(); else if (hiddenAt) { hiddenMs += Date.now() - hiddenAt; hiddenAt = 0; }
+  });
+  function markStart() { playStart = Date.now(); hiddenMs = 0; }
+  function takeDuration() {
+    var d = Math.round((Date.now() - playStart - hiddenMs) / 1000);
+    markStart();
+    return Math.max(1, Math.min(3600, d));
+  }
+
   function logAttempt(cat, gameId, score, extra) {
     try {
       if (!db) return;
@@ -276,7 +290,8 @@
       var ctx = window.KQ_CONTEXT;
       var row = {
         cat: cat, gameId: String(gameId), score: Number(score) || 0,
-        name: u.name, at: firebase.database.ServerValue.TIMESTAMP
+        name: u.name, at: firebase.database.ServerValue.TIMESTAMP,
+        dur: (extra && extra.dur) || takeDuration()
       };
       if (ctx && ctx.gameId === gameId && ctx.title) row.title = String(ctx.title).slice(0, 80);
       if (extra) for (var k in extra) if (extra[k] != null) row[k] = extra[k];
@@ -347,6 +362,70 @@
         rows.sort(function (a, b) { return lower ? a.score - b.score : b.score - a.score; });
         return rows.slice(0, limit);
       });
+    });
+  }
+
+  /* ---- sessions: one per visit (a new one after 30 min idle) ----------
+     sessions/<player>/<id> = { start, last, dur (active seconds), pages,
+       t: { quiz, single, multi, olympiad, home } seconds per section, name, guest }
+     Only visible (foreground) time is counted. */
+  var SES_GAP = 30 * 60 * 1000, SES_TICK = 15000, sesPushed = 0;
+  function section() {
+    var p = (location.pathname || "").toLowerCase();
+    if (/\/olympiad\//.test(p)) return "olympiad";
+    if (/\/multiplayer\//.test(p)) return "multi";
+    if (/\/games\//.test(p)) return "single";
+    if (/\/quiz\/|quiz2\.html/.test(p)) return "quiz";
+    return "home";
+  }
+  function sesLoad() { try { return JSON.parse(localStorage.getItem("kq_session") || "null"); } catch (e) { return null; } }
+  function sesSave(s) { try { localStorage.setItem("kq_session", JSON.stringify(s)); } catch (e) {} }
+  var lastTick = Date.now();
+  function sesTick(push) {
+    var now = Date.now(), s = sesLoad();
+    if (!s || now - s.last > SES_GAP) { s = { id: now.toString(36) + Math.random().toString(36).slice(2, 6), start: now, last: now, act: 0, pages: 0, t: {} }; }
+    if (!document.hidden) {
+      var d = Math.min(SES_TICK * 2, Math.max(0, now - lastTick));
+      s.act += d; var sec = section(); s.t[sec] = (s.t[sec] || 0) + d;
+    }
+    lastTick = now; s.last = now; sesSave(s);
+    if (push || now - sesPushed > 60000) sesPush(s);
+    return s;
+  }
+  function sesPush(s) {
+    try {
+      if (!db || !s || window.KQ_NO_SESSION) return;
+      var u = currentUser(), t = {};
+      Object.keys(s.t || {}).forEach(function (k) { t[k] = Math.round(s.t[k] / 1000); });
+      sesPushed = Date.now();
+      db.ref("sessions/" + u.key + "/" + s.id).set({
+        start: s.start, last: s.last, dur: Math.round(s.act / 1000), pages: s.pages || 1, t: t,
+        name: u.name, guest: !!u.isGuest
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  if (!window.KQ_NO_SESSION) {
+    (function () {
+      var s = sesTick(false); s.pages = (s.pages || 0) + 1; sesSave(s);
+      setInterval(function () { sesTick(false); }, SES_TICK);
+      document.addEventListener("visibilitychange", function () { if (document.hidden) sesTick(true); else lastTick = Date.now(); });
+      window.addEventListener("pagehide", function () { sesTick(true); });
+      ready.then(function () { sesTick(true); });
+    })();
+  }
+
+  /* All sessions of all players (leaderboard stats). {} if rules block it. */
+  function fetchSessions() {
+    return ready.then(function () {
+      if (!db) return {};
+      return db.ref("sessions").once("value").then(function (snap) { return snap.val() || {}; }).catch(function () { return {}; });
+    });
+  }
+  /* Every player's attempts (leaderboard stats). {} if rules block it. */
+  function fetchAllAttempts() {
+    return ready.then(function () {
+      if (!db) return {};
+      return db.ref("attempts").once("value").then(function (snap) { return snap.val() || {}; }).catch(function () { return {}; });
     });
   }
 
@@ -667,6 +746,9 @@
     fetchBoard: fetchBoard,
     fetchAll: fetchAll,
     fetchAttempts: fetchAttempts,
+    fetchSessions: fetchSessions,
+    fetchAllAttempts: fetchAllAttempts,
+    markStart: markStart,
     open: open,
     openModal: openModal,
     gameName: prettify

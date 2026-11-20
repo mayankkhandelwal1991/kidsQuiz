@@ -1,95 +1,148 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Balloon Pop</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#6ee7ff,#ff7ac6);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:440px;width:100%}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:14px}
-#area{position:relative;flex:1;min-height:320px;border-radius:18px;background:linear-gradient(180deg,#d9f6ff,#f0fcff);overflow:hidden}
-.b{position:absolute;font-size:44px;cursor:pointer;user-select:none;transition:transform .1s}
-.b:active{transform:scale(1.3)}
-.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.85);z-index:5}
-.overlay h2{color:#ff5a8a;font-size:24px}
-.overlay button{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:12px 36px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;margin-top:12px}
-.hidden{display:none}
-
-/* mobile fit */
-.wrap{display:flex;flex-direction:column;height:100%;max-height:820px}
-
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">⭐ <span id="score">0</span> &nbsp; ❤️ <span id="lives">3</span> &nbsp; 🏆 <span id="best">0</span></div>
-    <button onclick="start()">↻</button>
-  </div>
-  <div id="area">
-    <div class="overlay" id="overlay">
-      <h2 id="oTitle">🎈 Balloon Pop</h2>
-      <p style="color:#666;font-weight:600" id="oText">Pop balloons before they escape. Avoid the 💣!</p>
-      <button onclick="start()">▶ Start</button>
-    </div>
-  </div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const area=document.getElementById('area'),overlay=document.getElementById('overlay');
-const COLORS=['🎈','🟠','🟣','🔵'].map(()=>'🎈');
-let score,lives,spawnT,playing=false,best=+(localStorage.getItem('balloonBest')||0);
-document.getElementById('best').textContent=best;
-function start(){
-  [...area.querySelectorAll('.b')].forEach(b=>b.remove());
-  score=0;lives=3;playing=true;
-  document.getElementById('score').textContent=0;
-  document.getElementById('lives').textContent=3;
-  overlay.classList.add('hidden');
-  clearInterval(spawnT);
-  spawnT=setInterval(spawn,Math.max(500,900));
-  spawn();
+/* Balloon Pop — tap balloons before they float away. Gold = +5, heart = extra
+   life, animal riders parachute down (+3), bombs cost a life. */
+const THEMES = [
+  { icon: '🌞', name: 'Sunny', sky: ['#7dd3fc', '#e0f2fe'], hill: ['#86efac', '#4ade80'], night: false },
+  { icon: '🌅', name: 'Sunset', sky: ['#fb923c', '#fde68a'], hill: ['#f472b6', '#c026d3'], night: false },
+  { icon: '🌙', name: 'Night', sky: ['#1e1b4b', '#6d28d9'], hill: ['#312e81', '#1e1b4b'], night: true }
+];
+const COLORS = ['#ef4444', '#f97316', '#facc15', '#22c55e', '#3b82f6', '#a855f7', '#ec4899', '#14b8a6'];
+const RIDERS = ['🐶', '🐱', '🐰', '🐼', '🐸', '🐵'];
+const G = KQ3D.init({
+  id: 'balloon_pop', title: 'Balloon Pop', bestKey: 'balloonBest', music: true,
+  hero: ['🎈', '🌟', '💣'], colors: ['#ec4899', '#8b5cf6'],
+  how: [['👆', 'Tap balloons to pop them before they fly away'], ['🌟', 'Gold balloons = +5 points'], ['❤️', 'Heart balloons give an extra life'], ['💣', 'Don’t tap the bombs!']],
+  hud: [{ id: 'lives', icon: '❤️' }], scoreIcon: '🎈', stars: [30, 80, 150],
+  pick: { label: 'Pick the sky', options: THEMES },
+  onPick: (t) => { theme = t; },
+  onReset: (t) => reset(t)
+});
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+
+let theme = G.choice || THEMES[0], items = [], bits = [], floaters = [], clouds = [], starsBg = [];
+let score, lives, spawnT, elapsed, combo, comboT;
+for (let i = 0; i < 6; i++) clouds.push({ x: Math.random(), y: 0.08 + Math.random() * 0.4, s: 0.6 + Math.random() * 0.8, v: 0.004 + Math.random() * 0.01 });
+for (let i = 0; i < 60; i++) starsBg.push({ x: Math.random(), y: Math.random() * 0.7, r: Math.random() * 1.6 + 0.4, p: Math.random() * 6 });
+
+function reset(t) {
+  theme = t || THEMES[0]; items = []; bits = []; floaters = [];
+  score = 0; lives = 3; spawnT = 0; elapsed = 0; combo = 0; comboT = 0;
+  G.hudSet('lives', lives);
 }
-function spawn(){
-  if(!playing)return;
-  const b=document.createElement('div');
-  const isBomb=Math.random()<0.15;
-  b.className='b';b.textContent=isBomb?'💣':'🎈';
-  if(!isBomb)b.style.filter='hue-rotate('+Math.floor(Math.random()*360)+'deg)';
-  b.style.left=(10+Math.random()*80)+'%';
-  b.style.top=area.clientHeight+'px';
-  area.appendChild(b);
-  const speed=1.2+score*0.03+Math.random();
-  let y=area.clientHeight;
-  const mv=setInterval(()=>{
-    y-=speed*3;b.style.top=y+'px';
-    if(y<-50){
-      clearInterval(mv);b.remove();
-      if(!isBomb&&playing)loseLife();
+function spawn() {
+  const w = C.w, r = Math.max(26, Math.min(42, w * 0.075));
+  const roll = Math.random(), lvl = Math.min(1, elapsed / 90);
+  let type = 'normal';
+  if (roll < 0.08 + lvl * 0.07) type = 'bomb';
+  else if (roll < 0.16 + lvl * 0.07) type = 'gold';
+  else if (roll < 0.19 + lvl * 0.07 && lives < 5) type = 'heart';
+  else if (roll < 0.29 + lvl * 0.07) type = 'rider';
+  items.push({
+    type, r: type === 'bomb' ? r * 0.85 : r, x: r + Math.random() * (w - 2 * r), y: C.h + r * 2,
+    v: (80 + Math.random() * 50) * (1 + lvl * 1.2) * (type === 'gold' ? 1.35 : 1),
+    sw: Math.random() * 6, col: type === 'gold' ? '#facc15' : type === 'heart' ? '#f43f5e' : COLORS[Math.floor(Math.random() * COLORS.length)],
+    rider: RIDERS[Math.floor(Math.random() * RIDERS.length)]
+  });
+}
+function pop(it, i) {
+  items.splice(i, 1);
+  const n = it.type === 'bomb' ? 22 : 14;
+  for (let k = 0; k < n; k++) { const a = Math.random() * Math.PI * 2, s = 80 + Math.random() * 220; bits.push({ x: it.x, y: it.y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: 0.6, col: it.type === 'bomb' ? (k % 2 ? '#f97316' : '#1f2937') : it.col }); }
+  if (it.type === 'bomb') {
+    KQ3D.sfx('blast'); G.flash('#ef4444'); combo = 0; loseLife(); G.pop('💥 Oops!', it.x, it.y, '#fecaca'); return;
+  }
+  comboT = 1.1; combo++;
+  let pts = it.type === 'gold' ? 5 : it.type === 'rider' ? 3 : 1;
+  if (combo >= 5) pts *= 2;
+  score += pts; G.score(score);
+  KQ3D.sfx(it.type === 'gold' ? 'coin' : 'pop');
+  if (it.type === 'heart') { lives = Math.min(5, lives + 1); G.hudSet('lives', lives); KQ3D.sfx('chime'); G.pop('+1 ❤️', it.x, it.y, '#fecdd3'); }
+  else G.pop('+' + pts + (combo >= 5 ? ' combo!' : ''), it.x, it.y, it.type === 'gold' ? '#fde047' : '#fff');
+  if (combo === 5) KQ3D.sfx('levelup');
+  if (it.type === 'rider') floaters.push({ e: it.rider, x: it.x, y: it.y, t: 0 });
+}
+function loseLife() {
+  lives--; G.hudSet('lives', Math.max(0, lives));
+  if (lives <= 0) G.over({ score, title: 'Out of lives!', lines: ['⏱️ ' + Math.round(elapsed) + ' s'] });
+}
+G.scene.addEventListener('pointerdown', (e) => {
+  if (G.state !== 'play') return;
+  const r = C.cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  for (let i = items.length - 1; i >= 0; i--) {
+    const it = items[i];
+    if (Math.hypot(x - it.x, y - (it.y - it.r * 0.1)) < it.r * 1.25) { pop(it, i); return; }
+  }
+});
+
+function drawBalloon(it) {
+  const { x, y, r, col } = it;
+  const sway = Math.sin(it.sw) * 4;
+  // string
+  ctx.strokeStyle = 'rgba(60,60,60,.6)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x, y + r * 1.15);
+  ctx.quadraticCurveTo(x + sway * 3, y + r * 1.8, x - sway, y + r * 2.6); ctx.stroke();
+  if (it.type === 'bomb') { KQ3D.drawPic(ctx, '💣', x, y, r * 2.2, Math.sin(it.sw) * 0.2); return; }
+  const g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.45, r * 0.1, x, y, r * 1.2);
+  g.addColorStop(0, '#ffffff'); g.addColorStop(0.18, col); g.addColorStop(1, shade(col, -40));
+  ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(x, y, r, r * 1.18, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = shade(col, -30); ctx.beginPath(); ctx.moveTo(x - 5, y + r * 1.22); ctx.lineTo(x + 5, y + r * 1.22); ctx.lineTo(x, y + r * 1.1); ctx.fill();
+  if (it.type === 'gold') KQ3D.drawPic(ctx, '⭐', x, y, r * 1.0);
+  if (it.type === 'heart') KQ3D.drawPic(ctx, '❤️', x, y, r * 1.0);
+  if (it.type === 'rider') { ctx.fillStyle = '#a16207'; ctx.fillRect(x - r * 0.45, y + r * 2.4, r * 0.9, r * 0.45); KQ3D.drawPic(ctx, it.rider, x, y + r * 2.25, r * 0.95); }
+}
+function shade(hex, amt) {
+  const n = parseInt(hex.slice(1), 16), c = (v) => Math.max(0, Math.min(255, v + amt));
+  return 'rgb(' + c(n >> 16) + ',' + c((n >> 8) & 255) + ',' + c(n & 255) + ')';
+}
+function drawCloud(x, y, s) {
+  ctx.fillStyle = theme.night ? 'rgba(255,255,255,.12)' : 'rgba(255,255,255,.9)';
+  [[0, 0, 26], [24, -10, 22], [48, 0, 24], [24, 6, 24]].forEach(([dx, dy, r]) => { ctx.beginPath(); ctx.arc(x + dx * s, y + dy * s, r * s, 0, Math.PI * 2); ctx.fill(); });
+}
+function scene(t, dt) {
+  const w = C.w, h = C.h;
+  const sky = ctx.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, theme.sky[0]); sky.addColorStop(1, theme.sky[1]);
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
+  if (theme.night) { starsBg.forEach((s) => { ctx.globalAlpha = 0.5 + Math.sin(t / 500 + s.p) * 0.5; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(s.x * w, s.y * h, s.r, 0, 7); ctx.fill(); }); ctx.globalAlpha = 1; KQ3D.drawPic(ctx, '🌙', w * 0.8, h * 0.12, 70); }
+  else KQ3D.drawPic(ctx, '🌞', w * 0.82, h * 0.1, 80);
+  clouds.forEach((c) => { c.x += c.v * dt; if (c.x > 1.2) c.x = -0.3; drawCloud(c.x * w, c.y * h, c.s); });
+  [[0.82, theme.hill[0]], [0.9, theme.hill[1]]].forEach(([hy, col], k) => {
+    ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(0, h);
+    for (let x = 0; x <= w + 20; x += 20) ctx.lineTo(x, h * hy + Math.sin(x / (90 + k * 40) + k) * 18);
+    ctx.lineTo(w, h); ctx.fill();
+  });
+}
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  const playing = G.state === 'play';
+  scene(now, dt);
+  if (G.state === 'menu' && Math.random() < dt * 1.5) { spawn(); items[items.length - 1].type = 'normal'; }
+  if (playing) {
+    elapsed += dt; spawnT -= dt;
+    if (spawnT <= 0) { spawn(); spawnT = Math.max(0.38, 1.05 - elapsed / 110); }
+    comboT -= dt; if (comboT <= 0) combo = 0;
+  }
+  if (G.state !== 'pause') {
+    for (let i = items.length - 1; i >= 0; i--) {
+      const it = items[i]; it.y -= it.v * dt; it.sw += dt * 2; it.x += Math.sin(it.sw) * 12 * dt;
+      if (it.y < -it.r * 3) { items.splice(i, 1); if (playing && (it.type === 'normal' || it.type === 'rider' || it.type === 'gold')) { KQ3D.sfx('wrong'); combo = 0; loseLife(); } }
     }
-  },30);
-  b.onpointerdown=e=>{
-    e.preventDefault();
-    if(!playing)return;
-    clearInterval(mv);
-    if(isBomb){b.textContent='💥';setTimeout(()=>b.remove(),200);if(window.KQFX)KQFX.play('blast');loseLife();}
-    else{
-      b.textContent='✨';setTimeout(()=>b.remove(),150);
-      if(window.KQFX)KQFX.play('pop');
-      score++;document.getElementById('score').textContent=score;
-      if(score%10===0){clearInterval(spawnT);spawnT=setInterval(spawn,Math.max(400,900-score*20));}
-    }
-  };
+    for (let i = bits.length - 1; i >= 0; i--) { const b = bits[i]; b.life -= dt; b.vy += 500 * dt; b.x += b.vx * dt; b.y += b.vy * dt; if (b.life <= 0) bits.splice(i, 1); }
+    for (let i = floaters.length - 1; i >= 0; i--) { const f = floaters[i]; f.t += dt; f.y += 60 * dt; f.x += Math.sin(f.t * 3) * 30 * dt; if (f.y > C.h + 60) floaters.splice(i, 1); }
+  }
+  items.forEach(drawBalloon);
+  floaters.forEach((f) => { KQ3D.drawPic(ctx, '🪂', f.x, f.y - 34, 54); KQ3D.drawPic(ctx, f.e, f.x, f.y + 6, 36); });
+  bits.forEach((b) => { ctx.globalAlpha = Math.max(0, b.life / 0.6); ctx.fillStyle = b.col; ctx.fillRect(b.x - 4, b.y - 4, 8, 8); }); ctx.globalAlpha = 1;
+  if (playing && combo >= 3) { ctx.font = '800 22px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 4; const t = 'Combo x' + combo + (combo >= 5 ? ' 🔥' : ''); ctx.strokeText(t, C.w / 2, 96); ctx.fillText(t, C.w / 2, 96); }
 }
-function loseLife(){
-  lives--;document.getElementById('lives').textContent=lives;
-  if(lives<=0)end();
-}
-function end(){
-  playing=false;clearInterval(spawnT);if(window.KQFX)KQFX.lose();onGameComplete();
-  if(score>best){best=score;localStorage.setItem('balloonBest',best);document.getElementById('best').textContent=best;}
-  document.getElementById('oTitle').textContent='🎈 Score: '+score;
-  document.getElementById('oText').textContent='Great popping! Try again?';
-  overlay.classList.remove('hidden');
-}
-</script></body></html>
+reset(theme);
+requestAnimationFrame(frame);
+</script>
+</body></html>

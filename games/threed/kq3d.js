@@ -341,5 +341,36 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
     el.addEventListener('pointerup', function (e) { if (!done && st && Date.now() - st < 400) cb('tap', e); st = 0; });
   }
 
-  window.KQ3D = { init: init, renderer: renderer, emojiTexture: emojiTexture, emojiSprite: emojiSprite, emojiFile: emojiFile, toScreen: toScreen, swipe: swipe, sfx: sfx, ROOT: ROOT };
+  // ---- 2D canvas helpers (used by the arcade games)
+  var imgCache = {};
+  function img(e) {
+    if (imgCache[e]) return imgCache[e];
+    var im = new Image(); im.src = emojiFile(e); imgCache[e] = im; return im;
+  }
+  // draw an emoji picture centred at x,y with size s (falls back to text until loaded)
+  function drawPic(ctx, e, x, y, s, rot) {
+    var im = img(e);
+    ctx.save(); ctx.translate(x, y); if (rot) ctx.rotate(rot);
+    if (im.complete && im.naturalWidth) ctx.drawImage(im, -s / 2, -s / 2, s, s);
+    else { ctx.font = Math.round(s * 0.85) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(e, 0, s * 0.05); }
+    ctx.restore();
+  }
+  // full-size hi-DPI canvas inside el; returns {cv, ctx, w, h} kept up to date on resize
+  function canvas(el, onResize) {
+    var cv = document.createElement('canvas'); cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;touch-action:none';
+    el.appendChild(cv);
+    var o = { cv: cv, ctx: cv.getContext('2d'), w: 0, h: 0 };
+    function fit() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      o.w = el.clientWidth || innerWidth; o.h = el.clientHeight || innerHeight;
+      cv.width = Math.round(o.w * dpr); cv.height = Math.round(o.h * dpr);
+      o.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (onResize) onResize(o.w, o.h);
+    }
+    window.addEventListener('resize', fit); fit();
+    return o;
+  }
+  function roundRect(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+
+  window.KQ3D = { img: img, drawPic: drawPic, canvas: canvas, roundRect: roundRect, init: init, renderer: renderer, emojiTexture: emojiTexture, emojiSprite: emojiSprite, emojiFile: emojiFile, toScreen: toScreen, swipe: swipe, sfx: sfx, ROOT: ROOT };
 })();

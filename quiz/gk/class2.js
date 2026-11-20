@@ -28,10 +28,8 @@ registerQuiz("gk", 2, [
   { question: "Largest state by area?", answer: "Rajasthan", options: ["Rajasthan", "Maharashtra", "MP", "UP"] },
   { question: "Pink City of India?", answer: "Jaipur", options: ["Jaipur", "Udaipur", "Jodhpur", "Bikaner"] },
   { question: "Taj Mahal is in?", answer: "Agra", options: ["Agra", "Delhi", "Jaipur", "Lucknow"] },
-  { question: "How many planets in solar system?", answer: "8", options: ["8", "9", "7", "10"] },
   { question: "Largest planet?", answer: "Jupiter", options: ["Jupiter", "Saturn", "Earth", "Mars"] },
   { question: "Red planet?", answer: "Mars", options: ["Mars", "Venus", "Jupiter", "Saturn"] },
-  { question: "How many continents?", answer: "7", options: ["7", "5", "6", "8"] },
   { question: "Largest ocean?", answer: "Pacific", options: ["Pacific", "Atlantic", "Indian", "Arctic"] },
   { question: "How many colors in rainbow?", answer: "7", options: ["7", "5", "6", "8"] },
   { question: "Who is known as the 'Iron Man of India'?", answer: "Sardar Vallabhbhai Patel", options: ["Sardar Vallabhbhai Patel", "Mahatma Gandhi", "Jawaharlal Nehru", "Subhas Chandra Bose"] },
@@ -49,7 +47,6 @@ registerQuiz("gk", 2, [
   { question: "What is the highest civilian award in India?", answer: "Bharat Ratna", options: ["Bharat Ratna", "Padma Vibhushan", "Padma Bhushan", "Ashok Chakra"] },
   { question: "Which is the largest religion followed in India?", answer: "Hinduism", options: ["Hinduism", "Islam", "Christianity", "Sikhism"] },
   { question: "What is the national language spoken by most Indians?", answer: "Hindi", options: ["Hindi", "English", "Sanskrit", "Urdu"] },
-  { question: "What is the name of the parliament building in India?", answer: "Sansad Bhavan", options: ["Sansad Bhavan", "Rashtrapati Bhavan", "Red Fort", "India Gate"] },
   { question: "Where does the President of India live?", answer: "Rashtrapati Bhavan", options: ["Rashtrapati Bhavan", "Sansad Bhavan", "Red Fort", "India Gate"] },
   { question: "Which fort is famous for the Prime Minister's Independence Day speech?", answer: "Red Fort", options: ["Red Fort", "Amber Fort", "Golkonda Fort", "Gwalior Fort"] },
   { question: "Which gate in Delhi honors soldiers who died in World War I?", answer: "India Gate", options: ["India Gate", "Red Fort", "Gateway of India", "Lahore Gate"] },
@@ -59,23 +56,15 @@ registerQuiz("gk", 2, [
   { question: "Which is the largest state in India by population?", answer: "Uttar Pradesh", options: ["Uttar Pradesh", "Maharashtra", "Bihar", "West Bengal"] },
   { question: "Which is the smallest state in India by area?", answer: "Goa", options: ["Goa", "Sikkim", "Tripura", "Kerala"] },
   { question: "What is the name of India's space research organisation?", answer: "ISRO", options: ["ISRO", "NASA", "DRDO", "CSIR"] },
-  { question: "What is the name of the first satellite launched by India?", answer: "Aryabhata", options: ["Aryabhata", "Chandrayaan", "Mangalyaan", "INSAT"] },
-  { question: "How many planets are there in our solar system?", answer: "8", options: ["8", "7", "9", "10"] },
-  { question: "Which is the largest planet in our solar system?", answer: "Jupiter", options: ["Jupiter", "Saturn", "Earth", "Mars"] },
-  { question: "Which is the smallest planet in our solar system?", answer: "Mercury", options: ["Mercury", "Mars", "Venus", "Pluto"] },
   { question: "Which planet is known as the Red Planet?", answer: "Mars", options: ["Mars", "Venus", "Jupiter", "Mercury"] },
   { question: "Which planet is closest to the Sun?", answer: "Mercury", options: ["Mercury", "Venus", "Earth", "Mars"] },
   { question: "Which planet is known for its beautiful rings?", answer: "Saturn", options: ["Saturn", "Jupiter", "Uranus", "Neptune"] },
-  { question: "Which is the hottest planet in our solar system?", answer: "Venus", options: ["Venus", "Mercury", "Mars", "Jupiter"] },
-  { question: "What do we call a group of stars forming a shape?", answer: "Constellation", options: ["Constellation", "Galaxy", "Nebula", "Orbit"] },
-  { question: "What is the name of our galaxy?", answer: "Milky Way", options: ["Milky Way", "Andromeda", "Solar System", "Universe"] },
   { question: "How many colors are there in a rainbow?", answer: "7", options: ["7", "5", "6", "8"] },
   { question: "What is the boiling point of water in Celsius?", answer: "100°C", options: ["100°C", "0°C", "50°C", "212°C"] },
   { question: "What is the freezing point of water in Celsius?", answer: "0°C", options: ["0°C", "100°C", "32°C", "-10°C"] },
   { question: "What gas do we breathe in to live?", answer: "Oxygen", options: ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"] },
   { question: "What gas do we breathe out?", answer: "Carbon dioxide", options: ["Carbon dioxide", "Oxygen", "Nitrogen", "Hydrogen"] },
   { question: "What is the chemical formula for water?", answer: "H2O", options: ["H2O", "CO2", "O2", "NaCl"] },
-  { question: "What do plants make their food using?", answer: "Photosynthesis", options: ["Photosynthesis", "Digestion", "Respiration", "Excretion"] },
   { question: "What part of the plant absorbs water from soil?", answer: "Roots", options: ["Roots", "Leaves", "Flowers", "Stem"] },
   { question: "What part of the plant makes food?", answer: "Leaves", options: ["Leaves", "Roots", "Flowers", "Stem"] },
   { question: "How many bones are there in an adult human body?", answer: "206", options: ["206", "200", "210", "250"] },
@@ -112,15 +101,6 @@ registerQuiz("gk", 2, [
   { question: "What is the name of India's tricolor's top band color?", answer: "Saffron", options: ["Saffron", "White", "Green", "Blue"] },
   { question: "What is the name of India's tricolor's bottom band color?", answer: "Green", options: ["Green", "White", "Saffron", "Blue"] },
   { question: "What is the color of the middle band of the Indian flag?", answer: "White", options: ["White", "Saffron", "Green", "Blue"] },
-
   { question: "Which shape has 5 sides?", answer: "Pentagon", options: ["Pentagon", "Hexagon", "Square", "Triangle"] },
   { question: "Which shape has 6 sides?", answer: "Hexagon", options: ["Hexagon", "Pentagon", "Square", "Octagon"] },
-
-
-
-
-
-
-
-
 ]);

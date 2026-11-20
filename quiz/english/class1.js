@@ -62,10 +62,6 @@ registerQuiz("english", 1, [
   { question: "Is 'B' a vowel or a consonant?", answer: "Consonant", options: ["Consonant", "Vowel", "Neither", "Both"] },
   { question: "Which of these is a vowel: E or T?", answer: "E", options: ["E", "T", "Both", "Neither"] },
   { question: "Which of these is a vowel: I or K?", answer: "I", options: ["I", "K", "Both", "Neither"] },
-  { question: "What do we call a word that names a person, place, or thing?", answer: "Noun", options: ["Noun", "Verb", "Adjective", "Pronoun"] },
-  { question: "What do we call a word that shows action, like 'run' or 'jump'?", answer: "Verb", options: ["Verb", "Noun", "Adjective", "Pronoun"] },
-
-
   { question: "Which letter comes after D?", answer: "E", options: ["E", "F", "C", "G"] },
   { question: "Which letter comes after K?", answer: "L", options: ["L", "M", "J", "N"] },
   { question: "How many letters are there in the word 'FISH'?", answer: "4", options: ["4", "3", "5", "2"] },
@@ -83,287 +79,27 @@ registerQuiz("english", 1, [
   { question: "Which word means the same as 'fast'?", answer: "Quick", options: ["Quick", "Slow", "Lazy", "Still"] },
   { question: "Is 'O' a vowel or a consonant?", answer: "Vowel", options: ["Vowel", "Consonant", "Neither", "Both"] },
   { question: "Is 'M' a vowel or a consonant?", answer: "Consonant", options: ["Consonant", "Vowel", "Neither", "Both"] },
-  { question: "What do we call a word that describes a noun, like 'big' or 'red'?", answer: "Adjective", options: ["Adjective", "Verb", "Noun", "Pronoun"] },
-  { question: "What do we call words like 'he', 'she', and 'it' that replace nouns?", answer: "Pronoun", options: ["Pronoun", "Verb", "Adjective", "Noun"] },
-
-
-  { question: "What punctuation mark do we put at the end of a question?", answer: "Question mark (?)", options: ["Question mark (?)", "Period (.)", "Comma (,)", "Exclamation mark (!)"] },
-  { question: "What punctuation mark do we put at the end of a normal sentence?", answer: "Period/Full stop (.)", options: ["Period/Full stop (.)", "Question mark (?)", "Comma (,)", "Exclamation mark (!)"] },
-  { question: "What punctuation mark shows strong feeling, like excitement?", answer: "Exclamation mark (!)", options: ["Exclamation mark (!)", "Period (.)", "Comma (,)", "Question mark (?)"] },
-  { question: "What do we call the first word of a sentence, which should start with a capital letter?", answer: "Capitalized word", options: ["Capitalized word", "Lowercase word", "Bold word", "Underlined word"] },
-  { question: "What is the name we give to ourselves that starts with a capital letter?", answer: "Proper noun (name)", options: ["Proper noun (name)", "Common noun", "Verb", "Adjective"] },
-
-
-
-  { question: "What do we call more than one of something, like 'cats' instead of 'cat'?", answer: "Plural", options: ["Plural", "Singular", "Verb", "Adjective"] },
-  { question: "What do we call just one of something, like 'cat' instead of 'cats'?", answer: "Singular", options: ["Singular", "Plural", "Verb", "Adjective"] },
   { question: "What word do we add to the end of most nouns to make them plural?", answer: "-s", options: ["-s", "-ing", "-ed", "-er"] },
   { question: "Which word rhymes with 'cat'?", answer: "Hat", options: ["Hat", "Dog", "Sun", "Bird"] },
   { question: "Which word rhymes with 'sun'?", answer: "Fun", options: ["Fun", "Sky", "Book", "Tree"] },
-
-
-
-
   { question: "Which word rhymes with 'tree'?", answer: "Bee", options: ["Bee", "Cup", "Ball", "Star"] },
   { question: "Which word rhymes with 'ball'?", answer: "Tall", options: ["Tall", "Cup", "Bee", "Star"] },
   { question: "What is the plural of 'apple'?", answer: "apples", options: ["apples", "applies", "appels", "apple's"] },
   { question: "What is the plural of 'book'?", answer: "books", options: ["books", "bookes", "bookies", "book's"] },
   { question: "What is the plural of 'toy'?", answer: "toys", options: ["toys", "toies", "toyes", "toy's"] },
-
-
-
-
-
   { question: "What is the plural of 'ball'?", answer: "balls", options: ["balls", "ballies", "balles", "ball's"] },
   { question: "What is the plural of 'bird'?", answer: "birds", options: ["birds", "birdies", "birdes", "bird's"] },
   { question: "Which of these words means to move fast on your legs?", answer: "Run", options: ["Run", "Sit", "Sleep", "Eat"] },
   { question: "Which of these words means to take food into your mouth and swallow?", answer: "Eat", options: ["Eat", "Run", "Sit", "Jump"] },
   { question: "Which of these words means to look at something with your eyes?", answer: "See", options: ["See", "Hear", "Smell", "Taste"] },
-
-
-
-
-
-
   { question: "Which of these words means to use your ears to notice sound?", answer: "Hear", options: ["Hear", "See", "Smell", "Taste"] },
   { question: "Which of these words means to use your nose to notice something?", answer: "Smell", options: ["Smell", "See", "Hear", "Taste"] },
   { question: "What do we call it when we say 'good morning' to greet someone?", answer: "Greeting", options: ["Greeting", "Question", "Command", "Exclamation"] },
   { question: "What do we say when we want to be polite and ask for something?", answer: "Please", options: ["Please", "Now", "Quick", "Stop"] },
   { question: "What do we say after someone helps us or gives us something?", answer: "Thank you", options: ["Thank you", "Please", "Sorry", "Hello"] },
-
-
-
-
-
-
-
   { question: "What do we say when we accidentally bump into someone?", answer: "Sorry", options: ["Sorry", "Thanks", "Hello", "Bye"] },
   { question: "What do we say when we meet someone for the first time in the day?", answer: "Hello", options: ["Hello", "Bye", "Sorry", "Please"] },
-  { question: "What do we say when we leave and say goodbye?", answer: "Bye/Goodbye", options: ["Bye/Goodbye", "Hello", "Sorry", "Please"] },
+  { question: "What do we say when we leave and say goodbye?", answer: "Bye", options: ["Bye", "Hello", "Sorry", "Please"] },
   { question: "Which word means a place where we sleep at night?", answer: "Bed", options: ["Bed", "Chair", "Table", "Door"] },
   { question: "Which word means a place where we sit?", answer: "Chair", options: ["Chair", "Bed", "Table", "Door"] },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ]);

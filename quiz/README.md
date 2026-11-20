@@ -1,5 +1,17 @@
 # Quiz questions — how to edit
 
+> **Class-wise content (NCERT based).** Class 3–5 of every subject, and
+> Class 1–2 of Science, Human Body, Space, Geography and Computers, are
+> generated from the banks in `tools/ncert-banks/<subject>.txt`
+> (one line per question: `question | correct | wrong | wrong | wrong`).
+> Edit the bank, then run:
+> ```bash
+> node tools/build-ncert-banks.js && node tools/build-quizzes.js
+> ```
+> Every 10 questions in a class = 1 more paper in the app.
+> `tools/clean-quiz-content.js` checks/cleans the other class files
+> (duplicate options, muddled answers, above-level topics, repeats).
+
 > **Heads up — the app now reads questions from `data/quizzes.json`, not from
 > these files directly.** These per-subject files are kept as a friendly way to
 > edit. After changing anything here, recompile the manifest:

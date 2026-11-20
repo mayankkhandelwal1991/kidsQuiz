@@ -34,7 +34,7 @@ registerQuiz("history", 2, [
   { question: "Mughal empire founded by?", answer: "Babur", options: ["Babur", "Akbar", "Humayun", "Shah Jahan"] },
   { question: "Battle of Plassey year?", answer: "1757", options: ["1757", "1857", "1707", "1657"] },
   { question: "First War of Independence?", answer: "1857", options: ["1857", "1757", "1947", "1942"] },
-  { question: "Who built the Qutub Minar?", answer: "Qutb-ud-din Aibak (started it)", options: ["Qutb-ud-din Aibak (started it)", "Shah Jahan", "Akbar", "Babur"] },
+  { question: "Who built the Qutub Minar?", answer: "Qutb-ud-din Aibak", options: ["Qutb-ud-din Aibak", "Shah Jahan", "Akbar", "Babur"] },
   { question: "Which city is the Qutub Minar located in?", answer: "Delhi", options: ["Delhi", "Agra", "Jaipur", "Hyderabad"] },
   { question: "Who built the Charminar?", answer: "Muhammad Quli Qutb Shah", options: ["Muhammad Quli Qutb Shah", "Shah Jahan", "Akbar", "Tipu Sultan"] },
   { question: "Which city is the Charminar located in?", answer: "Hyderabad", options: ["Hyderabad", "Delhi", "Agra", "Mysore"] },
@@ -55,20 +55,18 @@ registerQuiz("history", 2, [
   { question: "Who was the first woman Prime Minister of India?", answer: "Indira Gandhi", options: ["Indira Gandhi", "Sarojini Naidu", "Pratibha Patil", "Sonia Gandhi"] },
   { question: "Who was the first woman President of India?", answer: "Pratibha Patil", options: ["Pratibha Patil", "Indira Gandhi", "Sarojini Naidu", "Droupadi Murmu"] },
   { question: "Which trading company first came to India for trade and later took control?", answer: "East India Company", options: ["East India Company", "Dutch Company", "French Company", "Portuguese Company"] },
-  { question: "From which country did the East India Company come?", answer: "Britain (England)", options: ["Britain (England)", "France", "Portugal", "Netherlands"] },
+  { question: "From which country did the East India Company come?", answer: "Britain", options: ["Britain", "France", "Portugal", "Netherlands"] },
   { question: "Which European explorer first sailed to India by sea route?", answer: "Vasco da Gama", options: ["Vasco da Gama", "Christopher Columbus", "Marco Polo", "Ferdinand Magellan"] },
   { question: "Which country did Vasco da Gama come from?", answer: "Portugal", options: ["Portugal", "Spain", "England", "France"] },
-  { question: "Which Indian city did Vasco da Gama land in?", answer: "Calicut (Kozhikode)", options: ["Calicut (Kozhikode)", "Mumbai", "Chennai", "Goa"] },
+  { question: "Which Indian city did Vasco da Gama land in?", answer: "Calicut", options: ["Calicut", "Mumbai", "Chennai", "Goa"] },
   { question: "Which state in India was ruled by the Portuguese for a long time?", answer: "Goa", options: ["Goa", "Kerala", "Tamil Nadu", "Gujarat"] },
-  { question: "Which city in India was a French colony?", answer: "Puducherry (Pondicherry)", options: ["Puducherry (Pondicherry)", "Goa", "Mumbai", "Chennai"] },
+  { question: "Which city in India was a French colony?", answer: "Puducherry", options: ["Puducherry", "Goa", "Mumbai", "Chennai"] },
   { question: "What do we call soldiers of the East India Company's army who rebelled in 1857?", answer: "Sepoys", options: ["Sepoys", "Sardars", "Nawabs", "Rajas"] },
   { question: "Which sepoy is famous for starting the revolt of 1857 in Meerut?", answer: "Mangal Pandey", options: ["Mangal Pandey", "Bahadur Shah Zafar", "Tantia Tope", "Nana Sahib"] },
   { question: "Who was the last Mughal emperor, involved in the 1857 revolt?", answer: "Bahadur Shah Zafar", options: ["Bahadur Shah Zafar", "Aurangzeb", "Shah Jahan", "Akbar"] },
-
   { question: "Which Indian king is famous for spreading Buddhism after a bloody war?", answer: "Ashoka", options: ["Ashoka", "Chandragupta Maurya", "Akbar", "Harsha"] },
   { question: "Which war made Ashoka turn to peace and Buddhism?", answer: "Kalinga War", options: ["Kalinga War", "Panipat War", "Plassey War", "Mahabharata War"] },
   { question: "Which ancient Indian empire built the first big unified kingdom in India?", answer: "Mauryan Empire", options: ["Mauryan Empire", "Gupta Empire", "Mughal Empire", "Maratha Empire"] },
-  { question: "Who was Chandragupta Maurya's clever teacher and advisor?", answer: "Chanakya", options: ["Chanakya", "Chanakya", "Ashoka", "Bindusara"] },
   { question: "Which Mughal ruler is remembered for his fair rule and 'Navratnas' (nine gems)?", answer: "Akbar", options: ["Akbar", "Babur", "Humayun", "Shah Jahan"] },
   { question: "Who was Akbar's clever and witty minister known for wise stories?", answer: "Birbal", options: ["Birbal", "Tansen", "Todar Mal", "Man Singh"] },
   { question: "Who was the famous musician in Akbar's court?", answer: "Tansen", options: ["Tansen", "Birbal", "Todar Mal", "Man Singh"] },
@@ -90,84 +88,23 @@ registerQuiz("history", 2, [
   { question: "Who was Jahangir's powerful and influential wife?", answer: "Nur Jahan", options: ["Nur Jahan", "Mumtaz Mahal", "Jodha Bai", "Razia Sultana"] },
   { question: "Who was Akbar's Hindu Rajput wife, a queen of great importance in his court?", answer: "Jodha Bai", options: ["Jodha Bai", "Nur Jahan", "Mumtaz Mahal", "Razia Sultana"] },
   { question: "Which Mughal emperor was known for his strict rule and expanding the empire greatly?", answer: "Aurangzeb", options: ["Aurangzeb", "Akbar", "Babur", "Humayun"] },
-
-
-  { question: "Which Mughal garden city did Jahangir love, known for beautiful Mughal gardens?", answer: "Srinagar (Kashmir)", options: ["Srinagar (Kashmir)", "Agra", "Delhi", "Lahore"] },
+  { question: "Which Mughal garden city did Jahangir love, known for beautiful Mughal gardens?", answer: "Srinagar", options: ["Srinagar", "Agra", "Delhi", "Lahore"] },
   { question: "Which two cities did the ancient Indus Valley civilisation's main sites include?", answer: "Harappa and Mohenjo-daro", options: ["Harappa and Mohenjo-daro", "Delhi and Agra", "Patna and Varanasi", "Mumbai and Pune"] },
   { question: "What ancient Indian civilization had well-planned cities with drainage systems?", answer: "Indus Valley Civilisation", options: ["Indus Valley Civilisation", "Vedic Civilisation", "Mauryan Civilisation", "Gupta Civilisation"] },
-
-
-
   { question: "Which Mughal emperor's name means 'tiger' and founded the empire after defeating Ibrahim Lodi?", answer: "Babur", options: ["Babur", "Akbar", "Humayun", "Aurangzeb"] },
   { question: "Who succeeded Babur but temporarily lost the empire before regaining it?", answer: "Humayun", options: ["Humayun", "Akbar", "Jahangir", "Shah Jahan"] },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   { question: "Which fort in Rajasthan is known as one of the largest forts in India?", answer: "Chittorgarh Fort", options: ["Chittorgarh Fort", "Amber Fort", "Red Fort", "Gwalior Fort"] },
   { question: "Which fort in Madhya Pradesh is famous and historic?", answer: "Gwalior Fort", options: ["Gwalior Fort", "Chittorgarh Fort", "Amber Fort", "Red Fort"] },
-  { question: "Who built the Golden Temple in Amritsar?", answer: "Guru Ram Das (founded the city) and Guru Arjan Dev (built temple)", options: ["Guru Ram Das (founded the city) and Guru Arjan Dev (built temple)", "Guru Nanak", "Guru Gobind Singh", "Maharaja Ranjit Singh alone"] },
   { question: "Which Sikh ruler is remembered for his powerful kingdom in Punjab?", answer: "Maharaja Ranjit Singh", options: ["Maharaja Ranjit Singh", "Guru Gobind Singh", "Guru Nanak", "Guru Arjan Dev"] },
   { question: "What is the famous stepwell in Gujarat, a UNESCO site, called?", answer: "Rani ki Vav", options: ["Rani ki Vav", "Hawa Mahal", "Amber Fort", "Charminar"] },
   { question: "Which ancient Indian university town is now in ruins in Bihar, famous for Buddhist learning?", answer: "Nalanda", options: ["Nalanda", "Takshashila", "Vikramshila", "Somapura"] },
   { question: "Which great Indian king is remembered for spreading Buddhism to other countries?", answer: "Ashoka", options: ["Ashoka", "Chandragupta Maurya", "Akbar", "Harsha"] },
   { question: "Which country did Ashoka send his children to spread Buddhism?", answer: "Sri Lanka", options: ["Sri Lanka", "China", "Japan", "Nepal"] },
   { question: "Which ancient Indian ruler is famous for defeating the Greek general Seleucus?", answer: "Chandragupta Maurya", options: ["Chandragupta Maurya", "Ashoka", "Bindusara", "Samudragupta"] },
-  { question: "What do we call the old trade route connecting India, China and other regions?", answer: "Silk Route", options: ["Silk Route", "Spice Route only", "Grand Trunk Road", "Amber Trail"] },
-  { question: "Which old road connected Kolkata to Peshawar, built and improved over centuries?", answer: "Grand Trunk Road", options: ["Grand Trunk Road", "Silk Route", "Golden Quadrilateral", "National Highway 1 only"] },
   { question: "Who improved the Grand Trunk Road significantly during Sher Shah Suri's rule?", answer: "Sher Shah Suri", options: ["Sher Shah Suri", "Akbar", "Babur", "Humayun"] },
   { question: "Which ruler briefly took the Mughal throne from Humayun?", answer: "Sher Shah Suri", options: ["Sher Shah Suri", "Akbar", "Babur", "Aurangzeb"] },
-  { question: "What did old Indian kingdoms trade with other countries, besides spices?", answer: "Cotton, silk, and gems", options: ["Cotton, silk, and gems", "Only oil", "Only plastic", "Only machines"] },
-  { question: "What do we call people who traveled long distances to trade goods in ancient times?", answer: "Traders / Merchants", options: ["Traders / Merchants", "Soldiers", "Farmers", "Priests only"] },
   { question: "Who was the wife of Shah Jahan, in whose memory the Taj Mahal was built?", answer: "Mumtaz Mahal", options: ["Mumtaz Mahal", "Nur Jahan", "Jodha Bai", "Razia Sultana"] },
   { question: "How many years did it take to build the Taj Mahal roughly?", answer: "About 22 years", options: ["About 22 years", "2 years", "100 years", "5 years"] },
   { question: "What material is the Taj Mahal mainly made of?", answer: "White marble", options: ["White marble", "Red sandstone", "Granite", "Brick"] },
   { question: "Which fort is built of red sandstone in Delhi, giving it its name?", answer: "Red Fort", options: ["Red Fort", "Taj Mahal", "Qutub Minar", "Hawa Mahal"] },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ]);

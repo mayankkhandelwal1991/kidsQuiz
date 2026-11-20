@@ -78,7 +78,7 @@ registerQuiz("gk", 1, [
   { question: "Which part of the body do we use to taste?", answer: "Tongue", options: ["Tongue", "Nose", "Ears", "Eyes"] },
   { question: "What do we use to write on paper?", answer: "Pen", options: ["Pen", "Spoon", "Fork", "Comb"] },
   { question: "What do we use to cut paper?", answer: "Scissors", options: ["Scissors", "Pen", "Spoon", "Comb"] },
-  { question: "What do we use to eat food with in most Indian homes?", answer: "Hand or spoon", options: ["Hand or spoon", "Scissors", "Comb", "Brush"] },
+  { question: "What do we use to eat food with in most Indian homes?", answer: "Hand", options: ["Hand", "Scissors", "Comb", "Brush"] },
   { question: "What is our national flower?", answer: "Lotus", options: ["Lotus", "Rose", "Sunflower", "Marigold"] },
   { question: "What is our national animal?", answer: "Tiger", options: ["Tiger", "Lion", "Elephant", "Peacock"] },
   { question: "What is our national bird?", answer: "Peacock", options: ["Peacock", "Parrot", "Sparrow", "Eagle"] },
@@ -94,7 +94,6 @@ registerQuiz("gk", 1, [
   { question: "On which day do we celebrate Republic Day?", answer: "26 January", options: ["26 January", "15 August", "2 October", "14 November"] },
   { question: "On which day was Mahatma Gandhi born?", answer: "2 October", options: ["2 October", "15 August", "26 January", "14 November"] },
   { question: "On which day do we celebrate Children's Day in India?", answer: "14 November", options: ["14 November", "15 August", "26 January", "5 September"] },
-  { question: "What season comes after summer in India?", answer: "Monsoon", options: ["Monsoon", "Winter", "Spring", "Autumn"] },
   { question: "What do plants need to grow, besides water and sunlight?", answer: "Air", options: ["Air", "Sand", "Salt", "Plastic"] },
   { question: "What do we call baby plants that just started growing?", answer: "Seedling", options: ["Seedling", "Sapling", "Sprout", "Bud"] },
   { question: "What is the source of light and heat for the Earth?", answer: "The Sun", options: ["The Sun", "The Moon", "Stars", "Clouds"] },
@@ -113,9 +112,4 @@ registerQuiz("gk", 1, [
   { question: "How many items are there in a dozen?", answer: "12", options: ["12", "10", "6", "20"] },
   { question: "What do we call a group of 100 years?", answer: "Century", options: ["Century", "Decade", "Millennium", "Era"] },
   { question: "What do we call a group of 10 years?", answer: "Decade", options: ["Decade", "Century", "Millennium", "Era"] },
-
-
-
-
-
 ]);

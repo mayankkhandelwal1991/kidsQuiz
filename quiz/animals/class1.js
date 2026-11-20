@@ -37,14 +37,13 @@ registerQuiz("animals", 1, [
   { question: "What animal says 'oink'?", answer: "Pig", options: ["Pig", "Cow", "Sheep", "Horse"] },
   { question: "What animal says 'neigh'?", answer: "Horse", options: ["Horse", "Cow", "Pig", "Sheep"] },
   { question: "What animal says 'quack'?", answer: "Duck", options: ["Duck", "Hen", "Goose", "Crow"] },
-  { question: "What animal says 'cluck' or 'cock-a-doodle-doo'?", answer: "Rooster/Hen", options: ["Rooster/Hen", "Duck", "Goose", "Owl"] },
+  { question: "What animal says 'cluck' or 'cock-a-doodle-doo'?", answer: "Rooster", options: ["Rooster", "Duck", "Goose", "Owl"] },
   { question: "What animal says 'roar'?", answer: "Lion", options: ["Lion", "Cat", "Dog", "Cow"] },
   { question: "What animal says 'hoot'?", answer: "Owl", options: ["Owl", "Parrot", "Crow", "Sparrow"] },
   { question: "What animal says 'caw'?", answer: "Crow", options: ["Crow", "Owl", "Parrot", "Sparrow"] },
   { question: "What animal has a long neck and eats leaves from tall trees?", answer: "Giraffe", options: ["Giraffe", "Elephant", "Zebra", "Camel"] },
   { question: "What animal is black and white and lives in China, eating bamboo?", answer: "Panda", options: ["Panda", "Zebra", "Penguin", "Cow"] },
   { question: "What animal hops using strong back legs and carries babies in a pouch?", answer: "Kangaroo", options: ["Kangaroo", "Rabbit", "Frog", "Deer"] },
-  { question: "What sea animal is very large and breathes air, not a fish?", answer: "Whale", options: ["Whale", "Shark", "Octopus", "Dolphin only"] },
   { question: "What animal has eight legs and makes webs?", answer: "Spider", options: ["Spider", "Ant", "Bee", "Butterfly"] },
   { question: "What small animal has six legs and lives in colonies, working together?", answer: "Ant", options: ["Ant", "Spider", "Snail", "Worm"] },
   { question: "What insect flies and makes honey?", answer: "Bee", options: ["Bee", "Butterfly", "Ant", "Fly"] },
@@ -62,9 +61,6 @@ registerQuiz("animals", 1, [
   { question: "What furry gray animal from Australia sleeps in trees and eats eucalyptus?", answer: "Koala", options: ["Koala", "Panda", "Kangaroo", "Sloth"] },
   { question: "What black and white bird cannot fly but swims very well in cold water?", answer: "Penguin", options: ["Penguin", "Ostrich", "Duck", "Swan"] },
   { question: "What tall bird cannot fly but runs very fast?", answer: "Ostrich", options: ["Ostrich", "Penguin", "Peacock", "Duck"] },
-  { question: "What reptile has no legs and slithers on the ground?", answer: "Snake", options: ["Snake", "Lizard", "Turtle", "Crocodile"] },
-  { question: "What green reptile lives in water and has sharp teeth?", answer: "Crocodile", options: ["Crocodile", "Lizard", "Snake", "Turtle"] },
-
   { question: "What pet animal loves to chase its tail and bark?", answer: "Dog", options: ["Dog", "Cat", "Fish", "Bird"] },
   { question: "What pet animal likes to sleep a lot and purrs?", answer: "Cat", options: ["Cat", "Dog", "Fish", "Bird"] },
   { question: "What small pet lives in a cage and loves seeds?", answer: "Parrot", options: ["Parrot", "Fish", "Cat", "Dog"] },
@@ -83,25 +79,18 @@ registerQuiz("animals", 1, [
   { question: "What jungle animal is called the King of the Jungle?", answer: "Lion", options: ["Lion", "Tiger", "Elephant", "Bear"] },
   { question: "What animal has a long tail and loves to swing from trees?", answer: "Monkey", options: ["Monkey", "Elephant", "Lion", "Rabbit"] },
   { question: "What animal is orange with black spots, related to lions and tigers?", answer: "Leopard", options: ["Leopard", "Tiger", "Cheetah", "Jaguar"] },
-  { question: "What long-legged bird stands in water on one leg often?", answer: "Flamingo/Stork", options: ["Flamingo/Stork", "Peacock", "Sparrow", "Owl"] },
-  { question: "What animal has a shell we sometimes see on the beach that used to have a hermit crab in it?", answer: "Seashell (from sea creatures)", options: ["Seashell (from sea creatures)", "Coconut", "Rock", "Coral"] },
-
-
+  { question: "What long-legged bird stands in water on one leg often?", answer: "Flamingo", options: ["Flamingo", "Peacock", "Sparrow", "Owl"] },
+  { question: "What animal has a shell we sometimes see on the beach that used to have a hermit crab in it?", answer: "Seashell", options: ["Seashell", "Coconut", "Rock", "Coral"] },
   { question: "What animal has black and white stripes and looks like a horse?", answer: "Zebra", options: ["Zebra", "Horse", "Donkey", "Deer"] },
   { question: "What animal has a very long neck used to reach tall tree leaves?", answer: "Giraffe", options: ["Giraffe", "Elephant", "Camel", "Zebra"] },
   { question: "What furry animal has a bushy tail and loves to eat nuts?", answer: "Squirrel", options: ["Squirrel", "Rabbit", "Cat", "Dog"] },
   { question: "What small animal has long ears and hops around, often kept as a pet?", answer: "Rabbit", options: ["Rabbit", "Squirrel", "Hamster", "Mouse"] },
-  { question: "What animal lives underground and has big front teeth for digging?", answer: "Mole/Rabbit", options: ["Mole/Rabbit", "Bird", "Fish", "Cat"] },
+  { question: "What animal lives underground and has big front teeth for digging?", answer: "Mole", options: ["Mole", "Bird", "Fish", "Cat"] },
   { question: "What tiny gray animal is often afraid of cats?", answer: "Mouse", options: ["Mouse", "Rabbit", "Squirrel", "Hamster"] },
-  { question: "What large bird of prey has excellent eyesight and sharp claws?", answer: "Eagle", options: ["Eagle", "Sparrow", "Duck", "Hen"] },
   { question: "What water bird has a wide flat beak and waddles when it walks?", answer: "Duck", options: ["Duck", "Eagle", "Sparrow", "Crow"] },
   { question: "What white bird is known for its long neck and graceful swimming?", answer: "Swan", options: ["Swan", "Duck", "Goose", "Crow"] },
   { question: "What insect glows in the dark at night?", answer: "Firefly", options: ["Firefly", "Butterfly", "Ant", "Bee"] },
-
-
-
   { question: "What animal has a long pink tongue used to catch ants?", answer: "Anteater", options: ["Anteater", "Elephant", "Giraffe", "Camel"] },
-  { question: "What animal rolls into a tight ball with sharp spikes when scared?", answer: "Hedgehog/Porcupine", options: ["Hedgehog/Porcupine", "Rabbit", "Squirrel", "Turtle only"] },
   { question: "What black and white sea bird cannot fly but is a great swimmer?", answer: "Penguin", options: ["Penguin", "Duck", "Swan", "Ostrich"] },
   { question: "What animal lives in the Arctic and has thick white fur?", answer: "Polar bear", options: ["Polar bear", "Brown bear", "Panda", "Koala"] },
   { question: "What large black and white animal lives in bamboo forests?", answer: "Panda", options: ["Panda", "Zebra", "Cow", "Penguin"] },
@@ -110,10 +99,6 @@ registerQuiz("animals", 1, [
   { question: "What furry pet likes to run on a wheel in its cage?", answer: "Hamster", options: ["Hamster", "Rabbit", "Cat", "Dog"] },
   { question: "What animal barks and helps guard our house?", answer: "Dog", options: ["Dog", "Cat", "Bird", "Fish"] },
   { question: "What animal meows and loves to chase mice?", answer: "Cat", options: ["Cat", "Dog", "Bird", "Fish"] },
-
-
-
-
   { question: "What animal has big round eyes and hunts at night, hooting loudly?", answer: "Owl", options: ["Owl", "Eagle", "Crow", "Sparrow"] },
   { question: "What water animal has a fin and swims fast in the ocean, sometimes with sharp teeth?", answer: "Shark", options: ["Shark", "Dolphin", "Whale", "Octopus"] },
   { question: "What smart, friendly water animal is known for jumping and playing?", answer: "Dolphin", options: ["Dolphin", "Shark", "Whale", "Octopus"] },
@@ -123,64 +108,4 @@ registerQuiz("animals", 1, [
   { question: "What animal has fluffy white or brown wool covering its body?", answer: "Sheep", options: ["Sheep", "Goat", "Cow", "Pig"] },
   { question: "What animal lays eggs, has feathers, and gives us eggs to eat on farms?", answer: "Hen", options: ["Hen", "Duck", "Goose", "Turkey"] },
   { question: "What tall bird from Africa cannot fly but runs fast on two legs?", answer: "Ostrich", options: ["Ostrich", "Peacock", "Penguin", "Duck"] },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ]);

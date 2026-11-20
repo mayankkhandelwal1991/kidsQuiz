@@ -46,11 +46,12 @@ function genAddSub(level) {
     }
     return { question: qText, answer: answer, options: buildNumericOptions(answer, 3), size: 'pico' };
   }
-  if (level === 1) { a = rand(0, 9); b = rand(0, 9); }
-  else if (level === 2) { a = rand(5, 30); b = rand(1, 20); }
-  else if (level === 3) { a = rand(20, 99); b = rand(10, 70); }
-  else if (level === 4) { a = rand(100, 500); b = rand(50, 300); size = 'medium'; }
-  else if (level === 5) { a = rand(200, 999); b = rand(100, 800); size = 'medium'; }
+  // NCERT Math-Magic: Cl.1 within 20 · Cl.2 two-digit (to 99) · Cl.3 three-digit · Cl.4 four-digit · Cl.5 large numbers
+  if (level === 1) { a = rand(0, 10); b = rand(0, 9); }
+  else if (level === 2) { a = rand(10, 60); b = rand(5, 39); }
+  else if (level === 3) { a = rand(100, 600); b = rand(20, 399); size = 'medium'; }
+  else if (level === 4) { a = rand(1000, 5999); b = rand(100, 3999); size = 'medium'; }
+  else if (level === 5) { a = rand(10000, 89999); b = rand(1000, 49999); size = 'small'; }
   else if (level <= 7) { a = rand(500, 5000); b = rand(200, 2500); size = 'medium'; }
   else if (level <= 9) { a = rand(1000, 25000); b = rand(500, 12000); size = 'small'; }
   else { a = rand(5000, 99999); b = rand(1000, 50000); size = 'small'; }
@@ -73,11 +74,12 @@ function genAddSub(level) {
 
 function genMultiply(level) {
   let a, b;
+  // NCERT Math-Magic: Cl.2 tables 2–5 · Cl.3 tables to 10 (+ 2-digit × 1-digit) · Cl.4 2-digit × 2-digit · Cl.5 3-digit × 2-digit
   if (level === 1) { a = rand(1, 5); b = rand(1, 5); }
-  else if (level === 2) { a = rand(2, 10); b = rand(1, 10); }
-  else if (level === 3) { a = rand(2, 12); b = rand(2, 10); }
-  else if (level === 4) { a = rand(10, 25); b = rand(2, 9); }
-  else if (level === 5) { a = rand(11, 25); b = rand(11, 20); }
+  else if (level === 2) { a = rand(2, 5); b = rand(1, 10); }
+  else if (level === 3) { if (Math.random() < 0.3) { a = rand(11, 30); b = rand(2, 5); } else { a = rand(2, 10); b = rand(1, 10); } }
+  else if (level === 4) { a = rand(11, 40); b = rand(11, 20); }
+  else if (level === 5) { a = rand(101, 499); b = rand(11, 30); }
   else if (level <= 7) { a = rand(12, 99); b = rand(3, 25); }
   else if (level <= 9) { a = rand(-20, 40); b = rand(-12, 18); if (a === 0) a = 7; if (b === 0) b = 5; }
   else { a = rand(15, 120); b = rand(11, 35); }
@@ -127,8 +129,9 @@ function genDivide(level) {
   if (level === 1) { divisor = rand(1, 5); quotient = rand(1, 5); }
   else if (level === 2) { divisor = rand(2, 5); quotient = rand(2, 10); }
   else if (level === 3) { divisor = rand(2, 9); quotient = rand(2, 10); }
-  else if (level === 4) { divisor = rand(2, 10); quotient = rand(5, 15); }
-  else if (level === 5) { divisor = rand(3, 12); quotient = rand(5, 25); }
+  // NCERT: Cl.3 sharing using tables · Cl.4 by 1-digit numbers · Cl.5 by 2-digit numbers
+  else if (level === 4) { divisor = rand(2, 9); quotient = rand(11, 99); }
+  else if (level === 5) { divisor = rand(11, 25); quotient = rand(5, 40); }
   else if (level <= 7) { divisor = rand(4, 25); quotient = rand(6, 40); }
   else if (level <= 9) { divisor = rand(5, 30); quotient = rand(8, 50); }
   else { divisor = rand(6, 40); quotient = rand(10, 60); }

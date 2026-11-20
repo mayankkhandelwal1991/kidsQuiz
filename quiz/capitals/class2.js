@@ -14,26 +14,14 @@
    • Save the file, then refresh the quiz page — changes appear instantly.
    ============================================================ */
 registerQuiz("capitals", 2, [
-  { question: "Capital of Jharkhand?", answer: "Ranchi", options: ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro"] },
-  { question: "Capital of Chhattisgarh?", answer: "Raipur", options: ["Raipur", "Bilaspur", "Korba", "Durg"] },
   { question: "Capital of Tripura?", answer: "Agartala", options: ["Agartala", "Udaipur", "Kailashahar", "Dharmanagar"] },
   { question: "Capital of Manipur?", answer: "Imphal", options: ["Imphal", "Thoubal", "Bishnupur", "Senapati"] },
   { question: "Capital of Meghalaya?", answer: "Shillong", options: ["Shillong", "Tura", "Jowai", "Nongstoin"] },
   { question: "Capital of Mizoram?", answer: "Aizawl", options: ["Aizawl", "Lunglei", "Champhai", "Kolasib"] },
   { question: "Capital of Nagaland?", answer: "Kohima", options: ["Kohima", "Dimapur", "Mokokchung", "Wokha"] },
   { question: "Capital of Sikkim?", answer: "Gangtok", options: ["Gangtok", "Pelling", "Namchi", "Mangan"] },
-  { question: "Capital of Arunachal Pradesh?", answer: "Itanagar", options: ["Itanagar", "Tawang", "Pasighat", "Naharlagun"] },
   { question: "Capital of USA?", answer: "Washington DC", options: ["Washington DC", "New York", "LA", "Chicago"] },
   { question: "Capital of UK?", answer: "London", options: ["London", "Manchester", "Liverpool", "Birmingham"] },
-  { question: "Capital of France?", answer: "Paris", options: ["Paris", "Lyon", "Marseille", "Nice"] },
-  { question: "Capital of Japan?", answer: "Tokyo", options: ["Tokyo", "Osaka", "Kyoto", "Nagoya"] },
-  { question: "Capital of China?", answer: "Beijing", options: ["Beijing", "Shanghai", "Guangzhou", "Shenzhen"] },
-  { question: "Capital of Russia?", answer: "Moscow", options: ["Moscow", "St Petersburg", "Kazan", "Sochi"] },
-  { question: "Capital of Germany?", answer: "Berlin", options: ["Berlin", "Munich", "Frankfurt", "Hamburg"] },
-  { question: "Capital of Italy?", answer: "Rome", options: ["Rome", "Milan", "Naples", "Turin"] },
-  { question: "Capital of Spain?", answer: "Madrid", options: ["Madrid", "Barcelona", "Valencia", "Seville"] },
-  { question: "Capital of Australia?", answer: "Canberra", options: ["Canberra", "Sydney", "Melbourne", "Perth"] },
-  { question: "Capital of Canada?", answer: "Ottawa", options: ["Ottawa", "Toronto", "Vancouver", "Montreal"] },
   { question: "Capital of Zimbabwe?", answer: "Harare", options: ["Harare", "Bulawayo", "Gweru", "Mutare"] },
   { question: "Capital of Zambia?", answer: "Lusaka", options: ["Lusaka", "Ndola", "Kitwe", "Livingstone"] },
   { question: "Capital of Uganda?", answer: "Kampala", options: ["Kampala", "Entebbe", "Gulu", "Jinja"] },
@@ -43,8 +31,6 @@ registerQuiz("capitals", 2, [
   { question: "Capital of Somalia?", answer: "Mogadishu", options: ["Mogadishu", "Hargeisa", "Kismayo", "Baidoa"] },
   { question: "Capital of Sudan?", answer: "Khartoum", options: ["Khartoum", "Omdurman", "Port Sudan", "Kassala"] },
   { question: "Capital of Libya?", answer: "Tripoli", options: ["Tripoli", "Benghazi", "Misrata", "Sabha"] },
-  { question: "Capital of Tunisia?", answer: "Tunis", options: ["Tunis", "Sfax", "Sousse", "Kairouan"] },
-  { question: "Capital of Algeria?", answer: "Algiers", options: ["Algiers", "Oran", "Constantine", "Annaba"] },
   { question: "Capital of Senegal?", answer: "Dakar", options: ["Dakar", "Thies", "Kaolack", "Saint-Louis"] },
   { question: "Capital of Ivory Coast?", answer: "Yamoussoukro", options: ["Yamoussoukro", "Abidjan", "Bouake", "Daloa"] },
   { question: "Capital of Cameroon?", answer: "Yaounde", options: ["Yaounde", "Douala", "Garoua", "Bamenda"] },
@@ -102,21 +88,14 @@ registerQuiz("capitals", 2, [
   { question: "Capital of Samoa?", answer: "Apia", options: ["Apia", "Salelologa", "Asau", "Mulifanua"] },
   { question: "Capital of Tonga?", answer: "Nuku'alofa", options: ["Nuku'alofa", "Neiafu", "Haveluloto", "Vaini"] },
   { question: "Capital of Kazakhstan's neighbour Uzbekistan?", answer: "Tashkent", options: ["Tashkent", "Samarkand", "Bukhara", "Namangan"] },
-  { question: "Capital of Mongolia?", answer: "Ulaanbaatar", options: ["Ulaanbaatar", "Erdenet", "Darkhan", "Choibalsan"] },
-  { question: "Capital of Vatican City?", answer: "Vatican City", options: ["Vatican City", "Rome", "Naples", "Florence"] },
   { question: "Capital of San Marino?", answer: "San Marino", options: ["San Marino", "Serravalle", "Borgo Maggiore", "Domagnano"] },
   { question: "Capital of Monaco?", answer: "Monaco", options: ["Monaco", "Monte Carlo", "La Condamine", "Fontvieille"] },
   { question: "Capital of Liechtenstein?", answer: "Vaduz", options: ["Vaduz", "Schaan", "Balzers", "Triesen"] },
   { question: "Capital of Andorra?", answer: "Andorra la Vella", options: ["Andorra la Vella", "Escaldes", "Encamp", "Sant Julia"] },
-  { question: "Capital of North Korea?", answer: "Pyongyang", options: ["Pyongyang", "Hamhung", "Chongjin", "Nampo"] },
   { question: "Capital of Sikkim (India)?", answer: "Gangtok", options: ["Gangtok", "Namchi", "Gyalshing", "Mangan"] },
   { question: "Capital of Tripura (India)?", answer: "Agartala", options: ["Agartala", "Udaipur", "Dharmanagar", "Kailashahar"] },
   { question: "Capital of Manipur (India)?", answer: "Imphal", options: ["Imphal", "Churachandpur", "Thoubal", "Bishnupur"] },
   { question: "Capital of Meghalaya (India)?", answer: "Shillong", options: ["Shillong", "Tura", "Jowai", "Nongstoin"] },
   { question: "Capital of Mizoram (India)?", answer: "Aizawl", options: ["Aizawl", "Lunglei", "Champhai", "Serchhip"] },
   { question: "Capital of Nagaland (India)?", answer: "Kohima", options: ["Kohima", "Dimapur", "Mokokchung", "Tuensang"] },
-
-
-
-
 ]);

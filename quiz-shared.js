@@ -320,10 +320,19 @@ if (typeof window !== 'undefined' && window.speechSynthesis) {
 function speak(text, opts) {
   try {
     if (isSoundMuted()) return;
-    if (typeof window === 'undefined' || !window.speechSynthesis) return;
     opts = opts || {};
     const clean = opts.raw ? String(text) : stripEmojiForSpeech(text);
     if (!clean) return;
+    // Inside the Android app, prefer the phone's own text-to-speech through the
+    // app bridge (Android WebViews often have no speechSynthesis at all).
+    // App side: @JavascriptInterface fun speak(text: String, lang: String)
+    try {
+      if (typeof Android !== 'undefined' && Android && typeof Android.speak === 'function') {
+        Android.speak(clean, opts.lang || 'en-US');
+        return;
+      }
+    } catch (e) {}
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(clean);
     u.rate = opts.rate || 0.88;

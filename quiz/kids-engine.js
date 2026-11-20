@@ -124,55 +124,55 @@
   const THING_SOUND = { car: 'Beep beep', train: 'Choo choo', ambulance: 'Nee naw nee naw', bicycle: 'Tring tring', plane: 'Zoooom', drum: 'Dum dum dum', bell: 'Ding dong', clock: 'Tick tock', phone: 'Ring ring', rocket: 'Whoosh', police: 'Wee woo wee woo' };
   const BABY = { hen: 'Chick', dog: 'Puppy', cat: 'Kitten', cow: 'Calf', sheep: 'Lamb', lion: 'Cub', horse: 'Foal', duck: 'Duckling', frog: 'Tadpole', goat: 'Kid' };
   const ANIMAL_FACT = [
-    ['Which animal has a long trunk?', 'elephant'], ['Which animal has a very long neck?', 'giraffe'],
-    ['Which animal has black and white stripes?', 'zebra'], ['Who is the king of the jungle?', 'lion'],
-    ['Which animal carries its house on its back?', 'snail'], ['Which animal jumps and has a pouch?', 'kangaroo'],
-    ['Which animal loves bananas?', 'monkey'], ['Which animal gives us milk?', 'cow'], ['Which animal gives us wool?', 'sheep'],
-    ['Which animal is called the ship of the desert?', 'camel'], ['Which animal makes honey?', 'bee'],
-    ['Which bird cannot fly but swims?', 'penguin'], ['Which animal has eight legs (arms)?', 'octopus'],
-    ['Which animal moves very slowly with a hard shell?', 'turtle'], ['Which animal is black and white and eats bamboo?', 'panda'],
+    ['Which animal has a long trunk?', 'elephant', ['👃', '📏']], ['Which animal has a very long neck?', 'giraffe', ['🌳', '📏']],
+    ['Which animal has black and white stripes?', 'zebra', ['⬛', '⬜']], ['Who is the king of the jungle?', 'lion', ['👑', '🌳']],
+    ['Which animal carries its house on its back?', 'snail', ['🏠']], ['Which animal jumps and has a pouch?', 'kangaroo', ['🦵', '👶']],
+    ['Which animal loves bananas?', 'monkey', ['🍌']], ['Which animal gives us milk?', 'cow', ['🥛']], ['Which animal gives us wool?', 'sheep', ['🧶']],
+    ['Which animal is called the ship of the desert?', 'camel', ['🏜️']], ['Which animal makes honey?', 'bee', ['🍯']],
+    ['Which bird cannot fly but swims?', 'penguin', ['❄️', '🌊']], ['Which animal has eight legs (arms)?', 'octopus', ['🌊', '8️⃣']],
+    ['Which animal moves very slowly with a hard shell?', 'turtle', ['🛡️', '🐌']], ['Which animal is black and white and eats bamboo?', 'panda', ['🎋']],
   ];
   const VEHICLE_FACT = [
-    ['Which one takes sick people to hospital?', 'ambulance'], ['Which one puts out fires?', 'fireengine'],
-    ['Which one runs on railway tracks?', 'train'], ['Which one goes to space?', 'rocket'],
-    ['Which one helps the farmer in the field?', 'tractor'], ['Which one has two wheels and pedals?', 'bicycle'],
-    ['Which one takes children to school?', 'bus'], ['Which one catches thieves?', 'police'],
-    ['Which one flies with big spinning blades on top?', 'helicopter'], ['Which one sails on the sea?', 'ship'],
+    ['Which one takes sick people to hospital?', 'ambulance', ['🤒', '🏥']], ['Which one puts out fires?', 'fireengine', ['🔥']],
+    ['Which one runs on railway tracks?', 'train', ['🛤️']], ['Which one goes to space?', 'rocket', ['🪐', '⭐']],
+    ['Which one helps the farmer in the field?', 'tractor', ['🧑‍🌾', '🌾']], ['Which one has two wheels and pedals?', 'bicycle', ['2️⃣', '🦶']],
+    ['Which one takes children to school?', 'bus', ['🧒', '🏫']], ['Which one catches thieves?', 'police', ['🦹', '🚨']],
+    ['Which one flies with big spinning blades on top?', 'helicopter', ['🌀', '☁️']], ['Which one sails on the sea?', 'ship', ['🌊']],
   ];
   const BODY_USE = [
-    ['We see with our…', 'eye'], ['We hear with our…', 'ear'], ['We smell with our…', 'nose'],
-    ['We taste with our…', 'tongue'], ['We hold things with our…', 'hand'], ['We walk with our…', 'leg'],
-    ['We chew food with our…', 'tooth'], ['We eat and talk with our…', 'mouth'],
+    ['We see with our…', 'eye', ['🌈', '📺']], ['We hear with our…', 'ear', ['🎵', '🔔']], ['We smell with our…', 'nose', ['🌸', '🍕']],
+    ['We taste with our…', 'tongue', ['🍦', '🍋']], ['We hold things with our…', 'hand', ['🧸', '⚽']], ['We walk with our…', 'leg', ['🚶']],
+    ['We chew food with our…', 'tooth', ['🍎', '🥕']], ['We eat and talk with our…', 'mouth', ['🍪', '💬']],
   ];
-  const BODY_COUNT = [['How many eyes do we have?', 2], ['How many noses do we have?', 1], ['How many ears do we have?', 2],
-    ['How many fingers on one hand?', 5], ['How many legs do we have?', 2], ['How many hands do we have?', 2]];
+  const BODY_COUNT = [['How many eyes do we have?', 2, '👁️'], ['How many noses do we have?', 1, '👃'], ['How many ears do we have?', 2, '👂'],
+    ['How many fingers on one hand?', 5, '✋'], ['How many legs do we have?', 2, '🦵'], ['How many hands do we have?', 2, '✋']];
   const SKY_FACT = [
-    ['What do we use when it rains?', 'umbrella', ['ball', 'sunglasses', 'kite']],
-    ['What shines in the sky at night?', 'moon', ['sun', 'rainbow', 'tree']],
-    ['What gives us light in the day?', 'sun', ['moon', 'cloud', 'snow']],
-    ['What do we see in the sky after rain?', 'rainbow', ['snow', 'fire', 'moon']],
-    ['What is very, very cold?', 'snow', ['fire', 'sun', 'cake']],
-    ['What do we wear on a cold winter day?', 'scarf', ['sunglasses', 'cap', 'icecream']],
-    ['What do we wear on a sunny day?', 'sunglasses', ['scarf', 'gloves', 'umbrella']],
-    ['What do we wear on our hands in winter?', 'gloves', ['cap', 'shoe', 'sunglasses']],
-    ['What do we build with snow?', 'snowman', ['house', 'car', 'tree']],
-    ['Rain falls from the…', 'cloud', ['sun', 'tree', 'star']],
-    ['What twinkles in the night sky?', 'star', ['sun', 'rainbow', 'umbrella']],
+    ['What do we use when it rains?', 'umbrella', ['ball', 'sunglasses', 'kite'], ['🌧️']],
+    ['What shines in the sky at night?', 'moon', ['sun', 'rainbow', 'tree'], ['🌃']],
+    ['What gives us light in the day?', 'sun', ['moon', 'cloud', 'snow'], ['🌅']],
+    ['What do we see in the sky after rain?', 'rainbow', ['snow', 'fire', 'moon'], ['🌧️', '➡️']],
+    ['What is very, very cold?', 'snow', ['fire', 'sun', 'cake'], ['🥶']],
+    ['What do we wear on a cold winter day?', 'scarf', ['sunglasses', 'cap', 'icecream'], ['🥶', '🧍']],
+    ['What do we wear on a sunny day?', 'sunglasses', ['scarf', 'gloves', 'umbrella'], ['🌞', '👀']],
+    ['What do we wear on our hands in winter?', 'gloves', ['cap', 'shoe', 'sunglasses'], ['🥶', '✋']],
+    ['What do we build with snow?', 'snowman', ['house', 'car', 'tree'], ['❄️', '❄️']],
+    ['Rain falls from the…', 'cloud', ['sun', 'tree', 'star'], ['💧', '⬆️']],
+    ['What twinkles in the night sky?', 'star', ['sun', 'rainbow', 'umbrella'], ['🌃']],
   ];
   const HABIT_FACT = [
-    ['What do we brush our teeth with?', 'toothbrush', ['spoon', 'pencil', 'shoe']],
-    ['What do we wash our hands with?', 'soap', ['candy', 'ball', 'phone']],
-    ['Where do we sleep at night?', 'bed', ['bin', 'tv', 'door']],
-    ['What do we read?', 'books', ['ball', 'fries', 'shoe']],
-    ['What do we drink to grow strong?', 'milk', ['soda', 'candy', 'fries']],
-    ['Where do we throw rubbish?', 'bin', ['bed', 'books', 'cake']],
-    ['Which food is healthy?', 'apple', ['candy', 'fries', 'soda']],
-    ['What do we wear on our feet?', 'shoe', ['hat', 'gloves', 'scarf']],
-    ['What do we write with?', 'pencil', ['spoon', 'toothbrush', 'ball']],
-    ['What tells us the time?', 'clock', ['bell', 'books', 'cake']],
-    ['What do we use to eat soup?', 'spoon', ['pencil', 'shoe', 'kite']],
-    ['What do we use when we sneeze?', 'tissue', ['ball', 'cake', 'phone']],
-    ['Which one keeps us healthy?', 'carrot', ['candy', 'soda', 'fries']],
+    ['What do we brush our teeth with?', 'toothbrush', ['spoon', 'pencil', 'shoe'], ['🦷']],
+    ['What do we wash our hands with?', 'soap', ['candy', 'ball', 'phone'], ['✋', '💧']],
+    ['Where do we sleep at night?', 'bed', ['bin', 'tv', 'door'], ['😴', '🌙']],
+    ['What do we read?', 'books', ['ball', 'fries', 'shoe'], ['👀', '🔤']],
+    ['What do we drink to grow strong?', 'milk', ['soda', 'candy', 'fries'], ['💪']],
+    ['Where do we throw rubbish?', 'bin', ['bed', 'books', 'cake'], ['🧃', '⬇️']],
+    ['Which food is healthy?', 'apple', ['candy', 'fries', 'soda'], ['💪', '😋']],
+    ['What do we wear on our feet?', 'shoe', ['hat', 'gloves', 'scarf'], ['🦶']],
+    ['What do we write with?', 'pencil', ['spoon', 'toothbrush', 'ball'], ['✍️']],
+    ['What tells us the time?', 'clock', ['bell', 'books', 'cake'], ['⌛']],
+    ['What do we use to eat soup?', 'spoon', ['pencil', 'shoe', 'kite'], ['🥣']],
+    ['What do we use when we sneeze?', 'tissue', ['ball', 'cake', 'phone'], ['🤧']],
+    ['Which one keeps us healthy?', 'carrot', ['candy', 'soda', 'fries'], ['💪', '😋']],
   ];
 
   /* ---------------- seeded random helpers ---------------- */
@@ -219,10 +219,10 @@
         const k2 = pickR(r, others(G.countables, [k]));
         const n = ri(r, 2, 7), m = ri(r, 2, 4);
         const items = shuffleR(r, Array(n).fill(0).map(() => ({ pic: pic(k), target: true })).concat(Array(m).fill(0).map(() => ({ pic: pic(k2), target: false }))));
-        return { type: 'count', prompt: `Count only the ${plural(nm(k).toLowerCase())} ${pic(k)}`, say: `Count only the ${plural(nm(k).toLowerCase())}. Tap each one!`, items, options: numOptions(r, n, NO(L)), answer: String(n) };
+        return { type: 'count', cue: { kind: 'tapcount', pic: pic(k) }, prompt: `Count only the ${plural(nm(k).toLowerCase())} ${pic(k)}`, say: `Count only the ${plural(nm(k).toLowerCase())}. Tap each one!`, items, options: numOptions(r, n, NO(L)), answer: String(n) };
       }
       const n = isU(L) ? ri(r, 3, 10) : ri(r, 1, 5);
-      return { type: 'count', prompt: `How many ${plural(nm(k).toLowerCase())}? ${pic(k)}`, say: `How many ${plural(nm(k).toLowerCase())}? Tap each one to count!`, items: Array(n).fill(0).map(() => ({ pic: pic(k), target: true })), options: numOptions(r, n, NO(L)), answer: String(n) };
+      return { type: 'count', cue: { kind: 'tapcount', pic: pic(k) }, prompt: `How many ${plural(nm(k).toLowerCase())}? ${pic(k)}`, say: `How many ${plural(nm(k).toLowerCase())}? Tap each one to count!`, items: Array(n).fill(0).map(() => ({ pic: pic(k), target: true })), options: numOptions(r, n, NO(L)), answer: String(n) };
     },
 
     k_numbers(r, L) {
@@ -230,25 +230,25 @@
       const kind = isU(L) ? ri(r, 0, 4) : ri(r, 0, 1);
       if (kind === 0) {
         const n = ri(r, 1, max);
-        return { type: 'pick', prompt: `Tap the number ${n}`, say: `Tap the number ${n}`, options: numOptions(r, n, NO(L), 0), answer: String(n), big: true };
+        return { type: 'pick', cue: { kind: 'dots', n: n }, prompt: `Tap the number ${n}`, say: `Tap the number ${n}`, options: numOptions(r, n, NO(L), 0), answer: String(n), big: true };
       }
       if (kind === 1) {
         const n = ri(r, 1, isU(L) ? 6 : 5);
         const k = pickR(r, G.countables);
         const ns = shuffleR(r, [n].concat(sampleR(r, others([1, 2, 3, 4, 5, 6], [n]), NO(L) - 1)));
-        return { type: 'pick', prompt: `Which group has ${n}?`, say: `Which group has ${n}?`, show: { text: String(n) }, options: ns.map((x) => ({ id: String(x), group: [pic(k), x], say: String(x) })), answer: String(n), cols: 2 };
+        return { type: 'pick', cue: { kind: 'group', n: n }, prompt: `Which group has ${n}?`, say: `Which group has ${n}?`, show: { text: String(n) }, options: ns.map((x) => ({ id: String(x), group: [pic(k), x], say: String(x) })), answer: String(n), cols: 2 };
       }
       if (kind === 2) {
         const n = ri(r, 1, max - 1);
-        return { type: 'pick', prompt: `What comes after ${n}?`, say: `What number comes after ${n}?`, options: numOptions(r, n + 1, 4, 0), answer: String(n + 1), big: true };
+        return { type: 'pick', cue: { kind: 'after', text: String(n) }, prompt: `What comes after ${n}?`, say: `What number comes after ${n}?`, options: numOptions(r, n + 1, 4, 0), answer: String(n + 1), big: true };
       }
       if (kind === 3) {
         const n = ri(r, 2, max);
-        return { type: 'pick', prompt: `What comes before ${n}?`, say: `What number comes before ${n}?`, options: numOptions(r, n - 1, 4, 0), answer: String(n - 1), big: true };
+        return { type: 'pick', cue: { kind: 'before', text: String(n) }, prompt: `What comes before ${n}?`, say: `What number comes before ${n}?`, options: numOptions(r, n - 1, 4, 0), answer: String(n - 1), big: true };
       }
       const ns = sampleR(r, Array.from({ length: max }, (_, i) => i + 1), 3);
       const big = Math.max.apply(null, ns);
-      return { type: 'pick', prompt: 'Tap the BIGGEST number', say: 'Tap the biggest number', options: ns.map(optNum), answer: String(big), big: true };
+      return { type: 'pick', cue: { kind: 'biggest' }, prompt: 'Tap the BIGGEST number', say: 'Tap the biggest number', options: ns.map(optNum), answer: String(big), big: true };
     },
 
     k_colours(r, L) {
@@ -257,7 +257,7 @@
       if (kind === 0) {
         const c = pickR(r, palette);
         const opts = shuffleR(r, [c].concat(sampleR(r, others(palette, [c]), NO(L) - 1))).map(optSwatch);
-        return { type: 'pick', prompt: `Tap ${c.name.toUpperCase()}`, say: `Tap the colour ${c.name}`, options: opts, answer: c.id };
+        return { type: 'pick', cue: { kind: 'colour', hex: c.hex }, prompt: `Tap ${c.name.toUpperCase()}`, say: `Tap the colour ${c.name}`, options: opts, answer: c.id };
       }
       if (kind === 1) {
         const items = Object.keys(COLOUR_OF).filter((k) => palette.some((c) => c.id === COLOUR_OF[k]));
@@ -265,7 +265,7 @@
         const c = palette.find((x) => x.id === COLOUR_OF[k]);
         const opts = shuffleR(r, [c].concat(sampleR(r, others(palette, [c]), NO(L) - 1))).map(optSwatch);
         const be = /s$/.test(nm(k)) ? 'are' : 'is';
-        return { type: 'pick', prompt: `What colour ${be} the ${nm(k).toLowerCase()}?`, say: `What colour ${be} the ${nm(k)}?`, show: { pic: pic(k) }, options: opts, answer: c.id };
+        return { type: 'pick', cue: { kind: 'ask', pics: ['🎨'] }, prompt: `What colour ${be} the ${nm(k).toLowerCase()}?`, say: `What colour ${be} the ${nm(k)}?`, show: { pic: pic(k) }, options: opts, answer: c.id };
       }
       if (kind === 2) {
         const col = pickR(r, ['red', 'yellow', 'green', 'orange', 'purple']);
@@ -273,13 +273,13 @@
         const no = Object.keys(COLOUR_OF).filter((k) => COLOUR_OF[k] !== col);
         const a = pickR(r, yes);
         const name = COLOURS.find((c) => c.id === col).name;
-        return { type: 'pick', prompt: `Tap the ${name.toUpperCase()} one`, say: `Tap the ${name} one`, options: shuffleR(r, [a].concat(sampleR(r, no, 3))).map(optPic), answer: a };
+        return { type: 'pick', cue: { kind: 'colour', hex: COLOURS.find((x) => x.id === col).hex, find: true }, prompt: `Tap the ${name.toUpperCase()} one`, say: `Tap the ${name} one`, options: shuffleR(r, [a].concat(sampleR(r, no, 3))).map(optPic), answer: a };
       }
       const MIX = [['red', 'yellow', 'orange'], ['blue', 'yellow', 'green'], ['red', 'blue', 'purple'], ['red', 'white', 'pink']];
       const m = pickR(r, MIX);
       const c = COLOURS.find((x) => x.id === m[2]);
       const A = COLOURS.find((x) => x.id === m[0]), B = COLOURS.find((x) => x.id === m[1]);
-      return { type: 'pick', prompt: `${A.name} + ${B.name} = ?`, say: `If we mix ${A.name} and ${B.name}, what colour do we get?`, show: { mix: [A.hex, B.hex] }, options: shuffleR(r, [c].concat(sampleR(r, others(COLOURS, [c, A, B]), 3))).map(optSwatch), answer: c.id };
+      return { type: 'pick', cue: { kind: 'next' }, prompt: `${A.name} + ${B.name} = ?`, say: `If we mix ${A.name} and ${B.name}, what colour do we get?`, show: { mix: [A.hex, B.hex] }, options: shuffleR(r, [c].concat(sampleR(r, others(COLOURS, [c, A, B]), 3))).map(optSwatch), answer: c.id };
     },
 
     k_shapes(r, L) {
@@ -287,20 +287,20 @@
       const kind = isU(L) ? ri(r, 0, 3) : (r() < 0.7 ? 0 : 2);
       if (kind === 0) {
         const s = pickR(r, pool);
-        return { type: 'pick', prompt: `Tap the ${SHAPE_NAME[s].toUpperCase()}`, say: `Tap the ${SHAPE_NAME[s]}`, options: shuffleR(r, [s].concat(sampleR(r, others(pool, [s]), NO(L) - 1))).map((x) => optShape(r, x)), answer: s };
+        return { type: 'pick', cue: { kind: 'shape', shape: s }, prompt: `Tap the ${SHAPE_NAME[s].toUpperCase()}`, say: `Tap the ${SHAPE_NAME[s]}`, options: shuffleR(r, [s].concat(sampleR(r, others(pool, [s]), NO(L) - 1))).map((x) => optShape(r, x)), answer: s };
       }
       if (kind === 1) {
         const s = pickR(r, pool);
-        return { type: 'pick', prompt: 'What shape is this?', say: 'What shape is this?', show: { shape: s, color: pickR(r, SHAPE_COLORS) }, options: shuffleR(r, [s].concat(sampleR(r, others(pool, [s]), 3))).map((x) => optText(SHAPE_NAME[x])).map((o, i, a) => o), answer: SHAPE_NAME[s] };
+        return { type: 'pick', cue: { kind: 'ask', pics: [] }, prompt: 'What shape is this?', say: 'What shape is this?', show: { shape: s, color: pickR(r, SHAPE_COLORS) }, options: shuffleR(r, [s].concat(sampleR(r, others(pool, [s]), 3))).map((x) => optText(SHAPE_NAME[x])).map((o, i, a) => o), answer: SHAPE_NAME[s] };
       }
       if (kind === 2) {
         const things = Object.keys(SHAPE_OF).filter((k) => pool.indexOf(SHAPE_OF[k]) !== -1);
         const k = pickR(r, things);
         const s = SHAPE_OF[k];
-        return { type: 'pick', prompt: `The ${nm(k).toLowerCase()} looks like a…`, say: `The ${nm(k)} looks like which shape?`, show: { pic: pic(k) }, options: shuffleR(r, [s].concat(sampleR(r, others(pool, [s]), NO(L) - 1))).map((x) => optShape(r, x)), answer: s };
+        return { type: 'pick', cue: { kind: 'ask', pics: ['🔺', '🟦', '⭕'] }, prompt: `The ${nm(k).toLowerCase()} looks like a…`, say: `The ${nm(k)} looks like which shape?`, show: { pic: pic(k) }, options: shuffleR(r, [s].concat(sampleR(r, others(pool, [s]), NO(L) - 1))).map((x) => optShape(r, x)), answer: s };
       }
       const s = pickR(r, Object.keys(SIDES));
-      return { type: 'pick', prompt: `How many sides does a ${SHAPE_NAME[s].toLowerCase()} have?`, say: `How many sides does a ${SHAPE_NAME[s]} have?`, show: { shape: s, color: pickR(r, SHAPE_COLORS) }, options: shuffleR(r, [0, 3, 4, 5].map(optNum)), answer: String(SIDES[s]), big: true };
+      return { type: 'pick', cue: { kind: 'sides' }, prompt: `How many sides does a ${SHAPE_NAME[s].toLowerCase()} have?`, say: `How many sides does a ${SHAPE_NAME[s]} have?`, show: { shape: s, color: pickR(r, SHAPE_COLORS) }, options: shuffleR(r, [0, 3, 4, 5].map(optNum)), answer: String(SIDES[s]), big: true };
     },
 
     k_abc(r, L) {
@@ -308,26 +308,26 @@
       const kind = isU(L) ? ri(r, 0, 4) : ri(r, 0, 2);
       if (kind === 0) {
         const l = pickR(r, letters);
-        return { type: 'pick', prompt: `Tap the letter ${l}`, say: `Tap the letter ${l}`, options: shuffleR(r, [l].concat(sampleR(r, others(letters, [l]), NO(L) - 1))).map((x) => optText(x)), answer: l, big: true };
+        return { type: 'pick', cue: { kind: 'glyph', text: l }, prompt: `Tap the letter ${l}`, say: `Tap the letter ${l}`, options: shuffleR(r, [l].concat(sampleR(r, others(letters, [l]), NO(L) - 1))).map((x) => optText(x)), answer: l, big: true };
       }
       if (kind === 1) {
         const l = pickR(r, letters), k = LETTER_WORD[l];
-        return { type: 'pick', prompt: `${nm(k)} starts with…`, say: `${nm(k)} starts with which letter?`, show: { pic: pic(k) }, options: shuffleR(r, [l].concat(sampleR(r, others(letters, [l]), NO(L) - 1))).map((x) => optText(x)), answer: l, big: true };
+        return { type: 'pick', cue: { kind: 'ask', pics: ['🔤'] }, prompt: `${nm(k)} starts with…`, say: `${nm(k)} starts with which letter?`, show: { pic: pic(k) }, options: shuffleR(r, [l].concat(sampleR(r, others(letters, [l]), NO(L) - 1))).map((x) => optText(x)), answer: l, big: true };
       }
       if (kind === 2) {
         const l = pickR(r, letters), k = LETTER_WORD[l];
         const wrong = sampleR(r, letters.filter((x) => x !== l), NO(L) - 1).map((x) => LETTER_WORD[x]);
-        return { type: 'pick', prompt: `Tap the picture that starts with ${l}`, say: `Tap the picture that starts with ${l}`, show: { text: l }, options: shuffleR(r, [k].concat(wrong)).map(optPic), answer: k };
+        return { type: 'pick', cue: { kind: 'glyph', text: l, pic: true }, prompt: `Tap the picture that starts with ${l}`, say: `Tap the picture that starts with ${l}`, show: { text: l }, options: shuffleR(r, [k].concat(wrong)).map(optPic), answer: k };
       }
       if (kind === 3) {
         const l = pickR(r, Object.keys(LOOKALIKE));
-        return { type: 'pick', prompt: `Tap the small letter ${l}`, say: `Tap the small letter ${l}`, show: { text: l.toUpperCase() + ' ' + l }, options: shuffleR(r, [l].concat(LOOKALIKE[l])).map((x) => optText(x)), answer: l, big: true };
+        return { type: 'pick', cue: { kind: 'glyph', text: l }, prompt: `Tap the small letter ${l}`, say: `Tap the small letter ${l}`, show: { text: l.toUpperCase() + ' ' + l }, options: shuffleR(r, [l].concat(LOOKALIKE[l])).map((x) => optText(x)), answer: l, big: true };
       }
       const all = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
       const i = ri(r, 0, 24);
       const ans = all[i + 1];
       const wrong = sampleR(r, all.split('').filter((x) => x !== ans && x !== all[i]), 3);
-      return { type: 'pick', prompt: `What letter comes after ${all[i]}?`, say: `What letter comes after ${all[i]}?`, options: shuffleR(r, [ans].concat(wrong)).map((x) => optText(x)), answer: ans, big: true };
+      return { type: 'pick', cue: { kind: 'after', text: all[i] }, prompt: `What letter comes after ${all[i]}?`, say: `What letter comes after ${all[i]}?`, options: shuffleR(r, [ans].concat(wrong)).map((x) => optText(x)), answer: ans, big: true };
     },
 
     k_animals(r, L) {
@@ -335,29 +335,29 @@
       const kind = isU(L) ? ri(r, 0, 4) : ri(r, 0, 2);
       if (kind === 0) {
         const a = pickR(r, pool);
-        return { type: 'pick', prompt: `Tap the ${nm(a)}`, say: `Can you find the ${nm(a)}? Tap it!`, options: picOptions(r, a, pool, NO(L)), answer: a };
+        return { type: 'pick', cue: { kind: 'find', pic: pic(a) }, prompt: `Tap the ${nm(a)}`, say: `Can you find the ${nm(a)}? Tap it!`, options: picOptions(r, a, pool, NO(L)), answer: a };
       }
       if (kind === 1) {
-        const [q, a] = pickR(r, ANIMAL_FACT.filter((f) => isU(L) || pool.indexOf(f[1]) !== -1 || ['cow', 'monkey', 'elephant', 'giraffe', 'lion'].indexOf(f[1]) !== -1));
-        return { type: 'pick', prompt: q, say: q, options: picOptions(r, a, G.animals, NO(L)), answer: a };
+        const [q, a, clue] = pickR(r, ANIMAL_FACT.filter((f) => isU(L) || pool.indexOf(f[1]) !== -1 || ['cow', 'monkey', 'elephant', 'giraffe', 'lion'].indexOf(f[1]) !== -1));
+        return { type: 'pick', cue: { kind: 'ask', pics: clue }, prompt: q, say: q, options: picOptions(r, a, G.animals, NO(L)), answer: a };
       }
       if (kind === 2) {
         const which = r() < 0.5 ? 'water' : 'fly';
         const a = pickR(r, G[which]);
         const wrong = sampleR(r, G.land, NO(L) - 1);
         const q = which === 'water' ? 'Which animal lives in water?' : 'Which one can fly?';
-        return { type: 'pick', prompt: q, say: q, options: shuffleR(r, [a].concat(wrong)).map(optPic), answer: a };
+        return { type: 'pick', cue: { kind: 'ask', pics: which === 'water' ? ['🌊'] : ['☁️', '🪽'] }, prompt: q, say: q, options: shuffleR(r, [a].concat(wrong)).map(optPic), answer: a };
       }
       if (kind === 3) {
         const a = pickR(r, Object.keys(BABY));
         const opts = shuffleR(r, [BABY[a]].concat(sampleR(r, others(Object.values(BABY), [BABY[a]]), 3)));
-        return { type: 'pick', prompt: `The baby of a ${nm(a).toLowerCase()} is called a…`, say: `The baby of a ${nm(a)} is called a?`, show: { pic: pic(a) }, options: opts.map((x) => optText(x)), answer: BABY[a] };
+        return { type: 'pick', cue: { kind: 'ask', pics: ['🍼'] }, prompt: `The baby of a ${nm(a).toLowerCase()} is called a…`, say: `The baby of a ${nm(a)} is called a?`, show: { pic: pic(a) }, options: opts.map((x) => optText(x)), answer: BABY[a] };
       }
       // tap all the animals that live in water / fly
       const which = r() < 0.5 ? 'water' : 'fly';
       const yes = sampleR(r, G[which], 3);
       const no = sampleR(r, G.land, 3);
-      return { type: 'tapall', prompt: which === 'water' ? 'Tap ALL the animals that live in water' : 'Tap ALL the ones that can fly', say: which === 'water' ? 'Tap all the animals that live in water!' : 'Tap all the ones that can fly!', items: shuffleR(r, yes.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: true })).concat(no.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: false })))) };
+      return { type: 'tapall', cue: { kind: 'all', pics: which === 'water' ? ['🌊'] : ['☁️'] }, prompt: which === 'water' ? 'Tap ALL the animals that live in water' : 'Tap ALL the ones that can fly', say: which === 'water' ? 'Tap all the animals that live in water!' : 'Tap all the ones that can fly!', items: shuffleR(r, yes.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: true })).concat(no.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: false })))) };
     },
 
     k_sounds(r, L) {
@@ -366,7 +366,7 @@
       const keys = Object.keys(map);
       const a = pickR(r, keys);
       const q = `Who says “${map[a]}”?`;
-      return { type: 'pick', listen: true, prompt: q, say: `Listen! ${map[a]}! ${map[a]}! Who makes this sound?`, options: shuffleR(r, [a].concat(sampleR(r, others(keys, [a]), NO(L) - 1))).map(optPic), answer: a };
+      return { type: 'pick', listen: true, cue: { kind: 'listen' }, prompt: q, say: `Listen! ${map[a]}! ${map[a]}! Who makes this sound?`, options: shuffleR(r, [a].concat(sampleR(r, others(keys, [a]), NO(L) - 1))).map(optPic), answer: a };
     },
 
     k_fruits(r, L) {
@@ -374,13 +374,13 @@
       if (kind === 0) {
         const pool = isU(L) ? G.fruits.concat(G.veg) : G.fruits;
         const a = pickR(r, pool);
-        return { type: 'pick', prompt: `Tap the ${nm(a)}`, say: `Tap the ${nm(a)}`, options: picOptions(r, a, pool, NO(L)), answer: a };
+        return { type: 'pick', cue: { kind: 'find', pic: pic(a) }, prompt: `Tap the ${nm(a)}`, say: `Tap the ${nm(a)}`, options: picOptions(r, a, pool, NO(L)), answer: a };
       }
       if (kind === 1) {
         const n = isU(L) ? 4 : 3;
         const yes = sampleR(r, G.fruits, n);
         const no = sampleR(r, isU(L) ? G.veg : G.animals.concat(G.toys), 6 - n);
-        return { type: 'tapall', prompt: 'Tap ALL the fruits', say: 'Tap all the fruits!', items: shuffleR(r, yes.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: true })).concat(no.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: false })))) };
+        return { type: 'tapall', cue: { kind: 'all', pics: sampleR(r, others(G.fruits, yes), 2).map(pic) }, prompt: 'Tap ALL the fruits', say: 'Tap all the fruits!', items: shuffleR(r, yes.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: true })).concat(no.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: false })))) };
       }
       if (kind === 2) {
         const col = pickR(r, ['red', 'yellow', 'green', 'orange', 'purple']);
@@ -388,53 +388,53 @@
         const no = G.fruits.concat(G.veg).filter((k) => COLOUR_OF[k] && COLOUR_OF[k] !== col);
         const a = pickR(r, yes);
         const name = COLOURS.find((c) => c.id === col).name.toLowerCase();
-        return { type: 'pick', prompt: `Which one is ${name}?`, say: `Which one is ${name}?`, options: shuffleR(r, [a].concat(sampleR(r, no, NO(L) - 1))).map(optPic), answer: a };
+        return { type: 'pick', cue: { kind: 'colour', hex: COLOURS.find((x) => x.id === col).hex, find: true }, prompt: `Which one is ${name}?`, say: `Which one is ${name}?`, options: shuffleR(r, [a].concat(sampleR(r, no, NO(L) - 1))).map(optPic), answer: a };
       }
       if (kind === 3) {
         const a = pickR(r, G.veg);
-        return { type: 'pick', prompt: 'Which one is a VEGETABLE?', say: 'Which one is a vegetable?', options: shuffleR(r, [a].concat(sampleR(r, G.fruits, 3))).map(optPic), answer: a };
+        return { type: 'pick', cue: { kind: 'kindof', pics: sampleR(r, others(G.veg, [a]), 2).map(pic) }, prompt: 'Which one is a VEGETABLE?', say: 'Which one is a vegetable?', options: shuffleR(r, [a].concat(sampleR(r, G.fruits, 3))).map(optPic), answer: a };
       }
       const n = 3;
       const yes = sampleR(r, G.veg, n), no = sampleR(r, G.fruits, 6 - n);
-      return { type: 'tapall', prompt: 'Tap ALL the vegetables', say: 'Tap all the vegetables!', items: shuffleR(r, yes.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: true })).concat(no.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: false })))) };
+      return { type: 'tapall', cue: { kind: 'all', pics: sampleR(r, others(G.veg, yes), 2).map(pic) }, prompt: 'Tap ALL the vegetables', say: 'Tap all the vegetables!', items: shuffleR(r, yes.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: true })).concat(no.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: false })))) };
     },
 
     k_vehicles(r, L) {
       const kind = isU(L) ? ri(r, 0, 4) : ri(r, 0, 2);
       if (kind === 0) {
         const a = pickR(r, G.vehicles);
-        return { type: 'pick', prompt: `Tap the ${nm(a)}`, say: `Tap the ${nm(a)}`, options: picOptions(r, a, G.vehicles, NO(L)), answer: a };
+        return { type: 'pick', cue: { kind: 'find', pic: pic(a) }, prompt: `Tap the ${nm(a)}`, say: `Tap the ${nm(a)}`, options: picOptions(r, a, G.vehicles, NO(L)), answer: a };
       }
       if (kind === 1) {
         const which = pickR(r, ['air', 'waterV']);
         const a = pickR(r, G[which]);
         const q = which === 'air' ? 'Which one flies in the sky?' : 'Which one goes on water?';
-        return { type: 'pick', prompt: q, say: q, options: shuffleR(r, [a].concat(sampleR(r, G.road, NO(L) - 1))).map(optPic), answer: a };
+        return { type: 'pick', cue: { kind: 'ask', pics: which === 'air' ? ['☁️', '🪽'] : ['🌊'] }, prompt: q, say: q, options: shuffleR(r, [a].concat(sampleR(r, G.road, NO(L) - 1))).map(optPic), answer: a };
       }
       if (kind === 2) {
-        const [q, a] = pickR(r, VEHICLE_FACT);
-        return { type: 'pick', prompt: q, say: q, options: picOptions(r, a, G.vehicles, NO(L)), answer: a };
+        const [q, a, clue] = pickR(r, VEHICLE_FACT);
+        return { type: 'pick', cue: { kind: 'ask', pics: clue }, prompt: q, say: q, options: picOptions(r, a, G.vehicles, NO(L)), answer: a };
       }
       if (kind === 3) {
         const yes = sampleR(r, G.road, 3), no = sampleR(r, G.air.concat(G.waterV), 3);
-        return { type: 'tapall', prompt: 'Tap ALL that go on the road', say: 'Tap all the ones that go on the road!', items: shuffleR(r, yes.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: true })).concat(no.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: false })))) };
+        return { type: 'tapall', cue: { kind: 'all', pics: ['🛣️'] }, prompt: 'Tap ALL that go on the road', say: 'Tap all the ones that go on the road!', items: shuffleR(r, yes.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: true })).concat(no.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: false })))) };
       }
       const yes = sampleR(r, G.air.concat(G.waterV), 3), no = sampleR(r, G.road, 3);
-      return { type: 'tapall', prompt: 'Tap ALL that do NOT go on the road', say: 'Tap all the ones that fly or float!', items: shuffleR(r, yes.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: true })).concat(no.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: false })))) };
+      return { type: 'tapall', cue: { kind: 'all', pics: ['☁️', '🌊'] }, prompt: 'Tap ALL that do NOT go on the road', say: 'Tap all the ones that fly or float!', items: shuffleR(r, yes.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: true })).concat(no.map((k) => ({ id: k, pic: pic(k), say: nm(k), target: false })))) };
     },
 
     k_body(r, L) {
       const kind = isU(L) ? ri(r, 0, 2) : ri(r, 0, 1);
       if (kind === 0) {
         const a = pickR(r, G.body);
-        return { type: 'pick', prompt: `Tap the ${nm(a).toLowerCase()}`, say: `Tap the ${nm(a)}`, options: picOptions(r, a, G.body, NO(L)), answer: a };
+        return { type: 'pick', cue: { kind: 'find', pic: pic(a) }, prompt: `Tap the ${nm(a).toLowerCase()}`, say: `Tap the ${nm(a)}`, options: picOptions(r, a, G.body, NO(L)), answer: a };
       }
       if (kind === 1) {
-        const [q, a] = pickR(r, BODY_USE);
-        return { type: 'pick', prompt: q, say: q.replace('…', ''), options: picOptions(r, a, G.body, NO(L)), answer: a };
+        const [q, a, clue] = pickR(r, BODY_USE);
+        return { type: 'pick', cue: { kind: 'ask', pics: clue }, prompt: q, say: q.replace('…', ''), options: picOptions(r, a, G.body, NO(L)), answer: a };
       }
-      const [q, n] = pickR(r, BODY_COUNT);
-      return { type: 'pick', prompt: q, say: q, options: numOptions(r, n, 4, 1), answer: String(n), big: true };
+      const [q, n, bp] = pickR(r, BODY_COUNT);
+      return { type: 'pick', cue: { kind: 'howmany', pic: bp }, prompt: q, say: q, options: numOptions(r, n, 4, 1), answer: String(n), big: true };
     },
 
     k_think(r, L) {
@@ -444,31 +444,31 @@
         const big = r() < 0.5;
         const scales = isU(L) ? [1, 0.7, 0.45, 0.3] : [1, 0.5, 0.3];
         const opts = shuffleR(r, scales.map((s, i) => ({ id: 's' + i, pic: pic(k), scale: s, say: s === 1 ? 'big' : 'small' })));
-        return { type: 'pick', prompt: big ? 'Tap the BIG one' : 'Tap the SMALL one', say: big ? `Tap the big ${nm(k)}` : `Tap the small ${nm(k)}`, options: opts, answer: big ? 's0' : 's' + (scales.length - 1) };
+        return { type: 'pick', cue: { kind: big ? 'big' : 'small' }, prompt: big ? 'Tap the BIG one' : 'Tap the SMALL one', say: big ? `Tap the big ${nm(k)}` : `Tap the small ${nm(k)}`, options: opts, answer: big ? 's0' : 's' + (scales.length - 1) };
       }
       if (kind === 1) {
         const k = pickR(r, G.countables);
         const more = !isU(L) || r() < 0.6;
         const ns = sampleR(r, [1, 2, 3, 4, 5, 6], isU(L) ? 3 : 2);
         const target = more ? Math.max.apply(null, ns) : Math.min.apply(null, ns);
-        return { type: 'pick', prompt: more ? 'Which has MORE?' : 'Which has LESS?', say: more ? 'Which one has more?' : 'Which one has less?', options: ns.map((n) => ({ id: String(n), group: [pic(k), n], say: String(n) })), answer: String(target), cols: ns.length === 3 ? 3 : 2 };
+        return { type: 'pick', cue: { kind: more ? 'more' : 'less' }, prompt: more ? 'Which has MORE?' : 'Which has LESS?', say: more ? 'Which one has more?' : 'Which one has less?', options: ns.map((n) => ({ id: String(n), group: [pic(k), n], say: String(n) })), answer: String(target), cols: ns.length === 3 ? 3 : 2 };
       }
       if (kind === 2) {
         const pairs = [['fruits', 'animals'], ['animals', 'vehicles'], ['vehicles', 'fruits'], ['toys', 'veg'], ['sky', 'animals'], ['body', 'fruits']];
         const [g1, g2] = pickR(r, pairs);
         const same = sampleR(r, G[g1], NO(L) - 1);
         const odd = pickR(r, G[g2]);
-        return { type: 'pick', prompt: 'Which one is DIFFERENT?', say: 'Which one is different from the others?', options: shuffleR(r, same.concat([odd])).map(optPic), answer: odd };
+        return { type: 'pick', cue: { kind: 'odd' }, prompt: 'Which one is DIFFERENT?', say: 'Which one is different from the others?', options: shuffleR(r, same.concat([odd])).map(optPic), answer: odd };
       }
       if (kind === 3) {
         const grp = pickR(r, ['animals', 'fruits', 'vehicles', 'toys']);
         const a = pickR(r, G[grp]);
-        return { type: 'pick', prompt: 'Find the SAME picture', say: 'Find the same picture!', show: { pic: pic(a) }, options: picOptions(r, a, G[grp], NO(L)), answer: a };
+        return { type: 'pick', cue: { kind: 'same' }, prompt: 'Find the SAME picture', say: 'Find the same picture!', show: { pic: pic(a) }, options: picOptions(r, a, G[grp], NO(L)), answer: a };
       }
       // tallest / longest by scale
       const k = pickR(r, ['giraffe', 'tree', 'house', 'rocket']);
       const scales = [1, 0.75, 0.55, 0.4];
-      return { type: 'pick', prompt: 'Tap the TALLEST one', say: `Tap the tallest ${nm(k)}`, options: shuffleR(r, scales.map((s, i) => ({ id: 's' + i, pic: pic(k), scale: s, say: '' }))), answer: 's0' };
+      return { type: 'pick', cue: { kind: 'tall' }, prompt: 'Tap the TALLEST one', say: `Tap the tallest ${nm(k)}`, options: shuffleR(r, scales.map((s, i) => ({ id: 's' + i, pic: pic(k), scale: s, say: '' }))), answer: 's0' };
     },
 
     k_pattern(r, L) {
@@ -479,7 +479,7 @@
         const unit = [cs[0], cs[1]];
         const seq = [0, 1, 0, 1, 0].map((i) => unit[i]);
         const ans = unit[1];
-        return { type: 'pick', prompt: 'What colour comes next?', say: 'What colour comes next?', show: { seqSwatch: seq.map((c) => c.hex) }, options: shuffleR(r, [ans].concat(sampleR(r, others(COLOURS.slice(0, 7), [ans]), 3))).map(optSwatch), answer: ans.id };
+        return { type: 'pick', cue: { kind: 'next' }, prompt: 'What colour comes next?', say: 'What colour comes next?', show: { seqSwatch: seq.map((c) => c.hex) }, options: shuffleR(r, [ans].concat(sampleR(r, others(COLOURS.slice(0, 7), [ans]), 3))).map(optSwatch), answer: ans.id };
       }
       const g = pickR(r, ['fruits', 'animals', 'toys', 'sky', 'vehicles']);
       const [a, b, c] = sampleR(r, G[g], 3);
@@ -489,31 +489,31 @@
       const ans = unit[len % unit.length];
       const pool = [a, b, c].concat(sampleR(r, others(G[g], [a, b, c]), 1));
       const opts = shuffleR(r, [ans].concat(others(pool, [ans]).slice(0, NO(L) - 1))).map(optPic);
-      return { type: 'pick', prompt: 'What comes next?', say: 'Look at the pattern. What comes next?', show: { seq: seq.map(pic) }, options: opts, answer: ans };
+      return { type: 'pick', cue: { kind: 'next' }, prompt: 'What comes next?', say: 'Look at the pattern. What comes next?', show: { seq: seq.map(pic) }, options: opts, answer: ans };
     },
 
     k_weather(r, L) {
       if (r() < 0.45) {
         const a = pickR(r, G.sky);
-        return { type: 'pick', prompt: `Tap the ${nm(a).toLowerCase()}`, say: `Tap the ${nm(a)}`, options: picOptions(r, a, G.sky, NO(L)), answer: a };
+        return { type: 'pick', cue: { kind: 'find', pic: pic(a) }, prompt: `Tap the ${nm(a).toLowerCase()}`, say: `Tap the ${nm(a)}`, options: picOptions(r, a, G.sky, NO(L)), answer: a };
       }
-      const [q, a, w] = pickR(r, SKY_FACT);
-      return { type: 'pick', prompt: q, say: q.replace('…', ''), options: shuffleR(r, [a].concat(w.slice(0, NO(L) - 1))).map(optPic), answer: a };
+      const [q, a, w, clue] = pickR(r, SKY_FACT);
+      return { type: 'pick', cue: { kind: 'ask', pics: clue }, prompt: q, say: q.replace('…', ''), options: shuffleR(r, [a].concat(w.slice(0, NO(L) - 1))).map(optPic), answer: a };
     },
 
     k_habits(r, L) {
-      const [q, a, w] = pickR(r, HABIT_FACT);
-      return { type: 'pick', prompt: q, say: q, options: shuffleR(r, [a].concat(w.slice(0, NO(L) - 1))).map(optPic), answer: a };
+      const [q, a, w, clue] = pickR(r, HABIT_FACT);
+      return { type: 'pick', cue: { kind: 'ask', pics: clue }, prompt: q, say: q, options: shuffleR(r, [a].concat(w.slice(0, NO(L) - 1))).map(optPic), answer: a };
     },
 
     k_addsub(r, L) {
       const k = pickR(r, G.countables);
       if (r() < 0.55) {
         const a = ri(r, 1, 5), b = ri(r, 1, 5);
-        return { type: 'pick', prompt: `${pic(k).repeat(a)} + ${pic(k).repeat(b)} = ?`, say: `${a} ${a === 1 ? nm(k) : plural(nm(k))} and ${b} more. How many altogether?`, options: numOptions(r, a + b, 4), answer: String(a + b), big: true, wide: true };
+        return { type: 'pick', cue: { kind: 'add' }, prompt: `${pic(k).repeat(a)} + ${pic(k).repeat(b)} = ?`, say: `${a} ${a === 1 ? nm(k) : plural(nm(k))} and ${b} more. How many altogether?`, options: numOptions(r, a + b, 4), answer: String(a + b), big: true, wide: true };
       }
       const a = ri(r, 3, 8), b = ri(r, 1, a - 1);
-      return { type: 'pick', prompt: `${pic(k).repeat(a)}  take away ${b}`, say: `There are ${a} ${plural(nm(k).toLowerCase())}. ${b} go away. How many are left?`, show: { takeaway: [pic(k), a, b] }, options: numOptions(r, a - b, 4, 0), answer: String(a - b), big: true };
+      return { type: 'pick', cue: { kind: 'takeaway' }, prompt: `${pic(k).repeat(a)}  take away ${b}`, say: `There are ${a} ${plural(nm(k).toLowerCase())}. ${b} go away. How many are left?`, show: { takeaway: [pic(k), a, b] }, options: numOptions(r, a - b, 4, 0), answer: String(a - b), big: true };
     },
   };
 

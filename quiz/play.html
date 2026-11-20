@@ -119,6 +119,35 @@
   .say { width: 46px; height: 46px; border-radius: 50%; border: none; background: linear-gradient(135deg, #38bdf8, #6366f1); color: #fff; font-size: 20px; box-shadow: 0 4px 0 #3730a3; flex: 0 0 auto; }
   .say.pulse { animation: pulse 1.2s ease-in-out infinite; }
   @keyframes pulse { 50% { transform: scale(1.12); } }
+  /* ---------- picture cue (pre-readers: LKG / UKG) ---------- */
+  .bubble.cued { flex-direction: column; align-items: stretch; gap: 4px; padding: 10px 12px; }
+  .bubble.cued .cue-row { display: flex; align-items: center; gap: 10px; }
+  .cue { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; min-height: 84px; }
+  .cue .arrow { font-size: 30px; font-weight: 900; color: var(--accent); }
+  .cue .glyph { font-size: 64px; line-height: 1; font-weight: 800; color: var(--accent); }
+  .cue .blob { width: 64px; height: 64px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 0 0 3px rgba(0,0,0,.08); }
+  .cue .ring { position: relative; padding: 4px; border-radius: 50%; }
+  .cue .ring::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 4px dashed var(--accent); animation: spin 6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .cue .hand { display: inline-block; animation: tapHand 1.2s ease-in-out infinite; transform-origin: 50% 0; }
+  @keyframes tapHand { 0%, 100% { transform: translate(0, 0) scale(1); } 45% { transform: translate(-6px, -10px) scale(1.05); } 60% { transform: translate(-10px, 0) scale(.88); } }
+  .cue .seqn { position: relative; display: inline-block; }
+  .cue .seqn b { position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; display: grid; place-items: center; opacity: 0; animation: badgeIn 3s infinite; }
+  .cue .seqn:nth-child(2) b { animation-delay: .6s; } .cue .seqn:nth-child(3) b { animation-delay: 1.2s; }
+  @keyframes badgeIn { 0%, 10% { opacity: 0; transform: scale(.3); } 20%, 85% { opacity: 1; transform: scale(1); } 100% { opacity: 0; } }
+  .cue .waves { display: inline-flex; gap: 3px; align-items: center; }
+  .cue .waves i { width: 6px; border-radius: 3px; background: var(--accent); animation: wave 1s ease-in-out infinite; }
+  .cue .waves i:nth-child(1) { height: 16px; } .cue .waves i:nth-child(2) { height: 30px; animation-delay: .15s; } .cue .waves i:nth-child(3) { height: 44px; animation-delay: .3s; } .cue .waves i:nth-child(4) { height: 30px; animation-delay: .45s; }
+  @keyframes wave { 50% { transform: scaleY(.4); } }
+  .cue .pair { display: inline-flex; align-items: flex-end; gap: 10px; padding: 6px 10px; background: #f5f3ff; border-radius: 16px; }
+  .cue .pair .c { border-radius: 50%; background: var(--accent2); }
+  .cue .pair .bar { width: 22px; border-radius: 6px 6px 2px 2px; background: var(--accent2); }
+  .cue .pair .pick { outline: 4px solid #22c55e; outline-offset: 3px; }
+  .cue .plate { display: inline-flex; flex-wrap: wrap; gap: 3px; width: 54px; justify-content: center; padding: 6px; background: #fff7ed; border-radius: 14px; }
+  .cue .plate i { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); }
+  .cue .plate.pick { outline: 4px solid #22c55e; }
+  .cue .dotsq { display: inline-grid; grid-template-columns: repeat(5, 18px); gap: 4px; }
+  .ptext { font-size: 13.5px; font-weight: 700; color: var(--muted); text-align: center; line-height: 1.2; }
   .show { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; background: rgba(255,255,255,.75); border-radius: 26px; padding: 12px; margin-bottom: 12px; min-height: 60px; }
   .show:empty { display: none; }
   .show .huge { font-size: 84px; font-weight: 800; line-height: 1; color: var(--accent); text-shadow: 0 4px 0 rgba(0,0,0,.1); }
@@ -231,11 +260,11 @@
   </div>
 </div>
 
-<script src="../quiz-shared.js?v=20261120f"></script>
-<script src="../emoji-images.js?v=20261120f"></script>
-<script src="kids-engine.js?v=20261120f"></script>
-<script src="kids-sound.js?v=20261120f"></script>
-<script src="math-gen.js?v=20261120f"></script>
+<script src="../quiz-shared.js?v=20261120g"></script>
+<script src="../emoji-images.js?v=20261120g"></script>
+<script src="kids-engine.js?v=20261120g"></script>
+<script src="kids-sound.js?v=20261120g"></script>
+<script src="math-gen.js?v=20261120g"></script>
 <script>
 /* ============================================================
    AUTH GUARD (same as the other quiz pages)
@@ -258,12 +287,12 @@ function registerQuiz(subject, level, questions) {
 window.KQ_NO_WIDGET = true;
 window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, isMuted: isSoundMuted };
 </script>
-<script src="../games/kq-leaderboard.js?v=20261120f"></script>
-<script src="../web-ads.js?v=20261120f"></script>
+<script src="../games/kq-leaderboard.js?v=20261120g"></script>
+<script src="../web-ads.js?v=20261120g"></script>
 <script>
 (function () {
   'use strict';
-  const V = '20261120f';
+  const V = '20261120g';
   const $app = document.getElementById('app');
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const img = (text, px) => (typeof emojiImgHtml === 'function' ? emojiImgHtml(text, px, '../') : esc(text));
@@ -546,12 +575,62 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     return '';
   }
 
+  /* Picture instructions — no reading needed. */
+  function cueHtml(q) {
+    const c = q.cue || {};
+    const hand = '<span class="hand">' + img('👆', 44) + '</span>';
+    const arrow = '<span class="arrow">' + img('➡️', 34) + '</span>';
+    const qm = img('❓', 50);
+    const many = (p, n) => Array(n).fill(0).map(() => img(p, 34)).join('');
+    switch (c.kind) {
+      case 'find': return img('🔍', 44) + '<span class="ring">' + img(c.pic, 70) + '</span>' + hand;
+      // no example items here: showing a few of them could be mistaken for the answer
+      case 'tapcount': return hand + img('🔢', 52) + arrow + qm;
+      case 'dots': return '<span class="dotsq">' + Array(c.n).fill(0).map(() => img('⭐', 18)).join('') + '</span>' + arrow + img('🔢', 46) + hand;
+      case 'group': return '<span class="glyph">' + esc(String(c.n)) + '</span>' + arrow + '<span class="dotsq">' + Array(c.n).fill(0).map(() => img('⭐', 18)).join('') + '</span>' + hand;
+      case 'after': return '<span class="glyph">' + esc(c.text) + '</span>' + arrow + qm;
+      case 'before': return qm + arrow + '<span class="glyph">' + esc(c.text) + '</span>';
+      case 'biggest': return '<span class="pair"><span class="glyph" style="font-size:26px">2</span><span class="glyph" style="font-size:40px">5</span><span class="glyph pick" style="font-size:62px;border-radius:12px">9</span></span>' + hand;
+      case 'colour': return (c.find ? img('🔍', 40) : '') + '<span class="ring"><span class="blob" style="display:block;background:' + c.hex + '"></span></span>' + hand;
+      case 'shape': return '<span class="ring">' + shapeSvg(c.shape, '#a855f7', 70) + '</span>' + hand;
+      case 'glyph': return '<span class="glyph">' + esc(c.text) + '</span>' + (c.pic ? arrow + img('🖼️', 44) : '') + hand;
+      case 'ask': return (c.pics || []).map((p) => img(p, 54)).join('') + (c.pics && c.pics.length ? arrow : '') + qm;
+      case 'kindof': return (c.pics || []).map((p) => img(p, 50)).join('') + arrow + qm + hand;
+      case 'all': return img('🧺', 50) + (c.pics || []).map((p) => img(p, 44)).join('') + hand + img('✅', 30) + img('✅', 30) + img('✅', 30);
+      case 'listen': return img('👂', 56) + '<span class="waves"><i></i><i></i><i></i><i></i></span>' + arrow + qm;
+      case 'howmany': return img(c.pic, 60) + arrow + img('🔢', 46) + qm;
+      case 'big': case 'small': {
+        const big = c.kind === 'big';
+        return '<span class="pair"><span class="c' + (big ? ' pick' : '') + '" style="width:58px;height:58px"></span><span class="c' + (big ? '' : ' pick') + '" style="width:24px;height:24px"></span></span>' + hand;
+      }
+      case 'tall': return '<span class="pair"><span class="bar" style="height:26px"></span><span class="bar pick" style="height:66px"></span><span class="bar" style="height:42px"></span></span>' + hand;
+      case 'more': case 'less': {
+        const more = c.kind === 'more';
+        const plate = (n, pk) => '<span class="plate' + (pk ? ' pick' : '') + '">' + Array(n).fill('<i></i>').join('') + '</span>';
+        return plate(6, more) + plate(2, !more) + hand;
+      }
+      case 'odd': return img('🔵', 40) + img('🔵', 40) + img('🔵', 40) + '<span class="ring">' + img('🟥', 40) + '</span>' + hand;
+      case 'same': return img('🔍', 44) + '<span class="glyph" style="font-size:52px">=</span>' + qm;
+      case 'next': return arrow + arrow + qm;
+      case 'add': return img('➕', 46) + arrow + img('🔢', 46) + qm;
+      case 'takeaway': return img('➖', 46) + arrow + img('🔢', 46) + qm;
+      case 'sides': return shapeSvg('triangle', '#a855f7', 60) + arrow + img('🔢', 44) + qm;
+      default: return qm;
+    }
+  }
+
   function renderQ() {
     const P = playing, q = P.qs[P.i], pre = isPre(P.level);
     P.busy = false;
     const promptHtml = q.listen ? '🔊 ' + esc(q.prompt) : img(q.prompt, pre ? 40 : 30);
+    const sayBtn = '<button class="say' + (q.listen || pre ? ' pulse' : '') + '" id="sayBtn" aria-label="Hear it again">🔊</button>';
+    // LKG/UKG children can't read yet: an animated picture cue shows WHAT to do;
+    // the written question stays small underneath for parents.
+    const bubble = (pre && q.cue)
+      ? '<div class="bubble cued"><div class="cue-row"><div class="cue">' + cueHtml(q) + '</div>' + sayBtn + '</div><div class="ptext">' + img(q.prompt, 18) + '</div></div>'
+      : '<div class="bubble"><span class="txt">' + promptHtml + '</span>' + sayBtn + '</div>';
     let h = '<div class="screen on"><div class="pbar"><button class="round-btn" id="quitBtn" aria-label="Quit">✕</button>' + dotsHtml() + muteBtn() + '</div>' +
-      '<div class="qwrap">' + owl() + '<div class="bubble"><span class="txt">' + promptHtml + '</span><button class="say' + (q.listen ? ' pulse' : '') + '" id="sayBtn" aria-label="Hear it again">🔊</button></div></div>';
+      '<div class="qwrap">' + owl() + bubble + '</div>';
     if (q.type === 'count') {
       h += '<div class="mat" id="mat">' + q.items.map((it, i) => '<button class="ci" data-i="' + i + '">' + img(it.pic, q.items.length > 7 ? 56 : 68) + '</button>').join('') + '</div>' +
         '<div class="counted" id="counted">Tap each one to count!</div>';

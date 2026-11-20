@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kids Quiz - Home</title>
-<link rel="stylesheet" href="quiz-theme.css?v=20261120d">
+<link rel="stylesheet" href="quiz-theme.css?v=20261120e">
 </head>
 <body class="pg-home">
 
@@ -217,8 +217,8 @@
   </div>
 </div>
 
-<script src="quiz-shared.js?v=20261120d" charset="utf-8"></script>
-<script src="emoji-images.js?v=20261120d" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261120e" charset="utf-8"></script>
+<script src="emoji-images.js?v=20261120e" charset="utf-8"></script>
 <script>
 /* ============================================================
    AUTH GUARD
@@ -652,14 +652,80 @@ function renderHomeProfile() {
       ? '<img class="pf-av" src="' + photo + '" referrerpolicy="no-referrer" alt="">'
       : '<div class="pf-avph">' + ini + '</div>';
   }
+  renderStatTiles();
+  loadAccountStats();
+}
+
+/* ------------------------------------------------------------------
+   HOME STATS — account-wide, same source as the leaderboard.
+   Firebase keeps this player's best score per board (quiz / games /
+   multiplayer / Olympiad) under leaderboards/<cat>/<board>/<playerKey>,
+   and (if the rule is enabled) every play under attempts/<playerKey>.
+   Local device history is only a fallback / instant first paint.
+   ------------------------------------------------------------------ */
+const HOME_SECTIONS = ['quiz', 'single', 'multi', 'olympiad'];
+let __acctStats = null;
+try { __acctStats = JSON.parse(localStorage.getItem('kq_home_stats') || 'null'); } catch (e) {}
+
+function renderStatTiles() {
   const st = document.getElementById('pfStats');
-  if (st) {
-    const s = getQuizStats();
-    st.innerHTML =
-      '<div class="pf-stat"><b>' + s.games + '</b><span>Quizzes</span></div>' +
-      '<div class="pf-stat"><b>' + s.best + '</b><span>Best score</span></div>' +
-      '<div class="pf-stat"><b>' + s.accuracy + '%</b><span>Accuracy</span></div>';
-  }
+  if (!st) return;
+  const local = getQuizStats();
+  const me = (window.KQ && KQ.user) ? KQ.user().key : '';
+  const a = (__acctStats && __acctStats.key === me) ? __acctStats : null;
+  const played = Math.max(local.games, a ? a.played : 0);
+  const points = a ? a.points : local.best;
+  const acc = (a && a.answered) ? a.accuracy : local.accuracy;
+  const fmt = (n) => (Math.round(n * 100) / 100).toLocaleString();
+  st.innerHTML =
+    '<div class="pf-stat"><b>' + fmt(played) + '</b><span>Played</span></div>' +
+    '<div class="pf-stat"><b>' + fmt(points) + '</b><span>Points</span></div>' +
+    '<div class="pf-stat"><b>' + acc + '%</b><span>Accuracy</span></div>';
+  st.onclick = function () { window.location.href = 'leaderboard.html?user=' + encodeURIComponent(me); };
+  st.style.cursor = me ? 'pointer' : '';
+  st.title = 'See your full history';
+}
+
+let __acctLoading = false, __acctLoadedAt = 0;
+function loadAccountStats(force) {
+  if (__acctLoading || !window.KQ || !KQ.ready || !KQ.fetchAll) return;
+  if (!force && Date.now() - __acctLoadedAt < 30000) return;
+  __acctLoading = true;
+  KQ.ready.then(function () {
+    const me = KQ.user().key;
+    return Promise.all([KQ.fetchAll(), KQ.fetchAttempts ? KQ.fetchAttempts(me, 500) : Promise.resolve([])])
+      .then(function (res) {
+        const tree = res[0] || {}, attempts = res[1] || [];
+        let boards = 0, points = 0, correct = 0, wrong = 0;
+        HOME_SECTIONS.forEach(function (cat) {
+          const bs = tree[cat] || {};
+          Object.keys(bs).forEach(function (id) {
+            const v = bs[id] && bs[id][me];
+            if (!v || typeof v.score !== 'number') return;
+            boards++;
+            if (!v.lowerIsBetter) points += v.score;
+            if (cat === 'quiz' && v.meta) { correct += Number(v.meta.correct) || 0; wrong += Number(v.meta.wrong) || 0; }
+          });
+        });
+        // Accuracy: every recorded quiz attempt if available, else best-score runs.
+        const qa = attempts.filter(function (x) { return x.cat === 'quiz' && x.meta; });
+        if (qa.length) {
+          correct = 0; wrong = 0;
+          qa.forEach(function (x) { correct += Number(x.meta.correct) || 0; wrong += Number(x.meta.wrong) || 0; });
+        }
+        const answered = correct + wrong;
+        __acctStats = {
+          key: me,
+          played: Math.max(boards, attempts.length),
+          points: points,
+          answered: answered,
+          accuracy: answered ? Math.round(correct / answered * 100) : 0
+        };
+        try { localStorage.setItem('kq_home_stats', JSON.stringify(__acctStats)); } catch (e) {}
+        __acctLoadedAt = Date.now();
+        renderStatTiles();
+      });
+  }).catch(function () {}).then(function () { __acctLoading = false; });
 }
 function renderDailyCard() {
   const card = document.getElementById('dailyCard');
@@ -783,6 +849,7 @@ getOrCreateUser(currentUser);
     // and the immediate onAuth callback below is authoritative.
     KQ.ready.then(function () {
       KQ.onAuth(function (u) { decide(u); });
+      loadAccountStats(true); // account-wide stats for guests and Google users
     });
   }
   if (window.KQ) { start(); }
@@ -816,6 +883,6 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   setTimeout(function () { kqAskName().then(renderHomeProfile); }, 400);
 }
 </script>
-<script src="games/kq-leaderboard.js?v=20261120d"></script>
+<script src="games/kq-leaderboard.js?v=20261120e"></script>
 </body>
 </html>

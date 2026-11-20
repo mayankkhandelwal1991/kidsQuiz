@@ -1,164 +1,185 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Sling Blast</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#1e3c72,#2a5298);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
-.wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.4);padding:12px;max-width:440px;width:100%;display:flex;flex-direction:column;height:100%;max-height:800px;position:relative}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
-h1{font-size:18px;font-weight:800;background:linear-gradient(135deg,#ffe066,#ff5a8a);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sc{font-size:12px;text-align:right}
-.sc b{color:#ffe066;font-size:16px;display:block}
-.stage{flex:1;min-height:0;border-radius:14px;overflow:hidden}
-canvas{width:100%;height:100%;display:block}
-.overlay{position:absolute;inset:0;background:rgba(10,20,40,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;border-radius:26px;z-index:10}
-.overlay.show{display:flex}
-.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <h1>Sling Blast</h1>
-    <div class="sc">SHOTS <b id="shots">5</b></div>
-  </div>
-  <div class="stage"><canvas id="cv"></canvas></div>
-  <div class="overlay" id="overlay"><h2 id="overTitle" style="background:linear-gradient(135deg,#ffe066,#ff5a8a);-webkit-background-clip:text;background-clip:text;color:transparent">Level Clear!</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="init()">Next Level</button></div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-function fit(){ cv.width=cv.clientWidth*devicePixelRatio; cv.height=cv.clientHeight*devicePixelRatio; cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
-window.addEventListener('resize',fit);
-let W,H,anchor,ball,blocks,shots,dragging,over,score,level=1,launched;
-const GRAV=0.45;
-function init(){
-  fit(); W=cv.clientWidth; H=cv.clientHeight;
-  anchor={x:70,y:H-70};
-  ball={x:anchor.x,y:anchor.y,vx:0,vy:0,r:14,onSling:true};
-  shots=5; score=0; over=false; launched=false;
-  document.getElementById('shots').textContent=shots;
-  document.getElementById('overlay').classList.remove('show');
-  blocks=[];
-  const groundY=H-40;
-  const baseX=W-140;
-  const cols=3, rows=4;
-  for(let r=0;r<rows;r++){
-    for(let c=0;c<(cols-Math.floor(r/2));c++){
-      blocks.push({x:baseX+c*34+ (r%2)*17,y:groundY-r*30-15,w:30,h:26,alive:true,hit:0});
-    }
+/* Sling Blast — a funfair can toss. Drag back & let go to throw. Knock every can
+   off the shelves with 5 throws. Unused throws = bonus. */
+const BALLS = [{ icon: '⚽', name: 'Soccer', r: 16, m: 1 }, { icon: '🎾', name: 'Tennis', r: 13, m: 0.8 }, { icon: '🍉', name: 'Melon', r: 20, m: 1.4 }, { icon: '🏀', name: 'Hoops', r: 17, m: 1.1 }];
+// shelves: [x0, x1 (fractions of width), height above ground (px)], stacks: [shelf, rows]
+const LEVELS = [
+  { shelves: [[0.58, 0.92, 130]], stacks: [[0, [2, 1]]] },
+  { shelves: [[0.55, 0.95, 120]], stacks: [[0, [3, 2, 1]]] },
+  { shelves: [[0.5, 0.7, 90], [0.76, 0.96, 190]], stacks: [[0, [2, 1]], [1, [2, 1]]] },
+  { shelves: [[0.5, 0.96, 110]], stacks: [[0, [4, 3, 2, 1]]] },
+  { shelves: [[0.48, 0.7, 210], [0.74, 0.97, 100]], stacks: [[0, [2, 1]], [1, [3, 2, 1]]] }
+];
+const CAN_COL = ['#ef4444', '#3b82f6', '#22c55e', '#f59e0b', '#a855f7', '#ec4899'];
+const G = KQ3D.init({
+  id: 'slingshot', title: 'Sling Blast', bestKey: 'slingBest', music: true,
+  hero: ['🎯', '⚽', '🎪'], colors: ['#ef4444', '#f59e0b'],
+  how: [['👆', 'Drag back and let go to throw the ball'], ['🎯', 'The dotted line shows where it goes'], ['🥫', 'Knock every can off the shelves'], ['⭐', 'Clear a level with throws left for bonus points']],
+  hud: [{ id: 'balls', icon: '⚽' }, { id: 'lvl', icon: '🎪' }], scoreIcon: '🥫', stars: [100, 300, 600],
+  pick: { label: 'Pick your ball', options: BALLS },
+  onReset: (b) => reset(b)
+});
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+let ballType = G.choice || BALLS[0], cans = [], shelves = [], ball = null, drag = null, level, throws, score, knocked, waitT, clearing, bits = [];
+const CW = 30, CH = 40, GRAV = 1400;
+const gY = () => C.h - 120;
+const launch = () => ({ x: Math.max(70, C.w * 0.14), y: gY() - 110 });
+
+function reset(b) { ballType = b || BALLS[0]; level = 1; score = 0; G.score(0); loadLevel(); }
+function loadLevel() {
+  const L = LEVELS[(level - 1) % LEVELS.length], round = Math.floor((level - 1) / LEVELS.length);
+  shelves = L.shelves.map(([a, b, h]) => ({ x0: C.w * a, x1: C.w * b, top: gY() - h - round * 20 }));
+  cans = [];
+  L.stacks.forEach(([si, rows]) => {
+    const s = shelves[si], mid = (s.x0 + s.x1) / 2;
+    rows.forEach((n, r) => { for (let i = 0; i < n; i++) cans.push({ x: mid + (i - (n - 1) / 2) * (CW + 2), y: s.top - CH / 2 - r * CH, vx: 0, vy: 0, rot: 0, vr: 0, sleep: true, out: false, col: CAN_COL[(r + i + si) % CAN_COL.length] }); });
+  });
+  throws = 5; knocked = 0; ball = null; waitT = 0; clearing = false;
+  G.hudSet('balls', throws); G.hudSet('lvl', level);
+  const hi = document.querySelector('#k3h_balls img'); if (hi) hi.src = KQ3D.emojiFile(ballType.icon);
+}
+
+G.scene.addEventListener('pointerdown', (e) => { if (G.state !== 'play' || ball || throws <= 0 || clearing) return; const r = C.cv.getBoundingClientRect(); drag = { x0: e.clientX - r.left, y0: e.clientY - r.top, dx: 0, dy: 0 }; });
+window.addEventListener('pointermove', (e) => { if (!drag) return; const r = C.cv.getBoundingClientRect(); drag.dx = e.clientX - r.left - drag.x0; drag.dy = e.clientY - r.top - drag.y0; });
+window.addEventListener('pointerup', () => {
+  if (!drag) return; const v = vel(drag); drag = null;
+  if (Math.hypot(v.x, v.y) < 200) return;
+  const L0 = launch(); ball = { x: L0.x, y: L0.y, vx: v.x, vy: v.y, r: ballType.r, rest: 0 };
+  throws--; G.hudSet('balls', throws); KQ3D.sfx('whoosh');
+});
+function vel(d) {
+  let dx = -d.dx, dy = -d.dy; const m = Math.hypot(dx, dy), max = 170;
+  if (m > max) { dx *= max / m; dy *= max / m; }
+  return { x: dx * 6.2, y: dy * 6.2 };
+}
+
+function supported(c) {
+  const bottom = c.y + CH / 2;
+  if (bottom >= gY() - 1) return true;
+  if (shelves.some((s) => Math.abs(bottom - s.top) < 3 && c.x > s.x0 - CW * 0.3 && c.x < s.x1 + CW * 0.3)) return true;
+  return cans.some((o) => o !== c && Math.abs(bottom - (o.y - CH / 2)) < 3 && Math.abs(o.x - c.x) < CW * 0.8);
+}
+function physics(dt) {
+  cans.forEach((c) => { if (c.sleep && !supported(c)) c.sleep = false; });
+  cans.forEach((c) => {
+    if (c.sleep) return;
+    c.vy += GRAV * dt; c.x += c.vx * dt; c.y += c.vy * dt; c.rot += c.vr * dt;
+    const bottom = c.y + CH / 2;
+    // shelves
+    shelves.forEach((s) => { if (c.vy > 0 && bottom > s.top && bottom - c.vy * dt <= s.top + 2 && c.x > s.x0 - CW * 0.3 && c.x < s.x1 + CW * 0.3) { c.y = s.top - CH / 2; c.vy *= -0.15; c.vx *= 0.96; c.vr *= 0.8; } });
+    if (bottom > gY()) { c.y = gY() - CH / 2; c.vy *= -0.25; c.vx *= 0.8; c.vr *= 0.6; if (!c.out) { c.out = true; scoreCan(c); } }
+    if ((c.x < -40 || c.x > C.w + 40) && !c.out) { c.out = true; scoreCan(c); }
+    if (Math.abs(c.vx) < 8 && Math.abs(c.vy) < 8 && supported(c)) { c.sleep = true; c.vx = c.vy = 0; c.vr = 0; c.rot *= 0.5; }
+  });
+  // can vs can
+  for (let i = 0; i < cans.length; i++) for (let j = i + 1; j < cans.length; j++) {
+    const a = cans[i], b = cans[j]; if (a.sleep && b.sleep) continue;
+    const ox = CW - Math.abs(a.x - b.x), oy = CH - Math.abs(a.y - b.y);
+    if (ox <= 0 || oy <= 0) continue;
+    a.sleep = b.sleep = false;
+    if (ox < oy) { const s = a.x < b.x ? -1 : 1; a.x += s * ox / 2; b.x -= s * ox / 2; const v = (a.vx + b.vx) / 2, k = Math.abs(a.vx - b.vx) * 0.35; a.vx = v + s * (20 + k); b.vx = v - s * (20 + k); }
+    else { const s = a.y < b.y ? -1 : 1; a.y += s * oy / 2; b.y -= s * oy / 2; const v = (a.vy + b.vy) / 2; a.vy = b.vy = v; const f = (a.vx + b.vx) / 2; a.vx += (f - a.vx) * 0.3; b.vx += (f - b.vx) * 0.3; }
   }
-  requestAnimationFrame(loop);
-}
-let dragX=0,dragY=0;
-cv.addEventListener('touchstart',e=>{
-  const r=cv.getBoundingClientRect();
-  const x=e.touches[0].clientX-r.left, y=e.touches[0].clientY-r.top;
-  if(!launched && Math.hypot(x-ball.x,y-ball.y)<50){ dragging=true; }
-},{passive:true});
-cv.addEventListener('touchmove',e=>{
-  if(!dragging)return;
-  const r=cv.getBoundingClientRect();
-  let x=e.touches[0].clientX-r.left, y=e.touches[0].clientY-r.top;
-  const dx=x-anchor.x, dy=y-anchor.y;
-  const dist=Math.min(70,Math.hypot(dx,dy));
-  const ang=Math.atan2(dy,dx);
-  ball.x=anchor.x+Math.cos(ang)*dist;
-  ball.y=anchor.y+Math.sin(ang)*dist;
-},{passive:true});
-cv.addEventListener('touchend',()=>{ if(dragging){ dragging=false; release(); } },{passive:true});
-cv.addEventListener('mousedown',e=>{
-  const r=cv.getBoundingClientRect();
-  const x=e.clientX-r.left, y=e.clientY-r.top;
-  if(!launched && Math.hypot(x-ball.x,y-ball.y)<50) dragging=true;
-});
-cv.addEventListener('mousemove',e=>{
-  if(!dragging)return;
-  const r=cv.getBoundingClientRect();
-  let x=e.clientX-r.left, y=e.clientY-r.top;
-  const dx=x-anchor.x, dy=y-anchor.y;
-  const dist=Math.min(70,Math.hypot(dx,dy));
-  const ang=Math.atan2(dy,dx);
-  ball.x=anchor.x+Math.cos(ang)*dist;
-  ball.y=anchor.y+Math.sin(ang)*dist;
-});
-cv.addEventListener('mouseup',()=>{ if(dragging){ dragging=false; release(); } });
-function release(){
-  const dx=anchor.x-ball.x, dy=anchor.y-ball.y;
-  ball.vx=dx*0.22; ball.vy=dy*0.22;
-  ball.onSling=false; launched=true;
-  shots--; document.getElementById('shots').textContent=shots;
-}
-function loop(){
-  if(!over) update();
-  draw();
-  requestAnimationFrame(loop);
-}
-function update(){
-  if(launched){
-    ball.vy+=GRAV;
-    ball.x+=ball.vx; ball.y+=ball.vy;
-    if(ball.x<ball.r){ball.x=ball.r;ball.vx*=-0.5;}
-    if(ball.y>H-30-ball.r){ ball.y=H-30-ball.r; ball.vy*=-0.4; ball.vx*=0.7; }
-    blocks.forEach(b=>{
-      if(!b.alive)return;
-      if(ball.x+ball.r>b.x-b.w/2 && ball.x-ball.r<b.x+b.w/2 && ball.y+ball.r>b.y-b.h/2 && ball.y-ball.r<b.y+b.h/2){
-        b.hit++;
-        const pushDir = ball.x < b.x ? -1:1;
-        ball.vx = pushDir* Math.abs(ball.vx)*0.6;
-        if(b.hit>=2){ b.alive=false; score+=100; if(window.KQFX)KQFX.play('blast'); }
-        else if(window.KQFX)KQFX.play('hit');
+  // ball
+  if (ball) {
+    ball.vy += GRAV * dt; ball.x += ball.vx * dt; ball.y += ball.vy * dt;
+    if (ball.y + ball.r > gY()) { ball.y = gY() - ball.r; ball.vy *= -0.4; ball.vx *= 0.8; }
+    shelves.forEach((s) => { if (ball.x > s.x0 && ball.x < s.x1 && ball.y + ball.r > s.top && ball.y < s.top + 12 && ball.vy > 0) { ball.y = s.top - ball.r; ball.vy *= -0.4; ball.vx *= 0.85; } });
+    cans.forEach((c) => {
+      const nx = Math.max(c.x - CW / 2, Math.min(ball.x, c.x + CW / 2)), ny = Math.max(c.y - CH / 2, Math.min(ball.y, c.y + CH / 2));
+      const dx = ball.x - nx, dy = ball.y - ny, d = Math.hypot(dx, dy);
+      if (d < ball.r && d > 0.01) {
+        const ux = dx / d, uy = dy / d, m = ballType.m;
+        ball.x += ux * (ball.r - d); ball.y += uy * (ball.r - d);
+        const vn = ball.vx * ux + ball.vy * uy;
+        if (vn < 0) {
+          c.sleep = false; c.vx += ux * vn * 0.8 * m + ball.vx * 0.55 * m; c.vy += uy * vn * 0.5 * m - 180; c.vr += (Math.random() - 0.5) * 14;
+          ball.vx -= 1.2 * vn * ux; ball.vy -= 1.2 * vn * uy; ball.vx *= 0.85; ball.vy *= 0.85;
+          KQ3D.sfx('hit');
+        }
       }
     });
-    if(ball.x>W+40 || (ball.y>H-30 && Math.abs(ball.vx)<0.5 && Math.abs(ball.vy)<0.5)){
-      resetBall();
-    }
+    if (Math.hypot(ball.vx, ball.vy) < 40) ball.rest += dt;
+    if (ball.x > C.w + 60 || ball.x < -60 || ball.rest > 0.6 || ball.y > C.h + 50) { ball = null; waitT = 1.2; }
   }
 }
-function resetBall(){
-  const remaining=blocks.filter(b=>b.alive).length;
-  if(remaining===0){ winLevel(); return; }
-  if(shots<=0){ loseLevel(); return; }
-  ball={x:anchor.x,y:anchor.y,vx:0,vy:0,r:14,onSling:true};
-  launched=false;
+function scoreCan(c) {
+  knocked++; score += 10; G.score(score); KQ3D.sfx('pop');
+  const r = C.cv.getBoundingClientRect(); G.pop('+10', c.x + r.left, Math.min(c.y, gY() - 30) + r.top);
 }
-function winLevel(){
-  over=true;
-  if(window.KQFX)KQFX.win();
-  document.getElementById('overTitle').textContent='🎉 Level Clear!';
-  document.getElementById('finalScore').textContent='Score: '+score;
-  document.getElementById('overlay').classList.add('show');
-  onGameComplete();
-  level++;
+function check(dt) {
+  if (clearing) return;
+  if (cans.every((c) => c.out)) {
+    clearing = true; const bonus = throws * 20; score += bonus; G.score(score); KQ3D.sfx('win');
+    G.pop('Level clear! ' + (bonus ? '+' + bonus + ' bonus' : ''), null, C.h * 0.35, '#fde047');
+    try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {}
+    setTimeout(() => { if (G.state === 'play' || G.state === 'pause') { level++; loadLevel(); } }, 1600);
+    return;
+  }
+  if (!ball && throws <= 0) {
+    waitT -= dt;
+    if (waitT <= 0 && cans.every((c) => c.sleep || c.out)) G.over({ score, title: 'Out of balls!', lines: ['🎪 Level ' + level, '🥫 ' + cans.filter((c) => !c.out).length + ' cans left'] });
+  }
 }
-function loseLevel(){
-  over=true;
-  if(window.KQFX)KQFX.lose();
-  document.getElementById('overTitle').textContent='Out of Shots!';
-  document.getElementById('finalScore').textContent='Score: '+score+' — Try Again';
-  document.getElementById('overlay').classList.add('show');
-  onGameComplete();
+
+function drawCan(c) {
+  ctx.save(); ctx.translate(c.x, c.y); ctx.rotate(c.rot);
+  ctx.fillStyle = c.col; KQ3D.roundRect(ctx, -CW / 2, -CH / 2, CW, CH, 4); ctx.fill();
+  ctx.fillStyle = '#e5e7eb'; ctx.fillRect(-CW / 2, -CH / 2, CW, 5); ctx.fillRect(-CW / 2, CH / 2 - 5, CW, 5);
+  ctx.fillStyle = '#fff'; ctx.fillRect(-CW / 2, -6, CW, 12);
+  KQ3D.drawPic(ctx, '⭐', 0, 0, 12);
+  ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(-CW / 2 + 4, -CH / 2 + 6, 4, CH - 12);
+  ctx.restore();
 }
-function draw(){
-  const grad=cx.createLinearGradient(0,0,0,H);
-  grad.addColorStop(0,'#1e3c72');grad.addColorStop(1,'#2a5298');
-  cx.fillStyle=grad; cx.fillRect(0,0,W,H);
-  cx.fillStyle='rgba(255,255,255,.15)'; cx.fillRect(0,H-30,W,30);
-  cx.strokeStyle='#8b5a2b'; cx.lineWidth=6;
-  cx.beginPath(); cx.moveTo(anchor.x-16,anchor.y+40); cx.lineTo(anchor.x-16,anchor.y-10); cx.stroke();
-  cx.beginPath(); cx.moveTo(anchor.x+16,anchor.y+40); cx.lineTo(anchor.x+16,anchor.y-10); cx.stroke();
-  cx.strokeStyle='rgba(200,150,80,.8)'; cx.lineWidth=3;
-  cx.beginPath(); cx.moveTo(anchor.x-16,anchor.y-6); cx.lineTo(ball.x,ball.y); cx.stroke();
-  cx.beginPath(); cx.moveTo(anchor.x+16,anchor.y-6); cx.lineTo(ball.x,ball.y); cx.stroke();
-  blocks.forEach(b=>{
-    if(!b.alive)return;
-    cx.fillStyle = b.hit===0 ? '#d97b3f' : '#ffb74d';
-    cx.fillRect(b.x-b.w/2,b.y-b.h/2,b.w,b.h);
-    cx.strokeStyle='rgba(0,0,0,.3)'; cx.strokeRect(b.x-b.w/2,b.y-b.h/2,b.w,b.h);
+function background(t) {
+  const w = C.w, h = C.h;
+  const sky = ctx.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#fde68a'); sky.addColorStop(1, '#fecaca');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
+  // tent stripes
+  for (let i = 0; i < 14; i++) { ctx.fillStyle = i % 2 ? '#ef4444' : '#fff7ed'; ctx.beginPath(); ctx.moveTo(w / 2, -40); ctx.lineTo(i * w / 13 - w * 0.04, h * 0.18); ctx.lineTo((i + 1) * w / 13 - w * 0.04, h * 0.18); ctx.fill(); }
+  ctx.fillStyle = '#ef4444'; for (let x = 0; x < w; x += 30) { ctx.beginPath(); ctx.arc(x + 15, h * 0.18, 15, 0, Math.PI); ctx.fill(); }
+  // bunting
+  ctx.strokeStyle = '#78350f'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, h * 0.24); ctx.quadraticCurveTo(w / 2, h * 0.3, w, h * 0.24); ctx.stroke();
+  for (let i = 0; i < 12; i++) { const x = (i + 0.5) * w / 12, y = h * 0.24 + Math.sin(i / 11 * Math.PI) * h * 0.03; ctx.fillStyle = CAN_COL[i % 6]; ctx.beginPath(); ctx.moveTo(x - 10, y); ctx.lineTo(x + 10, y); ctx.lineTo(x, y + 18); ctx.fill(); }
+  ctx.fillStyle = '#a16207'; ctx.fillRect(0, gY(), w, h - gY());
+  ctx.fillStyle = '#ca8a04'; for (let x = 0; x < w; x += 40) ctx.fillRect(x, gY(), 38, 8);
+  shelves.forEach((s) => {
+    ctx.fillStyle = '#7c2d12'; ctx.fillRect(s.x0 + 8, s.top, 10, gY() - s.top); ctx.fillRect(s.x1 - 18, s.top, 10, gY() - s.top);
+    ctx.fillStyle = '#b45309'; KQ3D.roundRect(ctx, s.x0, s.top, s.x1 - s.x0, 12, 4); ctx.fill();
   });
-  cx.beginPath(); cx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
-  cx.fillStyle='#ff5a8a'; cx.fill();
+  // sling
+  const L0 = launch();
+  ctx.strokeStyle = '#7c2d12'; ctx.lineWidth = 9; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(L0.x, gY()); ctx.lineTo(L0.x, L0.y + 30); ctx.moveTo(L0.x, L0.y + 30); ctx.lineTo(L0.x - 18, L0.y - 4); ctx.moveTo(L0.x, L0.y + 30); ctx.lineTo(L0.x + 18, L0.y - 4); ctx.stroke();
 }
-init();
-</script></body></html>
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.025, (now - last) / 1000); last = now;
+  if (G.state === 'play') { for (let s = 0; s < 3; s++) physics(dt / 3); check(dt); }
+  background(now);
+  cans.forEach(drawCan);
+  const L0 = launch();
+  if (drag) {
+    const v = vel(drag), bx = L0.x - Math.max(-60, Math.min(60, v.x / 10)), by = L0.y - Math.max(-60, Math.min(60, v.y / 10));
+    ctx.strokeStyle = '#451a03'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(L0.x - 18, L0.y - 4); ctx.lineTo(bx, by); ctx.lineTo(L0.x + 18, L0.y - 4); ctx.stroke();
+    for (let i = 1; i <= 12; i++) { const t = i * 0.06; ctx.globalAlpha = 1 - i / 13; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(L0.x + v.x * t, L0.y + v.y * t + 0.5 * GRAV * t * t, 5, 0, 7); ctx.fill(); }
+    ctx.globalAlpha = 1; KQ3D.drawPic(ctx, ballType.icon, bx, by, ballType.r * 2.3);
+  } else if (!ball && throws > 0 && G.state !== 'over') {
+    ctx.strokeStyle = '#451a03'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(L0.x - 18, L0.y - 4); ctx.lineTo(L0.x + 18, L0.y - 4); ctx.stroke();
+    KQ3D.drawPic(ctx, ballType.icon, L0.x, L0.y - 6, ballType.r * 2.3);
+    if (G.state === 'play' && throws === 5 && level === 1) { ctx.font = '800 20px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#7c2d12'; ctx.fillText('Drag back & let go! 👆', C.w / 2, C.h * 0.36); }
+  }
+  if (ball) KQ3D.drawPic(ctx, ballType.icon, ball.x, ball.y, ball.r * 2.3, now / 100);
+}
+reset(ballType);
+requestAnimationFrame(frame);
+</script>
+</body></html>

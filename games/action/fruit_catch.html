@@ -1,87 +1,119 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Fruit Catch</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#ffd166,#34d399);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:440px;width:100%}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:14px}
-canvas{width:100%;border-radius:18px;display:block;background:linear-gradient(180deg,#e0f7ff,#fdfff0);touch-action:none}
-.hint{text-align:center;color:#888;font-size:12px;margin-top:6px;font-weight:600}
-
-/* mobile fit */
-.wrap{display:flex;flex-direction:column;height:100%;max-height:820px}
-.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0}
-canvas{max-height:100%}
-
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">⭐ <span id="score">0</span> &nbsp; ❤️ <span id="lives">3</span> &nbsp; 🏆 <span id="best">0</span></div>
-    <button onclick="reset()">↻</button>
-  </div>
-  <div class="stage"><canvas id="cv" width="400" height="560"></canvas></div>
-  <div class="hint">Drag finger / move mouse / use ← → arrows</div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-const FRUITS=['🍎','🍌','🍇','🍓','🍊','🍉'];
-let bx,items,score,lives,playing,dead,frame,keys={},best=+(localStorage.getItem('fruitBest')||0);
-document.getElementById('best').textContent=best;
-function reset(){bx=cv.width/2;items=[];score=0;lives=3;playing=false;dead=false;frame=0;
-  document.getElementById('score').textContent=0;document.getElementById('lives').textContent=3;}
-function setX(clientX){
-  const r=cv.getBoundingClientRect();
-  bx=Math.max(30,Math.min(cv.width-30,(clientX-r.left)/r.width*cv.width));
-  if(dead)reset();playing=true;
+/* Fruit Catch — move the basket to catch fruit. Honey = +5. Rocks & bees cost a life. */
+const HEROES = [{ icon: '🐻', name: 'Bear' }, { icon: '🐼', name: 'Panda' }, { icon: '🐵', name: 'Monkey' }, { icon: '🐰', name: 'Bunny' }];
+const FRUITS = ['🍎', '🍌', '🍓', '🍊', '🍇', '🍉', '🍒', '🍐', '🍑', '🥝'];
+const G = KQ3D.init({
+  id: 'fruit_catch', title: 'Fruit Catch', bestKey: 'fruitBest', music: true,
+  hero: ['🧺', '🍓', '🍌'], colors: ['#f97316', '#16a34a'],
+  how: [['👆', 'Drag, or use ⬅️ ➡️, to move your basket'], ['🍎', 'Catch fruit for points — keep a streak!'], ['🍯', 'Honey pots are worth +5'], ['🪨', 'Dodge rocks and bees 🐝']],
+  hud: [{ id: 'lives', icon: '❤️' }], scoreIcon: '🧺', stars: [40, 100, 200],
+  pick: { label: 'Who is catching?', options: HEROES },
+  buttons: [{ icon: '⬅️', label: 'Left', down: () => { keyDir = -1; }, up: () => { keyDir = 0; } }, { icon: '➡️', label: 'Right', down: () => { keyDir = 1; }, up: () => { keyDir = 0; } }],
+  onReset: (h) => reset(h)
+});
+let hero = G.choice || HEROES[0], items = [], splats = [], basketFruit = [], leaves = [];
+let px, target, keyDir = 0, score, lives, streak, spawnT, elapsed, hurtT, caught;
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+for (let i = 0; i < 14; i++) leaves.push({ x: Math.random(), y: Math.random() * 0.15, r: 40 + Math.random() * 40 });
+
+function reset(h) {
+  hero = h || HEROES[0]; items = []; splats = []; basketFruit = [];
+  px = target = C.w / 2; score = 0; lives = 3; streak = 0; spawnT = 0.5; elapsed = 0; hurtT = 0; caught = 0;
+  G.hudSet('lives', lives);
 }
-cv.addEventListener('pointerdown',e=>{e.preventDefault();setX(e.clientX);});
-cv.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch')setX(e.clientX);});
-cv.addEventListener('touchmove',e=>{e.preventDefault();setX(e.touches[0].clientX);},{passive:false});
-document.addEventListener('keydown',e=>{keys[e.key]=true;if(dead){reset();}playing=true;});
-document.addEventListener('keyup',e=>{keys[e.key]=false;});
-function update(){
-  frame++;
-  if(keys['ArrowLeft'])bx=Math.max(30,bx-7);
-  if(keys['ArrowRight'])bx=Math.min(cv.width-30,bx+7);
-  if(playing&&!dead){
-    if(frame%Math.max(30,55-Math.floor(score/4))===0){
-      const bomb=Math.random()<0.18;
-      items.push({x:30+Math.random()*(cv.width-60),y:-20,e:bomb?'💣':FRUITS[Math.floor(Math.random()*FRUITS.length)],bomb,v:2.2+score*0.04+Math.random()});
-    }
-    for(let i=items.length-1;i>=0;i--){
-      const it=items[i];it.y+=it.v;
-      if(it.y>cv.height-58&&it.y<cv.height-20&&Math.abs(it.x-bx)<38){
-        items.splice(i,1);
-        if(it.bomb)loseLife();
-        else{score++;document.getElementById('score').textContent=score;if(window.KQFX)KQFX.play('pop');}
-      }else if(it.y>cv.height+20){
-        items.splice(i,1);
-        if(!it.bomb)loseLife();
-      }
-    }
+function spawn() {
+  const lvl = Math.min(1, elapsed / 80), r = Math.random();
+  let type = 'fruit', e = FRUITS[Math.floor(Math.random() * FRUITS.length)];
+  if (r < 0.14 + lvl * 0.12) { type = 'bad'; e = Math.random() < 0.6 ? '🪨' : '🐝'; }
+  else if (r < 0.2 + lvl * 0.12) { type = 'honey'; e = '🍯'; }
+  const s = Math.max(40, Math.min(58, C.w * 0.11));
+  items.push({ type, e, s, x: s / 2 + Math.random() * (C.w - s), y: C.h * 0.12, v: (150 + Math.random() * 80) * (1 + lvl * 1.1), rot: 0, vr: (Math.random() - 0.5) * 3, wob: Math.random() * 6 });
+}
+let dragging = false;
+G.scene.addEventListener('pointerdown', (e) => { if (G.state !== 'play') return; dragging = true; target = e.clientX - C.cv.getBoundingClientRect().left; });
+window.addEventListener('pointermove', (e) => { if (dragging) target = e.clientX - C.cv.getBoundingClientRect().left; });
+window.addEventListener('pointerup', () => { dragging = false; });
+document.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' || e.key === 'a') keyDir = -1; if (e.key === 'ArrowRight' || e.key === 'd') keyDir = 1; });
+document.addEventListener('keyup', (e) => { if (['ArrowLeft', 'ArrowRight', 'a', 'd'].includes(e.key)) keyDir = 0; });
+
+function groundY() { return C.h - 150; }
+function catchIt(it) {
+  const s = KQ3D;
+  if (it.type === 'bad') {
+    lives--; streak = 0; hurtT = 0.6; G.hudSet('lives', Math.max(0, lives)); s.sfx('hit'); G.flash('#fca5a5'); G.pop(it.e === '🐝' ? 'Bzzz! 🐝' : 'Bonk! 🪨', it.x, it.y, '#fecaca');
+    if (lives <= 0) G.over({ score, title: 'Oh no!', lines: ['🍎 ' + caught + ' fruit caught'] });
+    return;
   }
-  draw();requestAnimationFrame(update);
+  streak++; caught++;
+  const pts = (it.type === 'honey' ? 5 : 1) * (streak >= 10 ? 2 : 1);
+  score += pts; G.score(score); s.sfx(it.type === 'honey' ? 'coin' : 'pop');
+  G.pop('+' + pts + (streak >= 10 ? ' x2' : ''), it.x, it.y - 20, it.type === 'honey' ? '#fde047' : '#fff');
+  if (streak === 10) { s.sfx('levelup'); G.pop('Streak x2! 🔥', null, C.h * 0.35, '#fb923c'); }
+  basketFruit.push({ e: it.e, dx: (Math.random() - 0.5) * 40, dy: Math.random() * 8 }); if (basketFruit.length > 7) basketFruit.shift();
 }
-function loseLife(){
-  lives--;document.getElementById('lives').textContent=lives;
-  if(lives<=0){dead=true;if(window.KQFX)KQFX.lose();onGameComplete();
-    if(score>best){best=score;localStorage.setItem('fruitBest',best);document.getElementById('best').textContent=best;}
+
+function drawTree(t) {
+  const w = C.w;
+  ctx.fillStyle = '#7c4a22'; ctx.fillRect(w * 0.08, 0, 22, C.h * 0.2); ctx.fillRect(w * 0.88, 0, 22, C.h * 0.18);
+  leaves.forEach((l, i) => { ctx.fillStyle = i % 2 ? '#16a34a' : '#22c55e'; ctx.beginPath(); ctx.arc(l.x * w, l.y * C.h + Math.sin(t / 900 + i) * 3, l.r, 0, 7); ctx.fill(); });
+  for (let i = 0; i < 8; i++) KQ3D.drawPic(ctx, FRUITS[i], ((i * 0.13 + 0.06) % 1) * w, C.h * (0.06 + (i % 3) * 0.04), 26);
+}
+function background(t) {
+  const w = C.w, h = C.h;
+  const sky = ctx.createLinearGradient(0, 0, 0, h); sky.addColorStop(0, '#bae6fd'); sky.addColorStop(1, '#fef9c3');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = '#a7f3d0'; ctx.beginPath(); ctx.moveTo(0, h * 0.7); for (let x = 0; x <= w + 40; x += 40) ctx.lineTo(x, h * 0.7 - Math.sin(x / 120) * 30 - 20); ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.fill();
+  ctx.fillStyle = '#4ade80'; ctx.fillRect(0, groundY() + 40, w, h);
+  ctx.fillStyle = '#22c55e'; for (let x = 0; x < w; x += 14) { ctx.beginPath(); ctx.moveTo(x, groundY() + 40); ctx.lineTo(x + 7, groundY() + 28); ctx.lineTo(x + 14, groundY() + 40); ctx.fill(); }
+  drawTree(t);
+}
+function drawHero(t) {
+  const y = groundY(), bob = Math.abs(Math.sin(t / 120)) * (Math.abs(target - px) > 3 ? 5 : 1);
+  if (hurtT > 0 && Math.floor(t / 80) % 2) return;
+  KQ3D.drawPic(ctx, hero.icon, px, y + 2 - bob, 70);
+  ctx.fillStyle = "rgba(0,0,0,.15)"; ctx.beginPath(); ctx.ellipse(px, y + 38, 34, 8, 0, 0, 7); ctx.fill();
+  // basket
+  const bw = 96, by = y - 70 - bob;
+  basketFruit.forEach((f) => KQ3D.drawPic(ctx, f.e, px + f.dx, by - 6 + f.dy, 30));
+  ctx.fillStyle = '#b45309'; ctx.beginPath(); ctx.moveTo(px - bw / 2, by); ctx.lineTo(px + bw / 2, by); ctx.lineTo(px + bw / 2 - 12, by + 34); ctx.lineTo(px - bw / 2 + 12, by + 34); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#78350f'; ctx.lineWidth = 2; for (let i = 1; i < 6; i++) { ctx.beginPath(); ctx.moveTo(px - bw / 2 + i * bw / 6, by); ctx.lineTo(px - bw / 2 + 10 + i * (bw - 20) / 6, by + 34); ctx.stroke(); }
+  [10, 22].forEach((d) => { ctx.beginPath(); ctx.moveTo(px - bw / 2 + d * 0.4, by + d); ctx.lineTo(px + bw / 2 - d * 0.4, by + d); ctx.stroke(); });
+  ctx.fillStyle = '#92400e'; KQ3D.roundRect(ctx, px - bw / 2 - 4, by - 6, bw + 8, 10, 5); ctx.fill();
+  return by;
+}
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  const playing = G.state === 'play';
+  if (playing) {
+    elapsed += dt; spawnT -= dt; hurtT -= dt;
+    if (spawnT <= 0) { spawn(); spawnT = Math.max(0.35, 0.95 - elapsed / 100); }
+    if (keyDir) target = px + keyDir * 60;
   }
+  target = Math.max(48, Math.min(C.w - 48, target));
+  px += (target - px) * Math.min(1, dt * 14);
+  background(now);
+  const by = drawHero(now) || groundY() - 70;
+  if (G.state !== 'pause') for (let i = items.length - 1; i >= 0; i--) {
+    const it = items[i]; it.y += it.v * dt; it.rot += it.vr * dt; it.wob += dt * 5;
+    if (it.e === '🐝') it.x += Math.sin(it.wob) * 80 * dt;
+    if (playing && it.y > by - 16 && it.y < by + 22 && Math.abs(it.x - px) < 52) { items.splice(i, 1); catchIt(it); continue; }
+    if (it.y > groundY() + 30) { items.splice(i, 1); if (it.type !== 'bad') { splats.push({ x: it.x, y: groundY() + 36, e: it.e, l: 1 }); if (playing) { if (streak >= 3) G.pop('Missed!', it.x, groundY(), '#fff'); streak = 0; } } }
+  }
+  splats = splats.filter((s) => (s.l -= dt) > 0);
+  splats.forEach((s) => { ctx.globalAlpha = s.l; ctx.save(); ctx.translate(s.x, s.y); ctx.scale(1.3, 0.55); KQ3D.drawPic(ctx, s.e, 0, 0, 34); ctx.restore(); ctx.globalAlpha = 1; });
+  items.forEach((it) => KQ3D.drawPic(ctx, it.e, it.x, it.y, it.s, it.e === '🐝' ? 0 : it.rot));
+  if (playing && streak >= 3) { ctx.font = '800 20px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 4; const s = '🔥 Streak ' + streak; ctx.strokeText(s, C.w / 2, C.h * 0.24); ctx.fillText(s, C.w / 2, C.h * 0.24); }
 }
-function draw(){
-  cx.clearRect(0,0,cv.width,cv.height);
-  cx.font='30px serif';cx.textAlign='center';
-  items.forEach(it=>cx.fillText(it.e,it.x,it.y));
-  cx.font='44px serif';cx.fillText('🧺',bx,cv.height-18);
-  cx.fillStyle='#ff5a8a';cx.font='bold 20px sans-serif';
-  if(!playing&&!dead)cx.fillText('Touch or move to start!',cv.width/2,200);
-  if(dead){cx.fillText('💥 Game over! Score: '+score,cv.width/2,190);cx.font='bold 14px sans-serif';cx.fillText('Touch to play again',cv.width/2,220);}
-  cx.textAlign='left';
-}
-reset();update();
-</script></body></html>
+reset(hero);
+requestAnimationFrame(frame);
+</script>
+</body></html>

@@ -226,9 +226,11 @@
   <div class="loading"><div class="spinner"></div>Loading leaderboard…</div>
 </div>
 
-<script src="quiz-shared.js?v=20261120e" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261120f" charset="utf-8"></script>
 <script>window.KQ_NO_WIDGET = true;</script>
-<script src="games/kq-leaderboard.js?v=20261120e"></script>
+<script src="quiz/kids-engine.js?v=20261120f"></script>
+<script src="games/kq-leaderboard.js?v=20261120f"></script>
+<script src="web-ads.js?v=20261120f"></script>
 <script>
 (function () {
   'use strict';
@@ -277,12 +279,13 @@
   function describe(cat, gameId, meta) {
     const d = { cat, gameId, title: '', sub: '', subject: '', level: null };
     if (cat === 'quiz') {
-      const m = String(gameId).match(/^(.+)__(-?\d+)$/);
+      // quiz ids: <cat>__<level> (Speed Challenge) or <cat>__<level>__p<N> (paper)
+      const m = String(gameId).match(/^(.+?)__(-?\d+)(?:__p(\d+))?$/);
       const info = m && typeof getCatInfo === 'function' ? getCatInfo(m[1]) : null;
       if (m) {
         d.subject = m[1]; d.level = +m[2];
         d.title = (info ? info.icon + ' ' + info.title : (KQ.gameName ? KQ.gameName(m[1]) : m[1]));
-        d.sub = lvlLabel(d.level);
+        d.sub = lvlLabel(d.level) + (m[3] ? ' • Paper ' + m[3] : ' • Speed');
       } else { d.subject = gameId; d.title = '🤖 ' + (KQ.gameName ? KQ.gameName(gameId) : gameId); d.sub = 'Quiz game'; }
     } else if (cat === 'olympiad') {
       const m = String(gameId).match(/^class(\d+)__([a-z]+)__p(\d+)$/);
@@ -317,7 +320,7 @@
     const g = P.get('game');
     if (!g) return;
     if (S.sec === 'quiz') {
-      const m = g.match(/^(.+)__(-?\d+)$/);
+      const m = g.match(/^(.+?)__(-?\d+)(?:__p\d+)?$/);
       if (m) { S.subject = m[1]; S.level = String(+m[2]); } else S.subject = g;
     } else if (S.sec === 'single' || S.sec === 'multi') S.game = g;
   })();
@@ -406,7 +409,7 @@
 
   /* A single exact board is selected → rank raw scores; else total points. */
   function singleBoard() {
-    if (S.sec === 'quiz') return S.subject && S.level !== 'all' ? 'quiz/' + S.subject + '__' + S.level : null;
+    if (S.sec === 'quiz') return null; // papers + speed boards are added up per player
     if (S.sec === 'single' || S.sec === 'multi') return S.game ? S.sec + '/' + S.game : null;
     return null;
   }
@@ -482,7 +485,7 @@
     let h = '<div class="fgroup"><div class="flabel">Section</div>' + chipsHtml(SECTIONS, S.sec, 'sec') + '</div>';
     if (S.sec === 'quiz') {
       const subs = [...new Set(ROWS.filter((r) => r.cat === 'quiz').map((r) => r.d.subject))];
-      const cats = (typeof CATEGORIES !== 'undefined' ? CATEGORIES.map((c) => c.id) : []).concat(subs.filter((s) => !(typeof getCatInfo === 'function' && getCatInfo(s))));
+      const cats = (typeof CATEGORIES !== 'undefined' ? CATEGORIES.map((c) => c.id) : []).concat(window.KidsQuiz ? KidsQuiz.CATS.map((c) => c.id) : []).concat(subs.filter((s) => !(typeof getCatInfo === 'function' && getCatInfo(s))));
       h += '<div class="fgroup"><div class="flabel">Subject</div><select id="subjectSel"><option value="">All subjects</option>' +
         cats.map((id) => { const c = typeof getCatInfo === 'function' && getCatInfo(id); return '<option value="' + esc(id) + '"' + (S.subject === id ? ' selected' : '') + '>' + esc(c ? c.icon + ' ' + c.title : (KQ.gameName ? KQ.gameName(id) : id)) + '</option>'; }).join('') + '</select></div>';
       h += '<div class="fgroup"><div class="flabel">Level</div>' + chipsHtml([{ id: 'all', label: 'All levels' }].concat(QUIZ_LEVELS.map((n) => ({ id: String(n), label: lvlLabel(n) }))), S.level, 'level') + '</div>';

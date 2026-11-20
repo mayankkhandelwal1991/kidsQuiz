@@ -49,7 +49,44 @@ function styleKidCard(el, color, delayIndex) {
   el.style.boxShadow = '0 6px 0 ' + color.shadow + ', 0 10px 16px rgba(0,0,0,.18)';
   el.style.animationDelay = (delayIndex * 0.05) + 's';
 }
-function getCatInfo(id) { return CATEGORIES.find(c => c.id === id); }
+function getCatInfo(id) {
+  const c = CATEGORIES.find(c => c.id === id);
+  if (c) return c;
+  // LKG/UKG interactive categories live in quiz/kids-engine.js
+  if (typeof window !== 'undefined' && window.KidsQuiz) return window.KidsQuiz.CATS.find(k => k.id === id);
+  return undefined;
+}
+
+/* ============================================
+   CATEGORIES PER CLASS (Quiz: Class -> Category -> Paper)
+   ============================================ */
+/** Which classes each Class 1–5 subject is offered for: [from, to]. */
+const CAT_CLASS_RANGE = {
+  addsub: [1, 5], patterns: [1, 5], multiply: [2, 5], reasoning: [2, 5], divide: [3, 5], mixedmath: [3, 5],
+  english: [1, 5], hindi: [1, 5], gk: [1, 5], science: [1, 5], computers: [1, 5], sports: [1, 5],
+  humanbody: [1, 5], space: [1, 5], animals: [1, 3], plants: [1, 4], geography: [2, 5], riddles: [2, 5],
+  history: [3, 5], capitals: [3, 5]
+};
+/** Picture-question subjects (existing class0.js / ukg.js pools) also shown for LKG / UKG. */
+const PRE_POOL_CATS = { 0: ['hindi', 'gk', 'english'], '-1': ['english', 'hindi', 'gk', 'space', 'science'] };
+const MATH_CATS = ['addsub', 'multiply', 'divide', 'mixedmath', 'patterns', 'reasoning'];
+/** Categories for a class level, in display order. Each: {id, icon, title, kind}
+    kind: 'kids' (interactive LKG/UKG), 'math' (generated), 'pool' (question files). */
+function quizCategoriesFor(level) {
+  level = parseInt(level, 10);
+  const out = [];
+  if (isPicoLevel(level)) {
+    if (window.KidsQuiz) KidsQuiz.CATS.forEach(c => { if (c.levels.indexOf(level) !== -1) out.push(Object.assign({ kind: 'kids' }, c)); });
+    (PRE_POOL_CATS[String(level)] || []).forEach(id => { const c = getCatInfo(id); if (c) out.push(Object.assign({ kind: 'pool' }, c)); });
+    return out;
+  }
+  CATEGORIES.forEach(c => {
+    const r = CAT_CLASS_RANGE[c.id];
+    if (r && level >= r[0] && level <= r[1]) out.push(Object.assign({ kind: MATH_CATS.indexOf(c.id) !== -1 ? 'math' : 'pool' }, c));
+  });
+  return out;
+}
+
 
 /* ============================================
    MATH HELPERS (used by the procedural generators)

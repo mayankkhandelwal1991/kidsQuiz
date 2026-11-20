@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kids Quiz - Home</title>
-<link rel="stylesheet" href="quiz-theme.css?v=20261120e">
+<link rel="stylesheet" href="quiz-theme.css?v=20261120f">
 </head>
 <body class="pg-home">
 
@@ -56,10 +56,10 @@
 
       <div class="kh-h">Pick &amp; play ✨</div>
       <div class="kh-grid">
-        <button type="button" class="kh-card c-quiz" onclick="showQuizCategoryModal()">
+        <button type="button" class="kh-card c-quiz" onclick="openQuizFlow()">
           <span class="kh-ico icon-wiggle"><img class="emoji-img" src="images/emoji/1f3af.svg" alt="" style="width:30px;height:30px;"></span>
           <span class="kh-ttl">Quiz</span>
-          <span class="kh-sub">20 topics</span>
+          <span class="kh-sub">LKG – Class 5</span>
         </button>
         <button type="button" class="kh-card c-game" onclick="showGameOptions()">
           <span class="kh-ico icon-wiggle"><img class="emoji-img" src="images/emoji/1f3ae.svg" alt="" style="width:30px;height:30px;"></span>
@@ -113,7 +113,7 @@
 
     <nav class="kh-dock" aria-label="Main">
       <button type="button" class="kh-tab on" onclick="showScreen('menuScreen')"><i>🏠</i><b>Home</b></button>
-      <button type="button" class="kh-tab" onclick="showQuizCategoryModal()"><i>🎯</i><b>Quiz</b></button>
+      <button type="button" class="kh-tab" onclick="openQuizFlow()"><i>🎯</i><b>Quiz</b></button>
       <button type="button" class="kh-tab" onclick="showGameOptions()"><i>🎮</i><b>Play</b></button>
       <button type="button" class="kh-tab" onclick="openLeaderboardHub()"><i>🏆</i><b>Rank</b></button>
     </nav>
@@ -217,8 +217,9 @@
   </div>
 </div>
 
-<script src="quiz-shared.js?v=20261120e" charset="utf-8"></script>
-<script src="emoji-images.js?v=20261120e" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261120f" charset="utf-8"></script>
+<script src="emoji-images.js?v=20261120f" charset="utf-8"></script>
+<script src="quiz/kids-engine.js?v=20261120f" charset="utf-8"></script>
 <script>
 /* ============================================================
    AUTH GUARD
@@ -407,6 +408,13 @@ function goToQuiz(level) {
   window.location.href = 'quiz/index.html?cat=' + encodeURIComponent(currentCategory) + '&level=' + level;
 }
 
+/* New Quiz flow: Class -> Category -> Paper -> Play (quiz/play.html).
+   Opens straight at the class the child picked last time. */
+function openQuizFlow() {
+  let last = null;
+  try { last = localStorage.getItem('kq_last_class'); } catch (e) {}
+  window.location.href = 'quiz/play.html' + (last != null && last !== '' ? '#/c/' + parseInt(last, 10) : '');
+}
 function showQuizCategoryModal() {
   const grid = document.getElementById('quizCategoryGrid');
   if (grid && !grid.dataset.built) {
@@ -531,7 +539,7 @@ function renderBestScores() {
     grouped[cat][lvl] = user.best[key];
   });
   let html = '<div class="best-list">';
-  CATEGORIES.forEach(cat => {
+  CATEGORIES.concat(window.KidsQuiz ? KidsQuiz.CATS : []).forEach(cat => {
     if (!grouped[cat.id]) return;
     html += '<div style="margin-top:10px; font-weight:600; color:#555; font-size:13px;">' + cat.icon + ' ' + cat.title + '</div>';
     // Show every level that has a saved score (incl. hidden Class 6–10).
@@ -883,6 +891,7 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   setTimeout(function () { kqAskName().then(renderHomeProfile); }, 400);
 }
 </script>
-<script src="games/kq-leaderboard.js?v=20261120e"></script>
+<script src="games/kq-leaderboard.js?v=20261120f"></script>
+<script src="web-ads.js?v=20261120f"></script>
 </body>
 </html>

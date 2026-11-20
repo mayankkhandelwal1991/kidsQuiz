@@ -1,181 +1,248 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Gravity Maze 3D</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:#05050f;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
-.wrap{width:100%;height:100%;max-width:480px;max-height:900px;position:relative;background:#05050f;margin:auto}
-.bar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px;z-index:5}
-.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
-h1{font-size:16px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sc{font-size:13px;font-weight:800;color:#00f5ff}
-#scene{position:absolute;inset:0}
-.overlay{position:absolute;inset:0;background:rgba(5,5,20,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;z-index:10}
-.overlay.show{display:flex}
-.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-.hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.5);z-index:5}
-.startCard{position:absolute;inset:0;background:rgba(5,5,20,.7);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:8;text-align:center;padding:20px}
-</style><link rel="stylesheet" href="../game-theme.css"></head><body>
-<div class="wrap">
-  <div id="scene"></div>
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <h1>Gravity Maze 3D</h1>
-    <div class="sc" id="timer">0:00</div>
-  </div>
-  <div class="hint">Drag anywhere to tilt the maze and roll the ball to the goal</div>
-  <div class="startCard" id="startCard">
-    <h2 style="font-size:22px;background:linear-gradient(135deg,#00f5ff,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent">Gravity Maze 3D</h2>
-    <p style="font-size:13px;color:#ccc;max-width:260px">Drag to tilt the board and guide the glowing ball through the maze to the golden goal.</p>
-    <button class="newbtn" onclick="startGame()">▶ Start Maze</button>
-  </div>
-  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#00f5ff,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent">🎉 Reached Goal!</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="startGame()">Play Again</button></div>
-</div>
+.joy{position:fixed;z-index:6;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;border:4px solid rgba(255,255,255,.7);background:rgba(255,255,255,.18);pointer-events:none;display:none}
+.joy i{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;background:rgba(255,255,255,.85);box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.lvlbanner{position:fixed;left:50%;top:22%;z-index:7;transform:translateX(-50%);background:#fff;color:#14532d;font:800 26px 'Baloo 2',sans-serif;padding:8px 22px;border-radius:999px;box-shadow:0 6px 0 rgba(0,0,0,.15);pointer-events:none;opacity:0;transition:opacity .3s;white-space:nowrap}
+</style>
+</head><body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const container=document.getElementById('scene');
-let scene,camera,renderer,boardGroup,ball,goal,walls=[],ballVel,tiltX=0,tiltZ=0,targetTiltX=0,targetTiltZ=0,over,started,startTs,timerId,best=+(localStorage.getItem('mazeBest')||0);
-const N=9, CELL=0.9;
-function genMaze(n){
-  const grid=Array.from({length:n},()=>Array(n).fill(1));
-  function carve(x,y){
-    grid[y][x]=0;
-    const dirs=[[2,0],[-2,0],[0,2],[0,-2]].sort(()=>Math.random()-0.5);
-    dirs.forEach(([dx,dy])=>{
-      const nx=x+dx, ny=y+dy;
-      if(nx>0&&nx<n-1&&ny>0&&ny<n-1&&grid[ny][nx]===1){
-        grid[y+dy/2][x+dx/2]=0;
-        carve(nx,ny);
-      }
-    });
+/* Gravity Maze 3D — tilt the garden maze to roll your pet's bubble home.
+   6 levels; 3 stars per level; holes (from level 3) cost a life. */
+const PETS = [
+  { icon: '🐹', name: 'Hammy', tint: 0x7dd3fc },
+  { icon: '🐧', name: 'Pingu', tint: 0xa5b4fc },
+  { icon: '🐞', name: 'Dotty', tint: 0xfda4af },
+  { icon: '🐥', name: 'Chirp', tint: 0xfde68a }
+];
+const LEVELS = [7, 9, 9, 11, 11, 13];
+const G = KQ3D.init({
+  id: 'ball_maze_3d', title: 'Gravity Maze 3D', bestKey: 'mazeScoreBest', music: true,
+  hero: ['🐹', '⭐', '🏠'], colors: ['#4ade80', '#0891b2'],
+  how: [['👆', 'Drag anywhere (or use arrow keys) to tilt the maze'], ['🏠', 'Roll your pet home to finish the level'], ['⭐', 'Collect all 3 stars for big points'], ['🕳️', 'From level 3, watch out for holes!']],
+  hud: [{ id: 'lvl', icon: '🗺️' }, { id: 'lives', icon: '❤️' }], scoreIcon: '⭐', stars: [400, 900, 1500],
+  hint: 'Drag to tilt the maze',
+  pick: { label: 'Pick your pet', options: PETS },
+  onPick: (p) => dressBall(p),
+  onReset: (p) => reset(p)
+});
+
+const R = KQ3D.renderer(G.scene, { fov: 45, far: 120, shadows: true });
+const { scene, camera, renderer } = R || {};
+const L = (c, o) => new THREE.MeshLambertMaterial(Object.assign({ color: c }, o || {}));
+const BALL_R = 0.3, GRAVITY = 14, MAX_TILT = 0.32;
+
+scene.background = new THREE.Color(0x86d3f7);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x6aa84f, 0.8));
+const sun = new THREE.DirectionalLight(0xffffff, 0.65); sun.position.set(-5, 14, 6); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
+Object.assign(sun.shadow.camera, { left: -10, right: 10, top: 10, bottom: -10, near: 1, far: 40 }); scene.add(sun);
+// background garden (outside the board)
+const lawn = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), L(0x3f9b4a)); lawn.rotation.x = -Math.PI / 2; lawn.position.y = -2.2; scene.add(lawn);
+for (let i = 0; i < 26; i++) { const a = Math.random() * Math.PI * 2, d = 11 + Math.random() * 12; const s = KQ3D.emojiSprite(['🌸', '🌻', '🌷', '🍄', '🌳', '🦋'][i % 6], i % 6 === 4 ? 3 : 1.4); s.position.set(Math.cos(a) * d, -1.4 + (i % 6 === 4 ? 0.8 : 0), Math.sin(a) * d - 3); scene.add(s); }
+
+const board = new THREE.Group(); scene.add(board);
+let maze, N, walls = [], holes = [], stars = [], goal, home, ball, ballSprite, shell;
+let pos = new THREE.Vector2(), vel = new THREE.Vector2(), tilt = new THREE.Vector2(), joy = new THREE.Vector2();
+let level, lives, score, got, levelT, falling, done;
+
+function genMaze(n) {
+  const g = Array.from({ length: n }, () => Array(n).fill(1));
+  const stack = [[1, 1]]; g[1][1] = 0;
+  while (stack.length) {
+    const [x, y] = stack[stack.length - 1];
+    const opts = [[2, 0], [-2, 0], [0, 2], [0, -2]].filter(([dx, dy]) => { const nx = x + dx, ny = y + dy; return nx > 0 && ny > 0 && nx < n - 1 && ny < n - 1 && g[ny][nx] === 1; });
+    if (!opts.length) { stack.pop(); continue; }
+    const [dx, dy] = opts[Math.floor(Math.random() * opts.length)];
+    g[y + dy / 2][x + dx / 2] = 0; g[y + dy][x + dx] = 0; stack.push([x + dx, y + dy]);
   }
-  carve(1,1);
-  grid[n-2][n-2]=0;
-  return grid;
+  // open a few extra gaps so there's more than one route
+  for (let k = 0; k < n / 2; k++) { const x = 1 + Math.floor(Math.random() * (n - 2)), y = 1 + Math.floor(Math.random() * (n - 2)); if (g[y][x] === 1 && ((g[y][x - 1] === 0 && g[y][x + 1] === 0) || (g[y - 1][x] === 0 && g[y + 1][x] === 0))) g[y][x] = 0; }
+  return g;
 }
-let mazeGrid;
-function initScene(){
-  scene=new THREE.Scene();
-  scene.fog=new THREE.Fog(0x05050f,8,26);
-  camera=new THREE.PerspectiveCamera(50,container.clientWidth/container.clientHeight,0.1,100);
-  camera.position.set(0,8.5,6.5);
-  camera.lookAt(0,0,0);
-  renderer=new THREE.WebGLRenderer({antialias:true});
-  renderer.setSize(container.clientWidth,container.clientHeight);
-  renderer.setClearColor(0x05050f);
-  container.innerHTML=''; container.appendChild(renderer.domElement);
-  scene.add(new THREE.AmbientLight(0xffffff,0.75));
-  const dir=new THREE.DirectionalLight(0xffffff,0.6); dir.position.set(3,10,4); scene.add(dir);
-  boardGroup=new THREE.Group();
-  scene.add(boardGroup);
+function bfs(g, sx, sy) {
+  const n = g.length, dist = Array.from({ length: n }, () => Array(n).fill(-1)), prev = {};
+  const q = [[sx, sy]]; dist[sy][sx] = 0;
+  while (q.length) { const [x, y] = q.shift(); [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dx, dy]) => { const nx = x + dx, ny = y + dy; if (g[ny] && g[ny][nx] === 0 && dist[ny][nx] < 0) { dist[ny][nx] = dist[y][x] + 1; prev[nx + ',' + ny] = [x, y]; q.push([nx, ny]); } }); }
+  return { dist, prev };
 }
-function buildMaze(){
-  while(boardGroup.children.length) boardGroup.remove(boardGroup.children[0]);
-  walls=[];
-  mazeGrid=genMaze(N);
-  const size=N*CELL;
-  const floor=new THREE.Mesh(new THREE.BoxGeometry(size,0.2,size),new THREE.MeshStandardMaterial({color:0x1a1a3d}));
-  floor.position.y=-0.1;
-  boardGroup.add(floor);
-  const wallMat=new THREE.MeshStandardMaterial({color:0x7c3aed,emissive:0x2a1050,emissiveIntensity:0.4});
-  for(let y=0;y<N;y++)for(let x=0;x<N;x++){
-    if(mazeGrid[y][x]===1){
-      const w=new THREE.Mesh(new THREE.BoxGeometry(CELL,0.5,CELL),wallMat);
-      w.position.set((x-N/2+0.5)*CELL,0.25,(y-N/2+0.5)*CELL);
-      boardGroup.add(w);
-      walls.push({x:(x-N/2+0.5)*CELL,z:(y-N/2+0.5)*CELL});
+const cellPos = (x, y) => new THREE.Vector2(x - (N - 1) / 2, y - (N - 1) / 2);
+
+function hedge() {
+  const g = new THREE.Group();
+  const b = new THREE.Mesh(new THREE.BoxGeometry(1, 0.7, 1), L(0x2f9e44)); b.position.y = 0.35; b.castShadow = true; b.receiveShadow = true; g.add(b);
+  const t = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.12, 0.9), L(0x51cf66)); t.position.y = 0.74; g.add(t);
+  return g;
+}
+function buildLevel() {
+  while (board.children.length) board.remove(board.children[0]);
+  N = LEVELS[level - 1]; maze = genMaze(N); walls = []; holes = []; stars = []; got = 0;
+  const size = N + 0.6;
+  const tray = new THREE.Mesh(new THREE.BoxGeometry(size + 0.6, 0.5, size + 0.6), L(0xa0522d)); tray.position.y = -0.3; tray.receiveShadow = true; board.add(tray);
+  const grass = new THREE.Mesh(new THREE.BoxGeometry(size, 0.1, size), L(0x9be27a)); grass.position.y = -0.04; grass.receiveShadow = true; board.add(grass);
+  // checker path tiles
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const p = cellPos(x, y);
+    if (maze[y][x] === 1) { const h = hedge(); h.position.set(p.x, 0, p.y); board.add(h); walls.push(p); if (Math.random() < 0.12) { const f = KQ3D.emojiSprite(['🌸', '🌼', '🌷'][Math.floor(Math.random() * 3)], 0.45); f.position.set(p.x, 0.95, p.y); board.add(f); } }
+    else if ((x + y) % 2) { const t = new THREE.Mesh(new THREE.PlaneGeometry(0.98, 0.98), L(0x8fd46b)); t.rotation.x = -Math.PI / 2; t.position.set(p.x, 0.015, p.y); t.receiveShadow = true; board.add(t); }
+  }
+  const { dist, prev } = bfs(maze, 1, 1);
+  // goal = farthest reachable cell
+  let gx = N - 2, gy = N - 2, far = -1;
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (dist[y][x] > far && (x > N / 2 || y > N / 2)) { far = dist[y][x]; gx = x; gy = y; }
+  const onPath = {}; let c = [gx, gy]; while (c) { onPath[c[0] + ',' + c[1]] = true; c = prev[c[0] + ',' + c[1]]; }
+  goal = cellPos(gx, gy);
+  const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.05, 24), L(0xfde047, { emissive: 0x6b5a00 })); pad.position.set(goal.x, 0.03, goal.y); board.add(pad);
+  home = KQ3D.emojiSprite('🏠', 1.1); home.position.set(goal.x, 0.8, goal.y); board.add(home);
+  // stars in dead-ends (or far cells), never on start/goal
+  const open = []; for (let y = 1; y < N - 1; y++) for (let x = 1; x < N - 1; x++) if (maze[y][x] === 0 && !(x === 1 && y === 1) && !(x === gx && y === gy)) {
+    const nb = [[1, 0], [-1, 0], [0, 1], [0, -1]].filter(([dx, dy]) => maze[y + dy][x + dx] === 0).length;
+    open.push({ x, y, dead: nb === 1, path: !!onPath[x + ',' + y], d: dist[y][x] });
+  }
+  const pick = open.filter((o) => o.d > 2).sort((a, b) => (b.dead - a.dead) || (Math.random() - 0.5));
+  pick.slice(0, 3).forEach((o) => { const p = cellPos(o.x, o.y); const s = KQ3D.emojiSprite('⭐', 0.6); s.position.set(p.x, 0.45, p.y); board.add(s); stars.push({ p, s, got: false }); o.used = true; });
+  // holes off the main path (always solvable)
+  if (level >= 3) {
+    const hc = open.filter((o) => !o.used && !o.path && o.d > 3).sort(() => Math.random() - 0.5).slice(0, level - 1);
+    hc.forEach((o) => { const p = cellPos(o.x, o.y); const h = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.36, 0.03, 20), L(0x1c1917)); h.position.set(p.x, 0.02, p.y); board.add(h); const rim = new THREE.Mesh(new THREE.TorusGeometry(0.37, 0.04, 6, 20), L(0x78350f)); rim.rotation.x = Math.PI / 2; rim.position.set(p.x, 0.03, p.y); board.add(rim); holes.push(p); });
+  }
+  // the pet's bubble ball
+  ball = new THREE.Group(); board.add(ball);
+  shell = new THREE.Mesh(new THREE.SphereGeometry(BALL_R, 24, 18), new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.35, shininess: 90, depthWrite: false })); shell.castShadow = true; shell.renderOrder = 2; ball.add(shell);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(BALL_R, 0.025, 6, 24), L(0xffffff)); shell.add(ring);
+  ballSprite = KQ3D.emojiSprite('🐹', 0.5); ballSprite.renderOrder = 1; ball.add(ballSprite);
+  dressBall(G.choice);
+  spawn();
+  fitCamera();
+  levelT = 0; done = false;
+  G.hudSet('lvl', level + '/' + LEVELS.length);
+  banner('Level ' + level + (level >= 3 ? ' • mind the holes!' : ''));
+}
+function dressBall(p) {
+  p = p || PETS[0];
+  if (!ball) return;
+  ball.remove(ballSprite); ballSprite = KQ3D.emojiSprite(p.icon, 0.5); ballSprite.renderOrder = 1; ball.add(ballSprite);
+  shell.material.color.setHex(p.tint);
+}
+function spawn() { pos.copy(cellPos(1, 1)); vel.set(0, 0); falling = 0; ball.position.set(pos.x, BALL_R, pos.y); ball.scale.setScalar(1); }
+
+function fitCamera() {
+  const aspect = innerWidth / innerHeight, s = N + 1.5;
+  const d = (aspect < 1 ? s / aspect : s) * 1.05 + 2;
+  camera.position.set(0, d * 0.95, d * 0.42);
+  camera.lookAt(0, 0, 0.3);
+}
+window.addEventListener('resize', () => { if (N) fitCamera(); });
+
+let bannerEl = null;
+function banner(t) {
+  if (!bannerEl) { bannerEl = document.createElement('div'); bannerEl.className = 'lvlbanner'; document.body.appendChild(bannerEl); }
+  bannerEl.textContent = t; bannerEl.style.opacity = 1; clearTimeout(bannerEl._t); bannerEl._t = setTimeout(() => { bannerEl.style.opacity = 0; }, 1800);
+}
+
+function reset(p) {
+  level = 1; lives = 3; score = 0; G.hudSet('lives', lives); G.score(0);
+  tilt.set(0, 0); joy.set(0, 0); board.rotation.set(0, 0, 0);
+  buildLevel(); dressBall(p);
+}
+
+/* ---------------- input: joystick anywhere + keys ---------------- */
+const joyEl = document.createElement('div'); joyEl.className = 'joy'; joyEl.innerHTML = '<i></i>'; document.body.appendChild(joyEl);
+let jo = null;
+G.scene.addEventListener('pointerdown', (e) => { if (G.state !== 'play') return; jo = { x: e.clientX, y: e.clientY }; joyEl.style.left = e.clientX + 'px'; joyEl.style.top = e.clientY + 'px'; joyEl.style.display = 'block'; joyEl.firstChild.style.transform = ''; });
+window.addEventListener('pointermove', (e) => {
+  if (!jo) return;
+  let dx = e.clientX - jo.x, dy = e.clientY - jo.y; const m = Math.hypot(dx, dy), max = 60;
+  if (m > max) { dx *= max / m; dy *= max / m; }
+  joy.set(dx / max, dy / max); joyEl.firstChild.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+});
+const endJoy = () => { jo = null; joy.set(0, 0); joyEl.style.display = 'none'; };
+window.addEventListener('pointerup', endJoy); window.addEventListener('pointercancel', endJoy);
+const keys = {};
+document.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; if (e.key.startsWith('Arrow')) e.preventDefault(); });
+document.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+/* ---------------- physics ---------------- */
+function collide() {
+  const r = BALL_R;
+  walls.forEach((w) => {
+    if (Math.abs(w.x - pos.x) > 1.4 || Math.abs(w.y - pos.y) > 1.4) return;
+    const cx = THREE.MathUtils.clamp(pos.x, w.x - 0.5, w.x + 0.5), cy = THREE.MathUtils.clamp(pos.y, w.y - 0.5, w.y + 0.5);
+    const dx = pos.x - cx, dy = pos.y - cy, d = Math.hypot(dx, dy);
+    if (d < r && d > 1e-6) {
+      const nx = dx / d, ny = dy / d; pos.x += nx * (r - d); pos.y += ny * (r - d);
+      const vn = vel.x * nx + vel.y * ny;
+      if (vn < 0) { vel.x -= 1.35 * vn * nx; vel.y -= 1.35 * vn * ny; if (vn < -2.2) KQ3D.sfx('tick'); }
+    }
+  });
+  const lim = (N - 1) / 2; pos.x = THREE.MathUtils.clamp(pos.x, -lim, lim); pos.y = THREE.MathUtils.clamp(pos.y, -lim, lim);
+}
+function levelScore() { return 100 + got * 50 + Math.max(0, Math.round(90 - levelT)) * 2; }
+
+let last = performance.now();
+function loop(now) {
+  requestAnimationFrame(loop);
+  const dt = Math.min(0.033, (now - last) / 1000); last = now;
+  const playing = G.state === 'play' && !done;
+  // target tilt from joystick / keys
+  let jx = joy.x, jy = joy.y;
+  if (keys.arrowleft || keys.a) jx = -1; if (keys.arrowright || keys.d) jx = 1;
+  if (keys.arrowup || keys.w) jy = -1; if (keys.arrowdown || keys.s) jy = 1;
+  if (!playing) { jx = 0; jy = 0; }
+  tilt.x += (jx * MAX_TILT - tilt.x) * Math.min(1, dt * 8);
+  tilt.y += (jy * MAX_TILT - tilt.y) * Math.min(1, dt * 8);
+  board.rotation.z = -tilt.x;  // right side dips when pushing right
+  board.rotation.x = tilt.y;   // near side dips when pushing down
+  if (G.state === 'menu') { board.rotation.z = Math.sin(now / 900) * 0.08; board.rotation.x = Math.cos(now / 1100) * 0.06; }
+
+  if (playing && ball) {
+    levelT += dt;
+    if (falling > 0) {
+      falling -= dt; ball.position.y -= dt * 1.6; ball.scale.setScalar(Math.max(0.2, falling / 0.8));
+      if (falling <= 0) {
+        lives--; G.hudSet('lives', lives);
+        if (lives <= 0) { done = true; G.over({ score, title: 'Out of lives!', lines: ['🗺️ Level ' + level, '❤️ 0 lives left'] }); }
+        else { spawn(); banner('Try again! ❤️ ' + lives); }
+      }
+    } else {
+      vel.x += Math.sin(tilt.x) * GRAVITY * dt; vel.y += Math.sin(tilt.y) * GRAVITY * dt;
+      vel.multiplyScalar(Math.pow(0.35, dt));
+      const sp = vel.length(); if (sp > 6) vel.multiplyScalar(6 / sp);
+      const steps = 3;
+      for (let i = 0; i < steps; i++) { pos.x += vel.x * dt / steps; pos.y += vel.y * dt / steps; collide(); }
+      ball.position.set(pos.x, BALL_R, pos.y);
+      shell.rotation.z -= vel.x * dt / BALL_R; shell.rotation.x += vel.y * dt / BALL_R;
+      ballSprite.position.y = Math.sin(now / 120) * 0.02 * Math.min(1, sp);
+      // stars
+      stars.forEach((s) => {
+        if (s.got) return; s.s.position.y = 0.45 + Math.sin(now / 250 + s.p.x) * 0.08;
+        if (s.p.distanceTo(pos) < 0.5) {
+          s.got = true; got++; board.remove(s.s); score += 50; G.score(score); KQ3D.sfx('coin');
+          const sc = KQ3D.toScreen(board.localToWorld(new THREE.Vector3(s.p.x, 0.5, s.p.y)), camera, G.scene); G.pop('⭐ +50', sc.x, sc.y);
+          if (got === stars.length) G.pop('All stars! 🌟', null, innerHeight * 0.3, '#fde047');
+        }
+      });
+      // holes
+      if (holes.some((h) => h.distanceTo(pos) < 0.3)) { falling = 0.8; KQ3D.sfx('drop'); vel.set(0, 0); }
+      // home!
+      if (goal.distanceTo(pos) < 0.42) {
+        done = true; const pts = levelScore() - got * 50; score += pts; G.score(score); KQ3D.sfx('win');
+        try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {}
+        const sc = KQ3D.toScreen(board.localToWorld(new THREE.Vector3(goal.x, 0.8, goal.y)), camera, G.scene); G.pop('Home! +' + pts, sc.x, sc.y, '#bbf7d0');
+        setTimeout(() => {
+          if (G.state !== 'play') return;
+          if (level >= LEVELS.length) G.over({ score, title: 'Maze master! 🏆', lines: ['🗺️ All ' + LEVELS.length + ' levels', '❤️ ' + lives + ' lives left'] });
+          else { level++; buildLevel(); }
+        }, 1300);
+      }
     }
   }
-  const goalGeo=new THREE.CylinderGeometry(0.3,0.3,0.08,20);
-  goal=new THREE.Mesh(goalGeo,new THREE.MeshStandardMaterial({color:0xffe066,emissive:0xffe066,emissiveIntensity:0.6}));
-  goal.position.set((N-2-N/2+0.5)*CELL,0.05,(N-2-N/2+0.5)*CELL);
-  boardGroup.add(goal);
-  const ballGeo=new THREE.SphereGeometry(0.28,16,16);
-  ball=new THREE.Mesh(ballGeo,new THREE.MeshStandardMaterial({color:0x00f5ff,emissive:0x003a3a,emissiveIntensity:0.5}));
-  ball.position.set((1-N/2+0.5)*CELL,0.4,(1-N/2+0.5)*CELL);
-  boardGroup.add(ball);
-  const stripe=new THREE.Mesh(new THREE.TorusGeometry(.285,.035,8,16),new THREE.MeshStandardMaterial({color:0xffffff})); stripe.rotation.x=Math.PI/2; ball.add(stripe);
-  ballVel={x:0,z:0};
+  if (home) { home.position.y = 0.8 + Math.sin(now / 300) * 0.08; }
+  renderer.render(scene, camera);
 }
-function resetGame(){
-  buildMaze();
-  tiltX=0;tiltZ=0;targetTiltX=0;targetTiltZ=0;over=false;
-  boardGroup.rotation.set(0,0,0);
-  startTs=Date.now();
-  document.getElementById('overlay').classList.remove('show');
-  clearInterval(timerId);
-  timerId=setInterval(()=>{
-    const s=Math.floor((Date.now()-startTs)/1000);
-    document.getElementById('timer').textContent=Math.floor(s/60)+':'+(s%60<10?'0':'')+(s%60);
-  },250);
-}
-function startGame(){
-  document.getElementById('startCard').style.display='none';
-  if(!scene) initScene();
-  resetGame();
-  if(!started){ started=true; requestAnimationFrame(loop); }
-}
-let dragging=false,lastX=0,lastY=0;
-container.addEventListener('touchstart',e=>{ dragging=true; lastX=e.touches[0].clientX; lastY=e.touches[0].clientY; },{passive:true});
-container.addEventListener('touchmove',e=>{
-  if(!dragging)return;
-  const dx=e.touches[0].clientX-lastX, dy=e.touches[0].clientY-lastY;
-  targetTiltZ = Math.max(-0.35,Math.min(0.35,targetTiltZ + dx*0.0025));
-  targetTiltX = Math.max(-0.35,Math.min(0.35,targetTiltX - dy*0.0025));
-  lastX=e.touches[0].clientX; lastY=e.touches[0].clientY;
-},{passive:true});
-container.addEventListener('touchend',()=>{ dragging=false; });
-container.addEventListener('mousedown',e=>{ dragging=true; lastX=e.clientX; lastY=e.clientY; });
-container.addEventListener('mousemove',e=>{
-  if(!dragging)return;
-  const dx=e.clientX-lastX, dy=e.clientY-lastY;
-  targetTiltZ = Math.max(-0.35,Math.min(0.35,targetTiltZ + dx*0.0025));
-  targetTiltX = Math.max(-0.35,Math.min(0.35,targetTiltX - dy*0.0025));
-  lastX=e.clientX; lastY=e.clientY;
-});
-container.addEventListener('mouseup',()=>{ dragging=false; });
-function loop(){
-  if(!over) update();
-  renderer.render(scene,camera);
-  requestAnimationFrame(loop);
-}
-function collides(x,z){
-  const half=CELL*0.42;
-  for(const w of walls){
-    if(Math.abs(x-w.x)<half+0.28 && Math.abs(z-w.z)<half+0.28) return w;
-  }
-  return null;
-}
-function update(){
-  targetTiltX*=0.995; targetTiltZ*=0.995;
-  tiltX += (targetTiltX-tiltX)*0.15;
-  tiltZ += (targetTiltZ-tiltZ)*0.15;
-  boardGroup.rotation.x=tiltX;
-  boardGroup.rotation.z=tiltZ;
-  ballVel.x += Math.sin(tiltZ)*0.02;
-  ballVel.z -= Math.sin(tiltX)*0.02;
-  ballVel.x*=0.94; ballVel.z*=0.94;
-  let nx=ball.position.x+ballVel.x, nz=ball.position.z+ballVel.z;
-  if(!collides(nx,ball.position.z)) ball.position.x=nx; else ballVel.x=0;
-  if(!collides(ball.position.x,nz)) ball.position.z=nz; else ballVel.z=0;
-  const dx=ball.position.x-goal.position.x, dz=ball.position.z-goal.position.z;
-  if(Math.sqrt(dx*dx+dz*dz)<0.35) win();
-}
-function win(){
-  over=true; clearInterval(timerId);
-  if(window.KQFX)KQFX.win();
-  const t=Math.floor((Date.now()-startTs)/1000);
-  if(!best || t<best){ best=t; localStorage.setItem('mazeBest',best); }
-  document.getElementById('finalScore').textContent='Time: '+t+'s  •  Best: '+best+'s';
-  document.getElementById('overlay').classList.add('show');
-  onGameComplete();
-}
-window.addEventListener('resize',()=>{
-  if(!camera||!renderer)return;
-  camera.aspect=container.clientWidth/container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth,container.clientHeight);
-});
-</script></body></html>
+if (R) { reset(G.choice); requestAnimationFrame(loop); }
+</script>
+</body></html>

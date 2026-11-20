@@ -1,102 +1,160 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Brick Breaker</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#ff7ac6,#8b5cf6);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:14px;max-width:440px;width:100%}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:14px}
-canvas{width:100%;border-radius:18px;display:block;background:#1e2a4a;touch-action:none}
-.hint{text-align:center;color:#888;font-size:12px;margin-top:6px;font-weight:600}
-
-/* mobile fit */
-.wrap{display:flex;flex-direction:column;height:100%;max-height:820px}
-.stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:2px 0}
-canvas{max-height:100%}
-
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">⭐ <span id="score">0</span> &nbsp; ❤️ <span id="lives">3</span></div>
-    <button onclick="reset()">↻</button>
-  </div>
-  <div class="stage"><canvas id="cv" width="400" height="560"></canvas></div>
-  <div class="hint">Drag finger / move mouse / use ← → to move paddle</div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-const COLS=8,ROWS=5,BW=46,BH=20,PAD=3;
-const COLORS=['#ff5a5a','#ffb703','#ffe066','#8bd450','#5ab8ff'];
-let px,ball,bricks,score,lives,playing,dead,won,keys={};
-function reset(){
-  px=cv.width/2;score=0;lives=3;playing=false;dead=false;won=false;
-  ball={x:cv.width/2,y:cv.height-120,vx:3,vy:-3.4};
-  bricks=[];
-  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)
-    bricks.push({x:8+c*(BW+PAD),y:50+r*(BH+PAD),alive:true,color:COLORS[r]});
-  document.getElementById('score').textContent=0;
-  document.getElementById('lives').textContent=3;
+/* Brick Breaker — drag the paddle, bounce the ball, break the candy bricks.
+   Power-ups: 🍄 wide paddle, ⭐ extra balls, ❤️ extra life. 5 picture levels, then faster. */
+const BALLS = [{ icon: '⚽', name: 'Soccer' }, { icon: '🏀', name: 'Hoops' }, { icon: '🎾', name: 'Tennis' }, { icon: '🔮', name: 'Magic' }];
+// level maps: . empty, 1-6 colour, T tough (2 hits), G gold (bonus)
+const MAPS = [
+  ['..11.11..', '.1111111.', '.1111111.', '..11111..', '...111...', '....1....'],                 // heart
+  ['.3333333.', '33.333.33', '333333333', '33G333G33', '333...333', '.3333333.'],                 // smiley
+  ['111111111', '222222222', '333333333', '444444444', '555555555', '666666666'],                 // rainbow
+  ['....T....', '...TTT...', '..TTTTT..', '.5555555.', '.55G5G55.', '.555T555.', '.555T555.'],   // house
+  ['....G....', '...444...', '444444444', '.4444444.', '..44.44..', '.44...44.']                  // star
+];
+const BRICK = ['', '#f43f5e', '#f97316', '#facc15', '#22c55e', '#3b82f6', '#a855f7'];
+const G = KQ3D.init({
+  id: 'brick_breaker', title: 'Brick Breaker', bestKey: 'brickBest', music: true,
+  hero: ['🧱', '⚽', '⭐'], colors: ['#6366f1', '#ec4899'],
+  how: [['👆', 'Drag to move the paddle, tap to launch the ball'], ['🧱', 'Break all the bricks to clear the level'], ['🍄', 'Catch power-ups: 🍄 big paddle, ⭐ more balls, ❤️ life'], ['🪨', 'Grey bricks need two hits']],
+  hud: [{ id: 'lives', icon: '❤️' }, { id: 'lvl', icon: '🗺️' }], scoreIcon: '🧱', stars: [150, 400, 800],
+  pick: { label: 'Pick your ball', options: BALLS },
+  onReset: (b) => reset(b)
+});
+const C = KQ3D.canvas(G.scene, () => { if (bricks.length) layoutBricks(true); }), ctx = C.ctx;
+let ballPic = (G.choice || BALLS[0]).icon, bricks = [], balls = [], drops = [], bits = [];
+let pad, padW, wideT, score, lives, level, speed, keyDir = 0;
+const AREA = () => ({ x: Math.max(8, (C.w - 560) / 2), w: Math.min(C.w - 16, 560), top: 80 });
+
+function reset(b) {
+  ballPic = (b || BALLS[0]).icon; score = 0; lives = 3; level = 1; wideT = 0;
+  G.hudSet('lives', lives); startLevel();
 }
-function setX(clientX){
-  const r=cv.getBoundingClientRect();
-  px=Math.max(40,Math.min(cv.width-40,(clientX-r.left)/r.width*cv.width));
-  if(dead||won)reset();playing=true;
+function startLevel() {
+  const map = MAPS[(level - 1) % MAPS.length];
+  bricks = []; drops = [];
+  map.forEach((row, r) => [...row].forEach((ch, c) => { if (ch !== '.') bricks.push({ r, c, kind: ch, hp: ch === 'T' ? 2 : 1, col: ch === 'T' ? '#94a3b8' : ch === 'G' ? '#facc15' : BRICK[+ch], shake: 0 }); }));
+  layoutBricks();
+  speed = Math.min(620, 340 + (level - 1) * 40 + Math.max(0, C.h - 700) * 0.15);
+  pad = C.w / 2; padW = Math.min(130, C.w * 0.26);
+  balls = [{ x: pad, y: padY() - 14, vx: 0, vy: 0, stuck: true }];
+  G.hudSet('lvl', level);
 }
-cv.addEventListener('pointerdown',e=>{e.preventDefault();setX(e.clientX);});
-cv.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch')setX(e.clientX);});
-cv.addEventListener('touchmove',e=>{e.preventDefault();setX(e.touches[0].clientX);},{passive:false});
-document.addEventListener('keydown',e=>{keys[e.key]=true;if(dead||won)reset();playing=true;});
-document.addEventListener('keyup',e=>{keys[e.key]=false;});
-function update(){
-  if(keys['ArrowLeft'])px=Math.max(40,px-8);
-  if(keys['ArrowRight'])px=Math.min(cv.width-40,px+8);
-  if(playing&&!dead&&!won){
-    ball.x+=ball.vx;ball.y+=ball.vy;
-    if(ball.x<8||ball.x>cv.width-8)ball.vx*=-1;
-    if(ball.y<8)ball.vy*=-1;
-    if(ball.y>cv.height-30&&ball.y<cv.height-16&&Math.abs(ball.x-px)<44&&ball.vy>0){
-      ball.vy=-Math.abs(ball.vy);
-      ball.vx=(ball.x-px)*0.14;
-      if(window.KQFX)KQFX.play('hit');
-    }
-    if(ball.y>cv.height+10){
-      lives--;document.getElementById('lives').textContent=lives;
-      if(lives<=0){dead=true;if(window.KQFX)KQFX.lose();onGameComplete();}
-      else{ball={x:px,y:cv.height-120,vx:3,vy:-3.4};if(window.KQFX)KQFX.play('wrong');}
-    }
-    for(const b of bricks){
-      if(!b.alive)continue;
-      if(ball.x>b.x-6&&ball.x<b.x+BW+6&&ball.y>b.y-6&&ball.y<b.y+BH+6){
-        b.alive=false;ball.vy*=-1;
-        score+=10;document.getElementById('score').textContent=score;
-        if(window.KQFX)KQFX.play('blast');
-        break;
-      }
-    }
-    if(bricks.every(b=>!b.alive)){won=true;if(window.KQFX)KQFX.win();onGameComplete();}
+function layoutBricks() {
+  const A = AREA(), cols = 9, bw = A.w / cols, bh = Math.min(30, bw * 0.55);
+  bricks.forEach((b) => { b.x = A.x + b.c * bw + 2; b.y = A.top + 40 + b.r * (bh + 4); b.w = bw - 4; b.h = bh; });
+}
+const padY = () => C.h - 140, BR = 11;
+
+let dragging = false;
+G.scene.addEventListener('pointerdown', (e) => { if (G.state !== 'play') return; dragging = true; pad = e.clientX - C.cv.getBoundingClientRect().left; launch(); });
+window.addEventListener('pointermove', (e) => { if (dragging) pad = e.clientX - C.cv.getBoundingClientRect().left; });
+window.addEventListener('pointerup', () => { dragging = false; });
+document.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') keyDir = -1; if (e.key === 'ArrowRight') keyDir = 1; if (e.key === ' ' || e.key === 'ArrowUp') { e.preventDefault(); launch(); } });
+document.addEventListener('keyup', (e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') keyDir = 0; });
+function launch() {
+  balls.forEach((b) => { if (b.stuck) { b.stuck = false; const a = -Math.PI / 2 + (Math.random() - 0.5) * 0.6; b.vx = Math.cos(a) * speed; b.vy = Math.sin(a) * speed; KQ3D.sfx('boing'); } });
+}
+function hitBrick(b, ball) {
+  b.hp--; b.shake = 0.15;
+  if (b.hp > 0) { KQ3D.sfx('tick'); b.col = '#cbd5e1'; return; }
+  bricks.splice(bricks.indexOf(b), 1);
+  const pts = b.kind === 'G' ? 50 : b.kind === 'T' ? 20 : 10; score += pts; G.score(score);
+  KQ3D.sfx(b.kind === 'G' ? 'coin' : 'pop');
+  for (let k = 0; k < 8; k++) bits.push({ x: b.x + b.w / 2, y: b.y + b.h / 2, vx: (Math.random() - 0.5) * 300, vy: (Math.random() - 0.7) * 300, l: 0.6, col: b.col });
+  if (b.kind === 'G') { const r = C.cv.getBoundingClientRect(); G.pop('+50', b.x + r.left + b.w / 2, b.y + r.top); }
+  if (Math.random() < (b.kind === 'G' ? 1 : 0.12)) drops.push({ x: b.x + b.w / 2, y: b.y, e: ['🍄', '⭐', '⭐', '❤️'][Math.floor(Math.random() * 4)] });
+  if (!bricks.length) {
+    KQ3D.sfx('levelup'); score += 100; G.score(score); G.pop('Level ' + level + ' clear! +100', null, C.h * 0.4, '#fde047');
+    try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {}
+    level++; balls = []; setTimeout(() => { if (G.state === 'play' || G.state === 'pause') startLevel(); }, 1200);
   }
-  draw();requestAnimationFrame(update);
 }
-function draw(){
-  cx.clearRect(0,0,cv.width,cv.height);
-  bricks.forEach(b=>{
-    if(!b.alive)return;
-    cx.fillStyle=b.color;
-    cx.beginPath();cx.roundRect(b.x,b.y,BW,BH,5);cx.fill();
-  });
-  cx.fillStyle='#fff';
-  cx.beginPath();cx.roundRect(px-44,cv.height-26,88,12,6);cx.fill();
-  cx.fillStyle='#ffe066';
-  cx.beginPath();cx.arc(ball.x,ball.y,8,0,7);cx.fill();
-  cx.textAlign='center';cx.fillStyle='#fff';cx.font='bold 20px sans-serif';
-  if(!playing)cx.fillText('Touch or press arrow to start!',cv.width/2,300);
-  if(dead)cx.fillText('💥 Game over! Score: '+score+' — tap to retry',cv.width/2,300);
-  if(won)cx.fillText('🎉 You cleared all bricks! '+score,cv.width/2,300);
-  cx.textAlign='left';
+function power(e) {
+  KQ3D.sfx('chime');
+  if (e === '🍄') { wideT = 12; G.pop('Big paddle! 🍄', pad, padY() - 40, '#fecdd3'); }
+  else if (e === '⭐') { const src = balls.find((b) => !b.stuck) || balls[0]; if (src) for (let k = 0; k < 2; k++) { const a = -Math.PI / 2 + (k ? 0.5 : -0.5); balls.push({ x: src.x, y: src.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed }); } G.pop('More balls! ⭐', pad, padY() - 40, '#fde047'); }
+  else { lives = Math.min(5, lives + 1); G.hudSet('lives', lives); G.pop('+1 ❤️', pad, padY() - 40, '#fecdd3'); }
 }
-reset();update();
-</script></body></html>
+
+function moveBall(b, dt) {
+  if (b.stuck) { b.x = pad; b.y = padY() - BR - 3; return; }
+  const A = AREA();
+  b.x += b.vx * dt; b.y += b.vy * dt;
+  if (b.x < A.x + BR) { b.x = A.x + BR; b.vx = Math.abs(b.vx); KQ3D.sfx('tap'); }
+  if (b.x > A.x + A.w - BR) { b.x = A.x + A.w - BR; b.vx = -Math.abs(b.vx); KQ3D.sfx('tap'); }
+  if (b.y < A.top + BR) { b.y = A.top + BR; b.vy = Math.abs(b.vy); KQ3D.sfx('tap'); }
+  // paddle: bounce angle depends on where it hits
+  const pw = padW * (wideT > 0 ? 1.6 : 1), py = padY();
+  if (b.vy > 0 && b.y + BR > py && b.y + BR < py + 18 && Math.abs(b.x - pad) < pw / 2 + BR) {
+    const off = (b.x - pad) / (pw / 2), a = -Math.PI / 2 + off * 1.05, sp = Math.hypot(b.vx, b.vy);
+    b.vx = Math.cos(a) * sp; b.vy = Math.sin(a) * sp; b.y = py - BR; KQ3D.sfx('boing');
+  }
+  // bricks
+  for (const br of bricks) {
+    if (b.x + BR < br.x || b.x - BR > br.x + br.w || b.y + BR < br.y || b.y - BR > br.y + br.h) continue;
+    const ox = Math.min(b.x + BR - br.x, br.x + br.w - (b.x - BR)), oy = Math.min(b.y + BR - br.y, br.y + br.h - (b.y - BR));
+    if (ox < oy) { b.vx = -b.vx; b.x += b.vx > 0 ? ox : -ox; } else { b.vy = -b.vy; b.y += b.vy > 0 ? oy : -oy; }
+    hitBrick(br, b); break;
+  }
+}
+
+function drawBrick(b, t) {
+  const sx = b.shake > 0 ? Math.sin(t / 15) * 3 : 0;
+  const x = b.x + sx, y = b.y;
+  const g = ctx.createLinearGradient(0, y, 0, y + b.h); g.addColorStop(0, '#ffffff'); g.addColorStop(0.25, b.col); g.addColorStop(1, b.col);
+  ctx.fillStyle = 'rgba(0,0,0,.18)'; KQ3D.roundRect(ctx, x, y + 3, b.w, b.h, 8); ctx.fill();
+  ctx.fillStyle = g; KQ3D.roundRect(ctx, x, y, b.w, b.h, 8); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.55)'; KQ3D.roundRect(ctx, x + 5, y + 3, b.w * 0.4, 4, 2); ctx.fill();
+  if (b.kind === 'T') { ctx.strokeStyle = 'rgba(71,85,105,.7)'; ctx.lineWidth = 2; ctx.beginPath(); if (b.hp === 1) { ctx.moveTo(x + b.w * 0.3, y); ctx.lineTo(x + b.w * 0.45, y + b.h * 0.5); ctx.lineTo(x + b.w * 0.35, y + b.h); } ctx.stroke(); }
+  if (b.kind === 'G') KQ3D.drawPic(ctx, '⭐', x + b.w / 2, y + b.h / 2, b.h * 0.8);
+}
+function background(t) {
+  const g = ctx.createLinearGradient(0, 0, 0, C.h); g.addColorStop(0, '#312e81'); g.addColorStop(1, '#7c3aed');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, C.w, C.h);
+  for (let i = 0; i < 40; i++) { ctx.globalAlpha = 0.4 + Math.sin(t / 600 + i) * 0.3; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc((i * 151) % C.w, (i * 97) % C.h, 1.5, 0, 7); ctx.fill(); }
+  ctx.globalAlpha = 1;
+  const A = AREA(); ctx.fillStyle = 'rgba(255,255,255,.08)'; KQ3D.roundRect(ctx, A.x - 6, A.top - 6, A.w + 12, C.h - A.top - 40, 20); ctx.fill();
+}
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.025, (now - last) / 1000); last = now;
+  const playing = G.state === 'play';
+  if (playing) {
+    if (keyDir) pad += keyDir * 600 * dt;
+    const A = AREA(), pw = padW * (wideT > 0 ? 1.6 : 1); pad = Math.max(A.x + pw / 2, Math.min(A.x + A.w - pw / 2, pad));
+    wideT -= dt;
+    for (let s = 0; s < 2; s++) balls.forEach((b) => moveBall(b, dt / 2));
+    const before = balls.length; balls = balls.filter((b) => b.y < C.h + 20);
+    if (before && !balls.length && bricks.length) {
+      lives--; G.hudSet('lives', Math.max(0, lives)); KQ3D.sfx('wrong'); G.flash('#fecaca');
+      if (lives <= 0) G.over({ score, title: 'Game over!', lines: ['🗺️ Level ' + level] });
+      else { balls = [{ x: pad, y: padY() - 14, vx: 0, vy: 0, stuck: true }]; wideT = 0; }
+    }
+    drops.forEach((d) => { d.y += 170 * dt; if (!d.got && d.y > padY() - 10 && d.y < padY() + 20 && Math.abs(d.x - pad) < padW * (wideT > 0 ? 0.8 : 0.5) + 14) { d.got = true; power(d.e); } });
+    drops = drops.filter((d) => !d.got && d.y < C.h);
+  }
+  bricks.forEach((b) => { b.shake -= dt; });
+  background(now);
+  bricks.forEach((b) => drawBrick(b, now));
+  drops.forEach((d) => KQ3D.drawPic(ctx, d.e, d.x, d.y, 34, Math.sin(now / 150) * 0.3));
+  // paddle
+  const pw = padW * (wideT > 0 ? 1.6 : 1), py = padY();
+  const pg = ctx.createLinearGradient(0, py, 0, py + 18); pg.addColorStop(0, '#fde68a'); pg.addColorStop(1, '#f59e0b');
+  ctx.fillStyle = pg; KQ3D.roundRect(ctx, pad - pw / 2, py, pw, 18, 9); ctx.fill();
+  ctx.fillStyle = '#ec4899'; [-1, 1].forEach((s) => { ctx.beginPath(); ctx.arc(pad + s * (pw / 2 - 9), py + 9, 7, 0, 7); ctx.fill(); });
+  if (wideT > 0 && wideT < 3 && Math.floor(now / 150) % 2) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; KQ3D.roundRect(ctx, pad - pw / 2, py, pw, 18, 9); ctx.stroke(); }
+  balls.forEach((b) => KQ3D.drawPic(ctx, ballPic, b.x, b.y, BR * 2.4, now / 200));
+  bits = bits.filter((p) => (p.l -= dt) > 0); bits.forEach((p) => { p.vy += 700 * dt; p.x += p.vx * dt; p.y += p.vy * dt; ctx.fillStyle = p.col; ctx.fillRect(p.x - 4, p.y - 4, 8, 8); });
+  if (playing && balls.some((b) => b.stuck)) { ctx.font = '800 20px "Baloo 2",sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.fillText('Tap to launch! 👆', C.w / 2, padY() - 60); }
+}
+reset(G.choice);
+requestAnimationFrame(frame);
+</script>
+</body></html>

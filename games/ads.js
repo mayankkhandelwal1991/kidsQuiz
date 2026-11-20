@@ -110,7 +110,7 @@ function onGameComplete() {
   window.KQ_CONTEXT = { category: 'single', gameId: GAME_ID };
 
   // Games where a LOWER score is better (time / moves).
-  var LOWER_GAMES = { reaction_test: 1, number_order: 1, slide_puzzle: 1, memory_match: 1 };
+  var LOWER_GAMES = { reaction_test: 1, number_order: 1, slide_puzzle: 1 };
   // localStorage "*Best" keys that are lower-is-better.
   var LOWER_KEYS = { reactBest: 1, rushBest: 1, slideBest: 1 };
   var lowerForKey = function (k) { return !!LOWER_KEYS[k]; };

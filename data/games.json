@@ -75,7 +75,7 @@
       "file": "puzzle/memory_match.html",
       "icon": "🃏",
       "title": "Memory Match",
-      "how": "Flip cards and find all the matching emoji pairs in the fewest moves.",
+      "how": "Pick a theme — Animals, Fruits, Vehicles or Words — and flip two cards at a time to find the pairs. In Words, match each word with its picture! 3 levels, each bigger than the last.",
       "category": "puzzle",
       "badge": null,
       "featured": false,
@@ -201,17 +201,6 @@
       "badge": null,
       "featured": false,
       "order": 15
-    },
-    {
-      "id": "word_scramble",
-      "file": "word/word_scramble.html",
-      "icon": "🔤",
-      "title": "Word Scramble",
-      "how": "Tap the jumbled letters to spell the word shown by the emoji hint.",
-      "category": "word",
-      "badge": null,
-      "featured": false,
-      "order": 16
     },
     {
       "id": "rock_paper",
@@ -471,7 +460,7 @@
       "file": "word/spelling_bee.html",
       "icon": "🐝",
       "title": "Spelling Bee",
-      "how": "Look at the picture and tap the letters in order to spell each of the 10 words correctly!",
+      "how": "Look at the picture, tap 🔊 to hear it, then tap the letters to spell the word. Pick Easy (with hints), Jumbled, or Speed — spell as many as you can in 60 seconds!",
       "category": "word",
       "badge": null,
       "featured": false,
@@ -498,17 +487,6 @@
       "badge": null,
       "featured": false,
       "order": 45
-    },
-    {
-      "id": "word_match",
-      "file": "word/word_match.html",
-      "icon": "🃏",
-      "title": "Word Match",
-      "how": "Flip cards to match each word with its matching picture. Find all 6 pairs!",
-      "category": "word",
-      "badge": null,
-      "featured": false,
-      "order": 46
     },
     {
       "id": "rhyme_time",
@@ -575,17 +553,6 @@
       "badge": null,
       "featured": false,
       "order": 52
-    },
-    {
-      "id": "speed_spell",
-      "file": "word/speed_spell.html",
-      "icon": "⚡",
-      "title": "Speed Spell",
-      "how": "Spell each word before the timer runs out. Fast fingers win the round!",
-      "category": "word",
-      "badge": null,
-      "featured": false,
-      "order": 53
     },
     {
       "id": "train_the_robot",

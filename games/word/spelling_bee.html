@@ -1,213 +1,119 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Spelling Bee</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#f7971e,#ffd200);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:16px;max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#b8860b;font-size:15px}
-.progwrap{background:#fff3d6;border-radius:20px;height:10px;overflow:hidden;margin-bottom:8px}
-.progbar{height:100%;background:linear-gradient(135deg,#ffb703,#ff7a59);width:0%;transition:width .4s ease}
-.lives{font-size:16px;margin-bottom:4px;letter-spacing:3px}
-.hintbox{font-size:64px;margin:6px 0;animation:bob 2s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.blanks{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0}
-.bl{width:34px;height:44px;border-bottom:4px solid #ffb703;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#5a3d00;background:#fff8e6;border-radius:8px 8px 0 0;transition:.2s}
-.bl.filled{animation:fillpop .3s ease}
-@keyframes fillpop{0%{transform:scale(0.6)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
-.keyboard{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:12px 0}
-.key{aspect-ratio:1/1;border-radius:10px;background:linear-gradient(135deg,#8b5cf6,#ff4fa3);color:#fff;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:transform .1s}
-.key:active{transform:scale(.9)}
-.key.wrong{animation:shake .35s;background:linear-gradient(135deg,#94a3b8,#64748b)}
-.key.used{opacity:.3;pointer-events:none}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-.msg{color:#b8860b;font-weight:800;font-size:16px;min-height:24px;margin-top:6px}
-.row{display:flex;gap:8px;justify-content:center;margin-top:6px}
-.row button{border:none;border-radius:14px;padding:9px 18px;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;color:#fff}
-.row .hintbtn{background:linear-gradient(135deg,#38bdf8,#818cf8)}
-.row .cl{background:#95a5a6}
-.end{display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);align-items:center;justify-content:center;z-index:20}
-.end.show{display:flex}
-.end .card{background:#fff;border-radius:24px;padding:26px 22px;text-align:center;max-width:300px;animation:winpop .4s cubic-bezier(.34,1.56,.64,1)}
-@keyframes winpop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-.end .big{font-size:50px}
-.end h2{color:#b8860b;margin:8px 0}
-.end button{margin-top:10px;background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 26px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-.confetti{position:fixed;top:-10px;width:8px;height:14px;border-radius:2px;z-index:30;animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">🐝 <span id="score">0</span>/<span id="totalW">10</span></div>
-    <button onclick="restart()">↻</button>
-  </div>
-  <div class="progwrap"><div class="progbar" id="prog"></div></div>
-  <div class="lives" id="lives">❤️❤️❤️</div>
-  <div class="hintbox" id="hint"></div>
-  <div class="blanks" id="blanks"></div>
-  <div class="keyboard" id="keyboard"></div>
-  <div class="row">
-    <button class="cl" onclick="clearWord()">Clear</button>
-    <button class="hintbtn" onclick="useHint()">💡 Hint</button>
-  </div>
-  <div class="msg" id="msg">Spell the word letter by letter!</div>
-</div>
-<div class="end" id="end">
-  <div class="card">
-    <div class="big" id="endIcon">🏆</div>
-    <h2 id="endTitle">Round Complete!</h2>
-    <p id="endMsg">Nice spelling!</p>
-    <button onclick="restart()">Play Again</button>
-  </div>
-</div>
+.sb { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: 74px 14px 24px; font-family: 'Baloo 2', sans-serif;
+  background: radial-gradient(circle at 15% 85%, rgba(255,255,255,.35) 0 70px, transparent 71px), repeating-linear-gradient(60deg, rgba(255,255,255,.08) 0 20px, transparent 20px 40px), linear-gradient(170deg, #fde68a, #fdba74); }
+.sb-card { position: relative; width: 100%; max-width: 460px; background: #fff; border-radius: 30px; padding: 16px 14px 18px; text-align: center; box-shadow: 0 8px 0 rgba(180,83,9,.25), 0 16px 30px rgba(0,0,0,.12); }
+.sb-n { font-size: 14px; font-weight: 800; color: #b45309; }
+.sb-pic { width: 130px; height: 130px; margin: 2px auto 0; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle, #fef9c3 60%, #fde68a); animation: sbIn .45s cubic-bezier(.34,1.56,.64,1); }
+.sb-pic img { width: 92px; height: 92px; }
+@keyframes sbIn { from { transform: scale(.3) rotate(-30deg); opacity: 0; } }
+.sb-tools { display: flex; justify-content: center; gap: 10px; margin: 8px 0 12px; }
+.sb-tool { border: none; border-radius: 14px; padding: 6px 14px; font: 800 15px 'Baloo 2', sans-serif; background: #e0f2fe; color: #0369a1; box-shadow: 0 3px 0 #bae6fd; cursor: pointer; }
+.sb-tool:active { transform: translateY(2px); box-shadow: none; }
+.sb-slots { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.sb-slot { width: 46px; height: 54px; border-radius: 14px; border: 3px dashed #fcd34d; display: grid; place-items: center; font-size: 30px; font-weight: 800; color: #92400e; background: #fffbeb; }
+.sb-slot.hint { color: rgba(146,64,14,.22); }
+.sb-slot.ok { border-style: solid; border-color: #22c55e; background: #dcfce7; color: #15803d; animation: sbPop .3s; }
+@keyframes sbPop { 50% { transform: scale(1.18); } }
+.sb-pool { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.sb-l { width: 54px; height: 58px; border: none; border-radius: 16px; font: 800 30px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.2); }
+.sb-l:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,.2); }
+.sb-l.used { visibility: hidden; }
+.sb-l.bad { animation: sbShake .35s; background: #ef4444 !important; }
+@keyframes sbShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.sb-bee { position: absolute; width: 54px; top: -26px; left: 12px; animation: sbFly 2.4s ease-in-out infinite; }
+@keyframes sbFly { 50% { transform: translate(-12px, -8px) rotate(-8deg); } }
+.sb-time { height: 10px; border-radius: 5px; background: #fef3c7; overflow: hidden; margin: 8px 0 2px; }
+.sb-time i { display: block; height: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 5px; }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-const POOL=[
-['CAT','🐱'],['DOG','🐶'],['SUN','☀️'],['FISH','🐟'],['BIRD','🐦'],['FROG','🐸'],
-['APPLE','🍎'],['MANGO','🥭'],['GRAPE','🍇'],['LEMON','🍋'],['TIGER','🐯'],['ZEBRA','🦓'],
-['HOUSE','🏠'],['TRAIN','🚂'],['PLANE','✈️'],['CLOCK','⏰'],['STAR','⭐'],['MOON','🌙'],
-['FLOWER','🌸'],['MONKEY','🐵'],['RABBIT','🐰'],['ROCKET','🚀'],['GUITAR','🎸'],['CAMERA','📷'],
-['BANANA','🍌'],['ORANGE','🍊'],['SCHOOL','🏫'],['PENCIL','✏️'],['BUTTER','🧈'],['CHEESE','🧀'],
-['SHARK','🦈'],['WHALE','🐳'],['MOUSE','🐭'],['PANDA','🐼'],['SNAKE','🐍'],['HORSE','🐴']
+/* Spelling Bee — look at the picture and spell the word.
+   Easy: faint hints + 2 extra letters · Jumbled: just the word's letters · Speed: 60 s, decoys. */
+const MODES = [
+  { icon: '🐣', name: 'Easy', hints: true, extra: 2, count: 10 },
+  { icon: '🔀', name: 'Jumbled', hints: false, extra: 0, count: 10 },
+  { icon: '⏱️', name: 'Speed', hints: false, extra: 2, count: 99, time: 60 }
 ];
-const ROUND_LEN=10, MAX_LIVES=3;
-let round=[],idx=0,score=0,lives=MAX_LIVES,cur=null,filled=[],hintUsed=false;
+const WORDS = [
+  ['CAT', '🐱'], ['DOG', '🐶'], ['SUN', '☀️'], ['BUS', '🚌'], ['BEE', '🐝'], ['COW', '🐄'], ['PIG', '🐷'], ['HEN', '🐔'], ['EGG', '🥚'], ['CAR', '🚗'], ['HAT', '🎩'], ['KEY', '🔑'], ['BED', '🛏️'],
+  ['BALL', '⚽'], ['CAKE', '🎂'], ['FISH', '🐟'], ['FROG', '🐸'], ['STAR', '⭐'], ['TREE', '🌳'], ['MOON', '🌙'], ['BOOK', '📚'], ['DUCK', '🦆'], ['LION', '🦁'], ['BEAR', '🐻'], ['KITE', '🪁'], ['BIKE', '🚲'], ['SHIP', '🚢'], ['CORN', '🌽'], ['MILK', '🥛'], ['GIFT', '🎁'], ['BELL', '🔔'], ['DRUM', '🥁'], ['SHOE', '👟'],
+  ['APPLE', '🍎'], ['MANGO', '🥭'], ['LEMON', '🍋'], ['HORSE', '🐴'], ['ZEBRA', '🦓'], ['TIGER', '🐯'], ['PANDA', '🐼'], ['HOUSE', '🏠'], ['TRAIN', '🚂'], ['CLOCK', '⏰'], ['PIZZA', '🍕'], ['ROBOT', '🤖'], ['SNAKE', '🐍'], ['GRAPES', '🍇'],
+  ['RABBIT', '🐰'], ['ROCKET', '🚀'], ['CARROT', '🥕'], ['BANANA', '🍌'], ['TURTLE', '🐢'], ['FLOWER', '🌸'], ['PENCIL', '✏️'], ['ORANGE', '🍊'], ['MONKEY', '🐒'], ['PENGUIN', '🐧'], ['GIRAFFE', '🦒'], ['ELEPHANT', '🐘']
+];
+const COLORS = ['#f43f5e', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899'];
+const G = KQ3D.init({
+  id: 'spelling_bee', title: 'Spelling Bee', bestKey: 'spellBest', music: true,
+  hero: ['🐝', '🔤', '🍎'], colors: ['#f59e0b', '#ea580c'],
+  how: [['🖼️', 'Look at the picture — tap 🔊 to hear the word'], ['👆', 'Tap the letters in the right order'], ['💡', 'Stuck? Use a hint (costs 5 points)'], ['⏱️', 'Speed mode: spell as many as you can in 60 s!']],
+  scoreIcon: '🐝', stars: [60, 120, 180],
+  pick: { label: 'Pick a mode', options: MODES },
+  onReset: (m) => reset(m)
+});
+const box = document.createElement('div'); box.className = 'sb'; G.scene.appendChild(box);
+let mode, list, idx, score, pos, slips, solved, timeLeft, timer;
 
-function shuffleArr(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-
-function restart(){
-  round=shuffleArr([...POOL]).slice(0,ROUND_LEN);
-  idx=0;score=0;lives=MAX_LIVES;
-  document.getElementById('score').textContent=0;
-  document.getElementById('totalW').textContent=ROUND_LEN;
-  document.getElementById('end').classList.remove('show');
-  updateLives();
-  loadWord();
+function say(t) {
+  try { if (localStorage.getItem('kq_muted') === '1') return; } catch (e) {}
+  try { if (window.Android && Android.speak) { Android.speak(t, 'en'); return; } } catch (e) {}
+  try { const u = new SpeechSynthesisUtterance(t.toLowerCase()); u.rate = 0.85; u.pitch = 1.2; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}
 }
-
-function updateLives(){
-  document.getElementById('lives').textContent='❤️'.repeat(lives)+'🤍'.repeat(MAX_LIVES-lives);
+function reset(m) {
+  mode = m || MODES[0]; score = 0; idx = 0; solved = 0; G.score(0);
+  // easier words first, a few longer ones later
+  const by = (a, b) => WORDS.filter((w) => w[0].length >= a && w[0].length <= b).sort(() => Math.random() - 0.5);
+  list = mode.time ? by(3, 6).concat(by(3, 8)) : by(3, 3).slice(0, 3).concat(by(4, 4).slice(0, 3), by(5, 5).slice(0, 2), by(6, 8).slice(0, 2));
+  clearInterval(timer); timer = null; timeLeft = mode.time || 0;
+  next();
 }
-
-function loadWord(){
-  if(idx>=round.length){finishRound(true);return;}
-  cur=round[idx];hintUsed=false;
-  filled=[];
-  document.getElementById('hint').textContent=cur[1];
-  document.getElementById('msg').textContent='Word '+(idx+1)+' of '+round.length;
-  document.getElementById('prog').style.width=Math.round(idx/round.length*100)+'%';
-  renderBlanks();
-  renderKeyboard();
+function next() {
+  if (idx >= Math.min(mode.count, list.length)) { finish(); return; }
+  const [word, pic] = list[idx]; pos = 0; slips = 0;
+  let letters = word.split('');
+  for (let i = 0; i < mode.extra; i++) letters.push(String.fromCharCode(65 + Math.floor(Math.random() * 26)));
+  letters.sort(() => Math.random() - 0.5);
+  if (!mode.extra && letters.join('') === word && word.length > 1) letters.reverse();
+  box.innerHTML = '<div class="sb-card"><img class="sb-bee" src="' + KQ3D.emojiFile('🐝') + '" alt="">' +
+    '<div class="sb-n">' + (mode.time ? 'Words: ' + solved : 'Word ' + (idx + 1) + ' of ' + Math.min(mode.count, list.length)) + '</div>' +
+    (mode.time ? '<div class="sb-time"><i id="sbT" style="width:' + (timeLeft / mode.time * 100) + '%"></i></div>' : '') +
+    '<div class="sb-pic"><img src="' + KQ3D.emojiFile(pic) + '" alt=""></div>' +
+    '<div class="sb-tools"><button type="button" class="sb-tool" id="sbSay">🔊 Hear it</button><button type="button" class="sb-tool" id="sbHint">💡 Hint</button></div>' +
+    '<div class="sb-slots">' + word.split('').map((ch) => '<div class="sb-slot' + (mode.hints ? ' hint' : '') + '">' + (mode.hints ? ch : '') + '</div>').join('') + '</div>' +
+    '<div class="sb-pool">' + letters.map((ch, i) => '<button type="button" class="sb-l" data-c="' + ch + '" style="background:' + COLORS[i % COLORS.length] + '">' + ch + '</button>').join('') + '</div></div>';
+  box.querySelectorAll('.sb-l').forEach((b) => b.onclick = () => tap(b, word));
+  document.getElementById('sbSay').onclick = () => say(word);
+  document.getElementById('sbHint').onclick = () => { const b = [...box.querySelectorAll('.sb-l:not(.used)')].find((x) => x.dataset.c === word[pos]); if (b) { score = Math.max(0, score - 5); G.score(score); slips++; tap(b, word); } };
+  if (idx === 0 || !mode.time) setTimeout(() => say(word), 300);
+  if (mode.time && !timer) timer = setInterval(tick, 100);
 }
-
-function renderBlanks(){
-  const b=document.getElementById('blanks');b.innerHTML='';
-  for(let i=0;i<cur[0].length;i++){
-    const d=document.createElement('div');d.className='bl';d.id='bl_'+i;
-    d.textContent=filled[i]||'';
-    b.appendChild(d);
+function tick() {
+  if (G.state === 'pause') return;
+  if (G.state !== 'play') { clearInterval(timer); timer = null; return; }
+  timeLeft -= 0.1; const t = document.getElementById('sbT'); if (t) t.style.width = Math.max(0, timeLeft / mode.time * 100) + '%';
+  if (timeLeft <= 0) { clearInterval(timer); timer = null; finish(); }
+}
+function tap(b, word) {
+  if (G.state !== 'play' || b.classList.contains('used')) return;
+  if (b.dataset.c !== word[pos]) { slips++; b.classList.remove('bad'); void b.offsetWidth; b.classList.add('bad'); KQ3D.sfx('wrong'); return; }
+  b.classList.add('used');
+  const slot = box.querySelectorAll('.sb-slot')[pos]; slot.textContent = word[pos]; slot.classList.remove('hint'); slot.classList.add('ok');
+  KQ3D.sfx('pop'); pos++;
+  if (pos === word.length) {
+    solved++;
+    const pts = 10 + (slips ? 0 : 5) + (mode.time ? 0 : word.length > 4 ? 5 : 0);
+    score += pts; G.score(score); KQ3D.sfx('success'); say(word);
+    const r = box.querySelector('.sb-pic').getBoundingClientRect(); G.pop((slips ? 'Good! +' : 'Perfect! +') + pts, r.left + r.width / 2, r.top, '#fde047');
+    idx++; setTimeout(() => { if (G.state === 'play') next(); }, mode.time ? 350 : 1100);
   }
 }
-
-function renderKeyboard(){
-  const kb=document.getElementById('keyboard');kb.innerHTML='';
-  const need=new Set(cur[0].split(''));
-  let pool=new Set(need);
-  const alpha='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  while(pool.size<Math.min(14,alpha.length)){
-    pool.add(alpha[Math.floor(Math.random()*alpha.length)]);
-  }
-  const keys=shuffleArr([...pool]);
-  keys.forEach(ch=>{
-    const k=document.createElement('div');k.className='key';k.textContent=ch;
-    k.onclick=()=>pressKey(ch,k);
-    kb.appendChild(k);
-  });
+function finish() {
+  clearInterval(timer); timer = null;
+  G.over({ score, title: mode.time ? 'Time’s up! ⏱️' : 'Spelling star! 🐝', lines: ['🔤 ' + solved + ' words', '🐣 ' + mode.name + ' mode'] });
 }
-
-function pressKey(ch,el){
-  const need=cur[0][filled.length];
-  if(ch===need){
-    filled.push(ch);
-    const bl=document.getElementById('bl_'+(filled.length-1));
-    bl.textContent=ch;bl.classList.add('filled');
-    el.classList.add('used');
-    if(filled.length===cur[0].length){
-      wordComplete();
-    }
-  }else{
-    el.classList.add('wrong');if(window.KQFX)KQFX.play('wrong');
-    setTimeout(()=>el.classList.remove('wrong'),350);
-    loseLife();
-  }
-}
-
-function loseLife(){
-  lives--;updateLives();
-  document.getElementById('msg').textContent='❌ Try again!';
-  if(lives<=0){
-    setTimeout(()=>finishRound(false),600);
-  }
-}
-
-function wordComplete(){
-  score++;
-  document.getElementById('score').textContent=score;
-  document.getElementById('msg').textContent='🎉 Correct! '+cur[0];
-  burstConfetti();
-  idx++;
-  setTimeout(loadWord,900);
-}
-
-function clearWord(){
-  filled=[];
-  renderBlanks();
-  document.querySelectorAll('.key').forEach(k=>k.classList.remove('used'));
-}
-
-function useHint(){
-  if(hintUsed||filled.length>=cur[0].length)return;
-  hintUsed=true;
-  const need=cur[0][filled.length];
-  const keys=[...document.getElementById('keyboard').children];
-  const match=keys.find(k=>k.textContent===need && !k.classList.contains('used'));
-  if(match){
-    match.style.boxShadow='0 0 0 4px #38bdf8';
-    setTimeout(()=>match.style.boxShadow='',900);
-  }
-}
-
-function finishRound(won){
-  const icon=document.getElementById('endIcon');
-  const title=document.getElementById('endTitle');
-  const msg=document.getElementById('endMsg');
-  document.getElementById('prog').style.width='100%';
-  if(won){
-    icon.textContent='🏆';title.textContent='Round Complete!';
-    msg.textContent='You spelled '+score+' out of '+round.length+' words!';
-  }else{
-    icon.textContent='🐝';title.textContent='Out of Lives!';
-    msg.textContent='You spelled '+score+' words correctly. Try again!';
-  }
-  document.getElementById('end').classList.add('show');
-  onGameComplete();
-}
-
-function burstConfetti(){
-  const colors=['#ff5a8a','#ffd166','#34d399','#60a5fa','#c084fc'];
-  for(let i=0;i<20;i++){
-    const d=document.createElement('div');
-    d.className='confetti';
-    d.style.left=(Math.random()*100)+'vw';
-    d.style.background=colors[Math.floor(Math.random()*colors.length)];
-    d.style.animationDuration=(1+Math.random()*0.8)+'s';
-    document.body.appendChild(d);
-    setTimeout(()=>d.remove(),2000);
-  }
-}
-
-restart();
-</script></body></html>
+reset(G.choice);
+</script>
+</body></html>

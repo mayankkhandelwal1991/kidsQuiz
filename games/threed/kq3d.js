@@ -360,14 +360,14 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
     var cv = document.createElement('canvas'); cv.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;touch-action:none';
     el.appendChild(cv);
     var o = { cv: cv, ctx: cv.getContext('2d'), w: 0, h: 0 };
-    function fit() {
+    function fit(first) {
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
       o.w = el.clientWidth || innerWidth; o.h = el.clientHeight || innerHeight;
       cv.width = Math.round(o.w * dpr); cv.height = Math.round(o.h * dpr);
       o.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (onResize) onResize(o.w, o.h);
+      if (onResize && first !== true) onResize(o.w, o.h);
     }
-    window.addEventListener('resize', fit); fit();
+    window.addEventListener('resize', fit); fit(true);
     return o;
   }
   function roundRect(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }

@@ -1,76 +1,146 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Whack-a-Mole</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#ffb703,#ff7a59);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:16px;max-width:420px;width:100%;text-align:center}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.hole{position:relative;height:0;padding-bottom:100%;border-radius:50%;background:radial-gradient(circle at 50% 65%,#6d4c41 55%,#4e342e 56%);font-size:44px;cursor:pointer;user-select:none;overflow:hidden}
-.hole span{position:absolute;left:0;right:0;bottom:0;text-align:center;transform:translateY(110%);transition:transform .12s}
-.hole.up span{transform:translateY(6%)}
-.start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:12px 36px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;margin-top:12px}
-.msg{color:#ff5a8a;font-weight:800;font-size:18px;min-height:26px;margin-top:8px}
-
-/* mobile fit */
-.wrap{display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
-
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">⏱ <span id="time">30</span>s &nbsp; ⭐ <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
-    <button onclick="stopAll();start()">↻</button>
-  </div>
-  <div class="grid" id="grid"></div>
-  <button class="start" id="startBtn" onclick="start()">▶ Start</button>
-  <div class="msg" id="msg"></div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const grid=document.getElementById('grid');
-let score=0,time=30,timer=null,popTimer=null,playing=false,cur=-1;
-let best=+(localStorage.getItem('moleBest')||0);
-document.getElementById('best').textContent=best;
-for(let i=0;i<9;i++){
-  const h=document.createElement('div');h.className='hole';h.innerHTML='<span>🐹</span>';
-  h.onclick=()=>whack(i,h);grid.appendChild(h);
+/* Whack-a-Mole — 45 s. Mole +1, golden mole +3, clock +3 s, bunny friend = don't hit (−2). */
+const MODES = [
+  { icon: '🐣', name: 'Easy', cols: 3, rows: 3, up: 1.3, gap: 0.9 },
+  { icon: '🔨', name: 'Normal', cols: 3, rows: 3, up: 0.95, gap: 0.65 },
+  { icon: '🔥', name: 'Hard', cols: 4, rows: 4, up: 0.75, gap: 0.45 }
+];
+const TIME = 45;
+const G = KQ3D.init({
+  id: 'whack_mole', title: 'Whack-a-Mole', bestKey: 'moleBest', music: true,
+  hero: ['🔨', '🐹', '🐰'], colors: ['#84cc16', '#a16207'],
+  how: [['🔨', 'Tap the moles as they pop up'], ['👑', 'Golden moles = +3 points'], ['⏰', 'Hit a clock for +3 seconds'], ['🐰', 'Don’t bonk the bunny friends!']],
+  hud: [{ id: 'time', icon: '⏰' }], scoreIcon: '🔨', stars: [15, 35, 60],
+  pick: { label: 'Pick a level', options: MODES },
+  onReset: (m) => reset(m)
+});
+let mode = G.choice || MODES[1], holes = [], hammer = null, bits = [];
+const C = KQ3D.canvas(G.scene, () => layout()), ctx = C.ctx;
+
+let score, timeLeft, tick, hits, misses, spawnT;
+function layout() {
+  if (!mode) return;
+  const w = C.w, h = C.h, top = h * 0.24, areaH = h * 0.7;
+  const cw = Math.min(w / mode.cols, areaH / mode.rows * 1.1);
+  const ox = (w - cw * mode.cols) / 2;
+  const old = holes; holes = [];
+  for (let r = 0; r < mode.rows; r++) for (let c = 0; c < mode.cols; c++) {
+    const prev = old[holes.length];
+    holes.push(Object.assign(prev && old.length === mode.rows * mode.cols ? prev : { who: null, t: 0, up: 0, hit: 0 }, { x: ox + cw * (c + 0.5), y: top + areaH / mode.rows * (r + 0.62), s: cw * 0.78 }));
+  }
 }
-const holes=[...document.querySelectorAll('.hole')];
-function whack(i,h){
-  if(!playing||i!==cur)return;
-  score++;document.getElementById('score').textContent=score;
-  if(window.KQFX)KQFX.play('boing');
-  h.classList.remove('up');cur=-1;
+function reset(m) {
+  mode = m || MODES[1]; holes = []; layout(); bits = [];
+  score = 0; timeLeft = TIME; tick = -1; hits = 0; misses = 0; spawnT = 0.6;
 }
-function pop(){
-  holes.forEach(h=>h.classList.remove('up'));
-  cur=Math.floor(Math.random()*9);
-  holes[cur].classList.add('up');
-  const delay=Math.max(450,900-score*15);
-  popTimer=setTimeout(pop,delay);
+function popUp() {
+  const free = holes.filter((h) => !h.who); if (!free.length) return;
+  const h = free[Math.floor(Math.random() * free.length)];
+  const r = Math.random();
+  h.who = r < 0.12 ? 'gold' : r < 0.26 ? 'bunny' : r < 0.31 ? 'clock' : 'mole';
+  h.t = 0; h.hit = 0; h.stay = mode.up * (0.85 + Math.random() * 0.4) * (h.who === 'gold' ? 0.75 : 1) * Math.max(0.6, 1 - (TIME - timeLeft) / 120);
 }
-function stopAll(){clearInterval(timer);clearTimeout(popTimer);holes.forEach(h=>h.classList.remove('up'));playing=false;}
-function start(){
-  stopAll();score=0;time=30;playing=true;
-  document.getElementById('score').textContent=0;
-  document.getElementById('time').textContent=30;
-  document.getElementById('msg').textContent='';
-  document.getElementById('startBtn').style.display='none';
-  pop();
-  timer=setInterval(()=>{
-    time--;document.getElementById('time').textContent=time;
-    if(time<=0){
-      stopAll();
-      if(score>best){best=score;localStorage.setItem('moleBest',best);document.getElementById('best').textContent=best;}
-      onGameComplete();
-      document.getElementById('msg').textContent='⏰ Time up! You whacked '+score+' moles!';
-      document.getElementById('startBtn').style.display='inline-block';
-      document.getElementById('startBtn').textContent='▶ Play Again';
-    }
-  },1000);
+G.scene.addEventListener('pointerdown', (e) => {
+  if (G.state !== 'play') return;
+  const rc = C.cv.getBoundingClientRect(), x = e.clientX - rc.left, y = e.clientY - rc.top;
+  hammer = { x, y, t: 0 };
+  let best = null, bd = 1e9;
+  holes.forEach((h) => { const d = Math.hypot(x - h.x, y - (h.y - h.s * 0.3)); if (d < h.s * 0.62 && d < bd && h.who && !h.hit && h.up > 0.35) { best = h; bd = d; } });
+  if (!best) { KQ3D.sfx('tap'); return; }
+  best.hit = 0.001;
+  const sx = best.x, sy = best.y - best.s * 0.5;
+  if (best.who === 'bunny') { score = Math.max(0, score - 2); misses++; KQ3D.sfx('wrong'); G.flash('#fecaca'); G.pop('Ouch! −2 🐰', sx, sy, '#fecaca'); }
+  else if (best.who === 'clock') { timeLeft += 3; KQ3D.sfx('chime'); G.pop('+3 s ⏰', sx, sy, '#a5f3fc'); }
+  else { const p = best.who === 'gold' ? 3 : 1; score += p; hits++; KQ3D.sfx(best.who === 'gold' ? 'coin' : 'hit'); G.pop('+' + p, sx, sy, best.who === 'gold' ? '#fde047' : '#fff'); stars(sx, sy); }
+  G.score(score);
+});
+function stars(x, y) { for (let k = 0; k < 10; k++) { const a = Math.random() * 6.28, s = 100 + Math.random() * 150; bits.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 100, l: 0.5 }); } }
+
+function drawMole(h, rise) {
+  const { x, y, s } = h, who = h.who, hy = y - rise * s * 0.62;
+  ctx.save();
+  ctx.beginPath(); ctx.rect(x - s, y - s * 1.6, s * 2, s * 1.6 + s * 0.05); ctx.clip();   // hide below the hole edge
+  if (who === 'mole' || who === 'gold') {
+    const body = who === 'gold' ? '#facc15' : '#8b5a2b', dark = who === 'gold' ? '#ca8a04' : '#6b4423';
+    ctx.fillStyle = body; ctx.beginPath(); ctx.ellipse(x, hy + s * 0.1, s * 0.36, s * 0.42, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = who === 'gold' ? '#fef08a' : '#d6a77a'; ctx.beginPath(); ctx.ellipse(x, hy + s * 0.2, s * 0.22, s * 0.2, 0, 0, Math.PI * 2); ctx.fill();
+    // eyes (x_x when hit)
+    [-1, 1].forEach((d) => {
+      if (h.hit) { ctx.strokeStyle = '#1f2937'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x + d * s * 0.13 - 5, hy - s * 0.08 - 5); ctx.lineTo(x + d * s * 0.13 + 5, hy - s * 0.08 + 5); ctx.moveTo(x + d * s * 0.13 + 5, hy - s * 0.08 - 5); ctx.lineTo(x + d * s * 0.13 - 5, hy - s * 0.08 + 5); ctx.stroke(); }
+      else { ctx.fillStyle = '#111827'; ctx.beginPath(); ctx.arc(x + d * s * 0.13, hy - s * 0.08, s * 0.05, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x + d * s * 0.13 + 2, hy - s * 0.1, s * 0.017, 0, 7); ctx.fill(); }
+      ctx.fillStyle = 'rgba(244,114,182,.5)'; ctx.beginPath(); ctx.arc(x + d * s * 0.22, hy + s * 0.08, s * 0.05, 0, 7); ctx.fill();
+    });
+    ctx.fillStyle = '#ec4899'; ctx.beginPath(); ctx.ellipse(x, hy + s * 0.07, s * 0.07, s * 0.05, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillRect(x - s * 0.05, hy + s * 0.15, s * 0.045, s * 0.07); ctx.fillRect(x + s * 0.005, hy + s * 0.15, s * 0.045, s * 0.07);
+    ctx.fillStyle = dark; [-1, 1].forEach((d) => { ctx.beginPath(); ctx.arc(x + d * s * 0.27, hy - s * 0.3, s * 0.08, 0, 7); ctx.fill(); });
+    if (who === 'gold') KQ3D.drawPic(ctx, '👑', x, hy - s * 0.42, s * 0.36);
+    if (!h.hit && who === 'mole' && Math.sin(h.t * 6) > 0.6) { ctx.fillStyle = '#6b4423'; ctx.fillRect(x - s * 0.4, hy + s * 0.25, s * 0.1, s * 0.15); }
+  } else {
+    KQ3D.drawPic(ctx, who === 'bunny' ? '🐰' : '⏰', x, hy + s * 0.05, s * 0.75, h.hit ? Math.sin(h.t * 30) * 0.3 : 0);
+  }
+  if (h.hit) KQ3D.drawPic(ctx, '💫', x, hy - s * 0.45, s * 0.35, h.t * 4);
+  ctx.restore();
 }
-</script></body></html>
+function drawHole(h, front) {
+  const { x, y, s } = h;
+  if (!front) {
+    ctx.fillStyle = '#5b3a1e'; ctx.beginPath(); ctx.ellipse(x, y, s * 0.46, s * 0.17, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#2b1a0c'; ctx.beginPath(); ctx.ellipse(x, y + 2, s * 0.38, s * 0.12, 0, 0, 7); ctx.fill();
+  } else {
+    ctx.fillStyle = '#7c4a22'; ctx.beginPath(); ctx.ellipse(x, y + s * 0.06, s * 0.48, s * 0.12, 0, 0, Math.PI); ctx.fill();
+    ctx.fillStyle = '#a16207'; [-0.36, -0.12, 0.12, 0.36].forEach((d) => { ctx.beginPath(); ctx.arc(x + d * s, y + s * 0.12, s * 0.05, 0, 7); ctx.fill(); });
+  }
+}
+function background(t) {
+  const w = C.w, h = C.h;
+  const sky = ctx.createLinearGradient(0, 0, 0, h * 0.3); sky.addColorStop(0, '#7dd3fc'); sky.addColorStop(1, '#bae6fd');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
+  KQ3D.drawPic(ctx, '🌞', w * 0.85, h * 0.1, 64);
+  ctx.fillStyle = '#4ade80'; ctx.beginPath(); ctx.moveTo(0, h * 0.2);
+  for (let x = 0; x <= w + 30; x += 30) ctx.lineTo(x, h * 0.2 + Math.sin(x / 70) * 10); ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.fill();
+  ctx.fillStyle = '#86efac'; for (let i = 0; i < 40; i++) { const gx = (i * 97) % w, gy = h * 0.25 + ((i * 53) % (h * 0.72)); ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(gx + 4, gy - 10); ctx.lineTo(gx + 8, gy); ctx.fill(); }
+  // fence
+  ctx.fillStyle = '#fef3c7'; for (let x = 6; x < w; x += 34) { ctx.fillRect(x, h * 0.14, 14, h * 0.07); ctx.beginPath(); ctx.moveTo(x, h * 0.14); ctx.lineTo(x + 7, h * 0.125); ctx.lineTo(x + 14, h * 0.14); ctx.fill(); }
+  ctx.fillRect(0, h * 0.16, w, 6); ctx.fillRect(0, h * 0.19, w, 6);
+  ['🌻', '🌷', '🍄', '🌸'].forEach((e, i) => KQ3D.drawPic(ctx, e, (i + 0.5) * w / 4, h * 0.975, 28));
+}
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  const playing = G.state === 'play';
+  if (playing) {
+    timeLeft -= dt;
+    const sec = Math.max(0, Math.ceil(timeLeft)); if (sec !== tick) { tick = sec; G.hudSet('time', sec); if (sec <= 5 && sec > 0) KQ3D.sfx('tick'); }
+    if (timeLeft <= 0) G.over({ score, title: 'Time’s up! ⏰', lines: ['🔨 ' + hits + ' moles', '🐰 ' + misses + ' oops'] });
+    spawnT -= dt; if (spawnT <= 0) { popUp(); if (Math.random() < 0.25 + (TIME - timeLeft) / 120) popUp(); spawnT = mode.gap * (0.7 + Math.random() * 0.6); }
+  } else if (G.state === 'menu' && Math.random() < dt) popUp();
+  if (G.state !== 'pause') holes.forEach((h) => {
+    if (!h.who) { h.up = 0; return; }
+    h.t += dt;
+    if (h.hit) { h.hit += dt; h.up = Math.max(0, 1 - h.hit * 3); if (h.hit > 0.4) h.who = null; }
+    else if (h.t < 0.15) h.up = h.t / 0.15;
+    else if (h.t < 0.15 + h.stay) h.up = 1;
+    else { h.up = Math.max(0, 1 - (h.t - 0.15 - h.stay) / 0.15); if (h.up <= 0) h.who = null; }
+  });
+  background(now);
+  holes.forEach((h) => { drawHole(h, false); if (h.who) drawMole(h, h.up); drawHole(h, true); });
+  bits = bits.filter((b) => (b.l -= dt) > 0);
+  bits.forEach((b) => { b.vy += 400 * dt; b.x += b.vx * dt; b.y += b.vy * dt; KQ3D.drawPic(ctx, '✨', b.x, b.y, 16); });
+  if (hammer) {
+    hammer.t += dt; const a = hammer.t < 0.08 ? -0.9 + hammer.t / 0.08 * 1.5 : 0.6;
+    KQ3D.drawPic(ctx, '🔨', hammer.x + 20, hammer.y - 24, 64, a);
+    if (hammer.t > 0.25) hammer = null;
+  }
+}
+reset(mode);
+requestAnimationFrame(frame);
+</script>
+</body></html>

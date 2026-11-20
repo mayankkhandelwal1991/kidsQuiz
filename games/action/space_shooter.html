@@ -1,140 +1,129 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Space Shooter</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:#000;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
-.wrap{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.5);padding:12px;max-width:420px;width:100%;display:flex;flex-direction:column;height:100%;max-height:800px;position:relative}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
-h1{font-size:18px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sc{font-size:12px;text-align:right;line-height:1.3}
-.sc b{color:#00f5ff}
-.stage{flex:1;min-height:0;border-radius:14px;overflow:hidden;position:relative}
-canvas{width:100%;height:100%;display:block;background:#000}
-.overlay{position:absolute;inset:0;background:rgba(5,5,20,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;border-radius:26px;z-index:10}
-.overlay.show{display:flex}
-.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <h1>Space Shooter</h1>
-    <div class="sc">SCORE <b id="score">0</b><br>LIVES <b id="lives">3</b></div>
-  </div>
-  <div class="stage"><canvas id="cv"></canvas></div>
-  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">Ship Destroyed!</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="init()">Play Again</button></div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-function fit(){ cv.width=cv.clientWidth*devicePixelRatio; cv.height=cv.clientHeight*devicePixelRatio; cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
-window.addEventListener('resize',fit);
-let W,H,ship,bullets,enemies,estars,score,lives,over,frame,best=+(localStorage.getItem('spaceBest')||0),spawnRate;
-function init(){
-  fit(); W=cv.clientWidth; H=cv.clientHeight;
-  ship={x:W/2,y:H-60,w:34,h:34};
-  bullets=[];enemies=[];score=0;lives=3;over=false;frame=0;spawnRate=70;
-  estars=Array.from({length:60},()=>({x:Math.random()*W,y:Math.random()*H,s:Math.random()*2+0.5}));
-  document.getElementById('score').textContent=0;
-  document.getElementById('lives').textContent=3;
-  document.getElementById('overlay').classList.remove('show');
-  requestAnimationFrame(loop);
+/* Space Shooter — drag to fly, the ship fires by itself. Aliens & meteors;
+   a big UFO boss every 40 points. Power-ups: ⚡ triple shot, 🛡️ shield, ❤️ life. */
+const SHIPS = [
+  { icon: '🚀', name: 'Rocket', rot: -Math.PI / 4, laser: '#22d3ee' },
+  { icon: '🛸', name: 'Saucer', rot: 0, laser: '#a3e635' },
+  { icon: '✈️', name: 'Jet', rot: -Math.PI / 4, laser: '#f472b6' },
+  { icon: '👨‍🚀', name: 'Astro', rot: 0, laser: '#facc15' }
+];
+const G = KQ3D.init({
+  id: 'space_shooter', title: 'Space Shooter', bestKey: 'spaceBest', music: true,
+  hero: ['🚀', '👾', '☄️'], colors: ['#4338ca', '#0f172a'],
+  how: [['👆', 'Drag to fly — your ship shoots by itself'], ['👾', 'Zap aliens and meteors for points'], ['🛸', 'Beat the big UFO boss for +50'], ['⚡', 'Grab ⚡ triple shot, 🛡️ shield and ❤️ lives']],
+  hud: [{ id: 'lives', icon: '❤️' }], scoreIcon: '👾', stars: [60, 180, 400],
+  pick: { label: 'Pick your ship', options: SHIPS },
+  buttons: [{ icon: '⬅️', label: 'Left', down: () => { keyDir = -1; }, up: () => { keyDir = 0; } }, { icon: '➡️', label: 'Right', down: () => { keyDir = 1; }, up: () => { keyDir = 0; } }],
+  onReset: (s) => reset(s)
+});
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+let ship = G.choice || SHIPS[0], sx, sy, tx, ty, keyDir = 0, shots, foes, eshots, drops, bits, boss;
+let score, lives, fireT, spawnT, triple, shield, hurt, elapsed, nextBoss;
+const stars = Array.from({ length: 90 }, () => ({ x: Math.random(), y: Math.random(), z: 0.3 + Math.random() * 0.7 }));
+const planets = [{ e: '🪐', x: 0.2, y: 0.2, s: 90, v: 8 }, { e: '🌍', x: 0.8, y: 0.65, s: 70, v: 12 }, { e: '🌕', x: 0.6, y: -0.3, s: 50, v: 16 }];
+
+function reset(s) {
+  ship = s || SHIPS[0]; sx = tx = C.w / 2; sy = ty = C.h - 190;
+  shots = []; foes = []; eshots = []; drops = []; bits = []; boss = null;
+  score = 0; lives = 3; fireT = 0; spawnT = 1; triple = 0; shield = 0; hurt = 0; elapsed = 0; nextBoss = 40;
+  G.hudSet('lives', lives);
 }
-let targetX=null;
-cv.addEventListener('touchmove',e=>{ e.preventDefault(); const r=cv.getBoundingClientRect(); targetX=e.touches[0].clientX-r.left; },{passive:false});
-cv.addEventListener('touchstart',e=>{ e.preventDefault(); const r=cv.getBoundingClientRect(); targetX=e.touches[0].clientX-r.left; fireBullet(); },{passive:false});
-cv.addEventListener('mousemove',e=>{ const r=cv.getBoundingClientRect(); targetX=e.clientX-r.left; });
-cv.addEventListener('mousedown',()=>fireBullet());
-let keys={};
-document.addEventListener('keydown',e=>{ keys[e.key]=true; if(e.key===' ')fireBullet(); });
-document.addEventListener('keyup',e=>{ keys[e.key]=false; });
-function fireBullet(){
-  if(over)return;
-  if(frame - (fireBullet.last||0) < 12) return;
-  fireBullet.last=frame;
-  bullets.push({x:ship.x,y:ship.y-20,vy:-9});
+let drag = null;
+G.scene.addEventListener('pointerdown', (e) => { if (G.state !== 'play') return; drag = { x: e.clientX, y: e.clientY, sx: tx, sy: ty }; });
+window.addEventListener('pointermove', (e) => { if (drag) { tx = drag.sx + (e.clientX - drag.x) * 1.2; ty = drag.sy + (e.clientY - drag.y) * 1.2; } });
+window.addEventListener('pointerup', () => { drag = null; });
+const keys = {};
+document.addEventListener('keydown', (e) => { keys[e.key] = true; });
+document.addEventListener('keyup', (e) => { keys[e.key] = false; });
+
+function spawn() {
+  const lvl = Math.min(1, elapsed / 120), meteor = Math.random() < 0.35;
+  const s = meteor ? 44 + Math.random() * 20 : 46;
+  foes.push({ e: meteor ? '☄️' : Math.random() < 0.5 ? '👾' : '👽', meteor, s, hp: meteor ? 2 : 1, x: s / 2 + Math.random() * (C.w - s), y: -40,
+    vy: (meteor ? 160 : 90) * (1 + lvl), vx: meteor ? (Math.random() - 0.5) * 60 : 0, ph: Math.random() * 6, shootT: 1.5 + Math.random() * 2, rot: 0 });
 }
-function spawnEnemy(){
-  const type=Math.random()<0.15?'boss':'normal';
-  enemies.push({
-    x:30+Math.random()*(W-60), y:-30,
-    w:type==='boss'?46:28, h:type==='boss'?46:28,
-    vy:type==='boss'?1.4:2+Math.random()*1.5,
-    hp:type==='boss'?4:1,
-    color: type==='boss' ? '#ff5a8a' : ['#00f5ff','#38f9a1','#ffe066','#c77dff'][Math.floor(Math.random()*4)]
-  });
+function boom(x, y, col, n) { for (let k = 0; k < n; k++) { const a = Math.random() * 6.28, sp = 80 + Math.random() * 220; bits.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, l: 0.6, col }); } }
+function ouch() {
+  if (hurt > 0) return;
+  if (shield > 0) { shield = 0; KQ3D.sfx('hit'); G.flash('#7dd3fc'); hurt = 1; return; }
+  lives--; hurt = 1.6; G.hudSet('lives', Math.max(0, lives)); KQ3D.sfx('blast'); G.flash('#ef4444'); boom(sx, sy, '#f97316', 20);
+  if (lives <= 0) G.over({ score, title: 'Ship down!', lines: ['⏱️ ' + Math.round(elapsed) + ' s in space'] });
 }
-function loop(){
-  frame++;
-  update();
-  draw();
-  if(!over) requestAnimationFrame(loop);
+function kill(f) {
+  const pts = f.boss ? 50 : f.meteor ? 3 : 2;
+  score += pts; G.score(score); KQ3D.sfx(f.boss ? 'win' : 'pop');
+  boom(f.x, f.y, f.boss ? '#a3e635' : f.meteor ? '#fb923c' : '#c084fc', f.boss ? 40 : 14);
+  const r = C.cv.getBoundingClientRect(); G.pop('+' + pts, f.x + r.left, f.y + r.top, f.boss ? '#fde047' : '#fff');
+  if (f.boss || Math.random() < 0.1) drops.push({ x: f.x, y: f.y, e: f.boss ? '❤️' : ['⚡', '🛡️', '⚡', '❤️'][Math.floor(Math.random() * 4)] });
+  if (f.boss) { boss = null; try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {} }
 }
-function update(){
-  if(targetX!==null){ ship.x += (targetX-ship.x)*0.25; }
-  if(keys['ArrowLeft']) ship.x-=5;
-  if(keys['ArrowRight']) ship.x+=5;
-  ship.x=Math.max(20,Math.min(W-20,ship.x));
-  bullets.forEach(b=>b.y+=b.vy);
-  bullets=bullets.filter(b=>b.y>-20);
-  if(frame%Math.max(24,spawnRate)===0) spawnEnemy();
-  if(frame%600===0 && spawnRate>28) spawnRate-=6;
-  enemies.forEach(en=>en.y+=en.vy);
-  enemies.forEach(en=>{
-    bullets.forEach(b=>{
-      if(!b.dead && !en.dead && Math.abs(b.x-en.x)<en.w/2 && Math.abs(b.y-en.y)<en.h/2){
-        b.dead=true; en.hp--;
-        if(en.hp<=0){ en.dead=true; score+= en.w>30?50:10; document.getElementById('score').textContent=score; if(window.KQFX)KQFX.play('blast'); }
-      }
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.033, (now - last) / 1000); last = now;
+  const playing = G.state === 'play';
+  // background
+  const bg = ctx.createLinearGradient(0, 0, 0, C.h); bg.addColorStop(0, '#0f172a'); bg.addColorStop(1, '#312e81');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, C.w, C.h);
+  const flow = G.state === 'pause' ? 0 : dt;
+  planets.forEach((p) => { p.y += p.v * flow / C.h; if (p.y > 1.2) { p.y = -0.2; p.x = Math.random(); } ctx.globalAlpha = 0.85; KQ3D.drawPic(ctx, p.e, p.x * C.w, p.y * C.h, p.s); ctx.globalAlpha = 1; });
+  stars.forEach((s) => { s.y += s.z * 0.25 * flow; if (s.y > 1) { s.y = 0; s.x = Math.random(); } ctx.fillStyle = 'rgba(255,255,255,' + s.z + ')'; ctx.fillRect(s.x * C.w, s.y * C.h, s.z * 2.2, s.z * 2.2 + (playing ? 3 : 0)); });
+
+  if (playing) {
+    elapsed += dt;
+    const kx = (keys.ArrowRight || keys.d ? 1 : 0) - (keys.ArrowLeft || keys.a ? 1 : 0) + keyDir, ky = (keys.ArrowDown || keys.s ? 1 : 0) - (keys.ArrowUp || keys.w ? 1 : 0);
+    tx += kx * 480 * dt; ty += ky * 480 * dt;
+    tx = Math.max(30, Math.min(C.w - 30, tx)); ty = Math.max(C.h * 0.35, Math.min(C.h - 130, ty));
+    sx += (tx - sx) * Math.min(1, dt * 14); sy += (ty - sy) * Math.min(1, dt * 14);
+    triple -= dt; shield -= dt; hurt -= dt;
+    fireT -= dt;
+    if (fireT <= 0) { fireT = 0.22; shots.push({ x: sx, y: sy - 26, vx: 0 }); if (triple > 0) { shots.push({ x: sx - 10, y: sy - 20, vx: -120 }); shots.push({ x: sx + 10, y: sy - 20, vx: 120 }); } }
+    spawnT -= dt;
+    if (!boss && spawnT <= 0) { spawn(); spawnT = Math.max(0.35, 1.1 - elapsed / 100); }
+    if (!boss && score >= nextBoss) { boss = { e: '🛸', boss: true, s: 120, hp: 25 + Math.floor(nextBoss / 4), max: 25 + Math.floor(nextBoss / 4), x: C.w / 2, y: -80, vy: 60, ph: 0, shootT: 1 }; foes.push(boss); nextBoss += 60; G.pop('⚠️ Boss UFO!', null, C.h * 0.3, '#fca5a5'); KQ3D.sfx('countdown'); }
+    shots.forEach((b) => { b.y -= 620 * dt; b.x += b.vx * dt; });
+    shots = shots.filter((b) => b.y > -20 && !b.hit);
+    foes.forEach((f) => {
+      f.ph += dt;
+      if (f.boss) { f.y = Math.min(140, f.y + f.vy * dt); f.x = C.w / 2 + Math.sin(f.ph * 0.8) * (C.w / 2 - 80); }
+      else { f.y += f.vy * dt; f.x += (f.meteor ? f.vx : Math.sin(f.ph * 2) * 60) * dt; f.rot += dt * (f.meteor ? 2 : 0); }
+      if (!f.meteor) { f.shootT -= dt; if (f.shootT <= 0 && f.y > 0) { f.shootT = f.boss ? 0.9 : 2.5 + Math.random() * 2; (f.boss ? [-0.4, 0, 0.4] : [0]).forEach((a) => eshots.push({ x: f.x, y: f.y + f.s * 0.3, vx: Math.sin(a) * 200, vy: 230 })); } }
+      shots.forEach((b) => { if (!b.hit && Math.abs(b.x - f.x) < f.s * 0.45 && Math.abs(b.y - f.y) < f.s * 0.45) { b.hit = true; f.hp--; f.flash = 0.08; if (f.hp <= 0 && !f.dead) { f.dead = true; kill(f); } else KQ3D.sfx('tick'); } });
+      if (!f.dead && Math.hypot(f.x - sx, f.y - sy) < f.s * 0.4 + 18) { if (!f.boss) f.dead = true; ouch(); }
     });
+    foes = foes.filter((f) => !f.dead && f.y < C.h + 60);
+    eshots.forEach((b) => { b.x += b.vx * dt; b.y += b.vy * dt; if (Math.hypot(b.x - sx, b.y - sy) < 18) { b.hit = true; ouch(); } });
+    eshots = eshots.filter((b) => !b.hit && b.y < C.h + 10);
+    drops.forEach((d) => { d.y += 120 * dt; if (Math.hypot(d.x - sx, d.y - sy) < 36) { d.got = true; KQ3D.sfx('chime');
+      if (d.e === '⚡') { triple = 10; G.pop('Triple shot! ⚡', sx, sy - 50, '#fde047'); } else if (d.e === '🛡️') { shield = 12; G.pop('Shield! 🛡️', sx, sy - 50, '#a5f3fc'); } else { lives = Math.min(5, lives + 1); G.hudSet('lives', lives); G.pop('+1 ❤️', sx, sy - 50, '#fecdd3'); } } });
+    drops = drops.filter((d) => !d.got && d.y < C.h + 20);
+  } else if (G.state === 'menu') { sx = C.w / 2 + Math.sin(now / 700) * 60; sy = C.h - 190; }
+
+  // draw
+  shots.forEach((b) => { ctx.fillStyle = ship.laser; KQ3D.roundRect(ctx, b.x - 3, b.y - 10, 6, 20, 3); ctx.fill(); ctx.fillStyle = '#fff'; ctx.fillRect(b.x - 1, b.y - 8, 2, 12); });
+  eshots.forEach((b) => { ctx.fillStyle = '#f472b6'; ctx.beginPath(); ctx.arc(b.x, b.y, 6, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(b.x, b.y, 2.5, 0, 7); ctx.fill(); });
+  foes.forEach((f) => {
+    if (f.flash > 0) { f.flash -= dt; ctx.globalAlpha = 0.5; }
+    KQ3D.drawPic(ctx, f.e, f.x, f.y, f.s, f.rot); ctx.globalAlpha = 1;
+    if (f.boss) { ctx.fillStyle = 'rgba(0,0,0,.4)'; KQ3D.roundRect(ctx, f.x - 60, f.y - 80, 120, 10, 5); ctx.fill(); ctx.fillStyle = '#a3e635'; KQ3D.roundRect(ctx, f.x - 60, f.y - 80, 120 * f.hp / f.max, 10, 5); ctx.fill(); }
   });
-  bullets=bullets.filter(b=>!b.dead);
-  enemies.forEach(en=>{
-    if(!en.dead && Math.abs(en.x-ship.x)<(en.w+ship.w)/2*0.8 && Math.abs(en.y-ship.y)<(en.h+ship.h)/2*0.8){
-      en.dead=true; hitShip(); if(window.KQFX)KQFX.play('hit');
-    }
-    if(en.y>H+40 && !en.dead) en.dead=true;
-  });
-  enemies=enemies.filter(e=>!e.dead);
-  estars.forEach(s=>{ s.y+=s.s; if(s.y>H) s.y=0; });
+  drops.forEach((d) => { ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.beginPath(); ctx.arc(d.x, d.y, 22, 0, 7); ctx.fill(); KQ3D.drawPic(ctx, d.e, d.x, d.y, 30); });
+  if (!(hurt > 0 && Math.floor(now / 90) % 2) || G.state !== 'play') {
+    // engine flame
+    ctx.fillStyle = 'rgba(251,146,60,' + (0.6 + Math.random() * 0.4) + ')'; ctx.beginPath(); ctx.moveTo(sx - 8, sy + 22); ctx.lineTo(sx + 8, sy + 22); ctx.lineTo(sx, sy + 40 + Math.random() * 12); ctx.fill();
+    KQ3D.drawPic(ctx, ship.icon, sx, sy, 58, ship.rot);
+    if (shield > 0) { ctx.strokeStyle = 'rgba(125,211,252,' + (shield < 3 && Math.floor(now / 150) % 2 ? 0.2 : 0.8) + ')'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(sx, sy, 40, 0, 7); ctx.stroke(); }
+  }
+  bits = bits.filter((p) => (p.l -= dt) > 0); bits.forEach((p) => { p.x += p.vx * dt; p.y += p.vy * dt; ctx.globalAlpha = p.l / 0.6; ctx.fillStyle = p.col; ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, 7); ctx.fill(); }); ctx.globalAlpha = 1;
 }
-function hitShip(){
-  lives--;
-  document.getElementById('lives').textContent=lives;
-  if(lives<=0) endGame();
-}
-function draw(){
-  cx.fillStyle='#000'; cx.fillRect(0,0,W,H);
-  cx.fillStyle='rgba(255,255,255,.6)';
-  estars.forEach(s=>cx.fillRect(s.x,s.y,s.s,s.s));
-  bullets.forEach(b=>{
-    cx.fillStyle='#00f5ff'; cx.fillRect(b.x-2,b.y-8,4,10);
-  });
-  enemies.forEach(en=>{
-    cx.save(); cx.translate(en.x,en.y);
-    cx.fillStyle=en.color;
-    cx.beginPath();
-    cx.moveTo(0,-en.h/2); cx.lineTo(en.w/2,en.h/2); cx.lineTo(-en.w/2,en.h/2);
-    cx.closePath(); cx.fill();
-    cx.restore();
-  });
-  cx.save(); cx.translate(ship.x,ship.y);
-  cx.fillStyle='#fff';
-  cx.beginPath();
-  cx.moveTo(0,-18); cx.lineTo(16,16); cx.lineTo(0,8); cx.lineTo(-16,16);
-  cx.closePath(); cx.fill();
-  cx.fillStyle='#00f5ff';
-  cx.beginPath(); cx.moveTo(0,-18); cx.lineTo(6,4); cx.lineTo(-6,4); cx.closePath(); cx.fill();
-  cx.restore();
-}
-function endGame(){
-  over=true;
-  if(score>best){best=score;localStorage.setItem('spaceBest',best);}
-  document.getElementById('finalScore').textContent='Score: '+score+'  •  Best: '+best;
-  document.getElementById('overlay').classList.add('show');
-  onGameComplete();
-}
-init();
-</script></body></html>
+reset(ship);
+requestAnimationFrame(frame);
+</script>
+</body></html>

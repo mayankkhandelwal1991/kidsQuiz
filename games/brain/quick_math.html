@@ -1,84 +1,91 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Quick Math</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Baloo 2',system-ui,sans-serif;background:linear-gradient(135deg,#06b6d4,#8b5cf6);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
-.wrap{background:#fff;border:6px solid #fff;border-radius:28px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:18px;max-width:420px;width:100%;text-align:center}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.bar button{background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 14px;font-family:inherit;font-weight:800;cursor:pointer;font-size:13px}
-.bar .sc{font-weight:800;color:#ff5a8a;font-size:15px}
-.q{font-size:44px;font-weight:800;color:#374151;background:linear-gradient(135deg,#fff8cc,#fff0f6);border:4px dashed #ffb703;border-radius:22px;padding:22px;margin-bottom:14px;min-height:100px;display:flex;align-items:center;justify-content:center}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.opts button{padding:16px;font-size:22px;font-weight:800;border:3px solid #dbeafe;background:#fff;border-radius:16px;cursor:pointer;font-family:inherit;color:#374151;transition:.1s}
-.opts button.ok{background:#2ecc71;color:#fff;border-color:#2ecc71}
-.opts button.no{background:#e74c3c;color:#fff;border-color:#e74c3c}
-.msg{color:#ff5a8a;font-weight:800;font-size:18px;min-height:26px;margin-top:12px}
-.start{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:12px 36px;font-family:inherit;font-weight:800;font-size:16px;cursor:pointer;margin-top:10px}
-
-/* mobile fit */
-.wrap{display:flex;flex-direction:column;max-height:100%;overflow-y:auto}
-
-</style></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <div class="sc">⏱ <span id="time">60</span>s &nbsp; ⭐ <span id="score">0</span> &nbsp; 🏆 <span id="best">0</span></div>
-    <button onclick="start()">↻</button>
-  </div>
-  <div class="q" id="q">Ready?</div>
-  <div class="opts" id="opts"></div>
-  <div class="msg" id="msg"></div>
-  <button class="start" id="sb" onclick="start()">▶ Start (60s)</button>
-</div>
+.qm { position: absolute; inset: 0; display: flex; padding: 72px 12px 16px; gap: 10px; font-family: 'Baloo 2', sans-serif; background: linear-gradient(170deg, #1e1b4b, #4338ca 60%, #0ea5e9); overflow: hidden; }
+.qm-track { position: relative; width: 54px; flex: 0 0 auto; border-radius: 27px; background: rgba(255,255,255,.12); }
+.qm-rocket { position: absolute; left: 50%; width: 46px; margin-left: -23px; transition: bottom .4s cubic-bezier(.34,1.4,.64,1); }
+.qm-moon { position: absolute; left: 50%; top: 6px; width: 40px; margin-left: -20px; }
+.qm-main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; min-width: 0; }
+.qm-time { width: 100%; max-width: 420px; height: 12px; border-radius: 6px; background: rgba(255,255,255,.2); overflow: hidden; }
+.qm-time i { display: block; height: 100%; background: linear-gradient(90deg, #4ade80, #facc15, #ef4444); border-radius: 6px; }
+.qm-q { background: #fff; border-radius: 28px; padding: 14px 26px; font-size: 52px; font-weight: 800; color: #312e81; box-shadow: 0 8px 0 rgba(0,0,0,.2); animation: qmIn .3s cubic-bezier(.34,1.56,.64,1); white-space: nowrap; }
+@keyframes qmIn { from { transform: scale(.5) rotate(-6deg); opacity: 0; } }
+.qm-q .op { color: #f59e0b; }
+.qm-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 420px; }
+.qm-o { border: none; border-radius: 50%; aspect-ratio: 1; max-height: 120px; justify-self: center; width: 100%; max-width: 120px; font: 800 38px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; box-shadow: 0 6px 0 rgba(0,0,0,.25), inset 0 -8px 0 rgba(0,0,0,.12); }
+.qm-o:active { transform: translateY(4px); }
+.qm-o.ok { background: #22c55e !important; animation: qmPop .3s; } .qm-o.no { background: #ef4444 !important; animation: qmShake .3s; }
+@keyframes qmPop { 50% { transform: scale(1.15); } } @keyframes qmShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.qm-streak { color: #fde047; font-weight: 800; min-height: 26px; }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120k"></script>
 <script src="../ads.js"></script>
 <script>
-let score,time,timer,ans,lock=false,playing=false,best=+(localStorage.getItem('mathBest')||0);
-document.getElementById('best').textContent=best;
-const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-function gen(){
-  const lvl=Math.min(4,Math.floor(score/6));
-  let a,b,op=['+','−','×'][rnd(0,Math.min(2,1+Math.floor(lvl/2)))];
-  if(op==='×'){a=rnd(2,4+lvl*2);b=rnd(2,6+lvl);}
-  else{a=rnd(1,10+lvl*15);b=rnd(1,10+lvl*10);}
-  if(op==='−'&&b>a)[a,b]=[b,a];
-  ans=op==='+'?a+b:op==='−'?a-b:a*b;
-  document.getElementById('q').textContent=a+' '+op+' '+b+' = ?';
-  const set=new Set([ans]);
-  while(set.size<4){let d=ans+rnd(-8,8);if(d!==ans&&d>=0)set.add(d);}
-  const opts=[...set].sort(()=>Math.random()-.5);
-  const box=document.getElementById('opts');box.innerHTML='';
-  opts.forEach(o=>{
-    const b=document.createElement('button');b.textContent=o;
-    b.onclick=()=>pick(b,o);box.appendChild(b);
-  });
-  lock=false;
+/* Quick Math — 60 seconds of sums. Right answers fly the rocket to the moon. */
+const MODES = [{ icon: '➕', name: 'Add', ops: ['+'] }, { icon: '➖', name: 'Subtract', ops: ['-'] }, { icon: '✖️', name: 'Times', ops: ['×'] }, { icon: '🎲', name: 'Mix', ops: ['+', '-', '×', '÷'] }];
+const COLS = ['#f43f5e', '#f59e0b', '#06b6d4', '#8b5cf6'];
+const TIME = 60;
+const G = KQ3D.init({
+  id: 'quick_math', title: 'Quick Math', bestKey: 'mathBest', music: true,
+  hero: ['🚀', '➕', '🌙'], colors: ['#4338ca', '#0ea5e9'],
+  how: [['🔢', 'Solve the sum and tap the right answer'], ['🚀', 'Every right answer flies the rocket up'], ['🔥', '5 in a row = streak bonus!'], ['⏱️', 'You have 60 seconds — numbers grow as you go']],
+  scoreIcon: '🚀', stars: [100, 220, 350],
+  hud: [{ id: 'time', icon: '⏱️' }],
+  pick: { label: 'Pick a sum type', options: MODES },
+  onReset: (m) => reset(m)
+});
+const box = document.createElement('div'); box.className = 'qm'; G.scene.appendChild(box);
+let mode, q, score, right, wrong, streak, timeLeft, tick, timer, lock;
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+function reset(m) {
+  mode = m || MODES[0]; score = 0; right = 0; wrong = 0; streak = 0; timeLeft = TIME; tick = TIME; G.score(0); G.hudSet('time', TIME);
+  box.innerHTML = '<div class="qm-track" id="qmT"><img class="qm-moon" src="' + KQ3D.emojiFile('🌙') + '" alt=""><img class="qm-rocket" id="qmR" src="' + KQ3D.emojiFile('🚀') + '" alt="" style="bottom:6px;transform:rotate(-45deg)"></div>' +
+    '<div class="qm-main"><div class="qm-time"><i id="qmTi" style="width:100%"></i></div><div id="qmQ"></div><div class="qm-opts" id="qmO"></div><div class="qm-streak" id="qmS"></div></div>';
+  clearInterval(timer); timer = setInterval(step, 100); next();
 }
-function pick(btn,val){
-  if(lock||!playing)return;lock=true;
-  if(val===ans){btn.classList.add('ok');score++;if(window.KQFX)KQFX.play('ding');}
-  else{btn.classList.add('no');if(window.KQFX)KQFX.play('wrong');
-    [...document.querySelectorAll('.opts button')].find(b=>+b.textContent===ans).classList.add('ok');}
-  document.getElementById('score').textContent=score;
-  setTimeout(gen,val===ans?250:700);
+function make() {
+  const lvl = Math.min(4, Math.floor(right / 5)), op = mode.ops[Math.floor(Math.random() * mode.ops.length)];
+  let a, b, ans;
+  if (op === '+') { const m = [9, 15, 30, 60, 99][lvl]; a = rnd(1, m); b = rnd(1, m); ans = a + b; }
+  else if (op === '-') { const m = [10, 20, 40, 70, 99][lvl]; a = rnd(2, m); b = rnd(1, a - 1); ans = a - b; }
+  else if (op === '×') { const m = [3, 5, 6, 9, 12][lvl]; a = rnd(1, m); b = rnd(1, 10); ans = a * b; }
+  else { const m = [3, 5, 6, 9, 10][lvl]; b = rnd(1, m); ans = rnd(1, 10); a = b * ans; }
+  const opts = new Set([ans]);
+  while (opts.size < 4) { const d = ans + (Math.random() < 0.5 ? -1 : 1) * rnd(1, Math.max(3, Math.round(ans * 0.25))); if (d >= 0) opts.add(d); }
+  return { a, b, op, ans, opts: [...opts].sort(() => Math.random() - 0.5) };
 }
-function start(){
-  clearInterval(timer);score=0;time=60;playing=true;
-  document.getElementById('score').textContent=0;
-  document.getElementById('time').textContent=60;
-  document.getElementById('msg').textContent='';
-  document.getElementById('sb').style.display='none';
-  gen();
-  timer=setInterval(()=>{
-    time--;document.getElementById('time').textContent=time;
-    if(time<=0){
-      clearInterval(timer);playing=false;onGameComplete();
-      if(score>best){best=score;localStorage.setItem('mathBest',best);document.getElementById('best').textContent=best;}
-      document.getElementById('q').textContent='⏰ Time up!';
-      document.getElementById('opts').innerHTML='';
-      document.getElementById('msg').textContent='You solved '+score+' sums!';
-      const sb=document.getElementById('sb');sb.style.display='inline-block';sb.textContent='▶ Play Again';
-    }
-  },1000);
+function next() {
+  q = make(); lock = false;
+  document.getElementById('qmQ').innerHTML = '<div class="qm-q">' + q.a + ' <span class="op">' + q.op + '</span> ' + q.b + ' = ?</div>';
+  const O = document.getElementById('qmO');
+  O.innerHTML = q.opts.map((v, k) => '<button type="button" class="qm-o" data-v="' + v + '" style="background:' + COLS[k] + '">' + v + '</button>').join('');
+  O.querySelectorAll('.qm-o').forEach((b) => b.onclick = () => answer(b, +b.dataset.v));
 }
-</script></body></html>
+function answer(b, v) {
+  if (G.state !== 'play' || lock) return; lock = true;
+  if (v === q.ans) {
+    right++; streak++; const pts = 10 + (streak >= 5 ? 5 : 0) + (right > 15 ? 5 : 0); score += pts; G.score(score);
+    b.classList.add('ok'); KQ3D.sfx(streak >= 5 ? 'coin' : 'success');
+    const r = b.getBoundingClientRect(); G.pop('+' + pts, r.left + r.width / 2, r.top, '#fde047');
+  } else {
+    wrong++; streak = 0; b.classList.add('no'); KQ3D.sfx('wrong');
+    document.querySelectorAll('.qm-o').forEach((x) => { if (+x.dataset.v === q.ans) x.classList.add('ok'); });
+  }
+  document.getElementById('qmS').textContent = streak >= 3 ? '🔥 Streak ' + streak + (streak >= 5 ? ' — bonus!' : '') : '';
+  const T = document.getElementById('qmT'), Rk = document.getElementById('qmR');
+  Rk.style.bottom = Math.min(T.clientHeight - 60, 6 + right * (T.clientHeight - 66) / 30) + 'px';
+  setTimeout(() => { if (G.state === 'play') next(); }, v === q.ans ? 350 : 900);
+}
+function step() {
+  if (G.state === 'pause' || G.state === 'count') return;
+  if (G.state !== 'play') { clearInterval(timer); return; }
+  timeLeft -= 0.1; const s = Math.max(0, Math.ceil(timeLeft));
+  document.getElementById('qmTi').style.width = Math.max(0, timeLeft / TIME * 100) + '%';
+  if (s !== tick) { tick = s; G.hudSet('time', s); if (s <= 5 && s > 0) KQ3D.sfx('tick'); }
+  if (timeLeft <= 0) { clearInterval(timer); G.over({ score, title: right >= 30 ? 'To the moon! 🌙' : 'Time’s up! ⏱️', lines: ['✅ ' + right + ' right', '❌ ' + wrong + ' wrong', mode.icon + ' ' + mode.name] }); }
+}
+reset(G.choice);
+</script>
+</body></html>

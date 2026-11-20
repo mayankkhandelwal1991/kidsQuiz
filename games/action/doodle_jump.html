@@ -1,124 +1,127 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Sky Hopper</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',system-ui,sans-serif;background:linear-gradient(135deg,#0f0c29,#1a1a3d);height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#fff}
-.wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:26px;box-shadow:0 15px 40px rgba(0,0,0,.4);padding:12px;max-width:400px;width:100%;display:flex;flex-direction:column;height:100%;max-height:800px;position:relative}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bar button{background:linear-gradient(135deg,#00d4ff,#7c3aed);color:#fff;border:none;border-radius:12px;padding:7px 13px;font-family:inherit;font-weight:700;cursor:pointer;font-size:12px}
-h1{font-size:18px;font-weight:800;background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sc{font-size:14px;font-weight:800;color:#00f5ff}
-.stage{flex:1;min-height:0;border-radius:14px;overflow:hidden}
-canvas{width:100%;height:100%;display:block}
-.overlay{position:absolute;inset:0;background:rgba(15,12,41,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;border-radius:26px;z-index:10}
-.overlay.show{display:flex}
-.newbtn{background:linear-gradient(135deg,#ff7a59,#ff4fa3);color:#fff;border:none;border-radius:16px;padding:11px 28px;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer}
-.hint{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.5);pointer-events:none}
-</style><link rel="stylesheet" href="../game-theme.css"></head><body>
-<div class="wrap">
-  <div class="bar">
-    <button onclick="location.href='../index.html'">← Games</button>
-    <h1>Sky Hopper</h1>
-    <div class="sc" id="score">0</div>
-  </div>
-  <div class="stage"><canvas id="cv"></canvas></div>
-  <div class="hint">Drag left/right to move • auto-jump on platforms</div>
-  <div class="overlay" id="overlay"><h2 style="background:linear-gradient(135deg,#00f5ff,#ff00e5);-webkit-background-clip:text;background-clip:text;color:transparent">You Fell!</h2><p id="finalScore" style="font-size:13px;color:#ccc"></p><button class="newbtn" onclick="init()">Play Again</button></div>
-</div>
+</head><body>
+<script src="../threed/kq3d.js?v=20261120j"></script>
 <script src="../ads.js"></script>
 <script>
-const cv=document.getElementById('cv'),cx=cv.getContext('2d');
-function fit(){ cv.width=cv.clientWidth*devicePixelRatio; cv.height=cv.clientHeight*devicePixelRatio; cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
-window.addEventListener('resize',fit);
-let W,H,player,platforms,score,over,camY,best=+(localStorage.getItem('hopperBest')||0),moveDir,touchX,raf,running=false;
-function init(){
-  fit(); W=cv.clientWidth; H=cv.clientHeight;
-  player={x:W/2,y:H-100,vy:-14,vx:0,r:16};
-  platforms=[]; camY=0; score=0; over=false; moveDir=0; touchX=null;
-  let y=H-40;
-  for(let i=0;i<14;i++){
-    platforms.push({x:20+Math.random()*(W-70),y:y,w:60,moving: Math.random()<0.3});
-    y -= 70+Math.random()*30;
-  }
-  document.getElementById('score').textContent=0;
-  document.getElementById('overlay').classList.remove('show');
-  if(!running){ running=true; raf=requestAnimationFrame(loop); }
-}
-cv.addEventListener('touchstart',e=>{ touchX=e.touches[0].clientX; });
-cv.addEventListener('touchmove',e=>{
-  e.preventDefault();
-  const dx=e.touches[0].clientX-touchX;
-  moveDir=dx;
-  touchX=e.touches[0].clientX;
-},{passive:false});
-cv.addEventListener('touchend',()=>{ moveDir=0; });
-document.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft')moveDir=-6; if(e.key==='ArrowRight')moveDir=6; });
-document.addEventListener('keyup',e=>{ if(e.key==='ArrowLeft'||e.key==='ArrowRight')moveDir=0; });
-cv.addEventListener('mousemove',e=>{
-  const r=cv.getBoundingClientRect();
-  const cx2=e.clientX-r.left;
-  moveDir=(cx2-player.x)*0.15;
+/* Sky Hopper — bounce up the clouds. Drag/arrows to steer (wraps around the edges).
+   Spring clouds 🍄 = super jump, crumbly clouds break, stars = +10. */
+const HOPPERS = [{ icon: '🐸', name: 'Froggy' }, { icon: '🐰', name: 'Bunny' }, { icon: '🐱', name: 'Kitty' }, { icon: '🐧', name: 'Pengy' }];
+const G = KQ3D.init({
+  id: 'doodle_jump', title: 'Sky Hopper', bestKey: 'hopperBest', music: true,
+  hero: ['🐸', '☁️', '⭐'], colors: ['#38bdf8', '#a855f7'],
+  how: [['👆', 'Drag or use ⬅️ ➡️ to steer — you bounce by yourself'], ['🍄', 'Mushroom clouds send you super high'], ['☁️', 'Grey clouds crumble after one bounce'], ['⭐', 'Collect stars for +10. Don’t fall!']],
+  scoreIcon: '⬆️', stars: [100, 300, 600],
+  pick: { label: 'Pick your hopper', options: HOPPERS },
+  buttons: [{ icon: '⬅️', label: 'Left', down: () => { keyDir = -1; }, up: () => { keyDir = 0; } }, { icon: '➡️', label: 'Right', down: () => { keyDir = 1; }, up: () => { keyDir = 0; } }],
+  onReset: (h) => reset(h)
 });
-function loop(){
-  if(!over) update();
-  draw();
-  if(running) raf=requestAnimationFrame(loop);
+const C = KQ3D.canvas(G.scene), ctx = C.ctx;
+let hop = G.choice || HOPPERS[0], px, py, vx, vy, camY, plats, stars, bits, topY, maxH, starPts, keyDir = 0, targetX = null, squash = 0, face = 1;
+const GRAV = 1500, JUMP = -820, SPRING = -1300, PS = 52;
+let lastX = 0;
+
+function reset(h) {
+  hop = h || HOPPERS[0]; px = C.w / 2; py = C.h - 220; vx = 0; vy = JUMP; camY = 0; plats = []; stars = []; bits = []; maxH = 0; starPts = 0;
+  topY = C.h - 160; lastX = C.w / 2 - 50; addPlat(lastX, topY, 'normal');
+  while (topY > -C.h) genNext();
 }
-function update(){
-  player.vx += (moveDir*0.6 - player.vx)*0.2;
-  player.x += player.vx;
-  if(player.x<10)player.x=W-10; if(player.x>W-10)player.x=10;
-  player.vy += 0.5;
-  player.y += player.vy;
-  if(player.vy>0){
-    platforms.forEach(p=>{
-      if(player.x>p.x-6 && player.x<p.x+p.w+6 && player.y+player.r>p.y && player.y+player.r<p.y+14+player.vy){
-        player.vy=-14;
+function addPlat(x, y, type) { plats.push({ x, y, w: 100, type, vx: type === 'move' ? (Math.random() < 0.5 ? 1 : -1) * (60 + Math.random() * 60) : 0, broken: 0 }); }
+function genNext() {
+  const h = maxH, lvl = Math.min(1, h / 4000);
+  topY -= 70 + Math.random() * (40 + lvl * 60);
+  const r = Math.random(); let type = 'normal';
+  if (r < 0.12 + lvl * 0.15) type = 'move'; else if (r < 0.2 + lvl * 0.2) type = 'crumb'; else if (r < 0.26 + lvl * 0.2) type = 'spring';
+  const x = Math.max(10, Math.min(C.w - 110, lastX + (Math.random() - 0.5) * 2 * Math.min(220, C.w)));
+  if (type !== 'crumb') lastX = x;
+  addPlat(x, topY, type);
+  if (type === 'crumb') { topY -= 40; addPlat(Math.random() * (C.w - 110), topY, 'normal'); }  // always a safe cloud nearby
+  if (Math.random() < 0.25) stars.push({ x: x + 50, y: topY - 50 - Math.random() * 30 });
+}
+let drag = null;
+G.scene.addEventListener('pointerdown', (e) => { if (G.state === 'play') { drag = true; targetX = e.clientX - C.cv.getBoundingClientRect().left; } });
+window.addEventListener('pointermove', (e) => { if (drag) targetX = e.clientX - C.cv.getBoundingClientRect().left; });
+window.addEventListener('pointerup', () => { drag = null; targetX = null; });
+document.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' || e.key === 'a') keyDir = -1; if (e.key === 'ArrowRight' || e.key === 'd') keyDir = 1; });
+document.addEventListener('keyup', (e) => { if (['ArrowLeft', 'ArrowRight', 'a', 'd'].includes(e.key)) keyDir = 0; });
+
+function cloud(p) {
+  const x = p.x, y = p.y - camY, w = p.w;
+  if (p.broken) { ctx.globalAlpha = Math.max(0, 1 - p.broken); }
+  const col = p.type === 'crumb' ? '#cbd5e1' : '#ffffff', sh = p.type === 'crumb' ? '#94a3b8' : '#bae6fd';
+  ctx.fillStyle = sh; KQ3D.roundRect(ctx, x, y + 6, w, 18, 9); ctx.fill();
+  ctx.fillStyle = col; KQ3D.roundRect(ctx, x, y, w, 18, 9); ctx.fill();
+  [[0.22, 12], [0.5, 16], [0.78, 11]].forEach(([fx, r]) => { ctx.beginPath(); ctx.arc(x + w * fx, y + 2, r, 0, 7); ctx.fill(); });
+  if (p.type === 'crumb') { ctx.strokeStyle = '#64748b'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x + w * 0.4, y); ctx.lineTo(x + w * 0.5, y + 10); ctx.lineTo(x + w * 0.45, y + 18); ctx.stroke(); }
+  if (p.type === 'move') { ctx.fillStyle = '#7dd3fc'; ctx.beginPath(); ctx.arc(x + 10, y + 9, 4, 0, 7); ctx.arc(x + w - 10, y + 9, 4, 0, 7); ctx.fill(); }
+  if (p.type === 'spring') KQ3D.drawPic(ctx, '🍄', x + w / 2, y - 12 + (p.boing > 0 ? 6 : 0), 34);
+  ctx.globalAlpha = 1;
+}
+function skyColor() {
+  const h = maxH, a = Math.min(1, h / 3000), b = Math.min(1, Math.max(0, (h - 3000) / 3000));
+  const mix = (c1, c2, t) => c1.map((v, i) => Math.round(v + (c2[i] - v) * t));
+  let top = mix([56, 189, 248], [251, 146, 60], a), bot = mix([224, 242, 254], [253, 230, 138], a);
+  top = mix(top, [15, 23, 42], b); bot = mix(bot, [67, 56, 202], b);
+  return ['rgb(' + top + ')', 'rgb(' + bot + ')', b];
+}
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.025, (now - last) / 1000); last = now;
+  const playing = G.state === 'play';
+  if (playing || G.state === 'menu') {
+    let ax = keyDir * 1;
+    if (targetX != null) ax = Math.max(-1, Math.min(1, (targetX - px) / 60));
+    if (G.state === 'menu') ax = Math.sin(now / 900);
+    vx += (ax * 470 - vx) * Math.min(1, dt * 8);
+    if (Math.abs(vx) > 20) face = vx > 0 ? 1 : -1;
+    px += vx * dt; if (px < -20) px = C.w + 20; if (px > C.w + 20) px = -20;
+    vy += GRAV * dt; py += vy * dt;
+    if (vy > 0) plats.forEach((p) => {
+      if (p.broken) return;
+      if (px > p.x - 14 && px < p.x + p.w + 14 && py + PS * 0.45 >= p.y && py + PS * 0.45 - vy * dt <= p.y + 8) {
+        py = p.y - PS * 0.45; squash = 0.15;
+        if (p.type === 'spring') { vy = SPRING; p.boing = 0.2; KQ3D.sfx('boing'); }
+        else { vy = JUMP; KQ3D.sfx('jump'); }
+        if (p.type === 'crumb') { p.broken = 0.01; KQ3D.sfx('drop'); }
       }
     });
-  }
-  if(player.y < H*0.4){
-    const dy=H*0.4-player.y;
-    player.y=H*0.4;
-    camY+=dy;
-    score=Math.max(score,Math.floor(camY/10));
-    document.getElementById('score').textContent=score;
-    platforms.forEach(p=>p.y+=dy);
-    platforms=platforms.filter(p=>p.y<H+20);
-    while(platforms.length<14){
-      const topY=Math.min(...platforms.map(p=>p.y));
-      platforms.push({x:20+Math.random()*(W-70),y:topY-(70+Math.random()*30),w:60,moving:Math.random()<0.3});
+    plats.forEach((p) => { if (p.vx) { p.x += p.vx * dt; if (p.x < 0 || p.x + p.w > C.w) p.vx *= -1; } if (p.broken) { p.broken += dt * 2; p.y += 300 * dt; } if (p.boing) p.boing -= dt; });
+    // camera follows upward only
+    const line = C.h * 0.42;
+    if (py - camY < line) camY = py - line;
+    const h = Math.max(0, Math.round((C.h - 220 - py) / 10));
+    if (h > maxH) { maxH = h; if (playing) G.score(maxH + starPts); }
+    while (topY > camY - 200) genNext();
+    plats = plats.filter((p) => p.y - camY < C.h + 50 && p.broken < 1);
+    stars = stars.filter((s) => {
+      if (Math.hypot(s.x - px, s.y - py) < 40) { if (playing) { starPts += 10; G.score(maxH + starPts); KQ3D.sfx('coin'); const r = C.cv.getBoundingClientRect(); G.pop('+10 ⭐', s.x + r.left, s.y - camY + r.top, '#fde047'); } return false; }
+      return s.y - camY < C.h + 40;
+    });
+    if (py - camY > C.h + 60) {
+      if (playing) { KQ3D.sfx('lose'); G.over({ score: maxH + starPts, title: 'Whoooops!', lines: ['⬆️ ' + maxH + ' m high', '⭐ ' + starPts / 10 + ' stars'] }); }
+      else reset(hop);
     }
+    squash -= dt;
   }
-  platforms.forEach(p=>{ if(p.moving){ p.x+=Math.sin(Date.now()/600+p.y)*1.2; p.x=Math.max(10,Math.min(W-70,p.x)); } });
-  if(player.y>H+30) endGame();
+  // draw
+  const [t, b, space] = skyColor();
+  const g = ctx.createLinearGradient(0, 0, 0, C.h); g.addColorStop(0, t); g.addColorStop(1, b); ctx.fillStyle = g; ctx.fillRect(0, 0, C.w, C.h);
+  if (space > 0) { ctx.globalAlpha = space; for (let i = 0; i < 50; i++) { ctx.fillStyle = '#fff'; ctx.fillRect((i * 137) % C.w, ((i * 91 - camY * 0.1) % C.h + C.h) % C.h, 2, 2); } ctx.globalAlpha = 1; KQ3D.drawPic(ctx, '🪐', C.w * 0.8, 160, 70 * space); }
+  // far clouds (parallax)
+  ctx.fillStyle = 'rgba(255,255,255,' + (0.35 * (1 - space)) + ')';
+  for (let i = 0; i < 6; i++) { const y = ((i * 170 - camY * 0.3) % (C.h + 200) + C.h + 200) % (C.h + 200) - 100, x = (i * 113) % C.w; ctx.beginPath(); ctx.arc(x, y, 34, 0, 7); ctx.arc(x + 36, y - 10, 28, 0, 7); ctx.arc(x + 70, y, 30, 0, 7); ctx.fill(); }
+  if (camY > -400) { ctx.fillStyle = '#4ade80'; ctx.fillRect(0, C.h - 80 - camY, C.w, 400); ['🌳', '🌻', '🏠', '🌳'].forEach((e, i) => KQ3D.drawPic(ctx, e, (i + 0.5) * C.w / 4, C.h - 100 - camY, 56)); }
+  plats.forEach(cloud);
+  stars.forEach((s) => KQ3D.drawPic(ctx, '⭐', s.x, s.y - camY + Math.sin(now / 250 + s.x) * 5, 30));
+  ctx.save(); ctx.translate(px, py - camY); ctx.scale(-face, 1);
+  const sq = squash > 0 ? 1 - squash * 1.5 : 1; ctx.scale(1 / sq, sq);
+  KQ3D.drawPic(ctx, hop.icon, 0, 0, PS, vy < -900 ? Math.sin(now / 60) * 0.4 : 0);
+  ctx.restore();
 }
-function draw(){
-  const grad=cx.createLinearGradient(0,0,0,H);
-  grad.addColorStop(0,'#1a1a3d');grad.addColorStop(1,'#0b0b1e');
-  cx.fillStyle=grad; cx.fillRect(0,0,W,H);
-  platforms.forEach(p=>{
-    cx.fillStyle=p.moving?'#ff9f43':'#38f9a1';
-    cx.beginPath();
-    if(cx.roundRect) cx.roundRect(p.x,p.y,p.w,12,6); else cx.rect(p.x,p.y,p.w,12);
-    cx.fill();
-  });
-  cx.beginPath(); cx.arc(player.x,player.y,player.r,0,Math.PI*2);
-  cx.fillStyle='#00f5ff'; cx.fill();
-  cx.fillStyle='#0b0b1e';
-  cx.beginPath(); cx.arc(player.x-5,player.y-3,2.5,0,Math.PI*2); cx.fill();
-  cx.beginPath(); cx.arc(player.x+5,player.y-3,2.5,0,Math.PI*2); cx.fill();
-}
-function endGame(){
-  over=true;
-  running=false;
-  if(window.KQFX)KQFX.play('blast');
-  if(score>best){best=score;localStorage.setItem('hopperBest',best);}
-  document.getElementById('finalScore').textContent='Height: '+score+'  •  Best: '+best;
-  document.getElementById('overlay').classList.add('show');
-  onGameComplete();
-}
-init();
-</script></body></html>
+reset(hop);
+requestAnimationFrame(frame);
+</script>
+</body></html>

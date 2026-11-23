@@ -160,7 +160,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
       <div class="hm-top">
         <div class="hm-logo"><img src="images/app-logo.png" alt="Kids Quiz logo"><div><b>Kids Quiz</b><small>LKG – Class 5</small></div></div>
         <div class="hm-actions">
-          <button type="button" class="hm-ibtn" onclick="showHistoryScreen()" aria-label="My history"><img src="images/emoji/1f4ca.svg" alt=""></button>
+          <button type="button" class="hm-ibtn" onclick="openMyStats()" aria-label="My stats"><img src="images/emoji/1f4ca.svg" alt=""></button>
           <button type="button" class="hm-ibtn hm-out" id="pfAuthBtn" onclick="switchUser()">Out</button>
         </div>
       </div>
@@ -580,6 +580,20 @@ function goToGames() { openSinglePlayer(); }
    HISTORY SCREEN
    ============================================ */
 let activeHistoryTab = 'recent';
+/* My stats = this player's own page on the leaderboard: everything saved in
+   Firebase (all quizzes, games, multiplayer, Olympiad, time played, visits) from
+   any device, not just this browser's local quiz history. Waits for sign-in to
+   settle so a Google user isn't shown as a guest. */
+function openMyStats() {
+  let went = false;
+  const go = () => {
+    if (went) return; went = true;
+    let me = '';
+    try { me = (window.KQ && KQ.user) ? KQ.user().key : ''; } catch (e) {}
+    window.location.href = 'leaderboard.html' + (me ? '?user=' + encodeURIComponent(me) : '');
+  };
+  if (window.KQ && KQ.ready) { KQ.ready.then(go, go); setTimeout(go, 4000); } else go();
+}
 function showHistoryScreen() {
   enterSubScreen('historyScreen');
   switchHistoryTab(activeHistoryTab);
@@ -1025,7 +1039,7 @@ getOrCreateUser(currentUser);
   const screen = params.get('screen');
   const cat = params.get('cat');
   if (screen === 'history') {
-    showHistoryScreen();
+    openMyStats();
     return;
   }
   if (cat && getCatInfo(cat)) {

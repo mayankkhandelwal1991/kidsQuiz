@@ -667,7 +667,12 @@
   let attemptsCache = {};
   function renderProfile() {
     const key = S.user;
-    const u = USERS.get(key) || { key, name: 'Player', photo: '' };
+    let u = USERS.get(key);
+    if (!u) {
+      // No saved scores yet: if it's me, still show my own name instead of "Player".
+      let meU = null; try { meU = window.KQ && KQ.user ? KQ.user() : null; } catch (e) {}
+      u = meU && meU.key === key ? { key, name: meU.name || 'Player', photo: meU.photo || '', guest: !!meU.isGuest, last: 0 } : { key, name: 'Player', photo: '' };
+    }
     const mine = ROWS.filter((r) => r.key === key);
     const count = (c) => mine.filter((r) => r.cat === c).length;
     const points = mine.filter((r) => !r.lower).reduce((s, r) => s + r.score, 0);

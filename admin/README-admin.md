@@ -86,3 +86,31 @@ Without this rule the league screen says "Leagues are not switched on yet".
 The complete rules (with the real admin e-mail) are in `admin/firebase-rules.json` on the
 server only — it is in `.gitignore`, so it never goes to the public GitHub repo.
 Old weeks can be deleted from the Firebase console any time.
+
+## Instagram from GitHub Pages (no PHP server) — Instagram Studio "browser mode"
+
+`admin/index.html` opened on **github.io** switches to browser mode automatically
+(or add `?mode=browser`). It talks to Instagram directly from the browser; photos and
+videos are put on a small **public media repo** that GitHub Pages serves, so Instagram
+can download them. After posting, the file is deleted again (checkbox).
+
+One-time setup:
+1. **Media repo:** GitHub → New repository → name `kq-social` → **Public** → tick
+   "Add a README file" → Create. Then repo **Settings → Pages** → Source: *Deploy from a
+   branch* → Branch `main` / `(root)` → Save. (Wait ~1 minute: Pages is on at
+   `https://<you>.github.io/kq-social/`.)
+2. **GitHub token:** GitHub → Settings → Developer settings → Personal access tokens →
+   **Fine-grained tokens** → Generate new token → Repository access: **Only select
+   repositories → kq-social** → Permissions → Repository permissions → **Contents: Read and
+   write** → Generate → copy (`github_pat_…`). It cannot touch the app's code repo.
+3. Open `https://<you>.github.io/kidsQuiz/admin/index.html`, sign in as admin. In
+   **3 · Publish to Instagram**: type a passphrase, open **🔐 Connection settings**, fill in
+   Instagram user ID, Instagram access token, GitHub token and `<you>/kq-social`, press
+   **Save (encrypted)**, then **Check connection**.
+4. Next time: type the passphrase → **Publish now**.
+
+Tokens are stored only in that browser, AES-GCM encrypted with the passphrase (never
+on GitHub). Use **Forget** to remove them. Instagram tokens expire (Facebook-login
+tokens: extend to 60 days in Meta's Access Token Debugger → "Extend Access Token").
+Videos up to 45 MB (GitHub API limit); photos are converted to JPEG and padded to an
+Instagram shape (4:5 … 1.91:1) automatically.

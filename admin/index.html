@@ -35,6 +35,8 @@
   canvas { width: 100%; max-width: 540px; height: auto; border-radius: 18px; box-shadow: 0 10px 30px rgba(30,27,75,.18); background: #fff; }
   .note { font-size: 13px; color: var(--muted); font-weight: 600; line-height: 1.35; }
   .status { padding: 8px 12px; border-radius: 12px; font-weight: 700; font-size: 14px; margin-top: 10px; background: #f1f5f9; }
+  .mode { font-size: 13px; font-weight: 800; color: var(--muted); margin: 2px 0 4px; }
+  .muted { color: var(--muted); font-weight: 600; }
   .status.good { background: #dcfce7; color: #166534; } .status.bad { background: #fee2e2; color: #991b1b; } .status.info { background: #e0f2fe; color: #075985; }
   .preview-own { max-width: 100%; border-radius: 14px; margin-top: 8px; display: none; }
 </style>
@@ -79,8 +81,20 @@
 
     <div class="card">
       <h2>3 · Publish to Instagram</h2>
-      <label>Admin password</label>
+      <div class="mode" id="modeLine"></div>
+      <label id="pwLbl">Admin password</label>
       <input type="password" id="pw" placeholder="from admin/config.php" autocomplete="current-password">
+      <!-- Browser mode (GitHub Pages, no PHP): settings saved encrypted in this browser only -->
+      <details id="bmBox" style="display:none;margin-top:8px">
+        <summary style="cursor:pointer;font-weight:800">🔐 Connection settings <span id="bmState" class="muted"></span></summary>
+        <label>Instagram user ID</label><input type="text" id="bmIg" placeholder="1784…" autocomplete="off">
+        <label>Instagram access token</label><input type="password" id="bmTok" placeholder="EAA… or IGAA…" autocomplete="off">
+        <label>GitHub token <span class="muted">(fine-grained, only the media repo, Contents: read &amp; write)</span></label><input type="password" id="bmGh" placeholder="github_pat_…" autocomplete="off">
+        <label>Media repo <span class="muted">(public, GitHub Pages on)</span></label><input type="text" id="bmRepo" placeholder="mayankkhandelwal1991/kq-social" autocomplete="off">
+        <label style="display:flex;gap:8px;align-items:center;font-weight:700;color:var(--ink)"><input type="checkbox" id="bmDel" checked style="width:auto"> Delete the file from GitHub after posting</label>
+        <div class="row"><button class="btn gray" id="bmSave">💾 Save (encrypted)</button><button class="btn gray" id="bmForget">🗑 Forget</button></div>
+        <p class="muted" style="font-size:12px;margin:6px 0 0">Saved only in this browser, encrypted with the passphrase above. Never stored on GitHub. Setup: admin/README-admin.md → "Instagram from GitHub Pages".</p>
+      </details>
       <div class="row"><button class="btn gray" id="checkBtn">🔌 Check connection</button><button class="btn ok" id="publishBtn">📤 Publish now</button></div>
       <div class="status info" id="status">Publishing needs the PHP server with admin/config.php. You can always download the image and post it from the Instagram app.</div>
     </div>
@@ -249,12 +263,158 @@ $('ownFile').onchange = () => {
 function setStatus(t, k) { const s = $('status'); s.textContent = t; s.className = 'status ' + (k || 'info'); }
 try { $('pw').value = sessionStorage.getItem('kq_admin_pw') || ''; } catch (e) {}
 async function api(action, opts) {
+  if (BROWSER) return bapi(action, opts);
   const pw = $('pw').value; try { sessionStorage.setItem('kq_admin_pw', pw); } catch (e) {}
   opts = opts || {}; opts.headers = Object.assign({ 'X-Admin-Key': pw }, opts.headers || {});
   let r; try { r = await fetch('api.php?action=' + action + (opts.qs || ''), opts); } catch (e) { throw new Error('Cannot reach api.php — open this page from the PHP server (not GitHub Pages).'); }
   const t = await r.text(); let j; try { j = JSON.parse(t); } catch (e) { throw new Error('api.php did not answer (is PHP running here?).'); }
   if (!j.ok) throw new Error(j.error || 'Failed');
   return j;
+}
+
+/* ================================================================ BROWSER MODE
+   For GitHub Pages (no PHP). Same actions as api.php, done in the browser:
+     upload  -> the file goes to the public media repo (GitHub API), served by
+                GitHub Pages at https://<owner>.github.io/<repo>/social/<file>
+     publish -> Instagram Graph API: create the media container from that URL
+     check   -> container status; when FINISHED: media_publish, then delete the file
+   Tokens live only in this browser, AES-GCM encrypted with the passphrase. */
+const BROWSER = /\.github\.io$/i.test(location.hostname) || /[?&]mode=browser\b/.test(location.search);
+const VAULT_KEY = 'kq_ig_vault';
+let CFG = null;                                // decrypted settings (memory only)
+const b64 = (buf) => btoa(String.fromCharCode.apply(null, new Uint8Array(buf)));
+const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+async function vaultKey(pass, salt) {
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+async function vaultSave(obj, pass) {
+  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await vaultKey(pass, salt), new TextEncoder().encode(JSON.stringify(obj)));
+  localStorage.setItem(VAULT_KEY, JSON.stringify({ s: b64(salt), i: b64(iv), c: b64(ct) }));
+}
+async function vaultOpen(pass) {
+  const v = JSON.parse(localStorage.getItem(VAULT_KEY) || 'null'); if (!v) return null;
+  try { const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(v.i) }, await vaultKey(pass, unb64(v.s)), unb64(v.c)); return JSON.parse(new TextDecoder().decode(pt)); }
+  catch (e) { throw new Error('Wrong passphrase.'); }
+}
+function bmFields() {
+  return { ig: $('bmIg').value.trim(), tok: $('bmTok').value.trim(), gh: $('bmGh').value.trim(), repo: $('bmRepo').value.trim().replace(/^https?:\/\/github\.com\//, '').replace(/\/+$/, ''), del: $('bmDel').checked };
+}
+function bmFill(c) { $('bmIg').value = c.ig || ''; $('bmTok').value = c.tok || ''; $('bmGh').value = c.gh || ''; $('bmRepo').value = c.repo || ''; $('bmDel').checked = c.del !== false; }
+async function bmConfig() {
+  if (CFG) return CFG;
+  const typed = bmFields();
+  if (typed.ig && typed.tok && typed.gh && typed.repo) return (CFG = typed);
+  if (!localStorage.getItem(VAULT_KEY)) { $('bmBox').open = true; throw new Error('Fill in the connection settings first (and Save them).'); }
+  if (!$('pw').value) throw new Error('Type your passphrase to unlock the saved settings.');
+  CFG = await vaultOpen($('pw').value); bmFill(CFG); $('bmState').textContent = '· unlocked'; return CFG;
+}
+const GV = 'v21.0';
+function graphBase(tok) { return /^IG/.test(tok) ? 'https://graph.instagram.com' : 'https://graph.facebook.com'; }
+async function graph(method, path, params) {
+  const c = await bmConfig(), u = graphBase(c.tok) + '/' + GV + '/' + path;
+  const q = new URLSearchParams(Object.assign({}, params || {}, { access_token: c.tok }));
+  const r = method === 'GET' ? await fetch(u + '?' + q) : await fetch(u, { method, body: q });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) throw new Error('Instagram: ' + ((j.error && (j.error.error_user_msg || j.error.message)) || 'HTTP ' + r.status));
+  return j;
+}
+async function gh(method, path, body) {
+  const c = await bmConfig();
+  const r = await fetch('https://api.github.com/repos/' + c.repo + (path ? '/' + path : ''), { method, headers: { Authorization: 'Bearer ' + c.gh, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }, body: body ? JSON.stringify(body) : undefined });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error('GitHub: ' + (j.message || 'HTTP ' + r.status) + (r.status === 404 ? ' (check the media repo name and that the token can access it)' : ''));
+  return j;
+}
+function pagesUrl(repo, file) {
+  const [owner, name] = repo.split('/');
+  const base = name.toLowerCase() === (owner + '.github.io').toLowerCase() ? 'https://' + name + '/' : 'https://' + owner.toLowerCase() + '.github.io/' + name + '/';
+  return base + 'social/' + encodeURIComponent(file);
+}
+const fileB64 = (blob) => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1]); fr.onerror = rej; fr.readAsDataURL(blob); });
+// Feed photos must be JPEG with an aspect ratio between 4:5 and 1.91:1: pad if needed.
+async function toJpeg(blob) {
+  const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error('Could not read the image.')); i.src = URL.createObjectURL(blob); });
+  let w = im.naturalWidth, h = im.naturalHeight, W = w, H = h;
+  if (w / h < 0.8) W = Math.ceil(h * 0.8); else if (w / h > 1.91) H = Math.ceil(w / 1.91);
+  const k = Math.min(1, 1440 / W), cv = document.createElement('canvas');
+  cv.width = Math.round(W * k); cv.height = Math.round(H * k);
+  const x = cv.getContext('2d'); x.fillStyle = '#ffffff'; x.fillRect(0, 0, cv.width, cv.height);
+  x.drawImage(im, Math.round((W - w) / 2 * k), Math.round((H - h) / 2 * k), Math.round(w * k), Math.round(h * k));
+  return new Promise((res) => cv.toBlob(res, 'image/jpeg', 0.92));
+}
+const PENDING = {};                             // container id -> { file, sha }
+async function bapi(action, opts) {
+  opts = opts || {};
+  if (action === 'status') {
+    const c = await bmConfig();
+    const acct = await graph('GET', c.ig, { fields: 'username,name,followers_count,media_count' });
+    await gh('GET', '');                       // repo reachable with this token
+    return { ok: true, instagram: true, publicMedia: true, account: acct };
+  }
+  if (action === 'upload') {
+    const c = await bmConfig(); let f = opts.body.get('file');
+    const isVid = /^video\//.test(f.type);
+    if (!isVid) { setStatus('Preparing the photo (JPEG)…', 'info'); f = await toJpeg(f); }
+    if (f.size > 45 * 1024 * 1024) throw new Error('File is larger than 45 MB — make the video shorter or smaller.');
+    const ext = isVid ? (/quicktime/.test(f.type) ? 'mov' : 'mp4') : 'jpg';
+    const d = new Date(), pad = (n) => String(n).padStart(2, '0');
+    const name = d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds()) + '-' + Math.random().toString(36).slice(2, 8) + '.' + ext;
+    setStatus('Uploading to GitHub (' + Math.round(f.size / 1024) + ' KB)…', 'info');
+    const put = await gh('PUT', 'contents/social/' + name, { message: 'Instagram media ' + name, content: await fileB64(f) });
+    const url = pagesUrl(c.repo, name);
+    for (let k = 0; ; k++) {                    // GitHub Pages needs ~30–90 s to publish the file
+      try { const r = await fetch(url + '?t=' + Date.now(), { method: 'HEAD', cache: 'no-store' }); if (r.ok) break; } catch (e) {}
+      if (k > 48) throw new Error('GitHub Pages did not publish the file in 4 minutes. Is Pages turned on for ' + c.repo + '?');
+      setStatus('Waiting for GitHub Pages to publish the file… (' + (k + 1) * 5 + ' s)', 'info');
+      await new Promise((r) => setTimeout(r, 5000));
+    }
+    return { ok: true, file: name, kind: isVid ? 'reel' : 'photo', publicUrl: url, sha: put.content && put.content.sha };
+  }
+  if (action === 'publish') {
+    const c = await bmConfig(), inp = JSON.parse(opts.body), url = pagesUrl(c.repo, inp.file), cap = String(inp.caption || '').slice(0, 2200);
+    const res = inp.kind === 'reel'
+      ? await graph('POST', c.ig + '/media', { media_type: 'REELS', video_url: url, caption: cap, share_to_feed: 'true' })
+      : await graph('POST', c.ig + '/media', { image_url: url, caption: cap });
+    PENDING[res.id] = { file: inp.file, sha: LAST_UP && LAST_UP.file === inp.file ? LAST_UP.sha : null };
+    return { ok: true, containerId: String(res.id) };
+  }
+  if (action === 'check') {
+    const c = await bmConfig(), id = decodeURIComponent((opts.qs || '').replace(/^.*id=/, ''));
+    const st = await graph('GET', id, { fields: 'status_code,status' }), code = st.status_code || 'IN_PROGRESS';
+    if (code === 'FINISHED') {
+      const pub = await graph('POST', c.ig + '/media_publish', { creation_id: id });
+      let link = ''; try { link = (await graph('GET', pub.id, { fields: 'permalink' })).permalink || ''; } catch (e) {}
+      const p = PENDING[id];
+      if (p && p.sha && c.del) { try { await gh('DELETE', 'contents/social/' + p.file, { message: 'Posted on Instagram: ' + p.file, sha: p.sha }); } catch (e) {} }
+      delete PENDING[id];
+      return { ok: true, status: 'published', permalink: link };
+    }
+    if (code === 'ERROR' || code === 'EXPIRED') throw new Error('Instagram could not process it: ' + (st.status || code));
+    return { ok: true, status: 'processing' };
+  }
+  throw new Error('Unknown action.');
+}
+let LAST_UP = null;
+if (BROWSER) {
+  $('modeLine').textContent = '🌐 Browser mode (GitHub Pages) — no server needed';
+  $('pwLbl').textContent = 'Passphrase (unlocks your saved settings)';
+  $('pw').placeholder = 'your own passphrase'; $('pw').value = ''; $('pw').autocomplete = 'off';
+  $('bmBox').style.display = '';
+  const saved = !!localStorage.getItem(VAULT_KEY);
+  $('bmState').textContent = saved ? '· saved (locked)' : '· not set up yet';
+  if (!saved) { $('bmBox').open = true; $('bmRepo').value = 'mayankkhandelwal1991/kq-social'; }
+  setStatus(saved ? 'Type your passphrase, then Check connection or Publish.' : 'First time: fill in the connection settings, choose a passphrase above and press Save.', 'info');
+  $('bmSave').onclick = async () => {
+    const c = bmFields(), pass = $('pw').value;
+    if (!c.ig || !c.tok || !c.gh || !c.repo || !/^[^/]+\/[^/]+$/.test(c.repo)) return setStatus('Fill in all four settings (repo as owner/name).', 'bad');
+    if (pass.length < 6) return setStatus('Choose a passphrase of at least 6 characters in the box above.', 'bad');
+    try { await vaultSave(c, pass); CFG = c; $('bmState').textContent = '· saved'; setStatus('Saved (encrypted) ✅ — now press Check connection.', 'good'); } catch (e) { setStatus(e.message, 'bad'); }
+  };
+  $('bmForget').onclick = () => { if (!confirm('Remove the saved Instagram and GitHub tokens from this browser?')) return; localStorage.removeItem(VAULT_KEY); CFG = null; bmFill({ repo: 'mayankkhandelwal1991/kq-social' }); $('bmState').textContent = '· not set up yet'; setStatus('Forgotten.', 'info'); };
+} else {
+  $('modeLine').textContent = '🖥️ Server mode (PHP · admin/config.php)';
 }
 $('checkBtn').onclick = async () => {
   try {
@@ -271,7 +431,7 @@ $('publishBtn').onclick = async () => {
     const fd = new FormData();
     if (ownFile) fd.append('file', ownFile);
     else fd.append('file', await new Promise((res) => $('cv').toBlob(res, 'image/png')), 'post.png');
-    const up = await api('upload', { method: 'POST', body: fd });
+    const up = await api('upload', { method: 'POST', body: fd }); LAST_UP = up;
     setStatus('Sending to Instagram…', 'info');
     const pub = await api('publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ file: up.file, kind: up.kind, caption: $('caption').value }) });
     for (let k = 0; k < 60; k++) {

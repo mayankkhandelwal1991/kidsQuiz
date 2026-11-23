@@ -11,9 +11,9 @@
       "id": 1,
       "question": "Pick the right choice: In a class, 15 play cricket, 13 play football, 7 play both. How many play only cricket?",
       "options": [
-        "8",
         "7",
         "15",
+        "8",
         "10"
       ],
       "section": "Logical Reasoning",
@@ -23,10 +23,10 @@
       "id": 2,
       "question": "Identify the correct statement: Which does not belong to the group?",
       "options": [
-        "Rhombus",
         "Rectangle",
-        "Square",
-        "Circle"
+        "Circle",
+        "Rhombus",
+        "Square"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -35,10 +35,10 @@
       "id": 3,
       "question": "A is taller than B but shorter than C. D is shorter than B. Who is tallest?",
       "options": [
-        "C",
-        "A",
+        "D",
         "B",
-        "D"
+        "C",
+        "A"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -48,9 +48,9 @@
       "question": "Choose the correct option: If South-East becomes North, what does North-East become?",
       "options": [
         "North-West",
-        "South",
+        "East",
         "West",
-        "East"
+        "South"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -59,10 +59,10 @@
       "id": 5,
       "question": "Select the best answer: How many distinct 3-digit numbers can be formed using the digits 2, 4 and 8 without repetition?",
       "options": [
-        "6",
-        "3",
         "9",
-        "1"
+        "6",
+        "1",
+        "3"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -72,9 +72,9 @@
       "question": "Pick the right choice: If the mirror is placed vertically, the mirror image of the time 3:40 appears closest to:",
       "options": [
         "9:40",
-        "2:20",
+        "4:30",
         "8:20",
-        "4:30"
+        "2:20"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -85,8 +85,8 @@
       "options": [
         "82",
         "72",
-        "90",
-        "81"
+        "81",
+        "90"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -95,10 +95,10 @@
       "id": 8,
       "question": "If + means ×, × means −, − means ÷ and ÷ means +, then value of 8 + 4 − 2 × 3 ÷ 1 is:",
       "options": [
-        "14",
-        "12",
         "16",
-        "10"
+        "14",
+        "10",
+        "12"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -119,10 +119,10 @@
       "id": 10,
       "question": "Select the best answer: Find the odd one out: 2, 5, 10, 17, 26, 37, 50, 64",
       "options": [
-        "64",
+        "26",
         "37",
-        "50",
-        "26"
+        "64",
+        "50"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -133,8 +133,8 @@
       "options": [
         "31st",
         "29th",
-        "30th",
-        "28th"
+        "28th",
+        "30th"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -144,9 +144,9 @@
       "question": "Identify the correct statement: If the day before yesterday was Thursday, what day will it be the day after tomorrow?",
       "options": [
         "Monday",
-        "Tuesday",
         "Sunday",
-        "Saturday"
+        "Saturday",
+        "Tuesday"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -156,9 +156,9 @@
       "question": "Find the next term: 6, 8, 12, 18, 26, ?",
       "options": [
         "38",
-        "34",
+        "30",
         "36",
-        "30"
+        "34"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -167,10 +167,10 @@
       "id": 14,
       "question": "Choose the correct option: If PAPER is coded as QBQFS, how is PEN coded?",
       "options": [
+        "QFP",
         "QFO",
         "QDO",
-        "OEM",
-        "QFP"
+        "OEM"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -179,10 +179,10 @@
       "id": 15,
       "question": "Select the best answer: If ‘+’ means division, ‘−’ means multiplication, ‘×’ means subtraction and ‘÷’ means addition, then 12 − 3 + 6 × 2 ÷ 4 = ?",
       "options": [
-        "10",
-        "6",
         "8",
-        "4"
+        "4",
+        "10",
+        "6"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -191,8 +191,8 @@
       "id": 16,
       "question": "Pick the right choice: Which of the following is an irrational number?",
       "options": [
-        "√2",
         "0.25",
+        "√2",
         "4/9",
         "√9"
       ],
@@ -203,10 +203,10 @@
       "id": 17,
       "question": "Identify the correct statement: Value of (√(50))² ÷ 2 is:",
       "options": [
-        "25",
-        "5",
         "50",
-        "27"
+        "27",
+        "25",
+        "5"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -216,9 +216,9 @@
       "question": "Between which two integers does √50 lie?",
       "options": [
         "7 and 8",
+        "5 and 6",
         "6 and 7",
-        "8 and 9",
-        "5 and 6"
+        "8 and 9"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -227,10 +227,10 @@
       "id": 19,
       "question": "Choose the correct option: Degree of the polynomial 5x³ − 2x² + 7 is:",
       "options": [
-        "3",
-        "1",
+        "0",
         "2",
-        "0"
+        "1",
+        "3"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -239,9 +239,9 @@
       "id": 20,
       "question": "Select the best answer: If p(x) = x² − 5x + 6, then p(2) =",
       "options": [
+        "4",
         "0",
         "2",
-        "4",
         "−2"
       ],
       "section": "Mathematical Reasoning",
@@ -251,8 +251,8 @@
       "id": 21,
       "question": "Pick the right choice: Zeroes of x² − 5x + 6 are:",
       "options": [
-        "2 and 3",
         "−2 and −3",
+        "2 and 3",
         "1 and 6",
         "0 and 5"
       ],
@@ -263,10 +263,10 @@
       "id": 22,
       "question": "Identify the correct statement: (x + 5)(x + 6) expanded is:",
       "options": [
+        "x² + 11x − 30",
         "x² − 11x + 30",
         "x² + 30x + 11",
-        "x² + 11x + 30",
-        "x² + 11x − 30"
+        "x² + 11x + 30"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -275,9 +275,9 @@
       "id": 23,
       "question": "The point (6, 0) lies on the:",
       "options": [
-        "x-axis",
         "origin only",
         "y-axis",
+        "x-axis",
         "line x = y only always"
       ],
       "section": "Mathematical Reasoning",
@@ -288,9 +288,9 @@
       "question": "Choose the correct option: Abscissa of the point (5, −3) is:",
       "options": [
         "0",
+        "−5",
         "−3",
-        "5",
-        "−5"
+        "5"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -299,10 +299,10 @@
       "id": 25,
       "question": "Select the best answer: Distance of point (7, 0) from the origin is:",
       "options": [
-        "7",
-        "8",
+        "14",
         "0",
-        "14"
+        "8",
+        "7"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -311,10 +311,10 @@
       "id": 26,
       "question": "Pick the right choice: x = 2, y = 3 is a solution of:",
       "options": [
-        "2x + y = 3",
         "x − y = 5",
+        "x + 2y = 3",
         "x + y = 5",
-        "x + 2y = 3"
+        "2x + y = 3"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -324,8 +324,8 @@
       "question": "Identify the correct statement: The graph of the linear equation 2x + 3y = 6 cuts the y-axis at:",
       "options": [
         "(0, 2)",
-        "(3, 0)",
         "(0, 3)",
+        "(3, 0)",
         "(2, 0)"
       ],
       "section": "Mathematical Reasoning",
@@ -335,9 +335,9 @@
       "id": 28,
       "question": "The sum of the angles of a triangle is:",
       "options": [
+        "90°",
         "180°",
         "360°",
-        "90°",
         "270°"
       ],
       "section": "Mathematical Reasoning",
@@ -348,9 +348,9 @@
       "question": "Choose the correct option: If two lines intersect, the vertically opposite angles are:",
       "options": [
         "Equal",
-        "Complementary",
+        "Zero",
         "Supplementary always and unequal",
-        "Zero"
+        "Complementary"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -359,10 +359,10 @@
       "id": 30,
       "question": "Select the best answer: In ΔABC, if ∠A = 50° and ∠B = 60°, then ∠C =",
       "options": [
-        "70°",
-        "60°",
+        "50°",
         "80°",
-        "50°"
+        "60°",
+        "70°"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -371,10 +371,10 @@
       "id": 31,
       "question": "Pick the right choice: A triangle with sides 3 cm, 4 cm, 5 cm is:",
       "options": [
-        "Equilateral",
-        "Obtuse-angled",
         "Right-angled",
-        "Isosceles only non-right"
+        "Isosceles only non-right",
+        "Obtuse-angled",
+        "Equilateral"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -384,9 +384,9 @@
       "question": "Identify the correct statement: The sum of interior angles of a quadrilateral is:",
       "options": [
         "360°",
+        "90°",
         "540°",
-        "180°",
-        "90°"
+        "180°"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -395,10 +395,10 @@
       "id": 33,
       "question": "Area of a parallelogram with base 9 cm and height 5 cm is:",
       "options": [
-        "18 cm²",
         "14 cm²",
-        "45 cm²",
-        "25 cm²"
+        "25 cm²",
+        "18 cm²",
+        "45 cm²"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -408,8 +408,8 @@
       "question": "Choose the correct option: Area of a triangle with sides 5 cm, 5 cm and 6 cm (Heron’s formula) is:",
       "options": [
         "12 cm²",
-        "18 cm²",
         "6 cm²",
+        "18 cm²",
         "24 cm²"
       ],
       "section": "Mathematical Reasoning",
@@ -419,10 +419,10 @@
       "id": 35,
       "question": "Select the best answer: Curved surface area of a right circular cylinder of radius 7 cm and height 6 cm is (use π = 22/7):",
       "options": [
-        "84 cm²",
+        "42 cm²",
         "132 cm²",
         "264 cm²",
-        "42 cm²"
+        "84 cm²"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -431,10 +431,10 @@
       "id": 36,
       "question": "Pick the right choice: If (x − 2) is a factor of x³ − 3x² + ax − 10 and remainder theorem / factor conditions hold with another consistent root pattern: given p(2)=0 for p(x)=x³−3x²+ax−10, find a.",
       "options": [
-        "7",
+        "2",
         "5",
         "3",
-        "2"
+        "7"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -443,9 +443,9 @@
       "id": 37,
       "question": "Identify the correct statement: Solve: x + y = 8 and x − y = 4. The value of x is:",
       "options": [
-        "8",
-        "2",
         "6",
+        "2",
+        "8",
         "4"
       ],
       "section": "Achievers Section",
@@ -455,10 +455,10 @@
       "id": 38,
       "question": "In a circle of radius 7 cm, length of an arc subtending 90° at the centre is (π=22/7):",
       "options": [
-        "11 cm",
         "22 cm",
         "7 cm",
-        "14 cm"
+        "14 cm",
+        "11 cm"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -467,9 +467,9 @@
       "id": 39,
       "question": "Choose the correct option: Volume of a right circular cone with radius 7 cm and height 24 cm is (π = 22/7):",
       "options": [
+        "1056 cm³",
         "1232 cm³",
         "1540 cm³",
-        "1056 cm³",
         "616 cm³"
       ],
       "section": "Achievers Section",
@@ -479,10 +479,10 @@
       "id": 40,
       "question": "Select the best answer: Median of 3, 5, 7, 9, 11 is:",
       "options": [
-        "7",
-        "5",
         "9",
-        "8"
+        "7",
+        "8",
+        "5"
       ],
       "section": "Achievers Section",
       "marks": 3

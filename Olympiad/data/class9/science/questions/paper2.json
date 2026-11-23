@@ -11,10 +11,10 @@
       "id": 1,
       "question": "Select the best answer: A is mother of B. B is sister of C. How is C related to A?",
       "options": [
+        "Nephew only always",
         "Grandfather",
         "Uncle",
-        "Child of A",
-        "Nephew only always"
+        "Child of A"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -23,8 +23,8 @@
       "id": 2,
       "question": "Pick the right choice: Series: Z, X, V, T, ?",
       "options": [
-        "R",
         "S",
+        "R",
         "Q",
         "P"
       ],
@@ -47,10 +47,10 @@
       "id": 4,
       "question": "Mirror of 15:20 looks closest to:",
       "options": [
-        "8:40",
-        "4:40",
         "9:20",
-        "3:20"
+        "3:20",
+        "8:40",
+        "4:40"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -60,9 +60,9 @@
       "question": "Choose the correct option: Odd one: RBC, WBC, Platelet, Neuron (blood cell group)",
       "options": [
         "Neuron (blood cell group)",
-        "WBC",
         "RBC",
-        "Platelet"
+        "Platelet",
+        "WBC"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -71,9 +71,9 @@
       "id": 6,
       "question": "Select the best answer: Next in pattern: △, □, ⬠, ⬡, ?",
       "options": [
+        "Heptagon",
         "Triangle again",
         "Circle",
-        "Heptagon",
         "Line"
       ],
       "section": "Logical Reasoning",
@@ -95,9 +95,9 @@
       "id": 8,
       "question": "Identify the correct statement: Which diagram best shows: metals, solids, gold (all gold are metals and solids)",
       "options": [
-        "Only solids ⊂ gold",
         "Disjoint circles",
         "Gold ⊂ Metals ⊂ Solids (approx)",
+        "Only solids ⊂ gold",
         "Metals ∩ gold empty"
       ],
       "section": "Logical Reasoning",
@@ -109,8 +109,8 @@
       "options": [
         "Moon",
         "Mercury",
-        "Venus",
-        "Mars"
+        "Mars",
+        "Venus"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -119,10 +119,10 @@
       "id": 10,
       "question": "Choose the correct option: Complete: 2, 3, 5, 7, 11, ?",
       "options": [
-        "14",
         "12",
         "13",
-        "15"
+        "15",
+        "14"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -131,9 +131,9 @@
       "id": 11,
       "question": "Select the best answer: Atomicity of oxygen molecule O₂ is:",
       "options": [
-        "2",
         "1",
         "3",
+        "2",
         "8"
       ],
       "section": "Science",
@@ -143,10 +143,10 @@
       "id": 12,
       "question": "Pick the right choice: One mole of atoms contains how many atoms (Avogadro)?",
       "options": [
-        "6.022 × 10²³",
+        "10²³",
         "3.011 × 10²³",
         "6.022 × 10²²",
-        "10²³"
+        "6.022 × 10²³"
       ],
       "section": "Science",
       "marks": 1
@@ -155,8 +155,8 @@
       "id": 13,
       "question": "Identify the correct statement: Neutron was discovered by:",
       "options": [
-        "Chadwick",
         "Thomson",
+        "Chadwick",
         "Rutherford",
         "Goldstein"
       ],
@@ -167,10 +167,10 @@
       "id": 14,
       "question": "Maximum electrons in L shell:",
       "options": [
-        "8",
-        "18",
+        "32",
         "2",
-        "32"
+        "18",
+        "8"
       ],
       "section": "Science",
       "marks": 1
@@ -179,10 +179,10 @@
       "id": 15,
       "question": "Choose the correct option: Ribosomes help in:",
       "options": [
-        "Protein synthesis",
-        "Photosynthesis only",
         "Lipid storage only",
-        "DNA replication exclusively"
+        "DNA replication exclusively",
+        "Protein synthesis",
+        "Photosynthesis only"
       ],
       "section": "Science",
       "marks": 1
@@ -191,10 +191,10 @@
       "id": 16,
       "question": "Select the best answer: Xylem is responsible for transport of:",
       "options": [
-        "Water and minerals",
         "Hormones only",
+        "Oxygen only",
         "Food only",
-        "Oxygen only"
+        "Water and minerals"
       ],
       "section": "Science",
       "marks": 1
@@ -204,9 +204,9 @@
       "question": "Pick the right choice: Cardiac muscle is found in:",
       "options": [
         "Stomach only",
-        "Biceps only",
         "Heart",
-        "Skin only"
+        "Skin only",
+        "Biceps only"
       ],
       "section": "Science",
       "marks": 1
@@ -215,10 +215,10 @@
       "id": 18,
       "question": "Identify the correct statement: Mammals are characterised by:",
       "options": [
-        "Mammary glands",
         "Scales only always",
         "Feathers",
-        "Three-chambered heart only always"
+        "Three-chambered heart only always",
+        "Mammary glands"
       ],
       "section": "Science",
       "marks": 1
@@ -227,10 +227,10 @@
       "id": 19,
       "question": "A body moving with uniform velocity has:",
       "options": [
-        "Increasing speed",
-        "Constant non-zero acceleration",
         "Zero acceleration",
-        "Infinite force"
+        "Infinite force",
+        "Increasing speed",
+        "Constant non-zero acceleration"
       ],
       "section": "Science",
       "marks": 1
@@ -239,10 +239,10 @@
       "id": 20,
       "question": "Choose the correct option: SI unit of force is:",
       "options": [
+        "watt",
         "newton (N)",
-        "joule",
         "pascal",
-        "watt"
+        "joule"
       ],
       "section": "Science",
       "marks": 1
@@ -251,10 +251,10 @@
       "id": 21,
       "question": "Select the best answer: Weight of a body is:",
       "options": [
+        "Momentum",
         "Volume × density only without g",
         "Mass only",
-        "Mass × g",
-        "Momentum"
+        "Mass × g"
       ],
       "section": "Science",
       "marks": 1
@@ -263,10 +263,10 @@
       "id": 22,
       "question": "Pick the right choice: Kinetic energy equals:",
       "options": [
+        "Fd only always as KE",
         "(1/2)mv²",
         "mv",
-        "mgh only always",
-        "Fd only always as KE"
+        "mgh only always"
       ],
       "section": "Science",
       "marks": 1
@@ -275,10 +275,10 @@
       "id": 23,
       "question": "Identify the correct statement: Frequency determines:",
       "options": [
-        "Pitch",
-        "Quality only always",
         "Loudness only",
-        "Speed in vacuum"
+        "Speed in vacuum",
+        "Quality only always",
+        "Pitch"
       ],
       "section": "Science",
       "marks": 1
@@ -287,9 +287,9 @@
       "id": 24,
       "question": "Ozone layer protects us from:",
       "options": [
-        "UV radiation",
         "Infrared only",
         "Sound",
+        "UV radiation",
         "Gravity"
       ],
       "section": "Science",
@@ -300,9 +300,9 @@
       "question": "Choose the correct option: Hybridisation in plants is used to:",
       "options": [
         "Improve crop varieties",
+        "Remove chlorophyll",
         "Stop photosynthesis",
-        "Increase soil erosion",
-        "Remove chlorophyll"
+        "Increase soil erosion"
       ],
       "section": "Science",
       "marks": 1
@@ -312,9 +312,9 @@
       "question": "Select the best answer: Chlorophyll is essential for:",
       "options": [
         "Transpiration only",
-        "Respiration only",
         "Photosynthesis",
-        "Nitrogen fixation only"
+        "Nitrogen fixation only",
+        "Respiration only"
       ],
       "section": "Science",
       "marks": 1
@@ -324,8 +324,8 @@
       "question": "Pick the right choice: Dry ice is:",
       "options": [
         "Solid CO₂",
-        "Solid N₂",
         "Solid water",
+        "Solid N₂",
         "Solid O₂"
       ],
       "section": "Science",
@@ -336,9 +336,9 @@
       "question": "Identify the correct statement: A solution is a:",
       "options": [
         "Compound only",
+        "Element only",
         "Heterogeneous mixture always",
-        "Homogeneous mixture",
-        "Element only"
+        "Homogeneous mixture"
       ],
       "section": "Science",
       "marks": 1
@@ -347,9 +347,9 @@
       "id": 29,
       "question": "Alloy is an example of:",
       "options": [
-        "Mixture (solid solution often)",
-        "Compound only always",
         "Element",
+        "Compound only always",
+        "Mixture (solid solution often)",
         "Colloid only"
       ],
       "section": "Science",
@@ -372,9 +372,9 @@
       "question": "Select the best answer: Chemical formula of aluminium oxide is:",
       "options": [
         "Al₂O₃",
+        "AlO₂",
         "AlO",
-        "Al₃O₂",
-        "AlO₂"
+        "Al₃O₂"
       ],
       "section": "Science",
       "marks": 1
@@ -383,8 +383,8 @@
       "id": 32,
       "question": "Pick the right choice: Atomic number is equal to number of:",
       "options": [
-        "Nucleons only always",
         "Neutrons only",
+        "Nucleons only always",
         "Protons",
         "Electrons minus protons"
       ],
@@ -395,9 +395,9 @@
       "id": 33,
       "question": "Identify the correct statement: Powerhouse of the cell is:",
       "options": [
-        "Mitochondria",
         "Ribosome",
         "Nucleus",
+        "Mitochondria",
         "Golgi apparatus"
       ],
       "section": "Science",
@@ -408,9 +408,9 @@
       "question": "Lysosomes are known as:",
       "options": [
         "Suicidal bags of the cell",
-        "Kitchen of cell",
+        "Control room",
         "Powerhouse",
-        "Control room"
+        "Kitchen of cell"
       ],
       "section": "Science",
       "marks": 1
@@ -419,10 +419,10 @@
       "id": 35,
       "question": "Choose the correct option: Blood is a type of:",
       "options": [
+        "Nervous tissue",
         "Connective tissue",
-        "Epithelial tissue",
         "Muscular tissue",
-        "Nervous tissue"
+        "Epithelial tissue"
       ],
       "section": "Science",
       "marks": 1
@@ -432,9 +432,9 @@
       "question": "Select the best answer: Binomial nomenclature was given by:",
       "options": [
         "Linnaeus",
+        "Whittaker",
         "Mendel",
-        "Darwin",
-        "Whittaker"
+        "Darwin"
       ],
       "section": "Science",
       "marks": 1
@@ -443,10 +443,10 @@
       "id": 37,
       "question": "Pick the right choice: SI unit of acceleration is:",
       "options": [
+        "N",
         "m²/s",
         "m/s",
-        "m/s²",
-        "N"
+        "m/s²"
       ],
       "section": "Science",
       "marks": 1
@@ -455,10 +455,10 @@
       "id": 38,
       "question": "Identify the correct statement: v = u + at is a:",
       "options": [
-        "Equation of motion",
-        "Kepler’s law",
         "Newton’s third law",
-        "Ohm’s law"
+        "Ohm’s law",
+        "Equation of motion",
+        "Kepler’s law"
       ],
       "section": "Science",
       "marks": 1
@@ -467,10 +467,10 @@
       "id": 39,
       "question": "Momentum is product of:",
       "options": [
-        "Force and time only always",
-        "Mass and acceleration",
+        "Weight and speed only",
         "Mass and velocity",
-        "Weight and speed only"
+        "Mass and acceleration",
+        "Force and time only always"
       ],
       "section": "Science",
       "marks": 1
@@ -479,10 +479,10 @@
       "id": 40,
       "question": "Choose the correct option: Archimedes’ principle is related to:",
       "options": [
-        "Buoyancy",
-        "Reflection",
         "Refraction",
-        "Electromagnetic induction"
+        "Reflection",
+        "Electromagnetic induction",
+        "Buoyancy"
       ],
       "section": "Science",
       "marks": 1
@@ -491,10 +491,10 @@
       "id": 41,
       "question": "Select the best answer: Power is:",
       "options": [
+        "Energy × time",
         "Mass × velocity",
-        "Force × distance",
         "Rate of doing work",
-        "Energy × time"
+        "Force × distance"
       ],
       "section": "Science",
       "marks": 1
@@ -515,10 +515,10 @@
       "id": 43,
       "question": "Identify the correct statement: Nitrogen fixation is done by:",
       "options": [
-        "Rhizobium",
-        "Only viruses",
         "Only humans",
-        "Only fish"
+        "Only viruses",
+        "Only fish",
+        "Rhizobium"
       ],
       "section": "Science",
       "marks": 1
@@ -528,8 +528,8 @@
       "question": "Vector of malaria is:",
       "options": [
         "Female Anopheles mosquito",
-        "Aedes only always for malaria",
         "Housefly only",
+        "Aedes only always for malaria",
         "Sandfly for malaria only"
       ],
       "section": "Science",
@@ -540,9 +540,9 @@
       "question": "Choose the correct option: SI unit of temperature is:",
       "options": [
         "kelvin",
-        "fahrenheit only",
+        "calorie",
         "celsius only",
-        "calorie"
+        "fahrenheit only"
       ],
       "section": "Science",
       "marks": 1
@@ -551,10 +551,10 @@
       "id": 46,
       "question": "Select the best answer: Number of moles in 36 g of water (M=18 g/mol) is:",
       "options": [
-        "2",
-        "1",
         "0.5",
-        "18"
+        "18",
+        "1",
+        "2"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -563,10 +563,10 @@
       "id": 47,
       "question": "Pick the right choice: Electronic configuration of sodium (Z=11) is:",
       "options": [
-        "2, 8, 1",
-        "2, 7, 2",
+        "2, 8, 8",
         "2, 8, 2",
-        "2, 8, 8"
+        "2, 8, 1",
+        "2, 7, 2"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -576,9 +576,9 @@
       "question": "Identify the correct statement: A force of 10 N acts on 2 kg for 3 s from rest. Final velocity is:",
       "options": [
         "5 m/s",
-        "10 m/s",
+        "30 m/s",
         "15 m/s",
-        "30 m/s"
+        "10 m/s"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -587,8 +587,8 @@
       "id": 49,
       "question": "Work done when a force of 5 N moves a body 3 m in direction of force is:",
       "options": [
-        "15 J",
         "2 J",
+        "15 J",
         "8 J",
         "0 J"
       ],
@@ -600,8 +600,8 @@
       "question": "Choose the correct option: If wavelength of a sound wave is 2 m and frequency 170 Hz, speed is:",
       "options": [
         "85 m/s",
-        "170 m/s",
         "340 m/s",
+        "170 m/s",
         "680 m/s"
       ],
       "section": "Achievers Section",

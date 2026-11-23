@@ -12,9 +12,9 @@
       "question": "Identify the correct statement: Odd one: RBC, WBC, Platelet, Neuron (blood cell group)",
       "options": [
         "Neuron (blood cell group)",
-        "RBC",
         "WBC",
-        "Platelet"
+        "Platelet",
+        "RBC"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -23,10 +23,10 @@
       "id": 2,
       "question": "Next in pattern: △, □, ⬠, ⬡, ?",
       "options": [
+        "Line",
         "Heptagon",
-        "Triangle again",
         "Circle",
-        "Line"
+        "Triangle again"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -35,8 +35,8 @@
       "id": 3,
       "question": "Choose the correct option: If 1=3, 2=3, 3=5, 4=4, 5=4, then 6=?",
       "options": [
-        "3",
         "5",
+        "3",
         "6",
         "4"
       ],
@@ -47,10 +47,10 @@
       "id": 4,
       "question": "Select the best answer: Which diagram best shows: metals, solids, gold (all gold are metals and solids)",
       "options": [
-        "Gold ⊂ Metals ⊂ Solids (approx)",
         "Only solids ⊂ gold",
+        "Metals ∩ gold empty",
         "Disjoint circles",
-        "Metals ∩ gold empty"
+        "Gold ⊂ Metals ⊂ Solids (approx)"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -60,9 +60,9 @@
       "question": "Pick the right choice: Find the odd one: Mercury, Venus, Mars, Moon",
       "options": [
         "Venus",
-        "Mercury",
+        "Mars",
         "Moon",
-        "Mars"
+        "Mercury"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -71,10 +71,10 @@
       "id": 6,
       "question": "Identify the correct statement: Complete: 2, 3, 5, 7, 11, ?",
       "options": [
-        "13",
-        "14",
+        "15",
         "12",
-        "15"
+        "13",
+        "14"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -83,10 +83,10 @@
       "id": 7,
       "question": "If WATER is coded as XBUFS, what is FIRE?",
       "options": [
-        "EHQD",
-        "GHRF",
         "GJSF",
-        "GJSG"
+        "GHRF",
+        "GJSG",
+        "EHQD"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -95,8 +95,8 @@
       "id": 8,
       "question": "Choose the correct option: Which is different: Photosynthesis, Respiration, Digestion, Evaporation (of pure water only as life process)?",
       "options": [
-        "Evaporation (of pure water only as life process)",
         "Photosynthesis",
+        "Evaporation (of pure water only as life process)",
         "Respiration",
         "Digestion"
       ],
@@ -107,10 +107,10 @@
       "id": 9,
       "question": "Select the best answer: A is mother of B. B is sister of C. How is C related to A?",
       "options": [
-        "Grandfather",
         "Uncle",
-        "Child of A",
-        "Nephew only always"
+        "Nephew only always",
+        "Grandfather",
+        "Child of A"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -119,10 +119,10 @@
       "id": 10,
       "question": "Pick the right choice: Series: Z, X, V, T, ?",
       "options": [
-        "R",
         "S",
         "Q",
-        "P"
+        "P",
+        "R"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -133,8 +133,8 @@
       "options": [
         "Nucleus",
         "Ribosome",
-        "Mitochondria",
-        "Golgi apparatus"
+        "Golgi apparatus",
+        "Mitochondria"
       ],
       "section": "Science",
       "marks": 1
@@ -143,10 +143,10 @@
       "id": 12,
       "question": "Lysosomes are known as:",
       "options": [
-        "Suicidal bags of the cell",
-        "Powerhouse",
+        "Control room",
         "Kitchen of cell",
-        "Control room"
+        "Powerhouse",
+        "Suicidal bags of the cell"
       ],
       "section": "Science",
       "marks": 1
@@ -155,10 +155,10 @@
       "id": 13,
       "question": "Choose the correct option: Blood is a type of:",
       "options": [
-        "Connective tissue",
+        "Nervous tissue",
         "Muscular tissue",
-        "Epithelial tissue",
-        "Nervous tissue"
+        "Connective tissue",
+        "Epithelial tissue"
       ],
       "section": "Science",
       "marks": 1
@@ -168,9 +168,9 @@
       "question": "Select the best answer: Binomial nomenclature was given by:",
       "options": [
         "Linnaeus",
+        "Whittaker",
         "Darwin",
-        "Mendel",
-        "Whittaker"
+        "Mendel"
       ],
       "section": "Science",
       "marks": 1
@@ -179,10 +179,10 @@
       "id": 15,
       "question": "Pick the right choice: SI unit of acceleration is:",
       "options": [
-        "m/s²",
-        "m²/s",
+        "N",
         "m/s",
-        "N"
+        "m²/s",
+        "m/s²"
       ],
       "section": "Science",
       "marks": 1
@@ -191,10 +191,10 @@
       "id": 16,
       "question": "Identify the correct statement: v = u + at is a:",
       "options": [
-        "Kepler’s law",
-        "Newton’s third law",
         "Equation of motion",
-        "Ohm’s law"
+        "Kepler’s law",
+        "Ohm’s law",
+        "Newton’s third law"
       ],
       "section": "Science",
       "marks": 1
@@ -204,9 +204,9 @@
       "question": "Momentum is product of:",
       "options": [
         "Mass and velocity",
-        "Force and time only always",
+        "Weight and speed only",
         "Mass and acceleration",
-        "Weight and speed only"
+        "Force and time only always"
       ],
       "section": "Science",
       "marks": 1
@@ -215,10 +215,10 @@
       "id": 18,
       "question": "Choose the correct option: Archimedes’ principle is related to:",
       "options": [
-        "Refraction",
+        "Electromagnetic induction",
         "Reflection",
-        "Buoyancy",
-        "Electromagnetic induction"
+        "Refraction",
+        "Buoyancy"
       ],
       "section": "Science",
       "marks": 1
@@ -228,9 +228,9 @@
       "question": "Select the best answer: Power is:",
       "options": [
         "Rate of doing work",
+        "Energy × time",
         "Force × distance",
-        "Mass × velocity",
-        "Energy × time"
+        "Mass × velocity"
       ],
       "section": "Science",
       "marks": 1
@@ -251,10 +251,10 @@
       "id": 21,
       "question": "Identify the correct statement: Nitrogen fixation is done by:",
       "options": [
-        "Rhizobium",
         "Only humans",
-        "Only viruses",
-        "Only fish"
+        "Rhizobium",
+        "Only fish",
+        "Only viruses"
       ],
       "section": "Science",
       "marks": 1
@@ -263,10 +263,10 @@
       "id": 22,
       "question": "Vector of malaria is:",
       "options": [
-        "Female Anopheles mosquito",
         "Housefly only",
+        "Sandfly for malaria only",
         "Aedes only always for malaria",
-        "Sandfly for malaria only"
+        "Female Anopheles mosquito"
       ],
       "section": "Science",
       "marks": 1
@@ -275,10 +275,10 @@
       "id": 23,
       "question": "Choose the correct option: SI unit of temperature is:",
       "options": [
-        "kelvin",
         "celsius only",
+        "calorie",
         "fahrenheit only",
-        "calorie"
+        "kelvin"
       ],
       "section": "Science",
       "marks": 1
@@ -288,9 +288,9 @@
       "question": "Select the best answer: Which has the highest kinetic energy of particles (same substance)?",
       "options": [
         "Steam at 100°C",
-        "Water at 0°C",
         "Water at 100°C",
-        "Ice at 0°C"
+        "Ice at 0°C",
+        "Water at 0°C"
       ],
       "section": "Science",
       "marks": 1
@@ -299,10 +299,10 @@
       "id": 25,
       "question": "Pick the right choice: Which is a compound?",
       "options": [
+        "Milk",
         "Brass",
-        "Air",
         "Water (H₂O)",
-        "Milk"
+        "Air"
       ],
       "section": "Science",
       "marks": 1
@@ -311,9 +311,9 @@
       "id": 26,
       "question": "Identify the correct statement: Tyndall effect is shown by:",
       "options": [
-        "Colloids",
-        "Pure elements only",
         "True solutions",
+        "Pure elements only",
+        "Colloids",
         "Vacuum"
       ],
       "section": "Science",
@@ -323,10 +323,10 @@
       "id": 27,
       "question": "Law of constant proportions was given by:",
       "options": [
+        "Thomson",
         "Lavoisier only as proportions",
-        "Dalton only",
         "Proust",
-        "Thomson"
+        "Dalton only"
       ],
       "section": "Science",
       "marks": 1
@@ -335,9 +335,9 @@
       "id": 28,
       "question": "Choose the correct option: Electron was discovered by:",
       "options": [
-        "J.J. Thomson",
         "Bohr",
         "Rutherford",
+        "J.J. Thomson",
         "Chadwick"
       ],
       "section": "Science",
@@ -347,10 +347,10 @@
       "id": 29,
       "question": "Select the best answer: Isotopes have same:",
       "options": [
-        "Number of neutrons always",
-        "Mass number always",
         "Atomic number",
-        "Chemical formula different necessarily"
+        "Chemical formula different necessarily",
+        "Mass number always",
+        "Number of neutrons always"
       ],
       "section": "Science",
       "marks": 1
@@ -359,10 +359,10 @@
       "id": 30,
       "question": "Pick the right choice: Cell wall in plants is mainly made of:",
       "options": [
-        "Cellulose",
-        "Chitin only",
+        "Lipid only",
         "Peptidoglycan only",
-        "Lipid only"
+        "Chitin only",
+        "Cellulose"
       ],
       "section": "Science",
       "marks": 1
@@ -371,10 +371,10 @@
       "id": 31,
       "question": "Identify the correct statement: Prokaryotic cells lack:",
       "options": [
-        "Cytoplasm",
         "Cell membrane",
-        "True nucleus",
-        "Ribosomes entirely"
+        "Ribosomes entirely",
+        "Cytoplasm",
+        "True nucleus"
       ],
       "section": "Science",
       "marks": 1
@@ -383,10 +383,10 @@
       "id": 32,
       "question": "Meristematic tissues are:",
       "options": [
-        "Actively dividing",
-        "Dead permanently always",
+        "Non-living only",
         "Only in animals",
-        "Non-living only"
+        "Actively dividing",
+        "Dead permanently always"
       ],
       "section": "Science",
       "marks": 1
@@ -395,9 +395,9 @@
       "id": 33,
       "question": "Choose the correct option: Which is a cryptogam?",
       "options": [
-        "Fern",
-        "Pine",
         "Mango",
+        "Pine",
+        "Fern",
         "Wheat"
       ],
       "section": "Science",
@@ -407,10 +407,10 @@
       "id": 34,
       "question": "Select the best answer: Distance is a:",
       "options": [
-        "Scalar quantity",
-        "Vector quantity",
         "Tensor only",
-        "Dimensionless always"
+        "Scalar quantity",
+        "Dimensionless always",
+        "Vector quantity"
       ],
       "section": "Science",
       "marks": 1
@@ -419,10 +419,10 @@
       "id": 35,
       "question": "Pick the right choice: Newton’s first law is also called law of:",
       "options": [
-        "Inertia",
-        "Action-reaction only",
         "Momentum only",
-        "Gravitation"
+        "Inertia",
+        "Gravitation",
+        "Action-reaction only"
       ],
       "section": "Science",
       "marks": 1
@@ -431,10 +431,10 @@
       "id": 36,
       "question": "Identify the correct statement: Value of g on Earth is approximately:",
       "options": [
-        "3 × 10⁸",
         "6.7 × 10⁻¹¹",
         "9.8 m/s²",
-        "1.6 m/s² only"
+        "1.6 m/s² only",
+        "3 × 10⁸"
       ],
       "section": "Science",
       "marks": 1
@@ -444,9 +444,9 @@
       "question": "SI unit of work is:",
       "options": [
         "joule",
+        "pascal",
         "watt",
-        "newton",
-        "pascal"
+        "newton"
       ],
       "section": "Science",
       "marks": 1
@@ -455,10 +455,10 @@
       "id": 38,
       "question": "Choose the correct option: Sound needs a:",
       "options": [
+        "Magnetic field only",
         "Only light",
-        "Vacuum",
         "Material medium",
-        "Magnetic field only"
+        "Vacuum"
       ],
       "section": "Science",
       "marks": 1
@@ -467,10 +467,10 @@
       "id": 39,
       "question": "Select the best answer: Antibiotics are effective against:",
       "options": [
-        "Bacteria",
         "All viruses always",
-        "Genetic diseases only",
-        "Fractures only"
+        "Bacteria",
+        "Fractures only",
+        "Genetic diseases only"
       ],
       "section": "Science",
       "marks": 1
@@ -480,8 +480,8 @@
       "question": "Pick the right choice: Which is a non-renewable resource?",
       "options": [
         "Wind",
-        "Solar energy",
         "Coal",
+        "Solar energy",
         "Tidal energy"
       ],
       "section": "Science",
@@ -492,9 +492,9 @@
       "question": "Identify the correct statement: Plasma membrane is:",
       "options": [
         "Selectively permeable",
-        "Fully permeable always",
         "Impermeable always",
-        "Made of cellulose only in animals"
+        "Made of cellulose only in animals",
+        "Fully permeable always"
       ],
       "section": "Science",
       "marks": 1
@@ -503,10 +503,10 @@
       "id": 42,
       "question": "The process of change of a liquid into vapour at any temperature below its boiling point is:",
       "options": [
-        "Evaporation",
-        "Sublimation",
+        "Freezing",
         "Condensation",
-        "Freezing"
+        "Sublimation",
+        "Evaporation"
       ],
       "section": "Science",
       "marks": 1
@@ -515,10 +515,10 @@
       "id": 43,
       "question": "Choose the correct option: Latent heat of vaporisation is the heat required to:",
       "options": [
-        "Change liquid to gas at boiling point without temperature change",
-        "Raise temperature of liquid by 1°C",
         "Melt solid only",
-        "Freeze liquid"
+        "Change liquid to gas at boiling point without temperature change",
+        "Freeze liquid",
+        "Raise temperature of liquid by 1°C"
       ],
       "section": "Science",
       "marks": 1
@@ -527,10 +527,10 @@
       "id": 44,
       "question": "Select the best answer: Separation of cream from milk is done by:",
       "options": [
-        "Centrifugation",
-        "Chromatography only",
         "Sublimation",
-        "Distillation only"
+        "Distillation only",
+        "Centrifugation",
+        "Chromatography only"
       ],
       "section": "Science",
       "marks": 1
@@ -539,10 +539,10 @@
       "id": 45,
       "question": "Pick the right choice: Atomicity of oxygen molecule O₂ is:",
       "options": [
+        "8",
         "2",
-        "1",
         "3",
-        "8"
+        "1"
       ],
       "section": "Science",
       "marks": 1
@@ -551,10 +551,10 @@
       "id": 46,
       "question": "Identify the correct statement: A force of 10 N acts on 2 kg for 3 s from rest. Final velocity is:",
       "options": [
-        "15 m/s",
         "5 m/s",
-        "10 m/s",
-        "30 m/s"
+        "15 m/s",
+        "30 m/s",
+        "10 m/s"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -563,10 +563,10 @@
       "id": 47,
       "question": "Work done when a force of 5 N moves a body 3 m in direction of force is:",
       "options": [
-        "2 J",
-        "8 J",
         "15 J",
-        "0 J"
+        "0 J",
+        "2 J",
+        "8 J"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -576,9 +576,9 @@
       "question": "Choose the correct option: If wavelength of a sound wave is 2 m and frequency 170 Hz, speed is:",
       "options": [
         "340 m/s",
-        "85 m/s",
+        "680 m/s",
         "170 m/s",
-        "680 m/s"
+        "85 m/s"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -587,9 +587,9 @@
       "id": 49,
       "question": "Select the best answer: Density of a substance is 2.5 g/cm³. Mass of 20 cm³ is:",
       "options": [
-        "40 g",
-        "25 g",
         "50 g",
+        "25 g",
+        "40 g",
         "22.5 g"
       ],
       "section": "Achievers Section",
@@ -599,10 +599,10 @@
       "id": 50,
       "question": "Pick the right choice: A car starts from rest and accelerates uniformly at 2 m/s² for 5 s. Distance covered is:",
       "options": [
-        "25 m",
-        "10 m",
         "50 m",
-        "20 m"
+        "20 m",
+        "25 m",
+        "10 m"
       ],
       "section": "Achievers Section",
       "marks": 3

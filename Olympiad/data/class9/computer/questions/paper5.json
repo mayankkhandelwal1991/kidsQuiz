@@ -11,10 +11,10 @@
       "id": 1,
       "question": "Directions: Facing north, turn right, then right. You face:",
       "options": [
-        "West",
         "East",
+        "North",
         "South",
-        "North"
+        "West"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -24,9 +24,9 @@
       "question": "Choose the correct option: Complete: www stands for:",
       "options": [
         "World Wide Web",
-        "Wide World Web",
         "World Web Wide",
-        "Web World Wide"
+        "Web World Wide",
+        "Wide World Web"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -35,10 +35,10 @@
       "id": 3,
       "question": "Select the best answer: Odd one out: Keyboard, Mouse, Monitor, MS Word",
       "options": [
-        "Mouse",
-        "Keyboard",
+        "Monitor",
         "MS Word",
-        "Monitor"
+        "Mouse",
+        "Keyboard"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -59,8 +59,8 @@
       "id": 5,
       "question": "Identify the correct statement: If CPU is coded as DQV, how is RAM coded?",
       "options": [
-        "SBM",
         "QZL",
+        "SBM",
         "SBN",
         "SBN "
       ],
@@ -71,8 +71,8 @@
       "id": 6,
       "question": "Which comes next: Input → Process → ?",
       "options": [
-        "Output",
         "Only delete",
+        "Output",
         "Only virus",
         "Only cable"
       ],
@@ -84,8 +84,8 @@
       "question": "Choose the correct option: Find missing: 5, 10, 20, 40, ?",
       "options": [
         "80",
-        "50",
         "60",
+        "50",
         "70"
       ],
       "section": "Logical Reasoning",
@@ -95,10 +95,10 @@
       "id": 8,
       "question": "Select the best answer: Analogy: Pen : Write :: Keyboard : ?",
       "options": [
-        "Type",
-        "Print only always",
         "Scan only",
-        "Cool"
+        "Type",
+        "Cool",
+        "Print only always"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -107,10 +107,10 @@
       "id": 9,
       "question": "Pick the right choice: How many 2-digit numbers use only digits 1 and 0?",
       "options": [
+        "1",
         "2",
         "4",
-        "3",
-        "1"
+        "3"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -119,9 +119,9 @@
       "id": 10,
       "question": "Identify the correct statement: If all codes are programs and some programs are games, then:",
       "options": [
-        "No program is a code",
         "All games are codes",
         "Some codes may be games (uncertain)",
+        "No program is a code",
         "All codes are games"
       ],
       "section": "Logical Reasoning",
@@ -132,8 +132,8 @@
       "question": "Binary number 1010 in decimal is:",
       "options": [
         "10",
-        "8",
         "5",
+        "8",
         "12"
       ],
       "section": "Computers and IT",
@@ -143,10 +143,10 @@
       "id": 12,
       "question": "Choose the correct option: Which is system software?",
       "options": [
-        "Tally only as OS",
+        "Photoshop only as OS",
         "MS Word only as system",
         "Operating system",
-        "Photoshop only as OS"
+        "Tally only as OS"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -155,10 +155,10 @@
       "id": 13,
       "question": "Select the best answer: CC in email means:",
       "options": [
-        "Carbon Copy",
-        "Computer Copy",
         "Central Control",
-        "Cyber Crime"
+        "Carbon Copy",
+        "Cyber Crime",
+        "Computer Copy"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -167,10 +167,10 @@
       "id": 14,
       "question": "Pick the right choice: IoT stands for:",
       "options": [
-        "Image of Table",
         "Input of Text",
+        "Inline of Tools",
         "Internet of Things",
-        "Inline of Tools"
+        "Image of Table"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -179,10 +179,10 @@
       "id": 15,
       "question": "Identify the correct statement: LAN covers a:",
       "options": [
-        "Local area (small geographic)",
-        "Entire planet only",
         "Only undersea cables exclusive",
-        "Only satellites exclusive"
+        "Only satellites exclusive",
+        "Local area (small geographic)",
+        "Entire planet only"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -191,10 +191,10 @@
       "id": 16,
       "question": "In PPT, a slide transition is:",
       "options": [
-        "Effect when moving between slides",
-        "A database key",
+        "A network cable",
         "A virus",
-        "A network cable"
+        "A database key",
+        "Effect when moving between slides"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -203,10 +203,10 @@
       "id": 17,
       "question": "Choose the correct option: Malware is:",
       "options": [
-        "Malicious software",
         "A type of monitor",
+        "A coding language for babies only",
         "A printer paper size",
-        "A coding language for babies only"
+        "Malicious software"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -215,10 +215,10 @@
       "id": 18,
       "question": "Select the best answer: A byte can represent how many distinct values?",
       "options": [
-        "256",
         "2",
-        "8",
-        "1024"
+        "1024",
+        "256",
+        "8"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -227,10 +227,10 @@
       "id": 19,
       "question": "Pick the right choice: SSD compared to HDD generally offers:",
       "options": [
+        "Only optical discs",
         "Faster access speeds",
         "Only slower always",
-        "No storage",
-        "Only optical discs"
+        "No storage"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -251,10 +251,10 @@
       "id": 21,
       "question": "HTTPS indicates:",
       "options": [
-        "Offline mode only",
+        "Only FTP",
         "Broken network only",
         "Secure HTTP connection",
-        "Only FTP"
+        "Offline mode only"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -264,8 +264,8 @@
       "question": "Choose the correct option: Booting is the process of:",
       "options": [
         "Starting the computer / loading OS",
-        "Only defragmenting forever",
         "Shutting printer ink",
+        "Only defragmenting forever",
         "Only uninstalling"
       ],
       "section": "Computers and IT",
@@ -275,10 +275,10 @@
       "id": 23,
       "question": "Select the best answer: Flowchart oval symbol often represents:",
       "options": [
-        "Decision only",
-        "Process only",
         "Start/End",
-        "Input only always"
+        "Decision only",
+        "Input only always",
+        "Process only"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -287,10 +287,10 @@
       "id": 24,
       "question": "Pick the right choice: RAM is a type of:",
       "options": [
-        "Volatile memory",
         "Permanent storage only",
         "Output device",
-        "Input device only"
+        "Input device only",
+        "Volatile memory"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -299,10 +299,10 @@
       "id": 25,
       "question": "Identify the correct statement: The brain of the computer is the:",
       "options": [
-        "Keyboard",
-        "Monitor",
         "CPU",
-        "UPS"
+        "Monitor",
+        "UPS",
+        "Keyboard"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -311,10 +311,10 @@
       "id": 26,
       "question": "In HTML, <br> is used for:",
       "options": [
-        "Line break",
-        "Bold only",
         "Image only",
-        "Table only"
+        "Table only",
+        "Bold only",
+        "Line break"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -324,9 +324,9 @@
       "question": "Choose the correct option: IP address identifies a:",
       "options": [
         "Device on a network",
-        "Only a font",
         "Only a keyboard key",
-        "Only a printer ink colour"
+        "Only a printer ink colour",
+        "Only a font"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -335,10 +335,10 @@
       "id": 28,
       "question": "Select the best answer: A firewall is used for:",
       "options": [
-        "Network security",
         "Cooling the CPU",
-        "Increasing RAM magically",
-        "Printing faster"
+        "Printing faster",
+        "Network security",
+        "Increasing RAM magically"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -347,10 +347,10 @@
       "id": 29,
       "question": "Pick the right choice: Strong passwords should be:",
       "options": [
-        "Long and unique with mixed characters",
         "12345",
-        "Your name only",
-        "password"
+        "password",
+        "Long and unique with mixed characters",
+        "Your name only"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -359,10 +359,10 @@
       "id": 30,
       "question": "Identify the correct statement: AI stands for:",
       "options": [
-        "Analog Input only",
-        "Automatic Ink",
+        "Application Installer only",
         "Artificial Intelligence",
-        "Application Installer only"
+        "Analog Input only",
+        "Automatic Ink"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -371,10 +371,10 @@
       "id": 31,
       "question": "Which Excel function finds the average?",
       "options": [
-        "AVERAGE",
         "MID",
         "MEANONLY",
-        "CONCAT"
+        "CONCAT",
+        "AVERAGE"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -384,9 +384,9 @@
       "question": "Choose the correct option: SQL is used to:",
       "options": [
         "Paint images only",
-        "Design only CPU fans",
         "Query and manage databases",
-        "Compile only assembly always"
+        "Compile only assembly always",
+        "Design only CPU fans"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -395,10 +395,10 @@
       "id": 33,
       "question": "Select the best answer: In programming, a loop is used to:",
       "options": [
-        "Repeat a set of instructions",
         "Only print once never again",
-        "Delete the OS",
-        "Shut down permanently"
+        "Repeat a set of instructions",
+        "Shut down permanently",
+        "Delete the OS"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -407,10 +407,10 @@
       "id": 34,
       "question": "Pick the right choice: 1 byte equals:",
       "options": [
-        "16 bits",
-        "4 bits",
         "8 bits",
-        "2 bits"
+        "16 bits",
+        "2 bits",
+        "4 bits"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -419,10 +419,10 @@
       "id": 35,
       "question": "Identify the correct statement: URL stands for:",
       "options": [
-        "Uniform Resource Locator",
+        "United Resource List",
         "Universal Record Link",
         "User Random Login",
-        "United Resource List"
+        "Uniform Resource Locator"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -432,9 +432,9 @@
       "question": "Backup means:",
       "options": [
         "Formatting only",
+        "Overclocking CPU",
         "Deleting all files",
-        "Copying data for recovery",
-        "Overclocking CPU"
+        "Copying data for recovery"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -443,10 +443,10 @@
       "id": 37,
       "question": "Choose the correct option: A compiler:",
       "options": [
-        "Translates high-level code to machine code",
+        "Only stores passwords",
         "Only displays web pages",
         "Only connects printers",
-        "Only stores passwords"
+        "Translates high-level code to machine code"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -456,9 +456,9 @@
       "question": "Select the best answer: Which is open-source OS?",
       "options": [
         "Linux",
-        "Only microwave firmware as desktop",
+        "A single app",
         "Only a locked fridge OS",
-        "A single app"
+        "Only microwave firmware as desktop"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -468,9 +468,9 @@
       "question": "Pick the right choice: Shortcut Ctrl+C is commonly:",
       "options": [
         "Copy",
+        "Save",
         "Cut",
-        "Paste",
-        "Save"
+        "Paste"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -481,8 +481,8 @@
       "options": [
         "Account security",
         "CPU heat only",
-        "Monitor brightness",
-        "Font size only"
+        "Font size only",
+        "Monitor brightness"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -492,9 +492,9 @@
       "question": "In HTML, hyperlinks use tag:",
       "options": [
         "<h1>",
+        "<p>",
         "<linkonly>",
-        "<a>",
-        "<p>"
+        "<a>"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -503,10 +503,10 @@
       "id": 42,
       "question": "Choose the correct option: The full form of GUI is:",
       "options": [
-        "Graphical User Interface",
-        "Global User Internet",
         "General Utility Input",
-        "Graph Unit Index"
+        "Graph Unit Index",
+        "Graphical User Interface",
+        "Global User Internet"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -516,9 +516,9 @@
       "question": "Select the best answer: In databases, a table consists of:",
       "options": [
         "Only sounds",
-        "Only images",
         "Rows and columns",
-        "Only animations"
+        "Only animations",
+        "Only images"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -527,10 +527,10 @@
       "id": 44,
       "question": "Pick the right choice: Cache memory is:",
       "options": [
-        "Very fast memory close to CPU",
-        "Slowest storage",
         "Only cloud backup",
-        "A type of printer"
+        "Slowest storage",
+        "A type of printer",
+        "Very fast memory close to CPU"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -539,10 +539,10 @@
       "id": 45,
       "question": "Identify the correct statement: Which is NOT an output device?",
       "options": [
-        "Speaker",
+        "Monitor",
         "Printer",
         "Microphone",
-        "Monitor"
+        "Speaker"
       ],
       "section": "Computers and IT",
       "marks": 1
@@ -551,10 +551,10 @@
       "id": 46,
       "question": "A 2 Mbps connection downloads at most about how many megabits in 10 seconds (ideal)?",
       "options": [
-        "20 megabits",
-        "2 megabits",
+        "0.2 megabits",
         "200 megabits",
-        "0.2 megabits"
+        "2 megabits",
+        "20 megabits"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -563,10 +563,10 @@
       "id": 47,
       "question": "Choose the correct option: HTML structure correctly nests:",
       "options": [
-        "<!DOCTYPE html><html><head></head><body></body></html>",
         "<head><body></head></body>",
-        "<body><html></html></body>",
-        "<html></body></html><head>"
+        "<html></body></html><head>",
+        "<!DOCTYPE html><html><head></head><body></body></html>",
+        "<body><html></html></body>"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -575,10 +575,10 @@
       "id": 48,
       "question": "Select the best answer: Time complexity of scanning n items once is commonly denoted:",
       "options": [
+        "O(log n) only for linear scan",
         "O(n)",
-        "O(1) always for scan",
         "O(n²) only for one pass",
-        "O(log n) only for linear scan"
+        "O(1) always for scan"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -587,10 +587,10 @@
       "id": 49,
       "question": "Pick the right choice: Convert binary 1101 to decimal:",
       "options": [
-        "13",
         "14",
         "11",
-        "12"
+        "12",
+        "13"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -599,10 +599,10 @@
       "id": 50,
       "question": "Identify the correct statement: If each email attachment max is 25 MB and you have 3 files of 10 MB each, can you send in one mail as separate attachments under a 25 MB total limit?",
       "options": [
-        "No, total 30 MB exceeds 25 MB",
-        "Yes, always",
         "Only if images",
-        "Only on Sundays"
+        "No, total 30 MB exceeds 25 MB",
+        "Only on Sundays",
+        "Yes, always"
       ],
       "section": "Achievers Section",
       "marks": 3

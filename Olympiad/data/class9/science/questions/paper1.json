@@ -11,9 +11,9 @@
       "id": 1,
       "question": "If WATER is coded as XBUFS, what is FIRE?",
       "options": [
+        "GJSF",
         "EHQD",
         "GHRF",
-        "GJSF",
         "GJSG"
       ],
       "section": "Logical Reasoning",
@@ -23,10 +23,10 @@
       "id": 2,
       "question": "Which is different: Photosynthesis, Respiration, Digestion, Evaporation (of pure water only as life process)?",
       "options": [
-        "Evaporation (of pure water only as life process)",
-        "Respiration",
         "Photosynthesis",
-        "Digestion"
+        "Respiration",
+        "Digestion",
+        "Evaporation (of pure water only as life process)"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -35,10 +35,10 @@
       "id": 3,
       "question": "A is mother of B. B is sister of C. How is C related to A?",
       "options": [
-        "Grandfather",
         "Uncle",
-        "Child of A",
-        "Nephew only always"
+        "Grandfather",
+        "Nephew only always",
+        "Child of A"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -47,10 +47,10 @@
       "id": 4,
       "question": "Series: Z, X, V, T, ?",
       "options": [
-        "R",
         "S",
+        "P",
         "Q",
-        "P"
+        "R"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -59,10 +59,10 @@
       "id": 5,
       "question": "If all flowers are trees and some trees are bushes, which is true?",
       "options": [
-        "No tree is a flower",
         "All bushes are flowers",
+        "All flowers are bushes",
         "Cannot say some flowers are bushes",
-        "All flowers are bushes"
+        "No tree is a flower"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -72,9 +72,9 @@
       "question": "Mirror of 15:20 looks closest to:",
       "options": [
         "8:40",
+        "3:20",
         "4:40",
-        "9:20",
-        "3:20"
+        "9:20"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -83,10 +83,10 @@
       "id": 7,
       "question": "Odd one: RBC, WBC, Platelet, Neuron (blood cell group)",
       "options": [
-        "WBC",
         "RBC",
+        "Platelet",
         "Neuron (blood cell group)",
-        "Platelet"
+        "WBC"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -95,10 +95,10 @@
       "id": 8,
       "question": "Next in pattern: △, □, ⬠, ⬡, ?",
       "options": [
-        "Heptagon",
         "Circle",
+        "Line",
         "Triangle again",
-        "Line"
+        "Heptagon"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -107,9 +107,9 @@
       "id": 9,
       "question": "If 1=3, 2=3, 3=5, 4=4, 5=4, then 6=?",
       "options": [
-        "3",
         "6",
         "5",
+        "3",
         "4"
       ],
       "section": "Logical Reasoning",
@@ -119,10 +119,10 @@
       "id": 10,
       "question": "Which diagram best shows: metals, solids, gold (all gold are metals and solids)",
       "options": [
-        "Gold ⊂ Metals ⊂ Solids (approx)",
-        "Disjoint circles",
         "Only solids ⊂ gold",
-        "Metals ∩ gold empty"
+        "Disjoint circles",
+        "Metals ∩ gold empty",
+        "Gold ⊂ Metals ⊂ Solids (approx)"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -132,9 +132,9 @@
       "question": "A solution is a:",
       "options": [
         "Homogeneous mixture",
-        "Compound only",
+        "Element only",
         "Heterogeneous mixture always",
-        "Element only"
+        "Compound only"
       ],
       "section": "Science",
       "marks": 1
@@ -143,10 +143,10 @@
       "id": 12,
       "question": "Alloy is an example of:",
       "options": [
-        "Compound only always",
         "Element",
-        "Mixture (solid solution often)",
-        "Colloid only"
+        "Compound only always",
+        "Colloid only",
+        "Mixture (solid solution often)"
       ],
       "section": "Science",
       "marks": 1
@@ -155,10 +155,10 @@
       "id": 13,
       "question": "Molecular mass of H₂O (H=1, O=16) is:",
       "options": [
-        "18 u",
-        "16 u",
         "17 u",
-        "20 u"
+        "20 u",
+        "16 u",
+        "18 u"
       ],
       "section": "Science",
       "marks": 1
@@ -167,10 +167,10 @@
       "id": 14,
       "question": "Chemical formula of aluminium oxide is:",
       "options": [
-        "Al₃O₂",
         "AlO",
-        "Al₂O₃",
-        "AlO₂"
+        "Al₃O₂",
+        "AlO₂",
+        "Al₂O₃"
       ],
       "section": "Science",
       "marks": 1
@@ -179,10 +179,10 @@
       "id": 15,
       "question": "Atomic number is equal to number of:",
       "options": [
-        "Protons",
         "Neutrons only",
-        "Nucleons only always",
-        "Electrons minus protons"
+        "Electrons minus protons",
+        "Protons",
+        "Nucleons only always"
       ],
       "section": "Science",
       "marks": 1
@@ -191,10 +191,10 @@
       "id": 16,
       "question": "Powerhouse of the cell is:",
       "options": [
-        "Nucleus",
+        "Golgi apparatus",
         "Ribosome",
-        "Mitochondria",
-        "Golgi apparatus"
+        "Nucleus",
+        "Mitochondria"
       ],
       "section": "Science",
       "marks": 1
@@ -203,10 +203,10 @@
       "id": 17,
       "question": "Lysosomes are known as:",
       "options": [
-        "Suicidal bags of the cell",
         "Powerhouse",
-        "Kitchen of cell",
-        "Control room"
+        "Suicidal bags of the cell",
+        "Control room",
+        "Kitchen of cell"
       ],
       "section": "Science",
       "marks": 1
@@ -215,10 +215,10 @@
       "id": 18,
       "question": "Blood is a type of:",
       "options": [
+        "Nervous tissue",
         "Connective tissue",
         "Muscular tissue",
-        "Epithelial tissue",
-        "Nervous tissue"
+        "Epithelial tissue"
       ],
       "section": "Science",
       "marks": 1
@@ -227,9 +227,9 @@
       "id": 19,
       "question": "Binomial nomenclature was given by:",
       "options": [
-        "Linnaeus",
         "Darwin",
         "Mendel",
+        "Linnaeus",
         "Whittaker"
       ],
       "section": "Science",
@@ -239,9 +239,9 @@
       "id": 20,
       "question": "SI unit of acceleration is:",
       "options": [
+        "m/s",
         "m/s²",
         "m²/s",
-        "m/s",
         "N"
       ],
       "section": "Science",
@@ -252,9 +252,9 @@
       "question": "v = u + at is a:",
       "options": [
         "Kepler’s law",
+        "Ohm’s law",
         "Newton’s third law",
-        "Equation of motion",
-        "Ohm’s law"
+        "Equation of motion"
       ],
       "section": "Science",
       "marks": 1
@@ -265,8 +265,8 @@
       "options": [
         "Mass and velocity",
         "Force and time only always",
-        "Mass and acceleration",
-        "Weight and speed only"
+        "Weight and speed only",
+        "Mass and acceleration"
       ],
       "section": "Science",
       "marks": 1
@@ -275,10 +275,10 @@
       "id": 23,
       "question": "Archimedes’ principle is related to:",
       "options": [
-        "Refraction",
-        "Reflection",
         "Buoyancy",
-        "Electromagnetic induction"
+        "Reflection",
+        "Electromagnetic induction",
+        "Refraction"
       ],
       "section": "Science",
       "marks": 1
@@ -288,8 +288,8 @@
       "question": "Power is:",
       "options": [
         "Rate of doing work",
-        "Mass × velocity",
         "Force × distance",
+        "Mass × velocity",
         "Energy × time"
       ],
       "section": "Science",
@@ -312,9 +312,9 @@
       "question": "Nitrogen fixation is done by:",
       "options": [
         "Rhizobium",
-        "Only humans",
         "Only viruses",
-        "Only fish"
+        "Only fish",
+        "Only humans"
       ],
       "section": "Science",
       "marks": 1
@@ -323,10 +323,10 @@
       "id": 27,
       "question": "Vector of malaria is:",
       "options": [
-        "Housefly only",
-        "Aedes only always for malaria",
         "Female Anopheles mosquito",
-        "Sandfly for malaria only"
+        "Sandfly for malaria only",
+        "Aedes only always for malaria",
+        "Housefly only"
       ],
       "section": "Science",
       "marks": 1
@@ -335,8 +335,8 @@
       "id": 28,
       "question": "SI unit of temperature is:",
       "options": [
-        "kelvin",
         "celsius only",
+        "kelvin",
         "fahrenheit only",
         "calorie"
       ],
@@ -347,10 +347,10 @@
       "id": 29,
       "question": "Which has the highest kinetic energy of particles (same substance)?",
       "options": [
+        "Ice at 0°C",
         "Steam at 100°C",
         "Water at 0°C",
-        "Water at 100°C",
-        "Ice at 0°C"
+        "Water at 100°C"
       ],
       "section": "Science",
       "marks": 1
@@ -359,10 +359,10 @@
       "id": 30,
       "question": "Which is a compound?",
       "options": [
-        "Water (H₂O)",
-        "Air",
+        "Milk",
         "Brass",
-        "Milk"
+        "Water (H₂O)",
+        "Air"
       ],
       "section": "Science",
       "marks": 1
@@ -371,9 +371,9 @@
       "id": 31,
       "question": "Tyndall effect is shown by:",
       "options": [
-        "Colloids",
         "Pure elements only",
         "True solutions",
+        "Colloids",
         "Vacuum"
       ],
       "section": "Science",
@@ -383,10 +383,10 @@
       "id": 32,
       "question": "Law of constant proportions was given by:",
       "options": [
-        "Lavoisier only as proportions",
         "Dalton only",
         "Proust",
-        "Thomson"
+        "Thomson",
+        "Lavoisier only as proportions"
       ],
       "section": "Science",
       "marks": 1
@@ -395,10 +395,10 @@
       "id": 33,
       "question": "Electron was discovered by:",
       "options": [
-        "J.J. Thomson",
+        "Chadwick",
         "Bohr",
-        "Rutherford",
-        "Chadwick"
+        "J.J. Thomson",
+        "Rutherford"
       ],
       "section": "Science",
       "marks": 1
@@ -408,9 +408,9 @@
       "question": "Isotopes have same:",
       "options": [
         "Number of neutrons always",
-        "Mass number always",
         "Atomic number",
-        "Chemical formula different necessarily"
+        "Chemical formula different necessarily",
+        "Mass number always"
       ],
       "section": "Science",
       "marks": 1
@@ -420,9 +420,9 @@
       "question": "Cell wall in plants is mainly made of:",
       "options": [
         "Cellulose",
+        "Lipid only",
         "Chitin only",
-        "Peptidoglycan only",
-        "Lipid only"
+        "Peptidoglycan only"
       ],
       "section": "Science",
       "marks": 1
@@ -431,9 +431,9 @@
       "id": 36,
       "question": "Prokaryotic cells lack:",
       "options": [
+        "True nucleus",
         "Cytoplasm",
         "Cell membrane",
-        "True nucleus",
         "Ribosomes entirely"
       ],
       "section": "Science",
@@ -444,9 +444,9 @@
       "question": "Meristematic tissues are:",
       "options": [
         "Actively dividing",
-        "Dead permanently always",
         "Only in animals",
-        "Non-living only"
+        "Non-living only",
+        "Dead permanently always"
       ],
       "section": "Science",
       "marks": 1
@@ -456,8 +456,8 @@
       "question": "Which is a cryptogam?",
       "options": [
         "Fern",
-        "Pine",
         "Mango",
+        "Pine",
         "Wheat"
       ],
       "section": "Science",
@@ -467,8 +467,8 @@
       "id": 39,
       "question": "Distance is a:",
       "options": [
-        "Scalar quantity",
         "Vector quantity",
+        "Scalar quantity",
         "Tensor only",
         "Dimensionless always"
       ],
@@ -480,9 +480,9 @@
       "question": "Newton’s first law is also called law of:",
       "options": [
         "Inertia",
-        "Action-reaction only",
         "Momentum only",
-        "Gravitation"
+        "Gravitation",
+        "Action-reaction only"
       ],
       "section": "Science",
       "marks": 1
@@ -491,10 +491,10 @@
       "id": 41,
       "question": "Value of g on Earth is approximately:",
       "options": [
-        "9.8 m/s²",
         "6.7 × 10⁻¹¹",
-        "3 × 10⁸",
-        "1.6 m/s² only"
+        "1.6 m/s² only",
+        "9.8 m/s²",
+        "3 × 10⁸"
       ],
       "section": "Science",
       "marks": 1
@@ -503,9 +503,9 @@
       "id": 42,
       "question": "SI unit of work is:",
       "options": [
+        "newton",
         "joule",
         "watt",
-        "newton",
         "pascal"
       ],
       "section": "Science",
@@ -516,9 +516,9 @@
       "question": "Sound needs a:",
       "options": [
         "Only light",
-        "Vacuum",
+        "Magnetic field only",
         "Material medium",
-        "Magnetic field only"
+        "Vacuum"
       ],
       "section": "Science",
       "marks": 1
@@ -527,10 +527,10 @@
       "id": 44,
       "question": "Antibiotics are effective against:",
       "options": [
-        "Bacteria",
-        "Genetic diseases only",
         "All viruses always",
-        "Fractures only"
+        "Genetic diseases only",
+        "Fractures only",
+        "Bacteria"
       ],
       "section": "Science",
       "marks": 1
@@ -539,10 +539,10 @@
       "id": 45,
       "question": "Which is a non-renewable resource?",
       "options": [
-        "Wind",
-        "Solar energy",
+        "Tidal energy",
         "Coal",
-        "Tidal energy"
+        "Solar energy",
+        "Wind"
       ],
       "section": "Science",
       "marks": 1
@@ -551,10 +551,10 @@
       "id": 46,
       "question": "An object of mass 2 kg is lifted to 5 m. Potential energy gained (g=10 m/s²) is:",
       "options": [
-        "100 J",
         "50 J",
         "20 J",
-        "10 J"
+        "10 J",
+        "100 J"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -563,9 +563,9 @@
       "id": 47,
       "question": "Number of moles in 36 g of water (M=18 g/mol) is:",
       "options": [
-        "0.5",
         "1",
         "2",
+        "0.5",
         "18"
       ],
       "section": "Achievers Section",
@@ -575,9 +575,9 @@
       "id": 48,
       "question": "Electronic configuration of sodium (Z=11) is:",
       "options": [
-        "2, 8, 1",
         "2, 8, 2",
         "2, 7, 2",
+        "2, 8, 1",
         "2, 8, 8"
       ],
       "section": "Achievers Section",
@@ -587,9 +587,9 @@
       "id": 49,
       "question": "A force of 10 N acts on 2 kg for 3 s from rest. Final velocity is:",
       "options": [
+        "10 m/s",
         "15 m/s",
         "5 m/s",
-        "10 m/s",
         "30 m/s"
       ],
       "section": "Achievers Section",
@@ -599,10 +599,10 @@
       "id": 50,
       "question": "Work done when a force of 5 N moves a body 3 m in direction of force is:",
       "options": [
-        "15 J",
+        "0 J",
         "8 J",
-        "2 J",
-        "0 J"
+        "15 J",
+        "2 J"
       ],
       "section": "Achievers Section",
       "marks": 3

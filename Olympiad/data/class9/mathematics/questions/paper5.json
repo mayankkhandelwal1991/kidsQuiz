@@ -11,10 +11,10 @@
       "id": 1,
       "question": "A is taller than B but shorter than C. D is shorter than B. Who is tallest?",
       "options": [
-        "B",
-        "A",
+        "D",
         "C",
-        "D"
+        "B",
+        "A"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -23,9 +23,9 @@
       "id": 2,
       "question": "Choose the correct option: If South-East becomes North, what does North-East become?",
       "options": [
-        "West",
         "North-West",
         "South",
+        "West",
         "East"
       ],
       "section": "Logical Reasoning",
@@ -35,10 +35,10 @@
       "id": 3,
       "question": "Select the best answer: How many distinct 3-digit numbers can be formed using the digits 2, 4 and 8 without repetition?",
       "options": [
-        "9",
-        "3",
         "6",
-        "1"
+        "3",
+        "1",
+        "9"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -49,8 +49,8 @@
       "options": [
         "8:20",
         "2:20",
-        "9:40",
-        "4:30"
+        "4:30",
+        "9:40"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -71,9 +71,9 @@
       "id": 6,
       "question": "If + means ×, × means −, − means ÷ and ÷ means +, then value of 8 + 4 − 2 × 3 ÷ 1 is:",
       "options": [
-        "14",
         "16",
         "12",
+        "14",
         "10"
       ],
       "section": "Logical Reasoning",
@@ -96,9 +96,9 @@
       "question": "Select the best answer: Find the odd one out: 2, 5, 10, 17, 26, 37, 50, 64",
       "options": [
         "64",
-        "50",
+        "26",
         "37",
-        "26"
+        "50"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -107,9 +107,9 @@
       "id": 9,
       "question": "Pick the right choice: In a row of 40 students, R is 11th from the left. What is R’s position from the right?",
       "options": [
+        "29th",
         "30th",
         "31st",
-        "29th",
         "28th"
       ],
       "section": "Logical Reasoning",
@@ -119,10 +119,10 @@
       "id": 10,
       "question": "Identify the correct statement: If the day before yesterday was Thursday, what day will it be the day after tomorrow?",
       "options": [
-        "Tuesday",
-        "Sunday",
         "Monday",
-        "Saturday"
+        "Saturday",
+        "Tuesday",
+        "Sunday"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -131,10 +131,10 @@
       "id": 11,
       "question": "Find the next term: 8, 10, 14, 20, 28, ?",
       "options": [
-        "38",
+        "32",
         "40",
         "36",
-        "32"
+        "38"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -143,10 +143,10 @@
       "id": 12,
       "question": "Choose the correct option: If PAPER is coded as QBQFS, how is PEN coded?",
       "options": [
-        "OEM",
-        "QDO",
+        "QFP",
         "QFO",
-        "QFP"
+        "OEM",
+        "QDO"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -167,9 +167,9 @@
       "id": 14,
       "question": "Pick the right choice: In a class, 17 play cricket, 15 play football, 9 play both. How many play only cricket?",
       "options": [
-        "9",
-        "17",
         "8",
+        "17",
+        "9",
         "10"
       ],
       "section": "Logical Reasoning",
@@ -179,10 +179,10 @@
       "id": 15,
       "question": "Identify the correct statement: Which does not belong to the group?",
       "options": [
-        "Square",
-        "Rectangle",
         "Rhombus",
-        "Circle"
+        "Square",
+        "Circle",
+        "Rectangle"
       ],
       "section": "Logical Reasoning",
       "marks": 1
@@ -191,10 +191,10 @@
       "id": 16,
       "question": "Which of the following is an irrational number?",
       "options": [
-        "√2",
-        "4/9",
+        "√9",
         "0.25",
-        "√9"
+        "√2",
+        "4/9"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -203,10 +203,10 @@
       "id": 17,
       "question": "Choose the correct option: Value of (√(8))² ÷ 2 is:",
       "options": [
-        "4",
-        "8",
         "2",
-        "6"
+        "4",
+        "6",
+        "8"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -215,10 +215,10 @@
       "id": 18,
       "question": "Select the best answer: Between which two integers does √50 lie?",
       "options": [
-        "7 and 8",
+        "5 and 6",
         "8 and 9",
         "6 and 7",
-        "5 and 6"
+        "7 and 8"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -227,9 +227,9 @@
       "id": 19,
       "question": "Pick the right choice: Degree of the polynomial 5x³ − 2x² + 7 is:",
       "options": [
+        "1",
         "3",
         "2",
-        "1",
         "0"
       ],
       "section": "Mathematical Reasoning",
@@ -239,10 +239,10 @@
       "id": 20,
       "question": "Identify the correct statement: If p(x) = x² − 5x + 6, then p(2) =",
       "options": [
-        "0",
         "4",
-        "2",
-        "−2"
+        "0",
+        "−2",
+        "2"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -253,8 +253,8 @@
       "options": [
         "−2 and −3",
         "1 and 6",
-        "2 and 3",
-        "0 and 5"
+        "0 and 5",
+        "2 and 3"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -263,10 +263,10 @@
       "id": 22,
       "question": "Choose the correct option: (x + 2)(x + 4) expanded is:",
       "options": [
-        "x² + 6x + 8",
-        "x² − 6x + 8",
         "x² + 8x + 6",
-        "x² + 6x − 8"
+        "x² + 6x − 8",
+        "x² + 6x + 8",
+        "x² − 6x + 8"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -275,8 +275,8 @@
       "id": 23,
       "question": "Select the best answer: The point (8, 0) lies on the:",
       "options": [
-        "origin only",
         "y-axis",
+        "origin only",
         "x-axis",
         "line x = y only always"
       ],
@@ -287,10 +287,10 @@
       "id": 24,
       "question": "Pick the right choice: Abscissa of the point (5, −3) is:",
       "options": [
-        "5",
+        "−5",
         "−3",
         "0",
-        "−5"
+        "5"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -299,10 +299,10 @@
       "id": 25,
       "question": "Identify the correct statement: Distance of point (9, 0) from the origin is:",
       "options": [
-        "0",
         "10",
-        "9",
-        "18"
+        "0",
+        "18",
+        "9"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -312,9 +312,9 @@
       "question": "x = 2, y = 3 is a solution of:",
       "options": [
         "x + y = 5",
+        "x + 2y = 3",
         "x − y = 5",
-        "2x + y = 3",
-        "x + 2y = 3"
+        "2x + y = 3"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -325,8 +325,8 @@
       "options": [
         "(0, 2)",
         "(0, 3)",
-        "(3, 0)",
-        "(2, 0)"
+        "(2, 0)",
+        "(3, 0)"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -335,10 +335,10 @@
       "id": 28,
       "question": "Select the best answer: The sum of the angles of a triangle is:",
       "options": [
-        "180°",
-        "90°",
+        "270°",
         "360°",
-        "270°"
+        "90°",
+        "180°"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -359,10 +359,10 @@
       "id": 30,
       "question": "Identify the correct statement: In ΔABC, if ∠A = 50° and ∠B = 60°, then ∠C =",
       "options": [
-        "60°",
         "80°",
         "70°",
-        "50°"
+        "50°",
+        "60°"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -371,10 +371,10 @@
       "id": 31,
       "question": "A triangle with sides 3 cm, 4 cm, 5 cm is:",
       "options": [
-        "Right-angled",
-        "Equilateral",
         "Obtuse-angled",
-        "Isosceles only non-right"
+        "Isosceles only non-right",
+        "Equilateral",
+        "Right-angled"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -383,8 +383,8 @@
       "id": 32,
       "question": "Choose the correct option: The sum of interior angles of a quadrilateral is:",
       "options": [
-        "540°",
         "180°",
+        "540°",
         "360°",
         "90°"
       ],
@@ -395,10 +395,10 @@
       "id": 33,
       "question": "Select the best answer: Area of a parallelogram with base 11 cm and height 5 cm is:",
       "options": [
-        "55 cm²",
-        "22 cm²",
+        "25 cm²",
         "16 cm²",
-        "25 cm²"
+        "55 cm²",
+        "22 cm²"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -408,9 +408,9 @@
       "question": "Pick the right choice: Area of a triangle with sides 7 cm, 15 cm and 20 cm (Heron’s formula) is:",
       "options": [
         "36 cm²",
+        "84 cm²",
         "48 cm²",
-        "42 cm²",
-        "84 cm²"
+        "42 cm²"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -419,10 +419,10 @@
       "id": 35,
       "question": "Identify the correct statement: Curved surface area of a right circular cylinder of radius 7 cm and height 8 cm is (use π = 22/7):",
       "options": [
-        "352 cm²",
         "176 cm²",
-        "112 cm²",
-        "56 cm²"
+        "352 cm²",
+        "56 cm²",
+        "112 cm²"
       ],
       "section": "Mathematical Reasoning",
       "marks": 1
@@ -431,10 +431,10 @@
       "id": 36,
       "question": "Remainder when x³ + 3x² + 3x + 1 is divided by x + 1 is:",
       "options": [
-        "−1",
         "1",
         "0",
-        "2"
+        "2",
+        "−1"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -443,9 +443,9 @@
       "id": 37,
       "question": "Choose the correct option: Solve: x + y = 12 and x − y = 4. The value of x is:",
       "options": [
-        "8",
-        "4",
         "12",
+        "6",
+        "8",
         "4"
       ],
       "section": "Achievers Section",
@@ -455,10 +455,10 @@
       "id": 38,
       "question": "Select the best answer: Area of an equilateral triangle of side 4 cm is:",
       "options": [
-        "4√3 cm²",
-        "16√3 cm²",
         "8√3 cm²",
-        "2√3 cm²"
+        "4√3 cm²",
+        "2√3 cm²",
+        "16√3 cm²"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -469,8 +469,8 @@
       "options": [
         "1232 cm³",
         "1056 cm³",
-        "1540 cm³",
-        "616 cm³"
+        "616 cm³",
+        "1540 cm³"
       ],
       "section": "Achievers Section",
       "marks": 3
@@ -479,10 +479,10 @@
       "id": 40,
       "question": "Identify the correct statement: The mean of 5 observations is 12. If one observation 8 is excluded, the mean of remaining is:",
       "options": [
-        "13",
-        "12",
         "11",
-        "10"
+        "12",
+        "10",
+        "13"
       ],
       "section": "Achievers Section",
       "marks": 3

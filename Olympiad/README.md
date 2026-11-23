@@ -66,3 +66,5 @@ The included questions are **original SOF-pattern practice** aligned to the 2023
 **Visible classes:** only Class 1–5 are shown for now. Class 6–10 are marked `"hidden": true` in `data/config.json` (data kept) — remove that flag to show them again. A subject with a `"classes"` list in config only appears for those classes.
 
 To replace any paper, edit its questions JSON and answer JSON. The HTML/JS does not need to change as long as the JSON schema remains the same.
+
+**Checking papers** — after running any `tools/generate-*.js`, run `node tools/check-papers.js --balance`. It reports missing/out-of-range answers and duplicate options, and spreads correct answers evenly over A–D in any paper where more than half the answers sit on one option.

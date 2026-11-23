@@ -26,7 +26,8 @@ const G = KQ3D.init({
   onReset: (b) => reset(b)
 });
 const C = KQ3D.canvas(G.scene), ctx = C.ctx;
-let ballType = G.choice || BALLS[0], cans = [], shelves = [], ball = null, drag = null, level, throws, score, knocked, waitT, clearing, bits = [];
+let ballType = G.choice || BALLS[0], cans = [], shelves = [], ball = null, drag = null, level, throws, score, knocked, waitT, clearing, bits = [], settleT = 0;
+const LAST_LEVEL = LEVELS.length * 2; // every layout twice (2nd round on higher shelves), then you win
 const CW = 30, CH = 40, GRAV = 1400;
 const gY = () => C.h - 120;
 const launch = () => ({ x: Math.max(70, C.w * 0.14), y: gY() - 110 });
@@ -38,9 +39,9 @@ function loadLevel() {
   cans = [];
   L.stacks.forEach(([si, rows]) => {
     const s = shelves[si], mid = (s.x0 + s.x1) / 2;
-    rows.forEach((n, r) => { for (let i = 0; i < n; i++) cans.push({ x: mid + (i - (n - 1) / 2) * (CW + 2), y: s.top - CH / 2 - r * CH, vx: 0, vy: 0, rot: 0, vr: 0, sleep: true, out: false, col: CAN_COL[(r + i + si) % CAN_COL.length] }); });
+    rows.forEach((n, r) => { for (let i = 0; i < n; i++) cans.push({ home: s.top, x: mid + (i - (n - 1) / 2) * (CW + 2), y: s.top - CH / 2 - r * CH, vx: 0, vy: 0, rot: 0, vr: 0, sleep: true, out: false, col: CAN_COL[(r + i + si) % CAN_COL.length] }); });
   });
-  throws = 5; knocked = 0; ball = null; waitT = 0; clearing = false;
+  throws = 5; knocked = 0; ball = null; waitT = 0; clearing = false; settleT = 0;
   G.hudSet('balls', throws); G.hudSet('lvl', level);
   const hi = document.querySelector('#k3h_balls img'); if (hi) hi.src = KQ3D.emojiFile(ballType.icon);
 }
@@ -50,7 +51,7 @@ window.addEventListener('pointermove', (e) => { if (!drag) return; const r = C.c
 window.addEventListener('pointerup', () => {
   if (!drag) return; const v = vel(drag); drag = null;
   if (Math.hypot(v.x, v.y) < 200) return;
-  const L0 = launch(); ball = { x: L0.x, y: L0.y, vx: v.x, vy: v.y, r: ballType.r, rest: 0 };
+  const L0 = launch(); ball = { x: L0.x, y: L0.y, vx: v.x, vy: v.y, r: ballType.r, rest: 0, age: 0 };
   throws--; G.hudSet('balls', throws); KQ3D.sfx('whoosh');
 });
 function vel(d) {
@@ -75,6 +76,8 @@ function physics(dt) {
     shelves.forEach((s) => { if (c.vy > 0 && bottom > s.top && bottom - c.vy * dt <= s.top + 2 && c.x > s.x0 - CW * 0.3 && c.x < s.x1 + CW * 0.3) { c.y = s.top - CH / 2; c.vy *= -0.15; c.vx *= 0.96; c.vr *= 0.8; } });
     if (bottom > gY()) { c.y = gY() - CH / 2; c.vy *= -0.25; c.vx *= 0.8; c.vr *= 0.6; if (!c.out) { c.out = true; scoreCan(c); } }
     if ((c.x < -40 || c.x > C.w + 40) && !c.out) { c.out = true; scoreCan(c); }
+    // fell off its own shelf (onto a lower shelf or onto other fallen cans) = knocked down
+    if (!c.out && bottom > c.home + 20) { c.out = true; scoreCan(c); }
     if (Math.abs(c.vx) < 8 && Math.abs(c.vy) < 8 && supported(c)) { c.sleep = true; c.vx = c.vy = 0; c.vr = 0; c.rot *= 0.5; }
   });
   // can vs can
@@ -106,7 +109,8 @@ function physics(dt) {
       }
     });
     if (Math.hypot(ball.vx, ball.vy) < 40) ball.rest += dt;
-    if (ball.x > C.w + 60 || ball.x < -60 || ball.rest > 0.6 || ball.y > C.h + 50) { ball = null; waitT = 1.2; }
+    ball.age += dt;
+    if (ball.x > C.w + 60 || ball.x < -60 || ball.rest > 0.6 || ball.y > C.h + 50 || ball.age > 5) { ball = null; waitT = 1.2; }
   }
 }
 function scoreCan(c) {
@@ -119,12 +123,17 @@ function check(dt) {
     clearing = true; const bonus = throws * 20; score += bonus; G.score(score); KQ3D.sfx('win');
     G.pop('Level clear! ' + (bonus ? '+' + bonus + ' bonus' : ''), null, C.h * 0.35, '#fde047');
     try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {}
+    if (level >= LAST_LEVEL) {
+      setTimeout(() => { if (G.state === 'play' || G.state === 'pause') G.over({ score, title: 'You cleared every shelf! 🏆', lines: ['🎪 All ' + LAST_LEVEL + ' levels done', '⚽ Bonus balls: +' + bonus] }); }, 1600);
+      return;
+    }
     setTimeout(() => { if (G.state === 'play' || G.state === 'pause') { level++; loadLevel(); } }, 1600);
     return;
   }
   if (!ball && throws <= 0) {
     waitT -= dt;
-    if (waitT <= 0 && cans.every((c) => c.sleep || c.out)) G.over({ score, title: 'Out of balls!', lines: ['🎪 Level ' + level, '🥫 ' + cans.filter((c) => !c.out).length + ' cans left'] });
+    if (waitT <= 0) settleT += dt;
+    if (waitT <= 0 && (cans.every((c) => c.sleep || c.out) || settleT > 3)) G.over({ score, title: 'Out of balls!', lines: ['🎪 Level ' + level, '🥫 ' + cans.filter((c) => !c.out).length + ' cans left'] });
   }
 }
 

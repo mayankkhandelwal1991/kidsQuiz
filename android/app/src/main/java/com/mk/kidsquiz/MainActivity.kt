@@ -273,14 +273,25 @@ class MainActivity : ComponentActivity() {
             WebView.setWebContentsDebuggingEnabled(true)
         }
 
+        // ==================================================
+        // ADMOB FOR A CHILDREN'S APP (Google Play Families policy + COPPA/GDPR)
+        // Set BEFORE initialize() and before any ad is requested, so every
+        // request carries these settings:
+        //  - child-directed (COPPA): no personalised ads, no interest-based
+        //    targeting or remarketing, only Families-certified ad sources
+        //  - under the age of consent (GDPR / EEA)
+        //  - only G-rated ads ("general audiences")
+        // The advertising ID permission is removed in AndroidManifest.xml, and
+        // Firebase Analytics doesn't collect it either.
+        // ==================================================
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTagForChildDirectedTreatment(RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE)
+                .setTagForUnderAgeOfConsent(RequestConfiguration.TAG_FOR_UNDER_AGE_OF_CONSENT_TRUE)
+                .setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_G)
+                .build()
+        )
         MobileAds.initialize(this)
-        val requestConfiguration = RequestConfiguration.Builder()
-            .setTagForChildDirectedTreatment(
-                RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE
-            )
-            .build()
-
-        MobileAds.setRequestConfiguration(requestConfiguration)
 
         // Read-aloud voice for the web pages (Android.speak)
         tts = TextToSpeech(this) { status ->

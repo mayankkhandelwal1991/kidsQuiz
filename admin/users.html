@@ -428,7 +428,9 @@
     offline: { enabled: false },
     share: { enabled: true },
     app: { hideLeaderboardFab: true },
-    ads: { banner: true, interstitial: true, everyN: 2, minGapSec: 60, quit: true, quitGapSec: 90 }
+    ads: { banner: true, interstitial: true, everyN: 2, minGapSec: 60, quit: true, quitGapSec: 90 },
+    rating: { enabled: true, afterN: 3, repeatDays: 30 },
+    update: { mandatory: false, minVersionCode: 0, message: 'A new version of Kids Quiz is ready with new games and fixes. Please update to keep playing.' }
   };
   const merge = (a, b) => { const o = JSON.parse(JSON.stringify(a)); Object.keys(b || {}).forEach((k) => { o[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k])) ? Object.assign({}, o[k] || {}, b[k]) : b[k]; }); return o; };
   const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -452,6 +454,18 @@
       h += '<div class="tool"><h3>📤 Sharing &amp; buttons</h3>' +
         chk('sShare', c.share.enabled, 'Show "Share my score" on game results', 'Makes a picture of the score and opens the share sheet (WhatsApp, Instagram…).') +
         chk('aFab', c.app.hideLeaderboardFab, 'Hide the floating 🏆 Leaderboard button inside the app', 'The app\'s own Rank tab and result buttons are used instead.') + '</div>';
+      const up = c.update;
+      h += '<div class="tool"><h3>🔄 App update</h3><p>Make installed apps update before they can be used.</p>' +
+        chk('upOn', up.mandatory, 'Update is mandatory', 'Off: nobody sees an update popup. On: phones with an older version get Google Play\'s full-screen update screen (or, if Play can\'t do it, an “Update needed” box that only opens the Play Store) and can\'t play until they update.') +
+        '<div class="row" style="margin:4px 0 0 28px">Minimum version code ' + num('upMin', up.minVersionCode, 0) +
+        '<span class="muted" style="font-size:13px">the Play Console “version code” (1.0.12 = 13). 0 = any newer version on Google Play.</span></div>' +
+        '<div class="row" style="margin-top:8px">Message ' + txt('upMsg', up.message, CFG_DEFAULT.update.message) + '</div>' +
+        '<p class="muted" style="font-size:13px;margin:8px 0 0">Turn it on only after the new version is live on Google Play, so the update is there for them to install.</p></div>';
+      const rt = c.rating;
+      h += '<div class="tool"><h3>⭐ Play Store rating (Android app)</h3><p>Google\'s own star-rating sheet, shown inside the app (no trip to the Play Store).</p>' +
+        chk('rtOn', rt.enabled, 'Ask for a rating') +
+        '<div class="row" style="margin:4px 0 0 28px">after ' + num('rtN', rt.afterN, 1) + ' finished quizzes/games, then again after at least ' + num('rtDays', rt.repeatDays, 0) + ' days</div>' +
+        '<p class="muted" style="font-size:13px;margin:8px 0 0">Never on top of a full-screen ad. Google limits how often each person sees it, so it may not appear every time.</p></div>';
       h += '<div class="tool"><h3>💰 Ads (Android app)</h3>' +
         chk('adBanner', a.banner, 'Bottom banner ad') +
         chk('adInt', a.interstitial, 'Full-screen ad after finished games / quizzes') +
@@ -473,6 +487,8 @@
           offline: { enabled: v('oOff').checked },
           share: { enabled: v('sShare').checked },
           app: { hideLeaderboardFab: v('aFab').checked },
+          update: { mandatory: v('upOn').checked, minVersionCode: n('upMin', 0, 0), message: v('upMsg').value.trim() || CFG_DEFAULT.update.message },
+          rating: { enabled: v('rtOn').checked, afterN: n('rtN', 3, 1), repeatDays: n('rtDays', 30, 0) },
           ads: { banner: v('adBanner').checked, interstitial: v('adInt').checked, everyN: n('adN', 2, 1), minGapSec: n('adGap', 60, 0), quit: v('adQuit').checked, quitGapSec: n('adQGap', 90, 0) },
           updatedAt: Date.now()
         };

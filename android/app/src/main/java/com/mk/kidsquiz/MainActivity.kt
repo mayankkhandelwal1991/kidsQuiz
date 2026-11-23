@@ -135,9 +135,94 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission()
     ) { granted -> if (granted) Reminders.schedule(this) }
 
+    // ==================================================
+    // MANDATORY UPDATE (Admin console -> App settings -> App update)
+    // Only when the admin marks the update as mandatory AND this install is
+    // older than the minimum version (or, with no minimum set, Play reports a
+    // newer version). Otherwise nothing is shown.
+    // Google Play's full-screen "IMMEDIATE" update first; if Play can't do it
+    // (e.g. not installed from Play), a dialog that only leads to the Play Store.
+    // ==================================================
+    private val appUpdateManager by lazy { com.google.android.play.core.appupdate.AppUpdateManagerFactory.create(this) }
+    private var updateDialog: AlertDialog? = null
+    private val updateLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        // Mandatory: closing Google's update screen doesn't let them in.
+        if (result.resultCode != RESULT_OK) checkMandatoryUpdate(AppConfig.load(this))
+    }
+
+    private fun installedVersionCode(): Long = try {
+        val pi = packageManager.getPackageInfo(packageName, 0)
+        if (Build.VERSION.SDK_INT >= 28) pi.longVersionCode else @Suppress("DEPRECATION") pi.versionCode.toLong()
+    } catch (e: Exception) { Long.MAX_VALUE }
+
+    private fun checkMandatoryUpdate(cfg: JSONObject) {
+        val u = AppConfig.update(cfg)
+        if (!u.mandatory) { updateDialog?.dismiss(); updateDialog = null; return }
+        val current = installedVersionCode()
+        if (u.minVersionCode > 0 && current >= u.minVersionCode) { updateDialog?.dismiss(); updateDialog = null; return }
+        appUpdateManager.appUpdateInfo.addOnCompleteListener { task ->
+            val info = if (task.isSuccessful) task.result else null
+            val avail = info?.updateAvailability()
+            val playCanUpdate = info != null &&
+                (avail == com.google.android.play.core.install.model.UpdateAvailability.UPDATE_AVAILABLE ||
+                 avail == com.google.android.play.core.install.model.UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) &&
+                info.isUpdateTypeAllowed(com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE)
+            if (playCanUpdate) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                        info!!, updateLauncher,
+                        com.google.android.play.core.appupdate.AppUpdateOptions.newBuilder(
+                            com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
+                        ).build()
+                    )
+                    return@addOnCompleteListener
+                } catch (e: Exception) {
+                    Log.w("KidsQuizUpdate", "immediate update failed", e)
+                }
+            }
+            // No minimum set and Play says there's nothing newer: nothing to force.
+            if (u.minVersionCode <= 0 && avail != com.google.android.play.core.install.model.UpdateAvailability.UPDATE_AVAILABLE) return@addOnCompleteListener
+            showUpdateDialog(u.message)
+        }
+    }
+
+    private fun showUpdateDialog(message: String) {
+        if (updateDialog?.isShowing == true || isFinishing) return
+        updateDialog = AlertDialog.Builder(this)
+            .setTitle("Update needed")
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("Update now", null)
+            .create().apply {
+                setOnShowListener {
+                    // Keep the dialog open: the button only opens the Play Store.
+                    getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { openPlayListing() }
+                }
+                show()
+            }
+    }
+
+    private fun openPlayListing() {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")).apply {
+                setPackage("com.android.vending"); addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        } catch (e: ActivityNotFoundException) {
+            openUrl("https://play.google.com/store/apps/details?id=$packageName")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkMandatoryUpdate(AppConfig.load(this))   // came back from the Play Store / Google's update screen
+    }
+
     private fun applyConfig(cfg: JSONObject, fromNetwork: Boolean) {
         offlineAllowed = AppConfig.offlineAllowed(cfg)
         bannerOn = AppConfig.bannerOn(cfg)
+        if (fromNetwork) checkMandatoryUpdate(cfg)
         Reminders.schedule(this)
         if (fromNetwork) sendToPage("window.onAppConfig && window.onAppConfig(" + cfg.toString() + ")")
         maybeAskNotificationPermission(cfg)
@@ -792,14 +877,35 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun showRatingPrompt() {
-        AlertDialog.Builder(this)
-            .setTitle("Enjoying Kids Quiz?")
-            .setMessage("Your rating helps us create more fun learning games for kids!")
-            .setPositiveButton("Rate on Google Play") { _, _ -> rateApp() }
-            .setNegativeButton("Not now", null)
-            .show()
+    // ==================================================
+    // NATIVE PLAY RATING (Google Play In-App Review)
+    // The star-rating sheet appears inside the app - no trip to the Play Store.
+    // The page decides WHEN (after N finished quizzes/games, set in the admin
+    // console); Google decides whether it actually shows (it limits how often a
+    // person sees it, and it never shows in a sideloaded/debug install).
+    // ==================================================
+    private val reviewManager by lazy { com.google.android.play.core.review.ReviewManagerFactory.create(this) }
+    private var reviewInProgress = false
+
+    private fun requestReview() {
+        if (reviewInProgress) return
+        reviewInProgress = true
+        reviewManager.requestReviewFlow().addOnCompleteListener { req ->
+            if (req.isSuccessful) {
+                reviewManager.launchReviewFlow(this, req.result).addOnCompleteListener {
+                    reviewInProgress = false
+                    Log.d("KidsQuizReview", "review flow finished")
+                    sendToPage("window.onReviewDone && window.onReviewDone()")
+                }
+            } else {
+                reviewInProgress = false
+                Log.w("KidsQuizReview", "requestReviewFlow failed", req.exception)
+            }
+        }
     }
+
+    // Older pages call showRatingPrompt(): use the native sheet now.
+    private fun showRatingPrompt() = requestReview()
 
     // ==================================================
     // OPEN EXTERNAL URL  (ADDED)
@@ -1297,6 +1403,13 @@ class MainActivity : ComponentActivity() {
             runOnUiThread {
                 this@MainActivity.showRatingPrompt()
             }
+        }
+
+        // Native Play rating sheet (In-App Review).
+        // Usage in JS:  Android.requestReview();
+        @JavascriptInterface
+        fun requestReview() {
+            runOnUiThread { this@MainActivity.requestReview() }
         }
 
         // ==================================================

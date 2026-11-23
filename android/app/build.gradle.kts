@@ -67,6 +67,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
     implementation("com.google.android.play:app-update-ktx:2.1.0")
+    // Google Play In-App Review: the native star-rating sheet inside the app
+    implementation("com.google.android.play:review-ktx:2.0.2")
 
     // In dependencies block
     implementation("com.google.firebase:firebase-messaging-ktx:24.1.0")

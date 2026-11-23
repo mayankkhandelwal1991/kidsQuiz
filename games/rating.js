@@ -5,6 +5,9 @@ window.KQRating = window.KQRating || (function () {
   };
 
   function onComplete() {
+    // Newer pages: the shared rule in kq-leaderboard.js (KQ.adBreak -> native Play
+    // rating sheet after N finishes, set in the admin console) handles this.
+    if (window.KQ && KQ.adBreak) return;
     try {
       if (localStorage.getItem('kq_ratingPromptShown') === '1') return;
       var count = (+(localStorage.getItem('kq_ratingCompletionCount') || 0)) + 1;

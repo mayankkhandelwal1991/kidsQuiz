@@ -508,7 +508,34 @@
       quitGapMs: Math.max(0, (a.quitGapSec != null ? +a.quitGapSec : AD_RULES.quitMinGapMs / 1000) * 1000)
     };
   }
+  // A finished quiz/game/paper/match ('complete') or leaving early ('quit').
   function adBreak(reason) {
+    var shown = adBreakAd(reason);
+    if (reason !== "quit") { try { maybeAskReview(shown); } catch (e) {} }
+    return shown;
+  }
+
+  /* ---- Native Play rating sheet (Google In-App Review) --------------------
+     After N finished quizzes/games (admin: App settings -> Rating, default 3)
+     the app shows Google's star-rating sheet inside the app. Not on top of a
+     full-screen ad (waits for the next finish), then waits repeatDays before
+     asking again. Google also limits how often a person actually sees it. */
+  function maybeAskReview(adShown) {
+    if (typeof Android === "undefined" || !Android || typeof Android.requestReview !== "function") return;
+    var r = (APP_CFG && APP_CFG.rating) || {};
+    if (r.enabled === false) return;
+    var afterN = Math.max(1, +r.afterN || 3), repeatDays = r.repeatDays != null ? Math.max(0, +r.repeatDays) : 30;
+    var n = (+(localStorage.getItem("kq_review_n") || 0)) + 1;
+    localStorage.setItem("kq_review_n", n);
+    var last = +(localStorage.getItem("kq_review_last") || 0);
+    if (n < afterN || adShown) return;
+    if (last && Date.now() - last < repeatDays * 86400000) return;
+    localStorage.setItem("kq_review_n", 0);
+    localStorage.setItem("kq_review_last", Date.now());
+    setTimeout(function () { try { Android.requestReview(); } catch (e) {} }, 2500); // after the result screen + animation
+  }
+
+  function adBreakAd(reason) {
     try {
       if (typeof Android === "undefined" || !Android || typeof Android.showAd !== "function") return false;
       var rule = adRules(); if (!rule.on) return false;

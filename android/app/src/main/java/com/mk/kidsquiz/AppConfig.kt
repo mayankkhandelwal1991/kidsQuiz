@@ -21,7 +21,9 @@ import java.net.URL
  *   "offline":  { "enabled": false },          // allow playing without internet
  *   "share":    { "enabled": true },           // "Share score" picture button
  *   "app":      { "hideLeaderboardFab": true },// hide floating 🏆 inside the app
- *   "ads":      { "banner": true, "everyN": 2, "minGapSec": 60, "quit": true }
+ *   "ads":      { "banner": true, "everyN": 2, "minGapSec": 60, "quit": true },
+ *   "rating":   { "enabled": true, "afterN": 3, "repeatDays": 30 },  // (used by the page)
+ *   "update":   { "mandatory": false, "minVersionCode": 0, "message": "..." }
  * }
  */
 object AppConfig {
@@ -90,6 +92,19 @@ object AppConfig {
 
     fun offlineAllowed(cfg: JSONObject): Boolean =
         cfg.optJSONObject("offline")?.optBoolean("enabled", false) ?: false
+
+    data class Update(val mandatory: Boolean, val minVersionCode: Long, val message: String)
+
+    fun update(cfg: JSONObject): Update {
+        val u = cfg.optJSONObject("update") ?: JSONObject()
+        return Update(
+            mandatory = u.optBoolean("mandatory", false),
+            minVersionCode = u.optLong("minVersionCode", 0L),
+            message = u.optString("message", "").ifBlank {
+                "A new version of Kids Quiz is ready with new games and fixes. Please update to keep playing."
+            }
+        )
+    }
 
     fun bannerOn(cfg: JSONObject): Boolean =
         cfg.optJSONObject("ads")?.optBoolean("banner", true) ?: true

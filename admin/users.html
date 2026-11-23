@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Kids Quiz Admin – Players</title>
+<title>Kids Quiz Admin Console</title>
 <!--
   Admin portal: every player (Google + guest) from Firebase, with their scores,
   plays and time played, and deletion of a player's data.
@@ -85,6 +85,44 @@
   .confirm-in { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; margin-top: 6px; }
   .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-weight: 600; display: none; z-index: 30; max-width: calc(100% - 32px); }
   .err { color: var(--danger); font-weight: 600; }
+  /* charts: validated categorical slots 1-4 (sections), light + dark steps */
+  :root { --s-quiz: #2a78d6; --s-single: #eb6834; --s-multi: #1baf7a; --s-olympiad: #eda100; --s-one: #2a78d6; --grid: #ecebf5; --axis: #6b7280; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --s-quiz: #3987e5; --s-single: #d95926; --s-multi: #199e70; --s-olympiad: #c98500; --s-one: #3987e5; --grid: #2c2948; --axis: #a3a1c2; }
+  }
+  .tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .tabs button { border-radius: 999px; }
+  .tabs button.on { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+  .charts { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 980px) { .charts { grid-template-columns: 1fr 1fr; } .charts .wide { grid-column: 1 / -1; } }
+  .chart { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 14px 10px; position: relative; min-width: 0; }
+  .chart h3 { margin: 0; font-size: 15px; }
+  .chart .sub { color: var(--muted); font-size: 12.5px; margin: 2px 0 8px; }
+  .chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .chart svg text { fill: var(--axis); font: 11px system-ui, sans-serif; }
+  .chart .gl { stroke: var(--grid); stroke-width: 1; }
+  .chart .hit { fill: transparent; cursor: crosshair; }
+  .chart .hit:hover { fill: color-mix(in srgb, var(--ink) 6%, transparent); }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; color: var(--muted); margin: 4px 0 2px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .chart details { margin-top: 6px; font-size: 13px; }
+  .chart details summary { cursor: pointer; color: var(--muted); }
+  .chart details table { margin-top: 6px; font-size: 12.5px; }
+  .chart details td, .chart details th { padding: 4px 8px; }
+  .vtip { position: fixed; pointer-events: none; z-index: 40; background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 12.5px; box-shadow: 0 8px 24px rgba(0,0,0,.18); display: none; min-width: 130px; }
+  .vtip b { display: block; margin-bottom: 4px; }
+  .vtip .r { display: flex; justify-content: space-between; gap: 12px; }
+  .vtip .r i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; }
+  .hbar { display: grid; grid-template-columns: minmax(110px, 38%) 1fr auto; gap: 8px; align-items: center; font-size: 13px; padding: 4px 0; }
+  .hbar .lab { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hbar .tr { height: 14px; border-radius: 0 4px 4px 0; min-width: 2px; }
+  .hbar .v { font-variant-numeric: tabular-nums; color: var(--muted); }
+  .tool { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+  .tool h3 { margin: 0 0 4px; font-size: 16px; }
+  .tool p { margin: 0 0 10px; color: var(--muted); }
+  .tool .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .tool input[type=number], .tool select { padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; }
+  .tool input[type=number] { width: 90px; }
   @media (max-width: 760px) {
     .hide-sm { display: none; }
     th, td { padding: 8px 6px; }
@@ -94,7 +132,7 @@
 <body>
 <header>
   <div class="bar">
-    <h1>👥 Kids Quiz Admin · Players</h1>
+    <h1>⚙️ Kids Quiz Admin Console</h1>
     <div class="who" id="who"></div>
   </div>
 </header>
@@ -177,12 +215,13 @@
 
   /* ---------- data ---------- */
   let PLAYERS = [], BYKEY = new Map();
-  const S = { q: '', type: 'all', sort: 'last', sel: new Set() };
+  const S = { q: '', type: 'all', sort: 'last', sel: new Set(), tab: 'dash', range: 30 };
+  let RAW = { lb: {}, ses: {}, att: {} };
 
   function load() {
     $app.innerHTML = '<div class="card center"><p class="muted">Loading players from Firebase…</p></div>';
     Promise.all(['leaderboards', 'sessions', 'attempts'].map((n) => db.ref(n).once('value').then((s) => s.val() || {})))
-      .then(([lb, ses, att]) => { build(lb, ses, att); render(); })
+      .then(([lb, ses, att]) => { RAW = { lb, ses, att }; build(lb, ses, att); render(); })
       .catch((e) => { $app.innerHTML = '<div class="card center"><p class="err">Could not load: ' + esc(e.message) + '</p><button id="rt">Retry</button></div>'; document.getElementById('rt').onclick = load; });
   }
   function player(key) {
@@ -243,7 +282,206 @@
       time: (a, b) => b.time - a.time, name: (a, b) => a.name.localeCompare(b.name), first: (a, b) => b.first - a.first }[S.sort];
     return list.sort(by);
   }
+  function tabsHtml() {
+    return '<div class="tabs" role="tablist">' + [['dash', '📊 Dashboard'], ['players', '👥 Players'], ['tools', '🛠 Tools']].map(([v, l]) =>
+      '<button role="tab" data-tab="' + v + '" class="' + (S.tab === v ? 'on' : '') + '">' + l + '</button>').join('') + '</div>';
+  }
+  function bindTabs() { $app.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => { S.tab = b.dataset.tab; render(); window.scrollTo(0, 0); }); }
   function render() {
+    if (S.tab === 'dash') return renderDash();
+    if (S.tab === 'tools') return renderTools();
+    return renderPlayers();
+  }
+
+  /* ---------- dashboard ---------- */
+  const DAY = 86400000;
+  const SEC = [['quiz', 'Quiz'], ['single', 'Games'], ['multi', 'Multiplayer'], ['olympiad', 'Olympiad']];
+  const dayKey = (t) => { const d = new Date(t); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
+  const dayLabel = (t) => new Date(t).toLocaleDateString([], { day: 'numeric', month: 'short' });
+  const prettyGame = (id) => String(id || '').replace(/__p(\d+)$/, ' · paper $1').replace(/__/g, ' · ').replace(/_/g, ' ');
+
+  function dashData() {
+    const n = S.range, today0 = new Date(); today0.setHours(0, 0, 0, 0);
+    const start = today0.getTime() - (n - 1) * DAY;
+    const days = [], idx = {};
+    for (let i = 0; i < n; i++) { const t = start + i * DAY; idx[dayKey(t)] = i; days.push({ t, active: new Set(), fresh: 0, plays: { quiz: 0, single: 0, multi: 0, olympiad: 0 }, secs: 0 }); }
+    const at = (t) => (t >= start ? idx[dayKey(t)] : undefined);
+    const hours = new Array(24).fill(0), games = new Map(), activeAll = new Set();
+    let plays = 0, secs = 0;
+    PLAYERS.forEach((p) => {
+      const fi = at(p.first); if (fi != null) days[fi].fresh++;
+      p.sessions.forEach((x) => { const i = at(x.start); if (i == null) return; days[i].active.add(p.key); days[i].secs += x.dur || 0; secs += x.dur || 0; activeAll.add(p.key); hours[new Date(x.start).getHours()]++; });
+      p.attempts.forEach((a) => {
+        const i = at(a.at); if (i == null) return;
+        days[i].active.add(p.key); activeAll.add(p.key); plays++;
+        if (days[i].plays[a.cat] != null) days[i].plays[a.cat]++;
+        const k = a.cat + '/' + a.game, g = games.get(k) || { cat: a.cat, name: a.title || prettyGame(a.game), n: 0, players: new Set() };
+        g.n++; g.players.add(p.key); games.set(k, g);
+      });
+    });
+    return { days, hours, plays, secs, activeAll, start, top: [...games.values()].sort((a, b) => b.n - a.n).slice(0, 12) };
+  }
+
+  const tip = (() => { let el = null; return {
+    show(html, e) { if (!el) { el = document.createElement('div'); el.className = 'vtip'; document.body.appendChild(el); } el.innerHTML = html; el.style.display = 'block';
+      const w = el.offsetWidth, h = el.offsetHeight; let x = e.clientX + 14, y = e.clientY - h - 10; if (x + w > innerWidth - 8) x = e.clientX - w - 14; if (y < 8) y = e.clientY + 16; el.style.left = x + 'px'; el.style.top = y + 'px'; },
+    hide() { if (el) el.style.display = 'none'; } }; })();
+
+  // Vertical bar chart (single or stacked series). One y-axis, recessive grid,
+  // 2px gaps between stacked fills, rounded top on the top segment, hover tooltip
+  // per column, legend for >= 2 series, and a table view.
+  function barChart(id, cfg) {
+    // wide charts get a wider viewBox (same height) so text stays the same size
+    const W = cfg.wide ? 1300 : 640, H = 230, L = 46, B = 24, T = 8, Rr = 6, n = cfg.labels.length;
+    const tot = cfg.labels.map((_, i) => cfg.series.reduce((s, se) => s + (se.values[i] || 0), 0));
+    // "nice" whole-number ticks (counts: 1/2/5 x 10^k; durations: whole minutes/hours)
+    const raw = Math.max(1, ...tot);
+    const cands = cfg.fmt ? [60, 120, 300, 600, 900, 1800, 3600, 7200, 10800, 21600, 43200, 86400]
+      : [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000];
+    const tstep = cands.find((c) => raw / c <= 4) || cands[cands.length - 1];
+    const ticks = Math.max(1, Math.ceil(raw / tstep)), max = ticks * tstep;
+    const pw = W - L - Rr, ph = H - T - B, bw = pw / n, gap = Math.min(6, bw * 0.25), y = (v) => T + ph - v / max * ph;
+    let g = '';
+    for (let k = 0; k <= ticks; k++) { const v = tstep * k, yy = y(v); g += '<line class="gl" x1="' + L + '" x2="' + (W - Rr) + '" y1="' + yy + '" y2="' + yy + '"/><text x="' + (L - 6) + '" y="' + (yy + 4) + '" text-anchor="end">' + esc(cfg.fmt ? cfg.fmt(v, true) : fmtNum(v)) + '</text>'; }
+    const every = Math.ceil(n / 10);
+    cfg.labels.forEach((lab, i) => {
+      const x = L + i * bw + gap / 2, w = Math.max(1, bw - gap); let acc = 0;
+      const segs = cfg.series.map((se) => ({ se, v: se.values[i] || 0 })).filter((s) => s.v > 0);
+      segs.forEach((s, j) => {
+        const y0 = y(acc), y1 = y(acc + s.v); acc += s.v;
+        const top = j === segs.length - 1, hgt = Math.max(0, y0 - y1 - (j ? 2 : 0));
+        if (hgt <= 0) return;
+        const yy = y1, r = top ? Math.min(4, w / 2, hgt) : 0;
+        g += r ? '<path fill="var(' + s.se.color + ')" d="M' + x + ',' + (yy + hgt) + 'V' + (yy + r) + 'Q' + x + ',' + yy + ' ' + (x + r) + ',' + yy + 'H' + (x + w - r) + 'Q' + (x + w) + ',' + yy + ' ' + (x + w) + ',' + (yy + r) + 'V' + (yy + hgt) + 'Z"/>'
+               : '<rect fill="var(' + s.se.color + ')" x="' + x + '" y="' + yy + '" width="' + w + '" height="' + hgt + '"/>';
+      });
+      if ((i % every === 0 && n - 1 - i >= every) || i === n - 1) g += '<text x="' + (L + i * bw + bw / 2) + '" y="' + (H - 6) + '" text-anchor="middle">' + esc(lab) + '</text>';
+      g += '<rect class="hit" data-i="' + i + '" x="' + (L + i * bw) + '" y="' + T + '" width="' + bw + '" height="' + ph + '"/>';
+    });
+    const legend = cfg.series.length > 1 ? '<div class="legend">' + cfg.series.map((se) => '<span><i style="background:var(' + se.color + ')"></i>' + esc(se.name) + '</span>').join('') + '</div>' : '';
+    const table = '<details><summary>Show table</summary><table><thead><tr><th>' + esc(cfg.xName || 'Day') + '</th>' + cfg.series.map((se) => '<th class="num">' + esc(se.name) + '</th>').join('') + (cfg.series.length > 1 ? '<th class="num">Total</th>' : '') + '</tr></thead><tbody>' +
+      cfg.labels.map((lab, i) => '<tr><td>' + esc(cfg.full ? cfg.full[i] : lab) + '</td>' + cfg.series.map((se) => '<td class="num">' + esc(cfg.fmt ? cfg.fmt(se.values[i] || 0) : fmtNum(se.values[i] || 0)) + '</td>').join('') + (cfg.series.length > 1 ? '<td class="num">' + esc(cfg.fmt ? cfg.fmt(tot[i]) : fmtNum(tot[i])) + '</td>' : '') + '</tr>').join('') + '</tbody></table></details>';
+    return '<div class="chart' + (cfg.wide ? ' wide' : '') + '" id="' + id + '"><h3>' + esc(cfg.title) + '</h3><div class="sub">' + esc(cfg.sub || '') + '</div>' + legend +
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(cfg.title) + '">' + g + '</svg>' + table + '</div>';
+  }
+  function bindChart(id, cfg) {
+    const el = document.getElementById(id); if (!el) return;
+    el.querySelectorAll('.hit').forEach((h) => {
+      h.onmousemove = (e) => { const i = +h.dataset.i, tot = cfg.series.reduce((s, se) => s + (se.values[i] || 0), 0);
+        tip.show('<b>' + esc(cfg.full ? cfg.full[i] : cfg.labels[i]) + '</b>' + cfg.series.map((se) => '<div class="r"><span><i style="background:var(' + se.color + ')"></i>' + esc(se.name) + '</span><span>' + esc(cfg.fmt ? cfg.fmt(se.values[i] || 0) : fmtNum(se.values[i] || 0)) + '</span></div>').join('') +
+          (cfg.series.length > 1 ? '<div class="r" style="margin-top:4px;font-weight:700"><span>Total</span><span>' + esc(cfg.fmt ? cfg.fmt(tot) : fmtNum(tot)) + '</span></div>' : ''), e); };
+      h.onmouseleave = () => tip.hide();
+    });
+  }
+
+  function renderDash() {
+    const D = dashData(), now = Date.now();
+    const lab = D.days.map((d) => dayLabel(d.t)), full = D.days.map((d) => new Date(d.t).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' }));
+    const google = PLAYERS.filter((p) => !p.guest).length;
+    const todayActive = D.days[D.days.length - 1].active.size;
+    const fresh = D.days.reduce((s, d) => s + d.fresh, 0);
+    const k = (v, l, s2) => '<div class="kpi"><b>' + v + '</b><span>' + l + '</span>' + (s2 ? '<div class="muted" style="font-size:12px;margin-top:2px">' + s2 + '</div>' : '') + '</div>';
+    const rangeTxt = 'last ' + S.range + ' days';
+    let h = tabsHtml() +
+      '<div class="tools"><div class="seg">' + [7, 30, 90].map((r) => '<button data-range="' + r + '" class="' + (S.range === r ? 'on' : '') + '">' + r + ' days</button>').join('') + '</div>' +
+      '<button id="reload">↻ Refresh</button><span class="muted" style="font-size:13px">Updated ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '</span></div>' +
+      '<div class="kpis">' +
+        k(fmtNum(PLAYERS.length), 'Players (all time)', google + ' Google · ' + (PLAYERS.length - google) + ' guests') +
+        k(fmtNum(fresh), 'New players', rangeTxt) +
+        k(fmtNum(todayActive), 'Active today') +
+        k(fmtNum(D.activeAll.size), 'Active players', rangeTxt) +
+        k(fmtNum(D.plays), 'Plays', rangeTxt) +
+        k(fmtDur(D.secs), 'Time played', rangeTxt) +
+        k(D.activeAll.size ? fmtDur(D.secs / D.activeAll.size) : '—', 'Avg time / player', rangeTxt) +
+      '</div>';
+
+    const cActive = { title: 'Active players per day', sub: 'Players who visited or played', labels: lab, full, series: [{ name: 'Active players', color: '--s-one', values: D.days.map((d) => d.active.size) }] };
+    const cNew = { title: 'New players per day', sub: 'First time seen', labels: lab, full, series: [{ name: 'New players', color: '--s-one', values: D.days.map((d) => d.fresh) }] };
+    const cPlays = { title: 'Plays per day by section', sub: 'Finished quizzes, games, papers and matches', labels: lab, full, wide: true,
+      series: SEC.map(([c, nme]) => ({ name: nme, color: '--s-' + c, values: D.days.map((d) => d.plays[c]) })) };
+    const cTime = { title: 'Time played per day', sub: 'Active minutes in the app / website', labels: lab, full, fmt: (v) => fmtDur(v), series: [{ name: 'Time played', color: '--s-one', values: D.days.map((d) => d.secs) }] };
+    const cHour = { title: 'When kids play', sub: 'Visits and plays by hour of day (your time zone), ' + rangeTxt, xName: 'Hour',
+      labels: D.hours.map((_, i) => (i % 12 || 12) + (i < 12 ? 'a' : 'p')), full: D.hours.map((_, i) => String(i).padStart(2, '0') + ':00–' + String(i).padStart(2, '0') + ':59'),
+      series: [{ name: 'Visits + plays', color: '--s-one', values: D.hours }] };
+
+    h += '<div class="charts">' + barChart('cA', cActive) + barChart('cN', cNew) + barChart('cP', cPlays) + barChart('cT', cTime) + barChart('cH', cHour);
+    // top games: horizontal bars coloured by section (entity), legend + values on every row
+    const maxN = D.top.length ? D.top[0].n : 1, catName = Object.fromEntries(SEC);
+    h += '<div class="chart"><h3>Most played</h3><div class="sub">Top ' + D.top.length + ' by plays, ' + rangeTxt + '</div>' +
+      '<div class="legend">' + SEC.map(([c, nme]) => '<span><i style="background:var(--s-' + c + ')"></i>' + nme + '</span>').join('') + '</div>' +
+      (D.top.length ? D.top.map((g) => '<div class="hbar" title="' + esc(g.name) + ' — ' + g.n + ' plays by ' + g.players.size + ' players"><span class="lab">' + esc(g.name) + '</span>' +
+        '<span><span class="tr" style="display:block;width:' + Math.max(1, g.n / maxN * 100) + '%;background:var(--s-' + (catName[g.cat] ? g.cat : 'one') + ')"></span></span><span class="v">' + g.n + '</span></div>').join('') : '<p class="muted">No plays in this range yet.</p>') +
+      '<details><summary>Show table</summary><table><thead><tr><th>Game / quiz</th><th>Section</th><th class="num">Plays</th><th class="num">Players</th></tr></thead><tbody>' +
+      D.top.map((g) => '<tr><td>' + esc(g.name) + '</td><td>' + esc(catName[g.cat] || g.cat) + '</td><td class="num">' + g.n + '</td><td class="num">' + g.players.size + '</td></tr>').join('') + '</tbody></table></details></div>';
+    h += '</div>';
+    $app.innerHTML = h; bindTabs();
+    $app.querySelectorAll('[data-range]').forEach((b) => b.onclick = () => { S.range = +b.dataset.range; render(); });
+    document.getElementById('reload').onclick = load;
+    [['cA', cActive], ['cN', cNew], ['cP', cPlays], ['cT', cTime], ['cH', cHour]].forEach(([i, c]) => bindChart(i, c));
+  }
+
+  /* ---------- tools ---------- */
+  function renderTools() {
+    const boards = [];
+    Object.keys(RAW.lb || {}).forEach((cat) => Object.keys(RAW.lb[cat] || {}).forEach((g) => boards.push({ cat, g, n: Object.keys(RAW.lb[cat][g] || {}).length })));
+    boards.sort((a, b) => (a.cat + a.g).localeCompare(b.cat + b.g));
+    const nAtt = Object.values(RAW.att || {}).reduce((s, x) => s + Object.keys(x || {}).length, 0), nSes = Object.values(RAW.ses || {}).reduce((s, x) => s + Object.keys(x || {}).length, 0);
+    let h = tabsHtml() +
+      '<div class="tool"><h3>💾 Backup</h3><p>Download everything (leaderboards, play history, visits) as one JSON file. Do this before big clean-ups.</p>' +
+        '<div class="row"><button class="primary" id="tBackup">Download backup</button><span class="muted">' + PLAYERS.length + ' players · ' + nAtt + ' plays · ' + nSes + ' visits</span></div></div>' +
+      '<div class="tool"><h3>🧹 Remove inactive guests</h3><p>Delete all data of guest players not seen for a number of days (Google players are never touched).</p>' +
+        '<div class="row">Not seen for <input type="number" id="tDays" min="1" value="60"> days <button id="tPrev">Find</button><span id="tInfo" class="muted"></span></div></div>' +
+      '<div class="tool"><h3>🗓 Trim old history</h3><p>Delete plays and visits older than a number of days for everyone. Best scores and leaderboards stay.</p>' +
+        '<div class="row">Older than <input type="number" id="tOld" min="7" value="180"> days <button id="tOldGo">Find</button><span id="tOldInfo" class="muted"></span></div></div>' +
+      '<div class="tool"><h3>🏆 Reset a leaderboard</h3><p>Clear every score on one board (for example after changing a game\'s scoring).</p>' +
+        '<div class="row"><select id="tBoard">' + boards.map((b, i) => '<option value="' + i + '">' + esc((CAT[b.cat] || b.cat) + ' · ' + prettyGame(b.g)) + ' (' + b.n + ')</option>').join('') + '</select><button class="ghost-danger" id="tReset"' + (boards.length ? '' : ' disabled') + '>Reset board</button></div></div>';
+    $app.innerHTML = h; bindTabs();
+    document.getElementById('tBackup').onclick = () => {
+      const blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), leaderboards: RAW.lb, attempts: RAW.att, sessions: RAW.ses })], { type: 'application/json' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'kidsquiz-backup-' + new Date().toISOString().slice(0, 10) + '.json'; a.click();
+    };
+    document.getElementById('tPrev').onclick = () => {
+      const d = Math.max(1, +document.getElementById('tDays').value || 60), cut = Date.now() - d * DAY;
+      const list = PLAYERS.filter((p) => p.guest && (p.last || 0) < cut);
+      const info = document.getElementById('tInfo');
+      if (!list.length) { info.textContent = 'No guests inactive for ' + d + ' days.'; return; }
+      info.innerHTML = list.length + ' guests found. <button class="danger" id="tDel">Delete them…</button>';
+      document.getElementById('tDel').onclick = () => confirmDelete(list);
+    };
+    document.getElementById('tOldGo').onclick = () => {
+      const d = Math.max(7, +document.getElementById('tOld').value || 180), cut = Date.now() - d * DAY, paths = {};
+      Object.keys(RAW.att || {}).forEach((k2) => Object.keys(RAW.att[k2] || {}).forEach((id) => { const v = RAW.att[k2][id]; if (v && (v.at || 0) < cut) paths['attempts/' + k2 + '/' + id] = null; }));
+      Object.keys(RAW.ses || {}).forEach((k2) => Object.keys(RAW.ses[k2] || {}).forEach((id) => { const v = RAW.ses[k2][id]; if (v && (v.last || v.start || 0) < cut) paths['sessions/' + k2 + '/' + id] = null; }));
+      const n2 = Object.keys(paths).length, info = document.getElementById('tOldInfo');
+      if (!n2) { info.textContent = 'Nothing older than ' + d + ' days.'; return; }
+      info.innerHTML = n2 + ' old records found. <button class="danger" id="tOldDel">Delete them…</button>';
+      document.getElementById('tOldDel').onclick = () => confirmPaths('Delete ' + n2 + ' plays/visits older than ' + d + ' days?', paths);
+    };
+    document.getElementById('tReset').onclick = () => {
+      const b = boards[+document.getElementById('tBoard').value]; if (!b) return;
+      confirmPaths('Reset the leaderboard "' + (CAT[b.cat] || b.cat) + ' · ' + prettyGame(b.g) + '" (' + b.n + ' scores)?', { ['leaderboards/' + b.cat + '/' + b.g]: null });
+    };
+  }
+  function confirmPaths(title, paths) {
+    $modal.innerHTML = '<h3>' + esc(title) + '</h3><p class="muted">This permanently removes it from Firebase and can\'t be undone. Download a backup first if unsure.</p>' +
+      '<p style="margin:14px 0 0">Type <b>DELETE</b> to confirm:</p><input class="confirm-in" id="cIn" autocomplete="off" placeholder="DELETE">' +
+      '<div class="actions"><button id="cn">Cancel</button><button class="danger" id="go" disabled>Delete permanently</button></div>';
+    $ov.classList.add('on');
+    const go = document.getElementById('go'), inp = document.getElementById('cIn');
+    inp.oninput = () => { go.disabled = inp.value.trim() !== 'DELETE'; }; inp.focus();
+    document.getElementById('cn').onclick = closeModal;
+    go.onclick = () => {
+      go.disabled = true; go.textContent = 'Deleting…';
+      const keys = Object.keys(paths), chunks = [];
+      for (let i = 0; i < keys.length; i += 500) { const c = {}; keys.slice(i, i + 500).forEach((k2) => { c[k2] = null; }); chunks.push(c); }
+      chunks.reduce((pr, c) => pr.then(() => db.ref().update(c)), Promise.resolve())
+        .then(() => { closeModal(); toast('Deleted ' + keys.length + ' item' + (keys.length === 1 ? '' : 's')); load(); })
+        .catch((e) => { go.disabled = false; go.textContent = 'Delete permanently';
+          $modal.insertAdjacentHTML('beforeend', '<p class="err">' + esc(/permission/i.test(e.message || '') ? 'Permission denied — check the admin rules in Firebase.' : e.message) + '</p>'); });
+    };
+  }
+
+  function renderPlayers() {
     const now = Date.now(), DAY = 86400000;
     const google = PLAYERS.filter((p) => !p.guest).length;
     const k = (v, l) => '<div class="kpi"><b>' + v + '</b><span>' + l + '</span></div>';
@@ -268,7 +506,7 @@
           '<td class="num" title="' + esc(fmtDate(p.last)) + '">' + ago(p.last) + '</td></tr>').join('') + '</tbody></table>' +
         (list.length > 500 ? '<p class="muted">Showing 500 of ' + list.length + ' — use search to narrow down.</p>' : '');
     }
-    $app.innerHTML = h;
+    $app.innerHTML = tabsHtml() + h; bindTabs();
     const q = document.getElementById('q');
     q.oninput = () => { S.q = q.value; const pos = q.selectionStart; render(); const n = document.getElementById('q'); n.focus(); n.setSelectionRange(pos, pos); };
     $app.querySelectorAll('[data-type]').forEach((b) => b.onclick = () => { S.type = b.dataset.type; render(); });

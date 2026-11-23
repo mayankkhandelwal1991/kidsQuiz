@@ -413,9 +413,13 @@ function kqOpenExternal(url) {
   try {
     if (typeof Android !== "undefined" && Android.openUrl) { Android.openUrl(url); return; }
   } catch (e) {}
+  // Note: window.open(..., 'noopener') ALWAYS returns null, which made this
+  // fall through and ALSO load the link in the current page (two Instagrams).
+  // Open without the flag, then cut the opener link ourselves.
   var w = null;
-  try { w = window.open(url, '_blank', 'noopener'); } catch (e) {}
-  if (!w) window.location.href = url;
+  try { w = window.open(url, '_blank'); } catch (e) {}
+  if (w) { try { w.opener = null; } catch (e) {} return; }
+  window.location.href = url; // pop-up really blocked: use this tab
 }
 
 async function shareApp() {

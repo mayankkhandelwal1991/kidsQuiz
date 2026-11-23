@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Brick Breaker</title>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Brick Breaker — drag the paddle, bounce the ball, break the candy bricks.
@@ -71,7 +71,7 @@ function hitBrick(b, ball) {
   if (!bricks.length) {
     KQ3D.sfx('levelup'); score += 100; G.score(score); G.pop('Level ' + level + ' clear! +100', null, C.h * 0.4, '#fde047');
     try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {}
-    level++; balls = []; setTimeout(() => { if (G.state === 'play' || G.state === 'pause') startLevel(); }, 1200);
+    level++; balls = []; G.later(() => { startLevel(); }, 1200);
   }
 }
 function power(e) {

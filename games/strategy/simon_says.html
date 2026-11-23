@@ -16,7 +16,7 @@
 .cc-dots i { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,.3); } .cc-dots i.ok { background: #fde047; }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Copy Cat — watch the animals light up and sing, then copy the pattern.
@@ -55,8 +55,8 @@ function addAndPlay() { seq.push(Math.floor(Math.random() * 4)); playSeq(); }
 function playSeq() {
   listening = false; pos = 0; dots(); say('Watch me! 👀');
   const gap = Math.max(260, 650 - seq.length * 25), on = gap * 0.7;
-  seq.forEach((i, k) => setTimeout(() => { if (G.state === 'play') light(i, on); }, 700 + k * gap));
-  setTimeout(() => { if (G.state !== 'play') return; listening = true; say('Your turn! 👆'); }, 700 + seq.length * gap);
+  seq.forEach((i, k) => G.later(() => { light(i, on); }, 700 + k * gap));
+  G.later(() => { listening = true; say('Your turn! 👆'); }, 700 + seq.length * gap);
 }
 function press(i) {
   if (G.state !== 'play' || !listening) return;
@@ -64,12 +64,12 @@ function press(i) {
   if (i !== seq[pos]) {
     listening = false; lives--; G.hudSet('lives', Math.max(0, lives)); KQ3D.sfx('wrong'); G.flash('#fecaca');
     if (lives <= 0) { say('Oh no! 🙀'); G.over({ score: best, title: 'Great memory! 🐱', lines: ['🎵 ' + best + ' notes long'] }); return; }
-    say('Oops! Watch again 🙈'); setTimeout(() => { if (G.state === 'play') playSeq(); }, 1100); return;
+    say('Oops! Watch again 🙈'); G.later(() => { playSeq(); }, 1100); return;
   }
   pos++; dots();
   if (pos === seq.length) {
     listening = false; best = seq.length; G.score(best); KQ3D.sfx(best % 5 ? 'success' : 'levelup');
-    say(best % 5 ? 'Yay! 🎉' : best + ' in a row! 🌟'); setTimeout(() => { if (G.state === 'play') addAndPlay(); }, 900);
+    say(best % 5 ? 'Yay! 🎉' : best + ' in a row! 🌟'); G.later(() => { addAndPlay(); }, 900);
   }
 }
 // start the first pattern when play begins (after the countdown)

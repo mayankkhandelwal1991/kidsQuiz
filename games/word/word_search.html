@@ -14,7 +14,7 @@
 .ws-w.got { background: #22c55e; color: #fff; text-decoration: line-through; }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Word Search — drag across letters to find the hidden words. 3 levels. */
@@ -110,7 +110,7 @@ function check(s) {
     try { if (window.KQFX) KQFX.celebrate({ power: 0.5 }); } catch (e) {}
     lvl++;
     if (lvl >= LEVELS.length) setTimeout(() => G.over({ score, title: 'Super searcher! 🔎', lines: [theme.icon + ' ' + theme.name, '🔤 ' + place.length + ' words in the last grid'] }), 1000);
-    else setTimeout(() => { if (G.state === 'play') build(); }, 1300);
+    else G.later(() => { build(); }, 1300);
   }
 }
 window.addEventListener('resize', () => { if (grid) draw(); });

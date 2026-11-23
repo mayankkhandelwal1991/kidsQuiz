@@ -19,7 +19,7 @@
 .sd-k:active { transform: translateY(3px); box-shadow: none; }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Sudoku Mini — every row, column and box must have each picture/number once. */
@@ -114,7 +114,7 @@ function win() {
   try { if (window.KQFX) KQFX.celebrate({ power: 0.5 }); } catch (e) {}
   idx++;
   if (idx >= 3) setTimeout(() => G.over({ score, title: 'Sudoku star! 🧩', lines: [mode.icon + ' ' + mode.name] }), 1200);
-  else setTimeout(() => { if (G.state === 'play') make(); }, 1400);
+  else G.later(() => { make(); }, 1400);
 }
 document.addEventListener('keydown', (e) => { const n = parseInt(e.key, 10); if (n >= 1 && n <= mode.n) put(n); if (e.key === 'Backspace') put(0); });
 reset(G.choice);

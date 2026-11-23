@@ -196,6 +196,7 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
     function show(id) { ['k3start', 'k3paused', 'k3over'].forEach(function (s) { $(s).classList.toggle('on', s === id); }); $('k3pad').classList.toggle('hide', !(id === null && cfg.buttons && cfg.buttons.length)); }
 
     function begin() {
+      G.gen = (G.gen || 0) + 1; // new game: steps scheduled by the previous one are dropped
       sfx('click');
       try { if (window.KQ && KQ.markStart) KQ.markStart(); } catch (e) {}
       G._score = 0; setText('k3score', 0);
@@ -218,6 +219,20 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
       })();
     }
     G.restart = begin;
+
+    /* Run a game step after `ms` while playing. If the game is paused at that
+       moment (pause button, app switched, full-screen ad), it waits and runs as
+       soon as play resumes instead of being lost — a lost step used to leave the
+       game stuck with no next round and no game over. Dropped only if the game
+       was restarted or ended meanwhile. */
+    G.later = function (fn, ms) {
+      var gen = G.gen;
+      setTimeout(function run() {
+        if (G.gen !== gen) return;
+        if (G.state === 'pause') { setTimeout(run, 250); return; }
+        if (G.state === 'play') fn();
+      }, ms || 0);
+    };
 
     function pause(on) {
       if (on && G.state !== 'play') return;

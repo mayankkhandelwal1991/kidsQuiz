@@ -17,7 +17,7 @@
 @keyframes ctShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Color Tap — Easy: tap the colour of the paint splash. Tricky: tap the INK colour
@@ -60,7 +60,7 @@ function answer(b) {
     lock = true; right++; streak++; const secs = (performance.now() - t0) / 1000, pts = 10 + (secs < 1.5 ? 5 : 0) + (streak >= 5 ? 5 : 0);
     score += pts; G.score(score); b.classList.add('ok'); KQ3D.sfx(secs < 1.5 ? 'coin' : 'success'); if (!mode.tricky) say(q.ink[0].toLowerCase());
     const r = b.getBoundingClientRect(); G.pop('+' + pts + (secs < 1.5 ? ' ⚡' : ''), r.left + r.width / 2, r.top, '#a855f7');
-    setTimeout(() => { if (G.state === 'play') next(); }, 300);
+    G.later(() => { next(); }, 300);
   } else { streak = 0; b.classList.remove('no'); void b.offsetWidth; b.classList.add('no'); KQ3D.sfx('wrong'); timeLeft = Math.max(0, timeLeft - 2); }
 }
 function step() {

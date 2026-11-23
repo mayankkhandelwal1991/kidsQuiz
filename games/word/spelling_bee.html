@@ -29,7 +29,7 @@
 .sb-time i { display: block; height: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 5px; }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Spelling Bee — look at the picture and spell the word.
@@ -107,7 +107,7 @@ function tap(b, word) {
     const pts = 10 + (slips ? 0 : 5) + (mode.time ? 0 : word.length > 4 ? 5 : 0);
     score += pts; G.score(score); KQ3D.sfx('success'); say(word);
     const r = box.querySelector('.sb-pic').getBoundingClientRect(); G.pop((slips ? 'Good! +' : 'Perfect! +') + pts, r.left + r.width / 2, r.top, '#fde047');
-    idx++; setTimeout(() => { if (G.state === 'play') next(); }, mode.time ? 350 : 1100);
+    idx++; G.later(() => { next(); }, mode.time ? 350 : 1100);
   }
 }
 function finish() {

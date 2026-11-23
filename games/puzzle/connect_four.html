@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Four in a Row</title>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Four in a Row — drop discs; first to line up 4 (any direction) wins the round.
@@ -29,7 +29,7 @@ function reset(f) {
   const hi = document.querySelector('#k3h_cpu img'); if (hi) hi.src = KQ3D.emojiFile(foe.icon);
   newBoard();
 }
-function newBoard() { b = Array.from({ length: R }, () => Array(Cn).fill(0)); turn = round % 2 ? 1 : 2; drops = []; winLine = null; busy = false; if (turn === 2) setTimeout(cpuMove, 700); }
+function newBoard() { b = Array.from({ length: R }, () => Array(Cn).fill(0)); turn = round % 2 ? 1 : 2; drops = []; winLine = null; busy = false; if (turn === 2) G.later(cpuMove, 700); }
 const geo = () => { const s = Math.floor(Math.min((C.w - 24) / Cn, (C.h - 230) / (R + 0.6), 64)); return { s, x: (C.w - s * Cn) / 2, y: 150 }; };
 const rowFor = (bb, c) => { for (let r = R - 1; r >= 0; r--) if (!bb[r][c]) return r; return -1; };
 function lineAt(bb, r, c, p) {
@@ -47,7 +47,7 @@ function play(c, p) {
   const ln = lineAt(b, r, c, p);
   if (ln) { winLine = ln; endRound(p); }
   else if (b[0].every((v) => v)) endRound(0);
-  else { turn = 3 - p; if (turn === 2) setTimeout(cpuMove, 650); }
+  else { turn = 3 - p; if (turn === 2) G.later(cpuMove, 650); }
   return true;
 }
 function endRound(p) {
@@ -55,9 +55,8 @@ function endRound(p) {
   if (p === 1) { myW++; G.score(myW); KQ3D.sfx('win'); G.pop('You win the round! 🎉', null, 110, '#bbf7d0'); }
   else if (p === 2) { cpuW++; G.hudSet('cpu', cpuW); KQ3D.sfx('lose'); G.pop(foe.name + ' wins the round', null, 110, '#fecaca'); }
   else { KQ3D.sfx('draw'); G.pop('A draw!', null, 110, '#fff'); }
-  setTimeout(() => {
-    if (G.state !== 'play') return;
-    if (myW === 2 || cpuW === 2 || round >= 3) {
+  G.later(() => {
+        if (myW === 2 || cpuW === 2 || round >= 3) {
       const won = myW > cpuW, final = Math.round((myW * 40 + (won ? 100 : myW === cpuW ? 30 : 0)) * foe.mult);
       G.over({ score: final, title: won ? 'You beat ' + foe.name + '! 🏆' : myW === cpuW ? 'It’s a tie!' : foe.name + ' won this time', lines: ['🟡 ' + myW + ' – ' + cpuW + ' ' + foe.icon] });
     } else { round++; newBoard(); }

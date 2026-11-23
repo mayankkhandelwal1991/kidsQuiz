@@ -16,7 +16,7 @@
 @keyframes ttIn { from { transform: scale(0) rotate(-40deg); } }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Tic Tac Toe — get 3 in a row. Best of 5 against an animal (Owl never loses!). */
@@ -37,7 +37,7 @@ function reset(f) {
   foe = f || FOES[0]; let pick = 0; try { pick = +(localStorage.getItem('ttt_piece') || 0) % MINE.length; } catch (e) {}
   me = MINE[pick]; my = 0; cp = 0; draws = 0; round = 0; G.score(0); newRound();
 }
-function newRound() { b = Array(9).fill(null); busy = false; turn = round % 2 ? 'cpu' : 'me'; round++; draw(); if (turn === 'cpu') setTimeout(cpuMove, 650); }
+function newRound() { b = Array(9).fill(null); busy = false; turn = round % 2 ? 'cpu' : 'me'; round++; draw(); if (turn === 'cpu') G.later(cpuMove, 650); }
 function draw(win) {
   const S = Math.min(innerWidth - 40, innerHeight - 290, 380), cs = (S - 40) / 3;
   box.innerHTML = '<div class="tt-vs"><div class="tt-p' + (turn === 'me' && !busy ? ' on' : '') + '" id="ttMe"><img src="' + KQ3D.emojiFile(me) + '" alt=""><b>' + my + '</b>You</div><div style="font-weight:800;color:#7c3aed;font-size:20px">VS</div>' +
@@ -53,7 +53,7 @@ function place(i, who) {
   b[i] = who; KQ3D.sfx(who === 'me' ? 'pop' : 'tap');
   const w = winner(b);
   if (w || b.every(Boolean)) return end(w ? who : null, w);
-  turn = who === 'me' ? 'cpu' : 'me'; draw(); if (turn === 'cpu') setTimeout(cpuMove, 550);
+  turn = who === 'me' ? 'cpu' : 'me'; draw(); if (turn === 'cpu') G.later(cpuMove, 550);
 }
 function minimax(bb, who) {
   const w = winner(bb); if (w) return { s: bb[w[0]] === 'cpu' ? 10 : -10 };
@@ -74,9 +74,8 @@ function end(who, line) {
   else if (who === 'cpu') { cp++; KQ3D.sfx('lose'); G.pop(foe.name + ' wins the round', null, innerHeight * 0.3, '#fecaca'); }
   else { draws++; KQ3D.sfx('draw'); G.pop('Draw!', null, innerHeight * 0.3, '#fff'); }
   G.score(my); draw(line);
-  setTimeout(() => {
-    if (G.state !== 'play') return;
-    if (my >= 3 || cp >= 3 || round >= 5) {
+  G.later(() => {
+        if (my >= 3 || cp >= 3 || round >= 5) {
       const won = my > cp, final = Math.round((my * 30 + draws * 10 + (won ? 100 : 0)) * foe.mult);
       G.over({ score: final, title: won ? 'You beat ' + foe.name + '! 🏆' : my === cp ? 'It’s a tie!' : foe.name + ' won this time', lines: [me + ' ' + my + ' – ' + cp + ' ' + foe.icon, '🤝 ' + draws + ' draws'] });
     } else newRound();

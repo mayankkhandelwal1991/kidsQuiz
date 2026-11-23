@@ -22,7 +22,7 @@
 .js-b:disabled { opacity: .45; }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Juice Sort — tap a tube, then tap another to pour. You can pour onto the same
@@ -74,7 +74,7 @@ function win() {
   score += pts; G.score(score); KQ3D.sfx('levelup'); G.pop('All sorted! +' + pts, null, innerHeight * 0.3, '#bbf7d0');
   try { if (window.KQFX) KQFX.celebrate({ power: 0.5 }); } catch (e) {}
   if (level >= LEVELS) setTimeout(() => G.over({ score, title: 'Juice master! 🧃', lines: ['🗺️ ' + LEVELS + ' levels'] }), 1200);
-  else { level++; setTimeout(() => { if (G.state === 'play') gen(); }, 1500); }
+  else { level++; G.later(() => { gen(); }, 1500); }
 }
 reset();
 </script>

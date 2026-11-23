@@ -13,7 +13,7 @@
 .sp-full.on { opacity: 1; }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Slide Puzzle — slide the picture pieces back into place. Tap a piece next to the gap
@@ -95,7 +95,7 @@ function win() {
   try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {}
   stage++;
   if (stage >= SIZES.length) setTimeout(() => G.over({ score, title: 'Puzzle pro! 🧩', lines: [pic.icon + ' ' + pic.name, '👆 ' + moves + ' moves on 4×4'] }), 1400);
-  else setTimeout(() => { if (G.state === 'play') start(); }, 1800);
+  else G.later(() => { start(); }, 1800);
 }
 reset(G.choice);
 </script>

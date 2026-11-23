@@ -20,7 +20,7 @@
 .mm-front b { font: 800 clamp(14px, 4.6vw, 26px) 'Baloo 2', sans-serif; color: #4c1d95; letter-spacing: .04em; }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Memory Match — flip two cards, find the pairs. 3 levels per game.
@@ -81,7 +81,7 @@ function flip(b, c) {
     const pts = 20 + (combo > 1 ? combo * 5 : 0); score += pts; G.score(score);
     setTimeout(() => { a.b.classList.add('done'); d.b.classList.add('done'); KQ3D.sfx(combo > 1 ? 'coin' : 'success'); say(a.c.say); }, 250);
     const r = d.b.getBoundingClientRect(); G.pop('+' + pts + (combo > 1 ? ' combo!' : ''), r.left + r.width / 2, r.top, '#fde047');
-    if (matched === LEVELS[level - 1].pairs) setTimeout(levelDone, 900);
+    if (matched === LEVELS[level - 1].pairs) G.later(levelDone, 900);
   } else {
     combo = 0; lock = true;
     setTimeout(() => { a.b.classList.add('no'); d.b.classList.add('no'); KQ3D.sfx('wrong'); }, 350);
@@ -96,7 +96,7 @@ function levelDone() {
   KQ3D.sfx('levelup'); G.pop('Level ' + level + ' done! +' + bonus, null, innerHeight * 0.4, '#bbf7d0');
   try { if (window.KQFX) KQFX.celebrate({ power: 0.5 }); } catch (e) {}
   if (level >= LEVELS.length) setTimeout(() => G.over({ score, title: 'Super memory! 🧠', lines: ['👆 ' + moves + ' moves', '🃏 ' + theme.name] }), 900);
-  else { level++; setTimeout(() => { if (G.state === 'play') deal(); }, 1300); }
+  else { level++; G.later(() => { deal(); }, 1300); }
 }
 reset(G.choice);
 </script>

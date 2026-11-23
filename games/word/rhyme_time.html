@@ -22,7 +22,7 @@
 @keyframes wwPop { 50% { transform: scale(1.08); } } @keyframes wwShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Word Wizard — rhymes, same-meaning words and opposites. 10 rounds. */
@@ -84,7 +84,7 @@ function answer(b, o, q) {
     box.querySelectorAll('.ww-o').forEach((x) => { const oo = q.opts[+x.dataset.k]; if (oo.w === q.right.w) x.classList.add('ok'); else if (x !== b) x.classList.add('dim'); });
     say(q.word + ', ' + q.right.w);
   }
-  setTimeout(() => { if (G.state !== 'play') return; i++; if (i >= qs.length) finish(); else show(); }, ok ? 1000 : 1800);
+  G.later(() => { i++; if (i >= qs.length) finish(); else show(); }, ok ? 1000 : 1800);
 }
 function finish() {
   const right = results.filter(Boolean).length;

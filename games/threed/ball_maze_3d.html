@@ -8,7 +8,7 @@
 </style>
 </head><body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="kq3d.js?v=20261120m"></script>
+<script src="kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Gravity Maze 3D — tilt the garden maze to roll your pet's bubble home.
@@ -232,9 +232,8 @@ function loop(now) {
         done = true; const pts = levelScore() - got * 50; score += pts; G.score(score); KQ3D.sfx('win');
         try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {}
         const sc = KQ3D.toScreen(board.localToWorld(new THREE.Vector3(goal.x, 0.8, goal.y)), camera, G.scene); G.pop('Home! +' + pts, sc.x, sc.y, '#bbf7d0');
-        setTimeout(() => {
-          if (G.state !== 'play') return;
-          if (level >= LEVELS.length) G.over({ score, title: 'Maze master! 🏆', lines: ['🗺️ All ' + LEVELS.length + ' levels', '❤️ ' + lives + ' lives left'] });
+        G.later(() => {
+                    if (level >= LEVELS.length) G.over({ score, title: 'Maze master! 🏆', lines: ['🗺️ All ' + LEVELS.length + ' levels', '❤️ ' + lives + ' lives left'] });
           else { level++; buildLevel(); }
         }, 1300);
       }

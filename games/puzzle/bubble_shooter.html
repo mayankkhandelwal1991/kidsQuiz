@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Bubble Shooter</title>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Bubble Shooter — aim, let go to shoot. 3+ of the same animal pop; bubbles that
@@ -72,7 +72,7 @@ function land(x, y, k) {
     misses = Math.max(0, misses - 1);
   } else { misses++; KQ3D.sfx('drop'); }
   while (grid.length && grid[grid.length - 1].every((v) => v == null)) grid.pop();
-  if (!present().length) { score += 200; G.score(score); KQ3D.sfx('levelup'); G.pop('Board clear! +200', null, C.h * 0.4, '#bbf7d0'); try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {} level++; setTimeout(() => { if (G.state === 'play') start(); }, 1200); return; }
+  if (!present().length) { score += 200; G.score(score); KQ3D.sfx('levelup'); G.pop('Board clear! +200', null, C.h * 0.4, '#bbf7d0'); try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {} level++; G.later(() => { start(); }, 1200); return; }
   if (misses >= 5) { misses = 0; parity ^= 1; const row = []; for (let c2 = 0; c2 < cols(0); c2++) row[c2] = present()[Math.floor(Math.random() * present().length)]; grid.unshift(row); KQ3D.sfx('countdown'); }
   if (grid.length > maxRows) G.over({ score, title: 'Bubbles reached the bottom!', lines: ['🗺️ Level ' + level] });
 }

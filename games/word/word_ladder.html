@@ -27,7 +27,7 @@
 @keyframes wlShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Word Ladder — change ONE letter to make the pictured word. Each answer is the
@@ -87,9 +87,8 @@ function pickW(b) {
     const r = b.getBoundingClientRect(); G.pop('+' + pts, r.left + r.width / 2, r.top, '#fde047');
     box.querySelectorAll('.wl-o').forEach((x) => { x.disabled = true; });
     si++;
-    setTimeout(() => {
-      if (G.state !== 'play') return;
-      if (si >= steps.length) { draw(); KQ3D.sfx('win'); setTimeout(() => G.over({ score, title: 'Top of the ladder! 🍌', lines: ['🪜 ' + steps.length + ' rungs', '⭐ ' + rights + ' first-try'] }), 700); }
+    G.later(() => {
+            if (si >= steps.length) { draw(); KQ3D.sfx('win'); setTimeout(() => G.over({ score, title: 'Top of the ladder! 🍌', lines: ['🪜 ' + steps.length + ' rungs', '⭐ ' + rights + ' first-try'] }), 700); }
       else { if (steps[si].first) { KQ3D.sfx('levelup'); G.pop('New ladder! 🪜', null, innerHeight * 0.3, '#bbf7d0'); } draw(); }
     }, 1100);
   } else { tries++; b.classList.add('no'); b.disabled = true; KQ3D.sfx('wrong'); }

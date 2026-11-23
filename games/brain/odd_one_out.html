@@ -13,7 +13,7 @@
 @keyframes ooIn { from { transform: scale(.4); opacity: 0; } } @keyframes ooPop { 50% { transform: scale(1.2); } } @keyframes ooShake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261120m"></script>
+<script src="../threed/kq3d.js?v=20261123a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Odd One Out — one picture is different. Find it fast! Grids grow every 3 finds. */
@@ -56,7 +56,7 @@ function tap(el, ok, odd) {
     timeLeft = Math.min(TIME, timeLeft + 2); el.classList.add('ok'); KQ3D.sfx(secs < 1.5 ? 'coin' : 'success');
     const r = el.getBoundingClientRect(); G.pop('+' + pts + (secs < 1.5 ? ' ⚡' : ''), r.left + r.width / 2, r.top, '#fde047');
     if (found % 3 === 0 && found <= 12) KQ3D.sfx('levelup');
-    setTimeout(() => { if (G.state === 'play') next(); }, 380);
+    G.later(() => { next(); }, 380);
   } else {
     el.classList.remove('no'); void el.offsetWidth; el.classList.add('no'); KQ3D.sfx('wrong'); timeLeft = Math.max(0, timeLeft - 2);
   }

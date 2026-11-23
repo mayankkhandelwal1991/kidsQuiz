@@ -1516,6 +1516,24 @@ class MainActivity : ComponentActivity() {
         @JavascriptInterface
         fun getTestDeviceId(): String = testDeviceId
 
+        // Weekly report for parents (Sunday 18:00 notification).
+        // Usage in JS:  Android.setWeeklyReport(title, text, "<end of week, ms>")
+        @JavascriptInterface
+        fun setWeeklyReport(title: String?, text: String?, until: String?) {
+            Reminders.saveWeekly(this@MainActivity, title ?: "", text ?: "", until?.toLongOrNull() ?: 0L)
+        }
+
+        // Share plain text (league class code). Usage in JS:  Android.shareText(text)
+        @JavascriptInterface
+        fun shareText(text: String?) {
+            if (text.isNullOrBlank()) return
+            runOnUiThread {
+                try {
+                    startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply { type = "text/plain"; putExtra(Intent.EXTRA_TEXT, text) }, "Share"))
+                } catch (e: Exception) { }
+            }
+        }
+
         // Last load result per ad type: { banner: "<ms>|loaded" | "<ms>|error 3: No fill [..]", ... }
         // Usage in JS:  JSON.parse(Android.getAdLoadStatus())
         @JavascriptInterface

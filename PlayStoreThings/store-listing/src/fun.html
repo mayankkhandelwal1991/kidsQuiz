@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet"><style>*,*::before,*::after{animation:none!important;transition:none!important}.kqp-ov,.kqc-ov{background:rgba(15,10,40,.35)!important;align-items:flex-start!important;padding-top:10px!important}.kqp-sheet,.kqc-card{max-height:none!important}</style></head><body style="margin:0;min-height:100vh;background:linear-gradient(180deg,#bae6fd,#eef2ff 40%);font-family:'Baloo 2'">
+<div style="padding:14px;max-width:420px;margin:auto"><div class="hm-owl"><svg width="92" height="92" viewBox="0 0 120 120"><ellipse cx="60" cy="70" rx="42" ry="44" fill="#8b5cf6"/><circle cx="44" cy="50" r="17" fill="#fff"/><circle cx="76" cy="50" r="17" fill="#fff"/><circle cx="46" cy="51" r="8" fill="#1e1b4b"/><circle cx="74" cy="51" r="8" fill="#1e1b4b"/><path class="owl-cap" d="M38 24 Q60 0 82 24Z" fill="#facc15"/></svg></div>
+<h3 style="margin:4px 0 8px;color:#1e1b4b">✨ Fun zone</h3><div class="kqp-home" id="kqpHome"></div></div>
+<script>
+var now=Date.now(), d=new Date(now); d.setHours(12,0,0,0); d.setDate(d.getDate()-((d.getDay()+6)%7)); var wk=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+var y=new Date(now-864e5); var yk=y.getFullYear()+'-'+(y.getMonth()+1)+'-'+y.getDate();
+localStorage.setItem('kq_wallet_t', JSON.stringify({coins:340,earned:520,spent:180,cls:3,stats:{plays:{quiz:12,single:7,multi:1,olympiad:1},total:21,streak:4,best:4,days:6},ach:{first:now-9e8,total10:now-5e8,quiz1:now-8e8,quiz5:now-6e8,quiz10:now-2e8,game1:now-7e8,game5:now-3e8,games10:now-3e7,friends:now-1e8,streak3:now-4e8,days5:now-1e7,rich100:now-6e8,rich500:now-1e6,olympiad:now-5e6,explorer:now-2e6},
+ dr:{n:2,last:yk}, look:{own:{crown:1,shades:1,gold:1,sunset:1},hat:'crown',eyes:'shades',frame:'',theme:''},
+ wk:{id:wk,quiz:6,single:4,multi:1,olympiad:1,total:12,coins:120,d:[2,3,0,4,2,1,0]}, lastWk:{total:9}, log:[]}));
+var t0=new Date();localStorage.setItem('kqp_gift_shown_'+t0.getFullYear()+'-'+(t0.getMonth()+1)+'-'+t0.getDate(),'1');
+window.KQ={ready:Promise.resolve(),user:function(){return{key:'t',name:'Aarav Sharma'}},appConfig:function(){return{coins:{enabled:true}}},
+ fetchAll:function(){return Promise.resolve({quiz:{'gk__3':{t:{meta:{correct:9,wrong:1}}},'english__3':{t:{meta:{correct:7,wrong:3}}},'science__3':{t:{meta:{correct:4,wrong:6}}}}})}};
+</script>
+<script src="../../../games/kq-coins.js"></script><script src="../../../games/kq-play.js"></script>
+<script>
+var m=location.hash.slice(1);
+setTimeout(function(){ KQPlay.mountHome(document.getElementById('kqpHome'));
+  document.querySelectorAll('.kqp-ov').forEach(function(x){x.remove()});
+  if(m) { ({gift:KQPlay.openGift,qotd:KQPlay.openQotd,map:KQPlay.openMap,league:KQPlay.openLeague,shop:KQPlay.openShop,report:KQPlay.openReport,badges:function(){KQCoins.openBadges()},cert:function(){KQPlay.certificate({icon:'🎯',title:'Quiz kid',line:'Finish 5 quizzes',date:Date.now()})}})[m](); }
+},400);
+</script></body></html>

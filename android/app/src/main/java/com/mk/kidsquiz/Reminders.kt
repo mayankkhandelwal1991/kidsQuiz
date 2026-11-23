@@ -27,6 +27,49 @@ object Reminders {
     private const val REQ = 7101
     private const val NOTIF_ID = 7102
 
+    // Weekly report for parents: Sunday 18:00, text from the web page
+    // (Android.setWeeklyReport), only if it is about the current week.
+    const val ACTION_WEEKLY = "com.mk.kidsquiz.WEEKLY_REPORT"
+    private const val REQ_WEEKLY = 7103
+    private const val NOTIF_WEEKLY = 7104
+    private const val PREFS = "kq_weekly"
+
+    private fun pendingWeekly(ctx: Context): PendingIntent =
+        PendingIntent.getBroadcast(
+            ctx, REQ_WEEKLY,
+            Intent(ctx, ReminderReceiver::class.java).setAction(ACTION_WEEKLY),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+    /** Called from the page after each finished quiz/game. until = end of that week (ms). */
+    fun saveWeekly(ctx: Context, title: String, text: String, until: Long) {
+        ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+            .putString("title", title).putString("text", text).putLong("until", until).apply()
+        scheduleWeekly(ctx)
+    }
+
+    fun scheduleWeekly(ctx: Context) {
+        val am = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val pi = pendingWeekly(ctx)
+        am.cancel(pi)
+        val p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        if (p.getString("text", "").isNullOrBlank()) return
+        val c = Calendar.getInstance().apply {
+            set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY); set(Calendar.HOUR_OF_DAY, 18)
+            set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0)
+        }
+        while (c.timeInMillis <= System.currentTimeMillis() + 30_000) c.add(Calendar.WEEK_OF_YEAR, 1)
+        am.setWindow(AlarmManager.RTC_WAKEUP, c.timeInMillis, 30 * 60 * 1000L, pi)
+    }
+
+    fun showWeekly(ctx: Context) {
+        val p = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val text = p.getString("text", "") ?: ""
+        // Nothing played this week (text is from an older week): no notification.
+        if (text.isBlank() || System.currentTimeMillis() > p.getLong("until", 0L)) return
+        notify(ctx, NOTIF_WEEKLY, p.getString("title", "") ?: "Your week in Kids Quiz", text)
+    }
+
     private fun pending(ctx: Context): PendingIntent =
         PendingIntent.getBroadcast(
             ctx, REQ,
@@ -36,6 +79,7 @@ object Reminders {
 
     /** (Re)schedule from the saved settings; cancels when reminders are off. */
     fun schedule(ctx: Context) {
+        scheduleWeekly(ctx)
         val am = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val pi = pending(ctx)
         am.cancel(pi)
@@ -89,12 +133,43 @@ object Reminders {
             .build()
         try { NotificationManagerCompat.from(ctx).notify(NOTIF_ID, n) } catch (e: SecurityException) { }
     }
+
+    private fun notify(ctx: Context, id: Int, title: String, body: String) {
+        if (Build.VERSION.SDK_INT >= 33 &&
+            ContextCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) return
+        val nm = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= 26 && nm.getNotificationChannel(CHANNEL_ID) == null) {
+            nm.createNotificationChannel(
+                NotificationChannel(CHANNEL_ID, "Daily reminders", NotificationManager.IMPORTANCE_DEFAULT).apply {
+                    description = "A friendly reminder to play and learn"
+                }
+            )
+        }
+        val open = PendingIntent.getActivity(
+            ctx, 1,
+            Intent(ctx, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val n = NotificationCompat.Builder(ctx, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setContentIntent(open)
+            .setAutoCancel(true)
+            .build()
+        try { NotificationManagerCompat.from(ctx).notify(id, n) } catch (e: SecurityException) { }
+    }
 }
 
 /** Fires the reminder, then schedules the next one. */
 class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action == Reminders.ACTION_FIRE) Reminders.show(context)
+        when (intent.action) {
+            Reminders.ACTION_FIRE -> Reminders.show(context)
+            Reminders.ACTION_WEEKLY -> Reminders.showWeekly(context)
+        }
         Reminders.schedule(context)
     }
 }

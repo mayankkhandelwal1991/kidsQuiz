@@ -2,3 +2,6 @@
 # Admin: Instagram credentials and uploaded media (never commit)
 admin/config.php
 admin/media/
+
+# Firebase rules with the admin e-mail (paste into Firebase console; keep private)
+admin/firebase-rules.json

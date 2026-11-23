@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="images/favicon/favicon.ico" sizes="any"><link rel="icon" href="images/favicon/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="images/favicon/apple-touch-icon.png">
 <!-- Google AdSense (website only). Inside the Android app ad requests are paused:
      the app shows its own AdMob ads, and AdSense is not allowed in app WebViews. -->
 <script>(function(){var a=false;try{a=(typeof Android!=='undefined'&&!!Android)||/; wv\)/.test(navigator.userAgent||'');}catch(e){}if(a){window.adsbygoogle=window.adsbygoogle||[];window.adsbygoogle.pauseAdRequests=1;}})();</script>
@@ -179,7 +180,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
         </div>
         <div class="hm-owl" aria-hidden="true">
           <div class="hm-bubble" id="hmBubble">Let’s learn and play!</div>
-          <svg viewBox="0 0 120 120"><path d="M30 30 L40 12 L50 30Z" fill="#7c3aed"/><path d="M70 30 L80 12 L90 30Z" fill="#7c3aed"/><ellipse cx="60" cy="70" rx="42" ry="44" fill="#8b5cf6"/><ellipse cx="60" cy="82" rx="26" ry="28" fill="#ede9fe"/><path d="M18 66 Q8 86 26 100 Q30 82 24 66Z" fill="#7c3aed"/><path d="M102 66 Q112 86 94 100 Q90 82 96 66Z" fill="#7c3aed"/><circle cx="44" cy="50" r="17" fill="#fff"/><circle cx="76" cy="50" r="17" fill="#fff"/><circle cx="46" cy="51" r="8" fill="#1e1b4b"/><circle cx="74" cy="51" r="8" fill="#1e1b4b"/><circle cx="49" cy="48" r="3" fill="#fff"/><circle cx="77" cy="48" r="3" fill="#fff"/><path d="M54 62 L66 62 L60 72Z" fill="#f59e0b"/><ellipse cx="46" cy="114" rx="8" ry="4" fill="#f59e0b"/><ellipse cx="74" cy="114" rx="8" ry="4" fill="#f59e0b"/><path d="M38 24 Q60 0 82 24Z" fill="#facc15"/><circle cx="60" cy="8" r="5" fill="#f43f5e"/></svg>
+          <svg viewBox="0 0 120 120"><path d="M30 30 L40 12 L50 30Z" fill="#7c3aed"/><path d="M70 30 L80 12 L90 30Z" fill="#7c3aed"/><ellipse cx="60" cy="70" rx="42" ry="44" fill="#8b5cf6"/><ellipse cx="60" cy="82" rx="26" ry="28" fill="#ede9fe"/><path d="M18 66 Q8 86 26 100 Q30 82 24 66Z" fill="#7c3aed"/><path d="M102 66 Q112 86 94 100 Q90 82 96 66Z" fill="#7c3aed"/><circle cx="44" cy="50" r="17" fill="#fff"/><circle cx="76" cy="50" r="17" fill="#fff"/><circle cx="46" cy="51" r="8" fill="#1e1b4b"/><circle cx="74" cy="51" r="8" fill="#1e1b4b"/><circle cx="49" cy="48" r="3" fill="#fff"/><circle cx="77" cy="48" r="3" fill="#fff"/><path d="M54 62 L66 62 L60 72Z" fill="#f59e0b"/><ellipse cx="46" cy="114" rx="8" ry="4" fill="#f59e0b"/><ellipse cx="74" cy="114" rx="8" ry="4" fill="#f59e0b"/><path class="owl-cap" d="M38 24 Q60 0 82 24Z" fill="#facc15"/><circle class="owl-cap" cx="60" cy="8" r="5" fill="#f43f5e"/></svg>
         </div>
       </div>
     </header>
@@ -211,6 +212,9 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
           <span class="hm-tt">Leaders</span><span class="hm-ts">Top players &amp; stats</span><span class="hm-go">See ›</span>
         </button>
       </div>
+
+      <div class="hm-h"><img src="images/emoji/2728.svg" alt=""> Fun zone</div>
+      <div class="kqp-home" id="kqpHome"></div>
 
       <div class="hm-row2">
         <button type="button" class="daily-card kh-daily hm-daily" id="dailyCard" onclick="startDailyChallenge()"></button>
@@ -1069,12 +1073,18 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   setTimeout(function () { kqAskName().then(renderHomeProfile); }, 400);
 }
 </script>
-<script src="games/kq-leaderboard.js?v=20261123l"></script>
+<script src="games/kq-leaderboard.js?v=20261123n"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>try { KQWebAds.rails(); } catch (e) {}</script>
 <script>
 /* 🪙 Coin chip in the header (only when coins are on in the admin console):
    tap = my coins & badges. */
+/* ✨ Fun zone tiles (games/kq-play.js): daily gift, question of the day,
+   learning path, weekly league, owl shop, weekly report. */
+(function funZone(n) {
+  if (!window.KQPlay) { if ((n || 0) < 60) setTimeout(function () { funZone((n || 0) + 1); }, 250); return; }
+  var el = document.getElementById('kqpHome'); if (el) KQPlay.mountHome(el);
+})();
 (function coinChip(n) {
   if (!window.KQCoins) { if ((n || 0) < 40) setTimeout(function () { coinChip((n || 0) + 1); }, 250); return; }
   var bar = document.querySelector('.hm-actions'); if (bar && !bar.querySelector('.kqc-chip')) { if (KQCoins.mountBadges) KQCoins.mountBadges(bar); KQCoins.mountChip(bar); }

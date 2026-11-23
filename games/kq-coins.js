@@ -101,9 +101,11 @@
           ['badges40', '🌠', 'Badge legend', 'Collect 40 badges', 400, 40]], function (s, w) { return Object.keys(w.ach || {}).length; })
   );
 
-  var W = null, KEY = '', listeners = [], lastEarn = {};
+  var W = null, KEY = '', listeners = [], lastEarn = {}, earnHooks = [];
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   var dayKey = function (t) { var d = new Date(t); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
+  // Week = Monday..Sunday (local time); id = the Monday's day key.
+  var weekKey = function (t) { var d = new Date(t); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return dayKey(d.getTime()); };
 
   function cfg() {
     var c = (window.KQ && KQ.appConfig && (KQ.appConfig() || {}).coins) || {};
@@ -207,6 +209,11 @@
       var s = w.stats; s.plays[sec] = (s.plays[sec] || 0) + 1; s.total = (s.total || 0) + 1;
       var today = dayKey(now), yest = dayKey(now - 86400000);
       if (s.day !== today) { s.streak = s.day === yest ? (s.streak || 0) + 1 : 1; s.day = today; s.days = (s.days || 0) + 1; }
+      // This week's numbers (weekly report): per section + per weekday (Mon=0)
+      var wk = weekKey(now);
+      if (!w.wk || w.wk.id !== wk) { if (w.wk && w.wk.id) w.lastWk = w.wk; w.wk = { id: wk, quiz: 0, single: 0, multi: 0, olympiad: 0, total: 0, coins: 0, d: [0, 0, 0, 0, 0, 0, 0] }; }
+      w.wk[sec] = (w.wk[sec] || 0) + 1; w.wk.total = (w.wk.total || 0) + 1; w.wk.coins = (w.wk.coins || 0) + amount;
+      if (!Array.isArray(w.wk.d)) w.wk.d = [0, 0, 0, 0, 0, 0, 0]; w.wk.d[(new Date(now).getDay() + 6) % 7]++;
       s.best = Math.max(s.best || 0, s.streak || 0);
       ACH.forEach(function (a) {
         if (w.ach[a.id]) return;
@@ -215,6 +222,7 @@
       });
     }, '✅ ' + nice(sec, id));
     if (amount) toast('+' + amount + ' 🪙', false);
+    earnHooks.forEach(function (f) { try { f(sec, id, W); } catch (e) {} });
     unlocked.forEach(function (a, i) { setTimeout(function () { toast(a.icon + ' Achievement: ' + a.title + (useCoins ? '  +' + a.coins + ' 🪙' : ''), true); }, 1200 + i * 1800); });
   }
 
@@ -322,6 +330,32 @@
       '.kqc-ach.on{background:#fef9c3}.kqc-ach .i{font-size:28px;width:36px;text-align:center}.kqc-ach .t{flex:1;min-width:0}.kqc-ach b{display:block}' +
       '.kqc-ach small{color:#6b7280;font-weight:700}.kqc-bar{height:6px;border-radius:6px;background:#e5e7eb;margin-top:4px;overflow:hidden}.kqc-bar i{display:block;height:100%;background:#f59e0b}' +
       '.kqc-ach .c{font-weight:800;color:#92400e;white-space:nowrap}' +
+      /* badges popup */
+      '.kqc-card.kqb{padding:0;max-width:400px;overflow-x:hidden;background:#fffdf7}.kqb-pad{padding:0 14px}' +
+      '.kqb-hero{position:relative;padding:20px 16px 18px;color:#fff;border-radius:26px 26px 0 0;background:radial-gradient(circle at 15% 20%,rgba(255,255,255,.25) 0 6px,transparent 7px),radial-gradient(circle at 85% 30%,rgba(255,255,255,.2) 0 4px,transparent 5px),radial-gradient(circle at 70% 85%,rgba(255,255,255,.18) 0 5px,transparent 6px),linear-gradient(135deg,#8b5cf6,#ec4899 60%,#f97316)}' +
+      '.kqb-hero h3{margin:8px 0 0;font-size:24px;color:#fff}.kqb-hero p{margin:0;color:rgba(255,255,255,.92);font-weight:700}.kqb-hero p b{font-size:18px}' +
+      '.kqb-x{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.25);color:#fff;font:800 16px system-ui;cursor:pointer}' +
+      '.kqb-ring{width:92px;height:92px;margin:0 auto;border-radius:50%;padding:7px;box-sizing:border-box;animation:kqbPop .5s cubic-bezier(.34,1.56,.64,1)}' +
+      '.kqb-ring span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:rgba(255,255,255,.95);box-shadow:inset 0 -4px 0 rgba(0,0,0,.08)}' +
+      '@keyframes kqbPop{0%{transform:scale(.5)}100%{transform:scale(1)}}' +
+      '.kqb-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:8px;padding:12px 14px 4px;margin-top:-14px;position:relative}' +
+      '.kqb-st{background:#fff;border-radius:16px;padding:8px 4px;box-shadow:0 4px 12px rgba(79,70,229,.12);display:flex;flex-direction:column;align-items:center;gap:1px}' +
+      '.kqb-st b{font-size:18px;line-height:1.1;color:#1e1b4b}.kqb-st small{font-size:11px;color:#6b7280;font-weight:700}' +
+      '.kqb-next{margin:10px 0 4px;padding:10px;border-radius:18px;background:linear-gradient(135deg,#fef3c7,#fde68a);text-align:left}.kqb-next .lbl{display:block;font-weight:800;color:#92400e;font-size:13px;margin:0 0 4px 2px}.kqb-next.all{text-align:center;font-weight:800;color:#92400e}' +
+      '.kqb-info{display:flex;align-items:center;gap:10px;text-align:left}.kqb-info .t{flex:1;min-width:0}.kqb-info b{display:block;font-size:16px;color:#1e1b4b}.kqb-info small{display:block;color:#6b7280;font-weight:700;font-size:12.5px}' +
+      '.kqb-info .pr{font-size:11px;font-weight:800;color:#6b7280}.kqb-info .done{font-size:12px;font-weight:800;color:#16a34a}.kqb-info .rw{display:inline-flex;align-items:center;gap:3px;font-weight:800;color:#92400e;white-space:nowrap;background:#fff;border-radius:999px;padding:2px 8px}' +
+      '.kqb-sel{margin:6px 0 8px;padding:10px;border-radius:16px;background:#eef2ff;animation:kqbPop .25s ease-out}' +
+      '.kqb-grp{margin:14px 0 4px;text-align:left}.kqb-gh{display:flex;align-items:center;gap:8px;margin-bottom:8px}.kqb-gh .gi{display:grid;place-items:center;width:28px;height:28px;border-radius:10px}.kqb-gh b{flex:1;font-size:16px;color:#1e1b4b}.kqb-gh small{font-weight:800;color:#6b7280;background:#f1f5f9;border-radius:999px;padding:1px 8px}' +
+      '.kqb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px 4px}' +
+      '.kqb-tile{border:0;background:none;padding:2px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font:inherit;-webkit-tap-highlight-color:transparent}' +
+      '.kqb-tile .nm{font-size:11px;font-weight:800;line-height:1.1;color:#94a3b8;text-align:center}.kqb-tile.on .nm{color:#1e1b4b}.kqb-tile:active{transform:scale(.94)}' +
+      '.kqb-tile.sel .kqb-medal{outline:3px solid #6366f1;outline-offset:2px}' +
+      '.kqb-medal{position:relative;display:grid;place-items:center;border-radius:50%;padding:4px;box-sizing:border-box;flex:0 0 auto}' +
+      '.kqb-medal .in{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#f8fafc}.kqb-medal:not(.on) .in img{filter:grayscale(1);opacity:.45}' +
+      '.kqb-medal.on{box-shadow:0 4px 0 rgba(0,0,0,.12),0 6px 14px rgba(0,0,0,.12)}.kqb-medal.on .in{background:rgba(255,255,255,.88)}' +
+      '.kqb-medal .lock{position:absolute;right:-2px;bottom:-2px;width:20px;height:20px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 1px 3px rgba(0,0,0,.2)}' +
+      '.kqb-cert{display:inline-block;margin:4px 0 0 6px;border:0;border-radius:999px;padding:2px 10px;background:#6366f1;color:#fff;font:800 12px "Baloo 2",system-ui,sans-serif;cursor:pointer}' +
+      '.kqb-empty{color:#6b7280;font-weight:700;padding:20px 0}.kqb-cr{margin:8px 0 0!important;font-size:10px;color:#9ca3af!important;font-weight:600!important}' +
       /* Price pill: part of the card's own layout (never on top of its text).
          [data-kq-cost] > ... beats card rules like ".selection-card span". */
       '[data-kq-cost]>.kqc-cost{position:static;display:inline-flex;align-items:center;gap:3px;align-self:center;flex:0 0 auto;width:max-content;max-width:100%;box-sizing:border-box;margin:2px auto 8px;padding:1px 3px;border-radius:999px;background:#fff8e1;border:1.5px solid #fcd34d;color:#92400e;font:800 12px/1.35 "Baloo 2",system-ui,sans-serif;letter-spacing:0;text-shadow:none;white-space:nowrap;box-shadow:0 1px 0 rgba(146,64,14,.15);pointer-events:none;opacity:1;transform:none}' +
@@ -353,33 +387,92 @@
     badgeBtns.forEach(function (b) { b.innerHTML = '🏅 <span class="n">' + got + '/' + ACH.length + '</span>'; });
     tagSoon();
   }
+  /* ---------- Badges popup ---------- */
+  // Twemoji pictures from images/emoji (same full-color look on every phone).
+  function emo(e, size) {
+    var cp = Array.from(e).map(function (c) { return c.codePointAt(0); }).filter(function (c) { return c !== 0xfe0f; }).map(function (c) { return c.toString(16); }).join('-');
+    return '<img src="' + BASE + '../images/emoji/' + cp + '.svg" alt="' + e + '" width="' + size + '" height="' + size + '" style="width:' + size + 'px;height:' + size + 'px" onerror="this.replaceWith(document.createTextNode(this.alt))">';
+  }
+  var GROUPS = [
+    { id: 'play', name: 'Play & finish', icon: '🌟', c: ['#fbbf24', '#f97316'], re: /^(first|total\d+|plays50|explorer|allround)$/ },
+    { id: 'quiz', name: 'Quizzes', icon: '🎯', c: ['#60a5fa', '#4f46e5'], re: /^quiz\d+$/ },
+    { id: 'game', name: 'Games', icon: '🎮', c: ['#34d399', '#059669'], re: /^games?\d+$/ },
+    { id: 'friends', name: 'With friends', icon: '👥', c: ['#f472b6', '#db2777'], re: /^(friends|multi\d+)$/ },
+    { id: 'oly', name: 'Olympiad', icon: '🏅', c: ['#a78bfa', '#7c3aed'], re: /^(olympiad|oly\d+)$/ },
+    { id: 'streak', name: 'Streaks', icon: '🔥', c: ['#fb923c', '#dc2626'], re: /^streak\d+$/ },
+    { id: 'days', name: 'Days played', icon: '📅', c: ['#2dd4bf', '#0d9488'], re: /^days\d+$/ },
+    { id: 'coins', name: 'Coins', icon: '🪙', c: ['#fde047', '#d97706'], re: /^(rich|spend)\d+$/ },
+    { id: 'collect', name: 'Collector', icon: '🎖️', c: ['#94a3b8', '#475569'], re: /^badges\d+$/ }
+  ];
+  function groupOf(a) { for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i].re.test(a.id)) return GROUPS[i]; return GROUPS[0]; }
+
   function openBadges() {
     css();
-    var w = W || norm(null), s = w.stats, got = ACH.filter(function (a) { return w.ach[a.id]; }).length;
+    var w = W || norm(null), s = w.stats, coinsOn = enabled();
+    var got = ACH.filter(function (a) { return w.ach[a.id]; }).length, pctAll = Math.round(got / ACH.length * 100);
+    var prog = function (a) { var g = a.goal(s, w); return { have: Math.min(g[0] || 0, g[1]), need: g[1], pct: Math.min(100, Math.round((g[0] || 0) / g[1] * 100)) }; };
+    var next = ACH.filter(function (a) { return !w.ach[a.id]; }).sort(function (x, y) { return prog(y).pct - prog(x).pct; })[0];
+    var stat = function (icon, val, lbl) { return '<div class="kqb-st">' + icon + '<b>' + val + '</b><small>' + lbl + '</small></div>'; };
+    var medal = function (a, big) {
+      var gr = groupOf(a), on = !!w.ach[a.id], p = prog(a), sz = big ? 64 : 54;
+      return '<span class="kqb-medal' + (on ? ' on' : '') + '" style="width:' + sz + 'px;height:' + sz + 'px;' +
+        (on ? 'background:linear-gradient(135deg,' + gr.c[0] + ',' + gr.c[1] + ')' : 'background:conic-gradient(' + gr.c[1] + ' ' + p.pct + '%,#e5e7eb 0)') + '">' +
+        '<span class="in">' + emo(a.icon, big ? 34 : 28) + '</span>' + (on ? '' : '<span class="lock">' + emo('🔒', 14) + '</span>') + '</span>';
+    };
+    var info = function (a) {
+      var p = prog(a), on = !!w.ach[a.id];
+      return medal(a, true) + '<div class="t"><b>' + esc(a.title) + '</b><small>' + esc(a.desc) + '</small>' +
+        (on ? '<span class="done">✅ Unlocked ' + new Date(w.ach[a.id]).toLocaleDateString([], { day: 'numeric', month: 'short' }) + '</span>' +
+              (window.KQPlay ? '<button type="button" class="kqb-cert" data-cert="' + a.id + '">🎓 Certificate</button>' : '')
+            : '<span class="kqc-bar"><i style="width:' + p.pct + '%"></i></span><span class="pr">' + (p.pct >= 100 ? '🎉 Finish any quiz or game to collect it!' : p.have + ' / ' + p.need) + '</span>') + '</div>' +
+        (coinsOn ? '<span class="rw">' + (on ? '' : '+') + a.coins + ' ' + coinImg(16) + '</span>' : '');
+    };
+    var byId = {}; ACH.forEach(function (a) { byId[a.id] = a; });
+    var hist = (w.log.length ? w.log.slice().reverse().map(function (e) {
+      var d = new Date(e.t || 0);
+      return '<div class="kqc-log"><span class="t">' + esc(e.n || (e.d > 0 ? 'Coins' : 'Played')) + '<small>' + d.toLocaleDateString([], { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '</small></span>' +
+        '<span class="d ' + (e.d > 0 ? 'p' : 'm') + '">' + (e.d > 0 ? '+' : '−') + Math.abs(e.d) + ' 🪙</span></div>';
+    }).join('') : '<p class="kqb-empty">' + emo('📜', 40) + '<br>No coins earned or spent yet.</p>');
+
     var box = document.createElement('div'); box.className = 'kqc-ov';
-    var coinsOn = enabled();
-    box.innerHTML = '<div class="kqc-card"><div class="kqc-big">' + (coinsOn ? coinImg(44) : '🏅') + '</div><h3>' + (coinsOn ? w.coins + ' coins' : 'My achievements') + '</h3>' +
-      '<p>' + (coinsOn ? 'Earned ' + w.earned + ' · ' : '') + got + ' / ' + ACH.length + ' badges · 🔥 ' + (s.streak || 0) + '-day streak</p>' +
-      (coinsOn ? '<div class="kqc-tabs"><button class="on" data-tab="b">🏅 Badges</button><button data-tab="h">📜 Coin history</button></div>' +
-        '<div data-pane="h" style="display:none">' + (w.log.length ? w.log.slice().reverse().map(function (e) {
-          var d = new Date(e.t || 0);
-          return '<div class="kqc-log"><span class="t">' + esc(e.n || (e.d > 0 ? 'Coins' : 'Played')) + '<small>' + d.toLocaleDateString([], { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '</small></span>' +
-            '<span class="d ' + (e.d > 0 ? 'p' : 'm') + '">' + (e.d > 0 ? '+' : '−') + Math.abs(e.d) + ' 🪙</span></div>';
-        }).join('') : '<p>No coins earned or spent yet.</p>') + '</div>' : '') +
-      '<div data-pane="b">' + ACH.slice().sort(function (x, y) {   // unlocked (newest) first, then closest to done
-        var ux = w.ach[x.id] || 0, uy = w.ach[y.id] || 0; if (ux || uy) return uy - ux;
-        var gx = x.goal(s, w), gy = y.goal(s, w); return gy[0] / gy[1] - gx[0] / gx[1];
-      }).map(function (a) {
-        var g = a.goal(s, w), on = !!w.ach[a.id], pct = Math.min(100, Math.round(g[0] / g[1] * 100));
-        return '<div class="kqc-ach' + (on ? ' on' : '') + '"><span class="i">' + (on ? a.icon : '🔒') + '</span><span class="t"><b>' + esc(a.title) + '</b><small>' + esc(a.desc) + '</small>' +
-          (on ? '' : '<span class="kqc-bar"><i style="width:' + pct + '%"></i></span>') + '</span><span class="c">' + (on ? '✅' : (coinsOn ? '+' + a.coins + ' 🪙' : '')) + '</span></div>';
-      }).join('') + '</div>' +
-      '<button class="kqc-alt" data-a="close" style="margin-top:12px">Close</button></div>';
+    box.innerHTML = '<div class="kqc-card kqb">' +
+      '<div class="kqb-hero"><button class="kqb-x" data-a="close" aria-label="Close">✕</button>' +
+        '<div class="kqb-ring" style="background:conic-gradient(#fde047 ' + pctAll + '%,rgba(255,255,255,.25) 0)"><span>' + emo('🏆', 46) + '</span></div>' +
+        '<h3>My badges</h3><p><b>' + got + '</b> of ' + ACH.length + ' collected</p></div>' +
+      '<div class="kqb-stats">' + (coinsOn ? stat(coinImg(22), w.coins, 'coins') : '') + stat(emo('🔥', 22), s.streak || 0, 'day streak') +
+        stat(emo('📅', 22), s.days || 0, 'days') + stat(emo('🎮', 22), s.total || 0, 'played') + '</div>' +
+      (coinsOn ? '<div class="kqc-tabs"><button class="on" data-tab="b">🏅 Badges</button><button data-tab="h">📜 Coin history</button></div>' : '') +
+      '<div data-pane="h" class="kqb-pad" style="display:none">' + hist + '</div>' +
+      '<div data-pane="b" class="kqb-pad">' +
+        (next ? '<div class="kqb-next"><span class="lbl">⭐ Next up</span><div class="kqb-info">' + info(next) + '</div></div>' : '<div class="kqb-next all">🎉 You collected every badge!</div>') +
+        '<div class="kqb-info kqb-sel" style="display:none"></div>' +
+        GROUPS.map(function (gr) {
+          var list = ACH.filter(function (a) { return groupOf(a) === gr; }); if (!list.length) return '';
+          var n = list.filter(function (a) { return w.ach[a.id]; }).length;
+          return '<div class="kqb-grp"><div class="kqb-gh"><span class="gi" style="background:linear-gradient(135deg,' + gr.c[0] + ',' + gr.c[1] + ')">' + emo(gr.icon, 18) + '</span><b>' + gr.name + '</b><small>' + n + ' / ' + list.length + '</small></div>' +
+            '<div class="kqb-grid">' + list.map(function (a) {
+              return '<button type="button" class="kqb-tile' + (w.ach[a.id] ? ' on' : '') + '" data-id="' + a.id + '">' + medal(a) + '<span class="nm">' + esc(a.title) + '</span></button>';
+            }).join('') + '</div></div>';
+        }).join('') +
+      '</div>' +
+      '<div class="kqb-pad"><button class="kqc-alt" data-a="close">Close</button><p class="kqb-cr">Emoji graphics by Twemoji, CC-BY 4.0</p></div></div>';
+
+    var sel = box.querySelector('.kqb-sel');
+    box.addEventListener('click', function (e) {
+      var c = e.target.closest && e.target.closest('[data-cert]'); if (!c || !window.KQPlay) return;
+      var a = byId[c.getAttribute('data-cert')]; if (a) KQPlay.certificate({ icon: a.icon, title: a.title, line: a.desc, date: w.ach[a.id] });
+    });
+    box.querySelectorAll('.kqb-tile').forEach(function (t) { t.onclick = function () {
+      var a = byId[t.getAttribute('data-id')]; if (!a) return;
+      box.querySelectorAll('.kqb-tile.sel').forEach(function (x) { x.classList.remove('sel'); }); t.classList.add('sel');
+      sel.innerHTML = info(a); sel.style.display = '';
+      t.closest('.kqb-grp').insertBefore(sel, t.closest('.kqb-grid'));   // details right above that group's tiles
+    }; });
     box.querySelectorAll('[data-tab]').forEach(function (b) { b.onclick = function () {
       box.querySelectorAll('[data-tab]').forEach(function (x) { x.classList.toggle('on', x === b); });
       box.querySelectorAll('[data-pane]').forEach(function (p) { p.style.display = p.getAttribute('data-pane') === b.getAttribute('data-tab') ? '' : 'none'; });
     }; });
-    box.onclick = function (e) { if (e.target === box || (e.target.getAttribute && e.target.getAttribute('data-a') === 'close')) box.remove(); };
+    box.onclick = function (e) { var c = e.target.closest && e.target.closest('[data-a="close"]'); if (e.target === box || c) box.remove(); };
     document.body.appendChild(box);
   }
 
@@ -391,6 +484,9 @@
   window.KQCoins = {
     gate: gate, earn: earn, enabled: enabled, price: price, balance: function () { return W ? W.coins : 0; },
     wallet: function () { return W; }, onChange: function (f) { listeners.push(f); }, mountChip: mountChip, mountBadges: mountBadges, openBadges: openBadges, enabledFor: enabledFor, tagCards: tagCards, coinImg: coinImg,
-    achievements: ACH, defaults: DEF
+    achievements: ACH, defaults: DEF,
+    // for kq-play.js (shop, daily gift, leagues, weekly report)
+    tx: function (delta, label, mutate) { change(delta, delta < 0 ? 'spend' : 'reward', mutate, label); },
+    onEarn: function (f) { earnHooks.push(f); }, emo: emo, toast: toast, weekKey: weekKey, dayKey: dayKey, esc: esc, groupOf: groupOf
   };
 })();

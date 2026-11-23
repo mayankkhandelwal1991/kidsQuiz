@@ -59,3 +59,30 @@ Rule (add next to "config"):
 ```
 Signed-in players can only change their own wallet; guest wallets (`g_…`) have
 no sign-in, so they are open like guest scores. The admin can set or delete any.
+
+## Weekly leagues → `leagues/<week>/<group>/<player>`
+
+Used by the Fun zone (games/kq-play.js). `<week>` is the Monday (e.g. `2026-11-23`),
+`<group>` is `c3` (Class 3), `c0` (LKG), `cu` (UKG) or `k_<CODE>` (class code).
+Each row: `{ n: first name, cc: country, p: points, t: time }`. Add next to "wallets":
+
+```
+"leagues": {
+  ".read": true,
+  ".write": "<ADMIN>",
+  "$week": {
+    "$group": {
+      ".indexOn": ["p"],
+      "$player": {
+        ".write": "(auth != null && auth.uid === $player) || $player.beginsWith('g_')",
+        ".validate": "!newData.exists() || (newData.child('p').isNumber() && newData.child('p').val() >= 0 && newData.child('p').val() <= 100000 && newData.child('n').isString() && newData.child('n').val().length <= 20)"
+      }
+    }
+  }
+}
+```
+Without this rule the league screen says "Leagues are not switched on yet".
+
+The complete rules (with the real admin e-mail) are in `admin/firebase-rules.json` on the
+server only — it is in `.gitignore`, so it never goes to the public GitHub repo.
+Old weeks can be deleted from the Firebase console any time.

@@ -1,0 +1,50 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=540">
+<title>Store screenshot</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<!-- Play Store screenshot: open as shot.html?n=1..8 at 540x960 CSS px, device scale 2 -> 1080x1920 PNG.
+     Regenerate: PlayStoreThings/store-listing/make-assets.sh -->
+<style>
+  html, body { margin: 0; width: 540px; height: 960px; overflow: hidden; font-family: "Baloo 2", system-ui, sans-serif; }
+  body { position: relative; color: #fff; }
+  .bg { position: absolute; inset: 0; }
+  .dots { position: absolute; inset: 0; background-image: radial-gradient(circle at 10% 12%, rgba(255,255,255,.28) 0 7px, transparent 8px), radial-gradient(circle at 88% 8%, rgba(255,255,255,.22) 0 5px, transparent 6px), radial-gradient(circle at 92% 60%, rgba(255,255,255,.18) 0 9px, transparent 10px), radial-gradient(circle at 6% 70%, rgba(255,255,255,.2) 0 6px, transparent 7px); }
+  .cap { position: absolute; top: 34px; left: 24px; right: 24px; text-align: center; }
+  .cap h1 { margin: 0; font-size: 44px; line-height: 1.02; font-weight: 800; text-shadow: 0 4px 0 rgba(0,0,0,.12); }
+  .cap p { margin: 8px 0 0; font-size: 20px; font-weight: 700; opacity: .95; }
+  .cap .pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.95); color: #4338ca; border-radius: 999px; padding: 3px 14px; font-size: 15px; font-weight: 800; margin-bottom: 10px; }
+  .cap .pill img { width: 22px; height: 22px; }
+  .phone { position: absolute; left: 50%; bottom: -40px; width: 352px; height: 740px; transform: translateX(-50%); background: #111827; border-radius: 48px; padding: 12px; box-sizing: border-box; box-shadow: 0 30px 60px rgba(0,0,0,.35), inset 0 0 0 2px #374151; }
+  .phone::before { content: ''; position: absolute; top: 20px; left: 50%; width: 90px; height: 22px; transform: translateX(-50%); background: #111827; border-radius: 0 0 14px 14px; z-index: 3; }
+  .screen { width: 100%; height: 100%; border-radius: 38px; overflow: hidden; background: #fff; position: relative; }
+  .screen iframe { border: 0; width: 390px; height: 800px; transform: scale(.841); transform-origin: 0 0; }
+  .float { position: absolute; z-index: 4; filter: drop-shadow(0 8px 10px rgba(0,0,0,.25)); animation: none; }
+</style></head>
+<body>
+<div class="bg" id="bg"></div><div class="dots"></div>
+<div class="cap"><div class="pill" id="pill"></div><h1 id="h"></h1><p id="p"></p></div>
+<div class="phone"><div class="screen"><iframe id="f" scrolling="no"></iframe></div></div>
+<div id="fl"></div>
+<script>
+var E = function (cp, s) { return '<img src="../../../images/emoji/' + cp + '.svg" width="' + s + '" height="' + s + '" alt="">'; };
+var SHOTS = {
+  1: { bg: 'linear-gradient(160deg,#8b5cf6,#ec4899)', pill: ['1f393', 'LKG – Class 5'], h: 'Learn &amp; play<br>every day!', p: 'Fun quizzes in 14 subjects', src: '../../../quiz/play.html#/c/3', fl: [['1f31f', 70, 18, 250], ['1f4da', 64, 450, 230]] },
+  2: { bg: 'linear-gradient(160deg,#22c55e,#0ea5e9)', pill: ['1f5fa', 'New'], h: 'Your own<br>learning path', p: 'Win stars ⭐ to unlock the next stop', src: 'fun.html#map', fl: [['2b50', 60, 24, 240], ['1f3c6', 64, 452, 226]] },
+  3: { bg: 'linear-gradient(160deg,#f97316,#ef4444)', pill: ['1f3ae', '50+ games'], h: 'Brain games<br>&amp; 3D fun', p: 'Puzzles, words, maths, racing &amp; more', src: '../../../games/index.html', fl: [['1f680', 66, 20, 236], ['1f3b2', 60, 456, 236]] },
+  4: { bg: 'linear-gradient(160deg,#f59e0b,#ec4899)', pill: ['1f3c5', '56 badges'], h: 'Collect badges<br>&amp; trophies', p: 'Streaks, levels and rewards', src: 'fun.html#badges', fl: [['1f947', 64, 22, 240], ['1f525', 60, 456, 236]] },
+  5: { bg: 'linear-gradient(160deg,#ec4899,#8b5cf6)', pill: ['1f6cd', 'Owl shop'], h: 'Dress up<br>your owl!', p: 'Spend coins on hats, frames &amp; themes', src: 'fun.html#shop', fl: [['1f451', 66, 20, 236], ['1f576', 62, 454, 240]] },
+  6: { bg: 'linear-gradient(160deg,#06b6d4,#6366f1)', pill: ['1f381', 'Every day'], h: 'Question<br>of the day', p: 'Plus a daily gift with bonus coins', src: 'fun.html#qotd', fl: [['2753', 62, 22, 240], ['1f381', 64, 452, 232]] },
+  7: { bg: 'linear-gradient(160deg,#4f46e5,#06b6d4)', pill: ['1f9e0', '8 subjects'], h: 'Olympiad<br>practice papers', p: 'Maths, Science, English, GK &amp; more', src: '../../../Olympiad/index.html', fl: [['1f3c5', 64, 20, 236], ['1f4a1', 60, 456, 240]] },
+  8: { bg: 'linear-gradient(160deg,#6366f1,#22c55e)', pill: ['1f46a', 'For parents'], h: 'Weekly report<br>&amp; certificates', p: 'See progress, share on WhatsApp', src: 'fun.html#report', fl: [['1f4ca', 62, 22, 240], ['1f393', 62, 454, 236]] }
+};
+var n = +(new URLSearchParams(location.search).get('n') || 1), c = SHOTS[n];
+document.getElementById('bg').style.background = c.bg;
+document.getElementById('pill').innerHTML = E(c.pill[0], 22) + c.pill[1];
+document.getElementById('h').innerHTML = c.h;
+document.getElementById('p').innerHTML = c.p;
+// Pages behind the sign-in screen: open them as a guest (this browser only).
+try { localStorage.setItem('kq_guest_session', '1'); localStorage.setItem('kq_nick', 'Aarav'); localStorage.setItem('kq_last_class', '3'); } catch (e) {}
+document.getElementById('f').src = c.src;
+document.getElementById('fl').innerHTML = c.fl.map(function (x) { return '<div class="float" style="left:' + x[2] + 'px;top:' + x[3] + 'px">' + E(x[0], x[1]) + '</div>'; }).join('');
+</script>
+</body></html>

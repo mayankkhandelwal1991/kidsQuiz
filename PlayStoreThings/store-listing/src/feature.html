@@ -1,0 +1,45 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<title>Feature graphic</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<!-- Play Store feature graphic: 1024x500, rendered by make-assets.sh -->
+<style>
+  html, body { margin: 0; width: 1024px; height: 500px; overflow: hidden; font-family: "Baloo 2", system-ui, sans-serif; }
+  body { position: relative; color: #fff; background: linear-gradient(120deg, #7c3aed 0%, #db2777 55%, #f97316 100%); }
+  .dots { position: absolute; inset: 0; background-image: radial-gradient(circle at 6% 14%, rgba(255,255,255,.3) 0 8px, transparent 9px), radial-gradient(circle at 46% 88%, rgba(255,255,255,.2) 0 10px, transparent 11px), radial-gradient(circle at 60% 10%, rgba(255,255,255,.22) 0 6px, transparent 7px), radial-gradient(circle at 96% 82%, rgba(255,255,255,.2) 0 9px, transparent 10px); }
+  .hills { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; }
+  .txt { position: absolute; left: 64px; top: 70px; width: 520px; }
+  .logo { display: flex; align-items: center; gap: 14px; }
+  .logo img { width: 84px; height: 84px; border-radius: 22px; box-shadow: 0 8px 18px rgba(0,0,0,.25); background: #fff; }
+  .logo b { font-size: 74px; line-height: 1; text-shadow: 0 5px 0 rgba(0,0,0,.15); }
+  h2 { margin: 18px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .chips span { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.95); color: #4338ca; font-weight: 800; font-size: 19px; border-radius: 999px; padding: 4px 14px 4px 8px; }
+  .chips img { width: 26px; height: 26px; }
+  .owl { position: absolute; right: 120px; top: 96px; width: 260px; height: 260px; filter: drop-shadow(0 16px 18px rgba(0,0,0,.3)); }
+  .owl .hat { position: absolute; left: 22%; top: -16%; width: 56%; }
+  .owl .eyes { position: absolute; left: 19%; top: 25%; width: 62%; }
+  .fl { position: absolute; filter: drop-shadow(0 8px 10px rgba(0,0,0,.25)); }
+</style></head>
+<body>
+<div class="dots"></div>
+<svg class="hills" viewBox="0 0 1024 120" preserveAspectRatio="none"><path d="M0 70 Q 200 10 420 60 T 820 40 T 1024 55 V120 H0Z" fill="rgba(255,255,255,.18)"/><path d="M0 95 Q 260 55 520 92 T 1024 85 V120 H0Z" fill="rgba(255,255,255,.22)"/></svg>
+<div class="txt">
+  <div class="logo"><img src="../../../images/app-logo.png" alt=""><b>Kids Quiz</b></div>
+  <h2>Learn, play &amp; collect badges!</h2>
+  <div class="chips">
+    <span><img src="../../../images/emoji/1f3af.svg" alt="">Quizzes</span>
+    <span><img src="../../../images/emoji/1f3ae.svg" alt="">50+ games</span>
+    <span><img src="../../../images/emoji/1f3c5.svg" alt="">Olympiad</span>
+    <span><img src="../../../images/emoji/1f393.svg" alt="">LKG – Class 5</span>
+  </div>
+</div>
+<div class="owl">
+  <svg viewBox="0 0 120 120" width="260" height="260"><path d="M30 30 L40 12 L50 30Z" fill="#7c3aed"/><path d="M70 30 L80 12 L90 30Z" fill="#7c3aed"/><ellipse cx="60" cy="70" rx="42" ry="44" fill="#8b5cf6"/><ellipse cx="60" cy="82" rx="26" ry="28" fill="#ede9fe"/><path d="M18 66 Q8 86 26 100 Q30 82 24 66Z" fill="#7c3aed"/><path d="M102 66 Q112 86 94 100 Q90 82 96 66Z" fill="#7c3aed"/><circle cx="44" cy="50" r="17" fill="#fff"/><circle cx="76" cy="50" r="17" fill="#fff"/><circle cx="46" cy="51" r="8" fill="#1e1b4b"/><circle cx="74" cy="51" r="8" fill="#1e1b4b"/><circle cx="49" cy="48" r="3" fill="#fff"/><circle cx="77" cy="48" r="3" fill="#fff"/><path d="M54 62 L66 62 L60 72Z" fill="#f59e0b"/><ellipse cx="46" cy="114" rx="8" ry="4" fill="#f59e0b"/><ellipse cx="74" cy="114" rx="8" ry="4" fill="#f59e0b"/></svg>
+  <img class="hat" src="../../../images/emoji/1f451.svg" alt="">
+</div>
+<img class="fl" src="../../../images/emoji/2b50.svg" style="left:640px;top:70px;width:60px">
+<img class="fl" src="../../../images/emoji/1f3c6.svg" style="left:900px;top:60px;width:70px">
+<img class="fl" src="../../../images/emoji/1f381.svg" style="left:650px;top:330px;width:66px">
+<img class="fl" src="../../../images/emoji/1f680.svg" style="left:910px;top:320px;width:64px">
+</body></html>

@@ -331,6 +331,79 @@ function continueAsGuest() {
   });
 }
 
+/* ---- Android app login (native login screen) -----------------------------
+   The app shows its own login screen first and stores the choice:
+   Google  -> sign in to Firebase here with the app's Google ID token
+              (asks the app for a fresh one if it's too old), same account
+              on app and web;  Guest -> ask the name once, then home.
+   Returns false on the website / older app builds (normal gate flow). */
+function readAppSession() {
+  try {
+    if (typeof Android === 'undefined' || !Android || typeof Android.getAuthSession !== 'function') return null;
+    const s = JSON.parse(Android.getAuthSession() || 'null');
+    return s && s.mode ? s : null;
+  } catch (e) { return null; }
+}
+function appAutoLogin() {
+  const ses = readAppSession();
+  if (!ses) return false;
+  let done = false;
+  const finish = function (u) { if (done) return; done = true; if (u) setCachedAuth(u); goHome(); };
+
+  if (ses.mode === 'guest') {
+    setSplashStatus('Getting your games ready…');
+    whenKQ(function () {
+      KQ.ready.then(function () {
+        const u = KQ.user();
+        // The app says Guest: drop a leftover web Google session (web only, keep the app login).
+        const pre = (u && !u.isGuest) ? KQ.signOut({ webOnly: true }) : Promise.resolve();
+        Promise.resolve(pre).catch(function () {}).then(function () {
+          clearCachedAuth();
+          const nick = (typeof kqGetNick === 'function') ? kqGetNick() : '';
+          if (getCachedGuest() && nick && nick !== 'Guest') { setCachedGuest(true); finish(); return; }
+          releaseScroll();
+          kqAskName().then(function () { setCachedGuest(true); finish(); });
+        });
+      });
+    });
+    return true;
+  }
+
+  if (ses.mode !== 'google') return false;
+  setSplashStatus('Signing you in' + (ses.name ? ', ' + ses.name.split(' ')[0] : '') + '…');
+  const same = function (u) {
+    return u && !u.isGuest && (!ses.email || !u.email || u.email.toLowerCase() === String(ses.email).toLowerCase());
+  };
+  whenKQ(function () {
+    KQ.onAuth(function (u) { if (same(u)) { setCachedGuest(false); finish(u); } });
+    KQ.ready.then(function () {
+      const u = KQ.user();
+      if (same(u)) { setCachedGuest(false); finish(u); return; }
+      const useToken = function () {
+        if (ses.idToken) {
+          KQ.signInWithIdToken(ses.idToken, true).then(function (r) {
+            if (!r) { try { Android.refreshGoogleToken(); } catch (e) {} }
+          });
+        } else {
+          try { Android.refreshGoogleToken(); } catch (e) {}
+        }
+      };
+      // Signed in on the web as someone else: switch to the app's account.
+      if (u && !u.isGuest) Promise.resolve(KQ.signOut({ webOnly: true })).catch(function () {}).then(useToken);
+      else useToken();
+    });
+  });
+  // Couldn't finish (offline, token refused…): show the gate; its Google
+  // button still opens the app's account chooser.
+  setTimeout(function () { if (!done) { done = true; showGate(); } }, 20000);
+  return true;
+}
+function whenKQ(fn) {
+  if (window.KQ) return fn();
+  const t = setInterval(function () { if (window.KQ) { clearInterval(t); fn(); } }, 50);
+  setTimeout(function () { clearInterval(t); }, AUTH_TIMEOUT_MS);
+}
+
 /* ---- Splash + decision --------------------------------------------------- */
 (function initSplash() {
   const startTime = Date.now();
@@ -348,6 +421,10 @@ function continueAsGuest() {
     signingOut = sessionStorage.getItem('kq_signing_out') === '1';
     sessionStorage.removeItem('kq_signing_out');
   } catch (e) {}
+
+  // Android app with its own login screen: the player already signed in
+  // (or chose Guest) natively — finish that here, no gate buttons needed.
+  if (!signingOut && appAutoLogin()) return;
 
   // Loop-breaker: if a bounce loop was detected, land on the gate and do NOT
   // auto-home (which is what kept the reload going).
@@ -394,7 +471,7 @@ function continueAsGuest() {
   }, AUTH_TIMEOUT_MS);
 })();
 </script>
-<script src="games/kq-leaderboard.js?v=20261123b"></script>
+<script src="games/kq-leaderboard.js?v=20261123c"></script>
 <script src="web-ads.js?v=20261120i"></script>
 </body>
 </html>

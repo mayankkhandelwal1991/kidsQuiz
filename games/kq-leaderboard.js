@@ -146,6 +146,7 @@
         uid: authUser.uid,
         name: authUser.displayName || (authUser.email ? authUser.email.split("@")[0] : "Player"),
         photo: authUser.photoURL || "",
+        email: authUser.email || "",
         isGuest: false
       };
     }
@@ -474,20 +475,32 @@
   }
 
   // Complete Firebase sign-in using a Google ID token obtained natively.
-  function signInWithIdToken(idToken) {
+  // silent = true: the app's automatic sign-in (no alert; caller handles failure).
+  function signInWithIdToken(idToken, silent) {
     return ready.then(function () {
       if (!auth || !idToken) return null;
       var cred = firebase.auth.GoogleAuthProvider.credential(idToken);
       return auth.signInWithCredential(cred).then(function (r) { return r.user; })
         .catch(function (e) {
           console.warn("[KQ] signInWithCredential failed:", e);
-          alert("Google sign-in failed on this device. Please try again.");
+          if (!silent) alert("Google sign-in failed on this device. Please try again.");
           return null;
         });
     });
   }
   // Android calls this (via evaluateJavascript) after native Google Sign-In.
-  window.onGoogleIdToken = function (idToken) { return signInWithIdToken(idToken); };
+  window.onGoogleIdToken = function (idToken, silent) { return signInWithIdToken(idToken, silent); };
+
+  /* The Android app's own login (native login screen), or null on the website /
+     older app builds: { mode: 'google'|'guest'|'', name, email, photo, idToken }.
+     idToken is '' when it's too old: ask the app with Android.refreshGoogleToken(). */
+  function appSession() {
+    try {
+      if (typeof Android === "undefined" || !Android || typeof Android.getAuthSession !== "function") return null;
+      var s = JSON.parse(Android.getAuthSession() || "null");
+      return s && typeof s === "object" ? s : null;
+    } catch (e) { return null; }
+  }
 
   function signIn() {
     return ready.then(function () {
@@ -543,9 +556,11 @@
       });
     });
   }
-  function signOut() {
+  // opts.webOnly: sign out of Firebase here but keep the app's login
+  // (used when the app's account changed and the page must switch to it).
+  function signOut(opts) {
     try {
-      if (typeof Android !== "undefined" && Android && typeof Android.googleSignOut === "function") {
+      if (!(opts && opts.webOnly) && typeof Android !== "undefined" && Android && typeof Android.googleSignOut === "function") {
         Android.googleSignOut();
       }
     } catch (e) {}
@@ -746,6 +761,7 @@
     onAuth: function (fn) { if (typeof fn === "function") { authCbs.push(fn); try { fn(currentUser()); } catch (e) {} } },
     signIn: signIn,
     signInWithIdToken: signInWithIdToken,
+    appSession: appSession,
     signOut: signOut,
     setNick: function (name) {
       name = String(name || "").trim().slice(0, 24);

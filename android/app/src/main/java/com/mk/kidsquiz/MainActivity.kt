@@ -25,12 +25,21 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
+import androidx.credentials.CredentialOption
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
 import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -56,6 +65,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -84,6 +94,21 @@ class MainActivity : ComponentActivity() {
 
     private val credentialManager by lazy { CredentialManager.create(this) }
     private var signInInProgress = false
+
+    // ==================================================
+    // LOGIN SESSION (native login screen, shared with the web page)
+    // mode: ""  -> show the native login screen
+    //       "google" -> signed in with Google (token handed to the page)
+    //       "guest"  -> playing as a guest
+    // The page reads it with Android.getAuthSession() and signs in to
+    // Firebase with the Google ID token, so app and web stay in sync.
+    // ==================================================
+    private val authPrefs by lazy { getSharedPreferences("kq_auth", Context.MODE_PRIVATE) }
+    private var authMode by mutableStateOf("")
+    private var loginBusy by mutableStateOf(false)
+    private var loginError by mutableStateOf("")
+    // Google ID tokens live ~1 hour; hand the page only a fresh one.
+    private val TOKEN_FRESH_MS = 50 * 60 * 1000L
 
     // Text-to-speech for read-aloud in quizzes/games (WebView has no speechSynthesis).
     private var tts: TextToSpeech? = null
@@ -191,6 +216,9 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
 
+        // Who was signed in last time (Google / guest), or "" -> login screen.
+        authMode = authPrefs.getString("mode", "") ?: ""
+
         // ==================================================
         // BACK BUTTON -> WEBVIEW HISTORY OR QUIT CONFIRMATION
         // ==================================================
@@ -198,7 +226,9 @@ class MainActivity : ComponentActivity() {
             this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (::webView.isInitialized && webView.canGoBack()) {
+                    if (authMode.isEmpty()) {
+                        showExitDialog()
+                    } else if (::webView.isInitialized && webView.canGoBack()) {
                         webView.goBack()
                     } else {
                         showExitDialog()
@@ -247,7 +277,10 @@ class MainActivity : ComponentActivity() {
                                 Modifier.weight(1f)
                         ) {
 
-                            if (isConnected) {
+                            if (isConnected && authMode.isEmpty()) {
+                                // Not signed in yet: native login screen first.
+                                LoginScreen()
+                            } else if (isConnected) {
                                 key(reloadTrigger) {
                                     WebViewScreen(
                                         modifier =
@@ -266,8 +299,8 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
-                        // FIXED BOTTOM BANNER
-                        BannerAd()
+                        // FIXED BOTTOM BANNER (not on the login screen)
+                        if (authMode.isNotEmpty()) BannerAd()
                     }
                 }
             }
@@ -308,64 +341,238 @@ class MainActivity : ComponentActivity() {
     }
 
     // ==================================================
-    // START GOOGLE SIGN-IN
-    // Shows the "Sign in with Google" account chooser. On success the ID
-    // token goes to the page (window.onGoogleIdToken) which signs in to
-    // Firebase; the player's Google name is then used on the leaderboard.
-    // Cancel / failure just leaves the child on the screen, where
-    // "Continue as Guest" still works — sign-in is never required.
+    // GOOGLE SIGN-IN (native)
+    // silent = false: the "Sign in with Google" account chooser (login screen,
+    //                 or the page's own sign-in button).
+    // silent = true:  quietly get a fresh ID token for the account already
+    //                 chosen (the page asks when its saved token is too old);
+    //                 falls back to the chooser if that isn't possible.
+    // On success the profile + ID token are saved, and the page signs in to
+    // Firebase with the token -> the same account on the app and the web.
     // ==================================================
-    private fun startGoogleSignIn() {
+    private fun startGoogleSignIn(silent: Boolean = false) {
         if (signInInProgress) return
         signInInProgress = true
+        if (!silent) { loginBusy = true; loginError = "" }
 
-        val option = GetSignInWithGoogleOption.Builder(WEB_CLIENT_ID).build()
+        val option: CredentialOption = if (silent)
+            GetGoogleIdOption.Builder()
+                .setServerClientId(WEB_CLIENT_ID)
+                .setFilterByAuthorizedAccounts(true)
+                .setAutoSelectEnabled(true)
+                .build()
+        else
+            GetSignInWithGoogleOption.Builder(WEB_CLIENT_ID).build()
         val request = GetCredentialRequest.Builder()
             .addCredentialOption(option)
             .build()
 
         lifecycleScope.launch {
+            var retryInteractive = false
             try {
                 val credential = credentialManager.getCredential(this@MainActivity, request).credential
                 if (credential is CustomCredential &&
                     credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
                 ) {
-                    val google = GoogleIdTokenCredential.createFrom(credential.data)
-                    sendToPage(
-                        "window.onGoogleIdToken && window.onGoogleIdToken(" +
-                                JSONObject.quote(google.idToken) + ")"
-                    )
+                    onGoogleSignedIn(GoogleIdTokenCredential.createFrom(credential.data))
                 } else {
                     onSignInFailed("unexpected credential type")
                 }
             } catch (e: GetCredentialCancellationException) {
-                sendToPage("window.onGoogleSignInCancelled && window.onGoogleSignInCancelled()")
+                onSignInCancelled()
+            } catch (e: NoCredentialException) {
+                // Silent refresh found no remembered account -> show the chooser.
+                if (silent) retryInteractive = true else onSignInFailed("no credential: " + e.message)
             } catch (e: GetCredentialException) {
-                onSignInFailed(e.type + ": " + e.message)
+                if (silent) retryInteractive = true else onSignInFailed(e.type + ": " + e.message)
             } catch (e: GoogleIdTokenParsingException) {
                 onSignInFailed("token parse: " + e.message)
             } finally {
                 signInInProgress = false
             }
+            if (retryInteractive) startGoogleSignIn(silent = false)
         }
+    }
+
+    private fun onGoogleSignedIn(google: GoogleIdTokenCredential) {
+        authPrefs.edit()
+            .putString("mode", "google")
+            .putString("name", google.displayName ?: "")
+            .putString("email", google.id)
+            .putString("photo", google.profilePictureUri?.toString() ?: "")
+            .putString("idToken", google.idToken)
+            .putLong("tokenAt", System.currentTimeMillis())
+            .apply()
+        loginBusy = false
+        loginError = ""
+        if (authMode.isEmpty()) {
+            // From the login screen: open the app; the page picks the token
+            // up from Android.getAuthSession() as soon as it loads.
+            authMode = "google"
+        } else {
+            // The page is already open (token refresh, or a guest upgrading
+            // to Google): hand it the token now.
+            authMode = "google"
+            sendToPage(
+                "window.onGoogleIdToken && window.onGoogleIdToken(" +
+                        JSONObject.quote(google.idToken) + ", true)"
+            )
+        }
+    }
+
+    private fun onSignInCancelled() {
+        loginBusy = false
+        if (authMode.isNotEmpty())
+            sendToPage("window.onGoogleSignInCancelled && window.onGoogleSignInCancelled()")
     }
 
     private fun onSignInFailed(reason: String) {
         Log.w("KidsQuizLogin", "Google sign-in failed: $reason")
-        Toast.makeText(
-            this,
-            "Google sign-in didn't work. You can play as Guest.",
-            Toast.LENGTH_LONG
-        ).show()
-        sendToPage("window.onGoogleSignInCancelled && window.onGoogleSignInCancelled()")
+        loginBusy = false
+        if (authMode.isEmpty()) {
+            loginError = "Google sign-in didn't work. Check your internet and try again, or play as a guest."
+        } else {
+            Toast.makeText(this, "Google sign-in didn't work. Please try again.", Toast.LENGTH_LONG).show()
+            sendToPage("window.onGoogleSignInCancelled && window.onGoogleSignInCancelled()")
+        }
     }
 
-    private fun signOutGoogle() {
+    private fun continueAsGuest() {
+        authPrefs.edit().clear().putString("mode", "guest").apply()
+        loginError = ""
+        authMode = "guest"
+    }
+
+    // Sign out (Google or guest): forget the saved login and go back to the
+    // native login screen. A short delay lets the page finish its own
+    // Firebase sign-out first.
+    private fun signOutApp() {
+        authPrefs.edit().clear().apply()
         lifecycleScope.launch {
             try {
                 credentialManager.clearCredentialState(ClearCredentialStateRequest())
             } catch (e: Exception) {
                 Log.w("KidsQuizLogin", "clearCredentialState failed", e)
+            }
+        }
+        webViewHandler.postDelayed({ authMode = "" }, 700)
+    }
+    private val webViewHandler by lazy { android.os.Handler(mainLooper) }
+
+    // Session for the page (Android.getAuthSession): JSON string.
+    private fun authSessionJson(): String {
+        val o = JSONObject()
+        val mode = authPrefs.getString("mode", "") ?: ""
+        o.put("mode", mode)
+        o.put("name", authPrefs.getString("name", "") ?: "")
+        o.put("email", authPrefs.getString("email", "") ?: "")
+        o.put("photo", authPrefs.getString("photo", "") ?: "")
+        val at = authPrefs.getLong("tokenAt", 0L)
+        val fresh = mode == "google" && System.currentTimeMillis() - at < TOKEN_FRESH_MS
+        o.put("idToken", if (fresh) authPrefs.getString("idToken", "") ?: "" else "")
+        o.put("v", 1)
+        return o.toString()
+    }
+
+    // ==================================================
+    // NATIVE LOGIN SCREEN
+    // ==================================================
+    @Composable
+    fun LoginScreen() {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        listOf(Color(0xFF7DD3FC), Color(0xFFBAE6FD), Color(0xFFFDE68A))
+                    )
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(24.dp)
+                    .widthIn(max = 420.dp)
+                    .fillMaxWidth()
+                    .background(Color.White, RoundedCornerShape(28.dp))
+                    .padding(horizontal = 22.dp, vertical = 28.dp)
+            ) {
+                Text(text = "🦉", fontSize = 64.sp)
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = "Kids Quiz & Games",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color(0xFF1E1B4B),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = "Sign in to save your stars, scores and progress on every device",
+                    fontSize = 14.sp,
+                    color = Color(0xFF6B7280),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = { startGoogleSignIn() },
+                    enabled = !loginBusy,
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF4F46E5),
+                        contentColor = Color.White
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                ) {
+                    if (loginBusy) {
+                        CircularProgressIndicator(
+                            color = Color.White,
+                            strokeWidth = 3.dp,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .size(30.dp)
+                                .background(Color.White, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text("G", color = Color(0xFF4285F4), fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
+                        }
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text("Sign in with Google", fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+
+                if (loginError.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = loginError,
+                        fontSize = 13.sp,
+                        color = Color(0xFFDC2626),
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+                TextButton(onClick = { continueAsGuest() }, enabled = !loginBusy) {
+                    Text(
+                        "Play as Guest",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF4F46E5)
+                    )
+                }
+                Text(
+                    text = "We only use your name and email to show you on the leaderboard.",
+                    fontSize = 11.sp,
+                    color = Color(0xFF9CA3AF),
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
@@ -862,7 +1069,22 @@ class MainActivity : ComponentActivity() {
         // Usage in JS:  Android.googleSignOut();
         @JavascriptInterface
         fun googleSignOut() {
-            runOnUiThread { signOutGoogle() }
+            runOnUiThread { signOutApp() }
+        }
+
+        // The app's login (from the native login screen) for the page:
+        // {"mode":"google"|"guest"|"","name","email","photo","idToken"}.
+        // idToken is "" when it's too old -> call refreshGoogleToken().
+        // Usage in JS:  JSON.parse(Android.getAuthSession())
+        @JavascriptInterface
+        fun getAuthSession(): String = authSessionJson()
+
+        // Get a fresh Google ID token for the signed-in account; it comes
+        // back through window.onGoogleIdToken(token, true).
+        // Usage in JS:  Android.refreshGoogleToken();
+        @JavascriptInterface
+        fun refreshGoogleToken() {
+            runOnUiThread { startGoogleSignIn(silent = true) }
         }
 
         // The web page only shows "Sign in with Google" inside the app when

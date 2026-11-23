@@ -32,13 +32,22 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.lifecycle.lifecycleScope
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -492,59 +501,65 @@ class MainActivity : ComponentActivity() {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
+                    .verticalScroll(rememberScrollState())
                     .padding(24.dp)
                     .widthIn(max = 420.dp)
                     .fillMaxWidth()
                     .background(Color.White, RoundedCornerShape(28.dp))
                     .padding(horizontal = 22.dp, vertical = 28.dp)
             ) {
-                Text(text = "🦉", fontSize = 64.sp)
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
-                    text = "Kids Quiz & Games",
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Color(0xFF1E1B4B),
-                    textAlign = TextAlign.Center
+                // App logo ("Kids Game & Quiz")
+                Image(
+                    painter = painterResource(id = R.drawable.app_logo),
+                    contentDescription = "Kids Game & Quiz",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(168.dp)
+                        .shadow(10.dp, RoundedCornerShape(32.dp))
+                        .clip(RoundedCornerShape(32.dp))
                 )
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(18.dp))
                 Text(
                     text = "Sign in to save your stars, scores and progress on every device",
                     fontSize = 14.sp,
                     color = Color(0xFF6B7280),
                     textAlign = TextAlign.Center
                 )
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(22.dp))
 
-                Button(
+                // Standard "Sign in with Google" button (Google branding:
+                // white, grey outline, multicolour G, dark text).
+                OutlinedButton(
                     onClick = { startGoogleSignIn() },
                     enabled = !loginBusy,
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF4F46E5),
-                        contentColor = Color.White
+                    shape = RoundedCornerShape(50),
+                    border = BorderStroke(1.dp, Color(0xFF747775)),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = Color.White,
+                        contentColor = Color(0xFF1F1F1F),
+                        disabledContainerColor = Color.White
                     ),
+                    contentPadding = PaddingValues(horizontal = 16.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp)
+                        .height(52.dp)
                 ) {
                     if (loginBusy) {
                         CircularProgressIndicator(
-                            color = Color.White,
+                            color = Color(0xFF4285F4),
                             strokeWidth = 3.dp,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(22.dp)
                         )
-                    } else {
-                        Box(
-                            modifier = Modifier
-                                .size(30.dp)
-                                .background(Color.White, CircleShape),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text("G", color = Color(0xFF4285F4), fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
-                        }
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text("Sign in with Google", fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text("Signing in…", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color(0xFF1F1F1F))
+                    } else {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_google_g),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text("Sign in with Google", fontSize = 16.sp, fontWeight = FontWeight.Medium)
                     }
                 }
 

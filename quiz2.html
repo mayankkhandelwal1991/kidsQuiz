@@ -390,7 +390,10 @@ function appAutoLogin() {
       };
       // Signed in on the web as someone else: switch to the app's account.
       if (u && !u.isGuest) Promise.resolve(KQ.signOut({ webOnly: true })).catch(function () {}).then(useToken);
-      else useToken();
+      // Not signed in yet: Firebase may still be restoring the saved login on a
+      // slow / just-woken phone — give it a moment before asking the app for a
+      // new token (that shows Google's "Signing you in" sheet).
+      else setTimeout(function () { if (!done) useToken(); }, 3000);
     });
   });
   // Couldn't finish (offline, token refused…): show the gate; its Google

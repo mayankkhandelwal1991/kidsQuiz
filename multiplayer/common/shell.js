@@ -9,7 +9,7 @@
  * -----------------------------------------------------------------------
  */
 
-import { loadSavedNickname, saveNickname } from './utils.js';
+import { loadSavedNickname, saveNickname, useKnownName } from './utils.js';
 
 export class GameShell {
   constructor({ gameTitle }) {
@@ -36,9 +36,11 @@ export class GameShell {
     this._addMultiplayerHubNavigation();
     this._addSettingsMenu();
 
-    // Prefill the remembered nickname, if any.
+    // Use the name the kid already gave the app (Google sign-in / quiz / earlier game);
+    // only ask for a nickname when we have none.
     if (this.nicknameInput) {
       this.nicknameInput.value = loadSavedNickname();
+      useKnownName(this.nicknameInput);
     }
 
     this._checkUrlRoomParam();

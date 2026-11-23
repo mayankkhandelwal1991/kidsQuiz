@@ -7,11 +7,14 @@
  * -----------------------------------------------------------------------
  */
 
+import { loadSavedNickname, saveNickname, useKnownName } from '../../common/utils.js';
+
 export class UIManager {
   constructor() {
     // Landing screen
     this.landing = document.getElementById('landing-screen');
     this.nicknameInput = document.getElementById('nickname-input');
+    if (this.nicknameInput) { this.nicknameInput.value = loadSavedNickname(); useKnownName(this.nicknameInput); }
     this.playBtn = document.getElementById('play-btn');
     this.landingError = document.getElementById('landing-error');
 
@@ -103,7 +106,7 @@ export class UIManager {
   }
 
   bindLandingActions({ onPlay, onJoinCode }) {
-    this.playBtn.addEventListener('click', () => onPlay(this.nicknameInput.value));
+    this.playBtn.addEventListener('click', () => { saveNickname(this.nicknameInput.value.trim()); onPlay(this.nicknameInput.value); });
     this.nicknameInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') this.playBtn.click();
     });
@@ -113,9 +116,10 @@ export class UIManager {
     this.advancedToggle.addEventListener('click', () => {
       this.advancedPanel.classList.toggle('hidden');
     });
-    this.joinRoomBtn.addEventListener('click', () =>
-      onJoinCode(this.nicknameInput.value, this.roomCodeInput.value)
-    );
+    this.joinRoomBtn.addEventListener('click', () => {
+      saveNickname(this.nicknameInput.value.trim());
+      onJoinCode(this.nicknameInput.value, this.roomCodeInput.value);
+    });
     this.roomCodeInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') this.joinRoomBtn.click();
     });

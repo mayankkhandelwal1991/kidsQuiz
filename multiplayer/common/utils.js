@@ -45,8 +45,88 @@ export function loadSavedNickname() {
 export function saveNickname(name) {
   try {
     localStorage.setItem(NICKNAME_STORAGE_KEY, name);
+    // Guests: share the name with the rest of the app (quiz, leaderboard) too.
+    if (name && !localStorage.getItem('kq_cached_auth')) localStorage.setItem('kq_nick', name);
   } catch {
     /* localStorage unavailable (private mode etc.) — non-fatal, just skip persisting */
+  }
+}
+
+/** Fit a full name into the 14-char nickname limit ("Mayank Khandelwal" -> "Mayank"). */
+function shortName(name) {
+  const n = (name || '').toString().replace(/<[^>]*>?/gm, '').trim();
+  if (n.length <= 14) return n;
+  return (n.split(/\s+/)[0] || n).slice(0, 14);
+}
+
+/**
+ * The name the kid already gave the app: Google sign-in name first,
+ * then the name typed in the quiz / an earlier game. '' if none.
+ */
+export function knownPlayerName() {
+  try {
+    const auth = JSON.parse(localStorage.getItem('kq_cached_auth') || 'null');
+    if (auth && auth.name && auth.name !== 'Player') return shortName(auth.name);
+    return shortName(localStorage.getItem('kq_nick') || '');
+  } catch {
+    return '';
+  }
+}
+
+/**
+ * When the player's name is already known, hide the nickname box and show
+ * "Playing as <name> · Change" instead. The input keeps the name as its value,
+ * so the games' existing Play / Join handlers keep reading it from there.
+ */
+export function useKnownName(input) {
+  if (!input) return;
+  const field = input.closest('.field') || input.parentElement;
+  if (!field) return;
+
+  if (!document.getElementById('known-name-style')) {
+    const st = document.createElement('style');
+    st.id = 'known-name-style';
+    st.textContent =
+      '.known-name{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;' +
+      'padding:10px 14px;margin-bottom:16px;border-radius:14px;background:#eef4ff;border:2px solid #cfe0ff;' +
+      'font-weight:700;color:#1e3a8a;font-size:1rem}' +
+      '.known-name b{color:#1d4ed8}' +
+      '.known-name button{border:0;background:none;color:#2563eb;font:inherit;font-size:.9rem;' +
+      'text-decoration:underline;cursor:pointer;padding:2px 4px}';
+    document.head.appendChild(st);
+  }
+
+  let chip = null;
+  let editing = false;
+  const show = (name) => {
+    if (!name || editing) return;
+    input.value = name;
+    if (!chip) {
+      chip = document.createElement('div');
+      chip.className = 'known-name';
+      chip.innerHTML = '<span>🙂 Playing as <b></b></span><button type="button">Change</button>';
+      chip.querySelector('button').addEventListener('click', () => {
+        editing = true;
+        chip.remove();
+        field.style.display = '';
+        input.focus();
+        input.select();
+      });
+      field.parentNode.insertBefore(chip, field);
+    }
+    chip.querySelector('b').textContent = name;
+    field.style.display = 'none';
+  };
+
+  show(knownPlayerName() || loadSavedNickname());
+
+  // Google sign-in can finish after the page loads — pick the name up then.
+  try {
+    if (window.KQ && typeof window.KQ.onAuth === 'function') {
+      window.KQ.onAuth((u) => { if (u && !u.isGuest && u.name) show(shortName(u.name)); });
+    }
+  } catch {
+    /* KQ not available on this page — the stored name is enough */
   }
 }
 

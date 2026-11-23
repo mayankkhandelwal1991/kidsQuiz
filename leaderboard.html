@@ -34,6 +34,8 @@
   from best scores; the timeline, time played and Stats charts stay empty.
 -->
 <style>
+  .flag { margin-left: 6px; font-size: 1.05em; line-height: 1; vertical-align: -1px; }
+  .flag .ccb { font: 800 10px/1 system-ui, sans-serif; letter-spacing: .04em; padding: 2px 4px; border-radius: 4px; background: #eef2ff; color: #4338ca; vertical-align: 2px; }
   :root {
     --ink: #1e1b4b;
     --muted: #6b7280;
@@ -274,7 +276,7 @@
 <script src="quiz-shared.js?v=20261123a" charset="utf-8"></script>
 <script>window.KQ_NO_WIDGET = true;</script>
 <script src="quiz/kids-engine.js?v=20261120i"></script>
-<script src="games/kq-leaderboard.js?v=20261123f"></script>
+<script src="games/kq-leaderboard.js?v=20261123g"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>
 (function () {
@@ -284,6 +286,16 @@
   const $app = document.getElementById('app');
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const DAY = 86400000;
+  // Country flag next to names (country code saved with scores / visits; found on
+  // the player's device - see kq-leaderboard.js). Windows can't draw flag emoji,
+  // so it gets a small code badge instead.
+  const NO_FLAG_EMOJI = /Windows/.test(navigator.userAgent || '');
+  let regionNames = null; try { regionNames = new Intl.DisplayNames(['en'], { type: 'region' }); } catch (e) {}
+  const ccName = (cc) => { try { return (regionNames && regionNames.of(cc)) || cc; } catch (e) { return cc; } };
+  const flagEmoji = (cc) => String.fromCodePoint(...[...cc].map((c) => 0x1F1E6 + c.charCodeAt(0) - 65));
+  const ccOf = (r) => (r && r.cc) || ((USERS.get(r && r.key) || {}).cc) || '';
+  const flagHtml = (cc) => (cc && /^[A-Z]{2}$/.test(cc))
+    ? '<span class="flag" title="' + esc(ccName(cc)) + '" aria-label="' + esc(ccName(cc)) + '">' + (NO_FLAG_EMOJI ? '<b class="ccb">' + cc + '</b>' : flagEmoji(cc)) + '</span>' : '';
   const SECTIONS = [
     { id: 'all', label: '✨ All' },
     { id: 'quiz', label: '🎯 Quiz' },
@@ -413,7 +425,8 @@
         const nm = list.reduce((a, b) => (b.last > a.last ? b : a));
         if (nm.guest) GUEST_KEYS.add(key);
         const u = USERS.get(key);
-        if (!u) USERS.set(key, { key, name: nm.name || 'Player', photo: '', guest: !!nm.guest, last: nm.last || 0 });
+        if (!u) USERS.set(key, { key, name: nm.name || 'Player', photo: '', guest: !!nm.guest, last: nm.last || 0, cc: nm.cc || '' });
+        else if (nm.cc && !u.cc) u.cc = nm.cc;
         else if ((nm.last || 0) > u.last) u.last = nm.last;
       });
       if (ROWS.length || SES_OK) render();
@@ -429,14 +442,15 @@
             const v = players[key] || {};
             if (typeof v.score !== 'number') return;
             const row = {
-              cat, gameId, key, name: v.name || 'Player', photo: v.photo || '', guest: !!v.guest,
+              cat, gameId, key, name: v.name || 'Player', photo: v.photo || '', guest: !!v.guest, cc: v.cc || '',
               score: v.score, lower: !!v.lowerIsBetter, at: v.updatedAt || 0, meta: v.meta || null,
             };
             row.d = describe(cat, gameId, row.meta);
             if (row.guest) GUEST_KEYS.add(key);
             ROWS.push(row);
             const u = USERS.get(key);
-            if (!u || row.at > u.last) USERS.set(key, { key, name: row.name, photo: row.photo || (u && u.photo) || '', guest: row.guest, last: Math.max(row.at, u ? u.last : 0) });
+            if (!u || row.at > u.last) USERS.set(key, { key, name: row.name, photo: row.photo || (u && u.photo) || '', guest: row.guest, last: Math.max(row.at, u ? u.last : 0), cc: row.cc || (u && u.cc) || '' });
+            else if (row.cc && !u.cc) u.cc = row.cc;
           });
         });
       });
@@ -587,7 +601,7 @@
     return '<div class="podium">' + top.map((r, i) => r
       ? '<div class="pod ' + cls[i] + '" data-user="' + esc(r.key) + '"><div class="av-wrap">' +
         '<div style="position:relative;display:inline-block">' + (num[i] === 1 ? '<span class="crown">👑</span>' : '') + avatar(r, 'lg') + '</div></div>' +
-        '<div class="pname">' + esc(r.name) + '</div><div class="pscore">' + fmtScore(r.score) + ' ' + unit + '</div>' +
+        '<div class="pname">' + esc(r.name) + ' ' + flagHtml(ccOf(r)) + '</div><div class="pscore">' + fmtScore(r.score) + ' ' + unit + '</div>' +
         '<div class="block">' + num[i] + '</div></div>'
       : '<div class="pod ' + cls[i] + ' empty"><div class="block"></div></div>').join('') + '</div>';
   }
@@ -621,7 +635,7 @@
         const meta = (res.mode === 'total' ? r.n + ' board' + (r.n === 1 ? '' : 's') + ' • ' : '') + (r.time ? '⏱ ' + fmtDur(r.time) + ' • ' : '') + 'Last active ' + fmtDate(r.at);
         return '<div class="item' + (r.key === me ? ' me' : '') + '" data-user="' + esc(r.key) + '" style="animation-delay:' + Math.min(i, 15) * 25 + 'ms">' +
           '<div class="rk">' + rank + '</div>' + avatar(r) +
-          '<div class="info"><div class="nm">' + esc(r.name) + (isGuest(r.key) ? '<span class="tag">guest</span>' : '') + (r.key === me ? '<span class="tag">you</span>' : '') + '</div>' +
+          '<div class="info"><div class="nm">' + esc(r.name) + flagHtml(ccOf(r)) + (isGuest(r.key) ? '<span class="tag">guest</span>' : '') + (r.key === me ? '<span class="tag">you</span>' : '') + '</div>' +
           '<div class="meta">' + esc(meta) + '</div></div>' +
           '<div class="sc"><b>' + fmtScore(r.score) + '</b><small>' + unit + '</small></div></div>';
       }).join('') + '</div>';
@@ -661,7 +675,7 @@
         const rk = p.rank === 1 ? '🥇' : p.rank === 2 ? '🥈' : p.rank === 3 ? '🥉' : p.rank;
         return '<div class="item' + (p.key === me ? ' me' : '') + '" data-user="' + esc(p.key) + '" style="animation-delay:' + Math.min(i, 15) * 25 + 'ms">' +
           '<div class="rk">' + rk + '</div>' + avatar(p) +
-          '<div class="info"><div class="nm">' + esc(p.name) + (isGuest(p.key) ? '<span class="tag">guest</span>' : '') + (p.key === me ? '<span class="tag">you</span>' : '') + '</div>' +
+          '<div class="info"><div class="nm">' + esc(p.name) + flagHtml(ccOf(p)) + (isGuest(p.key) ? '<span class="tag">guest</span>' : '') + (p.key === me ? '<span class="tag">you</span>' : '') + '</div>' +
           '<div class="meta">Last active ' + esc(fmtDate(p.last)) + '</div><div class="badges">' + (p.time ? '<span class="bdg time" title="' + p.sessions + ' sessions' + (p.lastDur ? ', last ' + fmtDur(p.lastDur) : '') + '">⏱ ' + fmtDur(p.time) + ' • ' + p.sessions + '×</span>' : '') + b + '</div></div>' +
           '<div class="sc"><b>' + fmtScore(p.points) + '</b><small>pts</small></div><div class="go">›</div></div>';
       }).join('') + '</div>';
@@ -681,8 +695,9 @@
     const mine = ROWS.filter((r) => r.key === key);
     const count = (c) => mine.filter((r) => r.cat === c).length;
     const points = mine.filter((r) => !r.lower).reduce((s, r) => s + r.score, 0);
-    const extra = '<div class="profile-hero">' + avatar(u, 'xl') + '<div><div class="pn">' + esc(u.name) + '</div>' +
-      '<div class="ps">' + (u.guest ? 'Guest player • ' : '') + 'Last played ' + esc(fmtDate(u.last)) + '</div></div></div>';
+    const ucc = ccOf(u);
+    const extra = '<div class="profile-hero">' + avatar(u, 'xl') + '<div><div class="pn">' + esc(u.name) + ' ' + flagHtml(ucc) + '</div>' +
+      '<div class="ps">' + (u.guest ? 'Guest player • ' : '') + (ucc ? esc(ccName(ucc)) + ' • ' : '') + 'Last played ' + esc(fmtDate(u.last)) + '</div></div></div>';
     let h = heroHtml('Player history', '', extra);
     const tm = timeOf(key);
     h += '<div class="stats six">' +

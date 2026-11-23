@@ -298,10 +298,41 @@
         dur: (extra && extra.dur) || takeDuration()
       };
       if (ctx && ctx.gameId === gameId && ctx.title) row.title = String(ctx.title).slice(0, 80);
+      if (CC) row.cc = CC;
       if (extra) for (var k in extra) if (extra[k] != null) row[k] = extra[k];
       db.ref("attempts/" + u.key).push(row).catch(function () {});
     } catch (e) {}
   }
+
+  /* ---- Player's country (ISO code like "IN") — found on the device only ----
+     Android app: SIM / network / phone setting (Android.getCountry).
+     Otherwise: the device time zone (Asia/Kolkata -> IN), then the language
+     region (en-IN -> IN). No IP lookup, nothing sent to other services. */
+  var TZ_CC = {
+    "Asia/Kolkata": "IN", "Asia/Calcutta": "IN", "Asia/Karachi": "PK", "Asia/Dhaka": "BD", "Asia/Kathmandu": "NP", "Asia/Katmandu": "NP",
+    "Asia/Colombo": "LK", "Asia/Thimphu": "BT", "Indian/Maldives": "MV", "Asia/Kabul": "AF", "Asia/Dubai": "AE", "Asia/Muscat": "OM",
+    "Asia/Riyadh": "SA", "Asia/Qatar": "QA", "Asia/Kuwait": "KW", "Asia/Bahrain": "BH", "Asia/Tehran": "IR", "Asia/Baghdad": "IQ",
+    "Asia/Singapore": "SG", "Asia/Kuala_Lumpur": "MY", "Asia/Jakarta": "ID", "Asia/Makassar": "ID", "Asia/Manila": "PH", "Asia/Bangkok": "TH",
+    "Asia/Ho_Chi_Minh": "VN", "Asia/Saigon": "VN", "Asia/Yangon": "MM", "Asia/Hong_Kong": "HK", "Asia/Shanghai": "CN", "Asia/Taipei": "TW",
+    "Asia/Tokyo": "JP", "Asia/Seoul": "KR", "Asia/Jerusalem": "IL", "Europe/Istanbul": "TR", "Europe/London": "GB", "Europe/Dublin": "IE",
+    "Europe/Paris": "FR", "Europe/Berlin": "DE", "Europe/Madrid": "ES", "Europe/Rome": "IT", "Europe/Amsterdam": "NL", "Europe/Brussels": "BE",
+    "Europe/Zurich": "CH", "Europe/Vienna": "AT", "Europe/Stockholm": "SE", "Europe/Oslo": "NO", "Europe/Copenhagen": "DK", "Europe/Helsinki": "FI",
+    "Europe/Warsaw": "PL", "Europe/Lisbon": "PT", "Europe/Athens": "GR", "Europe/Moscow": "RU", "Europe/Kiev": "UA", "Europe/Kyiv": "UA",
+    "America/New_York": "US", "America/Chicago": "US", "America/Denver": "US", "America/Los_Angeles": "US", "America/Phoenix": "US",
+    "America/Anchorage": "US", "Pacific/Honolulu": "US", "America/Detroit": "US", "America/Toronto": "CA", "America/Vancouver": "CA",
+    "America/Edmonton": "CA", "America/Winnipeg": "CA", "America/Halifax": "CA", "America/Mexico_City": "MX", "America/Sao_Paulo": "BR",
+    "America/Argentina/Buenos_Aires": "AR", "America/Bogota": "CO", "America/Lima": "PE", "America/Santiago": "CL", "America/Port_of_Spain": "TT",
+    "America/Guyana": "GY", "Australia/Sydney": "AU", "Australia/Melbourne": "AU", "Australia/Brisbane": "AU", "Australia/Perth": "AU",
+    "Australia/Adelaide": "AU", "Pacific/Auckland": "NZ", "Pacific/Fiji": "FJ", "Africa/Johannesburg": "ZA", "Africa/Lagos": "NG",
+    "Africa/Nairobi": "KE", "Africa/Cairo": "EG", "Africa/Accra": "GH", "Africa/Dar_es_Salaam": "TZ", "Africa/Kampala": "UG", "Indian/Mauritius": "MU"
+  };
+  var CC = (function () {
+    try { if (typeof Android !== "undefined" && Android && typeof Android.getCountry === "function") { var a = String(Android.getCountry() || "").toUpperCase(); if (/^[A-Z]{2}$/.test(a)) return a; } } catch (e) {}
+    try { var tz = Intl.DateTimeFormat().resolvedOptions().timeZone; if (TZ_CC[tz]) return TZ_CC[tz]; } catch (e) {}
+    try { var ls = navigator.languages || [navigator.language || ""]; for (var i = 0; i < ls.length; i++) { var m = /[-_]([A-Za-z]{2})$/.exec(ls[i] || ""); if (m) return m[1].toUpperCase(); } } catch (e) {}
+    return "";
+  })();
+  function countryCode() { return CC; }
 
   function submit(cat, gameId, score, opts) {
     opts = opts || {};
@@ -316,11 +347,11 @@
       return ref.transaction(function (cur) {
         if (cur && typeof cur.score === "number") {
           var better = lower ? score < cur.score : score > cur.score;
-          if (!better) { cur.name = u.name; cur.photo = u.photo; return cur; } // keep best, refresh name
+          if (!better) { cur.name = u.name; cur.photo = u.photo; if (CC) cur.cc = CC; return cur; } // keep best, refresh name
         }
         return {
           name: u.name, photo: u.photo, uid: u.uid || null, guest: u.isGuest,
-          score: score, lowerIsBetter: lower, meta: opts.meta || null,
+          score: score, lowerIsBetter: lower, meta: opts.meta || null, cc: CC || null,
           updatedAt: firebase.database.ServerValue.TIMESTAMP
         };
       }).then(function () { return true; }).catch(function (e) {
@@ -338,7 +369,7 @@
       var ref = playerRef(cat, gameId);
       return ref.transaction(function (cur) {
         cur = cur || { name: u.name, photo: u.photo, uid: u.uid || null, guest: u.isGuest, score: 0 };
-        cur.name = u.name; cur.photo = u.photo;
+        cur.name = u.name; cur.photo = u.photo; if (CC) cur.cc = CC;
         cur.score = (Number(cur.score) || 0) + 1;
         cur.updatedAt = firebase.database.ServerValue.TIMESTAMP;
         return cur;
@@ -409,7 +440,7 @@
       sesPushed = Date.now();
       db.ref("sessions/" + u.key + "/" + s.id).set({
         start: s.start, last: s.last, dur: Math.round(s.act / 1000), pages: s.pages || 1, t: t,
-        name: u.name, guest: !!u.isGuest
+        name: u.name, guest: !!u.isGuest, cc: CC || null
       }).catch(function () {});
     } catch (e) {}
   }
@@ -852,6 +883,7 @@
     signIn: signIn,
     signInWithIdToken: signInWithIdToken,
     appSession: appSession,
+    country: countryCode,
     adBreak: adBreak,
     appConfig: function () { return APP_CFG; },
     onConfig: function (fn) { if (typeof fn === "function") { cfgCbs.push(fn); try { fn(APP_CFG); } catch (e) {} } },

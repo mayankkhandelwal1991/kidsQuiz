@@ -1318,6 +1318,20 @@ class MainActivity : ComponentActivity() {
         @JavascriptInterface
         fun getAppConfig(): String = AppConfig.raw(this@MainActivity)
 
+        // Player's country for the leaderboard flag (ISO code like "IN"):
+        // SIM country, then mobile network country, then the phone's region
+        // setting. No permission and no location needed.
+        // Usage in JS:  Android.getCountry()
+        @JavascriptInterface
+        fun getCountry(): String {
+            return try {
+                val tm = getSystemService(Context.TELEPHONY_SERVICE) as? android.telephony.TelephonyManager
+                listOf(tm?.simCountryIso, tm?.networkCountryIso, Locale.getDefault().country)
+                    .map { (it ?: "").trim().uppercase(Locale.ROOT) }
+                    .firstOrNull { it.length == 2 } ?: ""
+            } catch (e: Exception) { "" }
+        }
+
         // Usage in JS:  Android.isOnline()
         @JavascriptInterface
         fun isOnline(): Boolean = isNetworkAvailable()

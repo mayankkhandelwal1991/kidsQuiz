@@ -226,8 +226,8 @@
 
   function load() {
     $app.innerHTML = '<div class="card center"><p class="muted">Loading players from Firebase…</p></div>';
-    Promise.all(['leaderboards', 'sessions', 'attempts'].map((n) => db.ref(n).once('value').then((s) => s.val() || {})))
-      .then(([lb, ses, att]) => { RAW = { lb, ses, att }; build(lb, ses, att); render(); })
+    Promise.all(['leaderboards', 'sessions', 'attempts', 'wallets'].map((n) => db.ref(n).once('value').then((s) => s.val() || {}, () => ({}))))
+      .then(([lb, ses, att, wal]) => { RAW = { lb, ses, att, wal }; build(lb, ses, att); render(); })
       .catch((e) => { $app.innerHTML = '<div class="card center"><p class="err">Could not load: ' + esc(e.message) + '</p><button id="rt">Retry</button></div>'; document.getElementById('rt').onclick = load; });
   }
   function player(key) {
@@ -276,6 +276,7 @@
       });
     });
     PLAYERS = [...BYKEY.values()];
+    PLAYERS.forEach((p) => { const w = (RAW.wal || {})[p.key]; p.coins = w ? (+w.coins || 0) : null; p.badges = w && w.ach ? Object.keys(w.ach).length : 0; });
     PLAYERS.forEach((p) => { if (!p.name) p.name = p.guest ? 'Guest' : 'Player'; p.attempts.sort((a, b) => b.at - a.at); p.sessions.sort((a, b) => b.start - a.start); p.boards.sort((a, b) => b.at - a.at); });
     S.sel = new Set([...S.sel].filter((k) => BYKEY.has(k)));
   }
@@ -287,11 +288,12 @@
       (!q || p.name.toLowerCase().includes(q) || p.key.toLowerCase().includes(q)));
     const by = { last: (a, b) => b.last - a.last, points: (a, b) => b.points - a.points, plays: (a, b) => b.attempts.length - a.attempts.length,
       time: (a, b) => b.time - a.time, name: (a, b) => a.name.localeCompare(b.name), first: (a, b) => b.first - a.first,
-      country: (a, b) => ccName(a.cc).localeCompare(ccName(b.cc)) || b.last - a.last }[S.sort];
+      country: (a, b) => ccName(a.cc).localeCompare(ccName(b.cc)) || b.last - a.last,
+      coins: (a, b) => (b.coins || 0) - (a.coins || 0) }[S.sort];
     return list.sort(by);
   }
   function tabsHtml() {
-    return '<div class="tabs" role="tablist">' + [['dash', '📊 Dashboard'], ['players', '👥 Players'], ['app', '📱 App settings'], ['tools', '🛠 Tools']].map(([v, l]) =>
+    return '<div class="tabs" role="tablist">' + [['dash', '📊 Dashboard'], ['players', '👥 Players'], ['coins', '🪙 Coins'], ['app', '📱 App settings'], ['tools', '🛠 Tools']].map(([v, l]) =>
       '<button role="tab" data-tab="' + v + '" class="' + (S.tab === v ? 'on' : '') + '">' + l + '</button>').join('') + '</div>';
   }
   function bindTabs() { $app.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => { S.tab = b.dataset.tab; render(); window.scrollTo(0, 0); }); }
@@ -299,6 +301,7 @@
     if (S.tab === 'dash') return renderDash();
     if (S.tab === 'tools') return renderTools();
     if (S.tab === 'app') return renderAppSettings();
+    if (S.tab === 'coins') return renderCoins();
     return renderPlayers();
   }
 
@@ -496,7 +499,7 @@
       const dayWrap = document.getElementById('rDayWrap'), freq = document.getElementById('rFreq');
       const syncDay = () => { dayWrap.style.display = freq.value === 'weekly' ? '' : 'none'; };
       freq.onchange = syncDay; syncDay();
-      document.getElementById('resetCfg').onclick = () => { if (confirm('Reset all app settings to the defaults?')) db.ref('config/app').set(Object.assign({}, CFG_DEFAULT, { updatedAt: Date.now() })).then(() => { toast('Defaults saved'); renderAppSettings(); }, (e) => toast(e.message)); };
+      document.getElementById('resetCfg').onclick = () => { if (confirm('Reset all app settings to the defaults?')) db.ref('config/app').update(Object.assign({}, CFG_DEFAULT, { updatedAt: Date.now() })).then(() => { toast('Defaults saved'); renderAppSettings(); }, (e) => toast(e.message)); };
       document.getElementById('saveCfg').onclick = () => {
         const v = (id) => document.getElementById(id), n = (id, d, min) => Math.max(min, Math.round(+v(id).value || d));
         const f = v('rFreq').value;
@@ -512,10 +515,59 @@
           updatedAt: Date.now()
         };
         const btn = v('saveCfg'); btn.disabled = true;
-        db.ref('config/app').set(cfg).then(() => { btn.disabled = false; v('cfgMsg').textContent = 'Saved ✓ — phones get it next time the app opens.'; toast('App settings saved'); },
+        db.ref('config/app').update(cfg).then(() => { btn.disabled = false; v('cfgMsg').textContent = 'Saved ✓ — phones get it next time the app opens.'; toast('App settings saved'); },
           (e) => { btn.disabled = false; v('cfgMsg').innerHTML = '<span class="err">' + esc(/permission/i.test(e.message || '') ? 'Permission denied — add the "config" rule in Firebase (see README-admin.md).' : e.message) + '</span>'; });
       };
     }, (e) => { $app.innerHTML = tabsHtml() + '<div class="card center"><p class="err">Could not load settings: ' + esc(e.message) + '</p></div>'; bindTabs(); });
+  }
+
+  /* ---------- coins (config/app/coins) ---------- */
+  const QUIZ_CATS = ['animals', 'brainteasers', 'capitals', 'computers', 'english', 'geography', 'gk', 'hindi', 'history', 'humanbody', 'inventions', 'plants', 'riddles', 'science', 'space', 'sports'];
+  const MULTI_GAMES = ['archery-duel', 'basketball-shootout', 'battleship', 'blaster-arena', 'bubble-shooter', 'connect-four', 'doodle-guess', 'dots-and-boxes', 'ludo-royale', 'math-blitz', 'memory-match', 'pong-duel', 'reaction-duel', 'red-light-green-light', 'rock-paper-scissors', 'snake-duel', 'space-blaster', 'tic-tack-toe', 'trivia-battle', 'trivia-party', 'typing-race', 'whack-a-mole', 'word-duel', 'wordle-duel'];
+  const OLY_SUBJ = ['mathematics', 'science', 'english', 'computer', 'gk', 'socialstudies', 'reasoning', 'creativearts'];
+  const COINS_DEF = { enabled: false, signupBonus: 100, earn: { quiz: 10, single: 10, multi: 10, olympiad: 20 }, cost: { quiz: 5, single: 5, multi: 5, olympiad: 10 }, items: {} };
+  const SEC_LBL = { quiz: '🎯 Quiz', single: '🎮 Games', multi: '👥 Multiplayer', olympiad: '🏅 Olympiad' };
+  let GAME_LIST = null;
+  const inpStyle = 'padding:7px 9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit';
+  function renderCoins() {
+    $app.innerHTML = tabsHtml() + '<div class="card center"><p class="muted">Loading coin settings…</p></div>'; bindTabs();
+    Promise.all([db.ref('config/app/coins').once('value').then((x) => x.val(), () => null),
+      GAME_LIST ? Promise.resolve(GAME_LIST) : fetch('../data/games.json').then((r) => r.json()).then((d) => { const out = []; (function walk(x) { if (Array.isArray(x)) x.forEach(walk); else if (x && typeof x === 'object') { if (x.file && x.id) out.push({ id: x.id, name: x.title || x.name || x.id }); Object.values(x).forEach(walk); } })(d); GAME_LIST = out; return out; }).catch(() => [])])
+    .then(([saved, games]) => {
+      const c = merge(COINS_DEF, saved || {}), items = Object.assign({}, c.items || {});
+      const pretty = (id) => id.replace(/[-_]/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase());
+      const rows = [].concat(QUIZ_CATS.map((id) => ['quiz', id, pretty(id)]), games.map((g) => ['single', g.id, g.name]), MULTI_GAMES.map((id) => ['multi', id, pretty(id)]), OLY_SUBJ.map((id) => ['olympiad', id, pretty(id)]));
+      const secInp = (grp, sec, v) => '<input type="number" min="0" data-' + grp + '="' + sec + '" value="' + esc(v) + '" style="width:80px;' + inpStyle + '">';
+      let h = tabsHtml() + '<p class="muted" style="margin:0 0 12px">' + (saved && saved.updatedAt ? 'Last saved ' + esc(fmtDate(saved.updatedAt)) + '.' : 'Not saved yet — defaults shown.') +
+        ' Kids earn coins by finishing quizzes and games and spend them to start one. With too few coins they can watch a video to play (if no video is available they still play).</p>';
+      h += '<div class="tool"><h3>🪙 Coins</h3><label style="display:flex;gap:10px;align-items:flex-start;margin:4px 0 10px"><input type="checkbox" id="cOn"' + (c.enabled ? ' checked' : '') + ' style="margin-top:4px"><span><b>Use coins</b><br><span class="muted" style="font-size:13px">Off: no coins anywhere, everything is free to play.</span></span></label>' +
+        '<div class="row">🎁 New players start with <input type="number" min="0" id="cBonus" value="' + esc(c.signupBonus) + '" style="width:90px;' + inpStyle + '"> coins</div></div>';
+      h += '<div class="tool"><h3>Defaults per section</h3><table><thead><tr><th>Section</th><th class="num">Coins to play</th><th class="num">Coins for finishing</th></tr></thead><tbody>' +
+        ['quiz', 'single', 'multi', 'olympiad'].map((k) => '<tr><td>' + SEC_LBL[k] + '</td><td class="num">' + secInp('cost', k, c.cost[k]) + '</td><td class="num">' + secInp('earn', k, c.earn[k]) + '</td></tr>').join('') +
+        '</tbody></table><p class="muted" style="font-size:13px;margin:8px 0 0">Achievements give extra coins (first play, 5 quizzes, 10 games, streaks …).</p></div>';
+      h += '<div class="tool"><h3>Price for each quiz / game / subject</h3><p>Leave empty to use the section default.</p>' +
+        '<div class="tools"><input type="search" id="itQ" placeholder="Search…"><div class="seg">' + [['all', 'All']].concat(Object.entries(SEC_LBL)).map(([v, l]) => '<button data-its="' + v + '" class="' + (v === 'all' ? 'on' : '') + '">' + l + '</button>').join('') + '</div></div>' +
+        '<div style="max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:12px"><table><thead><tr><th>Name</th><th class="hide-sm">Section</th><th class="num">Default</th><th class="num">Price</th></tr></thead><tbody>' +
+        rows.map(([sec, id, nm]) => { const k = sec + '/' + id; return '<tr data-sec="' + sec + '" data-name="' + esc((nm + ' ' + id).toLowerCase()) + '"><td>' + esc(nm) + '</td><td class="hide-sm">' + SEC_LBL[sec] + '</td><td class="num muted">' + esc(c.cost[sec]) + '</td>' +
+          '<td class="num"><input type="number" min="0" data-item="' + esc(k) + '" value="' + esc(items[k] != null ? items[k] : '') + '" placeholder="—" style="width:80px;' + inpStyle + '"></td></tr>'; }).join('') +
+        '</tbody></table></div></div>';
+      h += '<div class="actions" style="justify-content:flex-start"><button class="primary" id="saveCoinsCfg">💾 Save coin settings</button><span id="coinMsg" class="muted"></span></div>';
+      $app.innerHTML = h; bindTabs();
+      let itSec = 'all';
+      const filt = () => { const q = document.getElementById('itQ').value.trim().toLowerCase(); $app.querySelectorAll('tr[data-sec]').forEach((tr) => { tr.style.display = (itSec === 'all' || tr.dataset.sec === itSec) && (!q || tr.dataset.name.includes(q)) ? '' : 'none'; }); };
+      document.getElementById('itQ').oninput = filt;
+      $app.querySelectorAll('[data-its]').forEach((b) => b.onclick = () => { itSec = b.dataset.its; $app.querySelectorAll('[data-its]').forEach((x) => x.classList.toggle('on', x === b)); filt(); });
+      document.getElementById('saveCoinsCfg').onclick = () => {
+        const num = (el, d) => { const v = Math.round(+el.value); return isFinite(v) && el.value !== '' ? Math.max(0, v) : d; };
+        const out = { enabled: document.getElementById('cOn').checked, signupBonus: num(document.getElementById('cBonus'), 100), cost: {}, earn: {}, items: {}, updatedAt: Date.now() };
+        $app.querySelectorAll('[data-cost]').forEach((el) => { out.cost[el.dataset.cost] = num(el, COINS_DEF.cost[el.dataset.cost]); });
+        $app.querySelectorAll('[data-earn]').forEach((el) => { out.earn[el.dataset.earn] = num(el, COINS_DEF.earn[el.dataset.earn]); });
+        $app.querySelectorAll('[data-item]').forEach((el) => { if (el.value !== '') out.items[el.dataset.item] = num(el, 0); });
+        const btn = document.getElementById('saveCoinsCfg'); btn.disabled = true;
+        db.ref('config/app/coins').set(out).then(() => { btn.disabled = false; document.getElementById('coinMsg').textContent = 'Saved ✓ — apps pick it up next time they open.'; toast('Coin settings saved'); },
+          (e) => { btn.disabled = false; document.getElementById('coinMsg').innerHTML = '<span class="err">' + esc(/permission/i.test(e.message || '') ? 'Permission denied — check the "config" rule in Firebase.' : e.message) + '</span>'; });
+      };
+    });
   }
 
   /* ---------- tools ---------- */
@@ -592,19 +644,19 @@
       (() => { const cnt = {}; PLAYERS.forEach((p) => { cnt[p.cc || ''] = (cnt[p.cc || ''] || 0) + 1; });
         return '<select id="ccSel" aria-label="Country"><option value="all">🌍 All countries</option>' + Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]).map((c) =>
           '<option value="' + esc(c) + '"' + (S.cc === c ? ' selected' : '') + '>' + esc(ccName(c)) + ' (' + cnt[c] + ')</option>').join('') + '</select>'; })() +
-      '<select id="sort">' + [['last', 'Last active'], ['first', 'Newest'], ['points', 'Points'], ['plays', 'Plays'], ['time', 'Time played'], ['name', 'Name'], ['country', 'Country']].map(([v, l]) => '<option value="' + v + '"' + (S.sort === v ? ' selected' : '') + '>Sort: ' + l + '</option>').join('') + '</select>' +
+      '<select id="sort">' + [['last', 'Last active'], ['first', 'Newest'], ['points', 'Points'], ['plays', 'Plays'], ['time', 'Time played'], ['coins', 'Coins'], ['name', 'Name'], ['country', 'Country']].map(([v, l]) => '<option value="' + v + '"' + (S.sort === v ? ' selected' : '') + '>Sort: ' + l + '</option>').join('') + '</select>' +
       '<button id="csv">⬇ CSV</button><button id="reload">↻ Refresh</button>' +
       '<button class="danger" id="delsel"' + (S.sel.size ? '' : ' disabled') + '>🗑 Delete selected (' + S.sel.size + ')</button></div>';
     if (!list.length) h += '<div class="card empty">No players match.</div>';
     else {
       const allSel = list.every((p) => S.sel.has(p.key));
       h += '<table><thead><tr><th style="width:34px"><input type="checkbox" id="selall"' + (allSel ? ' checked' : '') + ' aria-label="Select all shown"></th><th>Player</th><th class="hide-sm">Type</th><th>Country</th>' +
-        '<th class="num">Points</th><th class="num hide-sm">Plays</th><th class="num hide-sm">Time</th><th class="num">Last active</th></tr></thead><tbody>' +
+        '<th class="num">Points</th><th class="num hide-sm">🪙</th><th class="num hide-sm">Plays</th><th class="num hide-sm">Time</th><th class="num">Last active</th></tr></thead><tbody>' +
         list.slice(0, 500).map((p) => '<tr class="row" data-key="' + esc(p.key) + '"><td><input type="checkbox" class="sel" data-key="' + esc(p.key) + '"' + (S.sel.has(p.key) ? ' checked' : '') + ' aria-label="Select"></td>' +
           '<td><div class="nm">' + avatar(p) + '<div style="min-width:0"><div><b>' + esc(p.name) + '</b></div><div class="key">' + esc(p.key) + '</div></div></div></td>' +
           '<td class="hide-sm"><span class="tag ' + (p.guest ? 'u">Guest' : 'g">Google') + '</span></td>' +
           '<td title="' + esc(ccName(p.cc)) + '">' + flag(p.cc) + ' <span class="hide-sm">' + esc(p.cc ? ccName(p.cc) : '') + '</span></td>' +
-          '<td class="num">' + fmtNum(p.points) + '</td><td class="num hide-sm">' + p.attempts.length + '</td><td class="num hide-sm">' + fmtDur(p.time) + '</td>' +
+          '<td class="num">' + fmtNum(p.points) + '</td><td class="num hide-sm">' + (p.coins == null ? '—' : fmtNum(p.coins)) + '</td><td class="num hide-sm">' + p.attempts.length + '</td><td class="num hide-sm">' + fmtDur(p.time) + '</td>' +
           '<td class="num" title="' + esc(fmtDate(p.last)) + '">' + ago(p.last) + '</td></tr>').join('') + '</tbody></table>' +
         (list.length > 500 ? '<p class="muted">Showing 500 of ' + list.length + ' — use search to narrow down.</p>' : '');
     }
@@ -648,8 +700,16 @@
       li(esc(CAT[a.cat] || a.cat || '') + ' · ' + esc(a.title || String(a.game || '').replace(/__/g, ' · ')), 'score ' + esc(fmtNum(a.score)) + (a.dur ? ' · ' + fmtDur(a.dur) : '') + ' · ' + esc(fmtDate(a.at)))).join('') + '</div>' : '<p class="muted">None</p>');
     h += '<h4>Visits (' + p.sessions.length + ')</h4>' + (p.sessions.length ? '<div class="list">' + p.sessions.slice(0, 30).map((s) =>
       li(esc(fmtDate(s.start)), fmtDur(s.dur) + ' · ' + s.pages + ' page' + (s.pages === 1 ? '' : 's'))).join('') + '</div>' : '<p class="muted">None</p>');
+    h += '<h4>Coins</h4><div class="row" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">🪙 <b>' + (p.coins == null ? 'no wallet yet' : fmtNum(p.coins)) + '</b>' +
+      (p.coins == null ? '' : ' · ' + p.badges + ' badges') + ' <input type="number" id="setCoins" min="0" placeholder="new amount" style="width:120px;padding:7px 9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit"><button id="saveCoins">Set coins</button></div>';
     h += '<div class="actions"><button id="cl">Close</button><button class="danger" id="del">🗑 Delete this player\'s data</button></div>';
     $modal.innerHTML = h; $ov.classList.add('on');
+    document.getElementById('saveCoins').onclick = () => {
+      const inp = document.getElementById('setCoins'); if (inp.value === '') return;
+      const v = Math.max(0, Math.round(+inp.value)); if (!isFinite(v)) return;
+      db.ref('wallets/' + p.key).transaction((cur) => Object.assign(cur || { earned: 0, spent: 0, ach: {}, created: Date.now() }, { coins: v, updatedAt: Date.now() }))
+        .then(() => { toast('Coins set to ' + v + ' for ' + p.name); closeModal(); load(); }, (e) => toast(/permission/i.test(e.message || '') ? 'Permission denied — add the "wallets" rule (README-admin.md).' : e.message));
+    };
     document.getElementById('cl').onclick = closeModal;
     document.getElementById('del').onclick = () => confirmDelete([p]);
   }
@@ -678,6 +738,7 @@
         if (wB) p.boards.forEach((b) => { up[b.path] = null; });
         if (wA) up['attempts/' + p.key] = null;
         if (wS) up['sessions/' + p.key] = null;
+        if (wB && wA && wS) up['wallets/' + p.key] = null; // everything deleted -> coins too
       });
       if (!Object.keys(up).length) { closeModal(); return; }
       go.disabled = true; go.textContent = 'Deleting…';

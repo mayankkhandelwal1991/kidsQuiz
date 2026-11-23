@@ -388,7 +388,13 @@ function preloadPicoImages(maxWaitMs) {
   return Promise.race([allDone, timeout]);
 }
 
+// Coins (admin setting): pay to start, or watch a video; free when coins are off.
 function startQuiz(level) {
+  if (window.KQ && KQ.gate) KQ.gate('quiz', currentCategory, function () { startQuizNow(level); },
+    function () { if (history.length > 1) history.back(); else location.href = '../quiz-home.html'; });
+  else startQuizNow(level);
+}
+function startQuizNow(level) {
   if (window.KQ && KQ.markStart) KQ.markStart();
   if (typeof Android !== "undefined" && Android.showAd) {
     //Android.showAd("interstitial");
@@ -753,7 +759,7 @@ attachRipple('.android-action-btn');
 
 startQuiz(currentLevel);
 </script>
-<script src="../games/kq-leaderboard.js?v=20261123g"></script>
+<script src="../games/kq-leaderboard.js?v=20261123h"></script>
 <script src="../web-ads.js?v=20261123a"></script>
 </body>
 </html>

@@ -111,6 +111,8 @@
   if (!window.KQFX) { loadScript(SELF_BASE + "kq-fx.js").catch(function () {}); }
   // End-of-game animations (win / game over / lose) — on every page, even ones with their own sounds.
   if (!window.KQEnd) { loadScript(SELF_BASE + "kq-endfx.js").catch(function () {}); }
+  // Coins + achievements (switched on/off in the admin console)
+  if (!window.KQCoins) { loadScript(SELF_BASE + "kq-coins.js?v=20261123a").catch(function () {}); }
   function prettify(id) {
     if (GAME_NAMES[id]) return GAME_NAMES[id];
     return String(id || "").replace(/[_-]+/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });
@@ -299,6 +301,8 @@
       };
       if (ctx && ctx.gameId === gameId && ctx.title) row.title = String(ctx.title).slice(0, 80);
       if (CC) row.cc = CC;
+      // Coins for finishing (multiplayer is paid at match end in multiplayer/common/ads.js)
+      if (cat !== "multi" && !(extra && extra.result === "win")) { try { if (window.KQCoins) KQCoins.earn(cat, gameId); } catch (e) {} }
       if (extra) for (var k in extra) if (extra[k] != null) row[k] = extra[k];
       db.ref("attempts/" + u.key).push(row).catch(function () {});
     } catch (e) {}
@@ -333,6 +337,19 @@
     return "";
   })();
   function countryCode() { return CC; }
+
+  /* Coins gate before starting a quiz/game/paper/match. Waits (max 4 s) for the
+     coins module + wallet so a page that starts right away is still charged;
+     if coins are off or not ready, it just starts. */
+  function gate(sec, id, start, onCancel) {
+    var t0 = Date.now(), done = false;
+    var go = function () { if (done) return; done = true; start(); };
+    (function wait() {
+      if (window.KQCoins && (KQCoins.wallet() || !KQCoins.enabled())) { try { KQCoins.gate(sec, id, function () { if (!done) { done = true; start(); } }, onCancel); } catch (e) { go(); } return; }
+      if (Date.now() - t0 > 4000) { go(); return; }
+      setTimeout(wait, 100);
+    })();
+  }
 
   function submit(cat, gameId, score, opts) {
     opts = opts || {};
@@ -884,6 +901,7 @@
     signInWithIdToken: signInWithIdToken,
     appSession: appSession,
     country: countryCode,
+    gate: gate,
     adBreak: adBreak,
     appConfig: function () { return APP_CFG; },
     onConfig: function (fn) { if (typeof fn === "function") { cfgCbs.push(fn); try { fn(APP_CFG); } catch (e) {} } },

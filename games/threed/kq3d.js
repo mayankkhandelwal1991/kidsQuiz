@@ -195,7 +195,11 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
 
     function show(id) { ['k3start', 'k3paused', 'k3over'].forEach(function (s) { $(s).classList.toggle('on', s === id); }); $('k3pad').classList.toggle('hide', !(id === null && cfg.buttons && cfg.buttons.length)); }
 
+    // Coins (admin setting): pay to start, or watch a video; free when coins are off.
     function begin() {
+      if (window.KQ && KQ.gate) KQ.gate('single', cfg.id, beginNow); else beginNow();
+    }
+    function beginNow() {
       G.gen = (G.gen || 0) + 1; // new game: steps scheduled by the previous one are dropped
       sfx('click');
       try { if (window.KQ && KQ.markStart) KQ.markStart(); } catch (e) {}

@@ -107,9 +107,13 @@ export class GameShell {
   }
 
   bindLandingActions({ onPlay, onJoinCode }) {
+    // Coins (admin setting): pay to start, or watch a video; free when coins are off.
+    const gameId = (location.pathname.split('/').filter(Boolean).slice(-2, -1)[0]) || 'multi';
+    const paid = (fn) => { if (window.KQ && KQ.gate) KQ.gate('multi', gameId, fn); else fn(); };
     this.playBtn.addEventListener('click', () => {
       saveNickname(this.nicknameInput.value.trim());
-      onPlay(this.nicknameInput.value);
+      const name = this.nicknameInput.value;
+      paid(() => onPlay(name));
     });
     this.nicknameInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') this.playBtn.click();
@@ -121,7 +125,8 @@ export class GameShell {
       });
       this.joinRoomBtn.addEventListener('click', () => {
         saveNickname(this.nicknameInput.value.trim());
-        onJoinCode(this.nicknameInput.value, this.roomCodeInput.value);
+        const name = this.nicknameInput.value, code = this.roomCodeInput.value;
+        paid(() => onJoinCode(name, code));
       });
       this.roomCodeInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') this.joinRoomBtn.click();

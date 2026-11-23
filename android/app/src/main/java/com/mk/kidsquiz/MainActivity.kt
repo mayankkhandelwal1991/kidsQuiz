@@ -1420,6 +1420,19 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        // Coins: "watch a video to play". Rewarded video, else rewarded
+        // interstitial; answer comes back via window.onRewardResult(id, status).
+        // Usage in JS:  Android.showRewardFor('abc123')
+        @JavascriptInterface
+        fun showRewardFor(id: String?) {
+            runOnUiThread { this@MainActivity.showRewardFor(id) }
+        }
+
+        // Is a rewarded video (or rewarded interstitial) ready right now?
+        // Usage in JS:  Android.isRewardReady()
+        @JavascriptInterface
+        fun isRewardReady(): Boolean = rewardedAd != null || rewardedInterstitialAd != null
+
         // Native Play rating sheet (In-App Review).
         // Usage in JS:  Android.requestReview();
         @JavascriptInterface
@@ -1541,6 +1554,43 @@ class MainActivity : ComponentActivity() {
                 }
             }
         )
+    }
+
+    // ==================================================
+    // "WATCH A VIDEO TO PLAY" (coins feature)
+    // Rewarded video first; if none is ready, the rewarded interstitial.
+    // Tells the page how it went: window.onRewardResult(id, status)
+    //   status: "earned" (watched to the end), "closed" (closed early),
+    //           "none" (no ad available right now)
+    // ==================================================
+    private fun showRewardFor(id: String?) {
+        val token = (id ?: "").replace(Regex("[^A-Za-z0-9_-]"), "").take(40)
+        var earned = false
+        fun report(status: String) = sendToPage("window.onRewardResult && window.onRewardResult('$token','$status')")
+        fun reload() {
+            if (rewardedAd == null) loadRewardedAd()
+            if (rewardedInterstitialAd == null) loadRewardedInterstitialAd()
+        }
+        val callback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() { report(if (earned) "earned" else "closed"); reload() }
+            override fun onAdFailedToShowFullScreenContent(error: AdError) { report("none"); reload() }
+        }
+        val r = rewardedAd
+        if (r != null) {
+            rewardedAd = null
+            r.fullScreenContentCallback = callback
+            r.show(this) { earned = true }
+            return
+        }
+        val ri = rewardedInterstitialAd
+        if (ri != null) {
+            rewardedInterstitialAd = null
+            ri.fullScreenContentCallback = callback
+            ri.show(this) { earned = true }
+            return
+        }
+        reload()
+        report("none")
     }
 
     private fun showRewardedAd() {

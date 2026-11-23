@@ -208,7 +208,12 @@ function loadPapers() {
   });
 }
 
-async function startSelected(p) {
+// Coins (admin setting): pay to start a paper, or watch a video; free when coins are off.
+function startSelected(p) {
+  const go = () => { if (window.KQ && KQ.markStart) KQ.markStart(); startSelectedNow(p); };
+  if (window.KQ && KQ.gate) KQ.gate('olympiad', state.subjectId, go); else go();
+}
+async function startSelectedNow(p) {
   try {
     const qp = await fetch(`data/${state.classId}/${state.subjectId}/questions/paper${p}.json`, { cache: "no-cache" }).then((r) =>
       r.json()
@@ -249,7 +254,6 @@ async function startSelected(p) {
 }
 
 function startTest() {
-  if (window.KQ && KQ.markStart) KQ.markStart();
   if (state.paper) startSelected(state.paper);
 }
 

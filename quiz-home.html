@@ -1067,10 +1067,16 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   setTimeout(function () { kqAskName().then(renderHomeProfile); }, 400);
 }
 </script>
-<script src="games/kq-leaderboard.js?v=20261123g"></script>
+<script src="games/kq-leaderboard.js?v=20261123h"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>try { KQWebAds.rails(); } catch (e) {}</script>
 <script>
+/* 🪙 Coin chip in the header (only when coins are on in the admin console):
+   tap = my coins & badges. */
+(function coinChip(n) {
+  if (!window.KQCoins) { if ((n || 0) < 40) setTimeout(function () { coinChip((n || 0) + 1); }, 250); return; }
+  var bar = document.querySelector('.hm-actions'); if (bar && !bar.querySelector('.kqc-chip')) KQCoins.mountChip(bar);
+})();
 /* ⚙️ Admin console button: only for the admin account. No email in this code —
    Firebase rules let only the admin read /admin, so a successful read = admin. */
 (function adminButton() {

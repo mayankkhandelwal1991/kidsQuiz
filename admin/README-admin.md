@@ -42,3 +42,20 @@ the web pages: reminder (off / daily / weekly, time, day, text), offline play,
 "Share my score" button, floating 🏆 in the app, banner ad, full-screen ad
 frequency and quit ads. Needs the `"config"` rule above (public read so the app
 can fetch it without signing in; only the admin can change it).
+
+## Coins (🪙 tab) → `config/app/coins`, wallets → `wallets/<player>`
+
+Rule (add next to "config"):
+
+```
+"wallets": {
+  ".read": true,
+  ".write": "<ADMIN>",
+  "$player": {
+    ".write": "(auth != null && auth.uid === $player) || $player.beginsWith('g_')",
+    ".validate": "!newData.exists() || (newData.child('coins').isNumber() && newData.child('coins').val() >= 0)"
+  }
+}
+```
+Signed-in players can only change their own wallet; guest wallets (`g_…`) have
+no sign-in, so they are open like guest scores. The admin can set or delete any.

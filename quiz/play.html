@@ -292,7 +292,7 @@ function registerQuiz(subject, level, questions) {
 window.KQ_NO_WIDGET = true;
 window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, isMuted: isSoundMuted };
 </script>
-<script src="../games/kq-leaderboard.js?v=20261123g"></script>
+<script src="../games/kq-leaderboard.js?v=20261123h"></script>
 <script src="../web-ads.js?v=20261123a"></script>
 <script>
 (function () {
@@ -540,7 +540,12 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
   }
 
   /* ---------------- playing a paper ---------------- */
+  // Coins (admin setting): pay to start, or watch a video; free when coins are off.
   function startPaper(level, cat, paper) {
+    if (window.KQ && KQ.gate) KQ.gate('quiz', cat, () => startPaperNow(level, cat, paper), () => { if (history.length > 1) history.back(); });
+    else startPaperNow(level, cat, paper);
+  }
+  function startPaperNow(level, cat, paper) {
     if (window.KQ && KQ.markStart) KQ.markStart();
     level = +level;
     setLevelTheme(level);

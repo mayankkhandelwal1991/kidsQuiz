@@ -12,6 +12,8 @@ var MULTIPLAYER_AD_CONFIG = {
 })();
 
 function onMultiplayerGameComplete() {
+  // Coins for finishing a match (admin setting)
+  try { if (window.KQCoins) KQCoins.earn('multi', (location.pathname.split('/').filter(Boolean).slice(-2, -1)[0]) || 'multi'); } catch (e) {}
   // Shared rule (kq-leaderboard.js) when available; the old local rule otherwise.
   if (window.KQ && KQ.adBreak) { try { KQ.adBreak('complete'); } catch (e) {} try { if (window.KQRating) KQRating.onComplete(); } catch (e) {} return; }
   try {

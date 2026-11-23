@@ -132,7 +132,10 @@ export class GameShell {
   bindChromeActions({ onShare, onSoundToggle, onLeave }) {
     this.shareRoomBtn.addEventListener('click', onShare);
     this.soundToggleBtn.addEventListener('click', onSoundToggle);
-    this.leaveRoomBtn.addEventListener('click', onLeave);
+    this.leaveRoomBtn.addEventListener('click', () => {
+      try { if (window.KQ && KQ.adBreak) KQ.adBreak('quit'); } catch (e) {}
+      onLeave();
+    });
   }
 
   showError(message) {

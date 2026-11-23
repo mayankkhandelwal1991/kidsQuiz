@@ -484,9 +484,8 @@ function confirmQuit() {
   clearInterval(timerInterval);
   timerInterval = null;
   quizInProgress = false;
-  if (typeof Android !== "undefined" && Android.showAd) {
-    Android.showAd("interstitial");
-  }
+  // Leaving a quiz early: shared ad rule (at most one every 90 s)
+  try { if (window.KQ && KQ.adBreak) KQ.adBreak('quit'); } catch (e) {}
   goToMenu();
 }
 
@@ -654,9 +653,8 @@ function endQuiz() {
   }
 
   showScreen('endScreen');
-  if (typeof Android !== "undefined" && Android.showAd) {
-    setTimeout(function () { Android.showAd("interstitial"); }, 1500);
-  }
+  // Finished quiz: shared ad rule (every 2nd finished quiz/game, max 1 per minute)
+  try { if (window.KQ && KQ.adBreak) KQ.adBreak('complete'); } catch (e) {}
 }
 
 function restartQuiz() { startQuiz(currentLevel); }
@@ -756,6 +754,6 @@ attachRipple('.android-action-btn');
 startQuiz(currentLevel);
 </script>
 <script src="../games/kq-leaderboard.js?v=20261123d"></script>
-<script src="../web-ads.js?v=20261120i"></script>
+<script src="../web-ads.js?v=20261123a"></script>
 </body>
 </html>

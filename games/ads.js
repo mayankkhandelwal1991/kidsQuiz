@@ -55,6 +55,8 @@ function showGameAd(type) {
 }
 
 function onGameComplete() {
+  // Shared rule (kq-leaderboard.js) when available; the old local rule otherwise.
+  if (window.KQ && KQ.adBreak) { try { KQ.adBreak('complete'); } catch (e) {} try { if (window.KQRating) KQRating.onComplete(); } catch (e) {} return; }
   try {
     var n = (+(localStorage.getItem('kq_adCounter') || 0)) + 1;
     localStorage.setItem('kq_adCounter', n);

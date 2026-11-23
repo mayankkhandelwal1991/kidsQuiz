@@ -414,6 +414,7 @@ function submitTest() {
   h.push(attempt);
   saveHistory(h);
   state.lastResult = attempt;
+  try { if (window.KQ && KQ.adBreak) KQ.adBreak('complete'); } catch (e) {}
   try { if (window.KQEnd) { const pct = state.totalMarks ? score / state.totalMarks : 0; KQEnd.show(pct >= 0.75 ? 'win' : pct >= 0.4 ? 'over' : 'lose'); } } catch (e) {}
 
   // Shared leaderboard + player history (leaderboard.html). Board id:

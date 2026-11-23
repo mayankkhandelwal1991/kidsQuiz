@@ -19,7 +19,10 @@
   'use strict';
   var CLIENT = 'ca-pub-6850862418034067';
   // Fill in to enable fixed banner units, e.g. { result: '1234567890' }.
-  var AD_SLOTS = { result: '', page: '' };
+  //   rail: a "Vertical" display ad unit (AdSense -> Ads -> By ad unit -> Display ads)
+  //         shown left and right of the home page on wide desktop screens.
+  var AD_SLOTS = { result: '', page: '', rail: '' };
+  var RAIL_W = 160, RAIL_H = 600, CONTENT_W = 1040;
 
   function inApp() {
     try { if (typeof Android !== 'undefined' && Android) return true; } catch (e) {}
@@ -56,5 +59,35 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', load);
   else load();
 
-  window.KQWebAds = { enabled: enabled, slot: slot };
+  /**
+   * Desktop side ads for the home page. On wide screens the page content is
+   * centred at CONTENT_W so there is free space at both sides — AdSense Auto
+   * ads "Side rails" (turn on in AdSense) use that space, and if AD_SLOTS.rail is
+   * set, two fixed 160x600 units are placed there too. Phones / app: nothing.
+   */
+  function rails() {
+    if (!enabled || !document.body) return;
+    if (!document.getElementById('kq-rails-css')) {
+      var st = document.createElement('style'); st.id = 'kq-rails-css';
+      st.textContent =
+        '@media (min-width:1200px){html.kq-rails .container{max-width:' + CONTENT_W + 'px!important;margin-left:auto!important;margin-right:auto!important}}' +
+        '.kq-rail{position:fixed;top:96px;width:' + RAIL_W + 'px;min-height:' + RAIL_H + 'px;z-index:5;display:none}' +
+        '.kq-rail.l{left:max(12px,calc((100vw - ' + CONTENT_W + 'px)/2 - ' + (RAIL_W + 20) + 'px))}' +
+        '.kq-rail.r{right:max(12px,calc((100vw - ' + CONTENT_W + 'px)/2 - ' + (RAIL_W + 20) + 'px))}' +
+        '@media (min-width:' + (CONTENT_W + 2 * (RAIL_W + 32)) + 'px){html.kq-rails .kq-rail{display:block}}';
+      document.head.appendChild(st);
+    }
+    document.documentElement.classList.add('kq-rails');
+    if (!AD_SLOTS.rail || document.querySelector('.kq-rail')) return;
+    if (window.innerWidth < CONTENT_W + 2 * (RAIL_W + 32)) return; // not enough room: don't request
+    load();
+    ['l', 'r'].forEach(function (side) {
+      var d = document.createElement('div'); d.className = 'kq-rail ' + side;
+      d.innerHTML = '<ins class="adsbygoogle" style="display:inline-block;width:' + RAIL_W + 'px;height:' + RAIL_H + 'px" data-ad-client="' + CLIENT + '" data-ad-slot="' + AD_SLOTS.rail + '"></ins>';
+      document.body.appendChild(d);
+      try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+    });
+  }
+
+  window.KQWebAds = { enabled: enabled, slot: slot, rails: rails };
 })();

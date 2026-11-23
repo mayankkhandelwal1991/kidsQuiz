@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Kids Quiz Admin – Players</title>
+<!--
+  Admin portal: every player (Google + guest) from Firebase, with their scores,
+  plays and time played, and deletion of a player's data.
+
+  ACCESS: sign in with Google. The page itself holds no secret — what protects
+  the data is the Firebase Realtime Database rules: only the admin account
+  (set in the rules, with a verified email) may read /admin and delete from
+  /attempts, /sessions and /leaderboards. Anyone else who opens this page just
+  sees "not an admin". See admin/README-admin.md for the rules.
+-->
+<style>
+  :root {
+    --bg: #f4f3ff; --card: #ffffff; --ink: #1e1b4b; --muted: #6b7280; --line: #e7e5f5;
+    --brand: #4f46e5; --brand-ink: #ffffff; --danger: #dc2626; --ok: #059669; --google: #2563eb; --guest: #9333ea;
+    --chip: #eef2ff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f0e1a; --card: #1a1830; --ink: #eceaff; --muted: #a3a1c2; --line: #2c2948;
+      --brand: #818cf8; --brand-ink: #0f0e1a; --danger: #f87171; --ok: #34d399; --google: #60a5fa; --guest: #c084fc; --chip: #24213f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); }
+  .bar { max-width: 1200px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .bar h1 { font-size: 18px; margin: 0; flex: 1; min-width: 180px; }
+  .bar a { color: var(--brand); text-decoration: none; font-weight: 600; font-size: 14px; }
+  main { max-width: 1200px; margin: 0 auto; padding: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .center { max-width: 420px; margin: 60px auto; text-align: center; }
+  .center h2 { margin: 6px 0 8px; }
+  .muted { color: var(--muted); }
+  button { font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 8px 14px; font-weight: 600; }
+  button:disabled { opacity: .5; cursor: default; }
+  .primary { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+  .danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+  .ghost-danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, var(--line)); }
+  .gbtn { display: inline-flex; align-items: center; gap: 10px; background: #fff; color: #1f1f1f; border: 1px solid #747775; border-radius: 999px; padding: 10px 22px; font-weight: 600; }
+  .gbtn svg { width: 18px; height: 18px; }
+  .who { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+  .who img { width: 28px; height: 28px; border-radius: 50%; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+  .kpi b { display: block; font-size: 22px; }
+  .kpi span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .tools input[type=search] { flex: 1; min-width: 180px; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; }
+  .tools select { padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .seg button { border: 0; border-radius: 0; padding: 8px 12px; }
+  .seg button.on { background: var(--brand); color: var(--brand-ink); }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  th { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; background: color-mix(in srgb, var(--chip) 60%, var(--card)); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.row { cursor: pointer; }
+  tr.row:hover td { background: color-mix(in srgb, var(--chip) 50%, transparent); }
+  .nm { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .av { width: 30px; height: 30px; border-radius: 50%; flex: none; display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #fff; background: var(--brand); overflow: hidden; }
+  .av img { width: 100%; height: 100%; object-fit: cover; }
+  .tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+  .tag.g { color: var(--google); background: color-mix(in srgb, var(--google) 14%, transparent); }
+  .tag.u { color: var(--guest); background: color-mix(in srgb, var(--guest) 14%, transparent); }
+  .key { font: 12px ui-monospace, Menlo, monospace; color: var(--muted); word-break: break-all; }
+  .empty { padding: 30px; text-align: center; color: var(--muted); }
+  .overlay { position: fixed; inset: 0; background: rgba(10, 8, 30, .55); display: none; align-items: flex-start; justify-content: center; padding: 30px 16px; z-index: 20; overflow-y: auto; }
+  .overlay.on { display: flex; }
+  .modal { background: var(--card); border-radius: 18px; width: 100%; max-width: 720px; padding: 20px; border: 1px solid var(--line); }
+  .modal h3 { margin: 0 0 4px; }
+  .modal h4 { margin: 18px 0 6px; font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .list { border: 1px solid var(--line); border-radius: 12px; max-height: 260px; overflow-y: auto; }
+  .li { display: flex; justify-content: space-between; gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .li:last-child { border-bottom: 0; }
+  .li small { color: var(--muted); }
+  .actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 16px; }
+  .checks label { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+  .confirm-in { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; margin-top: 6px; }
+  .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-weight: 600; display: none; z-index: 30; max-width: calc(100% - 32px); }
+  .err { color: var(--danger); font-weight: 600; }
+  @media (max-width: 760px) {
+    .hide-sm { display: none; }
+    th, td { padding: 8px 6px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <h1>👥 Kids Quiz Admin · Players</h1>
+    <a href="index.html">📸 Instagram Studio</a>
+    <div class="who" id="who"></div>
+  </div>
+</header>
+
+<main id="app">
+  <div class="card center"><p class="muted">Loading…</p></div>
+</main>
+
+<div class="overlay" id="ov"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+(function () {
+  'use strict';
+  firebase.initializeApp({
+    apiKey: "AIzaSyB0eMyeIUtCsuMVk-8LtRQs_iwOJV3ksv8",
+    authDomain: "kidsgames-3987c.firebaseapp.com",
+    databaseURL: "https://kidsgames-3987c-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "kidsgames-3987c",
+    storageBucket: "kidsgames-3987c.appspot.com",
+    messagingSenderId: "851797718600",
+    appId: "1:851797718600:web:e990b3435751d209228a7d"
+  });
+  const auth = firebase.auth(), db = firebase.database();
+  const $app = document.getElementById('app'), $who = document.getElementById('who');
+  const $ov = document.getElementById('ov'), $modal = document.getElementById('modal');
+
+  /* ---------- helpers ---------- */
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmtNum = (n) => (Math.round((n || 0) * 100) / 100).toLocaleString();
+  const fmtDur = (s) => { s = Math.round(s || 0); if (s < 60) return s + 's'; const m = Math.floor(s / 60), h = Math.floor(m / 60); return h ? h + 'h ' + String(m % 60).padStart(2, '0') + 'm' : m + 'm'; };
+  const fmtDate = (t) => t ? new Date(t).toLocaleString([], { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : '—';
+  const ago = (t) => { if (!t) return '—'; const d = (Date.now() - t) / 1000; if (d < 3600) return Math.max(1, Math.round(d / 60)) + 'm ago'; if (d < 86400) return Math.round(d / 3600) + 'h ago'; if (d < 86400 * 30) return Math.round(d / 86400) + 'd ago'; return new Date(t).toLocaleDateString(); };
+  const initials = (n) => { const p = String(n || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + (p[1] ? p[1][0] : '')).toUpperCase(); };
+  const CAT = { quiz: '🎯 Quiz', single: '🎮 Game', multi: '👥 Multiplayer', olympiad: '🏅 Olympiad', travel: '🌍 Travel' };
+  function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; clearTimeout(toast._t); toast._t = setTimeout(() => { t.style.display = 'none'; }, 3500); }
+  function avatar(p) { return '<span class="av">' + (p.photo ? '<img src="' + esc(p.photo) + '" referrerpolicy="no-referrer" alt="">' : esc(initials(p.name))) + '</span>'; }
+  const G_ICON = '<svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+
+  /* ---------- auth ---------- */
+  function showSignIn(msg) {
+    $who.innerHTML = '';
+    $app.innerHTML = '<div class="card center"><div style="font-size:42px">🔐</div><h2>Admin sign-in</h2>' +
+      '<p class="muted">Sign in with the admin Google account to manage players.</p>' +
+      '<button class="gbtn" id="signin">' + G_ICON + 'Sign in with Google</button>' +
+      (msg ? '<p class="err" style="margin-top:14px">' + esc(msg) + '</p>' : '') + '</div>';
+    document.getElementById('signin').onclick = () => {
+      const p = new firebase.auth.GoogleAuthProvider(); p.setCustomParameters({ prompt: 'select_account' });
+      auth.signInWithPopup(p).catch((e) => {
+        if (e && (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment')) return auth.signInWithRedirect(p);
+        if (e && e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') showSignIn('Sign-in failed: ' + (e.message || e.code));
+      });
+    };
+  }
+  function showWho(u) {
+    $who.innerHTML = (u.photoURL ? '<img src="' + esc(u.photoURL) + '" referrerpolicy="no-referrer" alt="">' : '') +
+      '<span>' + esc(u.email || u.displayName || '') + '</span><button id="out">Sign out</button>';
+    document.getElementById('out').onclick = () => auth.signOut();
+  }
+  auth.getRedirectResult().catch(() => {});
+  auth.onAuthStateChanged((u) => {
+    if (!u) return showSignIn();
+    showWho(u);
+    $app.innerHTML = '<div class="card center"><p class="muted">Checking admin access…</p></div>';
+    // Only the admin account can read /admin (Firebase rules) — that is the access check.
+    db.ref('admin/check').once('value').then(() => load(), (e) => {
+      $app.innerHTML = '<div class="card center"><div style="font-size:42px">⛔</div><h2>Not an admin</h2>' +
+        '<p class="muted">' + esc(u.email || '') + ' doesn\'t have admin access.</p>' +
+        '<p class="muted" style="font-size:13px">' + esc(e && e.code === 'PERMISSION_DENIED' ? '' : (e && e.message) || '') + '</p>' +
+        '<button id="sw">Use another account</button></div>';
+      document.getElementById('sw').onclick = () => auth.signOut();
+    });
+  });
+
+  /* ---------- data ---------- */
+  let PLAYERS = [], BYKEY = new Map();
+  const S = { q: '', type: 'all', sort: 'last', sel: new Set() };
+
+  function load() {
+    $app.innerHTML = '<div class="card center"><p class="muted">Loading players from Firebase…</p></div>';
+    Promise.all(['leaderboards', 'sessions', 'attempts'].map((n) => db.ref(n).once('value').then((s) => s.val() || {})))
+      .then(([lb, ses, att]) => { build(lb, ses, att); render(); })
+      .catch((e) => { $app.innerHTML = '<div class="card center"><p class="err">Could not load: ' + esc(e.message) + '</p><button id="rt">Retry</button></div>'; document.getElementById('rt').onclick = load; });
+  }
+  function player(key) {
+    let p = BYKEY.get(key);
+    if (!p) { p = { key, name: '', photo: '', guest: /^g_/.test(key), boards: [], attempts: [], sessions: [], points: 0, time: 0, last: 0, first: 0 }; BYKEY.set(key, p); }
+    return p;
+  }
+  function seen(p, t, name, photo, guest) {
+    if (t && t > p.last) { p.last = t; if (name) p.name = name; }
+    if (t && (!p.first || t < p.first)) p.first = t;
+    if (!p.name && name) p.name = name;
+    if (!p.photo && photo) p.photo = photo;
+    if (guest === true) p.guest = true;
+  }
+  function build(lb, ses, att) {
+    BYKEY = new Map();
+    Object.keys(lb).forEach((cat) => {
+      const games = lb[cat] || {};
+      Object.keys(games).forEach((game) => {
+        const rows = games[game] || {};
+        Object.keys(rows).forEach((key) => {
+          const v = rows[key]; if (!v || typeof v !== 'object') return;
+          const p = player(key), at = v.updatedAt || v.at || 0;
+          p.boards.push({ cat, game, score: Number(v.score) || 0, at, lower: !!v.lowerIsBetter, path: 'leaderboards/' + cat + '/' + game + '/' + key });
+          if (!v.lowerIsBetter) p.points += Number(v.score) || 0;
+          seen(p, at, v.name, v.photo, v.guest);
+        });
+      });
+    });
+    Object.keys(ses).forEach((key) => {
+      const p = player(key);
+      Object.keys(ses[key] || {}).forEach((id) => {
+        const v = ses[key][id]; if (!v || typeof v !== 'object') return;
+        p.sessions.push({ id, start: v.start || 0, last: v.last || v.start || 0, dur: v.dur || 0, pages: v.pages || 0 });
+        p.time += v.dur || 0;
+        seen(p, v.last || v.start, v.name, '', v.guest);
+      });
+    });
+    Object.keys(att).forEach((key) => {
+      const p = player(key);
+      Object.keys(att[key] || {}).forEach((id) => {
+        const v = att[key][id]; if (!v || typeof v !== 'object') return;
+        p.attempts.push({ id, cat: v.cat, game: v.gameId, title: v.title || '', score: v.score, at: v.at || 0, dur: v.dur || 0 });
+        seen(p, v.at, v.name, '', undefined);
+      });
+    });
+    PLAYERS = [...BYKEY.values()];
+    PLAYERS.forEach((p) => { if (!p.name) p.name = p.guest ? 'Guest' : 'Player'; p.attempts.sort((a, b) => b.at - a.at); p.sessions.sort((a, b) => b.start - a.start); p.boards.sort((a, b) => b.at - a.at); });
+    S.sel = new Set([...S.sel].filter((k) => BYKEY.has(k)));
+  }
+
+  /* ---------- list ---------- */
+  function filtered() {
+    const q = S.q.trim().toLowerCase();
+    let list = PLAYERS.filter((p) => (S.type === 'all' || (S.type === 'guest') === p.guest) &&
+      (!q || p.name.toLowerCase().includes(q) || p.key.toLowerCase().includes(q)));
+    const by = { last: (a, b) => b.last - a.last, points: (a, b) => b.points - a.points, plays: (a, b) => b.attempts.length - a.attempts.length,
+      time: (a, b) => b.time - a.time, name: (a, b) => a.name.localeCompare(b.name), first: (a, b) => b.first - a.first }[S.sort];
+    return list.sort(by);
+  }
+  function render() {
+    const now = Date.now(), DAY = 86400000;
+    const google = PLAYERS.filter((p) => !p.guest).length;
+    const k = (v, l) => '<div class="kpi"><b>' + v + '</b><span>' + l + '</span></div>';
+    const list = filtered();
+    let h = '<div class="kpis">' + k(PLAYERS.length, 'Players') + k(google, 'Google') + k(PLAYERS.length - google, 'Guests') +
+      k(PLAYERS.filter((p) => now - p.last < DAY).length, 'Active 24h') + k(PLAYERS.filter((p) => now - p.last < 7 * DAY).length, 'Active 7 days') +
+      k(fmtNum(PLAYERS.reduce((s, p) => s + p.attempts.length, 0)), 'Plays') + k(fmtDur(PLAYERS.reduce((s, p) => s + p.time, 0)), 'Time played') + '</div>';
+    h += '<div class="tools"><input type="search" id="q" placeholder="Search name or ID…" value="' + esc(S.q) + '">' +
+      '<div class="seg">' + [['all', 'All'], ['google', 'Google'], ['guest', 'Guests']].map(([v, l]) => '<button data-type="' + v + '" class="' + (S.type === v ? 'on' : '') + '">' + l + '</button>').join('') + '</div>' +
+      '<select id="sort">' + [['last', 'Last active'], ['first', 'Newest'], ['points', 'Points'], ['plays', 'Plays'], ['time', 'Time played'], ['name', 'Name']].map(([v, l]) => '<option value="' + v + '"' + (S.sort === v ? ' selected' : '') + '>Sort: ' + l + '</option>').join('') + '</select>' +
+      '<button id="csv">⬇ CSV</button><button id="reload">↻ Refresh</button>' +
+      '<button class="danger" id="delsel"' + (S.sel.size ? '' : ' disabled') + '>🗑 Delete selected (' + S.sel.size + ')</button></div>';
+    if (!list.length) h += '<div class="card empty">No players match.</div>';
+    else {
+      const allSel = list.every((p) => S.sel.has(p.key));
+      h += '<table><thead><tr><th style="width:34px"><input type="checkbox" id="selall"' + (allSel ? ' checked' : '') + ' aria-label="Select all shown"></th><th>Player</th><th class="hide-sm">Type</th>' +
+        '<th class="num">Points</th><th class="num hide-sm">Plays</th><th class="num hide-sm">Time</th><th class="num">Last active</th></tr></thead><tbody>' +
+        list.slice(0, 500).map((p) => '<tr class="row" data-key="' + esc(p.key) + '"><td><input type="checkbox" class="sel" data-key="' + esc(p.key) + '"' + (S.sel.has(p.key) ? ' checked' : '') + ' aria-label="Select"></td>' +
+          '<td><div class="nm">' + avatar(p) + '<div style="min-width:0"><div><b>' + esc(p.name) + '</b></div><div class="key">' + esc(p.key) + '</div></div></div></td>' +
+          '<td class="hide-sm"><span class="tag ' + (p.guest ? 'u">Guest' : 'g">Google') + '</span></td>' +
+          '<td class="num">' + fmtNum(p.points) + '</td><td class="num hide-sm">' + p.attempts.length + '</td><td class="num hide-sm">' + fmtDur(p.time) + '</td>' +
+          '<td class="num" title="' + esc(fmtDate(p.last)) + '">' + ago(p.last) + '</td></tr>').join('') + '</tbody></table>' +
+        (list.length > 500 ? '<p class="muted">Showing 500 of ' + list.length + ' — use search to narrow down.</p>' : '');
+    }
+    $app.innerHTML = h;
+    const q = document.getElementById('q');
+    q.oninput = () => { S.q = q.value; const pos = q.selectionStart; render(); const n = document.getElementById('q'); n.focus(); n.setSelectionRange(pos, pos); };
+    $app.querySelectorAll('[data-type]').forEach((b) => b.onclick = () => { S.type = b.dataset.type; render(); });
+    document.getElementById('sort').onchange = (e) => { S.sort = e.target.value; render(); };
+    document.getElementById('reload').onclick = load;
+    document.getElementById('csv').onclick = () => csv(list);
+    document.getElementById('delsel').onclick = () => confirmDelete([...S.sel].map((k2) => BYKEY.get(k2)).filter(Boolean));
+    const sa = document.getElementById('selall');
+    if (sa) sa.onchange = () => { list.forEach((p) => sa.checked ? S.sel.add(p.key) : S.sel.delete(p.key)); render(); };
+    $app.querySelectorAll('.sel').forEach((c) => { c.onclick = (e) => e.stopPropagation(); c.onchange = () => { c.checked ? S.sel.add(c.dataset.key) : S.sel.delete(c.dataset.key); render(); }; });
+    $app.querySelectorAll('tr.row').forEach((r) => r.onclick = () => detail(BYKEY.get(r.dataset.key)));
+  }
+  function csv(list) {
+    const q = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const rows = [['id', 'name', 'type', 'points', 'best_scores', 'plays', 'sessions', 'time_seconds', 'first_seen', 'last_active']]
+      .concat(list.map((p) => [p.key, p.name, p.guest ? 'guest' : 'google', p.points, p.boards.length, p.attempts.length, p.sessions.length, p.time,
+        p.first ? new Date(p.first).toISOString() : '', p.last ? new Date(p.last).toISOString() : '']));
+    const blob = new Blob([rows.map((r) => r.map(q).join(',')).join('\n')], { type: 'text/csv' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'kidsquiz-players.csv'; a.click();
+  }
+
+  /* ---------- detail ---------- */
+  function closeModal() { $ov.classList.remove('on'); $modal.innerHTML = ''; }
+  $ov.onclick = (e) => { if (e.target === $ov) closeModal(); };
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  function detail(p) {
+    if (!p) return;
+    const li = (a, b) => '<div class="li"><span>' + a + '</span><small>' + b + '</small></div>';
+    let h = '<div class="nm" style="gap:12px">' + avatar(p) + '<div><h3>' + esc(p.name) + ' <span class="tag ' + (p.guest ? 'u">Guest' : 'g">Google') + '</span></h3>' +
+      '<div class="key">' + esc(p.key) + '</div></div></div>' +
+      '<p class="muted" style="margin:10px 0 0">First seen ' + esc(fmtDate(p.first)) + ' · Last active ' + esc(fmtDate(p.last)) + '<br>' +
+      fmtNum(p.points) + ' points · ' + p.boards.length + ' best scores · ' + p.attempts.length + ' plays · ' + p.sessions.length + ' visits · ' + fmtDur(p.time) + ' played</p>';
+    h += '<h4>Best scores (' + p.boards.length + ')</h4>' + (p.boards.length ? '<div class="list">' + p.boards.map((b) =>
+      li(esc(CAT[b.cat] || b.cat) + ' · ' + esc(b.game.replace(/__/g, ' · ')), '<b>' + fmtNum(b.score) + '</b>' + (b.lower ? ' (low)' : '') + ' · ' + esc(ago(b.at)))).join('') + '</div>' : '<p class="muted">None</p>');
+    h += '<h4>Recent plays (' + p.attempts.length + ')</h4>' + (p.attempts.length ? '<div class="list">' + p.attempts.slice(0, 50).map((a) =>
+      li(esc(CAT[a.cat] || a.cat || '') + ' · ' + esc(a.title || String(a.game || '').replace(/__/g, ' · ')), 'score ' + esc(fmtNum(a.score)) + (a.dur ? ' · ' + fmtDur(a.dur) : '') + ' · ' + esc(fmtDate(a.at)))).join('') + '</div>' : '<p class="muted">None</p>');
+    h += '<h4>Visits (' + p.sessions.length + ')</h4>' + (p.sessions.length ? '<div class="list">' + p.sessions.slice(0, 30).map((s) =>
+      li(esc(fmtDate(s.start)), fmtDur(s.dur) + ' · ' + s.pages + ' page' + (s.pages === 1 ? '' : 's'))).join('') + '</div>' : '<p class="muted">None</p>');
+    h += '<div class="actions"><button id="cl">Close</button><button class="danger" id="del">🗑 Delete this player\'s data</button></div>';
+    $modal.innerHTML = h; $ov.classList.add('on');
+    document.getElementById('cl').onclick = closeModal;
+    document.getElementById('del').onclick = () => confirmDelete([p]);
+  }
+
+  /* ---------- delete ---------- */
+  function confirmDelete(players) {
+    if (!players.length) return;
+    const nB = players.reduce((s, p) => s + p.boards.length, 0), nA = players.reduce((s, p) => s + p.attempts.length, 0), nS = players.reduce((s, p) => s + p.sessions.length, 0);
+    const who = players.length === 1 ? '<b>' + esc(players[0].name) + '</b> <span class="key">(' + esc(players[0].key) + ')</span>' : '<b>' + players.length + ' players</b>';
+    $modal.innerHTML = '<h3>Delete data for ' + who + '?</h3><p class="muted">This permanently removes it from Firebase and can\'t be undone.</p>' +
+      '<div class="checks"><label><input type="checkbox" id="cB" checked> Best scores / leaderboard entries (' + nB + ')</label>' +
+      '<label><input type="checkbox" id="cA" checked> Play history (' + nA + ')</label>' +
+      '<label><input type="checkbox" id="cS" checked> Visits / time played (' + nS + ')</label></div>' +
+      '<p style="margin:14px 0 0">Type <b>DELETE</b> to confirm:</p><input class="confirm-in" id="cIn" autocomplete="off" placeholder="DELETE">' +
+      '<p class="muted" style="font-size:13px">Their Google sign-in account itself stays; remove it in Firebase console → Authentication if needed.</p>' +
+      '<div class="actions"><button id="cn">Cancel</button><button class="danger" id="go" disabled>Delete permanently</button></div>';
+    $ov.classList.add('on');
+    const go = document.getElementById('go'), inp = document.getElementById('cIn');
+    inp.oninput = () => { go.disabled = inp.value.trim() !== 'DELETE'; };
+    inp.focus();
+    document.getElementById('cn').onclick = closeModal;
+    go.onclick = () => {
+      const wB = document.getElementById('cB').checked, wA = document.getElementById('cA').checked, wS = document.getElementById('cS').checked;
+      const up = {};
+      players.forEach((p) => {
+        if (wB) p.boards.forEach((b) => { up[b.path] = null; });
+        if (wA) up['attempts/' + p.key] = null;
+        if (wS) up['sessions/' + p.key] = null;
+      });
+      if (!Object.keys(up).length) { closeModal(); return; }
+      go.disabled = true; go.textContent = 'Deleting…';
+      db.ref().update(up).then(() => {
+        players.forEach((p) => S.sel.delete(p.key));
+        closeModal(); toast('Deleted data for ' + (players.length === 1 ? players[0].name : players.length + ' players'));
+        load();
+      }).catch((e) => {
+        go.disabled = false; go.textContent = 'Delete permanently';
+        const msg = e && /permission/i.test(e.message || e.code || '') ? 'Permission denied — check the admin rules in Firebase (admin/README-admin.md).' : (e.message || String(e));
+        $modal.insertAdjacentHTML('beforeend', '<p class="err">' + esc(msg) + '</p>');
+      });
+    };
+  }
+})();
+</script>
+</body>
+</html>

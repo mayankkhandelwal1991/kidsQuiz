@@ -7,11 +7,13 @@ var MULTIPLAYER_AD_CONFIG = {
 
 (function () {
   var s = document.createElement('script');
-  s.src = '../../Game/rating.js';
+  s.src = '../../games/rating.js';
   document.head.appendChild(s);
 })();
 
 function onMultiplayerGameComplete() {
+  // Shared rule (kq-leaderboard.js) when available; the old local rule otherwise.
+  if (window.KQ && KQ.adBreak) { try { KQ.adBreak('complete'); } catch (e) {} try { if (window.KQRating) KQRating.onComplete(); } catch (e) {} return; }
   try {
     var n = (+(localStorage.getItem('kq_adCounter') || 0)) + 1;
     localStorage.setItem('kq_adCounter', n);

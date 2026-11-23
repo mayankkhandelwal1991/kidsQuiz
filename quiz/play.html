@@ -293,7 +293,7 @@ window.KQ_NO_WIDGET = true;
 window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, isMuted: isSoundMuted };
 </script>
 <script src="../games/kq-leaderboard.js?v=20261123d"></script>
-<script src="../web-ads.js?v=20261120i"></script>
+<script src="../web-ads.js?v=20261123a"></script>
 <script>
 (function () {
   'use strict';
@@ -773,7 +773,7 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     document.getElementById('topics').onclick = () => go('#/c/' + P.level);
     document.getElementById('board').onclick = () => { location.href = '../leaderboard.html?cat=quiz'; };
     try { if (window.KQWebAds) KQWebAds.slot(document.getElementById('adSlot')); } catch (e) {}
-    try { if (typeof Android !== 'undefined' && Android.showAd && Math.random() < 0.5) setTimeout(() => Android.showAd('interstitial'), 2500); } catch (e) {}
+    try { if (window.KQ && KQ.adBreak) KQ.adBreak('complete'); } catch (e) {}
   }
 
   document.getElementById('stayBtn').onclick = () => document.getElementById('quitModal').classList.remove('on');

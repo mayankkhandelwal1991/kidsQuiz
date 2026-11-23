@@ -245,7 +245,7 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
         show('k3paused');
         $('k3res').onclick = function () { pause(false); };
         $('k3rst').onclick = begin;
-        $('k3home').onclick = function () { location.href = '../index.html'; };
+        $('k3home').onclick = function () { try { if (window.KQ && KQ.adBreak) KQ.adBreak('quit'); } catch (e) {} location.href = '../index.html'; };
       } else show(null);
       G.music(!on);
       if (cfg.onPause) cfg.onPause(on);
@@ -289,7 +289,7 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
           '<div class="k3row"><button class="k3alt" id="k3lb">' + pic('🏆', 20) + ' Top players</button><button class="k3alt" id="k3home2">🏠 Games</button></div></div>';
         show('k3over');
         $('k3again').onclick = begin;
-        $('k3home2').onclick = function () { location.href = '../index.html'; };
+        $('k3home2').onclick = function () { try { if (window.KQ && KQ.adBreak) KQ.adBreak('quit'); } catch (e) {} location.href = '../index.html'; };
         $('k3lb').onclick = function () { if (window.KQ && KQ.open) KQ.open('single', cfg.id, cfg.title); else location.href = ROOT + 'leaderboard.html?cat=single'; };
         // win / game over / lose animation (a different one each time); games can force it with o.result
         var kind = o.result || (rec || stars >= 3 ? 'win' : stars ? 'over' : 'lose');

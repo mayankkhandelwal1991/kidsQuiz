@@ -491,6 +491,29 @@
   // Android calls this (via evaluateJavascript) after native Google Sign-In.
   window.onGoogleIdToken = function (idToken, silent) { return signInWithIdToken(idToken, silent); };
 
+  /* ---- In-app ad breaks (AdMob interstitial via Android.showAd) ----------
+     One shared rule for quizzes, games, Olympiad and multiplayer:
+       'complete' -> every 2nd finished quiz/game/paper/match, at most 1 per minute
+       'quit'     -> leaving a game/quiz early, at most 1 per 90 s
+     Website: nothing here (AdSense Auto ads shows its own page-change ads). */
+  var AD_RULES = { everyNCompletions: 2, minGapMs: 60000, quitMinGapMs: 90000, completeDelayMs: 1500 };
+  function adBreak(reason) {
+    try {
+      if (typeof Android === "undefined" || !Android || typeof Android.showAd !== "function") return false;
+      var now = Date.now(), last = +(localStorage.getItem("kq_lastAdTime") || 0);
+      if (reason === "quit") {
+        if (now - last < AD_RULES.quitMinGapMs) return false;
+      } else {
+        var n = (+(localStorage.getItem("kq_adCounter") || 0)) + 1;
+        localStorage.setItem("kq_adCounter", n);
+        if (n % AD_RULES.everyNCompletions !== 0 || now - last < AD_RULES.minGapMs) return false;
+      }
+      localStorage.setItem("kq_lastAdTime", now);
+      setTimeout(function () { try { Android.showAd("interstitial"); } catch (e) {} }, reason === "quit" ? 0 : AD_RULES.completeDelayMs);
+      return true;
+    } catch (e) { return false; }
+  }
+
   /* The Android app's own login (native login screen), or null on the website /
      older app builds: { mode: 'google'|'guest'|'', name, email, photo, idToken }.
      idToken is '' when it's too old: ask the app with Android.refreshGoogleToken(). */
@@ -764,6 +787,7 @@
     signIn: signIn,
     signInWithIdToken: signInWithIdToken,
     appSession: appSession,
+    adBreak: adBreak,
     signOut: signOut,
     setNick: function (name) {
       name = String(name || "").trim().slice(0, 24);

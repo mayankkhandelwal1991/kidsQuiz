@@ -39,11 +39,14 @@
 </style>
 </head>
 <body>
+<!-- Admin only: hidden until the admin signs in with Google (see admin-gate.js) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="admin-gate.js"></script>
 <header>
   <img src="../images/app-logo.png" alt="">
   <h1>Kids Quiz · Instagram Studio</h1>
-  <a href="users.html">👥 Players</a>
-  <a href="../quiz-home.html">← App</a>
 </header>
 
 <div class="wrap">

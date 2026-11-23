@@ -95,7 +95,6 @@
 <header>
   <div class="bar">
     <h1>👥 Kids Quiz Admin · Players</h1>
-    <a href="index.html">📸 Instagram Studio</a>
     <div class="who" id="who"></div>
   </div>
 </header>
@@ -155,7 +154,10 @@
   }
   function showWho(u) {
     $who.innerHTML = (u.photoURL ? '<img src="' + esc(u.photoURL) + '" referrerpolicy="no-referrer" alt="">' : '') +
-      '<span>' + esc(u.email || u.displayName || '') + '</span><button id="out">Sign out</button>';
+      '<span>' + esc(u.email || u.displayName || '') + '</span>' +
+      '<button onclick="location.href=\'../quiz-home.html\'">🎮 Open app</button>' +
+      '<button onclick="location.href=\'index.html\'">📸 Instagram Studio</button>' +
+      '<button id="out">Sign out</button>';
     document.getElementById('out').onclick = () => auth.signOut();
   }
   auth.getRedirectResult().catch(() => {});

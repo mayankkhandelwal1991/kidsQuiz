@@ -33,6 +33,8 @@
     loaded = true;
     window.adsbygoogle = window.adsbygoogle || [];
     window.adsbygoogle.requestNonPersonalizedAds = 1; // child audience: no personalised ads
+    // The page <head> already has the AdSense tag (needed for site verification): don't add it twice.
+    if (document.querySelector('script[src*="adsbygoogle.js"]')) return;
     var s = document.createElement('script');
     s.async = true;
     s.crossOrigin = 'anonymous';

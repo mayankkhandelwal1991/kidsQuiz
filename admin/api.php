@@ -18,12 +18,24 @@ $MEDIA_DIR = __DIR__ . '/media';
 function out(array $d, int $code = 200): void { http_response_code($code); echo json_encode($d, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); exit; }
 function cfg(string $k, $def = '') { global $CFG; return isset($CFG[$k]) && $CFG[$k] !== '' ? $CFG[$k] : $def; }
 function ig_ready(): bool { return cfg('ig_user_id') !== '' && cfg('ig_access_token') !== ''; }
-function public_ok(): bool {
-    $u = parse_url((string)cfg('public_base_url'));
-    $h = strtolower($u['host'] ?? '');
-    return ($u['scheme'] ?? '') === 'https' && $h !== '' && $h !== 'localhost' && !preg_match('/^(127\.|10\.|192\.168\.)/', $h);
+// Public https address of this admin folder: config "public_base_url", or (when that
+// is empty) the address this page was opened from - e.g. a Cloudflare quick tunnel
+// started by admin/start-public.sh (https://<random>.trycloudflare.com).
+function base_url(): string {
+    $b = (string)cfg('public_base_url');
+    if ($b !== '') return rtrim($b, '/');
+    $https = (($_SERVER['HTTPS'] ?? '') === 'on') || strtolower($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https' || strpos((string)($_SERVER['HTTP_CF_VISITOR'] ?? ''), 'https') !== false;
+    $host = (string)($_SERVER['HTTP_X_FORWARDED_HOST'] ?? ($_SERVER['HTTP_HOST'] ?? ''));
+    if (!$https || $host === '' || !preg_match('/^[A-Za-z0-9.-]+(:\d+)?$/', $host)) return '';
+    $dir = rtrim(str_replace('\\', '/', dirname((string)($_SERVER['SCRIPT_NAME'] ?? '/api.php'))), '/');
+    return 'https://' . $host . $dir;
 }
-function public_url(string $file): string { return rtrim((string)cfg('public_base_url'), '/') . '/media/' . rawurlencode($file); }
+function public_ok(): bool {
+    $u = parse_url(base_url());
+    $h = strtolower($u['host'] ?? '');
+    return ($u['scheme'] ?? '') === 'https' && $h !== '' && $h !== 'localhost' && !preg_match('/^(127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/', $h);
+}
+function public_url(string $file): string { return base_url() . '/media/' . rawurlencode($file); }
 
 function ig(string $method, string $path, array $params = []): array {
     $url = rtrim((string)cfg('ig_graph_base'), '/') . '/' . cfg('graph_version', 'v21.0') . '/' . ltrim($path, '/');
@@ -102,7 +114,7 @@ try {
                 if (public_ok()) $c = ig('POST', "$igu/media", $p + ['video_url' => public_url($file)]);
                 else { $c = ig('POST', "$igu/media", $p + ['upload_type' => 'resumable']); ig_upload_video((string)$c['id'], "$MEDIA_DIR/$file"); }
             } else {
-                if (!public_ok()) out(['ok' => false, 'error' => 'Photo posts need public_base_url (a public https address) in admin/config.php — Instagram downloads the photo from there. Download the image and post it from the Instagram app, or run this admin on your https server.'], 400);
+                if (!public_ok()) out(['ok' => false, 'error' => 'Photo posts need a public https address: run admin/start-public.sh and open the admin page from the https://….trycloudflare.com link it prints (or set public_base_url in admin/config.php) — Instagram downloads the photo from there. Download the image and post it from the Instagram app, or run this admin on your https server.'], 400);
                 $c = ig('POST', "$igu/media", ['image_url' => public_url($file), 'caption' => $caption]);
             }
             out(['ok' => true, 'containerId' => (string)$c['id']]);

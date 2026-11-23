@@ -497,22 +497,57 @@
        'quit'     -> leaving a game/quiz early, at most 1 per 90 s
      Website: nothing here (AdSense Auto ads shows its own page-change ads). */
   var AD_RULES = { everyNCompletions: 2, minGapMs: 60000, quitMinGapMs: 90000, completeDelayMs: 1500 };
+  // Admin console -> App settings -> Ads can change these (config/app/ads).
+  function adRules() {
+    var a = (APP_CFG && APP_CFG.ads) || {};
+    return {
+      on: a.interstitial !== false,
+      everyN: Math.max(1, +a.everyN || AD_RULES.everyNCompletions),
+      minGapMs: Math.max(0, (a.minGapSec != null ? +a.minGapSec : AD_RULES.minGapMs / 1000) * 1000),
+      quit: a.quit !== false,
+      quitGapMs: Math.max(0, (a.quitGapSec != null ? +a.quitGapSec : AD_RULES.quitMinGapMs / 1000) * 1000)
+    };
+  }
   function adBreak(reason) {
     try {
       if (typeof Android === "undefined" || !Android || typeof Android.showAd !== "function") return false;
+      var rule = adRules(); if (!rule.on) return false;
       var now = Date.now(), last = +(localStorage.getItem("kq_lastAdTime") || 0);
       if (reason === "quit") {
-        if (now - last < AD_RULES.quitMinGapMs) return false;
+        if (!rule.quit || now - last < rule.quitGapMs) return false;
       } else {
         var n = (+(localStorage.getItem("kq_adCounter") || 0)) + 1;
         localStorage.setItem("kq_adCounter", n);
-        if (n % AD_RULES.everyNCompletions !== 0 || now - last < AD_RULES.minGapMs) return false;
+        if (n % rule.everyN !== 0 || now - last < rule.minGapMs) return false;
       }
       localStorage.setItem("kq_lastAdTime", now);
       setTimeout(function () { try { Android.showAd("interstitial"); } catch (e) {} }, reason === "quit" ? 0 : AD_RULES.completeDelayMs);
       return true;
     } catch (e) { return false; }
   }
+
+  /* ---- App settings from the admin console (config/app in Firebase) -------
+     Read instantly from the app's saved copy (Android.getAppConfig) or this
+     browser's last copy, then refreshed from Firebase. The app also pushes a
+     fresh copy with window.onAppConfig(cfg). */
+  var APP_CFG = (function () {
+    var c = null;
+    try { if (typeof Android !== "undefined" && Android && typeof Android.getAppConfig === "function") c = JSON.parse(Android.getAppConfig() || "null"); } catch (e) {}
+    if (!c || !Object.keys(c).length) { try { c = JSON.parse(localStorage.getItem("kq_app_config") || "null"); } catch (e) {} }
+    return c || {};
+  })();
+  var cfgCbs = [];
+  function setAppConfig(c) {
+    APP_CFG = (c && typeof c === "object") ? c : {};
+    try { localStorage.setItem("kq_app_config", JSON.stringify(APP_CFG)); } catch (e) {}
+    cfgCbs.forEach(function (f) { try { f(APP_CFG); } catch (e) {} });
+    try { renderWidget(); } catch (e) {}
+  }
+  window.onAppConfig = setAppConfig;
+  ready.then(function () {
+    if (db) db.ref("config/app").once("value").then(function (snap) { setAppConfig(snap.val() || {}); }).catch(function () {});
+  });
+  function inAndroidApp() { try { return typeof Android !== "undefined" && !!Android; } catch (e) { return false; } }
 
   /* The Android app's own login (native login screen), or null on the website /
      older app builds: { mode: 'google'|'guest'|'', name, email, photo, idToken }.
@@ -679,7 +714,10 @@
     var u = currentUser();
     var html = "";
 
-    if (ctx && ctx.gameId) {
+    // Inside the Android app the floating 🏆 is hidden (pages have their own
+    // leaderboard buttons) unless the admin turns it back on.
+    var hideFab = inAndroidApp() && ((APP_CFG.app || {}).hideLeaderboardFab !== false);
+    if (ctx && ctx.gameId && !hideFab) {
       html += '<button class="kqlb-btn kqlb-trophy" id="kqlb-open">🏆 <span>Leaderboard</span></button>';
     }
     // No floating name / sign-out chip: it sat on top of the pages' own buttons
@@ -788,6 +826,9 @@
     signInWithIdToken: signInWithIdToken,
     appSession: appSession,
     adBreak: adBreak,
+    appConfig: function () { return APP_CFG; },
+    onConfig: function (fn) { if (typeof fn === "function") { cfgCbs.push(fn); try { fn(APP_CFG); } catch (e) {} } },
+    inApp: inAndroidApp,
     signOut: signOut,
     setNick: function (name) {
       name = String(name || "").trim().slice(0, 24);

@@ -283,13 +283,14 @@
     return list.sort(by);
   }
   function tabsHtml() {
-    return '<div class="tabs" role="tablist">' + [['dash', '📊 Dashboard'], ['players', '👥 Players'], ['tools', '🛠 Tools']].map(([v, l]) =>
+    return '<div class="tabs" role="tablist">' + [['dash', '📊 Dashboard'], ['players', '👥 Players'], ['app', '📱 App settings'], ['tools', '🛠 Tools']].map(([v, l]) =>
       '<button role="tab" data-tab="' + v + '" class="' + (S.tab === v ? 'on' : '') + '">' + l + '</button>').join('') + '</div>';
   }
   function bindTabs() { $app.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => { S.tab = b.dataset.tab; render(); window.scrollTo(0, 0); }); }
   function render() {
     if (S.tab === 'dash') return renderDash();
     if (S.tab === 'tools') return renderTools();
+    if (S.tab === 'app') return renderAppSettings();
     return renderPlayers();
   }
 
@@ -418,6 +419,68 @@
     $app.querySelectorAll('[data-range]').forEach((b) => b.onclick = () => { S.range = +b.dataset.range; render(); });
     document.getElementById('reload').onclick = load;
     [['cA', cActive], ['cN', cNew], ['cP', cPlays], ['cT', cTime], ['cH', cHour]].forEach(([i, c]) => bindChart(i, c));
+  }
+
+  /* ---------- app settings (config/app) ----------
+     Read by the Android app on every launch and by the web pages. */
+  const CFG_DEFAULT = {
+    reminder: { enabled: false, frequency: 'daily', time: '18:00', weekday: 0, title: 'Your daily mission is ready! 🚀', body: 'Play a quick quiz or game and keep your streak going ⭐' },
+    offline: { enabled: false },
+    share: { enabled: true },
+    app: { hideLeaderboardFab: true },
+    ads: { banner: true, interstitial: true, everyN: 2, minGapSec: 60, quit: true, quitGapSec: 90 }
+  };
+  const merge = (a, b) => { const o = JSON.parse(JSON.stringify(a)); Object.keys(b || {}).forEach((k) => { o[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k])) ? Object.assign({}, o[k] || {}, b[k]) : b[k]; }); return o; };
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  function renderAppSettings() {
+    $app.innerHTML = tabsHtml() + '<div class="card center"><p class="muted">Loading app settings…</p></div>'; bindTabs();
+    db.ref('config/app').once('value').then((snap) => {
+      const c = merge(CFG_DEFAULT, snap.val() || {}), r = c.reminder, a = c.ads;
+      const chk = (id, on, label, hint) => '<label style="display:flex;gap:10px;align-items:flex-start;margin:8px 0"><input type="checkbox" id="' + id + '"' + (on ? ' checked' : '') + ' style="margin-top:4px"><span><b>' + label + '</b>' + (hint ? '<br><span class="muted" style="font-size:13px">' + hint + '</span>' : '') + '</span></label>';
+      const num = (id, v, min) => '<input type="number" id="' + id + '" min="' + min + '" value="' + esc(v) + '">';
+      const txt = (id, v, ph) => '<input id="' + id + '" value="' + esc(v) + '" placeholder="' + esc(ph) + '" maxlength="80" style="flex:1;min-width:220px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit">';
+      let h = tabsHtml() + '<p class="muted" style="margin:0 0 12px">These control the Android app (and the website where it applies). Phones pick up changes the next time the app opens.' +
+        (snap.val() && snap.val().updatedAt ? ' Last saved ' + esc(fmtDate(snap.val().updatedAt)) + '.' : ' Not saved yet — defaults shown.') + '</p>';
+      h += '<div class="tool"><h3>🔔 Reminder notification</h3><p>A friendly nudge on the phone.</p>' +
+        '<div class="row"><select id="rFreq">' + [['off', 'Off'], ['daily', 'Every day'], ['weekly', 'Once a week']].map(([v, l]) => '<option value="' + v + '"' + ((r.enabled ? r.frequency : 'off') === v ? ' selected' : '') + '>' + l + '</option>').join('') + '</select>' +
+        ' at <input type="time" id="rTime" value="' + esc(r.time) + '" style="padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit">' +
+        '<span id="rDayWrap"> on <select id="rDay">' + DAYS.map((d, i) => '<option value="' + i + '"' + (+r.weekday === i ? ' selected' : '') + '>' + d + '</option>').join('') + '</select></span></div>' +
+        '<div class="row" style="margin-top:10px">Title ' + txt('rTitle', r.title, CFG_DEFAULT.reminder.title) + '</div>' +
+        '<div class="row" style="margin-top:8px">Message ' + txt('rBody', r.body, CFG_DEFAULT.reminder.body) + '</div>' +
+        '<p class="muted" style="font-size:13px;margin:8px 0 0">Uses each phone\'s own time zone. Android 13+ asks the child\'s device once for permission to show notifications.</p></div>';
+      h += '<div class="tool"><h3>📶 Internet</h3>' + chk('oOff', c.offline.enabled, 'Allow playing offline', 'Off (recommended): quizzes and games need internet — the app shows "No internet". On: pages already opened on the phone load from its saved copy without internet (scores sync only when online).') + '</div>';
+      h += '<div class="tool"><h3>📤 Sharing &amp; buttons</h3>' +
+        chk('sShare', c.share.enabled, 'Show "Share my score" on game results', 'Makes a picture of the score and opens the share sheet (WhatsApp, Instagram…).') +
+        chk('aFab', c.app.hideLeaderboardFab, 'Hide the floating 🏆 Leaderboard button inside the app', 'The app\'s own Rank tab and result buttons are used instead.') + '</div>';
+      h += '<div class="tool"><h3>💰 Ads (Android app)</h3>' +
+        chk('adBanner', a.banner, 'Bottom banner ad') +
+        chk('adInt', a.interstitial, 'Full-screen ad after finished games / quizzes') +
+        '<div class="row" style="margin:4px 0 8px 28px">after every ' + num('adN', a.everyN, 1) + ' finished games/quizzes, at most once every ' + num('adGap', a.minGapSec, 0) + ' seconds</div>' +
+        chk('adQuit', a.quit, 'Full-screen ad when leaving a game / quiz early') +
+        '<div class="row" style="margin:4px 0 0 28px">at most once every ' + num('adQGap', a.quitGapSec, 0) + ' seconds</div></div>';
+      h += '<div class="actions" style="justify-content:flex-start"><button class="primary" id="saveCfg">💾 Save settings</button><button id="resetCfg">Reset to defaults</button><span id="cfgMsg" class="muted"></span></div>';
+      $app.innerHTML = h; bindTabs();
+      const dayWrap = document.getElementById('rDayWrap'), freq = document.getElementById('rFreq');
+      const syncDay = () => { dayWrap.style.display = freq.value === 'weekly' ? '' : 'none'; };
+      freq.onchange = syncDay; syncDay();
+      document.getElementById('resetCfg').onclick = () => { if (confirm('Reset all app settings to the defaults?')) db.ref('config/app').set(Object.assign({}, CFG_DEFAULT, { updatedAt: Date.now() })).then(() => { toast('Defaults saved'); renderAppSettings(); }, (e) => toast(e.message)); };
+      document.getElementById('saveCfg').onclick = () => {
+        const v = (id) => document.getElementById(id), n = (id, d, min) => Math.max(min, Math.round(+v(id).value || d));
+        const f = v('rFreq').value;
+        const cfg = {
+          reminder: { enabled: f !== 'off', frequency: f === 'off' ? (r.frequency || 'daily') : f, time: v('rTime').value || '18:00', weekday: +v('rDay').value,
+            title: v('rTitle').value.trim() || CFG_DEFAULT.reminder.title, body: v('rBody').value.trim() || CFG_DEFAULT.reminder.body },
+          offline: { enabled: v('oOff').checked },
+          share: { enabled: v('sShare').checked },
+          app: { hideLeaderboardFab: v('aFab').checked },
+          ads: { banner: v('adBanner').checked, interstitial: v('adInt').checked, everyN: n('adN', 2, 1), minGapSec: n('adGap', 60, 0), quit: v('adQuit').checked, quitGapSec: n('adQGap', 90, 0) },
+          updatedAt: Date.now()
+        };
+        const btn = v('saveCfg'); btn.disabled = true;
+        db.ref('config/app').set(cfg).then(() => { btn.disabled = false; v('cfgMsg').textContent = 'Saved ✓ — phones get it next time the app opens.'; toast('App settings saved'); },
+          (e) => { btn.disabled = false; v('cfgMsg').innerHTML = '<span class="err">' + esc(/permission/i.test(e.message || '') ? 'Permission denied — add the "config" rule in Firebase (see README-admin.md).' : e.message) + '</span>'; });
+      };
+    }, (e) => { $app.innerHTML = tabsHtml() + '<div class="card center"><p class="err">Could not load settings: ' + esc(e.message) + '</p></div>'; bindTabs(); });
   }
 
   /* ---------- tools ---------- */

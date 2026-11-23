@@ -269,6 +269,45 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
     };
     G.flash = function (color) { var f = $('k3flash'); f.style.transition = 'none'; f.style.background = color || '#fff'; f.style.opacity = .55; void f.offsetWidth; f.style.transition = 'opacity .45s'; f.style.opacity = 0; };
 
+    /* ---- Share my score: a picture of the result -> share sheet ----------
+       Admin console -> App settings -> "Share score" can switch it off. */
+    function shareOn() {
+      try { var c = (window.KQ && KQ.appConfig) ? KQ.appConfig() : {}; return !(c.share && c.share.enabled === false); } catch (e) { return true; }
+    }
+    function shareScore(r) {
+      var S = 1080, cv = document.createElement('canvas'); cv.width = S; cv.height = S;
+      var g = cv.getContext('2d');
+      var bg = g.createLinearGradient(0, 0, 0, S); bg.addColorStop(0, '#38bdf8'); bg.addColorStop(1, '#fde68a');
+      g.fillStyle = bg; g.fillRect(0, 0, S, S);
+      g.fillStyle = 'rgba(255,255,255,.95)'; roundRect(g, 70, 150, S - 140, S - 300, 56); g.fill();
+      var font = '"Baloo 2","Fredoka",system-ui,sans-serif';
+      function txt(t, y, size, color, weight) { g.font = (weight || 800) + ' ' + size + 'px ' + font; g.fillStyle = color; g.textAlign = 'center'; g.fillText(t, S / 2, y, S - 200); }
+      function star(x, y, rad, on) {
+        g.beginPath(); for (var i = 0; i < 10; i++) { var a = i * Math.PI / 5 - Math.PI / 2, rr = i % 2 ? rad * 0.45 : rad; g.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); }
+        g.closePath(); g.fillStyle = on ? '#facc15' : '#e5e7eb'; g.fill(); g.lineWidth = 6; g.strokeStyle = on ? '#f59e0b' : '#d1d5db'; g.stroke();
+      }
+      var logo = new Image();
+      var draw = function () {
+        try { if (logo.naturalWidth) { g.save(); roundRect(g, S / 2 - 90, 40, 180, 180, 40); g.clip(); g.drawImage(logo, S / 2 - 90, 40, 180, 180); g.restore(); } } catch (e) {}
+        txt(r.title || 'Kids Quiz', 300, 64, '#1e1b4b');
+        txt(r.heading, 380, 48, '#4f46e5');
+        for (var i = 0; i < 3; i++) star(S / 2 - 150 + i * 150, 480, 58, i < r.stars);
+        txt(String(r.score), 690, 200, '#1e1b4b', 900);
+        if (r.rec) txt('🏆 NEW BEST!', 770, 44, '#b45309');
+        (r.lines || []).slice(0, 2).forEach(function (l, k) { txt(String(l), 830 + k * 50, 36, '#4b5563', 700); });
+        txt('Play free: Kids Game & Quiz on Google Play', S - 70, 36, '#1e1b4b', 800);
+        var url = cv.toDataURL('image/png');
+        var text = 'I scored ' + r.score + ' in ' + (r.title || 'Kids Quiz') + '! 🎉 Can you beat me?\nhttps://play.google.com/store/apps/details?id=com.mk.kidsquiz';
+        try { if (typeof Android !== 'undefined' && Android && typeof Android.shareImage === 'function') { Android.shareImage(url, text); return; } } catch (e) {}
+        cv.toBlob(function (blob) {
+          var file = null; try { file = new File([blob], 'kids-quiz-score.png', { type: 'image/png' }); } catch (e) {}
+          if (file && navigator.canShare && navigator.canShare({ files: [file] })) { navigator.share({ files: [file], text: text }).catch(function () {}); return; }
+          var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'kids-quiz-score.png'; document.body.appendChild(a); a.click(); a.remove();
+        }, 'image/png');
+      };
+      logo.onload = draw; logo.onerror = draw; logo.src = ROOT + 'images/app-logo.png';
+    }
+
     G.over = function (o) {
       if (G.state === 'over') return;
       G.state = 'over'; G.music(false);
@@ -286,8 +325,10 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
           (rec ? '<div class="k3rec">🏆 NEW BEST!</div>' : '<div class="k3best">' + pic('🏆', 22) + ' Best: ' + best + '</div>') +
           (o.lines && o.lines.length ? '<div class="k3lines">' + o.lines.map(function (l) { return '<span>' + esc(l) + '</span>'; }).join('') + '</div>' : '') +
           '<button class="k3go" id="k3again" style="margin-top:10px">' + pic('🔁', 28) + ' Play again</button>' +
-          '<div class="k3row"><button class="k3alt" id="k3lb">' + pic('🏆', 20) + ' Top players</button><button class="k3alt" id="k3home2">🏠 Games</button></div></div>';
+          '<div class="k3row"><button class="k3alt" id="k3lb">' + pic('🏆', 20) + ' Top players</button><button class="k3alt" id="k3home2">🏠 Games</button></div>' +
+          (shareOn() ? '<button class="k3alt" id="k3share" style="width:100%;margin-top:8px">📤 Share my score</button>' : '') + '</div>';
         show('k3over');
+        if ($('k3share')) $('k3share').onclick = function () { shareScore({ title: cfg.title, score: score, stars: stars, rec: rec, heading: o.title || (rec ? 'New record!' : 'Great try!'), lines: o.lines || [] }); };
         $('k3again').onclick = begin;
         $('k3home2').onclick = function () { try { if (window.KQ && KQ.adBreak) KQ.adBreak('quit'); } catch (e) {} location.href = '../index.html'; };
         $('k3lb').onclick = function () { if (window.KQ && KQ.open) KQ.open('single', cfg.id, cfg.title); else location.href = ROOT + 'leaderboard.html?cat=single'; };

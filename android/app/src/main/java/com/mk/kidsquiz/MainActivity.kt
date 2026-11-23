@@ -1,6 +1,13 @@
 package com.mk.kidsquiz
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -119,6 +126,63 @@ class MainActivity : ComponentActivity() {
     // Google ID tokens live ~1 hour; hand the page only a fresh one.
     private val TOKEN_FRESH_MS = 50 * 60 * 1000L
 
+    // ==================================================
+    // APP SETTINGS FROM THE WEB ADMIN CONSOLE (see AppConfig.kt)
+    // ==================================================
+    private var offlineAllowed by mutableStateOf(false)   // play without internet?
+    private var bannerOn by mutableStateOf(true)          // bottom AdMob banner
+    private val notifPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted -> if (granted) Reminders.schedule(this) }
+
+    private fun applyConfig(cfg: JSONObject, fromNetwork: Boolean) {
+        offlineAllowed = AppConfig.offlineAllowed(cfg)
+        bannerOn = AppConfig.bannerOn(cfg)
+        Reminders.schedule(this)
+        if (fromNetwork) sendToPage("window.onAppConfig && window.onAppConfig(" + cfg.toString() + ")")
+        maybeAskNotificationPermission(cfg)
+    }
+
+    // Android 13+: reminders need permission to post notifications. Ask once a
+    // day at most, only when reminders are switched on and someone is signed in.
+    private fun maybeAskNotificationPermission(cfg: JSONObject) {
+        if (Build.VERSION.SDK_INT < 33 || authMode.isEmpty()) return
+        if (!AppConfig.reminder(cfg).enabled) return
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) return
+        val prefs = getSharedPreferences("kq_config", Context.MODE_PRIVATE)
+        val last = prefs.getLong("notifAskedAt", 0L)
+        if (System.currentTimeMillis() - last < 24 * 60 * 60 * 1000L) return
+        prefs.edit().putLong("notifAskedAt", System.currentTimeMillis()).apply()
+        notifPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+    }
+
+    private fun webCacheMode(): Int =
+        if (offlineAllowed && !isNetworkAvailable()) WebSettings.LOAD_CACHE_ELSE_NETWORK else WebSettings.LOAD_DEFAULT
+
+    // ==================================================
+    // SHARE A PICTURE (score card made by the page) -> Android share sheet
+    // ==================================================
+    private fun shareImage(dataUrl: String?, text: String?) {
+        if (dataUrl.isNullOrBlank()) return
+        try {
+            val bytes = android.util.Base64.decode(dataUrl.substringAfter("base64,", dataUrl), android.util.Base64.DEFAULT)
+            val dir = java.io.File(cacheDir, "share").apply { mkdirs() }
+            val file = java.io.File(dir, "kids-quiz-score.png").apply { writeBytes(bytes) }
+            val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", file)
+            val send = Intent(Intent.ACTION_SEND).apply {
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                if (!text.isNullOrBlank()) putExtra(Intent.EXTRA_TEXT, text)
+                clipData = ClipData.newRawUri("score", uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(send, "Share your score"))
+        } catch (e: Exception) {
+            Log.w("KidsQuizShare", "shareImage failed", e)
+            Toast.makeText(this, "Couldn't share right now", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     // Text-to-speech for read-aloud in quizzes/games (WebView has no speechSynthesis).
     private var tts: TextToSpeech? = null
     private var ttsReady = false
@@ -204,6 +268,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Debug builds only: allow Chrome DevTools to inspect the WebView (never in release).
+        if (0 != (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE)) {
+            WebView.setWebContentsDebuggingEnabled(true)
+        }
+
         MobileAds.initialize(this)
         val requestConfiguration = RequestConfiguration.Builder()
             .setTagForChildDirectedTreatment(
@@ -227,6 +296,12 @@ class MainActivity : ComponentActivity() {
 
         // Who was signed in last time (Google / guest), or "" -> login screen.
         authMode = authPrefs.getString("mode", "") ?: ""
+
+        // Admin-console settings: last saved copy now, fresh copy from Firebase next.
+        applyConfig(AppConfig.load(this), fromNetwork = false)
+        lifecycleScope.launch {
+            AppConfig.refresh(this@MainActivity)?.let { applyConfig(it, fromNetwork = true) }
+        }
 
         // ==================================================
         // BACK BUTTON -> WEBVIEW HISTORY OR QUIT CONFIRMATION
@@ -261,9 +336,11 @@ class MainActivity : ComponentActivity() {
                     val callback = object : ConnectivityManager.NetworkCallback() {
                         override fun onAvailable(network: Network) {
                             isConnected = true
+                            runOnUiThread { if (::webView.isInitialized) webView.settings.cacheMode = webCacheMode() }
                         }
                         override fun onLost(network: Network) {
                             isConnected = isNetworkAvailable()
+                            runOnUiThread { if (::webView.isInitialized) webView.settings.cacheMode = webCacheMode() }
                         }
                     }
                     cm.registerNetworkCallback(NetworkRequest.Builder().build(), callback)
@@ -286,17 +363,8 @@ class MainActivity : ComponentActivity() {
                                 Modifier.weight(1f)
                         ) {
 
-                            if (isConnected && authMode.isEmpty()) {
-                                // Not signed in yet: native login screen first.
-                                LoginScreen()
-                            } else if (isConnected) {
-                                key(reloadTrigger) {
-                                    WebViewScreen(
-                                        modifier =
-                                            Modifier.fillMaxSize()
-                                    )
-                                }
-                            } else {
+                            if (!isConnected && !offlineAllowed) {
+                                // Admin setting "offline play" is off: internet required.
                                 NoInternetScreen(
                                     onRetry = {
                                         if (isNetworkAvailable()) {
@@ -305,11 +373,22 @@ class MainActivity : ComponentActivity() {
                                         }
                                     }
                                 )
+                            } else if (authMode.isEmpty()) {
+                                // Not signed in yet: native login screen first.
+                                LoginScreen()
+                            } else {
+                                key(reloadTrigger) {
+                                    WebViewScreen(
+                                        modifier =
+                                            Modifier.fillMaxSize()
+                                    )
+                                }
                             }
                         }
 
                         // FIXED BOTTOM BANNER (not on the login screen)
-                        if (authMode.isNotEmpty()) BannerAd()
+                        // (switch on/off in Admin console -> App settings)
+                        if (authMode.isNotEmpty() && bannerOn) BannerAd()
                     }
                 }
             }
@@ -954,8 +1033,9 @@ class MainActivity : ComponentActivity() {
                         mediaPlaybackRequiresUserGesture =
                             false
 
+                        // Offline play (admin setting): load saved pages when there's no internet
                         cacheMode =
-                            WebSettings.LOAD_DEFAULT
+                            webCacheMode()
                     }
 
                     // ======================
@@ -1115,6 +1195,23 @@ class MainActivity : ComponentActivity() {
         // Usage in JS:  JSON.parse(Android.getAuthSession())
         @JavascriptInterface
         fun getAuthSession(): String = authSessionJson()
+
+        // Settings from the admin console (last saved copy; works offline).
+        // Usage in JS:  JSON.parse(Android.getAppConfig())
+        @JavascriptInterface
+        fun getAppConfig(): String = AppConfig.raw(this@MainActivity)
+
+        // Usage in JS:  Android.isOnline()
+        @JavascriptInterface
+        fun isOnline(): Boolean = isNetworkAvailable()
+
+        // Share a picture made by the page (data:image/png;base64,...) with
+        // the Android share sheet (WhatsApp, Instagram, ...).
+        // Usage in JS:  Android.shareImage(canvas.toDataURL('image/png'), 'text')
+        @JavascriptInterface
+        fun shareImage(dataUrl: String?, text: String?) {
+            runOnUiThread { this@MainActivity.shareImage(dataUrl, text) }
+        }
 
         // Get a fresh Google ID token for the signed-in account; it comes
         // back through window.onGoogleIdToken(token, true).

@@ -8,6 +8,8 @@
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="replace" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Put the daily/weekly reminder back after a reboot -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <queries>
         <!-- So we can detect/launch the Instagram app -->
         <package android:name="com.instagram.android" />
@@ -52,6 +54,30 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6850862418034067~3871390457"/>
+
+        <!-- Reminder notification (time/frequency set in the web admin console) -->
+        <receiver
+            android:name=".ReminderReceiver"
+            android:exported="false" />
+        <receiver
+            android:name=".ReminderBootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Share-score pictures (Android.shareImage) are handed to other apps through this -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <service
             android:name=".MyFirebaseMessagingService"

@@ -20,6 +20,7 @@ Firebase console → Realtime Database → Rules: add these to the existing rule
 
 ```
 "admin":        { ".read":  "<ADMIN>", ".write": "<ADMIN>" },
+"config":       { ".read":  true,      ".write": "<ADMIN>" },
 "attempts":     { ".write": "<ADMIN>", ...existing children... },
 "sessions":     { ".write": "<ADMIN>", ...existing children... },
 "leaderboards": { ".write": "<ADMIN>", ...existing children... }
@@ -33,3 +34,11 @@ auth != null && auth.token.email == 'ADMIN_EMAIL' && auth.token.email_verified =
 
 Reading `/admin` is how the page checks access, so without the `"admin"` rule
 nobody (not even the admin) gets in.
+
+## App settings (📱 tab) → `config/app`
+
+Read by the Android app on every launch (saved on the phone for offline) and by
+the web pages: reminder (off / daily / weekly, time, day, text), offline play,
+"Share my score" button, floating 🏆 in the app, banner ad, full-screen ad
+frequency and quit ads. Needs the `"config"` rule above (public read so the app
+can fetch it without signing in; only the admin can change it).

@@ -739,44 +739,50 @@ class MainActivity : ComponentActivity() {
     }
 
     // ==================================================
-    // OPEN INSTAGRAM (APP-FIRST, NO CHOOSER POPUP)  (ADDED)
-    // Targets the Instagram app explicitly via setPackage(), which
-    // skips the system disambiguation dialog entirely. If Instagram
-    // isn't installed, startActivity() throws ActivityNotFoundException
-    // and we silently fall back to opening the same URL in the browser
-    // — no popup either way, just one destination or the other.
+    // OPEN INSTAGRAM (APP FIRST)
+    // 1. Instagram app with the normal profile URL (what current Instagram
+    //    versions handle), targeted with setPackage -> no "choose an app" popup
+    // 2. Instagram's own scheme: instagram://user?username=<name>
+    // 3. Not installed: the profile in the browser (not the Play Store page
+    //    for Instagram — people want to see our profile, not install an app)
     // ==================================================
     private fun openInstagramLink(url: String) {
-        val username = Uri.parse(url).pathSegments.firstOrNull()
+        val username = Uri.parse(url).pathSegments
+            .firstOrNull { it.isNotBlank() && it != "_u" }
+            ?.trim()
+        val profileUrl = if (!username.isNullOrBlank())
+            "https://www.instagram.com/$username/" else url
 
+        val attempts = mutableListOf(
+            Intent(Intent.ACTION_VIEW, Uri.parse(profileUrl)).setPackage("com.instagram.android")
+        )
         if (!username.isNullOrBlank()) {
-            val appIntent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("http://instagram.com/_u/$username")
-            ).apply {
-                setPackage("com.instagram.android")
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-
+            attempts.add(
+                Intent(Intent.ACTION_VIEW, Uri.parse("instagram://user?username=$username"))
+                    .setPackage("com.instagram.android")
+            )
+        }
+        for (intent in attempts) {
             try {
-                startActivity(appIntent)
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                 return
             } catch (e: ActivityNotFoundException) {
-                // Instagram app not installed — send to its Play Store listing
-                openInstagramOnPlayStore()
-                return
+                // try the next way
+            } catch (e: SecurityException) {
+                // try the next way
             }
         }
 
-        // Could not parse a username — just try the profile URL directly.
+        // Instagram not installed (or can't take the link): profile in the browser.
         try {
             startActivity(
-                Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                Intent(Intent.ACTION_VIEW, Uri.parse(profileUrl)).apply {
+                    addCategory(Intent.CATEGORY_BROWSABLE)
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             )
         } catch (e: ActivityNotFoundException) {
-            // No browser available either — nothing we can do
+            openInstagramOnPlayStore()
         }
     }
 

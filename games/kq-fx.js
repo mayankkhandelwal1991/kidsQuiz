@@ -236,9 +236,10 @@
   function lose() { play("lose"); }
   function quizComplete(score, outOf) {
     var ratio = outOf ? (score / outOf) : (score >= 20 ? 1 : score / 30);
-    if (score <= 0) { play("lose"); return; }
-    if (ratio >= 0.6 || score >= 20) { play("win"); celebrate({ power: 1 }); }
-    else { play("levelup"); celebrate({ power: 0.5 }); }
+    var kind = score <= 0 ? "lose" : (ratio >= 0.6 || score >= 20) ? "win" : "over";
+    if (kind === "lose") play("lose"); else if (kind === "win") play("win"); else play("levelup");
+    if (window.KQEnd) { try { KQEnd.show(kind); } catch (e) {} }
+    else if (kind === "win") celebrate({ power: 1 }); else if (kind === "over") celebrate({ power: 0.5 });
   }
 
   /* --------------------------------------------------- element animations */

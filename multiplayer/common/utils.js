@@ -268,12 +268,13 @@ export class SoundManager {
   playTick() { this._play('tick', () => this._tone({ freq: 900, duration: 0.05, type: 'square', gain: 0.06 })); }
   playCountdown() { this._play('countdown', () => this._tone({ freq: 660, duration: 0.1, type: 'square', gain: 0.12 })); }
   playWin() {
+    try { if (window.KQEnd) KQEnd.show('win'); } catch (e) {}
     this._play('win', () => {
       [523, 659, 784, 1046].forEach((f, i) => this._tone({ freq: f, duration: 0.2, type: 'triangle', gain: 0.18, delay: i * 0.12 }));
     });
   }
-  playLose() { this._play('lose', () => this._tone({ freq: 300, slideTo: 120, duration: 0.4, type: 'sawtooth', gain: 0.16 })); }
-  playDraw() { this._play('draw', () => this._tone({ freq: 300, slideTo: 260, duration: 0.4, type: 'sawtooth', gain: 0.14 })); }
+  playLose() { try { if (window.KQEnd) KQEnd.show('lose'); } catch (e) {} this._play('lose', () => this._tone({ freq: 300, slideTo: 120, duration: 0.4, type: 'sawtooth', gain: 0.16 })); }
+  playDraw() { try { if (window.KQEnd) KQEnd.show('over'); } catch (e) {} this._play('draw', () => this._tone({ freq: 300, slideTo: 260, duration: 0.4, type: 'sawtooth', gain: 0.14 })); }
   playHit() { this._play('hit', () => this._tone({ freq: 180, duration: 0.18, type: 'square', gain: 0.2 })); }
   playSplash() { this._play('splash', () => this._tone({ freq: 700, slideTo: 300, duration: 0.15, type: 'sine', gain: 0.12 })); }
 

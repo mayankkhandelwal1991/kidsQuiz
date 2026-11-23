@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Super Over Cricket</title>
 </head><body>
-<script src="../threed/kq3d.js?v=20261123a"></script>
+<script src="../threed/kq3d.js?v=20261123b"></script>
 <script src="../ads.js"></script>
 <script>
 /* Super Over Cricket — chase the target in 6 balls with 2 wickets.
@@ -51,7 +51,7 @@ function endBall() {
 function finish(won) {
   played++;
   const final = runs * 10 + (won ? 100 + (6 - ballNo) * 20 + (2 - wkts) * 30 : 0);
-  G.over({ score: final, title: won ? team.icon + ' ' + team.name + ' WIN! 🏆' : 'So close! Try again 🏏', lines: ['🏏 ' + runs + '/' + wkts + ' (' + ballNo + ' balls)', '🎯 Target ' + target, log.join(' · ')] });
+  G.over({ score: final, result: won ? 'win' : 'lose', title: won ? team.icon + ' ' + team.name + ' WIN! 🏆' : 'So close! Try again 🏏', lines: ['🏏 ' + runs + '/' + wkts + ' (' + ballNo + ' balls)', '🎯 Target ' + target, log.join(' · ')] });
 }
 G.scene.addEventListener('pointerdown', swing);
 document.addEventListener('keydown', (e) => { if (e.key === ' ' && G.state === 'play') { e.preventDefault(); swing(); } });

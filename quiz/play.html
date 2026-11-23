@@ -287,7 +287,7 @@ function registerQuiz(subject, level, questions) {
 window.KQ_NO_WIDGET = true;
 window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, isMuted: isSoundMuted };
 </script>
-<script src="../games/kq-leaderboard.js?v=20261120l"></script>
+<script src="../games/kq-leaderboard.js?v=20261123b"></script>
 <script src="../web-ads.js?v=20261120i"></script>
 <script>
 (function () {
@@ -759,7 +759,7 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     $app.innerHTML = h;
     const st = document.querySelectorAll('#st span');
     for (let i = 0; i < stars; i++) setTimeout(() => { st[i].classList.add('on'); KidSound.star(i); }, 500 + i * 450);
-    setTimeout(() => { KidSound.finish(); if (stars >= 2) confetti(70); }, 500 + stars * 450);
+    setTimeout(() => { KidSound.finish(); if (window.KQEnd) { try { KQEnd.show(stars >= 3 ? 'win' : stars ? 'over' : 'lose'); } catch (e) {} } else if (stars >= 2) confetti(70); }, 500 + stars * 450);
     if (isPre(P.level)) setTimeout(() => speak(title + ' You got ' + correct + ' out of ' + total + '!', { raw: true, pitch: 1.3 }), 900);
     const base = '#/c/' + P.level + '/' + encodeURIComponent(P.cat);
     const nx = document.getElementById('nextP'); if (nx) nx.onclick = () => go('#/play/' + P.level + '/' + encodeURIComponent(P.cat) + '/' + (P.paper + 1));

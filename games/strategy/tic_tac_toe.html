@@ -16,7 +16,7 @@
 @keyframes ttIn { from { transform: scale(0) rotate(-40deg); } }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261123a"></script>
+<script src="../threed/kq3d.js?v=20261123b"></script>
 <script src="../ads.js"></script>
 <script>
 /* Tic Tac Toe — get 3 in a row. Best of 5 against an animal (Owl never loses!). */
@@ -77,7 +77,7 @@ function end(who, line) {
   G.later(() => {
         if (my >= 3 || cp >= 3 || round >= 5) {
       const won = my > cp, final = Math.round((my * 30 + draws * 10 + (won ? 100 : 0)) * foe.mult);
-      G.over({ score: final, title: won ? 'You beat ' + foe.name + '! 🏆' : my === cp ? 'It’s a tie!' : foe.name + ' won this time', lines: [me + ' ' + my + ' – ' + cp + ' ' + foe.icon, '🤝 ' + draws + ' draws'] });
+      G.over({ score: final, result: won ? 'win' : my === cp ? 'over' : 'lose', title: won ? 'You beat ' + foe.name + '! 🏆' : my === cp ? 'It’s a tie!' : foe.name + ' won this time', lines: [me + ' ' + my + ' – ' + cp + ' ' + foe.icon, '🤝 ' + draws + ' draws'] });
     } else newRound();
   }, 1600);
 }

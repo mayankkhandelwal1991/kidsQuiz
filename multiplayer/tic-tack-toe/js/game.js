@@ -240,6 +240,7 @@ export class Game {
     if (room.status === 'won') {
       try { onMultiplayerGameComplete(); } catch (e) {}
       this.sounds.playWin();
+      try { if (window.KQEnd) KQEnd.show(room.winner === this.network.mySymbol ? 'win' : 'lose'); } catch (e) {}
       // Leaderboard: credit a win only to the player who actually won.
       try {
         if (window.KQ && KQ.addWin && room.winner && room.winner === this.network.mySymbol) {
@@ -249,6 +250,7 @@ export class Game {
     } else if (room.status === 'draw') {
       try { onMultiplayerGameComplete(); } catch (e) {}
       this.sounds.playDraw();
+      try { if (window.KQEnd) KQEnd.show('over'); } catch (e) {}
     }
   }
 

@@ -291,8 +291,10 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
         $('k3again').onclick = begin;
         $('k3home2').onclick = function () { location.href = '../index.html'; };
         $('k3lb').onclick = function () { if (window.KQ && KQ.open) KQ.open('single', cfg.id, cfg.title); else location.href = ROOT + 'leaderboard.html?cat=single'; };
-        if (stars) { sfx(rec ? 'win' : 'success'); try { if (window.KQFX) KQFX.celebrate({ power: rec ? 1 : 0.5 }); } catch (e) {} }
-        else sfx('lose');
+        // win / game over / lose animation (a different one each time); games can force it with o.result
+        var kind = o.result || (rec || stars >= 3 ? 'win' : stars ? 'over' : 'lose');
+        sfx(kind === 'win' ? 'win' : kind === 'over' ? 'success' : 'lose');
+        try { if (window.KQEnd) KQEnd.show(kind); else if (stars && window.KQFX) KQFX.celebrate({ power: rec ? 1 : 0.5 }); } catch (e) {}
       }, o.delay == null ? 900 : o.delay);
     };
 

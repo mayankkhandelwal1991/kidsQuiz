@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Ping Pong</title>
 </head><body>
-<script src="../threed/kq3d.js?v=20261123a"></script>
+<script src="../threed/kq3d.js?v=20261123b"></script>
 <script src="../ads.js"></script>
 <script>
 /* Ping Pong — you (bottom) vs an animal (top). First to 7. */
@@ -47,7 +47,7 @@ function point(mine) {
   else { cs++; G.hudSet('cpu', cs); KQ3D.sfx('wrong'); G.pop(foe.icon + ' scores', C.w / 2, t.y + t.h * 0.7, '#fecaca'); }
   if (ps >= WIN || cs >= WIN) {
     const won = ps >= WIN, final = Math.round((ps * 10 + (won ? 100 + (ps - cs) * 10 : 0)) * foe.mult);
-    G.over({ score: final, title: won ? 'You beat ' + foe.name + '! 🏆' : foe.name + ' wins this time', lines: ['🧒 ' + ps + ' – ' + cs + ' ' + foe.icon] });
+    G.over({ score: final, result: won ? 'win' : 'lose', title: won ? 'You beat ' + foe.name + '! 🏆' : foe.name + ' wins this time', lines: ['🧒 ' + ps + ' – ' + cs + ' ' + foe.icon] });
     return;
   }
   serve(mine ? -1 : 1);

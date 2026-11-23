@@ -9,7 +9,7 @@
 .aa-go:disabled { background: #94a3b8; box-shadow: none; }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261123a"></script>
+<script src="../threed/kq3d.js?v=20261123b"></script>
 <script src="../ads.js"></script>
 <script>
 /* Ant Attack — tower defence. Place animal guards beside the path to stop the
@@ -90,12 +90,12 @@ function frame(now) {
       spawnT -= dt; if (spawnQ.length && spawnT <= 0) { const t = spawnQ.shift(); bugs.push({ t, d: 0, hp: BUGS[t].hp * (1 + wave * 0.12), x: path[0][0], y: path[0][1] }); spawnT = Math.max(0.35, 0.9 - wave * 0.06); }
       if (!spawnQ.length && !bugs.length) {
         waveOn = false; const bonus = 20 + wave * 5; seeds += bonus; score += 50; G.score(score); KQ3D.sfx('levelup'); G.pop('Wave cleared! +🌱' + bonus, null, C.h * 0.3, '#bbf7d0'); hud(); drawShop();
-        if (wave >= WAVES) { score += cookies * 60; G.score(score); G.over({ score, title: 'Cookies saved! 🍪', lines: ['🐜 ' + killed + ' bugs stopped', '🍪 ' + cookies + ' cookies left'] }); }
+        if (wave >= WAVES) { score += cookies * 60; G.score(score); G.over({ score, result: 'win', title: 'Cookies saved! 🍪', lines: ['🐜 ' + killed + ' bugs stopped', '🍪 ' + cookies + ' cookies left'] }); }
       }
     }
     bugs.forEach((b) => {
       b.d += BUGS[b.t].sp * (1 + wave * 0.04) * dt; const p = at(b.d); b.x = p[0]; b.y = p[1];
-      if (b.d >= path.len && !b.dead) { b.dead = true; cookies--; KQ3D.sfx('wrong'); G.flash('#fecaca'); hud(); if (cookies <= 0) G.over({ score, title: 'The bugs got the cookies! 🐜', lines: ['🚩 Wave ' + wave, '🐜 ' + killed + ' bugs stopped'] }); }
+      if (b.d >= path.len && !b.dead) { b.dead = true; cookies--; KQ3D.sfx('wrong'); G.flash('#fecaca'); hud(); if (cookies <= 0) G.over({ score, result: 'lose', title: 'The bugs got the cookies! 🐜', lines: ['🚩 Wave ' + wave, '🐜 ' + killed + ' bugs stopped'] }); }
     });
     guards.forEach((q) => {
       const g = GUARDS[q.k]; q.cd -= dt; if (q.cd > 0) return;

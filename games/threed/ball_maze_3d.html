@@ -8,7 +8,7 @@
 </style>
 </head><body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="kq3d.js?v=20261123a"></script>
+<script src="kq3d.js?v=20261123b"></script>
 <script src="../ads.js"></script>
 <script>
 /* Gravity Maze 3D — tilt the garden maze to roll your pet's bubble home.
@@ -204,7 +204,7 @@ function loop(now) {
       falling -= dt; ball.position.y -= dt * 1.6; ball.scale.setScalar(Math.max(0.2, falling / 0.8));
       if (falling <= 0) {
         lives--; G.hudSet('lives', lives);
-        if (lives <= 0) { done = true; G.over({ score, title: 'Out of lives!', lines: ['🗺️ Level ' + level, '❤️ 0 lives left'] }); }
+        if (lives <= 0) { done = true; G.over({ score, result: 'lose', title: 'Out of lives!', lines: ['🗺️ Level ' + level, '❤️ 0 lives left'] }); }
         else { spawn(); banner('Try again! ❤️ ' + lives); }
       }
     } else {
@@ -233,7 +233,7 @@ function loop(now) {
         try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {}
         const sc = KQ3D.toScreen(board.localToWorld(new THREE.Vector3(goal.x, 0.8, goal.y)), camera, G.scene); G.pop('Home! +' + pts, sc.x, sc.y, '#bbf7d0');
         G.later(() => {
-                    if (level >= LEVELS.length) G.over({ score, title: 'Maze master! 🏆', lines: ['🗺️ All ' + LEVELS.length + ' levels', '❤️ ' + lives + ' lives left'] });
+                    if (level >= LEVELS.length) G.over({ score, result: 'win', title: 'Maze master! 🏆', lines: ['🗺️ All ' + LEVELS.length + ' levels', '❤️ ' + lives + ' lives left'] });
           else { level++; buildLevel(); }
         }, 1300);
       }

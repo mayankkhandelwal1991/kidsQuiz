@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Sling Blast</title>
 </head><body>
-<script src="../threed/kq3d.js?v=20261123a"></script>
+<script src="../threed/kq3d.js?v=20261123b"></script>
 <script src="../ads.js"></script>
 <script>
 /* Sling Blast — a funfair can toss. Drag back & let go to throw. Knock every can
@@ -124,7 +124,7 @@ function check(dt) {
     G.pop('Level clear! ' + (bonus ? '+' + bonus + ' bonus' : ''), null, C.h * 0.35, '#fde047');
     try { if (window.KQFX) KQFX.celebrate({ power: 0.6 }); } catch (e) {}
     if (level >= LAST_LEVEL) {
-      G.later(() => { G.over({ score, title: 'You cleared every shelf! 🏆', lines: ['🎪 All ' + LAST_LEVEL + ' levels done', '⚽ Bonus balls: +' + bonus] }); }, 1600);
+      G.later(() => { G.over({ score, result: 'win', title: 'You cleared every shelf! 🏆', lines: ['🎪 All ' + LAST_LEVEL + ' levels done', '⚽ Bonus balls: +' + bonus] }); }, 1600);
       return;
     }
     G.later(() => { level++; loadLevel(); }, 1600);

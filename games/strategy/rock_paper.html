@@ -20,7 +20,7 @@
 .rp-b img { width: 56px; height: 56px; } .rp-b:active { transform: translateY(4px); box-shadow: 0 2px 0 #fb923c; } .rp-b:disabled { opacity: .5; }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261123a"></script>
+<script src="../threed/kq3d.js?v=20261123b"></script>
 <script src="../ads.js"></script>
 <script>
 /* Rock Paper Scissors — first to 5 wins. Turtle is random, Monkey has favourites,
@@ -78,7 +78,7 @@ function go(mine) {
     G.later(() => {
             if (me >= WIN || cp >= WIN) {
         const won = me > cp, final = Math.round((me * 15 + (won ? 100 : 0)) * foe.mult);
-        G.over({ score: final, title: won ? 'You beat ' + foe.name + '! 🏆' : foe.name + ' won this time', lines: ['🧒 ' + me + ' – ' + cp + ' ' + foe.icon, '🤝 ' + ties + ' ties'] });
+        G.over({ score: final, result: won ? 'win' : 'lose', title: won ? 'You beat ' + foe.name + '! 🏆' : foe.name + ' won this time', lines: ['🧒 ' + me + ' – ' + cp + ' ' + foe.icon, '🤝 ' + ties + ' ties'] });
         return;
       }
       busy = false; call.textContent = 'Pick one! 👇'; box.querySelectorAll('.rp-b').forEach((b) => { b.disabled = false; });

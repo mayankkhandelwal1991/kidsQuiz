@@ -109,6 +109,8 @@
 
   // Load the shared sounds + animations module (sits next to this file).
   if (!window.KQFX) { loadScript(SELF_BASE + "kq-fx.js").catch(function () {}); }
+  // End-of-game animations (win / game over / lose) — on every page, even ones with their own sounds.
+  if (!window.KQEnd) { loadScript(SELF_BASE + "kq-endfx.js").catch(function () {}); }
   function prettify(id) {
     if (GAME_NAMES[id]) return GAME_NAMES[id];
     return String(id || "").replace(/[_-]+/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });

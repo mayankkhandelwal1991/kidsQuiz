@@ -137,7 +137,7 @@
 
     function card(g, i) {
       const c = colorOf(g, i);
-      return '<button class="h-card" data-id="' + esc(g.id) + '" style="animation-delay:' + Math.min(i, 20) * 30 + 'ms">' +
+      return '<button class="h-card" data-id="' + esc(g.id) + '" data-kq-cost="' + (cfg.mode === 'multi' ? 'multi' : 'single') + '/' + esc(g.id) + '" style="animation-delay:' + Math.min(i, 20) * 30 + 'ms">' +
         (g.badge ? '<span class="bdg">' + esc(g.badge) + '</span>' : '') + (g.players ? '<span class="pl">👥 ' + esc(g.players) + '</span>' : '') +
         '<span class="top" style="background:linear-gradient(135deg,' + c[0] + ',' + c[1] + ')"><span class="pic">' + img(g.icon, 60) + '</span></span>' +
         '<span class="nm">' + esc(g.title) + '</span></button>';

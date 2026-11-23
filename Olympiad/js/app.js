@@ -112,7 +112,7 @@ function init() {
           .filter((s) => !Array.isArray(s.classes) || s.classes.includes(state.classId))
           .map(
             (s) =>
-              `<button type="button" class="card selection-card subject-card subject-${s.id}" data-subject="${s.id}" data-name="${s.name}"><strong>${s.name}</strong><span>${s.short || s.name}</span></button>`
+              `<button type="button" class="card selection-card subject-card subject-${s.id}" data-subject="${s.id}" data-kq-cost="olympiad/${s.id}" data-name="${s.name}"><strong>${s.name}</strong><span>${s.short || s.name}</span></button>`
           )
           .join("");
         show("screenSubject");

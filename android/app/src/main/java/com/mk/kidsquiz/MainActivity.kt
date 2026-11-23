@@ -95,6 +95,19 @@ class MainActivity : ComponentActivity() {
     private lateinit var webView: WebView
 
     private var interstitialAd: InterstitialAd? = null
+    @Volatile private var adNetworkStatus: String = "{}"   // JSON, filled when MobileAds has started
+    // Last load result per ad type, for the admin console (Android.getAdLoadStatus).
+    private val adLoadStatus = java.util.concurrent.ConcurrentHashMap<String, String>()
+    private fun noteAd(kind: String, error: LoadAdError?) {
+        val msg = if (error == null) "loaded" else {
+            val src = error.responseInfo?.adapterResponses?.joinToString("; ") { r ->
+                r.adapterClassName.substringAfterLast('.') + "=" + (r.adError?.let { "${it.code} ${it.message}" } ?: "ok")
+            } ?: ""
+            "error ${error.code}: ${error.message}" + (if (src.isNotEmpty()) " [$src]" else "")
+        }
+        adLoadStatus[kind] = System.currentTimeMillis().toString() + "|" + msg
+        Log.d("KidsQuizAds", "$kind: $msg")
+    }
     private var rewardedAd: RewardedAd? = null
     private var rewardedInterstitialAd:
             RewardedInterstitialAd? = null
@@ -376,7 +389,20 @@ class MainActivity : ComponentActivity() {
                 .setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_G)
                 .build()
         )
-        MobileAds.initialize(this)
+        // Start AdMob + every mediation adapter (Chartboost, Unity, Liftoff,
+        // DT Exchange). Their status is kept for the admin console
+        // (Android.getAdNetworks) and written to Logcat (tag KidsQuizAds).
+        MobileAds.initialize(this) { st ->
+            val o = JSONObject()
+            st.adapterStatusMap.forEach { (name, s) ->
+                Log.d("KidsQuizAds", "adapter $name: ${s.initializationState} ${s.latency}ms ${s.description}")
+                o.put(name, JSONObject()
+                    .put("state", s.initializationState.name)
+                    .put("ms", s.latency)
+                    .put("info", s.description ?: ""))
+            }
+            adNetworkStatus = o.toString()
+        }
 
         // Read-aloud voice for the web pages (Android.speak)
         tts = TextToSpeech(this) { status ->
@@ -1235,12 +1261,13 @@ class MainActivity : ComponentActivity() {
                     adListener = object : AdListener() {
                         override fun onAdLoaded() {
                             adShown = true
+                            noteAd("banner", null)
                         }
 
                         override fun onAdFailedToLoad(error: LoadAdError) {
                             // A failed refresh keeps the previous ad on screen;
                             // only collapse when nothing was ever shown.
-                            Log.d("KidsQuizAds", "Banner not filled: ${error.code} ${error.message}")
+                            noteAd("banner", error)
                         }
                     }
 
@@ -1433,6 +1460,32 @@ class MainActivity : ComponentActivity() {
         @JavascriptInterface
         fun isRewardReady(): Boolean = rewardedAd != null || rewardedInterstitialAd != null
 
+        // Ad networks (AdMob mediation adapters) and whether each one started.
+        // Usage in JS:  JSON.parse(Android.getAdNetworks())
+        //   -> { "<adapter class>": { state: "READY" | "NOT_READY", ms, info } }
+        @JavascriptInterface
+        fun getAdNetworks(): String = adNetworkStatus
+
+        // Last load result per ad type: { banner: "<ms>|loaded" | "<ms>|error 3: No fill [..]", ... }
+        // Usage in JS:  JSON.parse(Android.getAdLoadStatus())
+        @JavascriptInterface
+        fun getAdLoadStatus(): String = JSONObject(adLoadStatus as Map<*, *>).toString()
+
+        // Google's Ad Inspector: every ad unit, its mediation networks and test
+        // requests. Opens only on an AdMob test device (AdMob -> Settings ->
+        // Test devices). Usage in JS:  Android.openAdInspector()
+        @JavascriptInterface
+        fun openAdInspector() {
+            runOnUiThread {
+                MobileAds.openAdInspector(this@MainActivity) { err ->
+                    if (err != null) {
+                        Log.d("KidsQuizAds", "Ad Inspector: ${err.code} ${err.message}")
+                        Toast.makeText(this@MainActivity, "Ad Inspector: " + err.message, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+
         // Native Play rating sheet (In-App Review).
         // Usage in JS:  Android.requestReview();
         @JavascriptInterface
@@ -1484,6 +1537,7 @@ class MainActivity : ComponentActivity() {
                     ad: InterstitialAd
                 ) {
                     interstitialAd = ad
+                    noteAd("interstitial", null)
                 }
 
                 override fun
@@ -1491,6 +1545,7 @@ class MainActivity : ComponentActivity() {
                     error: LoadAdError
                 ) {
                     interstitialAd = null
+                    noteAd("interstitial", error)
                 }
             }
         )
@@ -1544,6 +1599,7 @@ class MainActivity : ComponentActivity() {
                     ad: RewardedAd
                 ) {
                     rewardedAd = ad
+                    noteAd("rewarded", null)
                 }
 
                 override fun
@@ -1551,6 +1607,7 @@ class MainActivity : ComponentActivity() {
                     error: LoadAdError
                 ) {
                     rewardedAd = null
+                    noteAd("rewarded", error)
                 }
             }
         )
@@ -1650,6 +1707,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     rewardedInterstitialAd =
                         ad
+                    noteAd("rewarded_interstitial", null)
                 }
 
                 override fun
@@ -1658,6 +1716,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     rewardedInterstitialAd =
                         null
+                    noteAd("rewarded_interstitial", error)
                 }
             }
         )

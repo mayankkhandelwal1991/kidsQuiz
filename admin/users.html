@@ -455,6 +455,58 @@
     update: { mandatory: false, minVersionCode: 0, message: 'A new version of Kids Quiz is ready with new games and fixes. Please update to keep playing.' }
   };
   const merge = (a, b) => { const o = JSON.parse(JSON.stringify(a)); Object.keys(b || {}).forEach((k) => { o[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k])) ? Object.assign({}, o[k] || {}, b[k]) : b[k]; }); return o; };
+  /* ---------- ad networks (AdMob mediation) ----------
+     The adapters are built into the Android app (android/app/build.gradle.kts).
+     Each one is switched on/off and given its IDs in AdMob -> Mediation, so no
+     app release is needed for that. Live status comes from the phone this page
+     is open on (Android.getAdNetworks). */
+  const AD_NETS = [
+    { key: 'chartboost', name: 'Chartboost', ids: 'App ID + App Signature', dash: 'https://platform.chartboost.com/' },
+    { key: 'unity', name: 'Unity Ads', ids: 'Game ID + Placement ID', dash: 'https://cloud.unity.com/' },
+    { key: 'vungle', name: 'Liftoff Monetize (Vungle)', ids: 'App ID + Placement Reference ID', dash: 'https://app.liftoff.io/' },
+    { key: 'fyber', name: 'DT Exchange (Digital Turbine)', ids: 'App ID + Spot ID', dash: 'https://console.fyber.com/' }
+  ];
+  function adNetStatus() {
+    try { if (window.Android && Android.getAdNetworks) return JSON.parse(Android.getAdNetworks() || '{}'); } catch (e) {}
+    return null;   // not inside the app
+  }
+  function adNetworksHtml() {
+    const st = adNetStatus();
+    const find = (k) => { if (!st) return null; const n = Object.keys(st).find((x) => x.toLowerCase().indexOf(k) >= 0); return n ? st[n] : undefined; };
+    const badge = (x) => x === null ? '<span class="muted">open in the app</span>' : x === undefined ? '<span class="err">not in this app version</span>' :
+      x.state === 'READY' ? '<b style="color:#16a34a">✅ ready</b> <span class="muted">' + esc(x.ms) + ' ms</span>' : '<b style="color:#d97706">⏳ ' + esc(x.state) + '</b> <span class="muted">' + esc(x.info || '') + '</span>';
+    return '<div class="tool"><h3>🌐 Ad networks (AdMob mediation)</h3>' +
+      '<p>Built into the app (Families-certified for kids apps). <b>Switch a network on/off and enter its IDs in AdMob → Mediation</b> — no app update needed.</p>' +
+      '<table><thead><tr><th>Network</th><th class="hide-sm">IDs to enter in AdMob</th><th>On this phone</th></tr></thead><tbody>' +
+      AD_NETS.map((n) => '<tr><td><a href="' + n.dash + '" target="_blank" rel="noopener">' + esc(n.name) + '</a></td><td class="hide-sm muted">' + esc(n.ids) + '</td><td>' + badge(find(n.key)) + '</td></tr>').join('') +
+      '</tbody></table>' + adLoadHtml() +
+      '<div class="actions" style="justify-content:flex-start;margin-top:10px"><a href="https://admob.google.com/v2/mediation/groups" target="_blank" rel="noopener"><button type="button">⚙️ AdMob mediation</button></a>' +
+      '<button type="button" id="adInspector"' + (st === null ? ' disabled title="Open the admin console inside the Android app"' : '') + '>🔍 Ad Inspector</button>' +
+      '<button type="button" id="adNetRefresh"' + (st === null ? ' disabled' : '') + '>↻ Refresh</button></div>' +
+      '<p class="muted" style="font-size:13px;margin:8px 0 0">Ad Inspector opens only on an AdMob test device (AdMob → Settings → Test devices). In each network\'s own dashboard, mark the app as child-directed (COPPA). "Ready" means the network started on this phone; it serves ads only once its AdMob mediation group is on.</p></div>';
+  }
+  // Why ads don't show: the last load result of each ad type on this phone.
+  const AD_ERR = { 0: 'AdMob internal error — often the account/app is still under review or ad serving is limited (check AdMob → Policy center).',
+    1: 'Invalid request — wrong ad unit ID or the app is not set up in AdMob.', 2: 'Network error — no internet on the phone.',
+    3: 'No fill — AdMob had no ad. Normal for new apps/ad units (can take 1–2 days), and kids-safe (child-directed, G-rated) ads fill less often.',
+    8: 'App ID mismatch — the AdMob app ID in the app does not match the ad unit.', 9: 'Mediation: no network returned an ad.' };
+  function adLoadHtml() {
+    let st = null; try { if (window.Android && Android.getAdLoadStatus) st = JSON.parse(Android.getAdLoadStatus() || '{}'); } catch (e) {}
+    if (!st) return '';
+    const rows = [['banner', 'Bottom banner'], ['interstitial', 'Full-screen'], ['rewarded', 'Rewarded video'], ['rewarded_interstitial', 'Rewarded full-screen']].map(([k, l]) => {
+      const v = st[k]; if (!v) return '<tr><td>' + l + '</td><td class="muted">not requested yet</td></tr>';
+      const i = v.indexOf('|'), t = +v.slice(0, i), msg = v.slice(i + 1), m = /^error (\d+)/.exec(msg);
+      return '<tr><td>' + l + '</td><td>' + (m ? '<b class="err">❌ ' + esc(msg) + '</b>' + (AD_ERR[m[1]] ? '<br><span class="muted" style="font-size:13px">' + esc(AD_ERR[m[1]]) + '</span>' : '') : '<b style="color:#16a34a">✅ ad loaded</b>') +
+        ' <span class="muted" style="font-size:12px">' + esc(fmtDate(t)) + '</span></td></tr>';
+    }).join('');
+    return '<h4 style="margin:14px 0 6px">Ads on this phone (last try)</h4><table><tbody>' + rows + '</tbody></table>';
+  }
+  function bindAdNetworks() {
+    const ins = document.getElementById('adInspector'), ref = document.getElementById('adNetRefresh');
+    if (ins) ins.onclick = () => { try { Android.openAdInspector(); } catch (e) { toast('Ad Inspector needs the Android app'); } };
+    if (ref) ref.onclick = () => renderAppSettings();
+  }
+
   const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   function renderAppSettings() {
     $app.innerHTML = tabsHtml() + '<div class="card center"><p class="muted">Loading app settings…</p></div>'; bindTabs();
@@ -480,7 +532,7 @@
       h += '<div class="tool"><h3>🔄 App update</h3><p>Make installed apps update before they can be used.</p>' +
         chk('upOn', up.mandatory, 'Update is mandatory', 'Off: nobody sees an update popup. On: phones with an older version get Google Play\'s full-screen update screen (or, if Play can\'t do it, an “Update needed” box that only opens the Play Store) and can\'t play until they update.') +
         '<div class="row" style="margin:4px 0 0 28px">Minimum version code ' + num('upMin', up.minVersionCode, 0) +
-        '<span class="muted" style="font-size:13px">the Play Console “version code” (1.0.12 = 14). 0 = any newer version on Google Play.</span></div>' +
+        '<span class="muted" style="font-size:13px">the Play Console “version code” (1.0.13 = 15). 0 = any newer version on Google Play.</span></div>' +
         '<div class="row" style="margin-top:8px">Message ' + txt('upMsg', up.message, CFG_DEFAULT.update.message) + '</div>' +
         '<p class="muted" style="font-size:13px;margin:8px 0 0">Turn it on only after the new version is live on Google Play, so the update is there for them to install.</p></div>';
       const rt = c.rating;
@@ -494,8 +546,9 @@
         '<div class="row" style="margin:4px 0 8px 28px">after every ' + num('adN', a.everyN, 1) + ' finished games/quizzes, at most once every ' + num('adGap', a.minGapSec, 0) + ' seconds</div>' +
         chk('adQuit', a.quit, 'Full-screen ad when leaving a game / quiz early') +
         '<div class="row" style="margin:4px 0 0 28px">at most once every ' + num('adQGap', a.quitGapSec, 0) + ' seconds</div></div>';
+      h += adNetworksHtml();
       h += '<div class="actions" style="justify-content:flex-start"><button class="primary" id="saveCfg">💾 Save settings</button><button id="resetCfg">Reset to defaults</button><span id="cfgMsg" class="muted"></span></div>';
-      $app.innerHTML = h; bindTabs();
+      $app.innerHTML = h; bindTabs(); bindAdNetworks();
       const dayWrap = document.getElementById('rDayWrap'), freq = document.getElementById('rFreq');
       const syncDay = () => { dayWrap.style.display = freq.value === 'weekly' ? '' : 'none'; };
       freq.onchange = syncDay; syncDay();
@@ -525,7 +578,7 @@
   const QUIZ_CATS = ['animals', 'brainteasers', 'capitals', 'computers', 'english', 'geography', 'gk', 'hindi', 'history', 'humanbody', 'inventions', 'plants', 'riddles', 'science', 'space', 'sports'];
   const MULTI_GAMES = ['archery-duel', 'basketball-shootout', 'battleship', 'blaster-arena', 'bubble-shooter', 'connect-four', 'doodle-guess', 'dots-and-boxes', 'ludo-royale', 'math-blitz', 'memory-match', 'pong-duel', 'reaction-duel', 'red-light-green-light', 'rock-paper-scissors', 'snake-duel', 'space-blaster', 'tic-tack-toe', 'trivia-battle', 'trivia-party', 'typing-race', 'whack-a-mole', 'word-duel', 'wordle-duel'];
   const OLY_SUBJ = ['mathematics', 'science', 'english', 'computer', 'gk', 'socialstudies', 'reasoning', 'creativearts'];
-  const COINS_DEF = { enabled: false, signupBonus: 100, earn: { quiz: 10, single: 10, multi: 10, olympiad: 20 }, cost: { quiz: 5, single: 5, multi: 5, olympiad: 10 }, items: {} };
+  const COINS_DEF = { enabled: false, requireGames: null, requireQuiz: null, signupBonus: 100, earn: { quiz: 10, single: 10, multi: 10, olympiad: 20 }, cost: { quiz: 5, single: 5, multi: 5, olympiad: 10 }, items: {} };
   const SEC_LBL = { quiz: '🎯 Quiz', single: '🎮 Games', multi: '👥 Multiplayer', olympiad: '🏅 Olympiad' };
   let GAME_LIST = null;
   const inpStyle = 'padding:7px 9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit';
@@ -540,7 +593,12 @@
       const secInp = (grp, sec, v) => '<input type="number" min="0" data-' + grp + '="' + sec + '" value="' + esc(v) + '" style="width:80px;' + inpStyle + '">';
       let h = tabsHtml() + '<p class="muted" style="margin:0 0 12px">' + (saved && saved.updatedAt ? 'Last saved ' + esc(fmtDate(saved.updatedAt)) + '.' : 'Not saved yet — defaults shown.') +
         ' Kids earn coins by finishing quizzes and games and spend them to start one. With too few coins they can watch a video to play (if no video is available they still play).</p>';
-      h += '<div class="tool"><h3>🪙 Coins</h3><label style="display:flex;gap:10px;align-items:flex-start;margin:4px 0 10px"><input type="checkbox" id="cOn"' + (c.enabled ? ' checked' : '') + ' style="margin-top:4px"><span><b>Use coins</b><br><span class="muted" style="font-size:13px">Off: no coins anywhere, everything is free to play.</span></span></label>' +
+      const onG = c.requireGames == null ? c.enabled === true : c.requireGames === true, onQ = c.requireQuiz == null ? c.enabled === true : c.requireQuiz === true;
+      const sw = (id, on, t, d) => '<label style="display:flex;gap:10px;align-items:flex-start;margin:4px 0 10px"><input type="checkbox" id="' + id + '"' + (on ? ' checked' : '') + ' style="margin-top:4px"><span><b>' + t + '</b><br><span class="muted" style="font-size:13px">' + d + '</span></span></label>';
+      h += '<div class="tool"><h3>🪙 Coins</h3>' +
+        sw('cGames', onG, '🎮 Coins needed for games', 'Single-player and multiplayer games. Off: games are free.') +
+        sw('cQuiz', onQ, '🎯 Coins needed for quizzes', 'Quizzes, picture quizzes and Olympiad papers. Off: quizzes are free.') +
+        '<p class="muted" style="font-size:13px;margin:0 0 10px">Both off: no coins anywhere. Achievements and streaks are always tracked.</p>' +
         '<div class="row">🎁 New players start with <input type="number" min="0" id="cBonus" value="' + esc(c.signupBonus) + '" style="width:90px;' + inpStyle + '"> coins</div></div>';
       h += '<div class="tool"><h3>Defaults per section</h3><table><thead><tr><th>Section</th><th class="num">Coins to play</th><th class="num">Coins for finishing</th></tr></thead><tbody>' +
         ['quiz', 'single', 'multi', 'olympiad'].map((k) => '<tr><td>' + SEC_LBL[k] + '</td><td class="num">' + secInp('cost', k, c.cost[k]) + '</td><td class="num">' + secInp('earn', k, c.earn[k]) + '</td></tr>').join('') +
@@ -559,7 +617,8 @@
       $app.querySelectorAll('[data-its]').forEach((b) => b.onclick = () => { itSec = b.dataset.its; $app.querySelectorAll('[data-its]').forEach((x) => x.classList.toggle('on', x === b)); filt(); });
       document.getElementById('saveCoinsCfg').onclick = () => {
         const num = (el, d) => { const v = Math.round(+el.value); return isFinite(v) && el.value !== '' ? Math.max(0, v) : d; };
-        const out = { enabled: document.getElementById('cOn').checked, signupBonus: num(document.getElementById('cBonus'), 100), cost: {}, earn: {}, items: {}, updatedAt: Date.now() };
+        const rg = document.getElementById('cGames').checked, rq = document.getElementById('cQuiz').checked;
+        const out = { enabled: rg || rq, requireGames: rg, requireQuiz: rq, signupBonus: num(document.getElementById('cBonus'), 100), cost: {}, earn: {}, items: {}, updatedAt: Date.now() };
         $app.querySelectorAll('[data-cost]').forEach((el) => { out.cost[el.dataset.cost] = num(el, COINS_DEF.cost[el.dataset.cost]); });
         $app.querySelectorAll('[data-earn]').forEach((el) => { out.earn[el.dataset.earn] = num(el, COINS_DEF.earn[el.dataset.earn]); });
         $app.querySelectorAll('[data-item]').forEach((el) => { if (el.value !== '') out.items[el.dataset.item] = num(el, 0); });
@@ -701,14 +760,27 @@
     h += '<h4>Visits (' + p.sessions.length + ')</h4>' + (p.sessions.length ? '<div class="list">' + p.sessions.slice(0, 30).map((s) =>
       li(esc(fmtDate(s.start)), fmtDur(s.dur) + ' · ' + s.pages + ' page' + (s.pages === 1 ? '' : 's'))).join('') + '</div>' : '<p class="muted">None</p>');
     h += '<h4>Coins</h4><div class="row" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">🪙 <b>' + (p.coins == null ? 'no wallet yet' : fmtNum(p.coins)) + '</b>' +
-      (p.coins == null ? '' : ' · ' + p.badges + ' badges') + ' <input type="number" id="setCoins" min="0" placeholder="new amount" style="width:120px;padding:7px 9px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit"><button id="saveCoins">Set coins</button></div>';
+      (p.coins == null ? '' : ' · ' + p.badges + ' badges') + '</div>' +
+      '<div class="row" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px"><input type="number" id="addCoins" placeholder="+50 or -20" style="width:110px;' + inpStyle + '">' +
+      '<input id="addWhy" maxlength="40" placeholder="Reason (kid sees it)" style="flex:1;min-width:150px;' + inpStyle + '"><button id="saveCoins">Add / remove coins</button></div>';
+    const wal = (RAW.wal || {})[p.key], log = !wal || !wal.log ? [] : (Array.isArray(wal.log) ? wal.log : Object.keys(wal.log).sort((a, b) => a - b).map((k) => wal.log[k])).filter(Boolean);
+    h += '<details style="margin-top:8px"' + (log.length ? '' : ' disabled') + '><summary style="cursor:pointer"><b>📜 Coin history</b> <span class="muted">(' + log.length + ' latest)</span></summary>' +
+      (log.length ? '<div style="max-height:240px;overflow:auto;margin-top:6px"><table><tbody>' + log.slice().reverse().map((e) =>
+        '<tr><td class="muted" style="white-space:nowrap">' + esc(fmtDate(e.t)) + '</td><td>' + esc(e.n || '') + '</td><td class="num" style="color:' + (e.d > 0 ? '#16a34a' : '#dc2626') + ';font-weight:700">' + (e.d > 0 ? '+' : '') + esc(e.d) + '</td></tr>').join('') +
+        '</tbody></table></div>' : '<p class="muted">No coin changes recorded yet (history starts with this update).</p>') + '</details>';
     h += '<div class="actions"><button id="cl">Close</button><button class="danger" id="del">🗑 Delete this player\'s data</button></div>';
     $modal.innerHTML = h; $ov.classList.add('on');
     document.getElementById('saveCoins').onclick = () => {
-      const inp = document.getElementById('setCoins'); if (inp.value === '') return;
-      const v = Math.max(0, Math.round(+inp.value)); if (!isFinite(v)) return;
-      db.ref('wallets/' + p.key).transaction((cur) => Object.assign(cur || { earned: 0, spent: 0, ach: {}, created: Date.now() }, { coins: v, updatedAt: Date.now() }))
-        .then(() => { toast('Coins set to ' + v + ' for ' + p.name); closeModal(); load(); }, (e) => toast(/permission/i.test(e.message || '') ? 'Permission denied — add the "wallets" rule (README-admin.md).' : e.message));
+      const d = Math.round(+document.getElementById('addCoins').value); if (!d || !isFinite(d)) { toast('Enter coins to add (+) or remove (−)'); return; }
+      const why = document.getElementById('addWhy').value.trim() || (d > 0 ? 'Gift from Kids Quiz' : 'Coins removed');
+      let applied = 0;
+      db.ref('wallets/' + p.key).transaction((cur) => {
+        const w = cur || { coins: 0, earned: 0, spent: 0, ach: {}, created: Date.now() }, before = Math.max(0, +w.coins || 0);
+        w.coins = Math.max(0, before + d); applied = w.coins - before;
+        let lg = !w.log ? [] : (Array.isArray(w.log) ? w.log : Object.keys(w.log).sort((a, b) => a - b).map((k) => w.log[k])).filter(Boolean);
+        if (applied) lg.push({ t: Date.now(), d: applied, n: (applied > 0 ? '🎁 ' : '') + why.slice(0, 55) });
+        w.log = lg.slice(-40); w.updatedAt = Date.now(); return w;
+      }).then(() => { toast((applied >= 0 ? '+' : '') + applied + ' coins for ' + p.name); closeModal(); load(); }, (e) => toast(/permission/i.test(e.message || '') ? 'Permission denied — add the "wallets" rule (README-admin.md).' : e.message));
     };
     document.getElementById('cl').onclick = closeModal;
     document.getElementById('del').onclick = () => confirmDelete([p]);

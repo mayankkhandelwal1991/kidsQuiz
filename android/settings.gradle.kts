@@ -16,6 +16,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // Chartboost SDK (AdMob mediation) is only published here
+        maven { url = uri("https://cboost.jfrog.io/artifactory/chartboost-ads/") }
     }
 }
 

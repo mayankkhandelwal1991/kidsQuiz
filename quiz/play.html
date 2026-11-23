@@ -292,7 +292,7 @@ function registerQuiz(subject, level, questions) {
 window.KQ_NO_WIDGET = true;
 window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, isMuted: isSoundMuted };
 </script>
-<script src="../games/kq-leaderboard.js?v=20261123h"></script>
+<script src="../games/kq-leaderboard.js?v=20261123j"></script>
 <script src="../web-ads.js?v=20261123a"></script>
 <script>
 (function () {
@@ -484,7 +484,7 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     cats.forEach((c, i) => {
       const col = c.c || POOL_COLORS[i % POOL_COLORS.length];
       const done = Object.keys(b).filter((k) => k.indexOf(level + '|' + c.id + '|') === 0).length;
-      h += '<button class="kcard" data-cat="' + esc(c.id) + '" style="animation-delay:' + i * 40 + 'ms">' +
+      h += '<button class="kcard" data-cat="' + esc(c.id) + '" data-kq-cost="quiz/' + esc(c.id) + '" style="animation-delay:' + i * 40 + 'ms">' +
         (done ? '<span class="prog">⭐ ' + done + '</span>' : '') +
         '<span class="ic" style="background:linear-gradient(135deg,' + col[0] + ',' + col[1] + ')">' + img(c.icon, 46) + '</span>' +
         '<span class="t">' + esc(c.title) + '</span>' + (c.blurb ? '<span class="s">' + esc(c.blurb) + '</span>' : '') + '</button>';

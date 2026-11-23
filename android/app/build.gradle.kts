@@ -15,8 +15,8 @@ android {
         applicationId = "com.mk.kidsquiz"
         minSdk = 24
         targetSdk = 36
-        versionCode = 14
-        versionName = "1.0.12"
+        versionCode = 15
+        versionName = "1.0.13"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -56,7 +56,18 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    implementation("com.google.android.gms:play-services-ads:24.3.0")
+    implementation("com.google.android.gms:play-services-ads:25.5.0")
+
+    // AdMob mediation adapters. Only ad networks on Google Play's Families
+    // Self-Certified Ads SDK list (this is a kids app). Each network is switched
+    // on/off and given its IDs in AdMob -> Mediation, not here: an adapter does
+    // nothing until a mediation group uses it. Check each new version in the
+    // Play SDK Index before updating.
+    implementation("com.google.ads.mediation:chartboost:9.14.1.0")   // Chartboost
+    implementation("com.google.ads.mediation:unity:4.21.0.0")        // Unity Ads
+    implementation("com.unity3d.ads:unity-ads:4.21.0")               //   (adapter doesn't include the SDK)
+    implementation("com.google.ads.mediation:vungle:7.8.0.0")        // Liftoff Monetize (Vungle)
+    implementation("com.google.ads.mediation:fyber:8.5.1.0")         // DT Exchange (Digital Turbine)
 
     // Google Sign-In (Credential Manager + Sign in with Google). Replaces the
     // deprecated play-services-auth GoogleSignIn API.

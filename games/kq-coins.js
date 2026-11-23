@@ -23,6 +23,7 @@
   var SECTIONS = ['quiz', 'single', 'multi', 'olympiad'];
   var DEF = {
     enabled: false, signupBonus: 100,
+    requireGames: null, requireQuiz: null,   // separate admin switches; null = follow "enabled"
     earn: { quiz: 10, single: 10, multi: 10, olympiad: 20 },
     cost: { quiz: 5, single: 5, multi: 5, olympiad: 10 },
     items: {}
@@ -50,7 +51,11 @@
     Object.keys(c).forEach(function (k) { o[k] = (c[k] && typeof c[k] === 'object' && !Array.isArray(c[k])) ? Object.assign({}, o[k] || {}, c[k]) : c[k]; });
     return o;
   }
-  function enabled() { return cfg().enabled === true; }
+  // Two admin switches: games (single-player + multiplayer) and quizzes (quiz,
+  // picture papers, Olympiad). Older settings with one "enabled" switch still work.
+  var GROUP = { single: 'requireGames', multi: 'requireGames', quiz: 'requireQuiz', olympiad: 'requireQuiz' };
+  function enabledFor(sec) { var c = cfg(), v = c[GROUP[sec]]; return v == null ? c.enabled === true : v === true; }
+  function enabled() { return enabledFor('single') || enabledFor('quiz'); }   // coins used anywhere
   function price(sec, id) {
     var c = cfg(), k = sec + '/' + id;
     if (id != null && c.items && c.items[k] != null && c.items[k] !== '') return Math.max(0, +c.items[k] || 0);
@@ -64,6 +69,7 @@
     w.coins = Math.max(0, +w.coins || 0); w.earned = +w.earned || 0; w.spent = +w.spent || 0;
     w.stats = Object.assign(b.stats, w.stats || {}); w.stats.plays = Object.assign(b.stats.plays, (w.stats || {}).plays || {});
     w.ach = w.ach || {};
+    w.log = Array.isArray(w.log) ? w.log.filter(Boolean) : (w.log && typeof w.log === 'object' ? Object.keys(w.log).sort(function (a, b) { return a - b; }).map(function (k) { return w.log[k]; }) : []);
     return w;
   }
   function saveLocal() { try { if (KEY && W) localStorage.setItem('kq_wallet_' + KEY, JSON.stringify(W)); } catch (e) {} }
@@ -82,6 +88,7 @@
       if (local) W = norm(local);
       else {                                       // new on this device: start with the signup bonus
         W = norm(null); W.coins = Math.max(0, +cfg().signupBonus || 0); W.created = Date.now(); W.name = u.name || '';
+        addLog(W, W.coins, '🎁 Welcome bonus');
         saveLocal();
       }
       notify();
@@ -98,12 +105,22 @@
       }).catch(function () {});
     });
   }
-  /* Change coins (+ earn / - spend) and stats in one Firebase transaction. */
-  function change(delta, kind, mutate) {
+  /* Coin history: last LOG_MAX changes { t: time, d: +/- coins, n: what for }. */
+  var LOG_MAX = 40;
+  function addLog(w, d, n, t) { if (!d) return; w.log.push({ t: t || Date.now(), d: d, n: String(n || '').slice(0, 60) }); if (w.log.length > LOG_MAX) w.log = w.log.slice(-LOG_MAX); }
+  var SEC_NAME = { quiz: 'Quiz', single: 'Game', multi: 'Multiplayer', olympiad: 'Olympiad' };
+  function nice(sec, id) { var t = document.title && document.title.split(/[|·–-]/)[0].trim(); return (SEC_NAME[sec] || sec) + ': ' + (id ? String(id).replace(/[-_]/g, ' ') : (t || '')); }
+
+  /* Change coins (+ earn / - spend) and stats in one Firebase transaction.
+     label = what it was for (coin history). */
+  function change(delta, kind, mutate, label) {
+    var t0 = Date.now();
     if (!W) W = norm(null);
     var apply = function (w) {
       w = norm(w);
+      var before = w.coins;
       w.coins = Math.max(0, w.coins + delta);
+      addLog(w, w.coins - before, label, t0);
       if (delta > 0 && kind !== 'reward') w.earned += delta;
       if (delta < 0) w.spent += -delta;
       if (mutate) mutate(w);
@@ -118,12 +135,14 @@
   }
 
   /* Finished a quiz / game / paper / match: coins + stats + achievements. */
+  // Achievements + streaks are always tracked (also with coins off);
+  // coins are only earned / shown when coins are used.
   function earn(sec, id) {
-    if (!enabled() || SECTIONS.indexOf(sec) < 0) return;
+    if (SECTIONS.indexOf(sec) < 0) return;
     var k = sec + '/' + id, now = Date.now();
     if (lastEarn[k] && now - lastEarn[k] < 4000) return;   // same finish reported twice
     lastEarn[k] = now;
-    var amount = reward(sec), unlocked = [];
+    var useCoins = enabled(), amount = useCoins ? reward(sec) : 0, unlocked = [];
     change(amount, 'earn', function (w) {
       var s = w.stats; s.plays[sec] = (s.plays[sec] || 0) + 1; s.total = (s.total || 0) + 1;
       var today = dayKey(now), yest = dayKey(now - 86400000);
@@ -132,20 +151,20 @@
       ACH.forEach(function (a) {
         if (w.ach[a.id]) return;
         var g = a.goal(s, w);
-        if (g[0] >= g[1]) { w.ach[a.id] = now; w.coins += a.coins; w.earned += a.coins; unlocked.push(a); }
+        if (g[0] >= g[1]) { w.ach[a.id] = now; if (useCoins) { w.coins += a.coins; w.earned += a.coins; addLog(w, a.coins, a.icon + ' ' + a.title, now + 1); } unlocked.push(a); }
       });
-    });
+    }, '✅ ' + nice(sec, id));
     if (amount) toast('+' + amount + ' 🪙', false);
-    unlocked.forEach(function (a, i) { setTimeout(function () { toast(a.icon + ' Achievement: ' + a.title + '  +' + a.coins + ' 🪙', true); }, 1200 + i * 1800); });
+    unlocked.forEach(function (a, i) { setTimeout(function () { toast(a.icon + ' Achievement: ' + a.title + (useCoins ? '  +' + a.coins + ' 🪙' : ''), true); }, 1200 + i * 1800); });
   }
 
   /* Start a quiz/game: free when coins are off; otherwise pay, or watch a video. */
   function gate(sec, id, start, onCancel) {
-    if (!enabled()) { start(); return; }
+    if (!enabledFor(sec)) { start(); return; }
     var p = price(sec, id);
     if (p <= 0) { start(); return; }
     if (!W) { start(); return; }                           // wallet not loaded yet: don't block
-    if (W.coins >= p) { change(-p, 'spend'); toast('−' + p + ' 🪙', false); start(); return; }
+    if (W.coins >= p) { change(-p, 'spend', null, '▶️ ' + nice(sec, id)); toast('−' + p + ' 🪙', false); start(); return; }
     askVideo(sec, id, p, start, onCancel);
   }
 
@@ -173,8 +192,8 @@
       pendingReward[token] = function (status) {
         done = true;
         if (status === 'earned') {                       // watched: cover the price and play
-          change(Math.max(0, p - (W ? W.coins : 0)), 'reward');
-          change(-p, 'spend'); close(); start();
+          change(Math.max(0, p - (W ? W.coins : 0)), 'reward', null, '📺 Watched a video');
+          change(-p, 'spend', null, '▶️ ' + nice(sec, id)); close(); start();
         } else if (status === 'none') {                  // no video right now: play anyway
           close(); start();
         } else {                                         // closed early
@@ -187,7 +206,45 @@
     };
   }
 
-  /* ---------- UI: coin chip, toasts, badges ---------- */
+  /* ---------- UI: coin chip, price tags, toasts, badges ---------- */
+  var BASE = (function () { var sc = document.currentScript && document.currentScript.src; return sc ? sc.replace(/[^/]*$/, '') : ''; })();
+  var COIN_SRC = BASE + '../images/emoji/1fa99.svg';   // gold coin
+  function coinImg(size) { return '<img src="' + COIN_SRC + '" alt="coins" width="' + size + '" height="' + size + '" style="width:' + size + 'px;height:' + size + 'px;vertical-align:middle">'; }
+
+  /* Price tag on every card marked data-kq-cost="<section>/<id>" (games hub,
+     multiplayer hub, quiz categories, picture-quiz topics, Olympiad subjects).
+     Only when coins are required for that kind (games / quizzes). */
+  function tagCards(root) {
+    if (!document.body) return; css();
+    (root || document).querySelectorAll('[data-kq-cost]').forEach(function (el) {
+      var k = el.getAttribute('data-kq-cost') || '', i = k.indexOf('/'), sec = k.slice(0, i), id = k.slice(i + 1);
+      var tag = el.querySelector(':scope > .kqc-cost');
+      var p = enabledFor(sec) ? price(sec, id) : 0;
+      if (!p) { if (tag) tag.remove(); return; }
+      if (!tag) {
+        if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+        tag = document.createElement('span'); tag.className = 'kqc-cost'; el.appendChild(tag);
+      }
+      var win = reward(sec);
+      tag.innerHTML = coinImg(16) + '<b>' + p + '</b>' + (win ? '<i>+' + win + '</i>' : '');
+      tag.title = p + ' coins to play' + (win ? ', win ' + win + ' coins for finishing' : '');
+    });
+  }
+  var tagTimer = 0;
+  function tagSoon() { clearTimeout(tagTimer); tagTimer = setTimeout(function () { tagCards(); }, 60); }
+  function watchCards() {
+    if (!document.body || watchCards.on) return; watchCards.on = true;
+    try { new MutationObserver(function (ms) { for (var i = 0; i < ms.length; i++) if (ms[i].addedNodes.length) { tagSoon(); return; } }).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
+    tagSoon();
+  }
+
+  var badgeBtns = [];
+  function mountBadges(el) {
+    if (!el) return; css();
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'kqc-chip kqc-badges'; b.title = 'My achievements'; b.setAttribute('aria-label', 'My achievements');
+    b.onclick = openBadges; badgeBtns.push(b); el.insertBefore(b, el.firstChild); renderChips();
+  }
+
   function css() {
     if (document.getElementById('kqc-css')) return;
     var st = document.createElement('style'); st.id = 'kqc-css';
@@ -205,7 +262,11 @@
       '.kqc-ach{display:flex;align-items:center;gap:10px;text-align:left;padding:8px 10px;border-radius:14px;margin:6px 0;background:#f8fafc}' +
       '.kqc-ach.on{background:#fef9c3}.kqc-ach .i{font-size:28px;width:36px;text-align:center}.kqc-ach .t{flex:1;min-width:0}.kqc-ach b{display:block}' +
       '.kqc-ach small{color:#6b7280;font-weight:700}.kqc-bar{height:6px;border-radius:6px;background:#e5e7eb;margin-top:4px;overflow:hidden}.kqc-bar i{display:block;height:100%;background:#f59e0b}' +
-      '.kqc-ach .c{font-weight:800;color:#92400e;white-space:nowrap}';
+      '.kqc-ach .c{font-weight:800;color:#92400e;white-space:nowrap}' +
+      '.kqc-cost{position:absolute;right:8px;bottom:8px;z-index:2;display:inline-flex;align-items:center;gap:3px;padding:2px 8px 2px 4px;border-radius:999px;background:#fffbeb;border:2px solid #fcd34d;color:#92400e;font:800 13px/1.3 "Baloo 2",system-ui,sans-serif;box-shadow:0 2px 6px rgba(146,64,14,.18);pointer-events:none}' +
+      '.kqc-cost img{width:16px;height:16px}.kqc-cost i{font-style:normal;margin-left:3px;padding:0 5px;border-radius:999px;background:#dcfce7;color:#166534;font-size:11px}' +
+      '.kqc-tabs{display:flex;gap:6px;justify-content:center;margin:8px 0}.kqc-tabs button{border:0;border-radius:999px;padding:6px 14px;font:800 14px "Baloo 2",system-ui,sans-serif;background:#f1f5f9;color:#334155;cursor:pointer}.kqc-tabs button.on{background:#f59e0b;color:#fff}' +
+      '.kqc-log{display:flex;align-items:center;gap:8px;text-align:left;padding:7px 10px;border-radius:12px;margin:4px 0;background:#f8fafc}.kqc-log .t{flex:1;min-width:0;font-weight:700}.kqc-log small{display:block;color:#6b7280;font-weight:600}.kqc-log .d{font-weight:800;white-space:nowrap}.kqc-log .d.p{color:#16a34a}.kqc-log .d.m{color:#dc2626}.kqc-badges .n{font-size:12px;opacity:.85}';
     document.head.appendChild(st);
   }
   function toast(text, big) {
@@ -221,20 +282,34 @@
     b.onclick = openBadges; chips.push(b); el.insertBefore(b, el.firstChild); renderChips();
   }
   function renderChips() {
-    chips.forEach(function (b) { b.style.display = enabled() ? '' : 'none'; b.textContent = '🪙 ' + (W ? W.coins : '…'); });
+    chips.forEach(function (b) { b.style.display = enabled() ? '' : 'none'; b.innerHTML = coinImg(22) + ' ' + (W ? W.coins : '…'); });
+    var got = W ? Object.keys(W.ach || {}).length : 0;
+    badgeBtns.forEach(function (b) { b.innerHTML = '🏅 <span class="n">' + got + '/' + ACH.length + '</span>'; });
+    tagSoon();
   }
   function openBadges() {
     css();
     var w = W || norm(null), s = w.stats, got = ACH.filter(function (a) { return w.ach[a.id]; }).length;
     var box = document.createElement('div'); box.className = 'kqc-ov';
-    box.innerHTML = '<div class="kqc-card"><div class="kqc-big">🪙</div><h3>' + w.coins + ' coins</h3>' +
-      '<p>Earned ' + w.earned + ' · ' + got + ' / ' + ACH.length + ' badges · 🔥 ' + (s.streak || 0) + '-day streak</p>' +
-      ACH.map(function (a) {
+    var coinsOn = enabled();
+    box.innerHTML = '<div class="kqc-card"><div class="kqc-big">' + (coinsOn ? coinImg(44) : '🏅') + '</div><h3>' + (coinsOn ? w.coins + ' coins' : 'My achievements') + '</h3>' +
+      '<p>' + (coinsOn ? 'Earned ' + w.earned + ' · ' : '') + got + ' / ' + ACH.length + ' badges · 🔥 ' + (s.streak || 0) + '-day streak</p>' +
+      (coinsOn ? '<div class="kqc-tabs"><button class="on" data-tab="b">🏅 Badges</button><button data-tab="h">📜 Coin history</button></div>' +
+        '<div data-pane="h" style="display:none">' + (w.log.length ? w.log.slice().reverse().map(function (e) {
+          var d = new Date(e.t || 0);
+          return '<div class="kqc-log"><span class="t">' + esc(e.n || (e.d > 0 ? 'Coins' : 'Played')) + '<small>' + d.toLocaleDateString([], { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) + '</small></span>' +
+            '<span class="d ' + (e.d > 0 ? 'p' : 'm') + '">' + (e.d > 0 ? '+' : '−') + Math.abs(e.d) + ' 🪙</span></div>';
+        }).join('') : '<p>No coins earned or spent yet.</p>') + '</div>' : '') +
+      '<div data-pane="b">' + ACH.map(function (a) {
         var g = a.goal(s, w), on = !!w.ach[a.id], pct = Math.min(100, Math.round(g[0] / g[1] * 100));
         return '<div class="kqc-ach' + (on ? ' on' : '') + '"><span class="i">' + (on ? a.icon : '🔒') + '</span><span class="t"><b>' + esc(a.title) + '</b><small>' + esc(a.desc) + '</small>' +
-          (on ? '' : '<span class="kqc-bar"><i style="width:' + pct + '%"></i></span>') + '</span><span class="c">' + (on ? '✅' : '+' + a.coins + ' 🪙') + '</span></div>';
-      }).join('') +
+          (on ? '' : '<span class="kqc-bar"><i style="width:' + pct + '%"></i></span>') + '</span><span class="c">' + (on ? '✅' : (coinsOn ? '+' + a.coins + ' 🪙' : '')) + '</span></div>';
+      }).join('') + '</div>' +
       '<button class="kqc-alt" data-a="close" style="margin-top:12px">Close</button></div>';
+    box.querySelectorAll('[data-tab]').forEach(function (b) { b.onclick = function () {
+      box.querySelectorAll('[data-tab]').forEach(function (x) { x.classList.toggle('on', x === b); });
+      box.querySelectorAll('[data-pane]').forEach(function (p) { p.style.display = p.getAttribute('data-pane') === b.getAttribute('data-tab') ? '' : 'none'; });
+    }; });
     box.onclick = function (e) { if (e.target === box || (e.target.getAttribute && e.target.getAttribute('data-a') === 'close')) box.remove(); };
     document.body.appendChild(box);
   }
@@ -242,10 +317,11 @@
   if (window.KQ && KQ.onAuth) KQ.onAuth(function () { load(); });
   if (window.KQ && KQ.onConfig) KQ.onConfig(function () { renderChips(); });
   load();
+  if (document.body) watchCards(); else document.addEventListener('DOMContentLoaded', watchCards);
 
   window.KQCoins = {
     gate: gate, earn: earn, enabled: enabled, price: price, balance: function () { return W ? W.coins : 0; },
-    wallet: function () { return W; }, onChange: function (f) { listeners.push(f); }, mountChip: mountChip, openBadges: openBadges,
+    wallet: function () { return W; }, onChange: function (f) { listeners.push(f); }, mountChip: mountChip, mountBadges: mountBadges, openBadges: openBadges, enabledFor: enabledFor, tagCards: tagCards, coinImg: coinImg,
     achievements: ACH, defaults: DEF
   };
 })();

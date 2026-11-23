@@ -420,18 +420,20 @@
     })();
   }
 
+  /* Nodes the database rules refused to read (set by the fetchers below). */
+  var denied = {};
   /* All sessions of all players (leaderboard stats). {} if rules block it. */
   function fetchSessions() {
     return ready.then(function () {
       if (!db) return {};
-      return db.ref("sessions").once("value").then(function (snap) { return snap.val() || {}; }).catch(function () { return {}; });
+      return db.ref("sessions").once("value").then(function (snap) { return snap.val() || {}; }).catch(function (e) { denied.sessions = !!(e && /permission/i.test(e.code + " " + e.message)); return {}; });
     });
   }
   /* Every player's attempts (leaderboard stats). {} if rules block it. */
   function fetchAllAttempts() {
     return ready.then(function () {
       if (!db) return {};
-      return db.ref("attempts").once("value").then(function (snap) { return snap.val() || {}; }).catch(function () { return {}; });
+      return db.ref("attempts").once("value").then(function (snap) { return snap.val() || {}; }).catch(function (e) { denied.attempts = !!(e && /permission/i.test(e.code + " " + e.message)); return {}; });
     });
   }
 
@@ -752,6 +754,7 @@
     fetchBoard: fetchBoard,
     fetchAll: fetchAll,
     fetchAttempts: fetchAttempts,
+    denied: denied,
     fetchSessions: fetchSessions,
     fetchAllAttempts: fetchAllAttempts,
     markStart: markStart,

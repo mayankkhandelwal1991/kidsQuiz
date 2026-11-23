@@ -9,18 +9,21 @@
   Reads Firebase:  leaderboards/<cat>/<gameId>/<player>   (best score per board)
                    attempts/<player>/<pushId>              (every attempt, dated)
 
-  FIREBASE RULES NOTE — add this next to "leaderboards" in the Realtime
-  Database rules so per-attempt history can be saved and read:
+  FIREBASE RULES NOTE — Firebase Console → Realtime Database → Rules.
+  Paste these two blocks inside "rules": { ... } next to "leaderboards"
+  (keep your existing entries; mind the commas), then Publish:
       "attempts": {
         ".read": true,
-        "$player": { "$id": { ".write": "!data.exists()",
-          ".validate": "newData.hasChildren(['cat','gameId','score']) && newData.child('score').isNumber()" } }
-      }
+        "$player": {
+          ".indexOn": ["at"],
+          "$id": { ".write": "!data.exists()",
+            ".validate": "newData.hasChildren(['cat','gameId','score']) && newData.child('score').isNumber()" } }
+      },
       "sessions": {
         ".read": true,
         "$player": { "$sid": { ".write": true,
           ".validate": "newData.hasChildren(['start','dur']) && newData.child('dur').isNumber()" } }
-      }
+      },
   attempts = every play (with "dur" = seconds played); sessions = every visit
   (active seconds, per-section split). Without them, the page still works
   from best scores; the timeline, time played and Stats charts stay empty.
@@ -266,7 +269,7 @@
 <script src="quiz-shared.js?v=20261120o" charset="utf-8"></script>
 <script>window.KQ_NO_WIDGET = true;</script>
 <script src="quiz/kids-engine.js?v=20261120i"></script>
-<script src="games/kq-leaderboard.js?v=20261120l"></script>
+<script src="games/kq-leaderboard.js?v=20261123a"></script>
 <script src="web-ads.js?v=20261120i"></script>
 <script>
 (function () {
@@ -807,7 +810,9 @@
       '<div class="kpi"><span>Time played</span><b class="tm">' + fmtDur(D.total) + '</b><small>total</small></div>' +
       '<div class="kpi"><span>Avg session</span><b class="tm">' + (D.sessions ? fmtDur(D.total / D.sessions) : '—') + '</b><small>per visit</small></div>' +
       '<div class="kpi"><span>Plays</span><b>' + D.plays + '</b><small>games &amp; quizzes</small></div></div>';
-    if (!SES_OK && !ALLATT.length) h += '<div class="note">⚠️ No session or attempt data yet. Time tracking starts now — check back after kids play. (Firebase rules must allow the <b>sessions</b> and <b>attempts</b> nodes.)</div>';
+    const BLOCKED = ['sessions', 'attempts'].filter((n) => KQ.denied && KQ.denied[n]);
+    if (BLOCKED.length) h += '<div class="note">⚠️ Firebase rules are blocking the <b>' + BLOCKED.join('</b> and <b>') + '</b> data, so time played and these charts can\'t be saved or shown. Add the rules from the note at the top of leaderboard.html in Firebase Console → Realtime Database → Rules.</div>';
+    else if (!SES_OK && !ALLATT.length) h += '<div class="note">⚠️ No session or attempt data yet. Time tracking has started — check back after kids play.</div>';
     const secs = S.sec === 'all' ? ['quiz', 'single', 'multi', 'olympiad', 'home'] : [S.sec];
     h += '<div class="charts-grid">' +
       '<div class="chart-card wide"><h3>⏱️ Time played per day</h3><p>Minutes, by section</p><div class="chart-box"><canvas id="cTime"></canvas></div>' +

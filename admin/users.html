@@ -470,8 +470,10 @@
     try { if (window.Android && Android.getAdNetworks) return JSON.parse(Android.getAdNetworks() || '{}'); } catch (e) {}
     return null;   // not inside the app
   }
-  function adNetworksHtml() {
+  function adNetworksHtml(a) {
     const st = adNetStatus();
+    let me = ''; try { if (window.Android && Android.getTestDeviceId) me = Android.getTestDeviceId() || ''; } catch (e) {}
+    const tl = Array.isArray(a && a.testDevices) ? a.testDevices : String((a && a.testDevices) || '').split(/[\s,]+/).filter(Boolean);
     const find = (k) => { if (!st) return null; const n = Object.keys(st).find((x) => x.toLowerCase().indexOf(k) >= 0); return n ? st[n] : undefined; };
     const badge = (x) => x === null ? '<span class="muted">open in the app</span>' : x === undefined ? '<span class="err">not in this app version</span>' :
       x.state === 'READY' ? '<b style="color:#16a34a">✅ ready</b> <span class="muted">' + esc(x.ms) + ' ms</span>' : '<b style="color:#d97706">⏳ ' + esc(x.state) + '</b> <span class="muted">' + esc(x.info || '') + '</span>';
@@ -480,6 +482,11 @@
       '<table><thead><tr><th>Network</th><th class="hide-sm">IDs to enter in AdMob</th><th>On this phone</th></tr></thead><tbody>' +
       AD_NETS.map((n) => '<tr><td><a href="' + n.dash + '" target="_blank" rel="noopener">' + esc(n.name) + '</a></td><td class="hide-sm muted">' + esc(n.ids) + '</td><td>' + badge(find(n.key)) + '</td></tr>').join('') +
       '</tbody></table>' + adLoadHtml() +
+      '<h4 style="margin:14px 0 6px">🧪 Test devices</h4>' +
+      '<p class="muted" style="font-size:13px;margin:0 0 6px">Phones listed here get <b>test ads</b> (safe to tap) and can open Ad Inspector. One ID per line, then <b>Save settings</b>; the phone picks it up when the app is reopened. The ID is also in Logcat (filter <code>KidsQuizAds</code>).</p>' +
+      (me ? '<div class="row" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px">This phone: <code id="adMe">' + esc(me) + '</code>' +
+        (tl.indexOf(me) >= 0 ? ' <b style="color:#16a34a">✅ test device</b>' : ' <button type="button" id="adAddMe">➕ Add this phone</button>') + '</div>' : '') +
+      '<textarea id="adTest" rows="3" placeholder="e.g. 33BE2250B43518CCDA7DE426D04EE231" style="width:100%;box-sizing:border-box;font-family:monospace;' + inpStyle + '">' + esc(tl.join('\n')) + '</textarea>' +
       '<div class="actions" style="justify-content:flex-start;margin-top:10px"><a href="https://admob.google.com/v2/mediation/groups" target="_blank" rel="noopener"><button type="button">⚙️ AdMob mediation</button></a>' +
       '<button type="button" id="adInspector"' + (st === null ? ' disabled title="Open the admin console inside the Android app"' : '') + '>🔍 Ad Inspector</button>' +
       '<button type="button" id="adNetRefresh"' + (st === null ? ' disabled' : '') + '>↻ Refresh</button></div>' +
@@ -505,6 +512,8 @@
     const ins = document.getElementById('adInspector'), ref = document.getElementById('adNetRefresh');
     if (ins) ins.onclick = () => { try { Android.openAdInspector(); } catch (e) { toast('Ad Inspector needs the Android app'); } };
     if (ref) ref.onclick = () => renderAppSettings();
+    const add = document.getElementById('adAddMe');
+    if (add) add.onclick = () => { const t = document.getElementById('adTest'), me = document.getElementById('adMe').textContent; if (t.value.indexOf(me) < 0) t.value = (t.value.trim() ? t.value.trim() + '\n' : '') + me; add.outerHTML = '<span class="muted">added — now press Save settings</span>'; };
   }
 
   const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -546,7 +555,7 @@
         '<div class="row" style="margin:4px 0 8px 28px">after every ' + num('adN', a.everyN, 1) + ' finished games/quizzes, at most once every ' + num('adGap', a.minGapSec, 0) + ' seconds</div>' +
         chk('adQuit', a.quit, 'Full-screen ad when leaving a game / quiz early') +
         '<div class="row" style="margin:4px 0 0 28px">at most once every ' + num('adQGap', a.quitGapSec, 0) + ' seconds</div></div>';
-      h += adNetworksHtml();
+      h += adNetworksHtml(a);
       h += '<div class="actions" style="justify-content:flex-start"><button class="primary" id="saveCfg">💾 Save settings</button><button id="resetCfg">Reset to defaults</button><span id="cfgMsg" class="muted"></span></div>';
       $app.innerHTML = h; bindTabs(); bindAdNetworks();
       const dayWrap = document.getElementById('rDayWrap'), freq = document.getElementById('rFreq');
@@ -564,7 +573,8 @@
           app: { hideLeaderboardFab: v('aFab').checked },
           update: { mandatory: v('upOn').checked, minVersionCode: n('upMin', 0, 0), message: v('upMsg').value.trim() || CFG_DEFAULT.update.message },
           rating: { enabled: v('rtOn').checked, afterN: n('rtN', 3, 1), repeatDays: n('rtDays', 30, 0) },
-          ads: { banner: v('adBanner').checked, interstitial: v('adInt').checked, everyN: n('adN', 2, 1), minGapSec: n('adGap', 60, 0), quit: v('adQuit').checked, quitGapSec: n('adQGap', 90, 0) },
+          ads: { banner: v('adBanner').checked, interstitial: v('adInt').checked, everyN: n('adN', 2, 1), minGapSec: n('adGap', 60, 0), quit: v('adQuit').checked, quitGapSec: n('adQGap', 90, 0),
+            testDevices: (v('adTest') ? v('adTest').value : '').split(/[\s,]+/).map((x) => x.trim().toUpperCase()).filter((x) => x.length >= 16).filter((x, i, arr) => arr.indexOf(x) === i) },
           updatedAt: Date.now()
         };
         const btn = v('saveCfg'); btn.disabled = true;

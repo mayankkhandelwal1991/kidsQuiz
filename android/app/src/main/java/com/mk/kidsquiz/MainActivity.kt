@@ -96,6 +96,30 @@ class MainActivity : ComponentActivity() {
 
     private var interstitialAd: InterstitialAd? = null
     @Volatile private var adNetworkStatus: String = "{}"   // JSON, filled when MobileAds has started
+
+    // AdMob's ID for this phone (MD5 of ANDROID_ID) - the value setTestDeviceIds wants.
+    // The advertising ID can't be used: its permission is removed (kids app).
+    private val testDeviceId: String by lazy {
+        try {
+            val aid = android.provider.Settings.Secure.getString(contentResolver, android.provider.Settings.Secure.ANDROID_ID) ?: ""
+            java.security.MessageDigest.getInstance("MD5").digest(aid.toByteArray())
+                .joinToString("") { "%02X".format(it) }
+        } catch (e: Exception) { "" }
+    }
+
+    // Kids-app ad rules (see above) + test devices from the admin console.
+    // Called at start and again when fresh settings arrive.
+    private fun applyAdRequestConfig(testIds: List<String>) {
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTagForChildDirectedTreatment(RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE)
+                .setTagForUnderAgeOfConsent(RequestConfiguration.TAG_FOR_UNDER_AGE_OF_CONSENT_TRUE)
+                .setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_G)
+                .setTestDeviceIds(testIds)
+                .build()
+        )
+        if (testDeviceId in testIds) Log.i("KidsQuizAds", "This phone is an AdMob test device: test ads only")
+    }
     // Last load result per ad type, for the admin console (Android.getAdLoadStatus).
     private val adLoadStatus = java.util.concurrent.ConcurrentHashMap<String, String>()
     private fun noteAd(kind: String, error: LoadAdError?) {
@@ -235,6 +259,7 @@ class MainActivity : ComponentActivity() {
     private fun applyConfig(cfg: JSONObject, fromNetwork: Boolean) {
         offlineAllowed = AppConfig.offlineAllowed(cfg)
         bannerOn = AppConfig.bannerOn(cfg)
+        if (fromNetwork) applyAdRequestConfig(AppConfig.testDevices(cfg))
         if (fromNetwork) checkMandatoryUpdate(cfg)
         Reminders.schedule(this)
         if (fromNetwork) sendToPage("window.onAppConfig && window.onAppConfig(" + cfg.toString() + ")")
@@ -382,13 +407,10 @@ class MainActivity : ComponentActivity() {
         // The advertising ID permission is removed in AndroidManifest.xml, and
         // Firebase Analytics doesn't collect it either.
         // ==================================================
-        MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder()
-                .setTagForChildDirectedTreatment(RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE)
-                .setTagForUnderAgeOfConsent(RequestConfiguration.TAG_FOR_UNDER_AGE_OF_CONSENT_TRUE)
-                .setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_G)
-                .build()
-        )
+        applyAdRequestConfig(AppConfig.testDevices(AppConfig.load(this)))
+        // AdMob test device ID of this phone: shown in Logcat (filter: KidsQuizAds)
+        // and in the admin console (Ad networks -> Test devices).
+        Log.i("KidsQuizAds", "AdMob test device ID: $testDeviceId  (add it in Admin -> App settings -> Ad networks -> Test devices)")
         // Start AdMob + every mediation adapter (Chartboost, Unity, Liftoff,
         // DT Exchange). Their status is kept for the admin console
         // (Android.getAdNetworks) and written to Logcat (tag KidsQuizAds).
@@ -1241,6 +1263,13 @@ class MainActivity : ComponentActivity() {
     fun BannerAd() {
 
         var adShown by remember { mutableStateOf(false) }
+        val handler = remember { android.os.Handler(android.os.Looper.getMainLooper()) }
+        var adViewRef by remember { mutableStateOf<AdView?>(null) }
+
+        // Free the banner when it leaves the screen (banner switched off, sign-out).
+        DisposableEffect(Unit) {
+            onDispose { handler.removeCallbacksAndMessages(null); adViewRef?.destroy() }
+        }
 
         AndroidView(
             modifier = Modifier
@@ -1250,24 +1279,41 @@ class MainActivity : ComponentActivity() {
             factory = { context ->
 
                 AdView(context).apply {
+                    adViewRef = this
 
+                    // Anchored adaptive banner: full screen width, height chosen by
+                    // Google for this phone. Fills better than the fixed 320x50.
+                    val dm = context.resources.displayMetrics
                     setAdSize(
-                        AdSize.BANNER
+                        AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+                            context, (dm.widthPixels / dm.density).toInt()
+                        )
                     )
 
                     adUnitId =
                         bannerAdId
 
+                    var fails = 0
+                    val retry = Runnable { loadAd(AdRequest.Builder().build()) }
+
                     adListener = object : AdListener() {
                         override fun onAdLoaded() {
                             adShown = true
+                            fails = 0
                             noteAd("banner", null)
                         }
 
                         override fun onAdFailedToLoad(error: LoadAdError) {
-                            // A failed refresh keeps the previous ad on screen;
-                            // only collapse when nothing was ever shown.
+                            // A failed refresh keeps the previous ad on screen.
+                            // Until one has loaded, try again: 30 s, 60 s, 2 min ...
+                            // up to 5 min (kids-safe ads often have no fill at first).
                             noteAd("banner", error)
+                            if (!adShown) {
+                                fails++
+                                val wait = minOf(300_000L, 30_000L shl minOf(fails - 1, 4))
+                                handler.removeCallbacks(retry)
+                                handler.postDelayed(retry, wait)
+                            }
                         }
                     }
 
@@ -1465,6 +1511,10 @@ class MainActivity : ComponentActivity() {
         //   -> { "<adapter class>": { state: "READY" | "NOT_READY", ms, info } }
         @JavascriptInterface
         fun getAdNetworks(): String = adNetworkStatus
+
+        // AdMob test device ID of this phone. Usage in JS:  Android.getTestDeviceId()
+        @JavascriptInterface
+        fun getTestDeviceId(): String = testDeviceId
 
         // Last load result per ad type: { banner: "<ms>|loaded" | "<ms>|error 3: No fill [..]", ... }
         // Usage in JS:  JSON.parse(Android.getAdLoadStatus())

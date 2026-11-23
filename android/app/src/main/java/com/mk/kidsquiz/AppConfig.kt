@@ -108,4 +108,15 @@ object AppConfig {
 
     fun bannerOn(cfg: JSONObject): Boolean =
         cfg.optJSONObject("ads")?.optBoolean("banner", true) ?: true
+
+    /** AdMob test device IDs (admin console -> App settings -> Ad networks). */
+    fun testDevices(cfg: JSONObject): List<String> {
+        val v = cfg.optJSONObject("ads")?.opt("testDevices") ?: return emptyList()
+        val raw = when (v) {
+            is org.json.JSONArray -> (0 until v.length()).map { v.optString(it) }
+            is JSONObject -> v.keys().asSequence().map { v.optString(it) }.toList()
+            else -> v.toString().split(',', ' ', '\n')
+        }
+        return raw.map { it.trim().uppercase() }.filter { it.length >= 16 }.distinct()
+    }
 }

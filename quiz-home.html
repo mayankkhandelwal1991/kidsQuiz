@@ -9,7 +9,7 @@
      crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kids Quiz - Home</title>
-<link rel="stylesheet" href="quiz-theme.css?v=20261120i">
+<link rel="stylesheet" href="quiz-theme.css?v=20261123a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -233,6 +233,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
       <button type="button" class="kh-tab" onclick="openQuizFlow()"><i>🎯</i><b>Quiz</b></button>
       <button type="button" class="kh-tab" onclick="showGameOptions()"><i>🎮</i><b>Play</b></button>
       <button type="button" class="kh-tab" onclick="openLeaderboardHub()"><i>🏆</i><b>Rank</b></button>
+      <button type="button" class="kh-tab kh-badges" onclick="if (window.KQCoins) KQCoins.openBadges()"><i>🏅</i><b>Badges</b></button>
     </nav>
   </div>
 
@@ -1068,7 +1069,7 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   setTimeout(function () { kqAskName().then(renderHomeProfile); }, 400);
 }
 </script>
-<script src="games/kq-leaderboard.js?v=20261123j"></script>
+<script src="games/kq-leaderboard.js?v=20261123l"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>try { KQWebAds.rails(); } catch (e) {}</script>
 <script>

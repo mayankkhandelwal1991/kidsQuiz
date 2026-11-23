@@ -1866,7 +1866,7 @@ body {
   padding: 6px 10px calc(6px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);   /* Home · Quiz · Play · Rank · Badges */
   gap: 4px;
   background: #ffffff;
   backdrop-filter: blur(12px);

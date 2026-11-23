@@ -20,6 +20,7 @@
 </head>
 <body>
   <p>Loading Kids Quiz… if nothing happens, <a href="https://play.google.com/store/apps/details?id=com.mk.kidsquiz">tap here</a>.</p>
-  <script>location.replace('https://play.google.com/store/apps/details?id=com.mk.kidsquiz');</script>
+  <script>// Through app/ so clicks are counted and Play gets the utm referrer (?s=ig&m=post&p=<code> are passed on)
+location.replace('app/' + (location.search || '?s=web&m=link&p=android-app'));</script>
 </body>
 </html>

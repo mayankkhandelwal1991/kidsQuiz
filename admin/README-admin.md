@@ -114,3 +114,27 @@ on GitHub). Use **Forget** to remove them. Instagram tokens expire (Facebook-log
 tokens: extend to 60 days in Meta's Access Token Debugger → "Extend Access Token").
 Videos up to 45 MB (GitHub API limit); photos are converted to JPEG and padded to an
 Instagram shape (4:5 … 1.91:1) automatically.
+
+## Post links & clicks → `promo/`
+
+Instagram Studio captions contain a tracking link
+`https://<you>.github.io/kidsQuiz/app/?s=ig&m=<post|reel>&p=<post code>`.
+`app/index.html` adds one row to `promo/clicks/<code>` and opens Google Play with
+`referrer=utm_source=instagram&utm_medium=…&utm_campaign=<code>` (Play Console →
+Statistics shows installs per UTM campaign). Published posts are saved in
+`promo/posts/<code>` (title, kind, permalink) so the Studio's **📈 Links & clicks**
+card can list clicks per post. `android-app.html` forwards to `app/` too.
+Other networks: change `s=` (fb, yt, wa, web, school…).
+
+Rule (next to "leagues"):
+```
+"promo": {
+  ".read": "<ADMIN>", ".write": "<ADMIN>",
+  "clicks": { "$code": { "$id": {
+    ".write": "!data.exists()",
+    ".validate": "newData.hasChildren(['t']) && newData.child('t').isNumber() && newData.child('t').val() <= now && (!newData.child('s').exists() || (newData.child('s').isString() && newData.child('s').val().length <= 24)) && (!newData.child('m').exists() || (newData.child('m').isString() && newData.child('m').val().length <= 24))"
+  } } }
+}
+```
+Anyone can add a click (the landing page has no login) but not change or read them;
+only the admin reads the counts.

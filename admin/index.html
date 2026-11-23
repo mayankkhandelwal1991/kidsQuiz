@@ -64,12 +64,15 @@
       <label>Colours</label>
       <div class="chips" id="themes"></div>
       <div class="row"><button class="btn alt" id="shuffle">🎲 New idea</button><button class="btn" id="download">⬇️ Download PNG</button></div>
+      <div class="row"><button class="btn ok" id="makeVid">🎬 Make video (Reel)</button><a class="btn gray" id="dlVid" style="display:none;text-decoration:none" download="kidsquiz-reel.mp4">⬇️ Download video</a></div>
+      <p class="note" id="vidNote">A 15–18 s vertical Reel made from this post: hook → question with countdown → answer → “Play free”. Keep this tab open while it records.</p>
     </div>
 
     <div class="card">
       <h2>…or use your own photo / video</h2>
       <input type="file" id="ownFile" accept="image/png,image/jpeg,video/mp4,video/quicktime">
       <img class="preview-own" id="ownPreview" alt="">
+      <video class="preview-own" id="vidPreview" controls playsinline muted style="display:none;max-height:340px"></video>
       <p class="note">Your file replaces the generated image when you publish. Reels: MP4, 3–90 s, vertical 9:16 works best.</p>
     </div>
 
@@ -97,6 +100,14 @@
       </details>
       <div class="row"><button class="btn gray" id="checkBtn">🔌 Check connection</button><button class="btn ok" id="publishBtn">📤 Publish now</button></div>
       <div class="status info" id="status">Publishing needs the PHP server with admin/config.php. You can always download the image and post it from the Instagram app.</div>
+    </div>
+    <div class="card">
+      <h2>📈 Links &amp; clicks</h2>
+      <p class="note" style="margin:0 0 6px">Every post gets its own code. Instagram captions are not clickable, so put the <b>bio link</b> in your Instagram bio and use the post link in Story link stickers / WhatsApp. Installs per code: Play Console → Statistics (UTM campaign).</p>
+      <label>This post’s link</label><div class="row" style="margin-top:0"><input type="text" id="postLink" readonly><button class="btn gray" id="copyLink">📋</button></div>
+      <label>Bio link (Instagram profile)</label><div class="row" style="margin-top:0"><input type="text" id="bioLink" readonly><button class="btn gray" id="copyBio">📋</button></div>
+      <div class="row"><button class="btn gray" id="loadClicks">🔄 Show clicks</button></div>
+      <div id="clicks" style="font-size:13px"></div>
     </div>
   </aside>
 
@@ -206,9 +217,34 @@ async function drawBig(ctx, cx, y0, inner, cardH, e, title, body) {
   wrap(ctx, body, inner).slice(0, Math.floor((cardH - 540) / 64)).forEach((l) => { ctx.fillText(l, cx, y); y += 64; });
 }
 
+/* ------------------------------------------------------------------ tracking links
+   app/?s=ig&m=<post|reel>&p=<code>: counts the click and opens Google Play with utm_* */
+const APP_LINK = 'https://mayankkhandelwal1991.github.io/kidsQuiz/app/';
+let MEDIUM = 'post';
+function contentKey() { return [S.type, S.cat, S.level, S.item && S.item.question, S.game && S.game.title, S.fact && S.fact[1], S.custom.title, S.showAnswer].join('|'); }
+function postCode() {
+  const k = contentKey();
+  if (S.code && (S.codeKey === k || S.snap)) return S.code;   // frozen while the Reel maker draws frames
+  const d = new Date(), pad = (n) => String(n).padStart(2, '0');
+  S.codeKey = k; S.code = ({ quiz: 'q', game: 'g', fact: 'f', custom: 'c' }[S.type] || 'x') + pad(d.getMonth() + 1) + pad(d.getDate()) + Math.random().toString(36).slice(2, 5);
+  return S.code;
+}
+function trackLink(m, code) { return APP_LINK + '?s=ig&m=' + (m || MEDIUM) + '&p=' + (code || postCode()); }
+function showLinks() { try { $('postLink').value = trackLink(); $('bioLink').value = APP_LINK + '?s=ig&m=bio&p=bio'; } catch (e) {} }
+function postTitle() {
+  if (S.type === 'quiz' && S.item) return 'Quiz: ' + stripEmoji(S.item.question).slice(0, 70) + (S.showAnswer ? ' (answer)' : '');
+  if (S.type === 'game' && S.game) return 'Game: ' + S.game.title;
+  if (S.type === 'fact' && S.fact) return 'Fact: ' + S.fact[1].slice(0, 70);
+  return 'Custom: ' + S.custom.title;
+}
+
 /* ------------------------------------------------------------------ caption */
 let captionEdited = false;
 function writeCaption() {
+  if (S.snap) return;
+  // a Reel made for another post: drop it
+  if (ownFile && ownFile._key && ownFile._key !== contentKey()) { ownFile = null; $('vidPreview').style.display = 'none'; $('dlVid').style.display = 'none'; setMedium('post'); }
+  showLinks();
   if (captionEdited) return;
   let c = '';
   if (S.type === 'quiz' && S.item) {
@@ -219,7 +255,7 @@ function writeCaption() {
   } else if (S.type === 'game' && S.game) c = '🎮 ' + (S.game.badge ? 'NEW GAME: ' : 'Have you played ') + S.game.title + (S.game.badge ? '!' : '?') + '\n\n' + S.game.how;
   else if (S.type === 'fact') c = '🤩 Fun Fact!\n\n' + S.fact[1] + '\n\nShare this with a friend who loves facts! 💡';
   else c = S.custom.title + '\n\n' + S.custom.body;
-  c += '\n\n📲 Play free: Kids Quiz on Google Play (link in bio)\n\n' + TAGS;
+  c += '\n\n📲 Play free: Kids Quiz on Google Play\n👆 Link in bio · or open: ' + trackLink().replace(/^https:\/\//, '') + '\n\n' + TAGS;
   $('caption').value = c;
 }
 
@@ -249,6 +285,8 @@ function controls() {
 $('shuffle').onclick = () => { if (S.type === 'quiz') pickQuiz(); else if (S.type === 'game') S.game = pick(GAMES); else if (S.type === 'fact') S.fact = pick(FACTS); captionEdited = false; controls(); draw(); };
 $('download').onclick = () => { const a = document.createElement('a'); a.download = 'kidsquiz-' + S.type + '-' + Date.now() + '.png'; a.href = $('cv').toDataURL('image/png'); a.click(); };
 $('caption').oninput = () => { captionEdited = true; };
+$('copyLink').onclick = () => { navigator.clipboard && navigator.clipboard.writeText($('postLink').value); setStatus('Post link copied ✅', 'good'); };
+$('copyBio').onclick = () => { navigator.clipboard && navigator.clipboard.writeText($('bioLink').value); setStatus('Bio link copied ✅ — paste it in Instagram → Edit profile → Links', 'good'); };
 $('copyCap').onclick = () => { navigator.clipboard && navigator.clipboard.writeText($('caption').value); setStatus('Caption copied ✅', 'good'); };
 
 /* ------------------------------------------------------------------ own media */
@@ -256,6 +294,8 @@ let ownFile = null;
 $('ownFile').onchange = () => {
   ownFile = $('ownFile').files[0] || null; const p = $('ownPreview');
   if (ownFile && ownFile.type.startsWith('image/')) { p.src = URL.createObjectURL(ownFile); p.style.display = 'block'; } else p.style.display = 'none';
+  setMedium(ownFile && ownFile.type.startsWith('video/') ? 'reel' : 'post');
+  const v = $('vidPreview'); if (ownFile && ownFile.type.startsWith('video/')) { v.src = URL.createObjectURL(ownFile); v.style.display = 'block'; } else { v.style.display = 'none'; }
   setStatus(ownFile ? 'Using your file: ' + ownFile.name + (ownFile.type.startsWith('video/') ? ' (Reel)' : '') : 'Using the generated image.', 'info');
 };
 
@@ -436,12 +476,164 @@ $('publishBtn').onclick = async () => {
     const pub = await api('publish', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ file: up.file, kind: up.kind, caption: $('caption').value }) });
     for (let k = 0; k < 60; k++) {
       const c = await api('check', { qs: '&id=' + encodeURIComponent(pub.containerId) });
-      if (c.status === 'published') { setStatus('Published! 🎉 ' + (c.permalink || ''), 'good'); return; }
+      if (c.status === 'published') {
+        setStatus('Published! 🎉 ' + (c.permalink || ''), 'good');
+        try {   // remember which post this code belongs to (for the clicks table)
+          await firebase.database().ref('promo/posts/' + postCode()).set({ t: firebase.database.ServerValue.TIMESTAMP, title: postTitle(), kind: MEDIUM, permalink: c.permalink || '', link: trackLink() });
+        } catch (e) {}
+        S.code = null; captionEdited = false; writeCaption();   // next post gets a new code
+        return;
+      }
       setStatus('Instagram is processing… (' + (k + 1) * 5 + ' s)', 'info');
       await new Promise((r) => setTimeout(r, 5000));
     }
     setStatus('Still processing — check Instagram in a few minutes.', 'info');
   } catch (e) { setStatus(e.message, 'bad'); } finally { btn.disabled = false; }
+};
+
+/* ------------------------------------------------------------------ post vs reel link */
+function setMedium(m) {
+  MEDIUM = m;
+  const cap = $('caption'); cap.value = cap.value.replace(/(kidsQuiz\/app\/\?s=ig&m=)(post|reel)(&p=)/, '$1' + m + '$3');
+  showLinks();
+}
+
+/* ------------------------------------------------------------------ clicks table */
+$('loadClicks').onclick = async () => {
+  const box = $('clicks'); box.textContent = 'Loading…';
+  try {
+    const db = firebase.database();
+    const [posts, clicks] = await Promise.all([db.ref('promo/posts').orderByChild('t').limitToLast(30).once('value'), db.ref('promo/clicks').once('value')]);
+    const P = posts.val() || {}, C = clicks.val() || {};
+    const count = (code) => Object.keys(C[code] || {}).length;
+    const rows = Object.keys(P).map((k) => Object.assign({ code: k, n: count(k) }, P[k])).sort((a, b) => (b.t || 0) - (a.t || 0));
+    const other = Object.keys(C).filter((k) => !P[k]).map((k) => ({ code: k, n: count(k) })).sort((a, b) => b.n - a.n);
+    const esc = (x) => String(x == null ? '' : x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const total = Object.keys(C).reduce((n, k) => n + count(k), 0);
+    box.innerHTML = '<p style="margin:6px 0"><b>' + total + '</b> clicks in total</p>' +
+      (rows.length ? '<table style="width:100%;border-collapse:collapse">' + rows.map((r) => '<tr style="border-top:1px solid #e2e8f0"><td style="padding:4px 2px"><b>' + r.n + '</b></td><td style="padding:4px">' +
+        (r.permalink ? '<a href="' + esc(r.permalink) + '" target="_blank" rel="noopener">' + esc(r.title || r.code) + '</a>' : esc(r.title || r.code)) +
+        '<br><span class="muted">' + esc(r.code) + ' · ' + esc(r.kind || '') + ' · ' + (r.t ? new Date(r.t).toLocaleDateString() : '') + '</span></td></tr>').join('') + '</table>' : '<p class="muted">No published posts yet.</p>') +
+      (other.length ? '<p class="muted" style="margin:8px 0 2px">Other links:</p>' + other.map((r) => '<div><b>' + r.n + '</b> · ' + esc(r.code) + '</div>').join('') : '');
+  } catch (e) { box.innerHTML = '<span style="color:#dc2626">' + (/permission/i.test(e.message) ? 'Add the "promo" rule in Firebase (admin/README-admin.md → Post links).' : e.message) + '</span>'; }
+};
+
+/* ------------------------------------------------------------------ 🎬 Reel maker
+   Renders the post as a 1080x1920 animation on a canvas and records it with
+   MediaRecorder as MP4 (H.264; + AAC tick sounds when the browser can).
+   Scenes: hook (2.2 s) -> post + countdown (9 s, quiz) -> answer (3.3 s) -> "Play free" (3 s). */
+async function snapshot(answer) {
+  const keep = { size: S.size, showAnswer: S.showAnswer }, cap = $('caption').value, ed = captionEdited;
+  S.snap = true; S.size = 'Story 9:16'; S.showAnswer = !!answer; captionEdited = true;
+  try { await draw(); } finally { S.snap = false; }
+  const c = document.createElement('canvas'); c.width = 1080; c.height = 1920; c.getContext('2d').drawImage($('cv'), 0, 0);
+  S.size = keep.size; S.showAnswer = keep.showAnswer; S.snap = true; try { await draw(); } finally { S.snap = false; } captionEdited = ed; $('caption').value = cap;
+  return c;
+}
+function vidMime() {
+  const list = ['video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1.42E028,mp4a.40.2', 'video/mp4;codecs=avc1.42E01F,mp4a.40.2', 'video/mp4;codecs=avc1', 'video/mp4'];
+  for (const m of list) if (window.MediaRecorder && MediaRecorder.isTypeSupported(m)) return m;
+  return null;
+}
+$('makeVid').onclick = async () => {
+  const mime = vidMime();
+  if (!mime) return setStatus('This browser cannot record MP4 video. Use the latest Chrome or Edge on a computer.', 'bad');
+  const btn = $('makeVid'); btn.disabled = true;
+  try {
+    setStatus('Preparing the video…', 'info');
+    try { await document.fonts.load('800 60px "Baloo 2"'); } catch (e) {}
+    const isQuiz = S.type === 'quiz' && S.item;
+    const base = await snapshot(false), ans = isQuiz ? await snapshot(true) : null;
+    const logo = await img('../images/app-logo.png'), [c1, c2] = THEMES[S.theme];
+    const hookEmoji = { quiz: '🤔', game: '🎮', fact: '🤩', custom: S.custom.emoji || '🌟' }[S.type];
+    const hookIcon = await img(emojiFile(hookEmoji)), party = await img(emojiFile('🎉'));
+    const lvl = (LEVELS.find((l) => l[0] === S.level) || [0, ''])[1];
+    const hookText = isQuiz ? ['Can your kid', 'answer this?'] : S.type === 'game' ? ['New game', 'alert!'] : S.type === 'fact' ? ['Fun fact', 'of the day!'] : [S.custom.title.slice(0, 18), ''];
+    const T = isQuiz ? { hook: 2.2, q: 9, a: 3.3, cta: 3 } : { hook: 2.2, q: 7, a: 0, cta: 3 };
+    const total = T.hook + T.q + T.a + T.cta;
+
+    const rc = document.createElement('canvas'); rc.width = 1080; rc.height = 1920; const x = rc.getContext('2d');
+    rc.style.cssText = 'width:100%;max-width:360px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.25)';
+    const stage = document.querySelector('.stage'); $('cv').style.display = 'none'; stage.appendChild(rc);
+    const bg = () => { const g = x.createLinearGradient(0, 0, 1080, 1920); g.addColorStop(0, c1); g.addColorStop(1, c2); x.fillStyle = g; x.fillRect(0, 0, 1080, 1920); };
+    const dots = (t) => { x.fillStyle = 'rgba(255,255,255,.18)'; for (let i = 0; i < 14; i++) { const px = (i * 173 + t * 40 * (i % 3 + 1)) % 1180 - 50, py = (i * 241 + t * 25) % 2000 - 40; x.beginPath(); x.arc(px, py, 10 + (i % 4) * 6, 0, 7); x.fill(); } };
+    const ease = (k) => 1 - Math.pow(1 - Math.min(1, Math.max(0, k)), 3);
+    const cover = (c, z) => { const w = 1080 * z, h = 1920 * z; x.drawImage(c, (1080 - w) / 2, (1920 - h) / 2, w, h); };
+    const confetti = Array.from({ length: 70 }, (_, i) => ({ x: Math.random() * 1080, v: 300 + Math.random() * 500, r: 8 + Math.random() * 10, c: ['#f43f5e', '#f59e0b', '#22c55e', '#3b82f6', '#a855f7'][i % 5], w: Math.random() * 6 }));
+
+    function frame(t) {
+      x.save(); x.textAlign = 'center';
+      if (t < T.hook) {                                   // 1) hook
+        const k = t / T.hook; bg(); dots(t);
+        const sc = 0.6 + 0.4 * ease(k * 3), bob = Math.sin(t * 6) * 12;
+        if (hookIcon) x.drawImage(hookIcon, 540 - 170 * sc, 520 - 170 * sc + bob, 340 * sc, 340 * sc);
+        x.globalAlpha = ease(k * 2.5); x.fillStyle = '#fff'; x.font = '800 118px "Baloo 2"';
+        x.fillText(hookText[0], 540, 900); if (hookText[1]) x.fillText(hookText[1], 540, 1030);
+        if (isQuiz) { x.font = '800 54px "Baloo 2"'; x.fillStyle = 'rgba(255,255,255,.95)'; rr(x, 290, 1110, 500, 90, 45); x.fill(); x.fillStyle = c2; x.fillText(lvl + ' · ' + S.cat.toUpperCase(), 540, 1172); }
+      } else if (t < T.hook + T.q) {                      // 2) the post (+ countdown for quizzes)
+        const k = (t - T.hook) / T.q; cover(base, 1 + 0.04 * k);
+        if (t - T.hook < 0.35) { x.globalAlpha = 1 - (t - T.hook) / 0.35; bg(); x.globalAlpha = 1; }
+        if (isQuiz) {
+          const left = Math.ceil(T.q - (t - T.hook)), frac = (t - T.hook) % 1;
+          x.fillStyle = 'rgba(0,0,0,.35)'; x.beginPath(); x.arc(940, 150, 92, 0, 7); x.fill();
+          x.strokeStyle = '#fde047'; x.lineWidth = 16; x.beginPath(); x.arc(940, 150, 80, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * (1 - k)); x.stroke();
+          x.fillStyle = '#fff'; x.font = '800 ' + Math.round(96 + 20 * (1 - frac)) + 'px "Baloo 2"'; x.fillText(String(left), 940, 184);
+        }
+      } else if (t < T.hook + T.q + T.a) {                // 3) answer
+        const k = (t - T.hook - T.q) / T.a; cover(ans, 1.02);
+        x.globalAlpha = Math.min(1, k * 4); x.fillStyle = '#16a34a'; rr(x, 240, 90, 600, 120, 60); x.fill();
+        x.fillStyle = '#fff'; x.font = '800 70px "Baloo 2"'; x.fillText('✓ Answer!', 540, 175); x.globalAlpha = 1;
+        confetti.forEach((p) => { const y = -40 + p.v * (t - T.hook - T.q); x.fillStyle = p.c; x.save(); x.translate(p.x + Math.sin(y / 60 + p.w) * 30, y); x.rotate(y / 80 + p.w); x.fillRect(-p.r, -p.r / 2, p.r * 2, p.r); x.restore(); });
+      } else {                                            // 4) call to action
+        const k = (t - T.hook - T.q - T.a) / T.cta; bg(); dots(t);
+        const sc = ease(k * 3);
+        if (logo) { x.save(); x.translate(540, 640); x.scale(sc, sc); rr(x, -170, -170, 340, 340, 70); x.clip(); x.drawImage(logo, -170, -170, 340, 340); x.restore(); }
+        x.fillStyle = '#fff'; x.font = '800 104px "Baloo 2"'; x.fillText('Kids Quiz', 540, 960);
+        x.font = '700 58px "Baloo 2"'; x.fillText('1000s of quizzes & 50+ games', 540, 1050);
+        const pulse = 1 + Math.sin(t * 7) * 0.04; x.save(); x.translate(540, 1230); x.scale(pulse, pulse);
+        x.fillStyle = '#fff'; rr(x, -330, -75, 660, 150, 75); x.fill(); x.fillStyle = c2; x.font = '800 66px "Baloo 2"'; x.fillText('▶ Play FREE', 0, 24); x.restore();
+        x.fillStyle = '#fff'; x.font = '800 60px "Baloo 2"'; x.fillText('👆 Link in bio', 540, 1450);
+        if (party) x.drawImage(party, 760, 330, 150, 150);
+        x.font = '700 40px "Baloo 2"'; x.globalAlpha = .9; x.fillText('Google Play · @kidsgames_quiz', 540, 1560);
+      }
+      x.restore();
+    }
+
+    // sounds: tick each second of the countdown, "ding" at the answer (only if MP4 audio is supported)
+    const withAudio = /mp4a/.test(mime);
+    let ac = null, tracks = rc.captureStream(30).getVideoTracks();
+    if (withAudio) {
+      ac = new AudioContext(); const dest = ac.createMediaStreamDestination(); tracks = tracks.concat(dest.stream.getAudioTracks());
+      const beep = (at, f, d, v) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.type = 'sine'; g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(v, at + 0.01); g.gain.exponentialRampToValueAtTime(0.001, at + d); o.connect(g); g.connect(dest); o.start(at); o.stop(at + d + 0.05); };
+      const t0 = ac.currentTime + 0.05;
+      beep(t0 + 0.1, 660, 0.25, 0.3); beep(t0 + 0.3, 880, 0.3, 0.3);
+      if (isQuiz) { for (let i = 0; i < T.q; i++) beep(t0 + T.hook + i, i >= T.q - 3 ? 1100 : 900, 0.08, 0.25); [784, 988, 1319].forEach((f, i) => beep(t0 + T.hook + T.q + i * 0.12, f, 0.5, 0.3)); }
+      beep(t0 + total - T.cta + 0.1, 523, 0.3, 0.25); beep(t0 + total - T.cta + 0.3, 784, 0.5, 0.25);
+    }
+    const rec = new MediaRecorder(new MediaStream(tracks), { mimeType: mime, videoBitsPerSecond: 6000000 });
+    const chunks = []; rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+    const stopped = new Promise((r) => { rec.onstop = r; });
+    frame(0); rec.start(500);
+    const start = performance.now();
+    await new Promise((resolve) => {
+      (function loop() {
+        const t = (performance.now() - start) / 1000;
+        frame(Math.min(t, total - 0.001));
+        setStatus('🎬 Recording… ' + Math.min(100, Math.round(t / total * 100)) + '% (keep this tab open)', 'info');
+        if (t >= total) return resolve();
+        requestAnimationFrame(loop);
+      })();
+    });
+    rec.stop(); await stopped; if (ac) ac.close();
+    rc.remove(); $('cv').style.display = '';
+    const blob = new Blob(chunks, { type: 'video/mp4' });
+    ownFile = new File([blob], 'kidsquiz-reel.mp4', { type: 'video/mp4' }); ownFile._key = contentKey();
+    const v = $('vidPreview'); v.src = URL.createObjectURL(blob); v.style.display = 'block'; $('ownPreview').style.display = 'none';
+    const dl = $('dlVid'); dl.href = v.src; dl.style.display = '';
+    setMedium('reel');
+    setStatus('Video ready ✅ (' + Math.round(blob.size / 1024 / 1024 * 10) / 10 + ' MB, ' + Math.round(total) + ' s' + (withAudio ? ', with sounds' : ', silent') + '). “Publish now” posts it as a Reel.', 'good');
+  } catch (e) { setStatus('Video failed: ' + e.message, 'bad'); $('cv').style.display = ''; document.querySelectorAll('.stage canvas:not(#cv)').forEach((c) => c.remove()); }
+  finally { btn.disabled = false; }
 };
 
 /* ------------------------------------------------------------------ boot */

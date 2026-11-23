@@ -659,7 +659,9 @@
     if (ctx && ctx.gameId) {
       html += '<button class="kqlb-btn kqlb-trophy" id="kqlb-open">🏆 <span>Leaderboard</span></button>';
     }
-    if (!u.isGuest) {
+    // No floating name / sign-out chip: it sat on top of the pages' own buttons
+    // (home header 📊 / Out). Pages use their own user button instead.
+    if (false && !u.isGuest) {
       var av = u.photo
         ? '<img src="' + esc(u.photo) + '" referrerpolicy="no-referrer" alt="">'
         : '<span class="kqlb-av">' + esc(initials(u.name)) + '</span>';

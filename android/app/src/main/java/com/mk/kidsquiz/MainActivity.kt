@@ -991,13 +991,17 @@ class MainActivity : ComponentActivity() {
     // ==================================================
     // BANNER
     // ==================================================
+    // Takes space only once an ad is actually showing; with no ad (no fill,
+    // offline, error) the WebView uses the full height — no blank white strip.
     @Composable
     fun BannerAd() {
+
+        var adShown by remember { mutableStateOf(false) }
 
         AndroidView(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp),
+                .then(if (adShown) Modifier.wrapContentHeight() else Modifier.height(0.dp)),
 
             factory = { context ->
 
@@ -1009,6 +1013,18 @@ class MainActivity : ComponentActivity() {
 
                     adUnitId =
                         bannerAdId
+
+                    adListener = object : AdListener() {
+                        override fun onAdLoaded() {
+                            adShown = true
+                        }
+
+                        override fun onAdFailedToLoad(error: LoadAdError) {
+                            // A failed refresh keeps the previous ad on screen;
+                            // only collapse when nothing was ever shown.
+                            Log.d("KidsQuizAds", "Banner not filled: ${error.code} ${error.message}")
+                        }
+                    }
 
                     loadAd(
                         AdRequest.Builder()

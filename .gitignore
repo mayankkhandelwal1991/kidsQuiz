@@ -5,3 +5,7 @@ admin/media/
 
 # Firebase rules with the admin e-mail (paste into Firebase console; keep private)
 admin/firebase-rules.json
+
+# Service-account private keys must never be committed
+*firebase-adminsdk*.json
+*service-account*.json

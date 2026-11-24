@@ -94,7 +94,15 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var webView: WebView
 
-    private var interstitialAd: InterstitialAd? = null
+    @Volatile private var interstitialAd: InterstitialAd? = null
+    // When the interstitial was loaded (AdMob ads expire after ~1 hour) and whether a load is running.
+    @Volatile private var interstitialLoadedAt = 0L
+    @Volatile private var interstitialLoading = false
+    private val AD_MAX_AGE_MS = 55 * 60 * 1000L
+
+    // A loaded interstitial that is still fresh enough to show.
+    private fun interstitialReady(): Boolean =
+        interstitialAd != null && System.currentTimeMillis() - interstitialLoadedAt < AD_MAX_AGE_MS
     @Volatile private var adNetworkStatus: String = "{}"   // JSON, filled when MobileAds has started
 
     // AdMob's ID for this phone (MD5 of ANDROID_ID) - the value setTestDeviceIds wants.
@@ -1331,8 +1339,18 @@ class MainActivity : ComponentActivity() {
     // ==================================================
     inner class WebAppInterface {
 
+        // Returns true when an ad is really going to be shown, so the page only
+        // counts an ad break that happened (no ad ready = try again next time).
         @JavascriptInterface
-        fun showAd(type: String) {
+        fun showAd(type: String): Boolean {
+
+            val t = type.lowercase().trim()
+            val ready = when (t) {
+                "interstitial" -> interstitialReady()
+                "reward" -> rewardedAd != null || rewardedInterstitialAd != null
+                "reward_interstitial" -> rewardedInterstitialAd != null
+                else -> false
+            }
 
             runOnUiThread {
 
@@ -1356,6 +1374,7 @@ class MainActivity : ComponentActivity() {
                         )
                 }
             }
+            return ready
         }
 
         // ==================================================
@@ -1593,6 +1612,8 @@ class MainActivity : ComponentActivity() {
     // ==================================================
     private fun loadInterstitialAd() {
 
+        if (interstitialLoading) return
+        interstitialLoading = true
         InterstitialAd.load(
             this,
             interstitialAdId,
@@ -1605,6 +1626,8 @@ class MainActivity : ComponentActivity() {
                     ad: InterstitialAd
                 ) {
                     interstitialAd = ad
+                    interstitialLoadedAt = System.currentTimeMillis()
+                    interstitialLoading = false
                     noteAd("interstitial", null)
                 }
 
@@ -1613,6 +1636,7 @@ class MainActivity : ComponentActivity() {
                     error: LoadAdError
                 ) {
                     interstitialAd = null
+                    interstitialLoading = false
                     noteAd("interstitial", error)
                 }
             }
@@ -1621,22 +1645,22 @@ class MainActivity : ComponentActivity() {
 
     private fun showInterstitialAd() {
 
-        if (interstitialAd == null) {
+        // None loaded, or too old to show (AdMob ads expire): drop it and load a new one.
+        if (!interstitialReady()) {
+            interstitialAd = null
             loadInterstitialAd()
             return
         }
 
-        interstitialAd
-            ?.fullScreenContentCallback =
+        val ad = interstitialAd ?: return
+        ad.fullScreenContentCallback =
             object :
                 FullScreenContentCallback() {
 
                 override fun
                         onAdDismissedFullScreenContent() {
 
-                    interstitialAd =
-                        null
-
+                    interstitialAd = null
                     loadInterstitialAd()
 
                     webView
@@ -1645,9 +1669,19 @@ class MainActivity : ComponentActivity() {
                             null
                         )
                 }
+
+                // Could not be shown (expired, app in background ...): never keep a
+                // broken ad - drop it and load a fresh one so the next break works.
+                override fun
+                        onAdFailedToShowFullScreenContent(error: AdError) {
+
+                    Log.w("KidsQuizAds", "interstitial failed to show: ${error.code} ${error.message}")
+                    interstitialAd = null
+                    loadInterstitialAd()
+                }
             }
 
-        interstitialAd?.show(this)
+        ad.show(this)
     }
 
     // ==================================================

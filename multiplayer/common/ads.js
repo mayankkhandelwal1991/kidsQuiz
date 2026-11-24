@@ -25,8 +25,9 @@ function onMultiplayerGameComplete() {
     if (enoughTime && enoughGames && typeof Android !== 'undefined' && Android.showAd) {
       setTimeout(function () {
         if (typeof Android !== 'undefined' && Android.showAd) {
-          Android.showAd('interstitial');
-          localStorage.setItem('kq_lastAdTime', Date.now());
+          var shown = Android.showAd('interstitial');
+          if (shown !== false) localStorage.setItem('kq_lastAdTime', Date.now());   // no ad ready: try again next time
+          else localStorage.setItem('kq_adCounter', n - 1);
         }
       }, MULTIPLAYER_AD_CONFIG.completionAdDelayMs);
     }

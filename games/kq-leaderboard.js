@@ -589,16 +589,28 @@
     try {
       if (typeof Android === "undefined" || !Android || typeof Android.showAd !== "function") return false;
       var rule = adRules(); if (!rule.on) return false;
-      var now = Date.now(), last = +(localStorage.getItem("kq_lastAdTime") || 0);
+      var now = Date.now(), last = +(localStorage.getItem("kq_lastAdTime") || 0), n = null;
       if (reason === "quit") {
         if (!rule.quit || now - last < rule.quitGapMs) return false;
       } else {
-        var n = (+(localStorage.getItem("kq_adCounter") || 0)) + 1;
+        n = (+(localStorage.getItem("kq_adCounter") || 0)) + 1;
         localStorage.setItem("kq_adCounter", n);
         if (n % rule.everyN !== 0 || now - last < rule.minGapMs) return false;
       }
       localStorage.setItem("kq_lastAdTime", now);
-      setTimeout(function () { try { Android.showAd("interstitial"); } catch (e) {} }, reason === "quit" ? 0 : AD_RULES.completeDelayMs);
+      setTimeout(function () {
+        var shown;
+        try { shown = Android.showAd("interstitial"); } catch (e) { shown = false; }
+        // The app answers false when no ad was ready (it starts loading one).
+        // Then this break doesn't count: the next finished game tries again.
+        // (Older app versions return nothing - treated as shown.)
+        if (shown === false) {
+          try {
+            localStorage.setItem("kq_lastAdTime", last);
+            if (n != null) localStorage.setItem("kq_adCounter", n - 1);
+          } catch (e) {}
+        }
+      }, reason === "quit" ? 0 : AD_RULES.completeDelayMs);
       return true;
     } catch (e) { return false; }
   }

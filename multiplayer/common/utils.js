@@ -193,12 +193,27 @@ export class SoundManager {
     // Resolve common/sounds/*.mp3 relative to THIS module's own URL so it
     // works the same regardless of which game imported utils.js.
     this._soundBase = new URL('./sounds/', import.meta.url).href;
-    ['click', 'join', 'leave', 'success', 'error', 'tick', 'countdown',
-     'win', 'lose', 'draw', 'hit', 'splash', 'flip', 'blast', 'whoosh',
-     'boing', 'drop', 'ding'].forEach((name) => this._makePool(name));
+    // Sounds are decoded once into Web Audio buffers (not 3 <audio> players
+    // per sound = ~54 media players per page, which stutters on Android).
+    this._buffers = {};
+    setTimeout(() => ['click', 'join', 'leave', 'success', 'error', 'tick', 'countdown',
+      'win', 'lose', 'draw', 'hit', 'splash', 'flip', 'blast', 'whoosh',
+      'boing', 'drop', 'ding'].forEach((name) => this._load(name)), 600);
   }
 
-  _makePool(name, size = 3) {
+  _load(name) {
+    if (this._buffers[name]) return;
+    let ctx;
+    try { ctx = this._ensureContext(); } catch (e) { this._buffers[name] = 'broken'; return; }
+    this._buffers[name] = 'loading';
+    fetch(this._soundBase + name + '.mp3')
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+      .then((ab) => new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej)))
+      .then((buf) => { this._buffers[name] = buf; })
+      .catch(() => { this._buffers[name] = 'broken'; });
+  }
+
+  _makePool(name, size = 2) {
     const items = [];
     for (let i = 0; i < size; i++) {
       const a = new Audio(this._soundBase + name + '.mp3');
@@ -244,19 +259,23 @@ export class SoundManager {
    *  file failed to load (offline, blocked request, etc). */
   _play(name, toneFallback) {
     if (!this.enabled) return;
-    const pool = this._pools[name];
-    if (pool && !pool.broken) {
-      const el = pool.items[pool.i % pool.items.length];
-      pool.i++;
+    const buf = this._buffers[name];
+    if (buf && typeof buf === 'object') {
       try {
-        el.currentTime = 0;
-        const p = el.play();
-        if (p && p.catch) p.catch(() => { if (toneFallback) toneFallback(); });
-      } catch (e) {
-        if (toneFallback) toneFallback();
-      }
-      return;
+        const ctx = this._ensureContext();
+        if (!this._out) { this._out = ctx.createGain(); this._out.gain.value = 0.85; this._out.connect(ctx.destination); }
+        const src = ctx.createBufferSource(); src.buffer = buf; src.connect(this._out); src.start();
+        return;
+      } catch (e) { /* fall through */ }
     }
+    if (buf === 'broken') {   // no fetch/decoding (e.g. file://): a small <audio> pool
+      if (!this._pools[name]) this._makePool(name);
+      const pool = this._pools[name];
+      if (!pool.broken) {
+        const el = pool.items[pool.i++ % pool.items.length];
+        try { el.currentTime = 0; const p = el.play(); if (p && p.catch) p.catch(() => { if (toneFallback) toneFallback(); }); return; } catch (e) { /* tone */ }
+      }
+    } else if (!buf) this._load(name);
     if (toneFallback) toneFallback();
   }
 

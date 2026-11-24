@@ -108,7 +108,7 @@
   }
 
   // Load the shared sounds + animations module (sits next to this file).
-  if (!window.KQFX) { loadScript(SELF_BASE + "kq-fx.js").catch(function () {}); }
+  if (!window.KQFX) { loadScript(SELF_BASE + "kq-fx.js?v=20261124b").catch(function () {}); }
   // End-of-game animations (win / game over / lose) — on every page, even ones with their own sounds.
   if (!window.KQEnd) { loadScript(SELF_BASE + "kq-endfx.js").catch(function () {}); }
   // Coins + achievements (switched on/off in the admin console)

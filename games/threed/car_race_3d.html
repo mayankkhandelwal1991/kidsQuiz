@@ -4,7 +4,7 @@
 <title>Car Race 3D</title>
 </head><body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="kq3d.js?v=20261124a"></script>
+<script src="kq3d.js?v=20261124b"></script>
 <script src="../ads.js"></script>
 <script>
 /* Car Race 3D — 3 lanes, dodge traffic & cones, grab coins and shields. */
@@ -15,7 +15,7 @@ const CARS = [
   { icon: '🚗', name: 'Zoomy', color: '#22c55e', hex: 0x22c55e }
 ];
 const G = KQ3D.init({
-  id: 'car_race_3d', title: 'Car Race 3D', bestKey: 'race3dBest',
+  id: 'car_race_3d', title: 'Car Race 3D', bestKey: 'race3dBest', music: true,
   hero: ['🏎️', '🪙', '🚧'], colors: ['#38bdf8', '#7c3aed'],
   how: [['👆', 'Swipe, tap a side, or use ⬅️ ➡️ to change lanes'], ['🪙', 'Grab coins for +10 points'], ['🛡️', 'A shield saves you from one crash'], ['🚧', 'Dodge cars, trucks and cones!']],
   hud: [{ id: 'coins', icon: '🪙' }], scoreIcon: '🏁', stars: [100, 300, 600],

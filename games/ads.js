@@ -98,7 +98,7 @@ function onGameComplete() {
   // actually do something in every game, without editing any game file.
   if (!window.KQFX) {
     var fx = document.createElement('script');
-    fx.src = ADS_BASE + 'kq-fx.js';
+    fx.src = ADS_BASE + 'kq-fx.js?v=20261124b';
     fx.async = false;
     document.head.appendChild(fx);
   }

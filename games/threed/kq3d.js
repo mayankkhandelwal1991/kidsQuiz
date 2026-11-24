@@ -146,9 +146,12 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
     if (cfg.pick && cfg.pick.options[pickIdx]) choice = cfg.pick.options[pickIdx]; else if (cfg.pick) { pickIdx = 0; choice = cfg.pick.options[0]; }
 
     var G = { state: 'menu', root: root, scene: $('k3scene'), best: best, choice: choice, _score: 0 };
+    // Background music: each game gets its own generated tune (see SongMaker);
+    // a game can still name an mp3 file instead (cfg.music = 'file.mp3').
     var music = null;
-    if (cfg.music) { try { music = new Audio(ROOT + 'games/sounds/' + (cfg.music === true ? 'bgm-loop.mp3' : cfg.music)); music.preload = 'none'; music.loop = true; music.volume = 0.22; } catch (e) {} }
-    G.music = function (on) { if (!music) return; try { if (on && !muted()) music.play().catch(function () {}); else music.pause(); } catch (e) {} };
+    if (typeof cfg.music === 'string') { try { var au = new Audio(ROOT + 'games/sounds/' + cfg.music); au.preload = 'none'; au.loop = true; au.volume = 0.22; music = { play: function () { var p = au.play(); if (p && p.catch) p.catch(function () {}); }, pause: function () { au.pause(); } }; } catch (e) {} }
+    else if (cfg.music) music = SongMaker(cfg.id, cfg.musicStyle || styleFor());
+    G.music = function (on) { if (!music) return; try { if (on && !muted()) music.play(); else music.pause(); } catch (e) {} };
 
     function renderMute() { $('k3mute').textContent = muted() ? '🔇' : '🔊'; }
     renderMute();
@@ -360,10 +363,122 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
     return G;
   }
 
+  /* ---- SongMaker: background music made in the browser ----------------------
+     Every game gets its own little tune: the game id seeds the key, chords,
+     tempo and melody, and the category picks the style. Nothing to download,
+     and it loops for ever without the "same 3 seconds again" feel.
+       arcade    (action)              fast, drums, bright square lead
+       adventure (3D)                  driving beat, pad, triangle lead
+       calm      (puzzle, word, brain) soft marimba, light hats, no kick
+       bouncy    (strategy, fun, AI)   bouncy bass, claps, xylophone      */
+  function styleFor() {
+    var m = (location.pathname || '').match(/games\/([a-z]+)\//), c = m ? m[1] : '';
+    return c === 'action' ? 'arcade' : c === 'threed' ? 'adventure' : (c === 'puzzle' || c === 'word' || c === 'brain') ? 'calm' : 'bouncy';
+  }
+  var sharedAC = null;
+  function audioCtx() {
+    try { if (window.KQFX && KQFX.audioContext) { var c = KQFX.audioContext(); if (c) return c; } } catch (e) {}
+    if (!sharedAC) { var A = window.AudioContext || window.webkitAudioContext; if (A) try { sharedAC = new A(); } catch (e) {} }
+    return sharedAC;
+  }
+  function SongMaker(id, style) {
+    var seed = 0; for (var i = 0; i < String(id).length; i++) seed = (seed * 31 + String(id).charCodeAt(i)) >>> 0;
+    var rnd = function () { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+    var pick = function (a) { return a[Math.floor(rnd() * a.length)]; };
+    var S = { arcade: { bpm: [132, 150], lead: 'square', drums: 2, pad: 0 }, adventure: { bpm: [118, 130], lead: 'triangle', drums: 2, pad: 1 }, calm: { bpm: [86, 100], lead: 'marimba', drums: 0, pad: 1 }, bouncy: { bpm: [106, 118], lead: 'xylo', drums: 1, pad: 0 } }[style] || { bpm: [110, 120], lead: 'triangle', drums: 1, pad: 0 };
+    var bpm = S.bpm[0] + Math.floor(rnd() * (S.bpm[1] - S.bpm[0])), step = 60 / bpm / 2;   // eighth notes
+    var root = pick([0, 2, 3, 5, 7, 9]), MAJ = [0, 2, 4, 5, 7, 9, 11], PENTA = [0, 2, 4, 7, 9];
+    var prog = pick([[0, 5, 3, 4], [0, 4, 5, 3], [0, 3, 4, 4], [5, 3, 0, 4], [0, 3, 0, 4]]);
+    var hz = function (semi) { return 261.63 * Math.pow(2, (semi + root) / 12); };
+    // melody: two 8-step motifs (A, B) per chord, song form A A B A over 4 chords = 16 bars
+    function motif() { var m = [], last = pick([0, 2, 4]); for (var k = 0; k < 8; k++) { if (rnd() < 0.28 && k % 2) { m.push(null); continue; } last = Math.max(-2, Math.min(7, last + pick([-2, -1, -1, 0, 1, 1, 2]))); m.push(last); } return m; }
+    var A = motif(), B = motif(), FORM = [A, A, B, A];
+    var noteOf = function (idx, chordDeg) { var o = Math.floor(idx / 5), p = ((idx % 5) + 5) % 5; return 12 + PENTA[p] + 12 * o + (chordDeg === 4 && p === 0 ? 0 : 0); };
+    var ac = null, master = null, noise = null, timer = null, nextT = 0, n = 0, on = false;
+    function setup() {
+      ac = audioCtx(); if (!ac) return false;
+      if (!master) {
+        master = ac.createGain(); master.gain.value = 0;
+        var lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 6000; master.connect(lp); lp.connect(ac.destination);
+        noise = ac.createBuffer(1, ac.sampleRate * 0.5, ac.sampleRate); var d = noise.getChannelData(0); for (var j = 0; j < d.length; j++) d[j] = Math.random() * 2 - 1;
+      }
+      return true;
+    }
+    function env(t, a, peak, dec) { var g = ac.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + dec); g.connect(master); return g; }
+    function osc(type, f, t, dur, g) { var o = ac.createOscillator(); o.type = type; o.frequency.setValueAtTime(f, t); o.connect(g); o.start(t); o.stop(t + dur + 0.05); return o; }
+    function kick(t) { var g = env(t, 0.005, 0.7, 0.16), o = osc('sine', 140, t, 0.18, g); o.frequency.exponentialRampToValueAtTime(42, t + 0.14); }
+    function hiss(t, type, f, vol, dec) { var s = ac.createBufferSource(); s.buffer = noise; var fl = ac.createBiquadFilter(); fl.type = type; fl.frequency.value = f; var g = env(t, 0.003, vol, dec); s.connect(fl); fl.connect(g); s.start(t); s.stop(t + dec + 0.05); }
+    function lead(t, f) {
+      if (S.lead === 'marimba') { var g = env(t, 0.004, 0.16, 0.35); osc('sine', f, t, 0.4, g); var g2 = env(t, 0.002, 0.05, 0.08); osc('sine', f * 4, t, 0.1, g2); }
+      else if (S.lead === 'xylo') { var g3 = env(t, 0.003, 0.14, 0.22); osc('triangle', f * 2, t, 0.25, g3); }
+      else { var g4 = env(t, 0.01, S.lead === 'square' ? 0.06 : 0.12, step * 1.6); osc(S.lead, f, t, step * 1.7, g4); }
+    }
+    function schedule() {
+      if (!on) return;
+      while (nextT < ac.currentTime + 0.25) {
+        var bar = Math.floor(n / 8) % 16, s8 = n % 8, chordDeg = prog[bar % 4], ch = MAJ[chordDeg], t = nextT;
+        var mel = FORM[Math.floor(bar / 4)][s8];
+        if (mel != null && (bar % 4 !== 3 || s8 < 6)) lead(t, hz(noteOf(mel, chordDeg)));
+        // bass
+        if (style === 'bouncy') { var gb = env(t, 0.005, 0.22, step * 0.9); osc('triangle', hz(ch - 24 + (s8 % 2 ? 12 : 0)), t, step, gb); }
+        else if (style === 'calm') { if (s8 % 4 === 0) { var gc = env(t, 0.02, 0.2, step * 3.5); osc('triangle', hz(ch - 24), t, step * 4, gc); } }
+        else if (s8 % 2 === 0) { var gd = env(t, 0.005, 0.24, step * 1.5); osc('triangle', hz(ch - 24), t, step * 1.6, gd); }
+        // pad: soft chord at the start of each bar
+        if (S.pad && s8 === 0) [0, 4, 7].forEach(function (iv) { var semi = MAJ[(chordDeg + (iv === 4 ? 2 : iv === 7 ? 4 : 0)) % 7] + (chordDeg + (iv === 4 ? 2 : iv === 7 ? 4 : 0) >= 7 ? 12 : 0); var gp = env(t, 0.25, 0.035, step * 7); osc('sine', hz(semi - 12), t, step * 8, gp); });
+        // drums
+        if (S.drums === 2) { if (s8 % 2 === 0) kick(t); if (s8 === 2 || s8 === 6) hiss(t, 'bandpass', 1800, 0.25, 0.12); hiss(t, 'highpass', 7000, s8 % 2 ? 0.06 : 0.09, 0.04); }
+        else if (S.drums === 1) { if (s8 === 0 || s8 === 4) kick(t); if (s8 === 2 || s8 === 6) hiss(t, 'bandpass', 1400, 0.2, 0.1); if (s8 % 2) hiss(t, 'highpass', 8000, 0.05, 0.03); }
+        else if (s8 % 2) hiss(t, 'highpass', 9000, 0.035, 0.03);
+        nextT += step; n++;
+      }
+    }
+    return {
+      play: function () {
+        if (on || !setup()) return; on = true;
+        try { if (ac.state === 'suspended') ac.resume(); } catch (e) {}
+        nextT = Math.max(nextT, ac.currentTime + 0.05);
+        master.gain.cancelScheduledValues(ac.currentTime); master.gain.setValueAtTime(master.gain.value, ac.currentTime); master.gain.linearRampToValueAtTime(0.42, ac.currentTime + 0.4);
+        schedule(); timer = setInterval(schedule, 60);
+      },
+      pause: function () {
+        if (!on) return; on = false; clearInterval(timer); timer = null;
+        if (ac && master) { master.gain.cancelScheduledValues(ac.currentTime); master.gain.setValueAtTime(master.gain.value, ac.currentTime); master.gain.linearRampToValueAtTime(0, ac.currentTime + 0.15); }
+        nextT = 0;
+      }
+    };
+  }
+
   // ---- three.js helpers
+  /* Free GPU memory automatically. Games remove meshes (old road rows, coins,
+     maze walls, particles ...) but never disposed their geometry, so every
+     round left hundreds of buffers on the GPU and the game got slower after
+     1-2 plays. Now: anything removed from the scene that has not been added
+     back by the next tick gets its geometries disposed. (A disposed geometry
+     that is still shared by a live mesh is simply uploaded again by three.js,
+     so this is always safe. Materials/textures are shared and kept.) */
+  function autoFree() {
+    var O = THREE.Object3D.prototype;
+    if (O.__kqFree) return; O.__kqFree = true;
+    var pending = [], queued = false, rm = O.remove;
+    O.remove = function () {
+      var r = rm.apply(this, arguments);
+      for (var i = 0; i < arguments.length; i++) if (arguments[i] && arguments[i].isObject3D) pending.push(arguments[i]);
+      if (!queued && pending.length) { queued = true; setTimeout(flush, 0); }
+      return r;
+    };
+    function flush() {
+      queued = false; var list = pending; pending = [];
+      list.forEach(function (o) {
+        if (o.parent) return;   // added back (moved or pooled) - keep it
+        o.traverse(function (c) { if (c.geometry && c.geometry.dispose) c.geometry.dispose(); });
+      });
+    }
+  }
+
   function renderer(el, o) {
     o = o || {};
     if (!window.THREE) { el.innerHTML = '<div class="k3nogl">Could not load the 3D engine. Please check your internet and try again.</div>'; return null; }
+    autoFree();
     var r;
     try { r = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' }); }
     catch (e) { el.innerHTML = '<div class="k3nogl">This device can\'t show 3D games 😢<br>Try another game from the Game Zone!</div>'; return null; }

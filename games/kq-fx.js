@@ -107,38 +107,46 @@
     return "sounds/";
   })();
 
-  var POOL_SIZE = 3;
-  var pools = {}; // name -> { items: [Audio], i: 0, broken: false }
-  function makePool(name) {
-    var items = [];
-    for (var i = 0; i < POOL_SIZE; i++) {
-      var a = new Audio(SOUND_BASE + name + ".mp3");
-      a.preload = "auto";
-      a.volume = 0.85;
-      items.push(a);
-    }
-    var pool = { items: items, i: 0, broken: false };
-    items[0].addEventListener("error", function () { pool.broken = true; }, { once: true });
-    pools[name] = pool;
-    return pool;
+  /* Sounds are played with Web Audio: each mp3 is fetched and decoded ONCE
+     into a buffer, then every play is a cheap buffer source. (The old way
+     made 3 <audio> players for each of ~25 sounds on every page = ~75 media
+     players loading at once, which is slow and stutters on Android WebView.)
+     The common small sounds are decoded at start; others on first use (that
+     first play uses the synthesised tone). If fetch/decoding is not possible
+     (e.g. file:// pages) it falls back to a small lazy <audio> pool. */
+  var buffers = {};            // name -> AudioBuffer | "loading" | "broken"
+  var PRELOAD = ["click", "tap", "pop", "coin", "success", "win", "lose", "wrong", "hit", "whoosh", "tick", "countdown", "levelup", "jump", "boing", "flip", "ding", "blast"];
+  function loadBuf(name) {
+    if (buffers[name]) return;
+    var c = ac(); if (!c || !window.fetch) { buffers[name] = "broken"; return; }
+    buffers[name] = "loading";
+    fetch(SOUND_BASE + name + ".mp3").then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+      .then(function (ab) { return new Promise(function (res, rej) { c.decodeAudioData(ab, res, rej); }); })
+      .then(function (b) { buffers[name] = b; })
+      .catch(function () { buffers[name] = "broken"; });
   }
-  Object.keys(TONE_FALLBACK).forEach(makePool);
+  var sfxGain = null;
+  function out(c) { if (!sfxGain) { sfxGain = c.createGain(); sfxGain.gain.value = 0.85; sfxGain.connect(c.destination); } return sfxGain; }
+  // preload after the page has settled so it never competes with the game's first frames
+  setTimeout(function () { PRELOAD.forEach(loadBuf); }, 600);
+
+  var pools = {};
+  function htmlPlay(name) {
+    var pool = pools[name];
+    if (!pool) { pool = pools[name] = { items: [], i: 0, broken: false }; for (var i = 0; i < 2; i++) { var a = new Audio(SOUND_BASE + name + ".mp3"); a.preload = "auto"; a.volume = 0.85; pool.items.push(a); } pool.items[0].addEventListener("error", function () { pool.broken = true; }, { once: true }); }
+    if (pool.broken) return false;
+    var el = pool.items[pool.i++ % pool.items.length];
+    try { el.currentTime = 0; var p = el.play(); if (p && p.catch) p.catch(function () {}); return true; } catch (e) { return false; }
+  }
 
   function play(name) {
     if (isMuted()) return;
-    var pool = pools[name];
-    if (pool && !pool.broken) {
-      var el = pool.items[pool.i % pool.items.length];
-      pool.i++;
-      try {
-        el.currentTime = 0;
-        var p = el.play();
-        if (p && p.catch) p.catch(function () { var fb = TONE_FALLBACK[name]; if (fb) { try { fb(); } catch (e) {} } });
-      } catch (e) {
-        var fb2 = TONE_FALLBACK[name]; if (fb2) { try { fb2(); } catch (e2) {} }
-      }
-      return;
+    var c = ac(), b = buffers[name];
+    if (c && b && typeof b === "object") {
+      try { var src = c.createBufferSource(); src.buffer = b; src.connect(out(c)); src.start(); return; } catch (e) {}
     }
+    if (b === "broken" && htmlPlay(name)) return;
+    if (!b) loadBuf(name);
     var fn = TONE_FALLBACK[name]; if (fn) { try { fn(); } catch (e) {} }
   }
 
@@ -320,6 +328,7 @@
   /* --------------------------------------------------------------- export */
   window.KQFX = {
     play: play, celebrate: celebrate, blastAt: blastAt,
+    audioContext: function () { return ac(); },
     gameComplete: gameComplete, win: win, lose: lose, quizComplete: quizComplete,
     shake: shake, bounce: bounce, flipEl: flipEl,
     isMuted: isMuted, setMuted: setMuted, toggleMute: toggleMute

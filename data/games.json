@@ -613,6 +613,17 @@
       "badge": "🆕 New",
       "featured": true,
       "order": 60
+    },
+    {
+      "id": "snake_3d",
+      "file": "threed/snake_3d.html",
+      "icon": "🐍",
+      "title": "Snake 3D",
+      "how": "The classic snake on a floating 3D island! Swipe, use the arrow keys or the buttons to turn. Eat fruit to grow, grab golden apples for +5, and don’t bump the fence, rocks or your own tail!",
+      "category": "threed",
+      "badge": "NEW",
+      "featured": false,
+      "order": 61
     }
   ]
 }

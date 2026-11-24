@@ -186,7 +186,7 @@
     <div class="card">
       <div class="row" style="margin-top:0;align-items:center">
         <h2 style="margin:0;flex:1">📊 Your Instagram posts — real numbers</h2>
-        <input type="password" id="hPw" placeholder="passphrase / admin password" style="width:240px">
+        <input type="password" id="hPw" placeholder="passphrase / admin password" autocomplete="new-password" style="width:240px">
         <button class="btn" id="hLoad">🔄 Load</button>
       </div>
       <p class="note" style="margin:6px 0 0">Likes and comments come straight from Instagram. Views, reach, saves and shares need the <b>instagram_manage_insights</b> permission on your token. Link clicks come from your tracking links (Firebase <i>promo</i>).</p>
@@ -526,7 +526,7 @@ let LAST_UP = null;
 if (BROWSER) {
   $('modeLine').textContent = '🌐 Browser mode (GitHub Pages) — no server needed';
   $('pwLbl').textContent = 'Passphrase (unlocks your saved settings)';
-  $('pw').placeholder = 'your own passphrase'; $('pw').value = ''; $('pw').autocomplete = 'off';
+  $('pw').placeholder = 'your own passphrase'; $('pw').value = ''; $('pw').autocomplete = 'new-password'; $('hPw').value = '';
   $('bmBox').style.display = '';
   const saved = !!localStorage.getItem(VAULT_KEY);
   $('bmState').textContent = saved ? '· saved (locked)' : '· not set up yet';
@@ -987,11 +987,11 @@ async function loadHistory() {
   }
   return api('history');
 }
-$('hPw').oninput = () => { $('pw').value = $('hPw').value; };
+$('hPw').oninput = () => { $('pw').value = $('hPw').value; CFG = null; };
+$('pw').addEventListener('input', () => { $('hPw').value = $('pw').value; });
 $('hLoad').onclick = async () => {
   const btn = $('hLoad'); btn.disabled = true; $('hList').innerHTML = '<p class="muted">Loading from Instagram…</p>';
   try {
-    if ($('hPw').value) $('pw').value = $('hPw').value;
     const [j, clicks] = await Promise.all([loadHistory(), Promise.race([new Promise((r) => setTimeout(() => r({ P: {}, C: {}, err: 'Firebase did not answer (check the promo rule / sign-in).' }), 6000)), (async () => { try { const [p, c] = await Promise.all([firebase.database().ref('promo/posts').once('value'), firebase.database().ref('promo/clicks').once('value')]); return { P: p.val() || {}, C: c.val() || {} }; } catch (e) { return { P: {}, C: {}, err: e.message }; } })()])]);
     const esc = (x) => String(x == null ? '' : x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const byLink = {}; Object.keys(clicks.P).forEach((code) => { const p = clicks.P[code]; if (p.permalink) byLink[p.permalink] = code; });
@@ -1018,7 +1018,7 @@ $('hLoad').onclick = async () => {
           (i._err ? '' : '<span>👁 ' + (i.views || 0) + '</span><span>👥 ' + (i.reach || 0) + '</span><span>🔖 ' + (i.saved || 0) + '</span>') + '</div>' +
           (m.code ? '<div class="muted" style="font-size:11px;margin-top:4px">code ' + esc(m.code) + '</div>' : '') + '</div></div>';
       }).join('') + '</div>';
-  } catch (e) { $('hList').innerHTML = '<p style="color:#dc2626">' + e.message + '</p>'; }
+  } catch (e) { $('hList').innerHTML = '<p style="color:#dc2626">' + e.message + (/passphrase/i.test(e.message) ? ' Type the passphrase you chose when you pressed 💾 Save. Forgot it? Create → ⑤ Publish → 🔐 Connection settings → 🗑 Forget, then fill in the settings again and Save with a new passphrase.' : '') + '</p>'; }
   finally { btn.disabled = false; }
 };
 

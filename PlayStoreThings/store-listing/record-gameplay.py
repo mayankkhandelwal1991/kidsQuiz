@@ -68,29 +68,42 @@ G = {  # id: (file, bot JS run in page, or None; cdp tap list function)
  'whack_mole':   ('action/whack_mole.html',    'TAPS'),
  'basketball_3d':('threed/basketball_3d.html', 'TAPS'),
 }
+# every other game in data/games.json gets the generic bot (taps + arrow keys + space)
+_R = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+for _g in json.load(open(os.path.join(_R, 'data', 'games.json')))['games']:
+    _id = _g['file'].split('/')[-1].replace('.html', '')
+    if _id not in G: G[_id] = (_g['file'], 'MIX')
+MIX_JS = "let i=0;setInterval(()=>__k(['ArrowRight','ArrowUp',' ','ArrowLeft','ArrowDown'][i++%5],i%5==2?'Space':null),420)"
+TAP_JS = """(()=>{const bad=/Play again|Play!|Home|🏠|🔊|🔇|⏸|Games|Share|Top players/;
+ const c=[...document.querySelectorAll('button,.card,.cell,.tile,.opt,.option,.letter,.key,.mole,.hole,.balloon,[data-i],[data-idx],canvas')].filter(e=>{const r=e.getBoundingClientRect();return e.offsetParent!==null&&r.y>70&&r.width>12&&!bad.test(e.innerText||'')&&!e.closest('a')});
+ if(!c.length)return null;const e=c[Math.floor(Math.random()*c.length)],r=e.getBoundingClientRect();
+ if(e.tagName==='CANVAS'){const y0=Math.max(r.y,90);return [r.x+r.width*(.2+.6*Math.random()),y0+(r.bottom-y0)*(.3+.6*Math.random())]}
+ return [r.x+r.width/2,r.y+r.height/2]})()"""
 def run(gid, secs=4.0, fps=12, warm=2.2):
-    f, bot = G[gid]; b = B()
+    f, bot = G[gid]; b = B(port=int(os.environ.get('PORT', '9340')))
     try:
         b.go(base + f + '?reel=1', 5)
         b.ev("(()=>{const p=[...document.querySelectorAll('button')].filter(e=>e.offsetParent&&/Play/.test(e.innerText));if(p.length)p[p.length-1].click()})()")
         time.sleep(1.2)
-        if bot != 'TAPS': b.ev(K + bot)
+        if bot not in ('TAPS', 'MIX'): b.ev(K + bot)
+        if bot == 'MIX': b.ev(K + MIX_JS)
         frames = []; step = int(1000 / fps); nframes = int(secs * fps); warmn = int(warm * fps)
         b.cmd('Emulation.setVirtualTimePolicy', policy='pause')
         for i in range(warmn + nframes):
             b.advance(step)
-            if bot == 'TAPS' and i % 5 == 0:
-                pt = b.ev("(()=>{const c=[...document.querySelectorAll('.card,.cell,.mole,.hole,.balloon,button')].filter(e=>e.offsetParent&&e.getBoundingClientRect().y>70&&!/Play|🏠|🔊|⏸/.test(e.innerText));if(c.length){const r=c[Math.floor(Math.random()*c.length)].getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2]}return null})()")
+            if bot in ('TAPS', 'MIX') and i % 5 == 0:
+                pt = b.ev(TAP_JS)
                 x, y = pt if pt else (random.randint(60, 330), random.randint(250, 600))
                 b.click(x, y)
-            if i >= warmn and b.ev("[...document.querySelectorAll('button,a')].some(e=>e.offsetParent&&/Play again|Try again/i.test(e.innerText))"): break
+            if i >= warmn and b.ev("!location.pathname.endsWith('/" + f.split('/')[-1] + "') || [...document.querySelectorAll('button,a')].some(e=>e.offsetParent&&/Play again|Try again/i.test(e.innerText))"): break
             if i >= warmn: frames.append(Image.open(io.BytesIO(b.shot(85))).convert('RGB'))
         return frames
     finally: b.close()
 def best(gid, fps=12, secs=3.5):
     top = []
     for k in range(3):
-        fr = run(gid, secs=secs, fps=fps, warm=2.2)
+        try: fr = run(gid, secs=secs, fps=fps, warm=2.2)
+        except Exception: fr = []
         if len(fr) > len(top): top = fr
         if len(top) >= int(secs * fps): break
     return top
@@ -101,14 +114,16 @@ def sheet(gid, fr, cols=6, cw=300):
     out = OUT + gid + '.webp'; S.save(out, 'WEBP', quality=72, method=6)
     return out, len(fr), cw, ch
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-OUT = os.path.join(ROOT, 'images', 'reel') + '/'
+OUT = os.environ.get('REEL_OUT') or os.path.join(ROOT, 'images', 'reel') + '/'
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
     man_path = OUT + 'clips.json'
     try: man = {c['id']: c for c in json.load(open(man_path))['clips']}
     except Exception: man = {}
     for gid in (sys.argv[1:] or list(G)):
-        fr = best(gid); print(gid, len(fr), 'frames', flush=True)
+        try: fr = best(gid)
+        except Exception as e: print(gid, 'failed:', type(e).__name__, flush=True); continue
+        print(gid, len(fr), 'frames', flush=True)
         if len(fr) < 24: print('  skipped (the bot lost too fast)'); continue
         out, n, cw, ch = sheet(gid, fr)
         man[gid] = {'id': gid, 'file': G[gid][0], 'n': n, 'cols': 6, 'cw': cw, 'ch': ch, 'fps': 12}

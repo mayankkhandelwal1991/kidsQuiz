@@ -1,18 +1,27 @@
 {
  "clips": [
   {
-   "id": "car_race_3d",
-   "file": "threed/car_race_3d.html",
-   "n": 25,
+   "id": "ant_attack",
+   "file": "strategy/ant_attack.html",
+   "n": 42,
    "cols": 6,
    "cw": 300,
    "ch": 533,
    "fps": 12
   },
   {
-   "id": "crossy_road_3d",
-   "file": "threed/crossy_road_3d.html",
-   "n": 32,
+   "id": "ball_maze_3d",
+   "file": "threed/ball_maze_3d.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "balloon_pop",
+   "file": "action/balloon_pop.html",
+   "n": 42,
    "cols": 6,
    "cw": 300,
    "ch": 533,
@@ -28,36 +37,9 @@
    "fps": 12
   },
   {
-   "id": "egg_jump",
-   "file": "action/egg_jump.html",
-   "n": 32,
-   "cols": 6,
-   "cw": 300,
-   "ch": 533,
-   "fps": 12
-  },
-  {
-   "id": "fruit_catch",
-   "file": "action/fruit_catch.html",
-   "n": 32,
-   "cols": 6,
-   "cw": 300,
-   "ch": 533,
-   "fps": 12
-  },
-  {
-   "id": "space_shooter",
-   "file": "action/space_shooter.html",
-   "n": 32,
-   "cols": 6,
-   "cw": 300,
-   "ch": 533,
-   "fps": 12
-  },
-  {
-   "id": "whack_mole",
-   "file": "action/whack_mole.html",
-   "n": 32,
+   "id": "brick_breaker",
+   "file": "action/brick_breaker.html",
+   "n": 42,
    "cols": 6,
    "cw": 300,
    "ch": 533,
@@ -73,9 +55,378 @@
    "fps": 12
   },
   {
+   "id": "car_race_3d",
+   "file": "threed/car_race_3d.html",
+   "n": 25,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "category_sort",
+   "file": "word/category_sort.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "color_tap",
+   "file": "brain/color_tap.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "connect_four",
+   "file": "puzzle/connect_four.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "cricket_superover",
+   "file": "action/cricket_superover.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "crossy_road_3d",
+   "file": "threed/crossy_road_3d.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "doodle_jump",
+   "file": "action/doodle_jump.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "egg_jump",
+   "file": "action/egg_jump.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "endless_runner_3d",
+   "file": "threed/endless_runner_3d.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "feed_monster",
+   "file": "funny/feed_monster.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "flappy_bee",
+   "file": "action/flappy_bee.html",
+   "n": 41,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "fruit_catch",
+   "file": "action/fruit_catch.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "game_2048",
+   "file": "puzzle/game_2048.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "hangman",
+   "file": "word/hangman.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "hidden_objects",
+   "file": "puzzle/hidden_objects.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
    "id": "memory_match",
    "file": "puzzle/memory_match.html",
    "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "missing_letter",
+   "file": "word/missing_letter.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "number_order",
+   "file": "brain/number_order.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "odd_one_out",
+   "file": "brain/odd_one_out.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "piano_tiles",
+   "file": "action/piano_tiles.html",
+   "n": 25,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "ping_pong",
+   "file": "action/ping_pong.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "quick_math",
+   "file": "brain/quick_math.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "reaction_test",
+   "file": "brain/reaction_test.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "rhyme_time",
+   "file": "word/rhyme_time.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "rock_paper",
+   "file": "strategy/rock_paper.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "simon_says",
+   "file": "strategy/simon_says.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "slide_puzzle",
+   "file": "puzzle/slide_puzzle.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "slingshot",
+   "file": "action/slingshot.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "snake",
+   "file": "action/snake.html",
+   "n": 26,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "space_shooter",
+   "file": "action/space_shooter.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "spelling_bee",
+   "file": "word/spelling_bee.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "sudoku_mini",
+   "file": "puzzle/sudoku_mini.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "target_gallery",
+   "file": "shooting/target_gallery.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "tetris",
+   "file": "puzzle/tetris.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "tic_tac_toe",
+   "file": "strategy/tic_tac_toe.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "train_the_robot",
+   "file": "ai/train_the_robot.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "typing_speed",
+   "file": "brain/typing_speed.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "water_sort",
+   "file": "puzzle/water_sort.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "whack_mole",
+   "file": "action/whack_mole.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "word_builder",
+   "file": "word/word_builder.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "word_ladder",
+   "file": "word/word_ladder.html",
+   "n": 42,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "word_search",
+   "file": "word/word_search.html",
+   "n": 42,
    "cols": 6,
    "cw": 300,
    "ch": 533,

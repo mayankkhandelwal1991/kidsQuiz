@@ -138,3 +138,20 @@ Rule (next to "leagues"):
 ```
 Anyone can add a click (the landing page has no login) but not change or read them;
 only the admin reads the counts.
+
+## Instagram Studio — steps, Reels and History
+
+**Create** tab, five steps: ① what to post → ② design → ③ Reel video → ④ caption → ⑤ publish.
+The right side shows the post exactly as big as on a phone, inside the Instagram feed or Reels
+screen (untick "Instagram buttons" to hide the overlay). Text in Reels stays out of the areas
+Instagram covers with its buttons.
+
+**Reels** are drawn and recorded in the browser (no AI service, no cost): app splash → Ollie the
+owl asks the question → countdown → answer with confetti → real gameplay → "Play FREE".
+Picking a game in step ① puts that game's own gameplay first (games marked 🎬 in the list).
+Gameplay clips live in `images/reel/` (WebP sprite sheets + `clips.json`); re-record them after
+changing games: `python3 PlayStoreThings/store-listing/record-gameplay.py [game ids]`.
+
+**History** tab: the latest 25 posts with likes and comments from Instagram, plus link clicks from
+`promo/`. Views, reach, saves and shares also need the **instagram_manage_insights** permission:
+Graph API Explorer → add it → Generate Access Token → paste the new token in ⑤ → Connection settings → Save.

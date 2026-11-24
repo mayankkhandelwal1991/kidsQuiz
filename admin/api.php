@@ -119,6 +119,20 @@ try {
             }
             out(['ok' => true, 'containerId' => (string)$c['id']]);
 
+        case 'history':  // latest 25 posts with likes/comments + insights when the token allows
+            if (!ig_ready()) throw new RuntimeException('Instagram is not connected.');
+            $igu = (string)cfg('ig_user_id');
+            $acct = ig('GET', $igu, ['fields' => 'username,followers_count,follows_count,media_count']);
+            $media = ig('GET', "$igu/media", ['fields' => 'id,caption,media_type,media_product_type,permalink,thumbnail_url,media_url,timestamp,like_count,comments_count', 'limit' => 25])['data'] ?? [];
+            foreach ($media as &$m) {
+                $m['ins'] = [];
+                foreach (['views,reach,saved,shares,total_interactions', 'reach,saved', 'reach'] as $metric) {
+                    try { foreach ((ig('GET', $m['id'] . '/insights', ['metric' => $metric])['data'] ?? []) as $d) $m['ins'][$d['name']] = $d['values'][0]['value'] ?? ($d['total_value']['value'] ?? 0); break; }
+                    catch (Throwable $e) { if (preg_match('/permission|scope|#10\b|#200\b/i', $e->getMessage())) { $m['ins'] = ['_err' => $e->getMessage()]; break; } }
+                }
+            }
+            unset($m);
+            out(['ok' => true, 'account' => $acct, 'media' => $media]);
         case 'check':    // ?id=container — publishes when Instagram has finished processing
             $id = preg_replace('/[^0-9]/', '', (string)($_GET['id'] ?? ''));
             $st = ig('GET', $id, ['fields' => 'status_code,status']);

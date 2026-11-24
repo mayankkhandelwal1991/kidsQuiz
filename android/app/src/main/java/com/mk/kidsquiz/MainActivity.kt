@@ -441,8 +441,9 @@ class MainActivity : ComponentActivity() {
         }
 
         loadInterstitialAd()
-        loadRewardedAd()
-        loadRewardedInterstitialAd()
+        // Rewarded ads are no longer preloaded: Google Play Families policy does not
+        // allow rewarded / opt-in ads that block play for children, and the web
+        // pages no longer ask for them (they load on demand only if ever called).
 
         enableEdgeToEdge()
 

@@ -603,7 +603,7 @@
       const rows = [].concat(QUIZ_CATS.map((id) => ['quiz', id, pretty(id)]), games.map((g) => ['single', g.id, g.name]), MULTI_GAMES.map((id) => ['multi', id, pretty(id)]), OLY_SUBJ.map((id) => ['olympiad', id, pretty(id)]));
       const secInp = (grp, sec, v) => '<input type="number" min="0" data-' + grp + '="' + sec + '" value="' + esc(v) + '" style="width:80px;' + inpStyle + '">';
       let h = tabsHtml() + '<p class="muted" style="margin:0 0 12px">' + (saved && saved.updatedAt ? 'Last saved ' + esc(fmtDate(saved.updatedAt)) + '.' : 'Not saved yet — defaults shown.') +
-        ' Kids earn coins by finishing quizzes and games and spend them to start one. With too few coins they can watch a video to play (if no video is available they still play).</p>';
+        ' Kids earn coins by finishing quizzes and games and spend them to start one. With too few coins they can still play (no reward videos — Google Play Families policy does not allow them for children).</p>';
       const onG = c.requireGames == null ? c.enabled === true : c.requireGames === true, onQ = c.requireQuiz == null ? c.enabled === true : c.requireQuiz === true;
       const sw = (id, on, t, d) => '<label style="display:flex;gap:10px;align-items:flex-start;margin:4px 0 10px"><input type="checkbox" id="' + id + '"' + (on ? ' checked' : '') + ' style="margin-top:4px"><span><b>' + t + '</b><br><span class="muted" style="font-size:13px">' + d + '</span></span></label>';
       h += '<div class="tool"><h3>🪙 Coins</h3>' +

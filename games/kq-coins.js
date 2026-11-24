@@ -8,8 +8,8 @@
      cost.{quiz,single,multi,olympiad}   coins to start one
      items.{"<section>/<id>"}            price for one quiz/game/subject
    Wallet: Firebase wallets/<player> { coins, earned, spent, stats, ach }.
-   Not enough coins -> "Watch a video to play" (Android rewarded video, else
-   rewarded interstitial). No video available / website -> they can play anyway
+   Not enough coins -> a friendly "Play anyway" (no reward videos: Google Play
+   Families policy does not allow rewarded ads that block play for children)
    (kids are never stuck).
 
    API: KQCoins.gate(section, id, start, onCancel)   KQCoins.earn(section, id)
@@ -240,38 +240,23 @@
   window.onRewardResult = function (token, status) { var f = pendingReward[token]; delete pendingReward[token]; if (f) f(status); };
   function inApp() { try { return typeof Android !== 'undefined' && Android && typeof Android.showRewardFor === 'function'; } catch (e) { return false; } }
 
+  /* Not enough coins. Google Play Families policy does not allow rewarded /
+     opt-in video ads in children's apps unless they can be closed after 5 s,
+     and a "watch the video to play" ad cannot. So no video here: the child
+     is told how to earn coins and can always play anyway (coins never go
+     below 0). */
   function askVideo(sec, id, p, start, onCancel) {
     css();
     var box = document.createElement('div'); box.className = 'kqc-ov';
     var have = W ? W.coins : 0;
     box.innerHTML = '<div class="kqc-card"><div class="kqc-big">🪙</div><h3>You need ' + p + ' coins</h3>' +
-      '<p>You have <b>' + have + '</b>. Finish quizzes and games to earn more!</p>' +
-      '<button class="kqc-go" data-a="video">▶️ Watch a video to play</button>' +
-      '<button class="kqc-alt" data-a="back">Not now</button><div class="kqc-msg"></div></div>';
+      '<p>You have <b>' + have + '</b>. Finish quizzes and games to earn more coins! 🌟</p>' +
+      '<button class="kqc-go" data-a="play">▶️ Play anyway</button>' +
+      '<button class="kqc-alt" data-a="back">Not now</button></div>';
     document.body.appendChild(box);
-    var msg = box.querySelector('.kqc-msg'), go = box.querySelector('[data-a=video]');
     var close = function () { box.remove(); };
     box.querySelector('[data-a=back]').onclick = function () { close(); if (onCancel) onCancel(); };
-    go.onclick = function () {
-      if (!inApp()) { close(); start(); return; }          // website: no reward videos -> play
-      go.disabled = true; go.textContent = 'Loading video…';
-      var token = 'r' + Date.now().toString(36);
-      var done = false;
-      pendingReward[token] = function (status) {
-        done = true;
-        if (status === 'earned') {                       // watched: cover the price and play
-          change(Math.max(0, p - (W ? W.coins : 0)), 'reward', null, '📺 Watched a video');
-          change(-p, 'spend', null, '▶️ ' + nice(sec, id)); close(); start();
-        } else if (status === 'none') {                  // no video right now: play anyway
-          close(); start();
-        } else {                                         // closed early
-          go.disabled = false; go.textContent = '▶️ Watch a video to play';
-          msg.textContent = 'Watch the video to the end to play 🙂';
-        }
-      };
-      try { Android.showRewardFor(token); } catch (e) { delete pendingReward[token]; close(); start(); }
-      setTimeout(function () { if (!done && pendingReward[token]) { delete pendingReward[token]; close(); start(); } }, 90000);
-    };
+    box.querySelector('[data-a=play]').onclick = function () { close(); start(); };
   }
 
   /* ---------- UI: coin chip, price tags, toasts, badges ---------- */

@@ -422,26 +422,20 @@ function kqOpenExternal(url) {
   window.location.href = url; // pop-up really blocked: use this tab
 }
 
+/* Share the app. Started only by a grown-up (behind the parent gate) through
+   the phone's own share sheet — nothing is sent automatically, no contacts
+   are read and there are no referral rewards. */
+const KQ_SHARE_TEXT = 'Looking for fun educational games for children? Discover Kids Quiz & Game! ' +
+  'Explore fun quizzes, learning activities and brain challenges.\n\nDownload here:\n' + KQ_LINKS.play;
 async function shareApp() {
-  const playStoreLink = KQ_LINKS.play;
-  const shareText = '🧠✨ Turn screen time into fun learning!\n\n' +
-    '🎮 Kids Quiz — Play, Learn & Grow\n' +
-    'Fun quizzes and mini-games made for curious kids.\n\n' +
-    '▶️ Get it on Google Play:\n' + playStoreLink + '\n\n' +
-    '📸 Follow us on Instagram for fun updates:\n' + KQ_LINKS.insta;
-
-  if (typeof Android !== "undefined" && Android.shareAppContent) {
-    Android.shareAppContent('Kids Quiz', shareText);
-    return;
-  }
-  if (typeof Android !== "undefined" && Android.shareApp) {
-    Android.shareApp();
-    return;
-  }
+  const playStoreLink = KQ_LINKS.play, shareText = KQ_SHARE_TEXT;
+  if (typeof Android !== "undefined" && Android.shareText) { Android.shareText(shareText); return; }      // native Android share sheet
+  if (typeof Android !== "undefined" && Android.shareAppContent) { Android.shareAppContent('Kids Quiz', shareText); return; }
+  if (typeof Android !== "undefined" && Android.shareApp) { Android.shareApp(); return; }
   // Phones / browsers with a native share sheet.
   if (navigator.share) {
     try {
-      await navigator.share({ title: 'Kids Quiz', text: shareText, url: playStoreLink });
+      await navigator.share({ title: 'Kids Quiz & Game', text: shareText });
       return;
     } catch (e) {
       if (e && e.name === 'AbortError') return; // user closed the sheet
@@ -598,5 +592,44 @@ function kqAskName(opts) {
     });
     var c = box.querySelector('[data-cancel]');
     if (c) c.onclick = function () { box.remove(); resolve(''); };
+  });
+}
+
+
+/* ============================================
+   PARENT GATE + PARENTS AREA
+   Google Play Families policy: links out of the app, sharing and
+   purchases must sit behind something a young child can't pass.
+   The gate asks a multiplication sum typed on a keypad (no multiple
+   choice to guess). Passing it is remembered for 5 minutes.
+   ============================================ */
+/* kqParentGate(onPass) lives in parent-gate.js (also used by the games). */
+function kqOpenParents() {
+  kqParentGate(function () {
+    const old = document.getElementById('kqParents'); if (old) old.remove();
+    const muted = (() => { try { return localStorage.getItem('kq_muted') === '1'; } catch (e) { return false; } })();
+    const w = document.createElement('div'); w.id = 'kqParents'; w.setAttribute('role', 'dialog'); w.setAttribute('aria-modal', 'true');
+    w.style.cssText = 'position:fixed;inset:0;z-index:2147483645;background:rgba(15,10,40,.55);display:flex;align-items:flex-end;justify-content:center;font-family:"Baloo 2",system-ui,sans-serif';
+    const btn = (id, ic, t, sub, bg) => '<button type="button" data-a="' + id + '" style="display:flex;align-items:center;gap:12px;width:100%;min-height:64px;border:none;border-radius:20px;padding:10px 14px;margin-top:10px;background:' + bg + ';color:#1e1b4b;font-family:inherit;text-align:left;cursor:pointer"><span style="font-size:30px">' + ic + '</span><span style="flex:1"><b style="font-size:18px;display:block;line-height:1.1">' + t + '</b><small style="color:#4b5563;font-weight:700">' + sub + '</small></span><span style="font-size:20px;color:#6b7280">›</span></button>';
+    w.innerHTML = '<div style="background:#fff;color:#1e1b4b;border-radius:28px 28px 0 0;padding:18px 16px max(18px,env(safe-area-inset-bottom));width:100%;max-width:560px;max-height:92vh;overflow-y:auto">' +
+      '<div style="display:flex;align-items:center;gap:10px"><span style="font-size:36px">👨‍👩‍👧</span><h2 style="margin:0;flex:1;font-size:24px">For parents</h2><button type="button" data-a="close" aria-label="Close" style="width:44px;height:44px;border-radius:50%;border:none;background:#f3f4f6;font-size:20px;cursor:pointer">✕</button></div>' +
+      btn('share', '📤', 'Share Kids Quiz', 'Tell other parents — opens your phone’s share menu', '#ede9fe') +
+      btn('rate', '⭐', 'Rate us on Google Play', 'Your review helps other families find us', '#fef3c7') +
+      (window.KQPlay && KQPlay.openReport ? btn('report', '📊', 'Weekly report', 'Quizzes and games your child finished', '#dcfce7') : '') +
+      btn('sound', muted ? '🔇' : '🔊', 'Sounds: ' + (muted ? 'off' : 'on'), 'Tap to turn ' + (muted ? 'on' : 'off'), '#e0f2fe') +
+      btn('privacy', '🔒', 'Privacy policy', 'What we collect and why', '#f3f4f6') +
+      '<div style="margin-top:14px;background:#f0fdf4;border-radius:18px;padding:12px 14px;font-size:14px;font-weight:600;color:#166534;line-height:1.4">' +
+      '✅ Made for children: no chat with strangers, leagues show first names only.<br>✅ Ads are child-safe (rated G) and never personalised. No rewards for watching ads.<br>✅ Sharing and links to other apps are only here, for grown-ups.</div></div>';
+    document.body.appendChild(w);
+    w.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-a]'); if (!b) { if (e.target === w) w.remove(); return; }
+      const a = b.dataset.a;
+      if (a === 'close') w.remove();
+      else if (a === 'share') shareApp();
+      else if (a === 'rate') rateApp();
+      else if (a === 'report') { w.remove(); KQPlay.openReport(); }
+      else if (a === 'privacy') kqOpenExternal('https://mayankkhandelwal1991.github.io/kidsQuiz/privacy_policy.html');
+      else if (a === 'sound') { try { localStorage.setItem('kq_muted', muted ? '0' : '1'); } catch (er) {} w.remove(); kqOpenParents(); }
+    });
   });
 }

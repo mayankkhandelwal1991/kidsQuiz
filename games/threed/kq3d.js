@@ -345,7 +345,7 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
           '<div class="k3row"><button class="k3alt" id="k3lb">' + pic('🏆', 20) + ' Top players</button><button class="k3alt" id="k3home2">🏠 Games</button></div>' +
           (shareOn() ? '<button class="k3alt" id="k3share" style="width:100%;margin-top:8px">📤 Share my score</button>' : '') + '</div>';
         show('k3over');
-        if ($('k3share')) $('k3share').onclick = function () { shareScore({ title: cfg.title, score: score, stars: stars, rec: rec, heading: o.title || (rec ? 'New record!' : 'Great try!'), lines: o.lines || [] }); };
+        if ($('k3share')) $('k3share').onclick = function () { parentGate(function () { shareScore({ title: cfg.title, score: score, stars: stars, rec: rec, heading: o.title || (rec ? 'New record!' : 'Great try!'), lines: o.lines || [] }); }); };
         $('k3again').onclick = begin;
         $('k3home2').onclick = function () { try { if (window.KQ && KQ.adBreak) KQ.adBreak('quit'); } catch (e) {} location.href = '../index.html'; };
         $('k3lb').onclick = function () { if (window.KQ && KQ.open) KQ.open('single', cfg.id, cfg.title); else location.href = ROOT + 'leaderboard.html?cat=single'; };
@@ -448,6 +448,14 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
     };
   }
 
+  /* Sharing goes through the parent gate (Google Play Families policy).
+     parent-gate.js is loaded the first time it is needed. */
+  function parentGate(fn) {
+    if (window.kqParentGate) { window.kqParentGate(fn); return; }
+    var sc = document.createElement('script'); sc.src = ROOT + 'parent-gate.js?v=20261124a';
+    sc.onload = function () { if (window.kqParentGate) window.kqParentGate(fn); };
+    document.head.appendChild(sc);
+  }
   // ---- three.js helpers
   /* Free GPU memory automatically. Games remove meshes (old road rows, coins,
      maze walls, particles ...) but never disposed their geometry, so every

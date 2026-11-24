@@ -149,6 +149,20 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 @media (prefers-reduced-motion: reduce) { .hm *, .hm *::before, .hm *::after { animation: none !important; } }
 </style>
 
+<style>
+  /* Learn & Play section cards (home) */
+  .hm-more { margin-left: auto; font-size: 14px; color: #7c3aed; text-decoration: none; font-weight: 800; }
+  .hm-learn { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0 0 6px; }
+  .hm-lc { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; padding: 10px 4px 8px; border-radius: 20px; color: #fff; text-decoration: none; background: linear-gradient(150deg, var(--a), var(--b)); box-shadow: 0 5px 0 rgba(0,0,0,.18); min-height: 104px; animation: hmLc .45s cubic-bezier(.34,1.56,.64,1) backwards; }
+  .hm-lc:nth-child(2) { animation-delay: .05s; } .hm-lc:nth-child(3) { animation-delay: .1s; } .hm-lc:nth-child(4) { animation-delay: .15s; } .hm-lc:nth-child(5) { animation-delay: .2s; }
+  @keyframes hmLc { from { transform: scale(.7); opacity: 0; } }
+  .hm-lc:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
+  .hm-lc img { width: 40px; height: 40px; }
+  .hm-lc b { font-size: 15px; line-height: 1.05; }
+  .hm-lc small { font-size: 11px; font-weight: 700; opacity: .95; line-height: 1.1; }
+  @media (max-width: 380px) { .hm-learn { grid-template-columns: repeat(3, 1fr); } }
+  .hm-chip.c-parents { background: #ede9fe; }
+</style>
 </head>
 <body class="pg-home">
 
@@ -188,7 +202,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
     <main class="hm-body">
       <div class="pf-stats hm-stats" id="pfStats"></div>
 
-      <div class="hm-h"><img src="images/emoji/1f3ae.svg" alt=""> Let’s play!</div>
+      <div class="hm-h"><img src="images/emoji/1f3ae.svg" alt=""> Let’s Learn &amp; Play!</div>
       <div class="hm-grid">
         <button type="button" class="hm-tile t-quiz" onclick="openQuizFlow()">
           <span class="hm-art"><img src="images/emoji/1f3af.svg" alt=""><i class="a2"><img src="images/emoji/1f4da.svg" alt=""></i></span>
@@ -213,6 +227,15 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
         </button>
       </div>
 
+      <div class="hm-h"><img src="images/emoji/1f4da.svg" alt=""> Learn &amp; Play <a class="hm-more" href="learn.html">See all ›</a></div>
+      <div class="hm-learn">
+        <a class="hm-lc" href="learn.html#quiz" style="--a:#ef4444;--b:#f97316"><img src="images/emoji/1f3af.svg" alt=""><b>Quizzes</b><small>Fun questions</small></a>
+        <a class="hm-lc" href="learn.html#math" style="--a:#f59e0b;--b:#eab308"><img src="images/emoji/1f522.svg" alt=""><b>Math</b><small>+ − × ÷ games</small></a>
+        <a class="hm-lc" href="learn.html#science" style="--a:#16a34a;--b:#0d9488"><img src="images/emoji/1f52c.svg" alt=""><b>Science</b><small>Facts &amp; quizzes</small></a>
+        <a class="hm-lc" href="learn.html#brain" style="--a:#8b5cf6;--b:#6366f1"><img src="images/emoji/1f9e0.svg" alt=""><b>Brain</b><small>Patterns &amp; memory</small></a>
+        <a class="hm-lc" href="learn.html#learn" style="--a:#0ea5e9;--b:#2563eb"><img src="images/emoji/1f524.svg" alt=""><b>Words</b><small>Spell &amp; read</small></a>
+      </div>
+
       <div class="hm-h"><img src="images/emoji/2728.svg" alt=""> Fun zone</div>
       <div class="kqp-home" id="kqpHome"></div>
 
@@ -225,10 +248,11 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 
       <div class="hm-h"><img src="images/emoji/2764.svg" alt=""> Love the app?</div>
       <div class="hm-love">
-        <button type="button" class="hm-chip c-rate" onclick="rateApp()"><img src="images/emoji/2b50.svg" alt=""><span><b>Rate us</b><small>★★★★★</small></span></button>
-        <button type="button" class="hm-chip c-share" onclick="shareApp()"><img src="images/emoji/1f680.svg" alt=""><span><b>Share</b><small>Invite friends</small></span></button>
-        <button type="button" class="hm-chip c-apps" onclick="moreGames()"><img src="images/emoji/1f3ae.svg" alt=""><span><b>More apps</b><small>Google Play</small></span></button>
-        <button type="button" class="hm-chip c-insta" onclick="openInstagram()"><img src="images/emoji/1f4f7.svg" alt=""><span><b>Instagram</b><small>Follow us</small></span></button>
+        <button type="button" class="hm-chip c-parents" onclick="kqOpenParents()"><img src="images/emoji/1f46a.svg" alt=""><span><b>Parents</b><small>Share &amp; settings</small></span></button>
+        <button type="button" class="hm-chip c-rate" onclick="kqParentGate(rateApp)"><img src="images/emoji/2b50.svg" alt=""><span><b>Rate us</b><small>★★★★★</small></span></button>
+        <button type="button" class="hm-chip c-share" onclick="kqParentGate(shareApp)"><img src="images/emoji/1f680.svg" alt=""><span><b>Share</b><small>Invite friends</small></span></button>
+        <button type="button" class="hm-chip c-apps" onclick="kqParentGate(moreGames)"><img src="images/emoji/1f3ae.svg" alt=""><span><b>More apps</b><small>Google Play</small></span></button>
+        <button type="button" class="hm-chip c-insta" onclick="kqParentGate(openInstagram)"><img src="images/emoji/1f4f7.svg" alt=""><span><b>Instagram</b><small>Follow us</small></span></button>
       </div>
     </main>
 
@@ -339,7 +363,8 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   </div>
 </div>
 
-<script src="quiz-shared.js?v=20261123a" charset="utf-8"></script>
+<script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261124a" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
 <script src="quiz/kids-engine.js?v=20261120i" charset="utf-8"></script>
 <script>

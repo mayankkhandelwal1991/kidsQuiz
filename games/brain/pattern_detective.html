@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<link rel="icon" href="../../images/favicon/favicon.ico" sizes="any"><link rel="icon" href="../../images/favicon/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../../images/favicon/apple-touch-icon.png"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Pattern Detective</title>
+<style>
+.pd { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; padding: 76px 14px 18px; gap: 12px; font-family: 'Baloo 2', sans-serif; background: linear-gradient(165deg, #1e1b4b, #5b21b6 55%, #db2777); overflow-y: auto; color: #fff; }
+.pd-top { width: 100%; max-width: 460px; display: flex; align-items: center; gap: 10px; }
+.pd-dots { flex: 1; display: flex; gap: 5px; }
+.pd-dots i { flex: 1; height: 12px; border-radius: 6px; background: rgba(255,255,255,.2); }
+.pd-dots i.ok { background: #4ade80; } .pd-dots i.no { background: #f87171; } .pd-dots i.cur { background: #fde047; animation: pdBlink 1s infinite; }
+@keyframes pdBlink { 50% { opacity: .4; } }
+.pd-lvl { background: #fde047; color: #4c1d95; border-radius: 999px; padding: 2px 12px; font-weight: 800; font-size: 14px; white-space: nowrap; }
+.pd-card { width: 100%; max-width: 460px; background: rgba(255,255,255,.96); color: #1e1b4b; border-radius: 28px; padding: 16px 12px; text-align: center; box-shadow: 0 8px 0 rgba(0,0,0,.25); animation: pdIn .35s cubic-bezier(.34,1.56,.64,1); }
+@keyframes pdIn { from { transform: translateY(20px) scale(.85); opacity: 0; } }
+.pd-ask { font-size: 18px; font-weight: 800; color: #6d28d9; margin-bottom: 8px; }
+.pd-seq { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; }
+.pd-seq img { width: 44px; height: 44px; animation: pdIn .4s backwards; }
+.pd-seq .num { font-size: 32px; font-weight: 800; min-width: 40px; }
+.pd-seq .q { width: 48px; height: 48px; border-radius: 14px; border: 4px dashed #f59e0b; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; color: #f59e0b; }
+.pd-seq .txt { font-size: 18px; font-weight: 700; color: #6b7280; }
+.pd-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 460px; }
+.pd-o { border: none; border-radius: 22px; min-height: 80px; font: 800 32px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; box-shadow: 0 6px 0 rgba(0,0,0,.25); display: flex; align-items: center; justify-content: center; }
+.pd-o img { width: 52px; height: 52px; }
+.pd-o:active { transform: translateY(4px); }
+.pd-o.ok { background: #22c55e !important; animation: pdPop .35s; } .pd-o.no { background: #ef4444 !important; animation: pdShake .35s; } .pd-o.dim { opacity: .4; }
+@keyframes pdPop { 50% { transform: scale(1.12); } } @keyframes pdShake { 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+.pd-fb { min-height: 30px; font-weight: 800; font-size: 19px; text-align: center; }
+.pd-best { font-size: 13px; opacity: .85; font-weight: 700; }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261124c"></script>
+<script src="../ads.js"></script>
+<script>
+/* Pattern Detective — brain challenges: picture patterns, number patterns
+   and "goes with" logic. 10 challenges a round; the level (Easy 1 → Hard 5)
+   goes up after 2 right in a row and down after a miss. Progress per
+   challenge type is kept on the device (kq_brain_progress). */
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = (a) => a[Math.floor(Math.random() * a.length)];
+const shuffle = (a) => a.map((v) => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
+const SETS = [['🔴', '🔵', '🟢', '🟡', '🟣'], ['🍎', '🍌', '🍇', '🍓', '🍊'], ['⭐', '🌙', '☀️', '☁️', '⚡'], ['🐶', '🐱', '🐰', '🐻', '🐸'], ['🔺', '🟦', '⚪', '🔶', '🟩']];
+// "goes with" pairs, grouped by how they go together (so every analogy is fair)
+const LINKS = [
+  { how: 'eats', pairs: [['🐰', '🥕'], ['🐒', '🍌'], ['🐭', '🧀'], ['🐼', '🎋'], ['🐝', '🌸']] },
+  { how: 'lives in', pairs: [['🐦', '🪺'], ['🐟', '🌊'], ['🐫', '🏜️'], ['🐧', '🧊'], ['🐄', '🛖']] },
+  { how: 'gives us', pairs: [['🐄', '🥛'], ['🐔', '🥚'], ['🐝', '🍯'], ['🐑', '🧶'], ['🌳', '🍎']] },
+  { how: 'goes on your', pairs: [['🧦', '🦶'], ['🧤', '✋'], ['🧢', '🧒'], ['👓', '👀']] },
+  { how: 'is used with', pairs: [['🔑', '🔒'], ['✏️', '📘'], ['🪥', '🦷'], ['☂️', '🌧️'], ['⚽', '🥅']] }
+];
+const TYPES = [
+  { id: 'pic', icon: '🔴', name: 'Picture Patterns', gen(l) {
+      const set = shuffle(pick(SETS)), unit = [['A', 'B'], ['A', 'A', 'B'], ['A', 'B', 'C'], ['A', 'A', 'B', 'B'], ['A', 'B', 'C', 'D']][l - 1].map((c) => set['ABCD'.indexOf(c)]);
+      const len = unit.length * 2 + rnd(0, unit.length - 1), seq = Array.from({ length: len }, (_, i) => unit[i % unit.length]), ans = unit[len % unit.length];
+      const opts = shuffle([ans, ...shuffle(set.filter((e) => e !== ans)).slice(0, 3)]);
+      return { ask: 'What comes next?', seq: seq.map((e) => ({ e })), ans, opts, pic: true, why: 'The pattern repeats: ' + unit.join(' ') };
+    } },
+  { id: 'num', icon: '🔢', name: 'Number Patterns', gen(l) {
+      let seq, ans, why;
+      if (l === 1) { const s = rnd(1, 10); seq = [0, 1, 2, 3].map((k) => s + k); ans = s + 4; why = 'Count on by 1'; }
+      else if (l === 2) { const d = pick([2, 5, 10]), s = d * rnd(0, 4); seq = [0, 1, 2, 3].map((k) => s + k * d); ans = s + 4 * d; why = 'Skip count by ' + d; }
+      else if (l === 3) { const d = pick([1, 2, 3, 5]), s = rnd(4, 8) * d + rnd(0, 4); seq = [0, 1, 2, 3].map((k) => s - k * d); ans = s - 4 * d; why = 'It goes down by ' + d; }
+      else if (l === 4) { const s = pick([1, 2, 3]); seq = [0, 1, 2, 3].map((k) => s * Math.pow(2, k)); ans = s * 16; why = 'It doubles each time (× 2)'; }
+      else { const a = rnd(1, 3), b = rnd(4, 6), s = rnd(1, 5); seq = [s]; for (let k = 1; k < 5; k++) seq.push(seq[k - 1] + (k % 2 ? a : b)); ans = seq[4] + a; why = 'It adds ' + a + ', then ' + b + ', then ' + a + '…'; }
+      const o = new Set([ans]); while (o.size < 4) { const d = ans + (Math.random() < 0.5 ? -1 : 1) * rnd(1, 4); if (d >= 0) o.add(d); }
+      return { ask: 'Which number comes next?', seq: seq.map((v) => ({ n: v })), ans, opts: shuffle([...o]), why };
+    } },
+  { id: 'logic', icon: '🧠', name: 'Goes With', gen(l) {
+      const g = pick(LINKS), [p1, p2] = shuffle(g.pairs).slice(0, 2), ans = p2[1];
+      // easy: wrong answers from other groups; hard: from the same group (closer thinking)
+      const pool = l <= 2 ? LINKS.filter((x) => x !== g).flatMap((x) => x.pairs.map((p) => p[1])) : g.pairs.filter((p) => p !== p2).map((p) => p[1]).concat(LINKS.filter((x) => x !== g).flatMap((x) => x.pairs.map((p) => p[1])));
+      const wrong = [...new Set(pool.filter((e) => e !== ans && e !== p1[1]))];
+      const opts = shuffle([ans, ...(l <= 2 ? shuffle(wrong) : wrong).slice(0, 3)]);
+      return { ask: p1[0] + ' goes with ' + p1[1] + '. So ' + p2[0] + ' goes with…', seq: [{ e: p1[0] }, { t: '→' }, { e: p1[1] }, { t: '&nbsp;&nbsp;' }, { e: p2[0] }, { t: '→' }], ans, opts, pic: true, why: p2[0] + ' ' + g.how + ' ' + ans };
+    } }
+];
+const COLS = ['#f43f5e', '#f59e0b', '#06b6d4', '#22c55e'];
+const ROUND = 10, LV = ['', 'Easy', 'Easy+', 'Medium', 'Hard', 'Super hard'];
+const G = KQ3D.init({
+  id: 'pattern_detective', title: 'Pattern Detective', bestKey: 'patternBest', music: true,
+  hero: ['🔍', '🔴', '🔢'], colors: ['#7c3aed', '#db2777'],
+  how: [['🔍', 'Look closely and find what comes next'], ['👆', 'Tap your answer — you find out straight away'], ['📈', 'Levels go from Easy to Super hard as you get them right'], ['⭐', '10 challenges a round — be a top detective!']],
+  scoreIcon: '🔍', stars: [60, 150, 260],
+  pick: { label: 'Pick a challenge', options: TYPES },
+  onReset: (m) => reset(m)
+});
+const box = document.createElement('div'); box.className = 'pd'; G.scene.appendChild(box);
+let type, q, n, right, level, run, score, marks, lock;
+const PKEY = 'kq_brain_progress';
+const progress = () => { try { return JSON.parse(localStorage.getItem(PKEY) || '{}'); } catch (e) { return {}; } };
+const img = (e, s) => '<img src="' + KQ3D.emojiFile(e) + '" alt="' + e + '"' + (s ? ' style="animation-delay:' + s + 's"' : '') + '>';
+function reset(t) {
+  type = t || TYPES[0]; n = 0; right = 0; level = 1; run = 0; score = 0; marks = []; G.score(0);
+  const p = progress()['pd_' + type.id];
+  box.innerHTML = '<div class="pd-top"><div class="pd-dots" id="pdD"></div><span class="pd-lvl" id="pdL"></span></div><div id="pdC"></div><div class="pd-opts" id="pdO"></div><div class="pd-fb" id="pdF"></div>' +
+    '<div class="pd-best">' + type.icon + ' ' + type.name + (p ? ' · best ' + p.best + '/' + ROUND + ' · ' + p.done + ' rounds done' : '') + '</div>';
+  next();
+}
+function dots() { document.getElementById('pdD').innerHTML = Array.from({ length: ROUND }, (_, i) => '<i class="' + (marks[i] || (i === n ? 'cur' : '')) + '"></i>').join(''); document.getElementById('pdL').textContent = '🧠 ' + LV[level]; }
+function next() {
+  q = type.gen(level); lock = false;
+  const seq = q.seq.map((s, i) => s.e ? img(s.e, i * 0.05) : s.n != null ? '<span class="num">' + s.n + '</span>' : '<span class="txt">' + s.t + '</span>').join(q.pic ? '' : '<span class="txt">,</span>');
+  document.getElementById('pdC').innerHTML = '<div class="pd-card"><div class="pd-ask">' + q.ask + '</div><div class="pd-seq">' + seq + '<span class="q">?</span></div></div>';
+  const O = document.getElementById('pdO');
+  O.innerHTML = q.opts.map((v, k) => '<button type="button" class="pd-o" data-k="' + k + '" style="background:' + COLS[k] + '">' + (q.pic ? img(v) : v) + '</button>').join('');
+  O.querySelectorAll('.pd-o').forEach((b) => b.onclick = () => answer(b, q.opts[+b.dataset.k]));
+  document.getElementById('pdF').textContent = '';
+  dots();
+}
+const PRAISE = ['Great detective work! 🕵️', 'You spotted it! 👀', 'Super brain! 🧠', 'Brilliant! 🌟', 'Well done! 👏'];
+function answer(b, v) {
+  if (G.state !== 'play' || lock) return; lock = true;
+  const ok = v === q.ans, F = document.getElementById('pdF');
+  if (ok) {
+    right++; run++; const pts = 10 * level; score += pts; G.score(score); marks[n] = 'ok'; b.classList.add('ok'); KQ3D.sfx(run >= 3 ? 'coin' : 'success');
+    F.textContent = pick(PRAISE);
+    const r = b.getBoundingClientRect(); G.pop('+' + pts, r.left + r.width / 2, r.top, '#fde047');
+    if (run % 2 === 0 && level < 5) { level++; G.pop(LV[level] + ' level! 📈', null, innerHeight * 0.3, '#fde047'); }
+  } else {
+    run = 0; marks[n] = 'no'; b.classList.add('no'); KQ3D.sfx('wrong');
+    document.querySelectorAll('.pd-o').forEach((x) => { if (q.opts[+x.dataset.k] === q.ans) x.classList.add('ok'); else if (x !== b) x.classList.add('dim'); });
+    F.textContent = 'Good try! ' + q.why;
+    if (level > 1) level--;
+  }
+  n++; dots();
+  G.later(() => { if (n >= ROUND) finish(); else next(); }, ok ? 900 : 2200);
+}
+function finish() {
+  const all = progress(), k = 'pd_' + type.id, p = all[k] || { best: 0, done: 0, lvl: 1 };
+  p.best = Math.max(p.best, right); p.done++; p.lvl = Math.max(p.lvl, level); all[k] = p;
+  try { localStorage.setItem(PKEY, JSON.stringify(all)); } catch (e) {}
+  const title = right >= 9 ? 'Top detective! ' : right >= 7 ? 'Great Job! ' : right >= 5 ? 'Good work! ' : 'Nice try! ';
+  G.over({ score, result: right >= 7 ? 'win' : right >= 4 ? 'over' : 'lose', title: title + 'You got ' + right + ' out of ' + ROUND + ' correct!', lines: [type.icon + ' ' + type.name, '🧠 Reached ' + LV[level]] });
+}
+reset(G.choice);
+</script>
+</body></html>

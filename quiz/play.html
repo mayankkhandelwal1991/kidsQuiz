@@ -214,6 +214,10 @@
   .stars3 span.on { filter: none; transform: scale(1) rotate(-8deg); }
   .stars3 span:nth-child(2).on { transform: scale(1.2) translateY(-10px); }
   .score { font-size: 22px; font-weight: 800; color: var(--muted); }
+  .cheer { font-size: 19px; font-weight: 800; color: #15803d; margin: 2px 8px 4px; line-height: 1.25; animation: cheerIn .5s cubic-bezier(.34,1.56,.64,1) .6s backwards; }
+  @keyframes cheerIn { from { transform: scale(.6); opacity: 0; } }
+  .qmeta { display: flex; justify-content: space-between; align-items: center; padding: 0 14px; margin: -2px 0 4px; font-weight: 800; font-size: 14px; color: var(--muted); }
+  .qmeta .qscore { background: #fef3c7; color: #92400e; border-radius: 999px; padding: 1px 12px; }
   .btns { display: grid; gap: 10px; margin-top: 16px; }
   .btn { border: none; border-radius: 20px; padding: 14px 16px; font-size: 18px; font-weight: 800; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: 0 5px 0 rgba(0,0,0,.18); }
   .btn.alt { background: #f1f0fb; color: var(--ink); box-shadow: 0 5px 0 #ddd6fe; }
@@ -266,7 +270,8 @@
   </div>
 </div>
 
-<script src="../quiz-shared.js?v=20261123a"></script>
+<script src="../parent-gate.js?v=20261124a"></script>
+<script src="../quiz-shared.js?v=20261124a"></script>
 <script src="../emoji-images.js?v=20261120i"></script>
 <script src="kids-engine.js?v=20261120i"></script>
 <script src="kids-sound.js?v=20261120i"></script>
@@ -641,7 +646,9 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     const bubble = (pre && q.cue)
       ? '<div class="bubble cued"><div class="cue-row"><div class="cue">' + cueHtml(q) + '</div>' + sayBtn + '</div><div class="ptext">' + img(q.prompt, 18) + '</div></div>'
       : '<div class="bubble"><span class="txt">' + promptHtml + '</span>' + sayBtn + '</div>';
+    const sc = P.results.filter((x) => x === true).length;
     let h = '<div class="screen on"><div class="pbar"><button class="round-btn" id="quitBtn" aria-label="Quit">✕</button>' + dotsHtml() + muteBtn() + '</div>' +
+      '<div class="qmeta"><span>Question ' + (P.i + 1) + ' of ' + P.qs.length + '</span><span class="qscore">⭐ Score ' + sc + '</span></div>' +
       '<div class="qwrap">' + owl() + bubble + '</div>';
     if (q.type === 'count') {
       h += '<div class="mat" id="mat">' + q.items.map((it, i) => '<button class="ci" data-i="' + i + '">' + img(it.pic, q.items.length > 7 ? 56 : 68) + '</button>').join('') + '</div>' +
@@ -747,6 +754,12 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     }, isPre(P.level) ? 1900 : 1200);
   }
 
+  // "Great Job! You got 8 out of 10 correct!" — a cheerful line for every score
+  function cheerLine(c, t) {
+    const head = c === t ? 'Perfect! 🌟' : c >= t * 0.8 ? 'Great Job! 🎉' : c >= t * 0.5 ? 'Well done! 👏' : 'Good try! 💪';
+    const tail = c === t ? ' Every answer right!' : c >= t * 0.5 ? '' : ' Practice makes you better — try again!';
+    return head + ' You got ' + c + ' out of ' + t + ' correct!' + tail;
+  }
   function showResult() {
     const P = playing;
     const total = P.qs.length;
@@ -759,11 +772,15 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
       if (window.KQ && KQ.submit) KQ.submit('quiz', P.cat + '__' + P.level + '__p' + P.paper, correct, { meta: { correct, wrong, paper: P.paper, total } });
     } catch (e) {}
     const n = paperCount(P.cat, P.level);
+    // after the last paper of a topic, "Next quiz" moves on to the next topic for this class
+    const cats = (typeof quizCategoriesFor === 'function' ? quizCategoriesFor(P.level) : []), ci = cats.findIndex((c) => c.id === P.cat);
+    const nextCat = ci !== -1 && cats.length > 1 ? cats[(ci + 1) % cats.length] : null;
     const title = stars === 3 ? 'Superstar!' : stars === 2 ? 'Great job!' : stars === 1 ? 'Good try!' : 'Keep practising!';
     let h = '<div class="screen on"><div class="result">' + owl('happy') +
       '<h2>' + title + '</h2><div class="stars3" id="st"><span>⭐</span><span>⭐</span><span>⭐</span></div>' +
       '<div class="score">' + correct + ' / ' + total + ' correct</div>' +
-      '<div class="btns">' + (P.paper < n ? '<button class="btn" id="nextP">Next paper ▶</button>' : '') +
+      '<div class="cheer">' + esc(cheerLine(correct, total)) + '</div>' +
+      '<div class="btns">' + (P.paper < n ? '<button class="btn" id="nextP">Next quiz ▶</button>' : nextCat ? '<button class="btn" id="nextC">Next quiz: ' + esc(nextCat.title) + ' ▶</button>' : '') +
       '<div class="row2"><button class="btn alt" id="again">↻ Play again</button><button class="btn alt" id="papers">📄 Papers</button></div>' +
       '<div class="row2"><button class="btn alt" id="topics">📚 Topics</button><button class="btn alt" id="board">🏆 Leaderboard</button></div></div></div>' +
       '<div class="ad-slot" id="adSlot"></div></div>';
@@ -774,6 +791,7 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     if (isPre(P.level)) setTimeout(() => speak(title + ' You got ' + correct + ' out of ' + total + '!', { raw: true, pitch: 1.3 }), 900);
     const base = '#/c/' + P.level + '/' + encodeURIComponent(P.cat);
     const nx = document.getElementById('nextP'); if (nx) nx.onclick = () => go('#/play/' + P.level + '/' + encodeURIComponent(P.cat) + '/' + (P.paper + 1));
+    const nc = document.getElementById('nextC'); if (nc) nc.onclick = () => go('#/c/' + P.level + '/' + encodeURIComponent(nextCat.id));
     document.getElementById('again').onclick = () => { playing = null; route(); };
     document.getElementById('papers').onclick = () => go(base);
     document.getElementById('topics').onclick = () => go('#/c/' + P.level);

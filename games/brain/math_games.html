@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<link rel="icon" href="../../images/favicon/favicon.ico" sizes="any"><link rel="icon" href="../../images/favicon/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../../images/favicon/apple-touch-icon.png"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Math Games</title>
+<style>
+.mg { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; padding: 76px 14px 18px; gap: 12px; font-family: 'Baloo 2', sans-serif; background: linear-gradient(170deg, #fef3c7, #fde68a 40%, #fdba74); overflow-y: auto; }
+.mg-top { width: 100%; max-width: 460px; display: flex; align-items: center; gap: 10px; }
+.mg-dots { flex: 1; display: flex; gap: 5px; }
+.mg-dots i { flex: 1; height: 12px; border-radius: 6px; background: rgba(124,45,18,.15); transition: background .3s; }
+.mg-dots i.ok { background: #22c55e; } .mg-dots i.no { background: #ef4444; } .mg-dots i.cur { background: #f59e0b; animation: mgBlink 1s infinite; }
+@keyframes mgBlink { 50% { opacity: .45; } }
+.mg-lvl { background: #7c2d12; color: #fff; border-radius: 999px; padding: 2px 12px; font-weight: 800; font-size: 14px; white-space: nowrap; }
+.mg-card { width: 100%; max-width: 460px; background: #fff; border-radius: 28px; padding: 18px 16px; text-align: center; box-shadow: 0 8px 0 rgba(124,45,18,.18); animation: mgIn .35s cubic-bezier(.34,1.56,.64,1); color: #1e1b4b; }
+@keyframes mgIn { from { transform: scale(.6) rotate(-4deg); opacity: 0; } }
+.mg-ask { font-size: 18px; font-weight: 700; color: #9a3412; margin-bottom: 4px; }
+.mg-q { font-size: 46px; font-weight: 800; line-height: 1.1; word-break: break-word; }
+.mg-q .op { color: #f59e0b; } .mg-q .gap { display: inline-block; min-width: 54px; border-bottom: 5px dashed #f59e0b; color: #f59e0b; }
+.mg-pics { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 6px; }
+.mg-pics img { width: 38px; height: 38px; animation: mgIn .4s backwards; }
+.mg-pics .sep { width: 100%; height: 0; }
+.mg-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 460px; }
+.mg-o { border: none; border-radius: 22px; min-height: 76px; padding: 8px; font: 800 30px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; box-shadow: 0 6px 0 rgba(0,0,0,.22); transition: transform .1s; }
+.mg-o.small { font-size: 22px; }
+.mg-o:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.22); }
+.mg-o.ok { background: #22c55e !important; animation: mgPop .35s; } .mg-o.no { background: #ef4444 !important; animation: mgShake .35s; } .mg-o.dim { opacity: .45; }
+@keyframes mgPop { 50% { transform: scale(1.12); } } @keyframes mgShake { 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+.mg-fb { min-height: 30px; font-weight: 800; font-size: 19px; color: #7c2d12; text-align: center; }
+.mg-fb.good { color: #15803d; } .mg-fb.bad { color: #b91c1c; }
+.mg-best { font-size: 13px; color: #9a3412; font-weight: 700; }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261124c"></script>
+<script src="../ads.js"></script>
+<script>
+/* Math Games — 10 questions per round, multiple choice, instant feedback.
+   Difficulty starts easy and goes up (level 1-5) with every 2 right answers
+   in a row; a wrong answer steps it back down.
+
+   MODULAR: every game is one entry in MODES with a gen(level) function that
+   returns { ask, q (html), ans, opts?, pics?, why }. To add a math game,
+   add an entry here — the round, scoring, feedback and progress are shared. */
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = (a) => a[Math.floor(Math.random() * a.length)];
+const PICS = ['🍎', '🍓', '⭐', '🐟', '🎈', '🍪', '🐥', '🚗', '🌼', '🦋'];
+const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+const word = (n) => n <= 20 ? WORDS[n] : TENS[Math.floor(n / 10)] + (n % 10 ? '-' + WORDS[n % 10] : '');
+const pics = (e, n) => Array.from({ length: n }, () => e);
+function near(ans, spread) {   // 3 wrong answers close to the right one (never negative)
+  const s = new Set([ans]); let guard = 0;
+  while (s.size < 4 && guard++ < 50) { const d = ans + (Math.random() < 0.5 ? -1 : 1) * rnd(1, Math.max(2, spread)); if (d >= 0) s.add(d); }
+  for (let k = 1; s.size < 4; k++) s.add(ans + k);
+  return [...s];
+}
+const MODES = [
+  { id: 'add', icon: '➕', name: 'Addition', gen(l) {
+      if (l === 1) { const a = rnd(1, 5), b = rnd(1, 4), e = pick(PICS); return { ask: 'How many ' + e + ' in all?', q: a + ' <span class="op">+</span> ' + b, pics: pics(e, a).concat(['|'], pics(e, b)), ans: a + b, why: a + ' + ' + b + ' = ' + (a + b) }; }
+      const m = [0, 0, 10, 20, 50, 99][l]; const a = rnd(2, m), b = rnd(1, m - (l < 4 ? a % 10 : 0)); return { ask: 'Add the numbers', q: a + ' <span class="op">+</span> ' + b, ans: a + b, why: a + ' + ' + b + ' = ' + (a + b) };
+    } },
+  { id: 'sub', icon: '➖', name: 'Subtraction', gen(l) {
+      if (l === 1) { const a = rnd(3, 7), b = rnd(1, a - 1), e = pick(PICS); return { ask: a + ' ' + e + ', ' + b + ' fly away. How many are left?', q: a + ' <span class="op">−</span> ' + b, pics: pics(e, a), ans: a - b, why: a + ' − ' + b + ' = ' + (a - b) }; }
+      const m = [0, 0, 10, 20, 50, 99][l]; const a = rnd(3, m), b = rnd(1, a - 1); return { ask: 'Take away', q: a + ' <span class="op">−</span> ' + b, ans: a - b, why: a + ' − ' + b + ' = ' + (a - b) };
+    } },
+  { id: 'mul', icon: '✖️', name: 'Multiplication', gen(l) {
+      if (l === 1) { const g = rnd(2, 3), n = rnd(2, 4), e = pick(PICS); const p = []; for (let i = 0; i < g; i++) { if (i) p.push('|'); p.push(...pics(e, n)); } return { ask: g + ' groups of ' + n + ' ' + e + '. How many?', q: g + ' <span class="op">×</span> ' + n, pics: p, ans: g * n, why: g + ' × ' + n + ' = ' + g * n }; }
+      const t = [0, 0, 5, 5, 10, 12][l], a = rnd(2, t), b = rnd(l < 4 ? 1 : 2, l < 3 ? 5 : 10); return { ask: 'Times table', q: a + ' <span class="op">×</span> ' + b, ans: a * b, why: a + ' × ' + b + ' = ' + a * b };
+    } },
+  { id: 'div', icon: '➗', name: 'Division', gen(l) {
+      if (l === 1) { const f = 2, each = rnd(1, 4), e = pick(['🍪', '🍬', '🍎', '🎈']); return { ask: 'Share ' + f * each + ' ' + e + ' between ' + f + ' friends. How many each?', q: (f * each) + ' <span class="op">÷</span> ' + f, pics: pics(e, f * each), ans: each, why: (f * each) + ' ÷ ' + f + ' = ' + each }; }
+      const t = [0, 0, 5, 5, 10, 12][l], b = rnd(2, t), ans = rnd(1, l < 3 ? 5 : 10); return { ask: 'Divide', q: (b * ans) + ' <span class="op">÷</span> ' + b, ans, why: (b * ans) + ' ÷ ' + b + ' = ' + ans + ' (because ' + b + ' × ' + ans + ' = ' + b * ans + ')' };
+    } },
+  { id: 'num', icon: '🔢', name: 'Numbers', gen(l) {
+      if (l === 1) { const n = rnd(1, 10), e = pick(PICS); return { ask: 'Count the ' + e, q: '?', pics: pics(e, n), ans: n, why: 'There are ' + n + ' ' + e }; }
+      if (l === 2) { const n = rnd(5, 20); return { ask: 'Which number is this?', q: '<span style="font-size:40px">' + word(n) + '</span>', ans: n, why: word(n) + ' = ' + n }; }
+      if (l === 3) { const t = rnd(1, 9), o = rnd(0, 9); return { ask: t + ' tens and ' + o + ' ones make…', q: '🧱 ' + t + ' tens + ' + o + ' ones', ans: t * 10 + o, why: t + ' tens = ' + t * 10 + ', plus ' + o + ' = ' + (t * 10 + o) }; }
+      if (l === 4) { const s = new Set(); while (s.size < 4) s.add(rnd(10, 99)); const o = [...s], big = Math.max(...o); return { ask: 'Tap the BIGGEST number', q: '🏆', ans: big, opts: o, why: big + ' is the biggest' }; }
+      const n = rnd(21, 99); return { ask: 'Which number is this?', q: '<span style="font-size:34px">' + word(n) + '</span>', ans: n, why: word(n) + ' = ' + n };
+    } },
+  { id: 'puz', icon: '🧩', name: 'Math Puzzles', gen(l) {
+      if (l <= 2) { const a = rnd(1, l === 1 ? 5 : 9), b = rnd(1, l === 1 ? 5 : 9); return { ask: 'Find the missing number', q: a + ' <span class="op">+</span> <span class="gap">?</span> = ' + (a + b), ans: b, why: a + ' + ' + b + ' = ' + (a + b) }; }
+      if (l === 3) { const st = rnd(1, 10), d = pick([2, 3, 5, 10]); const seq = [0, 1, 2, 3].map((k) => st + k * d); return { ask: 'What comes next?', q: seq.join(', ') + ', <span class="gap">?</span>', ans: st + 4 * d, why: 'It goes up by ' + d + ' each time' }; }
+      if (l === 4) { const b = rnd(2, 9), ans = rnd(2, 9); return { ask: 'Find the missing number', q: '<span class="gap">?</span> <span class="op">−</span> ' + b + ' = ' + ans, ans: ans + b, why: (ans + b) + ' − ' + b + ' = ' + ans }; }
+      const a = rnd(2, 9), b = rnd(2, 9); return { ask: 'Find the missing number', q: a + ' <span class="op">×</span> <span class="gap">?</span> = ' + a * b, ans: b, why: a + ' × ' + b + ' = ' + a * b };
+    } }
+];
+const COLS = ['#f43f5e', '#8b5cf6', '#0ea5e9', '#16a34a'];
+const ROUND = 10;
+const G = KQ3D.init({
+  id: 'math_games', title: 'Math Games', bestKey: 'mathGamesBest', music: true,
+  hero: ['➕', '🔢', '⭐'], colors: ['#f59e0b', '#ea580c'],
+  how: [['🎯', 'Pick a game: add, subtract, times, divide, numbers or puzzles'], ['👆', 'Tap the right answer — you find out straight away'], ['📈', 'Get 2 in a row right and it gets a little harder'], ['⭐', '10 questions a round — how many can you get?']],
+  scoreIcon: '⭐', stars: [60, 150, 260],
+  pick: { label: 'Pick a math game', options: MODES },
+  onReset: (m) => reset(m)
+});
+const box = document.createElement('div'); box.className = 'mg'; G.scene.appendChild(box);
+let mode, q, n, right, level, run, score, marks, lock;
+const PKEY = 'kq_math_progress';
+const progress = () => { try { return JSON.parse(localStorage.getItem(PKEY) || '{}'); } catch (e) { return {}; } };
+function reset(m) {
+  mode = m || MODES[0]; n = 0; right = 0; level = 1; run = 0; score = 0; marks = []; G.score(0);
+  const p = progress()[mode.id];
+  box.innerHTML = '<div class="mg-top"><div class="mg-dots" id="mgD"></div><span class="mg-lvl" id="mgL"></span></div>' +
+    '<div id="mgC"></div><div class="mg-opts" id="mgO"></div><div class="mg-fb" id="mgF"></div>' +
+    '<div class="mg-best">' + mode.icon + ' ' + mode.name + (p ? ' · best ' + p.best + '/' + ROUND + ' · top level ' + p.lvl : '') + '</div>';
+  next();
+}
+function dots() { document.getElementById('mgD').innerHTML = Array.from({ length: ROUND }, (_, i) => '<i class="' + (marks[i] || (i === n ? 'cur' : '')) + '"></i>').join(''); document.getElementById('mgL').textContent = '⭐ Level ' + level; }
+function next() {
+  q = mode.gen(level); lock = false;
+  const opts = (q.opts || near(q.ans, Math.max(2, Math.round(q.ans * 0.3)))).sort(() => Math.random() - 0.5);
+  let ph = '';
+  if (q.pics) ph = '<div class="mg-pics">' + q.pics.map((e, i) => e === '|' ? '<span class="sep"></span>' : '<img src="' + KQ3D.emojiFile(e) + '" alt="" style="animation-delay:' + i * 0.03 + 's">').join('') + '</div>';
+  document.getElementById('mgC').innerHTML = '<div class="mg-card"><div class="mg-ask">' + q.ask + '</div><div class="mg-q">' + q.q + '</div>' + ph + '</div>';
+  const O = document.getElementById('mgO');
+  O.innerHTML = opts.map((v, k) => '<button type="button" class="mg-o' + (String(v).length > 3 ? ' small' : '') + '" data-v="' + v + '" style="background:' + COLS[k] + '">' + v + '</button>').join('');
+  O.querySelectorAll('.mg-o').forEach((b) => b.onclick = () => answer(b, +b.dataset.v));
+  document.getElementById('mgF').textContent = ''; document.getElementById('mgF').className = 'mg-fb';
+  dots();
+}
+const PRAISE = ['Great job! 🎉', 'Super! ⭐', 'Well done! 👏', 'You got it! 🙌', 'Brilliant! 🌟', 'Awesome! 🚀'];
+function answer(b, v) {
+  if (G.state !== 'play' || lock) return; lock = true;
+  const ok = v === q.ans, F = document.getElementById('mgF');
+  if (ok) {
+    right++; run++; const pts = 10 * level; score += pts; G.score(score); marks[n] = 'ok';
+    b.classList.add('ok'); KQ3D.sfx(run >= 3 ? 'coin' : 'success');
+    F.textContent = pick(PRAISE); F.className = 'mg-fb good';
+    const r = b.getBoundingClientRect(); G.pop('+' + pts, r.left + r.width / 2, r.top, '#fde047');
+    if (run % 2 === 0 && level < 5) { level++; G.pop('Level ' + level + '! 📈', null, innerHeight * 0.3, '#fff'); }
+  } else {
+    run = 0; marks[n] = 'no'; b.classList.add('no'); KQ3D.sfx('wrong');
+    document.querySelectorAll('.mg-o').forEach((x) => { if (+x.dataset.v === q.ans) x.classList.add('ok'); else if (x !== b) x.classList.add('dim'); });
+    F.textContent = 'Good try! ' + q.why; F.className = 'mg-fb bad';
+    if (level > 1) level--;
+  }
+  n++; dots();
+  G.later(() => { if (n >= ROUND) finish(); else next(); }, ok ? 900 : 2200);
+}
+function finish() {
+  const all = progress(), p = all[mode.id] || { best: 0, lvl: 1, rounds: 0 };
+  p.best = Math.max(p.best, right); p.lvl = Math.max(p.lvl, level); p.rounds = (p.rounds || 0) + 1; all[mode.id] = p;
+  try { localStorage.setItem(PKEY, JSON.stringify(all)); } catch (e) {}
+  const title = right >= 9 ? 'Amazing! ' : right >= 7 ? 'Great Job! ' : right >= 5 ? 'Good work! ' : 'Nice try! ';
+  G.over({ score, result: right >= 7 ? 'win' : right >= 4 ? 'over' : 'lose', title: title + 'You got ' + right + ' out of ' + ROUND + ' correct!', lines: [mode.icon + ' ' + mode.name, '📈 Reached level ' + level] });
+}
+reset(G.choice);
+</script>
+</body></html>

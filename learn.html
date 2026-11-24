@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="images/favicon/favicon.ico" sizes="any"><link rel="icon" href="images/favicon/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="images/favicon/apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Learn & Play</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<!--
+  Learn & Play dashboard: every quiz subject and game the app really has,
+  grouped for young children — Quizzes, Math, Explore Science, Brain and
+  Learning games — plus "recently played". Built from:
+    • quiz subjects for the child's class   (quiz-shared.js quizCategoriesFor)
+    • the games list                        (data/games.json via KQData)
+    • recent games                          (localStorage kq_recent_games_single, same as the Game Zone)
+  Sections open with #quiz #math #science #brain #learn. Nothing here is a
+  placeholder: a card only shows when its quiz/game exists.
+-->
+<style>
+  :root { --ink: #1e1b4b; --muted: #6b7280; --bg1: #ede9fe; --bg2: #fef3c7; --card: #fff; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; min-height: 100%; }
+  body { font-family: 'Baloo 2', system-ui, sans-serif; color: var(--ink); background: linear-gradient(180deg, var(--bg1), var(--bg2) 60%, #dcfce7); padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+  img.e { vertical-align: middle; }
+  .top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 10px; padding: max(10px, env(safe-area-inset-top)) 14px 10px; background: rgba(255,255,255,.88); backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(76,29,149,.1); }
+  .ib { width: 46px; height: 46px; border-radius: 16px; border: none; background: #f5f3ff; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 3px 0 #ddd6fe; flex: 0 0 auto; }
+  .ib:active { transform: translateY(3px); box-shadow: none; }
+  .top h1 { flex: 1; margin: 0; font-size: 22px; line-height: 1.1; }
+  .top h1 small { display: block; font-size: 13px; color: var(--muted); font-weight: 700; }
+  .cls { border: none; border-radius: 999px; background: #7c3aed; color: #fff; font: 800 14px 'Baloo 2', sans-serif; padding: 8px 14px; cursor: pointer; box-shadow: 0 3px 0 #5b21b6; }
+  .hero { margin: 14px 14px 0; border-radius: 26px; padding: 16px 18px; color: #fff; background: linear-gradient(135deg, #7c3aed, #ec4899 60%, #f97316); display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 24px rgba(124,58,237,.3); overflow: hidden; position: relative; }
+  .hero h2 { margin: 0; font-size: 28px; line-height: 1.05; }
+  .hero p { margin: 4px 0 0; font-weight: 700; opacity: .95; }
+  .hero .owl { animation: bob 2.4s ease-in-out infinite; flex: 0 0 auto; }
+  @keyframes bob { 50% { transform: translateY(-6px) rotate(-4deg); } }
+  .tabs { display: flex; gap: 8px; overflow-x: auto; padding: 14px; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: 0 0 auto; border: none; border-radius: 20px; padding: 8px 14px; min-height: 52px; background: #fff; color: var(--ink); font: 800 16px 'Baloo 2', sans-serif; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 0 rgba(30,27,75,.1); }
+  .tab.on { background: var(--c, #7c3aed); color: #fff; box-shadow: 0 4px 0 rgba(0,0,0,.2); }
+  section { padding: 0 14px 6px; }
+  section h3 { display: flex; align-items: center; gap: 8px; margin: 10px 2px 8px; font-size: 21px; }
+  section h3 small { font-size: 13px; color: var(--muted); font-weight: 700; margin-left: auto; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .card { position: relative; border: none; border-radius: 24px; padding: 14px 12px 12px; color: #fff; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 4px; min-height: 172px; box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 10px 18px rgba(0,0,0,.08); animation: pop .4s cubic-bezier(.34,1.56,.64,1) backwards; font-family: inherit; }
+  .card:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.18); }
+  @keyframes pop { from { transform: scale(.85); opacity: 0; } }
+  .card .ic { width: 58px; height: 58px; border-radius: 18px; background: rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; }
+  .card b { font-size: 18px; line-height: 1.1; margin-top: 4px; }
+  .card span.d { font-size: 13px; line-height: 1.25; opacity: .95; font-weight: 600; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .card .go { align-self: flex-start; background: #fff; color: var(--ink); border-radius: 999px; padding: 2px 14px; font-weight: 800; font-size: 15px; margin-top: 6px; }
+  .card .tag { position: absolute; top: 10px; right: 10px; background: #fde047; color: #713f12; border-radius: 999px; font-size: 11px; font-weight: 800; padding: 0 8px; }
+  .row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+  .row::-webkit-scrollbar { display: none; }
+  .mini { flex: 0 0 auto; width: 104px; border: none; border-radius: 20px; background: #fff; padding: 10px 6px; display: flex; flex-direction: column; align-items: center; gap: 4px; font: 800 13px 'Baloo 2', sans-serif; color: var(--ink); cursor: pointer; box-shadow: 0 4px 0 rgba(30,27,75,.1); text-align: center; line-height: 1.1; }
+  .empty { background: rgba(255,255,255,.7); border-radius: 18px; padding: 14px; text-align: center; color: var(--muted); font-weight: 700; }
+  .sheetbg { position: fixed; inset: 0; background: rgba(15,10,40,.5); z-index: 40; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .sheetbg.on { opacity: 1; pointer-events: auto; }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; max-height: 92vh; overflow-y: auto; background: #fff; border-radius: 28px 28px 0 0; transform: translateY(105%); transition: transform .3s cubic-bezier(.2,.9,.3,1.1); padding: 0 0 max(18px, env(safe-area-inset-bottom)); max-width: 640px; margin: 0 auto; }
+  .sheet.on { transform: none; }
+  .sh-hero { padding: 18px; color: #fff; text-align: center; border-radius: 28px 28px 0 0; position: relative; }
+  .sh-hero h2 { margin: 6px 0 0; font-size: 28px; }
+  .sh-hero p { margin: 2px 0 0; font-weight: 700; }
+  .sh-x { position: absolute; top: 12px; right: 12px; width: 42px; height: 42px; border-radius: 50%; border: none; background: rgba(255,255,255,.3); color: #fff; font-size: 20px; cursor: pointer; }
+  .facts { padding: 14px 16px 4px; }
+  .fact { display: flex; gap: 12px; align-items: center; background: #f5f3ff; border-radius: 20px; padding: 12px; min-height: 96px; }
+  .fact .fi { flex: 0 0 auto; }
+  .fact p { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.3; }
+  .fnav { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+  .fnav button { width: 52px; height: 52px; border-radius: 50%; border: none; background: #ede9fe; font-size: 22px; cursor: pointer; }
+  .fdots { display: flex; gap: 6px; } .fdots i { width: 10px; height: 10px; border-radius: 50%; background: #ddd6fe; } .fdots i.on { background: #7c3aed; }
+  .acts { display: grid; gap: 10px; padding: 12px 16px; }
+  .big { border: none; border-radius: 22px; min-height: 64px; font: 800 20px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 5px 0 rgba(0,0,0,.2); }
+  .big:active { transform: translateY(4px); box-shadow: none; }
+  .big.alt { background: #f5f3ff; color: var(--ink); box-shadow: 0 5px 0 #ddd6fe; }
+  .note { text-align: center; color: var(--muted); font-size: 13px; font-weight: 700; padding: 0 16px; }
+  @media (prefers-reduced-motion: reduce) { .card, .hero .owl { animation: none; } }
+</style>
+</head>
+<body>
+<div class="top">
+  <button class="ib" id="home" aria-label="Home"><img class="e" src="images/emoji/1f3e0.svg" width="28" height="28" alt=""></button>
+  <h1>Learn &amp; Play <small id="sub">Pick something fun</small></h1>
+  <button class="cls" id="cls" aria-label="Change class"></button>
+  <button class="ib" id="parents" aria-label="For parents"><img class="e" src="images/emoji/1f46a.svg" width="28" height="28" alt=""></button>
+</div>
+
+<div class="hero">
+  <div style="flex:1"><h2>Let’s Learn &amp; Play!</h2><p id="heroTxt">Quizzes, math, science and brain games</p></div>
+  <img class="owl e" src="images/emoji/1f989.svg" width="74" height="74" alt="">
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div id="out"></div>
+
+<div class="sheetbg" id="sbg"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+
+<script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261124a" charset="utf-8"></script>
+<script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
+<script src="quiz/kids-engine.js?v=20261120i" charset="utf-8"></script>
+<script src="data/manifest.js"></script>
+<script>
+(function () {
+  'use strict';
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function emoFile(e) { const cps = []; for (const ch of String(e)) { const c = ch.codePointAt(0); if (c !== 0xfe0f) cps.push(c.toString(16)); } return 'images/emoji/' + cps.join('-') + '.svg'; }
+  const emo = (e, s) => '<img class="e" src="' + emoFile(e) + '" width="' + s + '" height="' + s + '" alt="" onerror="this.replaceWith(document.createTextNode(\'' + e + '\'))">';
+  const tap = () => { try { if (window.KQFX) KQFX.play('tap'); } catch (e) {} };
+
+  /* ---------- the child's class (same key the quiz uses) ---------- */
+  let level = 1;
+  try { const v = localStorage.getItem('kq_last_class'); if (v != null && v !== '') level = parseInt(v, 10); } catch (e) {}
+  if (!(level >= -1 && level <= VISIBLE_MAX_CLASS)) level = 1;
+  const LEVELS = (typeof quizLevels === 'function' ? quizLevels() : [0, -1, 1, 2, 3, 4, 5]).filter((l) => l <= VISIBLE_MAX_CLASS);
+  function setLevel(l) { level = l; try { localStorage.setItem('kq_last_class', String(l)); } catch (e) {} render(); }
+
+  /* ---------- sections ---------- */
+  const SECTIONS = [
+    { id: 'all', icon: '⭐', name: 'All', c: '#7c3aed' },
+    { id: 'quiz', icon: '🎯', name: 'Quizzes', c: '#ef4444', info: 'Fun questions for your class' },
+    { id: 'math', icon: '🔢', name: 'Math', c: '#f59e0b', info: 'Add, subtract, times, divide and more' },
+    { id: 'science', icon: '🔬', name: 'Explore Science', c: '#16a34a', info: 'Animals, plants, body and space' },
+    { id: 'brain', icon: '🧠', name: 'Brain Games', c: '#8b5cf6', info: 'Memory, patterns and puzzles' },
+    { id: 'learn', icon: '📚', name: 'Learning Games', c: '#0ea5e9', info: 'Words, spelling and reading' }
+  ];
+  // Which quiz subjects go where (knowledge quizzes are everything not in math/science)
+  const MATH_QUIZ = ['addsub', 'multiply', 'divide', 'mixedmath'];
+  const BRAIN_QUIZ = ['patterns', 'reasoning', 'riddles'];
+  const SCI = {
+    animals: { c: ['#f97316', '#ea580c'], intro: 'Meet amazing animals!', facts: [['🐙', 'An octopus has three hearts!'], ['🐘', 'Elephants are the biggest animals that live on land.'], ['🦁', 'A group of lions is called a pride.'], ['🦋', 'Butterflies taste things with their feet.'], ['🦒', 'A giraffe has 7 bones in its long neck — the same as you!']] },
+    plants: { c: ['#22c55e', '#15803d'], intro: 'How plants grow and help us', facts: [['☀️', 'Plants make their own food from sunlight, water and air.'], ['🌻', 'Young sunflowers turn to follow the Sun across the sky.'], ['🎋', 'Some bamboo can grow almost 1 metre in a single day!'], ['🌱', 'Roots drink water from the soil for the whole plant.'], ['🌳', 'Trees give us oxygen, the air we breathe.']] },
+    humanbody: { c: ['#ec4899', '#be185d'], intro: 'Learn about your amazing body', facts: [['❤️', 'Your heart beats about 100,000 times every day.'], ['🦴', 'Babies have about 300 bones. Grown-ups have 206.'], ['✋', 'Your skin is the biggest part of your body.'], ['🧠', 'Your brain sends messages along nerves faster than a race car!'], ['👀', 'You blink about 15 to 20 times every minute.']] },
+    space: { c: ['#4f46e5', '#1e1b4b'], intro: 'Blast off to the stars!', facts: [['☀️', 'The Sun is a star — the closest star to Earth.'], ['🪐', 'Jupiter is the biggest planet in our solar system.'], ['🌍', 'There are 8 planets that go around the Sun.'], ['🌙', 'The Moon has no air, so astronauts wear space suits.'], ['💡', 'Sunlight takes about 8 minutes to reach Earth.']] },
+    science: { c: ['#0ea5e9', '#0369a1'], intro: 'Everyday science and nature', facts: [['🧊', 'Water turns into ice when it gets as cold as 0 °C.'], ['🌈', 'A rainbow appears when sunlight shines through raindrops.'], ['🧲', 'Magnets pull things made of iron towards them.'], ['🔊', 'Sound needs air to travel — that is why space is silent.'], ['🎈', 'Hot air rises. That is how hot-air balloons fly!']] }
+  };
+  const SCI_ORDER = ['animals', 'plants', 'humanbody', 'space', 'science'];
+  const GAME_SETS = {
+    math: ['math_games', 'quick_math', 'number_order', 'sudoku_mini', 'game_2048'],
+    brain: ['pattern_detective', 'memory_match', 'odd_one_out', 'simon_says', 'color_tap', 'reaction_test', 'water_sort', 'slide_puzzle', 'hidden_objects', 'tic_tac_toe', 'connect_four'],
+    learn: ['spelling_bee', 'word_builder', 'missing_letter', 'rhyme_time', 'word_search', 'word_ladder', 'hangman', 'category_sort', 'typing_speed', 'train_the_robot'],
+    science: ['feed_monster']
+  };
+  const PAL = [['#f43f5e', '#e11d48'], ['#f59e0b', '#d97706'], ['#22c55e', '#16a34a'], ['#3b82f6', '#2563eb'], ['#a855f7', '#9333ea'], ['#06b6d4', '#0891b2'], ['#ec4899', '#db2777'], ['#f97316', '#ea580c']];
+  let GAMES = [];
+  let sec = (location.hash || '#all').slice(1);
+  if (!SECTIONS.some((s) => s.id === sec)) sec = 'all';
+
+  const short = (how) => { const m = String(how || '').match(/^[^.!?]+[.!?]?/); return m ? m[0] : ''; };
+  const quizCats = () => (typeof quizCategoriesFor === 'function' ? quizCategoriesFor(level) : []);
+  // a subject may not exist for this class: use the nearest class that has it
+  function quizLevelFor(cat) {
+    const ls = typeof quizLevels === 'function' ? quizLevels(cat).filter((l) => l <= VISIBLE_MAX_CLASS) : [level];
+    if (!ls.length || ls.indexOf(level) !== -1) return level;
+    const ord = (l) => (l === -1 ? 0.5 : l);
+    return ls.slice().sort((a, b) => Math.abs(ord(a) - ord(level)) - Math.abs(ord(b) - ord(level)))[0];
+  }
+  const quizUrl = (cat) => 'quiz/play.html#/c/' + quizLevelFor(cat) + '/' + cat;
+  const gameById = (id) => GAMES.find((g) => g.id === id);
+
+  function card(o, i) {
+    const c = o.c || PAL[i % PAL.length];
+    return '<button class="card" data-go="' + esc(o.go) + '"' + (o.game ? ' data-game="' + esc(o.game) + '"' : '') + (o.sci ? ' data-sci="' + esc(o.sci) + '"' : '') +
+      ' style="background:linear-gradient(145deg,' + c[0] + ',' + c[1] + ');animation-delay:' + (i * 0.04) + 's">' +
+      (o.tag ? '<span class="tag">' + esc(o.tag) + '</span>' : '') +
+      '<span class="ic">' + emo(o.icon, 40) + '</span><b>' + esc(o.title) + '</b><span class="d">' + esc(o.desc) + '</span><span class="go">' + (o.btn || '▶ Play') + '</span></button>';
+  }
+  const gameCards = (ids) => ids.map(gameById).filter(Boolean).map((g) => ({ icon: g.icon, title: g.title, desc: short(g.how), go: 'games/' + g.file, game: g.id, tag: g.badge && g.badge !== '3D' ? g.badge : '' }));
+  const quizCard = (c) => ({ icon: c.icon, title: c.title, desc: (c.kind === 'math' ? 'New questions every time' : 'Quiz for ' + classLabel(quizLevelFor(c.id))), go: quizUrl(c.id), btn: '▶ Start quiz' });
+
+  function sectionHtml(id) {
+    const S = SECTIONS.find((s) => s.id === id), cats = quizCats();
+    let items = [];
+    if (id === 'quiz') items = cats.filter((c) => MATH_QUIZ.indexOf(c.id) === -1 && SCI_ORDER.indexOf(c.id) === -1 && BRAIN_QUIZ.indexOf(c.id) === -1).map(quizCard);
+    else if (id === 'math') items = gameCards(GAME_SETS.math).concat(cats.filter((c) => MATH_QUIZ.indexOf(c.id) !== -1).map(quizCard));
+    else if (id === 'science') {
+      items = SCI_ORDER.filter((k) => typeof quizLevels !== 'function' || quizLevels(k).some((l) => l <= VISIBLE_MAX_CLASS)).map((k) => { const ci = getCatInfo(k) || { icon: '🔬', title: k }; return { icon: ci.icon, title: ci.title, desc: SCI[k].intro + ' · facts + quiz', go: '', sci: k, c: SCI[k].c, btn: '🔍 Explore' }; });
+      items = items.concat(gameCards(GAME_SETS.science));
+    }
+    else if (id === 'brain') items = gameCards(GAME_SETS.brain).concat(cats.filter((c) => BRAIN_QUIZ.indexOf(c.id) !== -1).map(quizCard));
+    else if (id === 'learn') items = gameCards(GAME_SETS.learn);
+    if (!items.length) return '';
+    return '<section id="s-' + id + '"><h3>' + emo(S.icon, 30) + esc(S.name) + '<small>' + items.length + '</small></h3><div class="grid">' + items.map(card).join('') + '</div></section>';
+  }
+  function recentHtml() {
+    let ids = []; try { ids = JSON.parse(localStorage.getItem('kq_recent_games_single') || '[]'); } catch (e) {}
+    const gs = ids.map(gameById).filter(Boolean).slice(0, 10);
+    if (!gs.length) return '';
+    return '<section><h3>' + emo('🕹️', 28) + 'Play again</h3><div class="row">' + gs.map((g) => '<button class="mini" data-go="games/' + esc(g.file) + '" data-game="' + esc(g.id) + '">' + emo(g.icon, 44) + esc(g.title) + '</button>').join('') + '</div></section>';
+  }
+  function render() {
+    document.getElementById('cls').textContent = '🎒 ' + classLabel(level);
+    document.getElementById('tabs').innerHTML = SECTIONS.map((s) => '<button class="tab' + (s.id === sec ? ' on' : '') + '" data-sec="' + s.id + '" style="--c:' + s.c + '">' + emo(s.icon, 26) + esc(s.name) + '</button>').join('');
+    const S = SECTIONS.find((s) => s.id === sec);
+    document.getElementById('heroTxt').textContent = sec === 'all' ? 'Quizzes, math, science and brain games' : S.info;
+    let html = sec === 'all' ? recentHtml() + ['quiz', 'math', 'science', 'brain', 'learn'].map(sectionHtml).join('') : sectionHtml(sec);
+    if (!html) html = '<section><div class="empty">' + emo('🦉', 48) + '<br>Nothing here for ' + esc(classLabel(level)) + ' yet — try another class!</div></section>';
+    document.getElementById('out').innerHTML = html;
+  }
+
+  /* ---------- Explore Science topic sheet ---------- */
+  const sheet = document.getElementById('sheet'), sbg = document.getElementById('sbg');
+  function closeSheet() { sheet.classList.remove('on'); sbg.classList.remove('on'); }
+  sbg.onclick = closeSheet;
+  function openScience(k) {
+    const t = SCI[k], ci = getCatInfo(k) || { icon: '🔬', title: k }; let i = 0;
+    const draw = () => {
+      const f = t.facts[i];
+      sheet.querySelector('#fact').innerHTML = '<div class="fact"><span class="fi">' + emo(f[0], 64) + '</span><p>' + esc(f[1]) + '</p></div>';
+      sheet.querySelector('#fdots').innerHTML = t.facts.map((_, j) => '<i class="' + (j === i ? 'on' : '') + '"></i>').join('');
+      try { if (typeof speak === 'function' && sheet.dataset.say === '1') speak(f[1]); } catch (e) {}
+    };
+    const qlv = quizLevelFor(k);
+    sheet.innerHTML = '<div class="sh-hero" style="background:linear-gradient(135deg,' + t.c[0] + ',' + t.c[1] + ')"><button class="sh-x" id="shx" aria-label="Close">✕</button>' + emo(ci.icon, 72) + '<h2>' + esc(ci.title) + '</h2><p>' + esc(t.intro) + '</p></div>' +
+      '<div class="facts"><h3 style="margin:0 0 8px">' + emo('💡', 24) + ' Did you know?</h3><div id="fact"></div>' +
+      '<div class="fnav"><button id="fprev" aria-label="Previous fact">◀</button><div class="fdots" id="fdots"></div><button id="fnext" aria-label="Next fact">▶</button></div></div>' +
+      '<div class="acts"><button class="big" id="fsay" style="background:#0ea5e9">' + emo('🔊', 28) + ' Read it to me</button>' +
+      '<button class="big" id="fquiz" style="background:linear-gradient(135deg,' + t.c[0] + ',' + t.c[1] + ')">' + emo('🎯', 28) + ' Take the ' + esc(ci.title) + ' quiz</button></div>' +
+      '<p class="note">Quiz for ' + esc(classLabel(qlv)) + '</p>';
+    sheet.querySelector('#shx').onclick = () => { tap(); closeSheet(); };
+    sheet.querySelector('#fprev').onclick = () => { tap(); i = (i + t.facts.length - 1) % t.facts.length; draw(); };
+    sheet.querySelector('#fnext').onclick = () => { tap(); i = (i + 1) % t.facts.length; draw(); };
+    sheet.querySelector('#fsay').onclick = () => { sheet.dataset.say = '1'; try { speak(t.facts[i][1]); } catch (e) {} };
+    sheet.querySelector('#fquiz').onclick = () => { location.href = quizUrl(k); };
+    sheet.dataset.say = '0'; draw();
+    sheet.scrollTop = 0; sheet.classList.add('on'); sbg.classList.add('on');
+  }
+  function openClassPicker() {
+    sheet.innerHTML = '<div class="sh-hero" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)"><button class="sh-x" id="shx" aria-label="Close">✕</button>' + emo('🎒', 64) + '<h2>Which class are you in?</h2></div>' +
+      '<div class="acts" style="grid-template-columns:1fr 1fr">' + LEVELS.map((l, k) => '<button class="big" data-l="' + l + '" style="background:' + PAL[k % PAL.length][0] + '">' + esc(classLabel(l)) + '</button>').join('') + '</div>';
+    sheet.querySelector('#shx').onclick = closeSheet;
+    sheet.querySelectorAll('[data-l]').forEach((b) => b.onclick = () => { tap(); closeSheet(); setLevel(parseInt(b.dataset.l, 10)); });
+    sheet.classList.add('on'); sbg.classList.add('on');
+  }
+
+  /* ---------- clicks ---------- */
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-sec],[data-go],[data-sci]'); if (!t) return;
+    if (t.dataset.sec) { tap(); sec = t.dataset.sec; history.replaceState(null, '', '#' + sec); render(); scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    if (t.dataset.sci) { tap(); openScience(t.dataset.sci); return; }
+    if (t.dataset.game) {   // same "recently played" + play-count lists as the Game Zone
+      try { const k = 'kq_recent_games_single', r = JSON.parse(localStorage.getItem(k) || '[]').filter((x) => x !== t.dataset.game); r.unshift(t.dataset.game); localStorage.setItem(k, JSON.stringify(r.slice(0, 12))); } catch (er) {}
+      try { const k = 'kq_plays_single', p = JSON.parse(localStorage.getItem(k) || '{}'); p[t.dataset.game] = (p[t.dataset.game] || 0) + 1; localStorage.setItem(k, JSON.stringify(p)); } catch (er) {}
+    }
+    if (t.dataset.go) { tap(); setTimeout(() => { location.href = t.dataset.go; }, 120); }
+  });
+  document.getElementById('home').onclick = () => { location.href = 'quiz-home.html'; };
+  document.getElementById('cls').onclick = openClassPicker;
+  document.getElementById('parents').onclick = () => { if (typeof kqOpenParents === 'function') kqOpenParents(); };
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet(); });
+  window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (SECTIONS.some((s) => s.id === h)) { sec = h; render(); } });
+
+  render();
+  const loaded = (d) => { GAMES = (d && d.games) || []; render(); };
+  if (window.KQData) KQData.loadGames('data/games.json').then((r) => loaded(r && r.data ? r.data : r)).catch(() => fetch('data/games.json').then((r) => r.json()).then(loaded).catch(() => {}));
+  else fetch('data/games.json').then((r) => r.json()).then(loaded).catch(() => {});
+})();
+</script>
+<script src="games/kq-leaderboard.js?v=20261124a"></script>
+</body>
+</html>

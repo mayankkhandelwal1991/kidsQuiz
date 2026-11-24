@@ -624,6 +624,28 @@
       "badge": "NEW",
       "featured": false,
       "order": 61
+    },
+    {
+      "id": "math_games",
+      "file": "brain/math_games.html",
+      "icon": "🔢",
+      "title": "Math Games",
+      "how": "Six math games in one: addition, subtraction, multiplication, division, numbers and math puzzles. 10 questions a round — it starts easy and gets harder as you get answers right!",
+      "category": "brain",
+      "badge": "NEW",
+      "featured": true,
+      "order": 62
+    },
+    {
+      "id": "pattern_detective",
+      "file": "brain/pattern_detective.html",
+      "icon": "🔍",
+      "title": "Pattern Detective",
+      "how": "Be a brain detective! Find what comes next in picture patterns and number patterns, and work out what goes with what. Levels go from Easy to Super hard.",
+      "category": "brain",
+      "badge": "NEW",
+      "featured": true,
+      "order": 63
     }
   ]
 }

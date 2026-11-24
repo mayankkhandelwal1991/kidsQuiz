@@ -155,3 +155,10 @@ changing games: `python3 PlayStoreThings/store-listing/record-gameplay.py [game 
 **History** tab: the latest 25 posts with likes and comments from Instagram, plus link clicks from
 `promo/`. Views, reach, saves and shares also need the **instagram_manage_insights** permission:
 Graph API Explorer → add it → Generate Access Token → paste the new token in ⑤ → Connection settings → Save.
+
+**Reel sound** (step ③ → 🎵 Music): 🎉 Happy pop, 🎮 Arcade or 🌈 Calm music is written by the
+Studio for each scene (no copyright issues), or use your own file (YouTube Audio Library /
+Pixabay Music), or 🔇 effects only. Instagram's trending sounds can't be added by any app —
+download the Reel and add the sound in the Instagram app. Chrome on Linux can't record AAC
+sound, so the Studio converts it with ffmpeg.wasm (`admin/vendor/ffmpeg/`, engine loaded from
+jsDelivr the first time, ~31 MB).

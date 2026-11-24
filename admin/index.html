@@ -116,6 +116,13 @@
       <p class="note" id="vidNote">A 20–25 s animated Reel: the app splash → Ollie the owl asks the question → countdown → answer → real gameplay of our games → “Play free”. If you picked a game, its own gameplay is shown first.</p>
       <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="optOwl" checked style="width:auto"> 🦉 Ollie the owl host (talks, cheers, reacts)</label>
       <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="optGames" checked style="width:auto"> 🎮 Gameplay of other games at the end</label>
+      <label>🎵 Music</label>
+      <div class="chips" id="musicPick"></div>
+      <div class="row" style="margin-top:6px"><button class="btn gray" id="musicPv">▶ Listen</button><input type="file" id="musicFile" accept="audio/*" style="display:none;flex:1"></div>
+      <p class="note" id="musicNote" style="margin:6px 0 0"></p>
+      <details style="margin-top:6px"><summary style="cursor:pointer;font-weight:800;font-size:13px">🔥 Want a trending Instagram sound?</summary>
+        <p class="note" style="margin:6px 0 0">Instagram only lets you add its trending / library songs inside the Instagram app (not from other apps, and songs found online are copyrighted). So: choose <b>🔇 Effects only</b> → Make the Reel → <b>⬇️ Download video</b> → send it to your phone → Instagram app → <b>＋ → Reel</b> → pick the video → <b>🎵 Music</b> → choose a trending sound (lower the original audio) → paste the caption (📋 in step ④) → Share.</p>
+      </details>
       <div class="row"><button class="btn ok" id="makeVid">🎬 Make the Reel</button><a class="btn gray" id="dlVid" style="display:none;text-decoration:none" download="kidsquiz-reel.mp4">⬇️ Download video</a></div>
       <p class="note">Keep this tab open while it records. You can skip this step: “Post + Reel” makes the video automatically.</p>
     </div>
@@ -725,8 +732,106 @@ async function loadClips() {   // gameplay clips listed in images/reel/clips.jso
   }
   return CLIPS;
 }
+/* ------------------------------------------------------------------ 🎵 Reel music
+   Background music written by code for each scene (no copyright problems):
+   splash jingle → hook groove → tense bass under the countdown → fanfare at the answer →
+   full upbeat groove over the gameplay → final chord. Or the admin's own music file. */
+const MUSIC = {
+  pop:    { name: '🎉 Happy pop', bpm: 112, lead: 'triangle', bass: 'triangle', pad: 'sawtooth', note: 'Bright and bouncy — good for quizzes and facts.' },
+  arcade: { name: '🎮 Arcade', bpm: 128, lead: 'square', bass: 'square', pad: 'square', note: 'Chiptune video-game music — great for game Reels.' },
+  calm:   { name: '🌈 Calm', bpm: 92, lead: 'sine', bass: 'sine', pad: 'triangle', note: 'Soft and gentle — for learning tips and stories.' },
+  own:    { name: '📁 My music file', note: 'Use music you are allowed to use: YouTube Audio Library or Pixabay Music (free, no attribution). It starts at the beginning and fades out at the end.' },
+  none:   { name: '🔇 Effects only', note: 'Only the ticks and dings. Pick this when you will add a trending sound in the Instagram app.' }
+};
+let MUSIC_STYLE = 'pop', MUSIC_BUF = null;
+function setMusic(v) {
+  MUSIC_STYLE = v;
+  chips('musicPick', Object.keys(MUSIC).map((k) => [k, MUSIC[k].name]), v, setMusic);
+  $('musicFile').style.display = v === 'own' ? '' : 'none';
+  $('musicPv').style.display = v === 'none' ? 'none' : '';
+  $('musicNote').textContent = MUSIC[v].note + (v === 'own' && MUSIC_BUF ? ' ✅ ' + MUSIC_BUF._name : '');
+}
+$('musicFile').onchange = async () => {
+  const f = $('musicFile').files[0]; if (!f) return;
+  try { const c = new AudioContext(); MUSIC_BUF = await c.decodeAudioData(await f.arrayBuffer()); MUSIC_BUF._name = f.name; c.close(); setMusic('own'); }
+  catch (e) { MUSIC_BUF = null; setStatus('Could not read that audio file. Use MP3, M4A or WAV.', 'bad'); }
+};
+let PV_AC = null;
+$('musicPv').onclick = async () => {
+  if (PV_AC) { PV_AC.close(); PV_AC = null; $('musicPv').textContent = '▶ Listen'; return; }
+  if (MUSIC_STYLE === 'own' && !MUSIC_BUF) return setStatus('Choose a music file first.', 'bad');
+  PV_AC = new AudioContext(); const ac = PV_AC; $('musicPv').textContent = '⏹ Stop';
+  const demo = [{ kind: 'splash', at: 0, d: 1.6 }, { kind: 'hook', at: 1.6, d: 2.4 }, { kind: 'post', at: 4, d: 4 }, { kind: 'answer', at: 8, d: 2.4 }, { kind: 'game', at: 10.4, d: 5 }, { kind: 'cta', at: 15.4, d: 2.6 }];
+  await addMusic(ac, ac.destination, ac.currentTime + 0.1, demo, 18);
+  setTimeout(() => { if (PV_AC === ac) { ac.close(); PV_AC = null; $('musicPv').textContent = '▶ Listen'; } }, 18500);
+};
+async function addMusic(ac, out, t0, SC, total) {
+  if (MUSIC_STYLE === 'none') return;
+  const bus = ac.createGain(); bus.gain.setValueAtTime(0.0001, t0); bus.gain.exponentialRampToValueAtTime(0.55, t0 + 0.3);
+  bus.gain.setValueAtTime(0.55, t0 + total - 1.2); bus.gain.linearRampToValueAtTime(0.0001, t0 + total); bus.connect(out);
+  if (MUSIC_STYLE === 'own') {
+    if (!MUSIC_BUF) return;
+    const src = ac.createBufferSource(); src.buffer = MUSIC_BUF; src.loop = MUSIC_BUF.duration < total; src.connect(bus); src.start(t0); src.stop(t0 + total + 0.1);
+    return;
+  }
+  const st = MUSIC[MUSIC_STYLE], beat = 60 / st.bpm;
+  const noise = ac.createBuffer(1, ac.sampleRate * 0.5, ac.sampleRate); const nd = noise.getChannelData(0); for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+  const env = (node, at, v, a, d) => { const g = ac.createGain(); g.gain.setValueAtTime(0.0001, at); g.gain.linearRampToValueAtTime(v, at + a); g.gain.exponentialRampToValueAtTime(0.0001, at + a + d); node.connect(g); g.connect(bus); return g; };
+  const tone = (at, f, d, v, type, cut) => { const o = ac.createOscillator(); o.type = type; o.frequency.value = f; let n = o; if (cut) { const l = ac.createBiquadFilter(); l.frequency.value = cut; o.connect(l); n = l; } env(n, at, v, 0.01, d); o.start(at); o.stop(at + d + 0.05); };
+  const kick = (at, v) => { const o = ac.createOscillator(); o.frequency.setValueAtTime(150, at); o.frequency.exponentialRampToValueAtTime(40, at + 0.12); env(o, at, v, 0.002, 0.16); o.start(at); o.stop(at + 0.2); };
+  const hiss = (at, v, f, d, type) => { const s = ac.createBufferSource(); s.buffer = noise; const fl = ac.createBiquadFilter(); fl.type = type; fl.frequency.value = f; s.connect(fl); env(fl, at, v, 0.002, d); s.start(at); s.stop(at + d + 0.05); };
+  const hz = (m) => 440 * Math.pow(2, (m - 69) / 12);
+  const CH = [[60, 64, 67], [67, 71, 74], [69, 72, 76], [65, 69, 72]];           // C  G  Am  F
+  const MEL = [0, 1, 2, 1, 0, 2, 1, -1, 2, 1, 0, 1, 2, -1, 1, 0];                 // chord-tone pattern, 2 bars of 8ths
+  SC.forEach((sc) => {
+    const a0 = t0 + sc.at, a1 = a0 + sc.d;
+    const firstBeat = Math.ceil((a0 - t0) / beat - 1e-6);
+    if (sc.kind === 'splash') { [60, 64, 67, 72].forEach((m, i) => tone(a0 + 0.1 + i * 0.12, hz(m + 12), 0.5, 0.12, st.lead)); return; }
+    if (sc.kind === 'cta') { tone(a0 + 0.05, hz(48), 1.8, 0.2, st.bass, 900); [60, 64, 67, 72].forEach((m) => tone(a0 + 0.05, hz(m), 2.2, 0.06, st.pad, 1800)); [72, 76, 79, 84].forEach((m, i) => tone(a0 + 0.3 + i * 0.1, hz(m), 0.6, 0.1, st.lead)); }
+    if (sc.kind === 'answer') [72, 76, 79, 84].forEach((m, i) => tone(a0 + i * 0.09, hz(m), 0.7, 0.14, st.lead));
+    for (let b = firstBeat; t0 + b * beat < a1 - 0.02; b++) {
+      const at = t0 + b * beat, bar = Math.floor(b / 4), ch = CH[bar % 4], inBar = b % 4;
+      if (sc.kind === 'cta' && at > a0 + 0.6) break;
+      if (sc.kind === 'post') {                       // tension: pulsing low bass + soft hats, no melody
+        tone(at, hz(ch[0] - 24), beat * 0.45, 0.22, st.bass, 500); tone(at + beat / 2, hz(ch[0] - 24), beat * 0.3, 0.14, st.bass, 500);
+        hiss(at + beat / 2, 0.04, 8000, 0.03, 'highpass'); continue;
+      }
+      const full = sc.kind === 'game' || sc.kind === 'intro' || sc.kind === 'answer' || sc.kind === 'cta';
+      kick(at, inBar % 2 === 0 ? 0.55 : full ? 0.25 : 0);
+      if (inBar % 2 === 1) hiss(at, full ? 0.22 : 0.14, 1800, 0.12, 'bandpass');
+      hiss(at + beat / 2, 0.06, 7500, 0.03, 'highpass'); if (full) hiss(at, 0.05, 7500, 0.03, 'highpass');
+      tone(at, hz(ch[0] - 24), beat * 0.8, 0.22, st.bass, 700);
+      if (inBar === 0) ch.forEach((m) => tone(at, hz(m), beat * 3.8, 0.035, st.pad, 1500));
+      if (full || sc.kind === 'hook') for (let e = 0; e < 2; e++) {
+        const k = MEL[((b % 8) * 2 + e) % 16]; if (k < 0) continue;
+        tone(at + e * beat / 2, hz(ch[k] + 12), beat * 0.42, full ? 0.09 : 0.06, st.lead, st.lead === 'square' ? 3500 : 0);
+      }
+    }
+  });
+}
+setMusic(MUSIC_STYLE);
+
+/* Opus → AAC with ffmpeg.wasm (Instagram needs AAC; Chrome on Linux can't record it). */
+let FF = null;
+async function toAac(blob) {
+  if (!FF) {
+    setStatus('🎵 Loading the sound converter (≈31 MB, first time only)…', 'info');
+    const { FFmpeg } = await import('./vendor/ffmpeg/index.js');
+    const ff = new FFmpeg(), base = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/esm/';
+    await ff.load({ coreURL: base + 'ffmpeg-core.js', wasmURL: base + 'ffmpeg-core.wasm' });
+    FF = ff;
+  }
+  setStatus('🎵 Converting the sound for Instagram…', 'info');
+  await FF.writeFile('in.mp4', new Uint8Array(await blob.arrayBuffer()));
+  const code = await FF.exec(['-y', '-i', 'in.mp4', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-ar', '48000', '-movflags', '+faststart', 'out.mp4']);
+  if (code !== 0) throw new Error('ffmpeg exit ' + code);
+  const data = await FF.readFile('out.mp4'); try { await FF.deleteFile('in.mp4'); await FF.deleteFile('out.mp4'); } catch (e) {}
+  return new Blob([data.buffer], { type: 'video/mp4' });
+}
+
 function vidMime() {
-  const list = ['video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1.42E028,mp4a.40.2', 'video/mp4;codecs=avc1.42E01F,mp4a.40.2', 'video/mp4;codecs=avc1', 'video/mp4'];
+  // AAC where Chrome can record it (Windows / Mac); Opus otherwise (Linux) -> converted to AAC by ffmpeg.wasm
+  const list = ['video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1.42E028,mp4a.40.2', 'video/mp4;codecs=avc1.42E01F,mp4a.40.2', 'video/mp4;codecs=avc1.640028,opus', 'video/mp4;codecs=avc1,opus', 'video/mp4;codecs=avc1', 'video/mp4'];
   for (const m of list) if (window.MediaRecorder && MediaRecorder.isTypeSupported(m)) return m;
   return null;
 }
@@ -873,23 +978,25 @@ async function makeReel() {
       if (lt < 0.12 && sc.at > 0) { x.fillStyle = 'rgba(255,255,255,' + (0.6 * (1 - lt / 0.12)) + ')'; x.fillRect(0, 0, 1080, 1920); }
     }
 
-    // sounds: whoosh at each scene, ticks in the countdown, "ding" at the answer (only if MP4 audio is supported)
-    const withAudio = /mp4a/.test(mime);
+    // sound: effects (ticks, dings) + background music made for each scene
+    const withAudio = /mp4a|opus/.test(mime);
     let ac = null, tracks = rc.captureStream(30).getVideoTracks();
     if (withAudio) {
-      ac = new AudioContext(); const dest = ac.createMediaStreamDestination(); tracks = tracks.concat(dest.stream.getAudioTracks());
+      ac = new AudioContext(); try { await ac.resume(); } catch (e) {}
+      const out = ac.createMediaStreamDestination(); tracks = tracks.concat(out.stream.getAudioTracks());
+      const comp = ac.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 4; comp.connect(out);
+      const dest = ac.createGain(); dest.gain.value = 0.9; dest.connect(comp);              // effects bus
       const beep = (at, f, d, v, type) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.type = type || 'sine'; g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(v, at + 0.01); g.gain.exponentialRampToValueAtTime(0.001, at + d); o.connect(g); g.connect(dest); o.start(at); o.stop(at + d + 0.05); };
-      const t0 = ac.currentTime + 0.05;
+      const t0 = ac.currentTime + 0.15;
       SC.forEach((sc) => {
         const at = t0 + sc.at;
-        if (sc.kind === 'splash') [523, 784, 1047].forEach((f, i) => beep(at + 0.15 + i * 0.1, f, 0.35, 0.22, 'triangle'));
-        else if (sc.kind === 'hook') { beep(at + 0.1, 660, 0.25, 0.3); beep(at + 0.3, 880, 0.3, 0.3); }
-        else if (sc.kind === 'post' && isQuiz) for (let i = 0; i < sc.d; i++) beep(at + i, i >= sc.d - 3 ? 1100 : 900, 0.08, 0.25);
-        else if (sc.kind === 'answer') [784, 988, 1319].forEach((f, i) => beep(at + i * 0.12, f, 0.5, 0.3));
-        else if (sc.kind === 'intro') [523, 659, 784, 1047].forEach((f, i) => beep(at + i * 0.08, f, 0.3, 0.22, 'triangle'));
-        else if (sc.kind === 'game') { beep(at, 300, 0.18, 0.15, 'triangle'); for (let i = 0.5; i < sc.d; i += 0.5) beep(at + i, 1250, 0.05, 0.12); }
-        else if (sc.kind === 'cta') { beep(at + 0.1, 523, 0.3, 0.25); beep(at + 0.3, 784, 0.5, 0.25); }
+        if (sc.kind === 'splash') [523, 784, 1047].forEach((f, i) => beep(at + 0.15 + i * 0.1, f, 0.35, 0.18, 'triangle'));
+        else if (sc.kind === 'hook') { beep(at + 0.1, 660, 0.25, 0.22); beep(at + 0.3, 880, 0.3, 0.22); }
+        else if (sc.kind === 'post' && isQuiz) for (let i = 0; i < sc.d; i++) beep(at + i, i >= sc.d - 3 ? 1100 : 900, 0.08, 0.2);
+        else if (sc.kind === 'answer') [784, 988, 1319].forEach((f, i) => beep(at + i * 0.12, f, 0.5, 0.25));
+        else if (sc.kind === 'game') { beep(at, 300, 0.18, 0.12, 'triangle'); for (let i = 0.5; i < sc.d; i += 0.5) beep(at + i, 1250, 0.04, 0.07); }
       });
+      await addMusic(ac, comp, t0, SC, total);
     }
     const rec = new MediaRecorder(new MediaStream(tracks), { mimeType: mime, videoBitsPerSecond: 6000000 });
     const chunks = []; rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
@@ -907,13 +1014,17 @@ async function makeReel() {
     });
     rec.stop(); await stopped; if (ac) ac.close();
     rc.remove();
-    const blob = new Blob(chunks, { type: 'video/mp4' });
+    let blob = new Blob(chunks, { type: 'video/mp4' }), soundNote = withAudio ? ', with sound' : ', silent';
+    if (/opus/.test(mime)) {
+      try { blob = await toAac(blob); }
+      catch (e) { soundNote = ', ⚠️ sound could not be converted for Instagram (' + e.message + ') — Download it and add music in the Instagram app'; }
+    }
     ownFile = new File([blob], 'kidsquiz-reel.mp4', { type: 'video/mp4' }); ownFile._key = contentKey();
     const v = $('vidPreview'); v.src = URL.createObjectURL(blob); v.style.display = 'block'; $('ownPreview').style.display = 'none';
     const dl = $('dlVid'); dl.href = v.src; dl.style.display = '';
     pvReel();
     setMedium('reel');
-    setStatus('Video ready ✅ (' + Math.round(blob.size / 1024 / 1024 * 10) / 10 + ' MB, ' + Math.round(total) + ' s' + (withAudio ? ', with sounds' : ', silent') + '). “Publish now” posts it as a Reel.', 'good');
+    setStatus('Video ready ✅ (' + Math.round(blob.size / 1024 / 1024 * 10) / 10 + ' MB, ' + Math.round(total) + ' s' + soundNote + '). “Publish now” posts it as a Reel.', 'good');
     return ownFile;
   } catch (e) { document.querySelectorAll('#reelScreen canvas').forEach((c) => c.remove()); pvReel(); throw e; }
 }

@@ -122,27 +122,58 @@ def credentials(env_name, scopes):
 
 
 def read_reports(months):
-    """Download this month's and last month's reports from the Play bucket."""
+    """Download this month's and last month's reports from the Play bucket.
+    A file that is missing (404) is skipped; no permission (403) is reported
+    in plain words instead of a traceback."""
     from google.cloud import storage
+    from google.api_core import exceptions as gex
     bucket_name = re.sub(r"^gs://", "", os.environ["PLAY_BUCKET"]).strip("/").split("/")[0]
     cred = credentials("PLAY_SA_JSON", ["https://www.googleapis.com/auth/devstorage.read_only"])
     client = storage.Client(credentials=cred, project=cred.project_id)
     bucket = client.bucket(bucket_name)
-    data, files = {}, []
+    data, files, denied = {}, [], []
+
+    def get(name):
+        try:
+            return bucket.blob(name).download_as_bytes()
+        except gex.NotFound:
+            print(f"  not there (yet): {name}")
+        except gex.Forbidden:
+            denied.append(name)
+            print(f"  no permission: {name}")
+        return None
+
     for m in months:
-        # installs overview
         name = f"stats/installs/installs_{PACKAGE}_{m}_overview.csv"
-        blob = bucket.blob(name)
-        if blob.exists():
-            merge(data, parse_installs(decode(blob.download_as_bytes())))
+        raw = get(name)
+        if raw is not None:
+            merge(data, parse_installs(decode(raw)))
             files.append(name)
         # store listing visitors: one dimension only (country), else rows would be counted twice
-        store = [b for b in client.list_blobs(bucket_name, prefix="stats/store_performance/")
-                 if PACKAGE in b.name and m in b.name and b.name.endswith(".csv")]
+        try:
+            store = [b for b in client.list_blobs(bucket_name, prefix="stats/store_performance/")
+                     if PACKAGE in b.name and m in b.name and b.name.endswith(".csv")]
+        except gex.Forbidden:
+            store = []   # listing needs a wider permission; installs still work without it
+        except gex.NotFound:
+            store = []
         store.sort(key=lambda b: (0 if "country" in b.name else 1, b.name))
         if store:
-            merge(data, parse_store(decode(store[0].download_as_bytes())))
-            files.append(store[0].name)
+            raw = get(store[0].name)
+            if raw is not None:
+                merge(data, parse_store(decode(raw)))
+                files.append(store[0].name)
+
+    if denied and not files:
+        sa = cred.service_account_email
+        print(f"""
+NO PERMISSION YET: {sa} cannot read the Play Console reports.
+  1. Play Console -> Manage account -> Users and permissions -> {sa}
+     -> ACCOUNT permissions (not only app permissions) -> tick
+     "View app information and download bulk reports (read-only)" -> Apply changes.
+  2. Google can take 24-48 hours after that before the reports can be read.
+     Then run this workflow again.""", file=sys.stderr)
+        sys.exit(2)
     return data, files
 
 

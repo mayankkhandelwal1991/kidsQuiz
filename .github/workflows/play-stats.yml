@@ -1,0 +1,34 @@
+# Daily: copy Google Play Console statistics (installs, uninstalls, store
+# listing visitors) into Firebase for admin -> Growth. Setup and secrets:
+# admin/README-admin.md -> "Automatic Play Console numbers".
+name: Play Console stats -> Firebase
+
+on:
+  schedule:
+    - cron: "30 5 * * *"     # every day 05:30 UTC (11:00 IST), after Play updates its reports
+  workflow_dispatch:          # Actions tab -> "Run workflow" to import now
+    inputs:
+      dry_run:
+        description: "Only read and print, write nothing"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet google-cloud-storage==2.18.2 google-auth==2.35.0 requests==2.32.3
+      - name: Import
+        env:
+          PLAY_SA_JSON: ${{ secrets.PLAY_SA_JSON }}
+          PLAY_BUCKET: ${{ secrets.PLAY_BUCKET }}
+          FIREBASE_SA_JSON: ${{ secrets.FIREBASE_SA_JSON }}
+        run: python tools/play-stats/import_play_stats.py ${{ inputs.dry_run && '--dry-run' || '' }}

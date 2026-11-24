@@ -473,6 +473,32 @@
     })();
   }
 
+  /* ---- growth: new devices + day-1 / day-7 retention (admin -> Growth) ----
+     Child-safe: a random device id made on this device (no name, no email,
+     no advertising id), the first day it was seen, where it runs (app or
+     web) and which days it was used. Written at most once a day.
+       growth/d/<device>/f    first day "YYYYMMDD" (written once)
+       growth/d/<device>/t    first time (ms)      (written once)
+       growth/d/<device>/s    "app" | "web"        (written once)
+       growth/d/<device>/days/<YYYYMMDD> = true */
+  function growthTick() {
+    try {
+      if (!db || window.KQ_NO_SESSION) return;
+      var d = new Date(), day = d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0");
+      if (localStorage.getItem("kq_dev_day") === day) return;
+      var id = localStorage.getItem("kq_dev");
+      if (!id || !/^[a-z0-9]{12,24}$/.test(id)) { id = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10)).slice(0, 16); localStorage.setItem("kq_dev", id); }
+      var ref = db.ref("growth/d/" + id), first = localStorage.getItem("kq_dev_first");
+      var inApp = false; try { inApp = typeof Android !== "undefined" && !!Android; } catch (e) {}
+      var w = first ? Promise.resolve() : Promise.all([
+        ref.child("f").set(day), ref.child("t").set(Date.now()), ref.child("s").set(inApp ? "app" : "web")
+      ]).then(function () { localStorage.setItem("kq_dev_first", day); }, function () { localStorage.setItem("kq_dev_first", day); });
+      w.then(function () { return ref.child("days/" + day).set(true); })
+        .then(function () { localStorage.setItem("kq_dev_day", day); }).catch(function () {});
+    } catch (e) {}
+  }
+  if (!window.KQ_NO_SESSION) ready.then(function () { setTimeout(growthTick, 1500); });
+
   /* Nodes the database rules refused to read (set by the fetchers below). */
   var denied = {};
   /* All sessions of all players (leaderboard stats). {} if rules block it. */

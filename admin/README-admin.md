@@ -162,3 +162,24 @@ Pixabay Music), or 🔇 effects only. Instagram's trending sounds can't be added
 download the Reel and add the sound in the Instagram app. Chrome on Linux can't record AAC
 sound, so the Studio converts it with ffmpeg.wasm (`admin/vendor/ffmpeg/`, engine loaded from
 jsDelivr the first time, ~31 MB).
+
+## Growth tracker (admin → 📈 Growth, `admin/growth.html`)
+
+Tracks progress towards 10,000 downloads in one place:
+
+| Metric | Where it comes from |
+|---|---|
+| New devices per day, daily active devices | The app (automatic) |
+| Day 1 / Day 7 retention, "back within 7 days" | The app (automatic), by first-day group |
+| Store listing visitors, first-time installers, uninstalls | Play Console → Statistics — type them in on the page |
+| Ad spend, paid installs → cost per install | Google Ads — type them in on the page |
+| Install conversion rate | installs ÷ listing visitors (from the typed-in numbers) |
+
+**Child-safe:** the app records only a random device id made on the device (no name,
+email or advertising id), the first day it was seen, `app`/`web`, and which days it was
+used — at most one small write a day (`games/kq-leaderboard.js` → `growthTick`).
+
+**Switch it on:** Firebase console → Realtime Database → Rules → add the `growth` block
+from `admin/firebase-rules.json` (only the admin can read; devices can only add their own
+first day and used days; typed-in numbers are admin-only) → **Publish**. Until then the
+page shows "Growth data is not switched on yet" and the app's writes are refused.

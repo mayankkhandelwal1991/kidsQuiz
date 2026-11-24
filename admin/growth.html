@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="../images/favicon/favicon.ico" sizes="any"><link rel="icon" href="../images/favicon/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Growth Tracker</title>
+<!--
+  Growth tracker (admin only): progress towards 10,000 downloads.
+    From the app (automatic, Firebase growth/d):  new devices per day, daily
+      active devices, day-1 and day-7 retention by first-day cohort.
+      Child-safe: a random device id only — no names, emails or ad ids.
+    From Play Console (typed in here, saved in Firebase growth/manual):
+      store listing visitors, first-time installers, uninstalls, ad spend
+      -> install conversion rate and cost per install.
+  Access is protected by the Firebase rules (admin account only), like the
+  other admin pages. Rules: admin/README-admin.md -> "Growth tracker".
+-->
+<style>
+  :root { --bg: #f4f3ff; --card: #fff; --ink: #1e1b4b; --muted: #6b7280; --line: #e7e5f5; --brand: #4f46e5; --ok: #059669; --bad: #dc2626; --bar: #818cf8; --bar2: #34d399; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0f0e1a; --card: #1a1830; --ink: #eceaff; --muted: #a3a1c2; --line: #2c2948; --brand: #818cf8; --ok: #34d399; --bad: #f87171; --bar: #818cf8; --bar2: #34d399; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); }
+  .bar { max-width: 1100px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .bar h1 { font-size: 18px; margin: 0; flex: 1; min-width: 160px; }
+  .bar button, button.b { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 10px; padding: 7px 12px; font: inherit; font-weight: 600; cursor: pointer; }
+  button.p { background: var(--brand); color: #fff; border-color: var(--brand); }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; display: grid; gap: 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; min-width: 0; }
+  .card h2 { margin: 0 0 4px; font-size: 17px; }
+  .muted { color: var(--muted); } .small { font-size: 13px; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+  .kpi b { display: block; font-size: 26px; line-height: 1.1; }
+  .kpi > span { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .kpi i { font-style: normal; font-size: 12px; color: var(--muted); }
+  .chart { display: flex; align-items: flex-end; gap: 3px; height: 150px; padding-top: 8px; overflow-x: auto; }
+  .chart .c { flex: 1 0 16px; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; height: 100%; }
+  .chart .c .bb { flex: 1; display: flex; align-items: flex-end; gap: 1px; }
+  .chart .c i { flex: 1; background: var(--bar); border-radius: 3px 3px 0 0; min-height: 1px; }
+  .chart .c i.n { background: var(--bar2); }
+  .chart .c small { font-size: 10px; color: var(--muted); margin-top: 3px; white-space: nowrap; text-align: center; }
+  .legend { display: flex; gap: 14px; font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: middle; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; }
+  .scroll { overflow-x: auto; }
+  .good { color: var(--ok); font-weight: 700; } .bad { color: var(--bad); font-weight: 700; }
+  form.add { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; align-items: end; margin-top: 10px; }
+  form.add label { font-size: 12px; color: var(--muted); font-weight: 600; display: grid; gap: 3px; }
+  form.add input { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 10px; padding: 8px; font: inherit; width: 100%; }
+  .center { max-width: 420px; margin: 50px auto; text-align: center; }
+  .range { display: flex; gap: 6px; }
+  .range button.on { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .tip { background: var(--bg); border-radius: 12px; padding: 10px 12px; font-size: 13px; }
+</style>
+</head>
+<body>
+<header><div class="bar"><h1>📈 Growth tracker</h1>
+  <div class="range" id="range"><button data-r="7">7 days</button><button data-r="14">14 days</button><button data-r="30" class="on">30 days</button><button data-r="90">90 days</button></div>
+  <button onclick="location.href='users.html'">👥 Players</button><button onclick="location.href='index.html'">📸 Instagram Studio</button><button id="out" hidden>Sign out</button>
+</div></header>
+<main id="app"><div class="card center"><p class="muted">Loading…</p></div></main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+(function () {
+  'use strict';
+  firebase.initializeApp({
+    apiKey: "AIzaSyB0eMyeIUtCsuMVk-8LtRQs_iwOJV3ksv8",
+    authDomain: "kidsgames-3987c.firebaseapp.com",
+    databaseURL: "https://kidsgames-3987c-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "kidsgames-3987c",
+    storageBucket: "kidsgames-3987c.appspot.com",
+    messagingSenderId: "851797718600",
+    appId: "1:851797718600:web:e990b3435751d209228a7d"
+  });
+  const auth = firebase.auth(), db = firebase.database(), $app = document.getElementById('app');
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const num = (n) => (n == null || isNaN(n)) ? '—' : Math.round(n).toLocaleString();
+  const pct = (a, b) => b ? (Math.round(a / b * 1000) / 10) + '%' : '—';
+  const money = (n) => (n == null || isNaN(n)) ? '—' : '₹' + (Math.round(n * 100) / 100).toLocaleString();
+  const key = (d) => d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+  const fromKey = (k) => new Date(+k.slice(0, 4), +k.slice(4, 6) - 1, +k.slice(6, 8));
+  const addDays = (k, n) => { const d = fromKey(k); d.setDate(d.getDate() + n); return key(d); };
+  const label = (k) => fromKey(k).toLocaleDateString([], { day: 'numeric', month: 'short' });
+  const isoDay = (k) => k.slice(0, 4) + '-' + k.slice(4, 6) + '-' + k.slice(6, 8);
+  let RANGE = 30, DEV = {}, MAN = {}, denied = false;
+
+  /* ---------- auth (same pattern as users.html: the rules are the lock) ---------- */
+  auth.getRedirectResult().catch(() => {});
+  auth.onAuthStateChanged((u) => {
+    document.getElementById('out').hidden = !u;
+    if (!u) {
+      $app.innerHTML = '<div class="card center"><div style="font-size:42px">🔐</div><h2>Admin sign-in</h2><p class="muted">Sign in with the admin Google account.</p><button class="b p" id="si">Sign in with Google</button></div>';
+      document.getElementById('si').onclick = () => { const p = new firebase.auth.GoogleAuthProvider(); p.setCustomParameters({ prompt: 'select_account' }); auth.signInWithPopup(p).catch((e) => { if (e && /popup-blocked|not-supported/.test(e.code)) auth.signInWithRedirect(p); }); };
+      return;
+    }
+    db.ref('admin/check').once('value').then(load, () => { $app.innerHTML = '<div class="card center"><div style="font-size:42px">⛔</div><h2>Not an admin</h2><p class="muted">' + esc(u.email) + '</p></div>'; });
+  });
+  document.getElementById('out').onclick = () => auth.signOut();
+  document.getElementById('range').onclick = (e) => { const b = e.target.closest('[data-r]'); if (!b) return; RANGE = +b.dataset.r; document.querySelectorAll('#range button').forEach((x) => x.classList.toggle('on', x === b)); render(); };
+
+  function load() {
+    $app.innerHTML = '<div class="card center"><p class="muted">Loading growth data…</p></div>';
+    Promise.all([
+      db.ref('growth/d').once('value').then((s) => s.val() || {}, (e) => { denied = true; return {}; }),
+      db.ref('growth/manual').once('value').then((s) => s.val() || {}, () => ({}))
+    ]).then(([d, m]) => { DEV = d; MAN = m; render(); });
+  }
+
+  /* ---------- numbers from the app ---------- */
+  function appStats() {
+    const today = key(new Date()), days = [];
+    for (let i = RANGE - 1; i >= 0; i--) days.push(addDays(today, -i));
+    const newBy = {}, actBy = {}, cohorts = {};
+    let total = 0, app = 0, web = 0;
+    Object.values(DEV).forEach((v) => {
+      if (!v || !v.f) return; total++; if (v.s === 'app') app++; else web++;
+      newBy[v.f] = (newBy[v.f] || 0) + 1;
+      const used = v.days || {};
+      Object.keys(used).forEach((k) => { actBy[k] = (actBy[k] || 0) + 1; });
+      const c = cohorts[v.f] || (cohorts[v.f] = { n: 0, d1: 0, d7: 0, w: 0 });
+      c.n++;
+      if (used[addDays(v.f, 1)]) c.d1++;
+      if (used[addDays(v.f, 7)]) c.d7++;
+      for (let i = 1; i <= 7; i++) if (used[addDays(v.f, i)]) { c.w++; break; }
+    });
+    // retention only counts cohorts old enough to have reached that day
+    let d1n = 0, d1 = 0, d7n = 0, d7 = 0;
+    days.forEach((k) => { const c = cohorts[k]; if (!c) return; if (addDays(k, 1) < today) { d1n += c.n; d1 += c.d1; } if (addDays(k, 7) < today) { d7n += c.n; d7 += c.d7; } });
+    const newIn = days.reduce((a, k) => a + (newBy[k] || 0), 0);
+    const avgDau = days.reduce((a, k) => a + (actBy[k] || 0), 0) / days.length;
+    return { days, today, newBy, actBy, cohorts, total, app, web, newIn, avgDau, d1, d1n, d7, d7n };
+  }
+  /* ---------- numbers typed in from Play Console ---------- */
+  function manualStats(days) {
+    const from = isoDay(days[0]), to = isoDay(days[days.length - 1]), t = { visitors: 0, installs: 0, uninstalls: 0, spend: 0, paid: 0, rows: 0 };
+    Object.keys(MAN).forEach((d) => { if (d < from || d > to) return; const r = MAN[d] || {}; t.rows++; ['visitors', 'installs', 'uninstalls', 'spend', 'paid'].forEach((f) => { t[f] += +r[f] || 0; }); });
+    return t;
+  }
+
+  function render() {
+    if (denied) {
+      $app.innerHTML = '<div class="card"><h2>⚠️ Growth data is not switched on yet</h2><p>Publish the <b>growth</b> rule in Firebase (Realtime Database → Rules). It is in <code>admin/firebase-rules.json</code>; the steps are in <code>admin/README-admin.md</code> → "Growth tracker". The app starts recording as soon as the rule is live.</p></div>' + manualCard();
+      bindForm(); return;
+    }
+    const A = appStats(), M = manualStats(A.days);
+    const max = Math.max(1, ...A.days.map((k) => Math.max(A.actBy[k] || 0, A.newBy[k] || 0)));
+    const goal = 10000, playInstalls = Object.values(MAN).reduce((a, r) => a + (+(r && r.installs) || 0), 0);
+    const kp = (v, l, sub) => '<div class="kpi"><b>' + v + '</b><span>' + l + '</span>' + (sub ? '<br><i>' + sub + '</i>' : '') + '</div>';
+    let h = '<div class="kpis">' +
+      kp(num(playInstalls), 'Installs typed in (all time)', '<progress max="' + goal + '" value="' + Math.min(goal, playInstalls) + '" style="width:100%"></progress> ' + pct(playInstalls, goal) + ' of 10,000') +
+      kp(num(A.newIn), 'New devices · ' + RANGE + ' days', num(A.total) + ' all time (' + num(A.app) + ' app, ' + num(A.web) + ' web)') +
+      kp(num(A.avgDau), 'Daily active devices (avg)', 'today: ' + num(A.actBy[A.today] || 0)) +
+      kp('<span class="' + (A.d1n && A.d1 / A.d1n >= 0.3 ? 'good' : A.d1n ? 'bad' : '') + '">' + pct(A.d1, A.d1n) + '</span>', 'Day 1 retention', A.d1n ? A.d1 + ' of ' + A.d1n + ' came back next day' : 'needs 2+ days of data') +
+      kp('<span class="' + (A.d7n && A.d7 / A.d7n >= 0.1 ? 'good' : A.d7n ? 'bad' : '') + '">' + pct(A.d7, A.d7n) + '</span>', 'Day 7 retention', A.d7n ? A.d7 + ' of ' + A.d7n + ' used it on day 7' : 'needs 8+ days of data') +
+      kp(pct(M.installs, M.visitors), 'Install conversion', num(M.installs) + ' installs / ' + num(M.visitors) + ' listing visitors') +
+      kp(M.paid ? money(M.spend / M.paid) : '—', 'Cost per install', money(M.spend) + ' spent · ' + num(M.paid) + ' paid installs') +
+      kp(num(M.uninstalls), 'Uninstalls · ' + RANGE + ' days', M.installs ? pct(M.uninstalls, M.installs) + ' of installs' : '') +
+      '</div>';
+    h += '<div class="card"><h2>Devices per day</h2><div class="chart">' + A.days.map((k) => {
+      const a = A.actBy[k] || 0, n = A.newBy[k] || 0;
+      return '<div class="c" title="' + label(k) + ': ' + a + ' active, ' + n + ' new"><div class="bb"><i style="height:' + (a / max * 100) + '%"></i><i class="n" style="height:' + (n / max * 100) + '%"></i></div><small>' + (A.days.length <= 31 ? label(k).split(' ')[0] : '') + '</small></div>';
+    }).join('') + '</div><div class="legend"><span><i style="background:var(--bar)"></i>Active devices</span><span><i style="background:var(--bar2)"></i>New devices</span></div></div>';
+    const rows = A.days.slice().reverse().filter((k) => A.cohorts[k]);
+    h += '<div class="card"><h2>Retention by first day</h2><p class="muted small">Of the devices first seen that day, how many came back on day 1, on day 7, and at any time in their first week.</p><div class="scroll"><table><tr><th>First day</th><th>New devices</th><th>Day 1</th><th>Day 7</th><th>Back within 7 days</th></tr>' +
+      (rows.length ? rows.map((k) => { const c = A.cohorts[k], ok1 = addDays(k, 1) < A.today, ok7 = addDays(k, 7) < A.today; return '<tr><td>' + label(k) + '</td><td>' + c.n + '</td><td>' + (ok1 ? pct(c.d1, c.n) : '…') + '</td><td>' + (ok7 ? pct(c.d7, c.n) : '…') + '</td><td>' + (ok1 ? pct(c.w, c.n) : '…') + '</td></tr>'; }).join('') : '<tr><td colspan="5" class="muted">No new devices in this range yet.</td></tr>') +
+      '</table></div></div>';
+    $app.innerHTML = h + manualCard() + tips();
+    bindForm();
+  }
+  function manualCard() {
+    const ds = Object.keys(MAN).sort().reverse().slice(0, 60);
+    const yest = new Date(); yest.setDate(yest.getDate() - 1);
+    return '<div class="card"><h2>Play Console numbers</h2><p class="muted small">Play Console → Statistics (or Store performance). Type a day’s numbers (or a whole week on its first day). Saved in Firebase <code>growth/manual</code>.</p>' +
+      '<form class="add" id="mf"><label>Date<input type="date" name="date" required value="' + isoDay(key(yest)) + '"></label>' +
+      '<label>Store listing visitors<input type="number" min="0" name="visitors"></label><label>First-time installers<input type="number" min="0" name="installs"></label>' +
+      '<label>Uninstalls<input type="number" min="0" name="uninstalls"></label><label>Ad spend (₹)<input type="number" min="0" step="0.01" name="spend"></label>' +
+      '<label>Paid installs (from ads)<input type="number" min="0" name="paid"></label><label>Note<input type="text" maxlength="80" name="note" placeholder="e.g. Diwali reel"></label>' +
+      '<button class="b p" type="submit">Save</button></form>' +
+      '<div class="scroll" style="margin-top:12px"><table><tr><th>Date</th><th>Visitors</th><th>Installs</th><th>Conversion</th><th>Uninstalls</th><th>Spend</th><th>Cost / paid install</th><th>Note</th><th></th></tr>' +
+      (ds.length ? ds.map((d) => { const r = MAN[d] || {}; return '<tr><td>' + esc(d) + '</td><td>' + num(r.visitors) + '</td><td>' + num(r.installs) + '</td><td>' + pct(+r.installs || 0, +r.visitors || 0) + '</td><td>' + num(r.uninstalls) + '</td><td>' + money(r.spend) + '</td><td>' + (r.paid ? money((+r.spend || 0) / r.paid) : '—') + '</td><td style="text-align:left">' + esc(r.note || '') + '</td><td><button class="b" data-del="' + esc(d) + '">✕</button></td></tr>'; }).join('') : '<tr><td colspan="9" class="muted">Nothing typed in yet.</td></tr>') +
+      '</table></div></div>';
+  }
+  function tips() {
+    return '<div class="card"><h2>What good looks like</h2><div class="tip">Install conversion: 25–35% is healthy for a kids education app. Day 1 retention above 30% and day 7 above 10% mean families keep using the app — aim for quality installs, not only more downloads. If conversion is low, test the icon, first screenshot and short description (Store listing experiments). If day 1 is low, look at the first screens a new child sees.</div></div>';
+  }
+  function bindForm() {
+    const f = document.getElementById('mf'); if (!f) return;
+    f.onsubmit = (e) => {
+      e.preventDefault();
+      const fd = new FormData(f), d = fd.get('date'); if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return;
+      const row = {}; ['visitors', 'installs', 'uninstalls', 'spend', 'paid'].forEach((k) => { const v = fd.get(k); if (v !== '' && v != null) row[k] = Math.max(0, +v); });
+      const note = String(fd.get('note') || '').trim(); if (note) row.note = note.slice(0, 80);
+      row.at = Date.now();
+      db.ref('growth/manual/' + d).set(row).then(() => { MAN[d] = row; render(); }, (er) => alert('Could not save: ' + er.message));
+    };
+    document.querySelectorAll('[data-del]').forEach((b) => b.onclick = () => { const d = b.dataset.del; if (!confirm('Delete the numbers for ' + d + '?')) return; db.ref('growth/manual/' + d).remove().then(() => { delete MAN[d]; render(); }); });
+  }
+})();
+</script>
+</body>
+</html>

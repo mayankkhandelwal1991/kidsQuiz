@@ -28,7 +28,7 @@ const EMOJI = { rock: '✊', paper: '✋', scissors: '✌️' };
 
 const db = firebase.database();
 const quickMatch = new QuickMatch(db, GAME_ID);
-const shell = new GameShell({ gameTitle: 'RPS Duel' });
+const shell = new GameShell({ gameTitle: 'Rock Paper Scissors' });
 const sounds = new SoundManager();
 
 const statusBar = document.getElementById('status-bar');

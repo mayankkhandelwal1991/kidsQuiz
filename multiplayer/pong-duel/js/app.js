@@ -25,25 +25,31 @@ const GAME_ID = 'pong-duel';
 const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
 
-const W = 480;
-const H = 300;
-const PADDLE_W = 10;
-const PADDLE_H = 64;
-const BALL_R = 6;
-const P1_X = 14;
-const P2_X = W - 14 - PADDLE_W;
+// Portrait table, same look as the single-player Ping Pong. World coordinates:
+// P1's paddle is at the bottom, P2's at the top. P2 sees the table turned
+// round (rotated 180°) so everyone plays from the bottom of the screen.
+const W = 300;
+const H = 480;
+const PADDLE_W = 72;   // paddle length (along x)
+const PADDLE_T = 14;   // paddle thickness
+const BALL_R = 8;
+const EDGE = 26;       // paddle distance from the table end
+const P1_TOP = H - EDGE - PADDLE_T;  // P1 (bottom) paddle front face
+const P2_BOT = EDGE + PADDLE_T;      // P2 (top) paddle front face
 const WIN_SCORE = 7;
-const BASE_SPEED = 220;
-const MAX_SPEED = 480;
-const KEYBOARD_SPEED = 320;
-const BOT_SPEED = 230;
+const BASE_SPEED = 240;
+const MAX_SPEED = 520;
+const KEYBOARD_SPEED = 360;
+const BOT_SPEED = 250;
+const SERVE_WAIT = 0.9;
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
 const BALL_SEND_INTERVAL_MS = 50;
 const PADDLE_SEND_INTERVAL_MS = 60;
 
 const db = firebase.database();
 const quickMatch = new QuickMatch(db, GAME_ID);
-const shell = new GameShell({ gameTitle: 'Pong Duel' });
+const shell = new GameShell({ gameTitle: 'Ping Pong Duel' });
 const sounds = new SoundManager();
 
 const canvas = document.getElementById('pong-canvas');
@@ -71,9 +77,10 @@ let matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
 
 let running = false;
 let lastFrameTime = 0;
-let myPaddleY = H / 2;
-let remoteOpponentPaddleY = H / 2;
-let botPaddleY = H / 2;
+let myPaddleX = W / 2;          // world x of my paddle
+let remoteOpponentPaddleX = W / 2;
+let botPaddleX = W / 2;
+let trail = [];
 let currentMode = 'human';
 let currentRoomStatus = 'waiting';
 let currentWinner = null;
@@ -90,12 +97,14 @@ let guestScores = { P1: 0, P2: 0 };
 
 const keys = {};
 
+// direction +1 = towards P1 (bottom), -1 = towards P2 (top). The ball waits a moment before the serve.
 function freshBall(direction = Math.random() < 0.5 ? 1 : -1) {
   return {
     x: W / 2,
     y: H / 2,
-    vx: direction * BASE_SPEED,
-    vy: (Math.random() * 2 - 1) * (BASE_SPEED * 0.6),
+    vx: (Math.random() * 2 - 1) * (BASE_SPEED * 0.45),
+    vy: direction * BASE_SPEED,
+    wait: SERVE_WAIT,
   };
 }
 
@@ -149,7 +158,7 @@ async function enterRoom(roomCode, nickname) {
 
   mySeat = await claimSeat(playersRef, SEATS, playerId, nickname);
   if (mySeat === 'P1' || mySeat === 'P2') {
-    await selfRef.update({ paddleY: H / 2 });
+    await selfRef.update({ paddleX: W / 2 });
   }
   setupPresence(selfRef);
 
@@ -205,8 +214,8 @@ function attachListeners() {
     playersMap = players;
     const oppositeSeat = mySeat === 'P1' ? 'P2' : 'P1';
     for (const p of Object.values(players)) {
-      if (p.seat === oppositeSeat && typeof p.paddleY === 'number') {
-        remoteOpponentPaddleY = p.paddleY;
+      if (p.seat === oppositeSeat && typeof p.paddleX === 'number') {
+        remoteOpponentPaddleX = p.paddleX;
       }
     }
     renderPlayers();
@@ -259,17 +268,19 @@ function bindControls() {
   window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
   window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
 
-  canvas.addEventListener('pointermove', (e) => {
+  const follow = (e) => {
     if (mySeat !== 'P1' && mySeat !== 'P2') return;
     const rect = canvas.getBoundingClientRect();
-    const scaleY = H / rect.height;
-    const y = (e.clientY - rect.top) * scaleY;
-    myPaddleY = clamp(y, PADDLE_H / 2, H - PADDLE_H / 2);
-  });
+    const sx = (e.clientX - rect.left) * (W / rect.width);
+    const x = mySeat === 'P2' ? W - sx : sx;   // P2's view is turned round
+    myPaddleX = clamp(x, PADDLE_W / 2, W - PADDLE_W / 2);
+  };
+  canvas.addEventListener('pointerdown', follow);
+  canvas.addEventListener('pointermove', follow);
 }
 
-const sendMyPaddle = throttle((y) => {
-  if (selfRef) selfRef.update({ paddleY: y });
+const sendMyPaddle = throttle((x) => {
+  if (selfRef) selfRef.update({ paddleX: Math.round(x * 10) / 10 });
 }, PADDLE_SEND_INTERVAL_MS);
 
 const sendBallState = throttle((ball, scores) => {
@@ -282,24 +293,30 @@ function loop(now) {
   lastFrameTime = now;
 
   if (mySeat === 'P1' || mySeat === 'P2') {
-    if (keys['arrowup'] || keys['w']) myPaddleY = clamp(myPaddleY - KEYBOARD_SPEED * dt, PADDLE_H / 2, H - PADDLE_H / 2);
-    if (keys['arrowdown'] || keys['s']) myPaddleY = clamp(myPaddleY + KEYBOARD_SPEED * dt, PADDLE_H / 2, H - PADDLE_H / 2);
-    sendMyPaddle(myPaddleY);
+    const flip = mySeat === 'P2' ? -1 : 1;  // ← → follow the screen, not the world
+    if (keys['arrowleft'] || keys['a']) myPaddleX = clamp(myPaddleX - flip * KEYBOARD_SPEED * dt, PADDLE_W / 2, W - PADDLE_W / 2);
+    if (keys['arrowright'] || keys['d']) myPaddleX = clamp(myPaddleX + flip * KEYBOARD_SPEED * dt, PADDLE_W / 2, W - PADDLE_W / 2);
+    sendMyPaddle(myPaddleX);
   }
 
   if (mySeat === 'P1' && hostRunning) {
     stepHostPhysics(dt);
   } else if (mySeat !== 'P1') {
-    renderBall.x = lerp(renderBall.x, targetBall.x, clamp(10 * dt, 0, 1));
-    renderBall.y = lerp(renderBall.y, targetBall.y, clamp(10 * dt, 0, 1));
+    if (Math.hypot(targetBall.x - renderBall.x, targetBall.y - renderBall.y) > 120) { renderBall.x = targetBall.x; renderBall.y = targetBall.y; } // new serve: jump
+    renderBall.x = lerp(renderBall.x, targetBall.x, clamp(12 * dt, 0, 1));
+    renderBall.y = lerp(renderBall.y, targetBall.y, clamp(12 * dt, 0, 1));
   }
 
   if (currentMode === 'bot' && mySeat === 'P1' && hostRunning) {
-    const target = hostBall.y;
-    const diff = target - botPaddleY;
+    // the Computer follows the ball when it comes its way, with a little wobble so it can be beaten
+    const target = hostBall.vy < 0 && !hostBall.wait ? hostBall.x + Math.sin(now / 420) * 24 : W / 2;
+    const diff = target - botPaddleX;
     const maxStep = BOT_SPEED * dt;
-    botPaddleY = clamp(botPaddleY + clamp(diff, -maxStep, maxStep), PADDLE_H / 2, H - PADDLE_H / 2);
+    botPaddleX = clamp(botPaddleX + clamp(diff, -maxStep, maxStep), PADDLE_W / 2, W - PADDLE_W / 2);
   }
+
+  const bp = mySeat === 'P1' ? (hostBall || { x: W / 2, y: H / 2 }) : renderBall;
+  trail.push({ x: bp.x, y: bp.y }); if (trail.length > 10) trail.shift();
 
   draw();
   requestAnimationFrame(loop);
@@ -307,41 +324,42 @@ function loop(now) {
 
 function stepHostPhysics(dt) {
   const ball = hostBall;
+  if (ball.wait > 0) { ball.wait = Math.max(0, ball.wait - dt); sendBallState(hostBall, hostScores); return; }
   ball.x += ball.vx * dt;
   ball.y += ball.vy * dt;
 
-  if (ball.y - BALL_R <= 0) { ball.y = BALL_R; ball.vy = Math.abs(ball.vy); }
-  else if (ball.y + BALL_R >= H) { ball.y = H - BALL_R; ball.vy = -Math.abs(ball.vy); }
+  if (ball.x - BALL_R <= 0) { ball.x = BALL_R; ball.vx = Math.abs(ball.vx); }
+  else if (ball.x + BALL_R >= W) { ball.x = W - BALL_R; ball.vx = -Math.abs(ball.vx); }
 
-  const p2Y = currentMode === 'bot' ? botPaddleY : remoteOpponentPaddleY;
+  const p2X = currentMode === 'bot' ? botPaddleX : remoteOpponentPaddleX;
 
-  // Left paddle (P1, the host) collision.
-  if (ball.vx < 0 && ball.x - BALL_R <= P1_X + PADDLE_W && ball.x - BALL_R >= P1_X - 6 && ball.y >= myPaddleY - PADDLE_H / 2 && ball.y <= myPaddleY + PADDLE_H / 2) {
-    const offset = (ball.y - myPaddleY) / (PADDLE_H / 2);
-    ball.vx = clamp(Math.abs(ball.vx) * 1.04, BASE_SPEED, MAX_SPEED);
-    ball.vy = offset * (BASE_SPEED * 0.9);
-    ball.x = P1_X + PADDLE_W + BALL_R;
+  // Bottom paddle (P1, the host).
+  if (ball.vy > 0 && ball.y + BALL_R >= P1_TOP && ball.y + BALL_R <= P1_TOP + PADDLE_T + 8 && Math.abs(ball.x - myPaddleX) <= PADDLE_W / 2 + BALL_R) {
+    const offset = clamp((ball.x - myPaddleX) / (PADDLE_W / 2), -1, 1);
+    ball.vy = -clamp(Math.abs(ball.vy) * 1.05, BASE_SPEED, MAX_SPEED);
+    ball.vx = offset * (BASE_SPEED * 1.1);
+    ball.y = P1_TOP - BALL_R;
     sounds.playHit();
   }
 
-  // Right paddle (P2 or bot) collision.
-  if (ball.vx > 0 && ball.x + BALL_R >= P2_X && ball.x + BALL_R <= P2_X + 6 && ball.y >= p2Y - PADDLE_H / 2 && ball.y <= p2Y + PADDLE_H / 2) {
-    const offset = (ball.y - p2Y) / (PADDLE_H / 2);
-    ball.vx = -clamp(Math.abs(ball.vx) * 1.04, BASE_SPEED, MAX_SPEED);
-    ball.vy = offset * (BASE_SPEED * 0.9);
-    ball.x = P2_X - BALL_R;
+  // Top paddle (P2 or the Computer).
+  if (ball.vy < 0 && ball.y - BALL_R <= P2_BOT && ball.y - BALL_R >= P2_BOT - PADDLE_T - 8 && Math.abs(ball.x - p2X) <= PADDLE_W / 2 + BALL_R) {
+    const offset = clamp((ball.x - p2X) / (PADDLE_W / 2), -1, 1);
+    ball.vy = clamp(Math.abs(ball.vy) * 1.05, BASE_SPEED, MAX_SPEED);
+    ball.vx = offset * (BASE_SPEED * 1.1);
+    ball.y = P2_BOT + BALL_R;
     sounds.playHit();
   }
 
   let scored = false;
-  if (ball.x < -20) {
+  if (ball.y > H + 20) {        // went past P1
     hostScores.P2 += 1;
     scored = true;
-    hostBall = freshBall(-1);
-  } else if (ball.x > W + 20) {
+    hostBall = freshBall(1);
+  } else if (ball.y < -20) {    // went past P2
     hostScores.P1 += 1;
     scored = true;
-    hostBall = freshBall(1);
+    hostBall = freshBall(-1);
   }
 
   if (scored) {
@@ -364,7 +382,7 @@ async function activateBot() {
     room.mode = 'bot';
     room.status = 'playing';
     room.players = room.players || {};
-    room.players['bot'] = { nickname: 'Computer', seat: 'P2', joinedAt: Date.now(), paddleY: H / 2 };
+    room.players['bot'] = { nickname: 'Computer', seat: 'P2', joinedAt: Date.now(), paddleX: W / 2 };
     return room;
   });
   if (txResult.committed) await quickMatch.clearIfMatches(roomRef.key);
@@ -422,42 +440,51 @@ async function handleLeave() {
 // Rendering
 // ---------------------------------------------------------------------
 
+canvas.width = W * DPR;
+canvas.height = H * DPR;
+const rr = (x, y, w, h, r) => { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); };
+
 function draw() {
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = '#1d4ed8';
-  ctx.fillRect(0, 0, W, H);
+  // table (symmetric, so it looks the same from both ends)
+  ctx.fillStyle = '#1d4ed8'; rr(0, 0, W, H, 16); ctx.fill();
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; rr(8, 8, W - 16, H - 16, 10); ctx.stroke();
+  ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(W / 2, 8); ctx.lineTo(W / 2, H - 8); ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.fillRect(0, H / 2 - 3, W, 6);
 
-  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-  ctx.setLineDash([6, 8]);
-  ctx.beginPath();
-  ctx.moveTo(W / 2, 0);
-  ctx.lineTo(W / 2, H);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  const myX = mySeat === 'P2' ? P2_X : P1_X;
-  const otherX = mySeat === 'P2' ? P1_X : P2_X;
-  const otherY = mySeat === 'P1' ? (currentMode === 'bot' ? botPaddleY : remoteOpponentPaddleY) : remoteOpponentPaddleY;
-
-  drawPaddle(myX, myPaddleY, mySeat === 'P2' ? '#ff3ec8' : '#33e5ff');
-  drawPaddle(otherX, otherY, mySeat === 'P2' ? '#33e5ff' : '#ff3ec8');
+  // everything below is drawn in world coordinates; P2 sees the table turned round
+  if (mySeat === 'P2') { ctx.translate(W, H); ctx.rotate(Math.PI); }
+  const p2X = mySeat === 'P1' ? (currentMode === 'bot' ? botPaddleX : remoteOpponentPaddleX) : (mySeat === 'P2' ? myPaddleX : remoteOpponentPaddleX);
+  const p1X = mySeat === 'P1' ? myPaddleX : remoteOpponentPaddleX;
+  const meP1 = mySeat !== 'P2';   // spectators watch from P1's end
+  drawPaddle(p1X, P1_TOP, meP1 ? '#22c55e' : '#ef4444', true);
+  drawPaddle(p2X, EDGE, meP1 ? '#ef4444' : '#22c55e', false);
 
   const ballPos = mySeat === 'P1' ? hostBall || { x: W / 2, y: H / 2 } : renderBall;
-  ctx.beginPath();
-  ctx.arc(ballPos.x, ballPos.y, BALL_R, 0, Math.PI * 2);
-  ctx.fillStyle = '#ffffff';
-  ctx.shadowColor = 'rgba(255,255,255,0.8)';
-  ctx.shadowBlur = 10;
-  ctx.fill();
-  ctx.shadowBlur = 0;
+  trail.forEach((p, i) => { ctx.globalAlpha = (i / trail.length) * 0.4; ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(p.x, p.y, BALL_R * (i / trail.length), 0, Math.PI * 2); ctx.fill(); });
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.ellipse(ballPos.x + 5, ballPos.y + 6, BALL_R, BALL_R * 0.6, 0, 0, Math.PI * 2); ctx.fill();
+  const g = ctx.createRadialGradient(ballPos.x - 3, ballPos.y - 3, 1, ballPos.x, ballPos.y, BALL_R);
+  g.addColorStop(0, '#fff'); g.addColorStop(1, '#fdba74');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(ballPos.x, ballPos.y, BALL_R, 0, Math.PI * 2); ctx.fill();
+
+  // score on the table while the ball waits to be served (my score first)
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const waiting = mySeat === 'P1' ? hostBall && hostBall.wait > 0 : targetBall && targetBall.wait > 0;
+  if (waiting && currentRoomStatus === 'playing') {
+    const sc = mySeat === 'P1' ? hostScores : guestScores, mine = mySeat === 'P2' ? 'P2' : 'P1', other = mine === 'P1' ? 'P2' : 'P1';
+    ctx.font = '800 30px "Baloo 2", system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#fff';
+    ctx.fillText(((sc && sc[mine]) || 0) + ' – ' + ((sc && sc[other]) || 0), W / 2, H / 2 + 40);
+  }
 }
 
-function drawPaddle(x, y, color) {
-  ctx.fillStyle = color;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 12;
-  ctx.fillRect(x, y - PADDLE_H / 2, PADDLE_W, PADDLE_H);
-  ctx.shadowBlur = 0;
+// y = the paddle's top edge (world). `near` = the paddle at the bottom end (its handle points down).
+function drawPaddle(x, y, color, near) {
+  ctx.fillStyle = 'rgba(0,0,0,.2)'; rr(x - PADDLE_W / 2 + 3, y + 4, PADDLE_W, PADDLE_T, 7); ctx.fill();
+  ctx.fillStyle = '#92400e'; ctx.fillRect(x - 6, near ? y + PADDLE_T - 2 : y - 22, 12, 24);
+  ctx.fillStyle = color; rr(x - PADDLE_W / 2, y, PADDLE_W, PADDLE_T, 7); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.4)'; rr(x - PADDLE_W / 2 + 6, y + 3, PADDLE_W * 0.5, 4, 2); ctx.fill();
 }
 
 function renderScoreboardAndStatus(room) {

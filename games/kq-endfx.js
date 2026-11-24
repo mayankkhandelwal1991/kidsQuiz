@@ -30,10 +30,17 @@
     var im = new Image(); im.src = EMOJI_DIR + cps.join('-') + '.svg';
     imgs[e] = im; return im;
   }
+  // SVGs are rasterised once per size into a bitmap: drawing SVG every frame is slow and flickers on Android WebView
+  var bmps = {}, DPR = Math.min(window.devicePixelRatio || 1, 2);
+  function bitmap(e, im, s) {
+    var px = s * DPR, b = px <= 48 ? 48 : px <= 96 ? 96 : px <= 160 ? 160 : px <= 256 ? 256 : 384, k = e + '@' + b;
+    if (!bmps[k]) { var c = document.createElement('canvas'); c.width = c.height = b; try { c.getContext('2d').drawImage(im, 0, 0, b, b); } catch (err) { return im; } bmps[k] = c; }
+    return bmps[k];
+  }
   function drawEmoji(g, e, x, y, s, rot) {
     var im = emojiImg(e);
     g.save(); g.translate(x, y); if (rot) g.rotate(rot);
-    if (im.complete && im.naturalWidth) g.drawImage(im, -s / 2, -s / 2, s, s);
+    if (im.complete && im.naturalWidth) g.drawImage(bitmap(e, im, s), -s / 2, -s / 2, s, s);
     else { g.font = Math.round(s * 0.85) + 'px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(e, 0, 0); }
     g.restore();
   }

@@ -20,7 +20,7 @@ const SEATS = ['R', 'Y'];
 
 const db = firebase.database();
 const quickMatch = new QuickMatch(db, GAME_ID);
-const shell = new GameShell({ gameTitle: 'Connect Four Arena' });
+const shell = new GameShell({ gameTitle: 'Four in a Row' });
 const sounds = new SoundManager();
 
 const boardEl = document.getElementById('board');

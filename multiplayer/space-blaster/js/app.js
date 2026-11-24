@@ -35,7 +35,7 @@ const TURRET_Y = H - 20;
 
 const db = firebase.database();
 const quickMatch = new QuickMatch(db, GAME_ID);
-const shell = new GameShell({ gameTitle: 'Space Blaster Duel' });
+const shell = new GameShell({ gameTitle: 'Space Shooter Duel' });
 const sounds = new SoundManager();
 
 const canvas = document.getElementById('game-canvas');

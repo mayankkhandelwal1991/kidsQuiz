@@ -12,7 +12,7 @@
 .aa-go:disabled { background: #94a3b8; box-shadow: none; }
 </style>
 </head><body>
-<script src="../threed/kq3d.js?v=20261123d"></script>
+<script src="../threed/kq3d.js?v=20261124a"></script>
 <script src="../ads.js"></script>
 <script>
 /* Ant Attack — tower defence. Place animal guards beside the path to stop the
@@ -20,7 +20,7 @@
 const GUARDS = {
   frog: { e: '🐸', name: 'Frog', cost: 30, range: 95, rate: 0.6, dmg: 1, col: '#ec4899' },
   hedgehog: { e: '🦔', name: 'Hedgehog', cost: 50, range: 70, rate: 1.4, dmg: 2, splash: 45, col: '#a16207' },
-  bee: { e: '🐝', name: 'Bee', cost: 70, range: 150, rate: 1.0, dmg: 2, col: '#eab308' }
+  bee: { e: '🐝', name: 'Bee', cost: 70, range: 120, rate: 1.0, dmg: 2, col: '#eab308' }
 };
 const BUGS = {
   ant: { hp: 3, sp: 46, seeds: 4, k: 1, body: '#7c2d12', mid: '#9a3412', dark: '#3b0d06' },
@@ -34,7 +34,7 @@ const WAVES = 8;
 const G = KQ3D.init({
   id: 'ant_attack', title: 'Ant Attack', bestKey: 'antBest', music: true,
   hero: ['🐜', '🍪', '🐸'], colors: ['#16a34a', '#a16207'],
-  how: [['🐜', 'Bugs march along the path to steal your cookies!'], ['🔥', 'Fast fire ants, tough soldier ants, leaf-cutters and the 👑 Queen!'], ['👆', 'Pick a guard below, then tap the grass to place it'], ['🌱', 'Stopping bugs earns seeds to buy more guards'], ['🍪', 'Protect your 5 cookies for 8 waves']],
+  how: [['🐜', 'Bugs march along the path to steal your cookies!'], ['🔥', 'Fast fire ants, tough soldier ants, leaf-cutters and the 👑 Queen!'], ['👆', 'Pick a guard below, then tap the grass to place it'], ['🌱', 'Stopping bugs earns seeds to buy more guards'], ['📍', 'Put guards at the bends — they reach more of the path!'], ['⏩', 'Fast forward makes the bugs faster: harder, but more ⭐'], ['🍪', 'Protect your 5 cookies for 8 waves']],
   hud: [{ id: 'seeds', icon: '🌱' }, { id: 'jar', icon: '🍪' }, { id: 'wave', icon: '🚩' }], scoreIcon: '⭐', stars: [300, 600, 900],
   onReset: () => reset()
 });
@@ -61,7 +61,7 @@ function at(d) {
   return path[path.length - 1];
 }
 function nearPath(x, y, m) { for (let d = 0; d < path.len; d += 8) { const p = at(d); if (Math.hypot(p[0] - x, p[1] - y) < m) return true; } return false; }
-function reset() { layout = Math.floor(Math.random() * LAYOUTS.length); mirror = Math.random() < 0.5; bossWave = 4 + Math.floor(Math.random() * 3); buildPath(); guards = []; bugs = []; shots = []; pops = []; seeds = 90; cookies = 5; wave = 0; waveOn = false; spawnQ = []; sel = 'frog'; score = 0; killed = 0; fx = []; corpses = []; darts = []; quills = []; G.score(0); hud(); drawShop(); }
+function reset() { layout = Math.floor(Math.random() * LAYOUTS.length); mirror = Math.random() < 0.5; bossWave = 4 + Math.floor(Math.random() * 3); buildPath(); guards = []; bugs = []; shots = []; pops = []; seeds = 80; cookies = 5; wave = 0; waveOn = false; spawnQ = []; sel = 'frog'; score = 0; killed = 0; fx = []; corpses = []; darts = []; quills = []; G.score(0); hud(); drawShop(); }
 function hud() { G.hudSet('seeds', seeds); G.hudSet('jar', cookies); G.hudSet('wave', wave + '/' + WAVES); }
 function drawShop() {
   shop.innerHTML = Object.keys(GUARDS).map((k) => { const g = GUARDS[k]; return '<button type="button" class="aa-b' + (sel === k ? ' on' : '') + (seeds < g.cost ? ' poor' : '') + '" data-k="' + k + '"><img src="' + KQ3D.emojiFile(g.e) + '" alt="">' + g.name + ' · 🌱' + g.cost + '</button>'; }).join('') +
@@ -109,7 +109,12 @@ G.scene.addEventListener('pointerdown', (e) => {
   if (nearPath(x, y, 34)) { KQ3D.sfx('tick'); G.pop('Not on the path!', e.clientX, e.clientY - 30, '#fecaca'); return; }
   if (guards.some((q) => Math.hypot(q.x - x, q.y - y) < 46)) { KQ3D.sfx('tick'); return; }
   if (seeds < g.cost) { KQ3D.sfx('wrong'); G.pop('Need 🌱' + g.cost, e.clientX, e.clientY - 30, '#fecaca'); return; }
+  let cov = 0; for (let d = 0; d < path.len; d += 10) { const p = at(d); if (Math.hypot(p[0] - x, p[1] - y) < g.range) cov += 10; }
+  if (!cov) { KQ3D.sfx('tick'); G.pop('Too far from the path!', e.clientX, e.clientY - 30, '#fecaca'); return; }
   seeds -= g.cost; guards.push({ k: sel, x, y, px: x, py: y, cd: 0, bob: Math.random() * 6, ph: Math.random() * 6, dir: 1 }); KQ3D.sfx('pop'); hud(); drawShop();
+  // corners and bends let a guard reach more of the path
+  const tx = Math.min(Math.max(e.clientX, 100), innerWidth - 100);
+  if (cov > g.range * 2) G.pop('Great spot! ⭐', tx, e.clientY - 34, '#ffffff'); else if (cov < g.range * 1.2) G.pop('Try a bend! 📍', tx, e.clientY - 34, '#fef08a');
 });
 let last = performance.now(), spd = 1, fx = [], corpses = [], darts = [], quills = [];
 const lerpA = (a, b, t) => { let d = ((b - a + Math.PI * 3) % (Math.PI * 2)) - Math.PI; return a + d * Math.min(1, t); };
@@ -170,7 +175,7 @@ function hit(b, dmg, how) {
   if (b.dead) return;
   b.hp -= dmg; b.flash = 0.12; b.shake = 0.15;
   if (b.hp <= 0) {
-    b.dead = true; killed++; seeds += BUGS[b.t].seeds; score += BUGS[b.t].seeds * 5; G.score(score); KQ3D.sfx('pop');
+    b.dead = true; killed++; seeds += BUGS[b.t].seeds; score += BUGS[b.t].seeds * 5 * spd; G.score(score); KQ3D.sfx('pop');
     if (how !== 'eat') corpses.push({ t: b.t, x: b.x, y: b.y, ang: b.ang, l: 0.6 });
     spark(b.x, b.y, how === 'quill' ? '#a16207' : how === 'sting' ? '#facc15' : '#f472b6', 10, 120);
     fx.push({ txt: '+' + BUGS[b.t].seeds + ' 🌱', x: b.x, y: b.y - 10, vx: 0, vy: -40, l: 0.9, m: 0.9 });
@@ -178,26 +183,27 @@ function hit(b, dmg, how) {
   }
 }
 function update(dt) {
+  const bdt = dt * spd, gdt = dt * (1 + (spd - 1) * 0.7); // ⏩ bugs go full speed; guards reload a bit faster but their moves stay normal
   if (waveOn) {
-    spawnT -= dt; if (spawnQ.length && spawnT <= 0) { const en = spawnQ.shift(), t = en.t || en, hp = BUGS[t].hp * (1 + wave * 0.12); if (t === 'queen') { KQ3D.sfx('countdown'); G.pop('👑 The Queen ant is coming!', null, C.h * 0.3, '#e9d5ff'); }
+    spawnT -= bdt; if (spawnQ.length && spawnT <= 0) { const en = spawnQ.shift(), t = en.t || en, hp = BUGS[t].hp * (1 + wave * 0.2); if (t === 'queen') { KQ3D.sfx('countdown'); G.pop('👑 The Queen ant is coming!', null, C.h * 0.3, '#e9d5ff'); }
       bugs.push({ t, d: 0, hp, max: hp, x: path[0][0], y: path[0][1], ang: 0, walk: Math.random() * 6, wob: Math.random() * 6, sp: BUGS[t].sp * (1 + wave * 0.04) * waveSpd * rnd(0.9, 1.1) }); spawnT = spawnQ.length ? (spawnQ[0].gap || 0.6) : 0; }
     if (!spawnQ.length && !bugs.length) {
-      waveOn = false; const bonus = 20 + wave * 5; seeds += bonus; score += 50; G.score(score); KQ3D.sfx('levelup'); G.pop('Wave cleared! +🌱' + bonus, null, C.h * 0.3, '#bbf7d0'); hud(); drawShop();
+      waveOn = false; const bonus = 12 + wave * 4; seeds += bonus; score += 50; G.score(score); KQ3D.sfx('levelup'); G.pop('Wave cleared! +🌱' + bonus, null, C.h * 0.3, '#bbf7d0'); hud(); drawShop();
       if (wave >= WAVES) { score += cookies * 60; G.score(score); G.over({ score, result: 'win', title: 'Cookies saved! 🍪', lines: ['🐜 ' + killed + ' bugs stopped', '🍪 ' + cookies + ' cookies left'] }); return; }
     }
   }
   bugs.forEach((b) => {
     const v = b.sp;
-    b.d += v * dt; b.walk += v * dt * 0.38; b.wob += dt * (b.t === 'fly' ? 9 : 4);
+    b.d += v * bdt; b.walk += v * bdt * 0.38; b.wob += bdt * (b.t === 'fly' ? 9 : 4);
     const p = at(b.d), nx = at(b.d + 16), want = Math.atan2(nx[1] - p[1], nx[0] - p[0]);
-    b.ang = b.d < 2 ? want : lerpA(b.ang, want, dt * 9);
+    b.ang = b.d < 2 ? want : lerpA(b.ang, want, bdt * 9);
     const side = Math.sin(b.wob) * (b.t === 'fly' ? 6 : 1.5);
     b.x = p[0] - Math.sin(b.ang) * side; b.y = p[1] + Math.cos(b.ang) * side;
     if (b.flash > 0) b.flash -= dt; if (b.shake > 0) b.shake -= dt;
     if (b.d >= path.len && !b.dead) { b.dead = true; cookies--; KQ3D.sfx('wrong'); G.flash('#fecaca'); hud(); if (cookies <= 0) G.over({ score, result: 'lose', title: 'The bugs got the cookies! 🐜', lines: ['🚩 Wave ' + wave, '🐜 ' + killed + ' bugs stopped'] }); }
   });
   guards.forEach((q) => {
-    const g = GUARDS[q.k]; q.bob += dt * 3; q.cd -= dt;
+    const g = GUARDS[q.k]; q.bob += dt * 3; q.cd -= gdt;
     if (q.k === 'bee') { q.ph += dt * 2.6; q.px = q.x + Math.sin(q.ph) * 16; q.py = q.y - 10 + Math.sin(q.ph * 2) * 8; q.dir = Math.cos(q.ph) >= 0 ? 1 : -1; }
     else { q.px = q.x; q.py = q.y; }
     if (q.tg) { // frog tongue: out, hit, back
@@ -241,9 +247,8 @@ function frame(now) {
   const end = path[path.length - 1];
   ctx.fillStyle = '#fef3c7'; ctx.beginPath(); ctx.ellipse(end[0], end[1] + 10, 42, 14, 0, 0, 7); ctx.fill();
   KQ3D.drawPic(ctx, '🫙', end[0], end[1] - 14, 66); for (let k = 0; k < cookies; k++) KQ3D.drawPic(ctx, '🍪', end[0] - 32 + k * 16, end[1] - 50, 22);
-  const steps = playing ? spd : 0;
-  for (let i = 0; i < steps && G.state === 'play'; i++) update(dt);
-  const fdt = dt * Math.max(1, steps);
+  if (playing) update(dt);
+  const fdt = dt;
   // corpses: spin, shrink and fade
   corpses = corpses.filter((c) => (c.l -= fdt) > 0); corpses.forEach((c) => { ctx.save(); ctx.globalAlpha = c.l / 0.6; ctx.translate(c.x, c.y); ctx.rotate(c.ang + (0.6 - c.l) * 8); const k = BUGS[c.t].k * (0.4 + c.l); drawBug(c.t, 0, k, 0); ctx.restore(); });
   // guards

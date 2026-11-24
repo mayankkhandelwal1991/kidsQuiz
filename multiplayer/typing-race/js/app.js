@@ -21,7 +21,7 @@ const PROGRESS_SEND_INTERVAL_MS = 200;
 
 const db = firebase.database();
 const quickMatch = new QuickMatch(db, GAME_ID);
-const shell = new GameShell({ gameTitle: 'Typing Race' });
+const shell = new GameShell({ gameTitle: 'Typing Speed Race' });
 const sounds = new SoundManager();
 
 const statusBar = document.getElementById('status-bar');

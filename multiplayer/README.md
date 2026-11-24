@@ -19,19 +19,19 @@ collides between games.
 | Game | Folder | What it is |
 |---|---|---|
 | Tic Tac Toe | `tic-tack-toe/` | Classic 3-in-a-row |
-| Connect Four | `connect-four/` | Drop discs, connect 4 in a row |
-| RPS Duel | `rock-paper-scissors/` | Best-of-5 rock/paper/scissors |
+| Four in a Row | `connect-four/` | Drop discs, connect 4 in a row |
+| Rock Paper Scissors | `rock-paper-scissors/` | Best-of-5 rock/paper/scissors |
 | Word Duel | `word-duel/` | Race to unscramble a word, first to 4 |
-| Typing Race | `typing-race/` | Same passage, fastest accurate typer wins |
+| Typing Speed Race | `typing-race/` | Same passage, fastest accurate typer wins |
 | Memory Match | `memory-match/` | Flip-and-match card pairs, most pairs wins |
 | Reaction Duel | `reaction-duel/` | Tap the instant it turns green, best of 5 |
 | Trivia Battle | `trivia-battle/` | Multiple-choice race, first to 5 points |
 | Dots & Boxes | `dots-and-boxes/` | Draw lines, claim boxes, most boxes wins |
 | Battleship | `battleship/` | Auto-placed fleets, sink the enemy first |
-| Pong Duel | `pong-duel/` | Real-time canvas Pong, first to 7 |
-| **Space Blaster Duel** 🆕 | `space-blaster/` | Host-synced falling asteroid field — tap the fastest to blast them, first to 15 |
+| Ping Pong Duel | `pong-duel/` | Real-time portrait ping pong (same look as single-player Ping Pong), first to 7 |
+| **Space Shooter Duel** 🆕 | `space-blaster/` | Host-synced falling asteroid field — tap the fastest to blast them, first to 15 |
 | **Blaster Arena** 🆕 | `blaster-arena/` | Top-down foam-bolt arena shooter, dodge and fire, first to 5 hits |
-| **Basketball Shootout** 🆕 | `basketball-shootout/` | Time your release on a moving power bar, most baskets in 45s |
+| **Hoops Shootout** 🆕 | `basketball-shootout/` | Time your release on a moving power bar, most baskets in 45s |
 | **Bubble Shooter Duel** 🆕 | `bubble-shooter/` | Classic pop-3-match bubble shooter, race to 120 points |
 | **Archery Duel** 🆕 | `archery-duel/` | Time your release as a 2D crosshair drifts toward the bullseye, best of 5 |
 | **Ludo Royale** 🆕 | `ludo-royale/` | **2-4 players**, not just 2 — full Ludo with dice, capturing, and home stretches |

@@ -1,11 +1,13 @@
 @import url('../common/theme.css');
 
+/* Same warm look as the single-player Ping Pong */
 .arena-bg {
   position: absolute; inset: 0; z-index: -1;
   background:
-    radial-gradient(circle at 15% 20%, rgba(255, 62, 200, 0.14), transparent 45%),
-    radial-gradient(circle at 85% 80%, rgba(51, 229, 255, 0.16), transparent 45%),
-    var(--bg-void);
+    radial-gradient(circle at 12% 18%, rgba(255,255,255,0.22) 0 40px, transparent 41px),
+    radial-gradient(circle at 88% 30%, rgba(255,255,255,0.18) 0 54px, transparent 55px),
+    radial-gradient(circle at 20% 82%, rgba(255,255,255,0.16) 0 46px, transparent 47px),
+    linear-gradient(180deg, #fde68a, #fb923c);
 }
 
 .board-wrap {
@@ -13,31 +15,39 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: 10px 16px 26px;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 8px 16px 16px;
 }
 
-.player-card.seat-p1.active-turn { color: rgba(51,229,255,0.7); }
-.player-card.seat-p2.active-turn { color: rgba(255,62,200,0.7); }
+#game-screen .player-card { background: rgba(255,255,255,0.88); border: 2px solid transparent; color: #1e293b; padding: 6px 16px; min-width: 104px; }
+#game-screen .player-name { color: #334155; }
+#game-screen .player-score { color: #0f172a; }
+#game-screen .vs-label { color: #7c2d12; font-weight: 800; }
+.player-card.seat-p1.active-turn { border-color: #22c55e; }
+.player-card.seat-p2.active-turn { border-color: #ef4444; }
 
+#game-screen .status-bar { color: #7c2d12; text-shadow: none; }
+#game-screen .status-bar.status-won { color: #15803d; }
+#game-screen .status-bar.status-lost { color: #b91c1c; }
+
+/* Portrait table: as big as the screen allows, never taller than the space left */
 .pong-canvas {
-  width: min(480px, 92vw);
-  max-width: 480px;
-  aspect-ratio: 480 / 300;
-  background: #1d4ed8;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-glow);
-  box-shadow: 0 0 50px rgba(51, 229, 255, 0.12);
+  width: min(92vw, 400px, calc((100dvh - 250px) * 300 / 480));
+  aspect-ratio: 300 / 480;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 6px 10px 0 rgba(0,0,0,0.18);
   touch-action: none;
   cursor: pointer;
 }
 
 .pong-hint {
-  font-size: 11px;
-  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 700;
+  color: #7c2d12;
   text-align: center;
 }
 
-.spectator-count { font-size: 12px; color: var(--text-dim); min-height: 16px; }
+.spectator-count { font-size: 12px; color: #7c2d12; min-height: 0; }
 #play-again-btn { max-width: 220px; }

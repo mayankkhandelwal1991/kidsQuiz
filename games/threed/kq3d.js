@@ -262,7 +262,17 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
       else if ((e.key === 'Enter' || e.key === ' ') && (G.state === 'menu' || G.state === 'over')) { e.preventDefault(); begin(); }
     });
 
-    function setText(id, v) { var el = $(id); if (!el) return; el.lastChild.textContent = v; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+    /* Restarting the bump animation forces a layout; scores that change every
+       frame (distance) did that 60×/s and made the HUD flicker. So the text
+       always updates, but the bump plays at most every 350 ms per box. */
+    var bumpAt = {};
+    function setText(id, v) {
+      var el = $(id); if (!el) return;
+      var s = String(v); if (el.lastChild.textContent === s) return;
+      el.lastChild.textContent = s;
+      var now = performance.now(); if (now - (bumpAt[id] || 0) < 350) return; bumpAt[id] = now;
+      el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+    }
     G.score = function (n) { if (n === G._score) return; G._score = n; setText('k3score', n); };
     G.hudSet = function (id, n) { setText('k3h_' + id, n); };
     G.pop = function (text, x, y, color) {
@@ -411,11 +421,26 @@ body{font-family:"Baloo 2",system-ui,sans-serif;background:#0f172a;color:#fff;to
     if (imgCache[e]) return imgCache[e];
     var im = new Image(); im.src = emojiFile(e); imgCache[e] = im; return im;
   }
+  /* Emoji pictures are SVG files. Drawing an SVG on a canvas every frame makes
+     Android WebView re-rasterise it each time (slow, and it can drop the
+     picture for a frame = flicker). So each picture is rasterised once per size
+     bucket into a small bitmap canvas and that bitmap is drawn instead. */
+  var bmpCache = {};
+  function bmp(e, im, px) {
+    var b = px <= 48 ? 48 : px <= 96 ? 96 : px <= 160 ? 160 : px <= 256 ? 256 : 384, key = e + '@' + b, c = bmpCache[key];
+    if (!c) {
+      c = document.createElement('canvas'); c.width = c.height = b;
+      try { c.getContext('2d').drawImage(im, 0, 0, b, b); } catch (err) { return im; }
+      bmpCache[key] = c;
+    }
+    return c;
+  }
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
   // draw an emoji picture centred at x,y with size s (falls back to text until loaded)
   function drawPic(ctx, e, x, y, s, rot) {
     var im = img(e);
     ctx.save(); ctx.translate(x, y); if (rot) ctx.rotate(rot);
-    if (im.complete && im.naturalWidth) ctx.drawImage(im, -s / 2, -s / 2, s, s);
+    if (im.complete && im.naturalWidth) ctx.drawImage(bmp(e, im, s * DPR), -s / 2, -s / 2, s, s);
     else { ctx.font = Math.round(s * 0.85) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(e, 0, s * 0.05); }
     ctx.restore();
   }

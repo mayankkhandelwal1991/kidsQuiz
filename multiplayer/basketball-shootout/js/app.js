@@ -27,7 +27,7 @@ const BAR_X1 = 30, BAR_X2 = 290, BAR_Y = 300;
 
 const db = firebase.database();
 const quickMatch = new QuickMatch(db, GAME_ID);
-const shell = new GameShell({ gameTitle: 'Basketball Shootout' });
+const shell = new GameShell({ gameTitle: 'Hoops Shootout' });
 const sounds = new SoundManager();
 
 const canvas = document.getElementById('game-canvas');

@@ -1,0 +1,85 @@
+{
+ "clips": [
+  {
+   "id": "car_race_3d",
+   "file": "threed/car_race_3d.html",
+   "n": 25,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "crossy_road_3d",
+   "file": "threed/crossy_road_3d.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "basketball_3d",
+   "file": "threed/basketball_3d.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "egg_jump",
+   "file": "action/egg_jump.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "fruit_catch",
+   "file": "action/fruit_catch.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "space_shooter",
+   "file": "action/space_shooter.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "whack_mole",
+   "file": "action/whack_mole.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "bubble_shooter",
+   "file": "puzzle/bubble_shooter.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  },
+  {
+   "id": "memory_match",
+   "file": "puzzle/memory_match.html",
+   "n": 32,
+   "cols": 6,
+   "cw": 300,
+   "ch": 533,
+   "fps": 12
+  }
+ ]
+}

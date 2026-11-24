@@ -110,7 +110,7 @@ try {
             if ($file === '' || !is_file("$MEDIA_DIR/$file")) out(['ok' => false, 'error' => 'Upload the media first.'], 400);
             $igu = (string)cfg('ig_user_id');
             if (($in['kind'] ?? 'photo') === 'reel') {
-                $p = ['media_type' => 'REELS', 'caption' => $caption, 'share_to_feed' => 'true'];
+                $p = ['media_type' => 'REELS', 'caption' => $caption, 'share_to_feed' => 'true', 'thumb_offset' => '0'];
                 if (public_ok()) $c = ig('POST', "$igu/media", $p + ['video_url' => public_url($file)]);
                 else { $c = ig('POST', "$igu/media", $p + ['upload_type' => 'resumable']); ig_upload_video((string)$c['id'], "$MEDIA_DIR/$file"); }
             } else {

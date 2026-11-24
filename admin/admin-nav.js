@@ -3,6 +3,7 @@
    between sections in one tap and see your changes.
      users.html#dash|players|coins|app|tools   (Admin console sections)
      growth.html                               (Growth tracker)
+     plan.html                                 (Growth plan checklist)
      index.html                                (Instagram Studio)
    Sections of the same page switch without reloading (the page listens
    to the URL hash). Include with <script src="admin-nav.js"></script>.
@@ -16,6 +17,7 @@
     ['users.html#app', '📱', 'App settings'],
     ['users.html#tools', '🛠', 'Tools'],
     ['growth.html', '📈', 'Growth'],
+    ['plan.html', '✅', 'Growth plan'],
     ['index.html', '📸', 'Instagram Studio'],
     ['../quiz-home.html', '🎮', 'Open app']
   ];

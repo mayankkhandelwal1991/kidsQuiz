@@ -67,6 +67,12 @@ G = {  # id: (file, bot JS run in page, or None; cdp tap list function)
  'balloon_pop':  ('action/balloon_pop.html',   'TAPS'),
  'whack_mole':   ('action/whack_mole.html',    'TAPS'),
  'basketball_3d':('threed/basketball_3d.html', 'TAPS'),
+ # rebuilt / new games: bots that show the best moments
+ 'ant_attack':   ('strategy/ant_attack.html', "setTimeout(()=>{seeds=900;const K=['frog','bee','hedgehog'];let i=0;path.slice(1,-1).forEach(p=>[[42,42],[-42,42],[42,-42],[-42,-42]].some(([dx,dy])=>{const x=p[0]+dx,y=p[1]+dy;if(y<95||y>C.h-110||nearPath(x,y,34)||guards.some(q=>Math.hypot(q.x-x,q.y-y)<46))return false;guards.push({k:K[i++%3],x,y,px:x,py:y,cd:0,bob:0,ph:0,dir:1});return true}));wave=2;spd=2;drawShop();startWave();spawnQ.splice(2,0,{t:'queen',gap:0.6})},2700)"),
+ 'cricket_superover':('action/cricket_superover.html', "let __b=-1,__t=false;setInterval(()=>{if(G.state!=='play')return;if(phase==='runup'&&__b!==ballNo){__b=ballNo;__t=false}if(phase==='flight'&&!__t&&pt*del.dur>=del.dur-0.09){__t=true;tap()}},10)"),
+ 'snake_3d':     ('threed/snake_3d.html', "const __free=(n,body)=>!(n.x<0||n.y<0||n.x>=COLS||n.y>=ROWS||body.some(p=>p.x===n.x&&p.y===n.y)||rocks.some(r=>r.x===n.x&&r.y===n.y));const __room=(st,body)=>{const seen=new Set([st.x+','+st.y]),q=[st];let c=0;while(q.length&&c<200){const p=q.shift();c++;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const n={x:p.x+dx,y:p.y+dy},k=n.x+','+n.y;if(!seen.has(k)&&__free(n,body)){seen.add(k);q.push(n)}}}return c};const __step=step;step=function(){if(G.state==='play'){const h=snake[0],tg=gold||food,body=snake.slice(0,-1);const o=[[1,0],[-1,0],[0,1],[0,-1]].filter(([x,y])=>!(x===-dir.x&&y===-dir.y)).map(([x,y])=>{const n={x:h.x+x,y:h.y+y},ok=__free(n,body);return{x,y,ok,room:ok?__room(n,body):0,d:Math.abs(n.x-tg.x)+Math.abs(n.y-tg.y)}}).filter(m=>m.ok).sort((a,b)=>((b.room>=snake.length)-(a.room>=snake.length))||(a.d-b.d)||(b.room-a.room))[0];queue=o?[{x:o.x,y:o.y}]:[]}__step()}"),
+ 'math_games':   ('brain/math_games.html', "setInterval(()=>{if(G.state!=='play'||lock)return;const b=[...document.querySelectorAll('.mg-o')].find(x=>+x.dataset.v===q.ans);if(b)b.click()},1300)"),
+ 'pattern_detective':('brain/pattern_detective.html', "setInterval(()=>{if(G.state!=='play'||lock)return;const b=[...document.querySelectorAll('.pd-o')].find(x=>q.opts[+x.dataset.k]===q.ans);if(b)b.click()},1300)"),
 }
 # every other game in data/games.json gets the generic bot (taps + arrow keys + space)
 _R = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))

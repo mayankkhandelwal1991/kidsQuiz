@@ -457,10 +457,18 @@
       var u = currentUser(), t = {};
       Object.keys(s.t || {}).forEach(function (k) { t[k] = Math.round(s.t[k] / 1000); });
       sesPushed = Date.now();
+      // full session detail: admin only (Firebase rules)
       db.ref("sessions/" + u.key + "/" + s.id).set({
         start: s.start, last: s.last, dur: Math.round(s.act / 1000), pages: s.pages || 1, t: t,
         name: u.name, guest: !!u.isGuest, cc: CC || null
       }).catch(function () {});
+      // public: only today's total seconds (no times, names or country) for the
+      // leaderboard's "time played" — playtime/<player>/<YYYYMMDD> = seconds
+      try {
+        var td = JSON.parse(localStorage.getItem("kq_today") || "null"), d = new Date();
+        var day = d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0");
+        if (td && td.day === d.toDateString()) db.ref("playtime/" + u.key + "/" + day).set(Math.min(86400, Math.round(td.ms / 1000))).catch(function () {});
+      } catch (e) {}
     } catch (e) {}
   }
   if (!window.KQ_NO_SESSION) {
@@ -502,6 +510,13 @@
   /* Nodes the database rules refused to read (set by the fetchers below). */
   var denied = {};
   /* All sessions of all players (leaderboard stats). {} if rules block it. */
+  /* Daily play time of every player: { player: { YYYYMMDD: seconds } } (public). */
+  function fetchPlaytime() {
+    return ready.then(function () {
+      if (!db) return {};
+      return db.ref("playtime").once("value").then(function (snap) { return snap.val() || {}; }).catch(function () { return {}; });
+    });
+  }
   function fetchSessions() {
     return ready.then(function () {
       if (!db) return {};
@@ -958,6 +973,7 @@
     fetchAttempts: fetchAttempts,
     denied: denied,
     fetchSessions: fetchSessions,
+    fetchPlaytime: fetchPlaytime,
     fetchAllAttempts: fetchAllAttempts,
     markStart: markStart,
     todaySeconds: function () { try { var td = JSON.parse(localStorage.getItem("kq_today") || "null"); return td && td.day === new Date().toDateString() ? Math.round(td.ms / 1000) : 0; } catch (e) { return 0; } },

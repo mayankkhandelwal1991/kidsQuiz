@@ -193,27 +193,37 @@ and writes **first-time installers, uninstalls and store listing visitors** into
 `growth/manual/<date>` (marked 🤖 Play on the Growth page). Ad spend, paid installs and notes
 you type on the page are kept — the import only updates its own three numbers.
 
-One-time setup (about 15 minutes):
+One-time setup (about 10 minutes) — one key does both jobs:
 
-1. **Service account** — Google Cloud console → IAM & Admin → Service accounts → Create
-   (e.g. `play-stats`) → Keys → Add key → JSON → download.
-2. **Play Console access** — Play Console → Users and permissions → Invite new users →
-   the service account's email → App permissions: Kids Quiz → tick
+1. **Firebase key** — Firebase console → project `kidsgames-3987c` → ⚙️ Project settings →
+   **Service accounts** → note the email (`firebase-adminsdk-…@kidsgames-3987c.iam.gserviceaccount.com`)
+   → **Generate new private key** → a JSON file downloads. Keep it private (never in the repo:
+   `.gitignore` blocks `*firebase-adminsdk*.json`).
+2. **Play Console access** — Play Console → Manage account → **Users and permissions** →
+   Invite new users → that `firebase-adminsdk-…` email → **Account permissions** → tick
    **"View app information and download bulk reports (read-only)"** → Invite.
-   (It can take up to 24 hours before the reports can be read.)
-3. **Bucket** — Play Console → Download reports → Statistics → **Copy Cloud Storage URI**
-   (`gs://pubsite_prod_rev_…`).
-4. **Firebase key** — Firebase console → Project settings → Service accounts →
-   **Generate new private key** (JSON). This lets the job write `growth/manual`.
-5. **GitHub secrets** — repo → Settings → Secrets and variables → Actions → New secret:
+   Google can take **24–48 hours** before the account can read the reports (until then the
+   job says "NO PERMISSION YET").
+3. **Bucket** — Play Console → Manage account → **Download reports** → Statistics →
+   **Copy Cloud Storage URI** (`gs://pubsite_prod_rev_…`). Ours: `pubsite_prod_rev_10169471778906171674`.
+4. **GitHub secrets** — repo → Settings → Secrets and variables → Actions → New secret:
    - `PLAY_SA_JSON` = the whole JSON from step 1
    - `PLAY_BUCKET` = the URI from step 3
-   - `FIREBASE_SA_JSON` = the whole JSON from step 4
-6. GitHub → Actions → "Play Console stats -> Firebase" → **Run workflow** with
+   (`FIREBASE_SA_JSON` is not needed: the script writes to Firebase with `PLAY_SA_JSON`.)
+5. GitHub → Actions → "Play Console stats -> Firebase" → **Run workflow** with
    "dry run" ticked: the log lists the files and numbers it found. Then run it without
-   dry run (or wait for the next day).
+   dry run (or wait for the next day's automatic run at 11:00 IST).
 
 Notes: Play updates the reports about once a day and can be 1–2 days behind. Store listing
 visitors come from the store-performance report if Play puts it in the bucket for your
 app; if not, type them in. GitHub pauses scheduled jobs after 60 days with no commits in
 the repo — any push (or Run workflow) starts it again.
+
+
+## Privacy: sessions are admin-only, play time is public as daily totals
+
+`sessions/<player>/<id>` (start/end times, country, name) is readable **only by the admin**.
+The public leaderboard's "time played" uses `playtime/<player>/<YYYYMMDD>` = seconds that day
+(no times of day, names or country), written by `games/kq-leaderboard.js`. Both rules are in
+`admin/firebase-rules.json` (`sessions` `.read` = admin, new `playtime` block) — **publish them
+in Firebase** together.

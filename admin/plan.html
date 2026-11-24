@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="../images/favicon/favicon.ico" sizes="any"><link rel="icon" href="../images/favicon/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Growth Plan</title>
+<script src="admin-nav.js" defer></script>
+<!--
+  Growth plan with a checklist (admin only): weekly routine (resets every
+  week), monthly tasks, one-time setup and the Google Play Families ads
+  checklist. Ticks are saved in Firebase admin/plan (admin-only by the rules),
+  so they follow you to any device.
+-->
+<style>
+  :root { --bg: #f4f3ff; --card: #fff; --ink: #1e1b4b; --muted: #6b7280; --line: #e7e5f5; --brand: #4f46e5; --ok: #059669; --soft: #eef2ff; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0f0e1a; --card: #1a1830; --ink: #eceaff; --muted: #a3a1c2; --line: #2c2948; --brand: #818cf8; --ok: #34d399; --soft: #24213f; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 16px; display: grid; gap: 14px; }
+  h1 { font-size: 22px; margin: 4px 0 0; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+  .card h2 { margin: 0; font-size: 17px; display: flex; align-items: center; gap: 8px; }
+  .card h2 small { margin-left: auto; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .bar { height: 8px; border-radius: 4px; background: var(--soft); overflow: hidden; margin: 8px 0 4px; }
+  .bar i { display: block; height: 100%; background: var(--ok); transition: width .3s; }
+  .item { display: flex; gap: 10px; align-items: flex-start; padding: 9px 2px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .item:last-child { border-bottom: none; }
+  .item input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--ok); flex: 0 0 auto; cursor: pointer; }
+  .item b { display: block; font-weight: 650; }
+  .item span { font-size: 13px; color: var(--muted); }
+  .item.done b { text-decoration: line-through; color: var(--muted); }
+  .item a { color: var(--brand); }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; border-radius: 999px; padding: 0 7px; margin-left: 6px; background: var(--soft); color: var(--brand); vertical-align: 1px; }
+  .muted { color: var(--muted); } .center { text-align: center; padding: 40px 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; } th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); } th { color: var(--muted); font-weight: 600; font-size: 13px; }
+  button.b { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 10px; padding: 7px 12px; font: inherit; font-weight: 600; cursor: pointer; }
+</style>
+</head>
+<body>
+<main id="app"><div class="card center"><p class="muted">Loading…</p></div></main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+(function () {
+  'use strict';
+  firebase.initializeApp({
+    apiKey: "AIzaSyB0eMyeIUtCsuMVk-8LtRQs_iwOJV3ksv8",
+    authDomain: "kidsgames-3987c.firebaseapp.com",
+    databaseURL: "https://kidsgames-3987c-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "kidsgames-3987c",
+    storageBucket: "kidsgames-3987c.appspot.com",
+    messagingSenderId: "851797718600",
+    appId: "1:851797718600:web:e990b3435751d209228a7d"
+  });
+  const auth = firebase.auth(), db = firebase.database(), $app = document.getElementById('app');
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  /* ---------- the plan (edit here to change the list) ---------- */
+  // [id, title, how / where]
+  const WEEKLY = [
+    ['reels', 'Post 5+ Reels / Shorts', 'Instagram Studio makes them in a minute — quiz of the day, game clips, facts. <a href="index.html">📸 Studio</a>'],
+    ['reviews', 'Reply to every new Play review', 'Play Console → Ratings and reviews. Fast, kind replies help ranking — especially for 1–3 ★.'],
+    ['vitals', 'Check Android vitals', 'Play Console → Quality → Android vitals: crash rate &lt; 1.09%, ANR rate &lt; 0.47%. Fix the top crash first.'],
+    ['growth', 'Check installs, conversion and retention', 'Day 1 above 30%, Day 7 above 10%, conversion 25–35%. <a href="growth.html">📈 Growth</a>'],
+    ['schools', 'Contact 2 schools / tuition centres', 'Send the teacher kit (class code league) — PlayStoreThings/store-listing/PROMOTION.md §3.'],
+    ['plan', 'Plan next week’s posts and the next seasonal event', 'Diwali, Children’s Day, exams, Republic Day… (PROMOTION.md §4).']
+  ];
+  const MONTHLY = [
+    ['update', 'Ship an app update with “What’s new”', 'Every 2–4 weeks — Play favours active apps. Raise versionCode in android/app/build.gradle.kts.'],
+    ['experiment', 'Run (or read) a store listing experiment', 'Play Console → Grow users → Store listing experiments: icon, first screenshot or short description, 2–3 weeks each.'],
+    ['event', 'Promotional content for the season', 'Play Console → Grow users → Promotional content (submit 4+ days before).'],
+    ['web', 'Publish 10 new web question pages', 'Class × subject pages that rank on Google (PROMOTION.md §2).']
+  ];
+  const ONCE = [
+    ['rules', 'Publish the Firebase rules', 'growth, playtime and admin-only sessions — admin/firebase-rules.json.'],
+    ['import', 'Daily Play Console import works', 'GitHub → Actions → “Play Console stats -> Firebase” shows a green run; Growth page says “Imported automatically”.'],
+    ['keywords', 'Store listing keywords in title and descriptions', '“GK quiz”, “Olympiad”, “Class 1–5”, “learning games” — PlayStoreThings/store-listing/LISTING.md.'],
+    ['video', 'Promo video on the store listing', 'A 30-second YouTube video (Instagram Studio Reels can be joined into one).'],
+    ['hindi', 'Hindi custom store listing for India', 'LISTING.md → “Custom store listing for India”.'],
+    ['datasafety', 'Data safety form up to date', 'Ad networks (Chartboost, Unity, Liftoff, DT Exchange): device IDs and app interactions for ads/analytics.'],
+    ['appads', 'app-ads.txt has every ad network', 'Add each network’s lines next to the AdMob line (PlayStoreThings/ads.txt) on your developer website.'],
+    ['release', 'Release 1.0.14', 'Build in Android Studio (Java 17), upload, then (only after it is live) set the minimum version code to 16.'],
+    ['teacher', 'Families program / Teacher Approved', 'Target audience 5 & under, 6–8, 9–12; keep content kid-safe so the app can get the badge.']
+  ];
+  // Google Play Families — ads & monetization (checked in this project on 24 Nov 2026)
+  const FAMILIES = [
+    ['sdk', 'Only Families self-certified ad SDK versions', 'AdMob 25.5, Chartboost 9.14, Unity 4.21, Vungle 7.8, DT Exchange 8.5 — all above the certified minimums. Re-check when you update them.', true],
+    ['nonpers', 'Ads are never personalised', 'Child-directed + under-age-of-consent tags; advertising ID permission removed; Analytics ad signals off.', true],
+    ['rating', 'Ad content is child-appropriate', 'Max ad content rating G.', true],
+    ['rewarded', 'No rewarded / opt-in ads that block play', '“Watch a video to play” replaced by “Play anyway”; rewarded ads no longer preloaded.', true],
+    ['disrupt', 'No disruptive or accidental-click ads', 'No ad at app launch; full-screen ads only at natural breaks (finished game, leaving a game) with a 60–90 s gap.', true],
+    ['age', 'Age screen', 'Not needed while the target audience is children only (every user is treated as a child). Needed if you ever add 13+ users.', true],
+    ['privacy', 'Privacy policy matches what is collected', 'privacy_policy.html lists AdMob, the 4 networks, Firebase, Analytics and Google Sign-In.', true],
+    ['gate', 'Sharing and outside links behind a parent gate', 'Share app, Rate, More apps, Instagram, Share my score.', true]
+  ];
+
+  /* ---------- periods ---------- */
+  function isoWeek(d) { const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); const day = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - day); const y = t.getUTCFullYear(); const w = Math.ceil(((t - Date.UTC(y, 0, 1)) / 86400000 + 1) / 7); return y + '-W' + String(w).padStart(2, '0'); }
+  const now = new Date(), WEEK = isoWeek(now), MONTH = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+  const monday = new Date(now); monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  let STATE = { once: {}, fam: {}, weeks: {}, months: {} };
+
+  function section(title, icon, items, path, note, defaults) {
+    const st = path.reduce((o, k) => (o && o[k]) || {}, STATE);
+    const isOn = (id, def) => st[id] != null ? !!st[id] : !!def;
+    const done = items.filter((it) => isOn(it[0], defaults && it[3])).length;
+    return '<div class="card"><h2>' + icon + ' ' + esc(title) + '<small>' + done + ' / ' + items.length + '</small></h2>' +
+      (note ? '<div class="muted" style="font-size:13px">' + note + '</div>' : '') +
+      '<div class="bar"><i style="width:' + (done / items.length * 100) + '%"></i></div>' +
+      items.map((it) => { const on = isOn(it[0], defaults && it[3]); return '<label class="item' + (on ? ' done' : '') + '"><input type="checkbox" data-path="' + path.join('/') + '" data-id="' + it[0] + '"' + (on ? ' checked' : '') + '><div><b>' + esc(it[1]) + (defaults && it[3] && st[it[0]] == null ? '<span class="tag">verified</span>' : '') + '</b><span>' + it[2] + '</span></div></label>'; }).join('') + '</div>';
+  }
+  function render() {
+    const wk = (STATE.weeks || {})[WEEK] || {}, prevWeeks = Object.keys(STATE.weeks || {}).filter((w) => w !== WEEK).sort().reverse().slice(0, 6);
+    let h = '<div><h1>✅ Growth plan</h1><div class="muted">Week ' + esc(WEEK.split('-W')[1]) + ' (from ' + monday.toLocaleDateString([], { day: 'numeric', month: 'short' }) + ') — the weekly list starts fresh every Monday.</div></div>';
+    h += section('This week', '📅', WEEKLY, ['weeks', WEEK], 'Your 30-minutes-a-day routine.');
+    h += section('This month', '🗓️', MONTHLY, ['months', MONTH]);
+    h += section('One-time setup', '🧰', ONCE, ['once']);
+    h += section('Google Play Families — ads & monetization', '👨‍👩‍👧', FAMILIES, ['fam'], 'Checked in the code on 24 Nov 2026 (marked “verified”). Untick anything that changes, e.g. after adding a new ad network.', true);
+    if (prevWeeks.length) h += '<div class="card"><h2>📊 Past weeks</h2><table><tr><th>Week</th><th>Done</th></tr>' + prevWeeks.map((w) => { const s = STATE.weeks[w] || {}, n = WEEKLY.filter((it) => s[it[0]]).length; return '<tr><td>' + esc(w) + '</td><td>' + n + ' / ' + WEEKLY.length + '</td></tr>'; }).join('') + '</table></div>';
+    h += '<div class="card muted" style="font-size:13px">Aim for quality installs — families who keep using the app — not only more downloads. Watch Day 1 / Day 7 retention on the <a href="growth.html">📈 Growth</a> page while you try new posts or ads.</div>';
+    $app.innerHTML = h;
+    $app.querySelectorAll('input[type=checkbox]').forEach((c) => c.onchange = () => {
+      const path = c.dataset.path.split('/'), id = c.dataset.id;
+      let o = STATE; path.forEach((k) => { o = o[k] = o[k] || {}; }); o[id] = c.checked;
+      db.ref('admin/plan/' + path.join('/') + '/' + id).set(c.checked).catch((e) => alert('Could not save: ' + e.message));
+      render();
+    });
+  }
+
+  auth.getRedirectResult().catch(() => {});
+  auth.onAuthStateChanged((u) => {
+    if (!u) {
+      $app.innerHTML = '<div class="card center"><div style="font-size:42px">🔐</div><h2>Admin sign-in</h2><p class="muted">Sign in with the admin Google account.</p><button class="b" id="si">Sign in with Google</button></div>';
+      document.getElementById('si').onclick = () => { const p = new firebase.auth.GoogleAuthProvider(); p.setCustomParameters({ prompt: 'select_account' }); auth.signInWithPopup(p).catch((e) => { if (e && /popup-blocked|not-supported/.test(e.code)) auth.signInWithRedirect(p); }); };
+      return;
+    }
+    db.ref('admin/plan').once('value').then((s) => { STATE = Object.assign({ once: {}, fam: {}, weeks: {}, months: {} }, s.val() || {}); render(); },
+      () => { $app.innerHTML = '<div class="card center"><div style="font-size:42px">⛔</div><h2>Not an admin</h2><p class="muted">' + esc(u.email) + '</p><button class="b" id="so">Use another account</button></div>'; document.getElementById('so').onclick = () => auth.signOut(); });
+  });
+})();
+</script>
+</body>
+</html>

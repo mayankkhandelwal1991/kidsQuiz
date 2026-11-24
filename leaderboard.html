@@ -278,7 +278,7 @@
 <script src="quiz-shared.js?v=20261124a" charset="utf-8"></script>
 <script>window.KQ_NO_WIDGET = true;</script>
 <script src="quiz/kids-engine.js?v=20261120i"></script>
-<script src="games/kq-leaderboard.js?v=20261124b"></script>
+<script src="games/kq-leaderboard.js?v=20261124c"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>
 (function () {
@@ -418,8 +418,21 @@
     const lastSes = list.filter((x) => inRange(x.start)).sort((a, b) => b.start - a.start)[0];
     return { t, n, lastDur: lastSes ? lastSes.dur || 0 : 0 };
   }
+  // Session detail is admin-only now; everyone else gets daily totals (playtime/<player>/<day>),
+  // turned into one "session" per day so the time-played maths below stays the same.
+  function playtimeAsSessions(pt) {
+    const out = {};
+    Object.keys(pt || {}).forEach((key) => {
+      const days = pt[key] || {}; const o = out[key] = {};
+      Object.keys(days).forEach((d) => { if (!/^\d{8}$/.test(d)) return; const t = new Date(+d.slice(0, 4), +d.slice(4, 6) - 1, +d.slice(6, 8), 12).getTime(); o[d] = { start: t, last: t, dur: +days[d] || 0 }; });
+    });
+    return out;
+  }
+  function loadSessions() {
+    return KQ.fetchSessions().then((tree) => (tree && Object.keys(tree).length) || !KQ.fetchPlaytime ? tree : KQ.fetchPlaytime().then(playtimeAsSessions));
+  }
   function load() {
-    KQ.fetchSessions().then((tree) => {
+    loadSessions().then((tree) => {
       Object.keys(tree || {}).forEach((key) => {
         const list = Object.values(tree[key] || {}).filter((x) => x && x.start);
         if (!list.length) return;
@@ -427,6 +440,7 @@
         const nm = list.reduce((a, b) => (b.last > a.last ? b : a));
         if (nm.guest) GUEST_KEYS.add(key);
         const u = USERS.get(key);
+        if (!u && !nm.name) return;   // daily totals carry no names: only list players known from the boards
         if (!u) USERS.set(key, { key, name: nm.name || 'Player', photo: '', guest: !!nm.guest, last: nm.last || 0, cc: nm.cc || '' });
         else if (nm.cc && !u.cc) u.cc = nm.cc;
         else if ((nm.last || 0) > u.last) u.last = nm.last;

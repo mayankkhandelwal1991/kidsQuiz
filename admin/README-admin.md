@@ -183,3 +183,37 @@ used — at most one small write a day (`games/kq-leaderboard.js` → `growthTic
 from `admin/firebase-rules.json` (only the admin can read; devices can only add their own
 first day and used days; typed-in numbers are admin-only) → **Publish**. Until then the
 page shows "Growth data is not switched on yet" and the app's writes are refused.
+
+### Automatic Play Console numbers (daily import)
+
+`.github/workflows/play-stats.yml` runs every day at 11:00 IST (and on demand: GitHub →
+Actions → "Play Console stats -> Firebase" → Run workflow). It runs
+`tools/play-stats/import_play_stats.py`, which reads Play Console's daily bulk-report files
+and writes **first-time installers, uninstalls and store listing visitors** into Firebase
+`growth/manual/<date>` (marked 🤖 Play on the Growth page). Ad spend, paid installs and notes
+you type on the page are kept — the import only updates its own three numbers.
+
+One-time setup (about 15 minutes):
+
+1. **Service account** — Google Cloud console → IAM & Admin → Service accounts → Create
+   (e.g. `play-stats`) → Keys → Add key → JSON → download.
+2. **Play Console access** — Play Console → Users and permissions → Invite new users →
+   the service account's email → App permissions: Kids Quiz → tick
+   **"View app information and download bulk reports (read-only)"** → Invite.
+   (It can take up to 24 hours before the reports can be read.)
+3. **Bucket** — Play Console → Download reports → Statistics → **Copy Cloud Storage URI**
+   (`gs://pubsite_prod_rev_…`).
+4. **Firebase key** — Firebase console → Project settings → Service accounts →
+   **Generate new private key** (JSON). This lets the job write `growth/manual`.
+5. **GitHub secrets** — repo → Settings → Secrets and variables → Actions → New secret:
+   - `PLAY_SA_JSON` = the whole JSON from step 1
+   - `PLAY_BUCKET` = the URI from step 3
+   - `FIREBASE_SA_JSON` = the whole JSON from step 4
+6. GitHub → Actions → "Play Console stats -> Firebase" → **Run workflow** with
+   "dry run" ticked: the log lists the files and numbers it found. Then run it without
+   dry run (or wait for the next day).
+
+Notes: Play updates the reports about once a day and can be 1–2 days behind. Store listing
+visitors come from the store-performance report if Play puts it in the bucket for your
+app; if not, type them in. GitHub pauses scheduled jobs after 60 days with no commits in
+the repo — any push (or Run workflow) starts it again.

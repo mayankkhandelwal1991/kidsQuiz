@@ -128,13 +128,32 @@
   // Which quiz subjects go where (knowledge quizzes are everything not in math/science)
   const MATH_QUIZ = ['addsub', 'multiply', 'divide', 'mixedmath'];
   const BRAIN_QUIZ = ['patterns', 'reasoning', 'riddles'];
+  /* Explore Science facts, by age group: pre = LKG/UKG, early = Class 1-2,
+     upper = Class 3-5. They change when the class changes. */
   const SCI = {
-    animals: { c: ['#f97316', '#ea580c'], intro: 'Meet amazing animals!', facts: [['🐙', 'An octopus has three hearts!'], ['🐘', 'Elephants are the biggest animals that live on land.'], ['🦁', 'A group of lions is called a pride.'], ['🦋', 'Butterflies taste things with their feet.'], ['🦒', 'A giraffe has 7 bones in its long neck — the same as you!']] },
-    plants: { c: ['#22c55e', '#15803d'], intro: 'How plants grow and help us', facts: [['☀️', 'Plants make their own food from sunlight, water and air.'], ['🌻', 'Young sunflowers turn to follow the Sun across the sky.'], ['🎋', 'Some bamboo can grow almost 1 metre in a single day!'], ['🌱', 'Roots drink water from the soil for the whole plant.'], ['🌳', 'Trees give us oxygen, the air we breathe.']] },
-    humanbody: { c: ['#ec4899', '#be185d'], intro: 'Learn about your amazing body', facts: [['❤️', 'Your heart beats about 100,000 times every day.'], ['🦴', 'Babies have about 300 bones. Grown-ups have 206.'], ['✋', 'Your skin is the biggest part of your body.'], ['🧠', 'Your brain sends messages along nerves faster than a race car!'], ['👀', 'You blink about 15 to 20 times every minute.']] },
-    space: { c: ['#4f46e5', '#1e1b4b'], intro: 'Blast off to the stars!', facts: [['☀️', 'The Sun is a star — the closest star to Earth.'], ['🪐', 'Jupiter is the biggest planet in our solar system.'], ['🌍', 'There are 8 planets that go around the Sun.'], ['🌙', 'The Moon has no air, so astronauts wear space suits.'], ['💡', 'Sunlight takes about 8 minutes to reach Earth.']] },
-    science: { c: ['#0ea5e9', '#0369a1'], intro: 'Everyday science and nature', facts: [['🧊', 'Water turns into ice when it gets as cold as 0 °C.'], ['🌈', 'A rainbow appears when sunlight shines through raindrops.'], ['🧲', 'Magnets pull things made of iron towards them.'], ['🔊', 'Sound needs air to travel — that is why space is silent.'], ['🎈', 'Hot air rises. That is how hot-air balloons fly!']] }
+    animals: { c: ['#f97316', '#ea580c'], intro: 'Meet amazing animals!', facts: {
+      pre: [['🐄', 'A cow gives us milk.'], ['🐶', 'A puppy is a baby dog.'], ['🐟', 'Fish live in water and swim with their fins.'], ['🐦', 'Birds have feathers and wings.'], ['🐘', 'An elephant has a long trunk.']],
+      early: [['🐸', 'A frog starts life as a tiny tadpole in the water.'], ['🐧', 'Penguins are birds, but they cannot fly — they swim!'], ['🐫', 'A camel can walk a long way in the desert without drinking water.'], ['🦁', 'A group of lions is called a pride.'], ['🐝', 'Bees make honey from the nectar of flowers.']],
+      upper: [['🐙', 'An octopus has three hearts!'], ['🐳', 'The blue whale is the biggest animal that has ever lived.'], ['🐘', 'Elephants are the biggest animals that live on land.'], ['🦋', 'Butterflies taste things with their feet.'], ['🦒', 'A giraffe has 7 bones in its long neck — the same as you!']] } },
+    plants: { c: ['#22c55e', '#15803d'], intro: 'How plants grow and help us', facts: {
+      pre: [['🌱', 'Plants need water and sunlight to grow.'], ['🌳', 'Trees give us shade, fruit and wood.'], ['🌸', 'Flowers come in lots of colours.'], ['🍎', 'Apples grow on apple trees.'], ['🌻', 'A sunflower is big and yellow.']],
+      early: [['🌱', 'A seed grows into a new plant.'], ['🍃', 'Leaves make food for the plant.'], ['🌵', 'A cactus stores water inside its thick stem.'], ['🥕', 'A carrot is a root that we eat.'], ['🌳', 'Roots hold a plant tightly in the soil.']],
+      upper: [['☀️', 'Plants make their own food from sunlight, water and air. This is called photosynthesis.'], ['🌻', 'Young sunflowers turn to follow the Sun across the sky.'], ['🎋', 'Some bamboo can grow almost 1 metre in a single day!'], ['🍃', 'Leaves have tiny holes called stomata that let air in and out.'], ['🌳', 'Trees give us oxygen, the air we breathe.']] } },
+    humanbody: { c: ['#ec4899', '#be185d'], intro: 'Learn about your amazing body', facts: {
+      pre: [['👀', 'We see with our eyes.'], ['👂', 'We hear with our ears.'], ['👃', 'We smell with our nose.'], ['✋', 'We have 5 fingers on each hand.'], ['🦷', 'Brush your teeth twice a day to keep them strong.']],
+      early: [['❤️', 'Your heart pumps blood all around your body.'], ['💨', 'Your lungs help you breathe in fresh air.'], ['🧍', 'Bones keep your body strong and give it its shape.'], ['🧠', 'Your brain helps you think, learn and remember.'], ['💪', 'Exercise makes your muscles strong.']],
+      upper: [['❤️', 'Your heart beats about 100,000 times every day.'], ['🧒', 'Babies have about 300 bones. Grown-ups have 206.'], ['✋', 'Your skin is the biggest part of your body.'], ['🧠', 'Your brain sends messages along nerves faster than a race car!'], ['👀', 'You blink about 15 to 20 times every minute.']] } },
+    space: { c: ['#4f46e5', '#1e1b4b'], intro: 'Blast off to the stars!', facts: {
+      pre: [['☀️', 'The Sun gives us light and keeps us warm.'], ['🌙', 'We see the Moon at night.'], ['⭐', 'Stars twinkle in the night sky.'], ['🌍', 'We live on planet Earth.'], ['🚀', 'Astronauts go to space in rockets.']],
+      early: [['🌍', 'The Earth spins round once every day. That gives us day and night.'], ['🌙', 'The Moon goes round and round the Earth.'], ['🔴', 'Mars is called the Red Planet.'], ['🌞', 'The Sun is a star — a very big, very hot ball of gas.'], ['🚀', 'In space, astronauts float about inside their spaceship.']],
+      upper: [['☀️', 'The Sun is the closest star to Earth.'], ['🪐', 'Jupiter is the biggest planet in our solar system.'], ['🌍', 'There are 8 planets that go around the Sun.'], ['🌙', 'The Moon has no air, so astronauts wear space suits.'], ['💡', 'Sunlight takes about 8 minutes to reach Earth.']] } },
+    science: { c: ['#0ea5e9', '#0369a1'], intro: 'Everyday science and nature', facts: {
+      pre: [['🧊', 'Ice is frozen water.'], ['🌧️', 'Rain falls from the clouds.'], ['🌈', 'A rainbow has seven colours.'], ['🔥', 'Fire is hot — never touch it!'], ['🧲', 'A magnet can pull things made of iron, like pins.']],
+      early: [['💧', 'Water can be solid ice, runny water or steam.'], ['🍃', 'Moving air is called wind.'], ['🌞', 'A shadow forms when something blocks the light.'], ['🔊', 'Sounds are made when things vibrate — shake very fast.'], ['🧪', 'Scientists find things out by testing their ideas.']],
+      upper: [['❄️', 'Water turns into ice when it gets as cold as 0 °C.'], ['🌈', 'A rainbow appears when sunlight shines through raindrops.'], ['🧲', 'Magnets pull things made of iron towards them.'], ['🔊', 'Sound needs air to travel — that is why space is silent.'], ['🎈', 'Hot air rises. That is how hot-air balloons fly!']] } }
   };
+  const band = (l) => (l <= 0 ? 'pre' : l <= 2 ? 'early' : 'upper');
+  const BAND_NAME = { pre: 'LKG & UKG', early: 'Class 1–2', upper: 'Class 3–5' };
   const SCI_ORDER = ['animals', 'plants', 'humanbody', 'space', 'science'];
   const GAME_SETS = {
     math: ['math_games', 'quick_math', 'number_order', 'sudoku_mini', 'game_2048'],
@@ -151,7 +170,8 @@
   const quizCats = () => (typeof quizCategoriesFor === 'function' ? quizCategoriesFor(level) : []);
   // a subject may not exist for this class: use the nearest class that has it
   function quizLevelFor(cat) {
-    const ls = typeof quizLevels === 'function' ? quizLevels(cat).filter((l) => l <= VISIBLE_MAX_CLASS) : [level];
+    // the classes whose quiz menu really offers this subject (respects each subject's class range)
+    const ls = typeof quizCategoriesFor === 'function' ? LEVELS.filter((l) => quizCategoriesFor(l).some((c) => c.id === cat)) : [level];
     if (!ls.length || ls.indexOf(level) !== -1) return level;
     const ord = (l) => (l === -1 ? 0.5 : l);
     return ls.slice().sort((a, b) => Math.abs(ord(a) - ord(level)) - Math.abs(ord(b) - ord(level)))[0];
@@ -175,7 +195,7 @@
     if (id === 'quiz') items = cats.filter((c) => MATH_QUIZ.indexOf(c.id) === -1 && SCI_ORDER.indexOf(c.id) === -1 && BRAIN_QUIZ.indexOf(c.id) === -1).map(quizCard);
     else if (id === 'math') items = gameCards(GAME_SETS.math).concat(cats.filter((c) => MATH_QUIZ.indexOf(c.id) !== -1).map(quizCard));
     else if (id === 'science') {
-      items = SCI_ORDER.filter((k) => typeof quizLevels !== 'function' || quizLevels(k).some((l) => l <= VISIBLE_MAX_CLASS)).map((k) => { const ci = getCatInfo(k) || { icon: '🔬', title: k }; return { icon: ci.icon, title: ci.title, desc: SCI[k].intro + ' · facts + quiz', go: '', sci: k, c: SCI[k].c, btn: '🔍 Explore' }; });
+      items = SCI_ORDER.filter((k) => typeof quizLevels !== 'function' || quizLevels(k).some((l) => l <= VISIBLE_MAX_CLASS)).map((k) => { const ci = getCatInfo(k) || { icon: '🔬', title: k }; return { icon: ci.icon, title: ci.title, desc: SCI[k].intro + ' · facts for ' + BAND_NAME[band(level)] + ' + quiz', go: '', sci: k, c: SCI[k].c, btn: '🔍 Explore' }; });
       items = items.concat(gameCards(GAME_SETS.science));
     }
     else if (id === 'brain') items = gameCards(GAME_SETS.brain).concat(cats.filter((c) => BRAIN_QUIZ.indexOf(c.id) !== -1).map(quizCard));
@@ -204,24 +224,24 @@
   function closeSheet() { sheet.classList.remove('on'); sbg.classList.remove('on'); }
   sbg.onclick = closeSheet;
   function openScience(k) {
-    const t = SCI[k], ci = getCatInfo(k) || { icon: '🔬', title: k }; let i = 0;
+    const t = SCI[k], ci = getCatInfo(k) || { icon: '🔬', title: k }, facts = t.facts[band(level)]; let i = 0;
     const draw = () => {
-      const f = t.facts[i];
+      const f = facts[i];
       sheet.querySelector('#fact').innerHTML = '<div class="fact"><span class="fi">' + emo(f[0], 64) + '</span><p>' + esc(f[1]) + '</p></div>';
-      sheet.querySelector('#fdots').innerHTML = t.facts.map((_, j) => '<i class="' + (j === i ? 'on' : '') + '"></i>').join('');
+      sheet.querySelector('#fdots').innerHTML = facts.map((_, j) => '<i class="' + (j === i ? 'on' : '') + '"></i>').join('');
       try { if (typeof speak === 'function' && sheet.dataset.say === '1') speak(f[1]); } catch (e) {}
     };
     const qlv = quizLevelFor(k);
     sheet.innerHTML = '<div class="sh-hero" style="background:linear-gradient(135deg,' + t.c[0] + ',' + t.c[1] + ')"><button class="sh-x" id="shx" aria-label="Close">✕</button>' + emo(ci.icon, 72) + '<h2>' + esc(ci.title) + '</h2><p>' + esc(t.intro) + '</p></div>' +
-      '<div class="facts"><h3 style="margin:0 0 8px">' + emo('💡', 24) + ' Did you know?</h3><div id="fact"></div>' +
+      '<div class="facts"><h3 style="margin:0 0 8px">' + emo('💡', 24) + ' Did you know? <small style="font-size:13px;color:#6b7280">· facts for ' + esc(BAND_NAME[band(level)]) + '</small></h3><div id="fact"></div>' +
       '<div class="fnav"><button id="fprev" aria-label="Previous fact">◀</button><div class="fdots" id="fdots"></div><button id="fnext" aria-label="Next fact">▶</button></div></div>' +
       '<div class="acts"><button class="big" id="fsay" style="background:#0ea5e9">' + emo('🔊', 28) + ' Read it to me</button>' +
       '<button class="big" id="fquiz" style="background:linear-gradient(135deg,' + t.c[0] + ',' + t.c[1] + ')">' + emo('🎯', 28) + ' Take the ' + esc(ci.title) + ' quiz</button></div>' +
       '<p class="note">Quiz for ' + esc(classLabel(qlv)) + '</p>';
     sheet.querySelector('#shx').onclick = () => { tap(); closeSheet(); };
-    sheet.querySelector('#fprev').onclick = () => { tap(); i = (i + t.facts.length - 1) % t.facts.length; draw(); };
-    sheet.querySelector('#fnext').onclick = () => { tap(); i = (i + 1) % t.facts.length; draw(); };
-    sheet.querySelector('#fsay').onclick = () => { sheet.dataset.say = '1'; try { speak(t.facts[i][1]); } catch (e) {} };
+    sheet.querySelector('#fprev').onclick = () => { tap(); i = (i + facts.length - 1) % facts.length; draw(); };
+    sheet.querySelector('#fnext').onclick = () => { tap(); i = (i + 1) % facts.length; draw(); };
+    sheet.querySelector('#fsay').onclick = () => { sheet.dataset.say = '1'; try { speak(facts[i][1]); } catch (e) {} };
     sheet.querySelector('#fquiz').onclick = () => { location.href = quizUrl(k); };
     sheet.dataset.say = '0'; draw();
     sheet.scrollTop = 0; sheet.classList.add('on'); sbg.classList.add('on');

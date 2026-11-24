@@ -7,7 +7,7 @@
    The page content stays hidden; a sign-in card is shown instead.
    Access = the Firebase rules: only the admin account may read /admin
    (see README-admin.md). After sign-in a bar is added to the page
-   <header>: the admin's email, "Open app", "Players" and "Sign out".
+   <header>: the admin's email and "Sign out" (page links: admin-nav.js).
    window.KQAdmin = { user, signOut } for the page's own code.
    ============================================================ */
 (function () {
@@ -80,9 +80,7 @@
         var bar = document.createElement('div'); bar.className = 'kq-adminbar';
         var here = (location.pathname.split('/').pop() || 'index.html');
         bar.innerHTML = '<span class="em" title="' + esc(u.email) + '">' + esc(u.email || u.displayName || '') + '</span>' +
-          '<button type="button" data-go="../quiz-home.html">🎮 Open app</button>' +
-          (here !== 'users.html' ? '<button type="button" data-go="users.html">👥 Players</button>' : '') +
-          (here !== 'index.html' && here !== '' ? '<button type="button" data-go="index.html">📸 Instagram Studio</button>' : '') +
+          // page links ("Open app", "Players" …) are in the common header (admin-nav.js)
           '<button type="button" id="kqgOut">Sign out</button>';
         header.appendChild(bar);
         bar.querySelectorAll('[data-go]').forEach(function (b) { b.onclick = function () { location.href = b.getAttribute('data-go'); }; });

@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Growth Tracker</title>
+<script src="admin-nav.js" defer></script>
 <!--
   Growth tracker (admin only): progress towards 10,000 downloads.
     From the app (automatic, Firebase growth/d):  new devices per day, daily
@@ -62,7 +63,7 @@
 <body>
 <header><div class="bar"><h1>📈 Growth tracker</h1>
   <div class="range" id="range"><button data-r="7">7 days</button><button data-r="14">14 days</button><button data-r="30" class="on">30 days</button><button data-r="90">90 days</button></div>
-  <button onclick="location.href='users.html'">👥 Players</button><button onclick="location.href='index.html'">📸 Instagram Studio</button><button id="out" hidden>Sign out</button>
+  <button id="out" hidden>Sign out</button>
 </div></header>
 <main id="app"><div class="card center"><p class="muted">Loading…</p></div></main>
 
@@ -91,7 +92,7 @@
   const addDays = (k, n) => { const d = fromKey(k); d.setDate(d.getDate() + n); return key(d); };
   const label = (k) => fromKey(k).toLocaleDateString([], { day: 'numeric', month: 'short' });
   const isoDay = (k) => k.slice(0, 4) + '-' + k.slice(4, 6) + '-' + k.slice(6, 8);
-  let RANGE = 30, DEV = {}, MAN = {}, denied = false;
+  let RANGE = 30, DEV = {}, MAN = {}, META = {}, denied = false;
 
   /* ---------- auth (same pattern as users.html: the rules are the lock) ---------- */
   auth.getRedirectResult().catch(() => {});
@@ -111,8 +112,9 @@
     $app.innerHTML = '<div class="card center"><p class="muted">Loading growth data…</p></div>';
     Promise.all([
       db.ref('growth/d').once('value').then((s) => s.val() || {}, (e) => { denied = true; return {}; }),
-      db.ref('growth/manual').once('value').then((s) => s.val() || {}, () => ({}))
-    ]).then(([d, m]) => { DEV = d; MAN = m; render(); });
+      db.ref('growth/manual').once('value').then((s) => s.val() || {}, () => ({})),
+      db.ref('growth/meta').once('value').then((s) => s.val() || {}, () => ({}))
+    ]).then(([d, m, meta]) => { DEV = d; MAN = m; META = meta; render(); });
   }
 
   /* ---------- numbers from the app ---------- */
@@ -179,14 +181,17 @@
   function manualCard() {
     const ds = Object.keys(MAN).sort().reverse().slice(0, 60);
     const yest = new Date(); yest.setDate(yest.getDate() - 1);
-    return '<div class="card"><h2>Play Console numbers</h2><p class="muted small">Play Console → Statistics (or Store performance). Type a day’s numbers (or a whole week on its first day). Saved in Firebase <code>growth/manual</code>.</p>' +
+    const imp = META.playImport;
+    const impTxt = imp && imp.at ? '🤖 Imported automatically from Play Console every day — last import ' + new Date(imp.at).toLocaleString([], { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) + ' (' + (imp.days || 0) + ' days). Installs, uninstalls and listing visitors fill in by themselves; type ad spend and paid installs here.'
+      : 'Not imported automatically yet — set up the daily Play Console import (admin/README-admin.md → "Automatic Play Console numbers"), or type the numbers from Play Console → Statistics here.';
+    return '<div class="card"><h2>Play Console numbers</h2><p class="muted small">' + esc(impTxt) + ' Typing a day only changes the boxes you fill in.</p>' +
       '<form class="add" id="mf"><label>Date<input type="date" name="date" required value="' + isoDay(key(yest)) + '"></label>' +
       '<label>Store listing visitors<input type="number" min="0" name="visitors"></label><label>First-time installers<input type="number" min="0" name="installs"></label>' +
       '<label>Uninstalls<input type="number" min="0" name="uninstalls"></label><label>Ad spend (₹)<input type="number" min="0" step="0.01" name="spend"></label>' +
       '<label>Paid installs (from ads)<input type="number" min="0" name="paid"></label><label>Note<input type="text" maxlength="80" name="note" placeholder="e.g. Diwali reel"></label>' +
       '<button class="b p" type="submit">Save</button></form>' +
       '<div class="scroll" style="margin-top:12px"><table><tr><th>Date</th><th>Visitors</th><th>Installs</th><th>Conversion</th><th>Uninstalls</th><th>Spend</th><th>Cost / paid install</th><th>Note</th><th></th></tr>' +
-      (ds.length ? ds.map((d) => { const r = MAN[d] || {}; return '<tr><td>' + esc(d) + '</td><td>' + num(r.visitors) + '</td><td>' + num(r.installs) + '</td><td>' + pct(+r.installs || 0, +r.visitors || 0) + '</td><td>' + num(r.uninstalls) + '</td><td>' + money(r.spend) + '</td><td>' + (r.paid ? money((+r.spend || 0) / r.paid) : '—') + '</td><td style="text-align:left">' + esc(r.note || '') + '</td><td><button class="b" data-del="' + esc(d) + '">✕</button></td></tr>'; }).join('') : '<tr><td colspan="9" class="muted">Nothing typed in yet.</td></tr>') +
+      (ds.length ? ds.map((d) => { const r = MAN[d] || {}; return '<tr><td>' + esc(d) + '</td><td>' + num(r.visitors) + '</td><td>' + num(r.installs) + '</td><td>' + pct(+r.installs || 0, +r.visitors || 0) + '</td><td>' + num(r.uninstalls) + '</td><td>' + money(r.spend) + '</td><td>' + (r.paid ? money((+r.spend || 0) / r.paid) : '—') + '</td><td style="text-align:left">' + (r.src === 'play' ? '<span title="Imported from Play Console">🤖 Play</span> ' : '') + esc(r.note || '') + '</td><td><button class="b" data-del="' + esc(d) + '">✕</button></td></tr>'; }).join('') : '<tr><td colspan="9" class="muted">Nothing typed in yet.</td></tr>') +
       '</table></div></div>';
   }
   function tips() {
@@ -200,7 +205,8 @@
       const row = {}; ['visitors', 'installs', 'uninstalls', 'spend', 'paid'].forEach((k) => { const v = fd.get(k); if (v !== '' && v != null) row[k] = Math.max(0, +v); });
       const note = String(fd.get('note') || '').trim(); if (note) row.note = note.slice(0, 80);
       row.at = Date.now();
-      db.ref('growth/manual/' + d).set(row).then(() => { MAN[d] = row; render(); }, (er) => alert('Could not save: ' + er.message));
+      // update, not set: keeps the numbers imported from Play Console (and any box left empty)
+      db.ref('growth/manual/' + d).update(row).then(() => { MAN[d] = Object.assign({}, MAN[d] || {}, row); render(); }, (er) => alert('Could not save: ' + er.message));
     };
     document.querySelectorAll('[data-del]').forEach((b) => b.onclick = () => { const d = b.dataset.del; if (!confirm('Delete the numbers for ' + d + '?')) return; db.ref('growth/manual/' + d).remove().then(() => { delete MAN[d]; render(); }); });
   }

@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Kids Quiz Admin Console</title>
+<script src="admin-nav.js" defer></script>
 <!--
   Admin portal: every player (Google + guest) from Firebase, with their scores,
   plays and time played, and deletion of a player's data.
@@ -200,9 +201,6 @@
   function showWho(u) {
     $who.innerHTML = (u.photoURL ? '<img src="' + esc(u.photoURL) + '" referrerpolicy="no-referrer" alt="">' : '') +
       '<span>' + esc(u.email || u.displayName || '') + '</span>' +
-      '<button onclick="location.href=\'../quiz-home.html\'">🎮 Open app</button>' +
-      '<button onclick="location.href=\'index.html\'">📸 Instagram Studio</button>' +
-      '<button onclick="location.href=\'growth.html\'">📈 Growth</button>' +
       '<button id="out">Sign out</button>';
     document.getElementById('out').onclick = () => auth.signOut();
   }
@@ -223,13 +221,19 @@
 
   /* ---------- data ---------- */
   let PLAYERS = [], BYKEY = new Map();
-  const S = { q: '', type: 'all', sort: 'last', sel: new Set(), tab: 'dash', range: 30, cc: 'all' };
+  // The section comes from the URL hash (#dash #players #coins #app #tools), so the
+  // common admin header (admin-nav.js) switches it without reloading.
+  const TAB_IDS = ['dash', 'players', 'coins', 'app', 'tools'];
+  const tabFromHash = () => { const h = (location.hash || '').slice(1); return TAB_IDS.indexOf(h) !== -1 ? h : 'dash'; };
+  const S = { q: '', type: 'all', sort: 'last', sel: new Set(), tab: tabFromHash(), range: 30, cc: 'all' };
+  let loaded = false;
+  window.addEventListener('hashchange', () => { const t = tabFromHash(); if (t === S.tab) return; S.tab = t; if (loaded) render(); window.scrollTo(0, 0); });
   let RAW = { lb: {}, ses: {}, att: {} };
 
   function load() {
     $app.innerHTML = '<div class="card center"><p class="muted">Loading players from Firebase…</p></div>';
     Promise.all(['leaderboards', 'sessions', 'attempts', 'wallets'].map((n) => db.ref(n).once('value').then((s) => s.val() || {}, () => ({}))))
-      .then(([lb, ses, att, wal]) => { RAW = { lb, ses, att, wal }; build(lb, ses, att); render(); })
+      .then(([lb, ses, att, wal]) => { RAW = { lb, ses, att, wal }; build(lb, ses, att); loaded = true; render(); })
       .catch((e) => { $app.innerHTML = '<div class="card center"><p class="err">Could not load: ' + esc(e.message) + '</p><button id="rt">Retry</button></div>'; document.getElementById('rt').onclick = load; });
   }
   function player(key) {
@@ -294,11 +298,12 @@
       coins: (a, b) => (b.coins || 0) - (a.coins || 0) }[S.sort];
     return list.sort(by);
   }
-  function tabsHtml() {
+  function tabsHtml() { return ''; }   // sections are in the common admin header (admin-nav.js)
+  function oldTabsHtml() {
     return '<div class="tabs" role="tablist">' + [['dash', '📊 Dashboard'], ['players', '👥 Players'], ['coins', '🪙 Coins'], ['app', '📱 App settings'], ['tools', '🛠 Tools']].map(([v, l]) =>
       '<button role="tab" data-tab="' + v + '" class="' + (S.tab === v ? 'on' : '') + '">' + l + '</button>').join('') + '</div>';
   }
-  function bindTabs() { $app.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => { S.tab = b.dataset.tab; render(); window.scrollTo(0, 0); }); }
+  function bindTabs() { $app.querySelectorAll('[data-tab]').forEach((b) => b.onclick = () => { location.hash = b.dataset.tab; }); }
   function render() {
     if (S.tab === 'dash') return renderDash();
     if (S.tab === 'tools') return renderTools();

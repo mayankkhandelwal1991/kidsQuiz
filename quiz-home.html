@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="quiz-theme.css?v=20261123a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<script>window.KQFX_NO_MUTE = true;   /* the header has its own sound button (no floating one over the buttons) */</script>
 <style>
 /* ===== Home (redesign) ===== */
 body.pg-home { background: linear-gradient(180deg, #e0f2fe 0%, #f5f3ff 45%, #fdf2f8 100%) fixed !important; }
@@ -38,6 +39,26 @@ body.pg-home { background: linear-gradient(180deg, #e0f2fe 0%, #f5f3ff 45%, #fdf
 .hm-ibtn { height: 42px; min-width: 42px; padding: 0 12px; border: none; border-radius: 14px; background: rgba(255,255,255,.92); color: #0369a1; font: 800 14px 'Baloo 2', sans-serif; display: grid; place-items: center; box-shadow: 0 4px 0 rgba(3,105,161,.25); cursor: pointer; }
 .hm-ibtn img { width: 24px; height: 24px; }
 .hm-ibtn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(3,105,161,.25); }
+.hm-lbl { display: none; }
+.hm-menu-btn { display: none; }
+/* 📱 Phones: the header buttons fold into a ☰ dropdown (they overlapped on small screens) */
+@media (max-width: 520px) {
+  .hm-menu-btn { display: grid; font-size: 22px; line-height: 1; }
+  .hm-menu-btn[aria-expanded="true"] { background: #fff; color: #7c3aed; }
+  .hm-actions { display: none; position: fixed; z-index: 2147483001; right: 12px; top: 64px; width: min(250px, calc(100vw - 24px));
+    flex-direction: column; gap: 6px; padding: 10px; background: #fff; border-radius: 20px; box-shadow: 0 16px 40px rgba(15,23,42,.28); animation: hmMenuIn .16s ease-out; }
+  .hm-actions.open { display: flex; }
+  .hm-actions > button { width: 100%; height: 48px; display: flex !important; align-items: center; justify-content: flex-start; gap: 12px; padding: 0 14px;
+    border-radius: 14px; background: #f1f5f9; box-shadow: none; color: #1e1b4b; font: 800 16px 'Baloo 2', sans-serif; text-align: left; }
+  .hm-actions > button[style*="display: none"], .hm-actions > button[style*="display:none"] { display: none !important; }
+  .hm-actions > button:active { transform: scale(.98); box-shadow: none; }
+  .hm-actions .hm-lbl { display: inline; }
+  .hm-actions .kqc-chip::after { content: 'My coins'; margin-left: auto; font-size: 13px; color: #64748b; }
+  .hm-actions .kqc-chip.kqc-badges::after { content: 'Badges'; }
+  .hm-actions .hm-out { background: #ede9fe; color: #6d28d9; }
+  .hm-menu-shade { position: fixed; inset: 0; z-index: 2147483000; background: rgba(15,23,42,.25); }
+}
+@keyframes hmMenuIn { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: none; } }
 .hm-hello { position: relative; display: flex; align-items: center; gap: 12px; margin-top: 16px; }
 .hm-av { width: 64px; height: 64px; flex: 0 0 auto; border-radius: 50%; border: 4px solid #fff; background: linear-gradient(135deg, #f472b6, #8b5cf6); display: grid; place-items: center; overflow: hidden; box-shadow: 0 6px 14px rgba(0,0,0,.18); }
 .hm-av .pf-avph { color: #fff; font-size: 26px; font-weight: 800; } .hm-av img { width: 100%; height: 100%; object-fit: cover; }
@@ -179,9 +200,11 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
       </div>
       <div class="hm-top">
         <div class="hm-logo"><img src="images/app-logo.png" alt="Kids Quiz logo"><div><b>Kids Quiz</b><small>LKG – Class 5</small></div></div>
-        <div class="hm-actions">
-          <button type="button" class="hm-ibtn" id="hmAdmin" style="display:none" onclick="location.href='admin/users.html'" aria-label="Admin console" title="Admin console"><img src="images/emoji/2699.svg" alt=""></button>
-          <button type="button" class="hm-ibtn" onclick="openMyStats()" aria-label="My stats"><img src="images/emoji/1f4ca.svg" alt=""></button>
+        <button type="button" class="hm-ibtn hm-menu-btn" id="hmMenuBtn" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="hmActions">☰</button>
+        <div class="hm-actions" id="hmActions">
+          <button type="button" class="hm-ibtn" id="hmAdmin" style="display:none" onclick="location.href='admin/users.html'" aria-label="Admin console" title="Admin console"><img src="images/emoji/2699.svg" alt=""><span class="hm-lbl">Admin console</span></button>
+          <button type="button" class="hm-ibtn" onclick="openMyStats()" aria-label="My stats"><img src="images/emoji/1f4ca.svg" alt=""><span class="hm-lbl">My stats</span></button>
+          <button type="button" class="hm-ibtn" id="hmSound" aria-label="Sound on/off" title="Sound on/off"><img src="images/emoji/1f50a.svg" alt=""><span class="hm-lbl">Sound: on</span></button>
           <button type="button" class="hm-ibtn hm-out" id="pfAuthBtn" onclick="switchUser()">Out</button>
         </div>
       </div>
@@ -1131,6 +1154,35 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
       } catch (e) {}
     });
   });
+})();
+</script>
+<script>
+/* ☰ Header menu (phones) + 🔊 sound button. On wide screens the buttons stay in a row. */
+(function hmMenu() {
+  var btn = document.getElementById('hmMenuBtn'), box = document.getElementById('hmActions'), shade = null;
+  if (!btn || !box) return;
+  function isOpen() { return box.classList.contains('open'); }
+  function close() { box.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); btn.textContent = '☰'; if (shade) { shade.remove(); shade = null; } }
+  function open() {
+    var r = btn.getBoundingClientRect();
+    box.style.top = Math.round(r.bottom + 8) + 'px';
+    box.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); btn.textContent = '✕';
+    shade = document.createElement('div'); shade.className = 'hm-menu-shade'; shade.onclick = close; document.body.appendChild(shade);
+  }
+  btn.onclick = function (e) { e.stopPropagation(); isOpen() ? close() : open(); };
+  box.addEventListener('click', function (e) { if (e.target.closest('button') && e.target.closest('button').id !== 'hmSound') setTimeout(close, 60); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) { close(); btn.focus(); } });
+  window.addEventListener('scroll', function () { if (isOpen()) close(); }, { passive: true });
+  window.addEventListener('resize', function () { if (isOpen()) close(); });
+  // sound on/off (kq-fx.js loads a moment later)
+  var snd = document.getElementById('hmSound');
+  function paint() {
+    var m = window.KQFX && KQFX.isMuted && KQFX.isMuted();
+    snd.querySelector('img').style.opacity = m ? '.35' : '';   // no muted-speaker icon in the set: faded = off
+    snd.querySelector('.hm-lbl').textContent = 'Sound: ' + (m ? 'off' : 'on');
+  }
+  snd.onclick = function () { if (window.KQFX && KQFX.toggleMute) { KQFX.toggleMute(); paint(); } };
+  (function wait(n) { if (window.KQFX && KQFX.isMuted) paint(); else if (n < 40) setTimeout(function () { wait(n + 1); }, 250); })(0);
 })();
 </script>
 </body>

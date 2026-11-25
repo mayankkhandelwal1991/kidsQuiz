@@ -56,7 +56,6 @@ body.pg-home { background: linear-gradient(180deg, #e0f2fe 0%, #f5f3ff 45%, #fdf
   .hm-actions .kqc-chip::after { content: 'My coins'; margin-left: auto; font-size: 13px; color: #64748b; }
   .hm-actions .kqc-chip.kqc-badges::after { content: 'Badges'; }
   .hm-actions .hm-out { background: #ede9fe; color: #6d28d9; }
-  .hm-menu-shade { position: fixed; inset: 0; z-index: 2147483000; background: rgba(15,23,42,.25); }
 }
 @keyframes hmMenuIn { from { opacity: 0; transform: translateY(-6px) scale(.97); } to { opacity: 1; transform: none; } }
 .hm-hello { position: relative; display: flex; align-items: center; gap: 12px; margin-top: 16px; }
@@ -452,6 +451,7 @@ function switchUser() {
   // A guest has no Firebase session, so just go. A logged-in user must wait for
   // KQ.signOut() to actually complete first — otherwise the next page still
   // sees a live session and sends them right back here (the reload loop).
+  if (!wasGuest && !(window.KQ && KQ.signOut)) { try { if (typeof Android !== 'undefined' && Android && Android.googleSignOut) Android.googleSignOut(); } catch (e) {} }
   if (!wasGuest && window.KQ && KQ.signOut) {
     try { Promise.resolve(KQ.signOut()).then(done, done); } catch (e) { done(); }
   } else {
@@ -1181,17 +1181,19 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
 <script>
 /* ☰ Header menu (phones) + 🔊 sound button. On wide screens the buttons stay in a row. */
 (function hmMenu() {
-  var btn = document.getElementById('hmMenuBtn'), box = document.getElementById('hmActions'), shade = null;
+  var btn = document.getElementById('hmMenuBtn'), box = document.getElementById('hmActions');
   if (!btn || !box) return;
   function isOpen() { return box.classList.contains('open'); }
-  function close() { box.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); btn.textContent = '☰'; if (shade) { shade.remove(); shade = null; } }
+  function close() { box.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); btn.textContent = '☰'; }
   function open() {
     var r = btn.getBoundingClientRect();
     box.style.top = Math.round(r.bottom + 8) + 'px';
     box.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); btn.textContent = '✕';
-    shade = document.createElement('div'); shade.className = 'hm-menu-shade'; shade.onclick = close; document.body.appendChild(shade);
   }
   btn.onclick = function (e) { e.stopPropagation(); isOpen() ? close() : open(); };
+  // Tap outside closes it. (No dimming layer: the page's .container has its own
+  // z-index, so a layer on <body> would sit ON TOP of the menu and eat the taps.)
+  document.addEventListener('pointerdown', function (e) { if (isOpen() && !box.contains(e.target) && e.target !== btn) close(); }, true);
   box.addEventListener('click', function (e) { if (e.target.closest('button') && e.target.closest('button').id !== 'hmSound') setTimeout(close, 60); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) { close(); btn.focus(); } });
   window.addEventListener('scroll', function () { if (isOpen()) close(); }, { passive: true });

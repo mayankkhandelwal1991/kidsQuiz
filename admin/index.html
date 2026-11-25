@@ -114,8 +114,12 @@
     <!-- STEP 3 -->
     <div class="card step" data-step="3">
       <h2>③ Reel video</h2>
-      <p class="note" id="vidNote">A 20–25 s animated Reel: the app splash → Ollie the owl asks the question → countdown → answer → real gameplay of our games → “Play free”. If you picked a game, its own gameplay is shown first.</p>
-      <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="optOwl" checked style="width:auto"> 🦉 Ollie the owl host (talks, cheers, reacts)</label>
+      <p class="note" id="vidNote">A 20–35 s animated Reel that starts with a hook (no slow intro): the characters ask the question → countdown → answer → real gameplay of our games → “Download free”. If you picked a game, its own gameplay is shown first.</p>
+      <label>🎭 Characters</label>
+      <div class="chips" id="castPick"></div>
+      <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="optVoice" checked style="width:auto"> 🗣 AI voice-over (the characters speak: hook, question, answer, “Download free on Google Play!”)</label>
+      <div class="row" style="margin-top:4px"><button class="btn gray" id="voicePv">▶ Hear the voices</button></div>
+      <p class="note" style="margin:4px 0 0">Free AI voice (Kokoro) made inside this browser — no account, no cost. The first time it downloads the voice model (≈90 MB, then it is cached). The music gets quieter while they talk, and their mouths move with the voice.</p>
       <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="optGames" checked style="width:auto"> 🎮 Gameplay of other games at the end</label>
       <label>🎵 Music</label>
       <div class="chips" id="musicPick"></div>
@@ -131,7 +135,8 @@
     <div class="card step" data-step="4">
       <h2>④ Caption</h2>
       <textarea id="caption"></textarea>
-      <div class="row"><button class="btn gray" id="copyCap">📋 Copy caption</button></div>
+      <div class="row"><button class="btn gray" id="copyCap">📋 Copy caption</button><button class="btn gray" id="newTags"># New hashtags</button></div>
+      <p class="note" style="margin:4px 0 0">5 hashtags, mixed fresh for every post (Instagram now shows at most 5): brand + type + topic + Reel reach + season/parents.</p>
       <label>This post’s link</label><div class="row" style="margin-top:0"><input type="text" id="postLink" readonly style="flex:1"><button class="btn gray" id="copyLink">📋</button></div>
       <label>Bio link (Instagram profile)</label><div class="row" style="margin-top:0"><input type="text" id="bioLink" readonly style="flex:1"><button class="btn gray" id="copyBio">📋</button></div>
       <div class="row"><button class="btn gray" id="loadClicks">🔄 Show link clicks</button></div>
@@ -217,7 +222,47 @@ const FACTS = [
   ['🐯', 'No two tigers have the same stripes — like our fingerprints!'], ['🌍', 'Earth is the only planet not named after a god.'], ['🦈', 'Sharks were around before dinosaurs.'],
   ['🌧️', 'Cherrapunji in India is one of the rainiest places on Earth.'], ['🐫', 'A camel’s hump stores fat, not water.'], ['🧠', 'Your brain uses about 20% of your body’s energy.'],
 ];
-const TAGS = '#kidsquiz #kidslearning #quizforkids #funlearning #kidsgames #learningisfun #parenting #studentsofindia #gkquiz #kidsactivities #homeschool #brainteaser';
+/* Hashtags: Instagram now shows at most 5 per post, so each post gets 5 strong ones, freshly mixed
+   (the same block on every post looks like spam): 1 brand + 1 type + 1 topic + 1 reach + 1 audience/season.
+   Instagram has no API for "trending" tags; these are the big, active ones for kids' learning,
+   plus seasonal tags that trend around festivals and school dates. */
+const TAG_N = 5;
+const TAGPOOL = {
+  brand: ['#kidsquiz', '#kidsgames', '#kidslearning', '#learningisfun', '#educationalgames', '#learnwithfun'],
+  quiz: ['#quiztime', '#quizoftheday', '#quizforkids', '#braintest', '#canyouanswer'],
+  fact: ['#funfacts', '#didyouknow', '#factsdaily', '#amazingfacts'],
+  game: ['#mobilegames', '#androidgames', '#freegames', '#kidsapps', '#gamesforkids'],
+  custom: ['#kidsactivities', '#learningthroughplay'],
+  reel: ['#reels', '#reelsinstagram', '#trendingreels', '#viralreels', '#explorepage', '#reelitfeelit'],
+  audience: ['#parenting', '#momlife', '#indianmoms', '#parentingtips', '#homeschooling', '#kidsactivities', '#mumbaimoms', '#delhimoms'],
+  cat: { gk: ['#gkquiz', '#generalknowledge'], science: ['#scienceforkids', '#sciencefacts'], space: ['#spacefacts', '#solarsystem'], animals: ['#animalfacts', '#animalsforkids'],
+    english: ['#englishlearning', '#spellingbee'], hindi: ['#hindilearning', '#hindi'], geography: ['#geography', '#maps'], history: ['#indianhistory', '#history'],
+    humanbody: ['#humanbody', '#biologyforkids'], computers: ['#codingforkids', '#computers'], inventions: ['#inventions', '#stem'], plants: ['#plantsforkids', '#nature'],
+    riddles: ['#riddles', '#riddlesforkids'], brainteasers: ['#brainteaser', '#puzzles'], capitals: ['#worldcapitals', '#geography'], sports: ['#cricketfans', '#sportsquiz'], math: ['#mathforkids', '#mathgames'] }
+};
+function seasonTags(d) {   // tags that trend around Indian festivals and school dates (approximate dates)
+  const m = d.getMonth() + 1, day = d.getDate(), md = m * 100 + day, o = [];
+  if (md >= 1110 && md <= 1116) o.push('#childrensday');
+  if (md >= 1015 && md <= 1110) o.push('#diwali');
+  if (md >= 1215) o.push('#christmas');
+  if (md >= 1226 || md <= 103) o.push('#newyear');
+  if (md >= 120 && md <= 127) o.push('#republicday');
+  if (md >= 810 && md <= 816) o.push('#independenceday');
+  if (md >= 301 && md <= 316) o.push('#holi');
+  if (md >= 415 && md <= 615) o.push('#summervacation');
+  if (md >= 601 && md <= 715) o.push('#backtoschool');
+  if (md >= 201 && md <= 331) o.push('#examtime');
+  return o;
+}
+function makeTags(reel) {
+  const P = TAGPOOL, g = S.game || {}, topic = S.type === 'quiz' ? P.cat[S.cat] : S.type === 'game' ? (/math/i.test(g.title || '') ? P.cat.math : /quiz|word|spell/i.test(g.title || '') ? P.cat.english : P.game) : S.type === 'fact' ? P.cat.science.concat(P.cat.animals) : P.custom;
+  const season = seasonTags(new Date());
+  const picks = [pick(P.brand), pick(P[S.type] || P.custom), pick(topic || P.brand), reel ? pick(P.reel) : pick(P.audience), season.length ? pick(season) : pick(P.audience)];
+  const out = []; picks.forEach((t) => { if (!out.includes(t)) out.push(t); });
+  while (out.length < TAG_N) { const t = pick(P.audience.concat(P.brand)); if (!out.includes(t)) out.push(t); }
+  return out.slice(0, TAG_N).join(' ');
+}
+let TAGS = '';
 const THEMES = { sky: ['#38bdf8', '#6366f1'], sunset: ['#fb923c', '#ec4899'], jungle: ['#22c55e', '#0d9488'], grape: ['#a855f7', '#4f46e5'], sun: ['#facc15', '#f97316'] };
 const SIZES = { 'Portrait 4:5': [1080, 1350], 'Square 1:1': [1080, 1080], 'Story 9:16': [1080, 1920] };
 
@@ -348,6 +393,7 @@ function writeCaption() {
   } else if (S.type === 'game' && S.game) c = '🎮 ' + (S.game.badge ? 'NEW GAME: ' : 'Have you played ') + S.game.title + (S.game.badge ? '!' : '?') + '\n\n' + S.game.how;
   else if (S.type === 'fact') c = '🤩 Fun Fact!\n\n' + S.fact[1] + '\n\nShare this with a friend who loves facts! 💡';
   else c = S.custom.title + '\n\n' + S.custom.body;
+  TAGS = makeTags(PUBAS !== 'post');
   c += '\n\n📲 Play free: Kids Quiz on Google Play\n👆 Link in bio · or open: ' + trackLink().replace(/^https:\/\//, '') + '\n\n' + TAGS;
   $('caption').value = c;
   pvCaption();
@@ -379,6 +425,12 @@ function controls() {
 $('shuffle').onclick = () => { if (S.type === 'quiz') pickQuiz(); else if (S.type === 'game') S.game = pick(GAMES); else if (S.type === 'fact') S.fact = pick(FACTS); captionEdited = false; controls(); draw(); };
 $('download').onclick = () => { const a = document.createElement('a'); a.download = 'kidsquiz-' + S.type + '-' + Date.now() + '.png'; a.href = $('cv').toDataURL('image/png'); a.click(); };
 $('caption').oninput = () => { captionEdited = true; pvCaption(); };
+$('newTags').onclick = () => {   // swap only the hashtag line, keep any edits to the rest
+  const c = $('caption'); TAGS = makeTags(PUBAS !== 'post');
+  const lines = c.value.split('\n'), i = lines.map((l) => /^#\w/.test(l.trim())).lastIndexOf(true);
+  if (i >= 0) lines[i] = TAGS; else lines.push('', TAGS);
+  c.value = lines.join('\n'); pvCaption();
+};
 $('copyLink').onclick = () => { navigator.clipboard && navigator.clipboard.writeText($('postLink').value); setStatus('Post link copied ✅', 'good'); };
 $('copyBio').onclick = () => { navigator.clipboard && navigator.clipboard.writeText($('bioLink').value); setStatus('Bio link copied ✅ — paste it in Instagram → Edit profile → Links', 'good'); };
 $('copyCap').onclick = () => { navigator.clipboard && navigator.clipboard.writeText($('caption').value); setStatus('Caption copied ✅', 'good'); };
@@ -665,7 +717,7 @@ $('loadClicks').onclick = async () => {
 /* ------------------------------------------------------------------ 🦉 Ollie, the Reel host
    A vector owl drawn on the canvas. mood: talk | think | cheer | wave | point.
    t = seconds (drives blinking, bobbing, flapping and the talking beak). */
-function drawOwl(x, cx, cy, s, t, mood, hat) {
+function drawOwl(x, cx, cy, s, t, mood, hat, mouth) {
   x.save(); x.translate(cx, cy);
   const jump = mood === 'cheer' ? -Math.abs(Math.sin(t * 6)) * 60 : 0, bob = Math.sin(t * 3) * 8;
   x.translate(0, jump + bob); x.scale(s, s);
@@ -692,7 +744,7 @@ function drawOwl(x, cx, cy, s, t, mood, hat) {
   // cheeks
   x.fillStyle = 'rgba(244,114,182,.55)'; x.beginPath(); x.ellipse(-56, -6, 12, 7, 0, 0, 7); x.fill(); x.beginPath(); x.ellipse(56, -6, 12, 7, 0, 0, 7); x.fill();
   // beak (opens while talking)
-  const open = mood === 'talk' || mood === 'wave' || mood === 'point' ? Math.abs(Math.sin(t * 14)) * 12 : mood === 'cheer' ? 14 : 0;
+  const open = mouth != null ? mouth * 16 : mood === 'talk' || mood === 'wave' || mood === 'point' ? Math.abs(Math.sin(t * 14)) * 12 : mood === 'cheer' ? 14 : 0;
   x.fillStyle = '#f59e0b'; x.beginPath(); x.moveTo(-14, -14); x.lineTo(14, -14); x.lineTo(0, 4); x.fill();
   if (open > 1) { x.fillStyle = '#b45309'; x.beginPath(); x.moveTo(-10, -2); x.lineTo(10, -2); x.lineTo(0, 4 + open); x.fill(); }
   // feet
@@ -700,8 +752,78 @@ function drawOwl(x, cx, cy, s, t, mood, hat) {
   if (hat) x.drawImage(hat, -55, -175, 110, 110);
   x.restore();
 }
-// comic speech bubble with pop-in and typewriter text
-function bubble(x, text, bx, by, maxW, t, tailX, tailY, fg) {
+/* 🤖 Robo: a friendly robot with a screen face (eyes + equalizer mouth). Same arguments as drawOwl. */
+function drawRobo(x, cx, cy, s, t, mood, hat, mouth) {
+  x.save(); x.translate(cx, cy);
+  const jump = mood === 'cheer' ? -Math.abs(Math.sin(t * 6 + 0.7)) * 60 : 0, bob = Math.sin(t * 3 + 1) * 6;
+  x.translate(0, jump + bob); x.scale(s, s); x.rotate(mood === 'think' ? 0.08 : Math.sin(t * 2.2) * 0.03);
+  x.save(); x.translate(0, 120 - (jump + bob) / s); x.fillStyle = 'rgba(0,0,0,.18)'; x.beginPath(); x.ellipse(0, 0, 70, 12, 0, 0, 7); x.fill(); x.restore();
+  x.fillStyle = '#64748b'; x.fillRect(-36, 60, 20, 44); x.fillRect(16, 60, 20, 44);
+  x.fillStyle = '#334155'; rr(x, -48, 98, 40, 18, 9); x.fill(); rr(x, 8, 98, 40, 18, 9); x.fill();
+  const arm = (side, ang) => { x.save(); x.translate(side * 62, 0); x.rotate(side * ang); x.strokeStyle = '#94a3b8'; x.lineWidth = 14; x.lineCap = 'round'; x.beginPath(); x.moveTo(0, 0); x.lineTo(side * 10, 52); x.stroke(); x.fillStyle = '#f59e0b'; x.beginPath(); x.arc(side * 10, 60, 14, 0, 7); x.fill(); x.restore(); };
+  const sw = Math.sin(t * 4) * 0.12, up = mood === 'cheer' ? -2.6 + Math.sin(t * 16) * 0.3 : null;
+  arm(-1, up != null ? up : sw); arm(1, mood === 'wave' ? -2.4 + Math.sin(t * 10) * 0.45 : mood === 'point' ? -1.3 : mood === 'think' ? -2.0 : up != null ? up : -sw);
+  const bg = x.createLinearGradient(0, -14, 0, 70); bg.addColorStop(0, '#60a5fa'); bg.addColorStop(1, '#2563eb');
+  x.fillStyle = bg; rr(x, -62, -14, 124, 84, 26); x.fill();
+  x.fillStyle = '#fde047'; x.beginPath(); x.arc(0, 26, 13 + Math.sin(t * 5) * 2, 0, 7); x.fill();
+  x.fillStyle = '#94a3b8'; x.fillRect(-14, -26, 28, 14);
+  x.save(); x.translate(0, -86); x.rotate(Math.sin(t * 1.7) * 0.05);
+  x.strokeStyle = '#94a3b8'; x.lineWidth = 6; x.beginPath(); x.moveTo(0, -58); x.lineTo(0, -92); x.stroke();
+  x.fillStyle = (t * 2) % 1 < 0.5 ? '#f43f5e' : '#fde047'; x.beginPath(); x.arc(0, -98, 12, 0, 7); x.fill();
+  x.fillStyle = '#94a3b8'; [-1, 1].forEach((sd) => { x.beginPath(); x.arc(sd * 86, 0, 16, 0, 7); x.fill(); });
+  const hg = x.createLinearGradient(0, -60, 0, 60); hg.addColorStop(0, '#93c5fd'); hg.addColorStop(1, '#3b82f6');
+  x.fillStyle = hg; rr(x, -82, -60, 164, 120, 34); x.fill();
+  x.fillStyle = '#0f172a'; rr(x, -64, -44, 128, 86, 22); x.fill();
+  const blink = (t % 3.1) > 2.95, look = mood === 'think' ? [6, -6] : mood === 'point' ? [-6, 3] : [Math.sin(t * 0.9) * 4, 0];
+  x.fillStyle = '#22d3ee'; x.strokeStyle = '#22d3ee'; x.lineWidth = 7; x.lineCap = 'round';
+  [-28, 28].forEach((ex) => {
+    if (mood === 'cheer') { x.beginPath(); x.moveTo(ex - 13 + look[0], -12); x.lineTo(ex + look[0], -24); x.lineTo(ex + 13 + look[0], -12); x.stroke(); }
+    else rr(x, ex - 13 + look[0], (blink ? -12 : -28) + look[1], 26, blink ? 5 : 30, 8), x.fill();
+  });
+  const m = mouth != null ? mouth : mood === 'talk' || mood === 'wave' || mood === 'point' ? Math.abs(Math.sin(t * 14)) : mood === 'cheer' ? 0.8 : 0.1;
+  for (let i = 0; i < 5; i++) { const h = 4 + m * 22 * (0.55 + 0.45 * Math.sin(i * 1.7 + t * 20)); x.fillRect(-38 + i * 16, 22 - h / 2, 10, h); }
+  x.fillStyle = 'rgba(244,114,182,.5)'; x.beginPath(); x.ellipse(-50, 14, 9, 6, 0, 0, 7); x.fill(); x.beginPath(); x.ellipse(50, 14, 9, 6, 0, 0, 7); x.fill();
+  if (hat) x.drawImage(hat, -50, -210, 100, 100);
+  x.restore(); x.restore();
+}
+/* 🦖 Dino: a cute little dinosaur with a wagging tail. Same arguments as drawOwl. */
+function drawDino(x, cx, cy, s, t, mood, hat, mouth) {
+  x.save(); x.translate(cx, cy);
+  const jump = mood === 'cheer' ? -Math.abs(Math.sin(t * 6 + 1.4)) * 60 : 0, bob = Math.sin(t * 3 + 2) * 7;
+  x.translate(0, jump + bob); x.scale(s, s); x.rotate(mood === 'think' ? -0.06 : Math.sin(t * 2.4) * 0.035);
+  x.save(); x.translate(0, 118 - (jump + bob) / s); x.fillStyle = 'rgba(0,0,0,.18)'; x.beginPath(); x.ellipse(0, 0, 80, 13, 0, 0, 7); x.fill(); x.restore();
+  x.save(); x.translate(-50, 60); x.rotate(Math.sin(t * 5) * 0.18);                       // tail
+  x.fillStyle = '#16a34a'; x.beginPath(); x.moveTo(0, -24); x.quadraticCurveTo(-80, -10, -120, 34); x.quadraticCurveTo(-60, 20, 0, 24); x.fill(); x.restore();
+  x.fillStyle = '#f97316'; [[-62, 0], [-70, 30], [-58, -30]].forEach(([sx, sy]) => { x.beginPath(); x.moveTo(sx, sy - 14); x.lineTo(sx - 22, sy); x.lineTo(sx, sy + 14); x.fill(); });
+  x.fillStyle = '#15803d'; x.beginPath(); x.ellipse(-30, 100, 28, 20, 0, 0, 7); x.fill(); x.beginPath(); x.ellipse(32, 100, 28, 20, 0, 0, 7); x.fill();
+  const bg = x.createLinearGradient(0, -50, 0, 110); bg.addColorStop(0, '#4ade80'); bg.addColorStop(1, '#16a34a');
+  x.fillStyle = bg; x.beginPath(); x.ellipse(0, 34, 70, 78, 0, 0, 7); x.fill();
+  x.fillStyle = '#fef3c7'; x.beginPath(); x.ellipse(14, 50, 40, 52, 0, 0, 7); x.fill();
+  x.strokeStyle = '#fcd34d'; x.lineWidth = 4; for (let i = 0; i < 3; i++) { x.beginPath(); x.moveTo(-14, 28 + i * 20); x.lineTo(42, 28 + i * 20); x.stroke(); }
+  const armA = mood === 'cheer' ? -1.2 + Math.sin(t * 16) * 0.3 : mood === 'wave' ? -1.4 + Math.sin(t * 10) * 0.5 : Math.sin(t * 4) * 0.15;
+  x.strokeStyle = '#16a34a'; x.lineWidth = 14; x.lineCap = 'round';
+  [[-46, -1], [58, 1]].forEach(([ax, sd]) => { x.save(); x.translate(ax, 10); x.rotate(sd * armA); x.beginPath(); x.moveTo(0, 0); x.lineTo(sd * 22, 26); x.stroke(); x.restore(); });
+  x.save(); x.translate(16, -66); x.rotate(mood === 'think' ? -0.12 : Math.sin(t * 1.9) * 0.06);   // head
+  x.fillStyle = '#f97316'; [[-40, -50], [-6, -62], [28, -56]].forEach(([sx, sy]) => { x.beginPath(); x.moveTo(sx - 12, sy + 12); x.lineTo(sx, sy - 10); x.lineTo(sx + 12, sy + 12); x.fill(); });
+  const hg = x.createLinearGradient(0, -60, 0, 50); hg.addColorStop(0, '#86efac'); hg.addColorStop(1, '#22c55e');
+  x.fillStyle = hg; x.beginPath(); x.ellipse(0, 0, 80, 60, 0, 0, 7); x.fill(); x.beginPath(); x.ellipse(46, 16, 46, 36, 0, 0, 7); x.fill();
+  const m = mouth != null ? mouth : mood === 'talk' || mood === 'wave' || mood === 'point' ? Math.abs(Math.sin(t * 14)) : mood === 'cheer' ? 0.9 : 0;
+  x.fillStyle = '#7f1d1d'; x.beginPath(); x.ellipse(44, 34, 30, 3 + m * 16, 0, 0, 7); x.fill();
+  if (m > 0.2) { x.fillStyle = '#fff'; [24, 44, 64].forEach((tx) => { x.beginPath(); x.moveTo(tx - 6, 32 - m * 12); x.lineTo(tx, 40 - m * 12); x.lineTo(tx + 6, 32 - m * 12); x.fill(); }); }
+  x.fillStyle = '#14532d'; x.beginPath(); x.arc(70, 6, 4, 0, 7); x.fill(); x.beginPath(); x.arc(82, 10, 4, 0, 7); x.fill();
+  const blink = (t % 2.8) > 2.65 ? 0.12 : 1, look = mood === 'think' ? [5, -7] : mood === 'point' ? [-7, 3] : [Math.sin(t * 0.9) * 4 + 3, 0];
+  [[-22, -18], [18, -22]].forEach(([ex, ey]) => {
+    x.fillStyle = '#fff'; x.beginPath(); x.ellipse(ex, ey, 22, 22 * blink, 0, 0, 7); x.fill();
+    if (blink > 0.5) { x.fillStyle = '#1e1b4b'; x.beginPath(); x.arc(ex + look[0], ey + 2 + look[1], 11, 0, 7); x.fill(); x.fillStyle = '#fff'; x.beginPath(); x.arc(ex + look[0] + 4, ey - 3 + look[1], 4, 0, 7); x.fill(); }
+  });
+  if (mood === 'cheer') { x.strokeStyle = '#14532d'; x.lineWidth = 5; [[-22, -10], [18, -14]].forEach(([ex, ey]) => { x.beginPath(); x.arc(ex, ey, 11, Math.PI + 0.3, -0.3); x.stroke(); }); }
+  x.fillStyle = 'rgba(244,114,182,.55)'; x.beginPath(); x.ellipse(-44, 12, 12, 7, 0, 0, 7); x.fill();
+  if (hat) x.drawImage(hat, -60, -150, 100, 100);
+  x.restore(); x.restore();
+}
+const CHAR = { ollie: drawOwl, robo: drawRobo, dino: drawDino };
+// comic speech bubble with pop-in and typewriter text (prog: how much of the line the voice has said, 0..1)
+function bubble(x, text, bx, by, maxW, t, tailX, tailY, fg, prog) {
   if (t < 0) return;
   const k = Math.min(1, t / 0.25), sc = k < 1 ? 0.6 + 0.4 * (1 + 2.7 * Math.pow(k - 1, 3) + 1.7 * Math.pow(k - 1, 2)) : 1;
   x.save(); x.font = '800 58px "Baloo 2"';
@@ -710,7 +832,7 @@ function bubble(x, text, bx, by, maxW, t, tailX, tailY, fg) {
   x.shadowColor = 'rgba(0,0,0,.2)'; x.shadowBlur = 20; x.shadowOffsetY = 8;
   x.fillStyle = '#fff'; rr(x, -w / 2, -h / 2, w, h, 40); x.fill();
   x.beginPath(); x.moveTo(-24, h / 2 - 4); x.lineTo(tailX - bx, tailY - by); x.lineTo(24, h / 2 - 4); x.fill(); x.shadowColor = 'transparent';
-  const chars = Math.floor(t * 40) + 1; let used = 0;
+  const total = lines.reduce((n, l) => n + l.length, 0), chars = prog != null ? Math.ceil(prog * total * 1.08) + 1 : Math.floor(t * 40) + 1; let used = 0;
   x.fillStyle = fg || '#1e1b4b'; x.textAlign = 'center';
   lines.forEach((l, i) => { const vis = l.slice(0, Math.max(0, chars - used)); used += l.length; x.fillText(vis, 0, -h / 2 + 68 + i * 66); });
   x.restore();
@@ -766,10 +888,12 @@ $('musicPv').onclick = async () => {
   await addMusic(ac, ac.destination, ac.currentTime + 0.1, demo, 18);
   setTimeout(() => { if (PV_AC === ac) { ac.close(); PV_AC = null; $('musicPv').textContent = '▶ Listen'; } }, 18500);
 };
-async function addMusic(ac, out, t0, SC, total) {
+async function addMusic(ac, out, t0, SC, total, ducks) {
   if (MUSIC_STYLE === 'none') return;
-  const bus = ac.createGain(); bus.gain.setValueAtTime(0.0001, t0); bus.gain.exponentialRampToValueAtTime(0.55, t0 + 0.3);
-  bus.gain.setValueAtTime(0.55, t0 + total - 1.2); bus.gain.linearRampToValueAtTime(0.0001, t0 + total); bus.connect(out);
+  // ducks: [{at, d}] seconds when a character talks -> the music goes quieter
+  const bus = ac.createGain(), LV = 0.55, DUCK = 0.16; bus.gain.setValueAtTime(0.0001, t0); bus.gain.exponentialRampToValueAtTime(LV, t0 + 0.3);
+  (ducks || []).forEach((k) => { const a = t0 + Math.max(0.35, k.at - 0.08), b = Math.min(t0 + total - 1.3, t0 + k.at + k.d); if (b <= a) return; bus.gain.setTargetAtTime(DUCK, a, 0.05); bus.gain.setTargetAtTime(LV, b, 0.2); });
+  bus.gain.setTargetAtTime(0.0001, t0 + total - 1.2, 0.3); bus.connect(out);
   if (MUSIC_STYLE === 'own') {
     if (!MUSIC_BUF) return;
     const src = ac.createBufferSource(); src.buffer = MUSIC_BUF; src.loop = MUSIC_BUF.duration < total; src.connect(bus); src.start(t0); src.stop(t0 + total + 0.1);
@@ -811,6 +935,61 @@ async function addMusic(ac, out, t0, SC, total) {
   });
 }
 setMusic(MUSIC_STYLE);
+
+/* ------------------------------------------------------------------ 🗣 AI voice + 🎭 cast
+   Kokoro-82M, an open text-to-speech model, runs inside this browser (WebAssembly):
+   free, no key, nothing sent anywhere. ~90 MB is downloaded once and then cached.
+   Each character has a voice; Ollie and Dino are pitched up (cartoon), Robo gets a robot buzz. */
+const VOICE = {
+  ollie: { v: 'af_heart', rate: 1.1, name: '🦉 Ollie' },
+  robo: { v: 'am_puck', rate: 1.0, robot: true, name: '🤖 Robo' },
+  dino: { v: 'af_bella', rate: 1.17, name: '🦖 Dino' }
+};
+const CASTS = { squad: '🦉🤖🦖 Ollie + Robo + Dino', ollie: '🦉 Only Ollie', none: '🚫 No characters' };
+let CAST = 'squad';
+function setCast(v) { CAST = v; chips('castPick', Object.keys(CASTS).map((k) => [k, CASTS[k]]), v, setCast); }
+setCast(CAST);
+let TTS = null;
+async function loadTTS() {
+  if (TTS) return TTS;
+  setStatus('🗣 Loading the AI voice (≈90 MB, first time only — then it is cached)…', 'info');
+  const { KokoroTTS } = await import('https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/+esm');
+  TTS = await KokoroTTS.from_pretrained('onnx-community/Kokoro-82M-v1.0-ONNX', { dtype: 'q8', device: 'wasm' });
+  return TTS;
+}
+const sayable = (t) => String(t).replace(/[\p{Extended_Pictographic}‍️]/gu, '').replace(/50\+/g, 'fifty plus').replace(/&/g, ' and ').replace(/\s+/g, ' ').trim();
+/* text -> { buf, rate, robot, dur (seconds, after the pitch change), env (mouth opening, 60 per second of buffer) } */
+async function speak(text, who) {
+  const V = VOICE[who] || VOICE.ollie, r = await (await loadTTS()).generate(sayable(text), { voice: V.v });
+  const data = r.audio, sr = r.sampling_rate;
+  const buf = new AudioBuffer({ length: data.length, sampleRate: sr, numberOfChannels: 1 }); buf.copyToChannel(data, 0);
+  const step = Math.round(sr / 60), env = []; let mx = 1e-4;
+  for (let i = 0; i < data.length; i += step) { let a = 0; for (let j = i; j < Math.min(data.length, i + step); j++) a += data[j] * data[j]; a = Math.sqrt(a / step); env.push(a); mx = Math.max(mx, a); }
+  for (let i = 0; i < env.length; i++) env[i] = Math.min(1, env[i] / mx * 1.4);
+  return { buf, rate: V.rate, robot: !!V.robot, dur: buf.duration / V.rate, env };
+}
+function playVoice(ac, out, vo, at) {   // schedule a spoken line (robot buzz for Robo)
+  const src = ac.createBufferSource(); src.buffer = vo.buf; src.playbackRate.value = vo.rate;
+  const g = ac.createGain(); g.gain.value = 1.6; g.connect(out);
+  if (vo.robot) {
+    const dry = ac.createGain(); dry.gain.value = 0.55; src.connect(dry); dry.connect(g);
+    const ring = ac.createGain(); ring.gain.value = 0; const osc = ac.createOscillator(); osc.frequency.value = 55; const depth = ac.createGain(); depth.gain.value = 0.7;
+    osc.connect(depth); depth.connect(ring.gain); src.connect(ring); ring.connect(g); osc.start(at); osc.stop(at + vo.dur + 0.1);
+  } else src.connect(g);
+  src.start(at);
+}
+$('voicePv').onclick = async () => {
+  const btn = $('voicePv'); btn.disabled = true;
+  try {
+    const who = CAST === 'squad' ? ['ollie', 'robo', 'dino'] : ['ollie'];
+    const lines = { ollie: 'Hoo hoo! I am Ollie. Can you answer this one?', robo: 'Beep boop! I am Robo. Quiz time!', dino: 'Rawr! I am Dino. Download Kids Quiz free on Google Play!' };
+    const ac = new AudioContext(); let at = ac.currentTime + 0.1;
+    for (const w of who) { setStatus('🗣 Making ' + VOICE[w].name + '’s voice…', 'info'); const vo = await speak(lines[w], w); playVoice(ac, ac.destination, vo, Math.max(at, ac.currentTime + 0.05)); at = Math.max(at, ac.currentTime) + vo.dur + 0.3; }
+    setStatus('🔊 Playing the voices.', 'good');
+    setTimeout(() => ac.close(), (at - ac.currentTime + 1) * 1000);
+  } catch (e) { setStatus('AI voice could not load: ' + e.message + ' (the Reel still works without the voice).', 'bad'); }
+  finally { btn.disabled = false; }
+};
 
 /* Opus → AAC with ffmpeg.wasm (Instagram needs AAC; Chrome on Linux can't record it). */
 let FF = null;
@@ -859,20 +1038,23 @@ async function makeReel() {
     const clips = await loadClips(), own = S.type === 'game' && S.game ? clips.find((c) => c.file === S.game.file) : null;
     const others = $('optGames').checked ? clips.filter((c) => c !== own).sort(() => Math.random() - 0.5).slice(0, own ? 2 : 3) : [];
     await Promise.all((own ? [own] : []).concat(others).map(async (c) => { c.img = await img(c.src); c.ico = await img(emojiFile(c.icon)); }));
-    const splash = await img('../images/splash.png');
-    const OWL = $('optOwl').checked, crown = await img(emojiFile('👑')), star = await img(emojiFile('⭐'));
+    const OWL = CAST !== 'none', SQUAD = CAST === 'squad', crown = await img(emojiFile('👑')), star = await img(emojiFile('⭐'));
     const finger = await img(emojiFile('👆')), pad = await img(emojiFile('🎮')), spark = await img(emojiFile('✨'));
+    const burst = await Promise.all(['🎉', '🤩', '⭐', '🔥', '💯'].map((e) => img(emojiFile(e))));
+    const WHO = (role) => (SQUAD ? role : 'ollie');
 
     const rc = document.createElement('canvas'); rc.width = 1080; rc.height = 1920; const x = rc.getContext('2d');
     rc.style.cssText = 'width:100%;max-width:360px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.25)';
-    setPv('reel'); $('reelPv').style.display = 'none'; $('reelStill').style.display = 'none'; $('reelScreen').appendChild(rc);
     const bg = () => { const g = x.createLinearGradient(0, 0, 1080, 1920); g.addColorStop(0, c1); g.addColorStop(1, c2); x.fillStyle = g; x.fillRect(0, 0, 1080, 1920); };
     const twinkle = (t) => { if (!star) return; for (let i = 0; i < 7; i++) { const a = 0.35 + 0.35 * Math.sin(t * 3 + i * 1.7), z = 34 + (i % 3) * 16; x.globalAlpha = a; x.drawImage(star, (i * 157 + 60) % 1000 + 20, (i * 263 + 120) % 1700 + 60, z, z); } x.globalAlpha = 1; };
     const dots = (t) => { twinkle(t); x.fillStyle = 'rgba(255,255,255,.18)'; for (let i = 0; i < 14; i++) { const px = (i * 173 + t * 40 * (i % 3 + 1)) % 1180 - 50, py = (i * 241 + t * 25) % 2000 - 40; x.beginPath(); x.arc(px, py, 10 + (i % 4) * 6, 0, 7); x.fill(); } };
+    const rays = (t, cx, cy, a) => { x.save(); x.translate(cx, cy); x.rotate(t * 0.5); x.fillStyle = 'rgba(255,255,255,' + (a || 0.13) + ')'; for (let i = 0; i < 12; i++) { x.beginPath(); x.moveTo(0, 0); x.arc(0, 0, 1600, i * Math.PI / 6, i * Math.PI / 6 + Math.PI / 12); x.closePath(); x.fill(); } x.restore(); };
     const ease = (k) => 1 - Math.pow(1 - Math.min(1, Math.max(0, k)), 3);
     const back = (k) => { k = Math.min(1, Math.max(0, k)); const c = 1.70158; return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); };
     const cover = (c, z) => { const w = 1080 * z, h = 1920 * z; x.drawImage(c, (1080 - w) / 2, (1920 - h) / 2, w, h); };
     const confetti = Array.from({ length: 70 }, (_, i) => ({ x: Math.random() * 1080, v: 300 + Math.random() * 500, r: 8 + Math.random() * 10, c: ['#f43f5e', '#f59e0b', '#22c55e', '#3b82f6', '#a855f7'][i % 5], w: Math.random() * 6 }));
+    const pops = Array.from({ length: 26 }, (_, i) => ({ a: i / 26 * Math.PI * 2 + Math.random() * 0.2, v: 700 + Math.random() * 700, s: 80 + Math.random() * 70, e: i % 5, r: Math.random() * 6 - 3 }));
+    const emojiBurst = (t, cx, cy) => { if (t < 0) return; pops.forEach((p) => { const im = burst[p.e]; if (!im) return; const d = p.v * t; x.save(); x.globalAlpha = Math.max(0, 1 - t / 1.6); x.translate(cx + Math.cos(p.a) * d, cy + Math.sin(p.a) * d + 900 * t * t); x.rotate(p.r * t); x.drawImage(im, -p.s / 2, -p.s / 2, p.s, p.s); x.restore(); }); x.globalAlpha = 1; };
     const pill = (text, y, size, fg, icon) => {   // white rounded label, centred
       x.font = '800 ' + size + 'px "Baloo 2"'; const tw = x.measureText(text).width, iw = icon ? size * 1.15 : 0, w = tw + iw + size * 1.3, h = size * 1.6;
       x.fillStyle = 'rgba(255,255,255,.96)'; rr(x, 540 - w / 2, y - h / 2, w, h, h / 2); x.fill();
@@ -895,24 +1077,31 @@ async function makeReel() {
         if (ph < 0.25) { x.strokeStyle = 'rgba(255,255,255,' + (1 - ph * 4) + ')'; x.lineWidth = 8; x.beginPath(); x.arc(w * 0.12, h * 0.22 - 30, 30 + ph * 240, 0, 7); x.stroke(); } }
       x.restore();
     };
-    const gameScene = (c, d, head, sub) => ({ d, kind: 'game', draw(t) {
-      bg(); dots(t); const k = t / d, inn = back(t / 0.45), out = ease((t - d + 0.3) / 0.3);
+    // the talking character of a scene: mouth follows the voice, the bubble types along with it
+    const mouthOf = (sc, t) => { const v = sc.voice; if (!v) return null; const u = (t - sc.say.off) * v.rate; return u < 0 || u > v.buf.duration ? 0 : v.env[Math.floor(u * 60)] || 0; };
+    const progOf = (sc, t) => (sc.voice ? Math.max(0, Math.min(1, (t - sc.say.off) / sc.voice.dur)) : null);
+    const ch = (name, cx, cy, s, t, mood, sc) => CHAR[name](x, cx, cy, s, t, mood, name === 'ollie' ? crown : null, sc ? mouthOf(sc, t) : null);
+    const gameScene = (c, d, head, sub) => ({ d, kind: 'game', say: c._say ? { who: c._who, text: c._line, off: 0.45 } : null, draw(t) {
+      bg(); rays(t, 540, 900, 0.08); dots(t); const k = t / this.d, inn = back(t / 0.45), out = ease((t - this.d + 0.3) / 0.3);
       if (head) { x.globalAlpha = Math.min(1, t * 4); pill(head, 270, 60, c2, pad); x.globalAlpha = 1; }
       phone(c, t, 540 + (1 - inn) * 900 - out * 900, 900, 560, (c._r || 0) * (1 - k * 0.5), 1 + 0.03 * k);
       pill(c.title, 1500, 60, c2, c.ico);
       if (sub) { x.fillStyle = '#fff'; x.font = '700 44px "Baloo 2"'; x.fillText(sub, 540, 1590); }
-      if (OWL) { drawOwl(x, 120 - 300 * (1 - ease(t / 0.4)) - out * 300, 1280, 0.62, t, 'point', crown); if (c._say) bubble(x, c._say, 250, 1090, 330, t - 0.5, 160, 1190); }
+      if (OWL) { ch(c._who, 120 - 300 * (1 - ease(t / 0.4)) - out * 300, 1280, 0.62, t, 'point', this); if (c._say) bubble(x, c._say, 250, 1090, 330, t - 0.5, 160, 1190, null, progOf(this, t)); }
     } });
 
-    // ----- the storyboard
+    // ----- the script (spoken lines) and the storyboard
+    const q = S.item, opts = isQuiz ? q.options.slice(0, 4).map((o) => sayable(stripEmoji(o))) : [];
+    const readQ = isQuiz ? 'Question! ' + sayable(stripEmoji(q.question)) + (opts.length >= 2 && opts.every(Boolean) ? ' Is it ' + opts.map((o, k) => 'ABCD'[k] + ', ' + o).slice(0, -1).join('? ') + '? Or ' + 'ABCD'[opts.length - 1] + ', ' + opts[opts.length - 1] + '?' : '') : '';
+    const ansShort = isQuiz ? stripEmoji(q.answer) : '', howFirst = S.game ? ((S.game.how || '').split(/[.!]/)[0] || '').trim() : '';
+    const HOOKS = isQuiz ? [['Only super smart kids can answer this one!', 'Only smart kids get this! 🤓'], ['Can you answer this before the timer ends?', 'Beat the timer! ⏰'], ['Wait for it… this one is tricky!', 'Wait for it… 👀'], ['Quiz time! Are you ready?', 'Quiz time! Ready? 🤔']]
+      : S.type === 'game' ? [['New game alert! You have to see this!', 'New game alert! 🚨'], ['This game is so much fun! Look!', 'Sooo much fun! 😍']]
+      : S.type === 'fact' ? [['Did you know this? It is amazing!', 'Did you know? 🤯'], ['Wow! Here is a crazy fun fact!', 'Crazy fun fact! 🤩']]
+      : [[S.custom.title, S.custom.title]];
+    const hk = pick(HOOKS);
     const SC = [];
-    if (splash) SC.push({ d: 1.6, kind: 'splash', draw(t) {                   // 0) app splash screen (also the Reel cover)
-      const z = 1.0 + 0.06 * (t / 1.6), h = 1920 * z, w = h * splash.width / splash.height;
-      x.drawImage(splash, 540 - w / 2, 960 - h / 2 - 20 * t, w, h);
-      if (t > 1.3) { x.globalAlpha = (t - 1.3) / 0.3; x.fillStyle = '#fff'; x.fillRect(0, 0, 1080, 1920); x.globalAlpha = 1; }   // flash into the hook
-    } });
-    SC.push({ d: 2.6, kind: 'hook', draw(t) {                                   // 1) hook: icon + words pop in, Ollie asks
-      bg(); dots(t);
+    SC.push({ d: 2.6, kind: 'hook', say: { who: WHO('robo'), text: hk[0], off: 0.45 }, draw(t) {   // 1) hook first: no slow logo intro
+      bg(); rays(t, 540, 430, 0.14); dots(t);
       const sc = back(t / 0.4), bob = Math.sin(t * 6) * 12;
       if (hookIcon) { x.save(); x.translate(540, 430 + bob); x.rotate(Math.sin(t * 4) * 0.12); x.scale(sc, sc); x.drawImage(hookIcon, -150, -150, 300, 300); x.restore(); }
       x.fillStyle = '#fff'; x.font = '800 118px "Baloo 2"';
@@ -922,64 +1111,89 @@ async function makeReel() {
         words.forEach((w, wi) => { const k = back((t - 0.25 - (li * 2 + wi) * 0.16) / 0.3); if (k > 0) { x.save(); x.translate(px + widths[wi] / 2, 760 + li * 130); x.scale(k, k); x.textAlign = 'center'; x.lineWidth = 14; x.strokeStyle = 'rgba(30,27,75,.25)'; x.strokeText(w, 0, 0); x.fillText(w, 0, 0); x.restore(); } px += widths[wi]; });
       });
       if (isQuiz) { x.globalAlpha = ease((t - 0.9) * 3); pill(lvl + ' · ' + S.cat.toUpperCase(), 1000, 46, c2); x.globalAlpha = 1; }
-      if (OWL) { const oy = 1840 - 420 * back((t - 0.3) / 0.5); drawOwl(x, 540, oy, 1.45, t, 'talk', S.type === 'game' ? null : crown);
-        bubble(x, isQuiz ? 'Hoo can solve it? 🤔' : S.type === 'game' ? 'Let me show you! 🎮' : 'Did you know? ✨', 540, 1150, 760, t - 0.9, 540, 1215); }
+      if (OWL) { const who = this.say.who, oy = 1840 - 420 * back((t - 0.3) / 0.5); ch(who, 540, oy, 1.45, t, 'talk', this);
+        bubble(x, hk[1], 540, 1150, 760, t - 0.5, 540, 1215, null, progOf(this, t)); }
     } });
-    if (own) { own._r = 0; own._say = 'My fave! ⭐'; SC.push(gameScene(own, 4.6, 'Play it now!', ((h) => h.length > 44 ? h.slice(0, h.lastIndexOf(' ', 42)) + '…' : h)((S.game.how || '').split(/[.!]/)[0]))); }
-    const QD = isQuiz ? 7 : own ? 3 : 5.5;
-    SC.push({ d: QD, kind: 'post', draw(t) {                                   // 2) the post (+ countdown for quizzes)
-      const k = t / QD; cover(base, 1 + 0.04 * k);
+    if (own) { own._r = 0; own._say = 'My fave! ⭐'; own._who = WHO('robo'); own._line = 'This is ' + own.title + '! ' + howFirst; SC.push(gameScene(own, 4.6, 'Play it now!', ((h) => h.length > 44 ? h.slice(0, h.lastIndexOf(' ', 42)) + '…' : h)(howFirst))); }
+    const postSay = isQuiz ? readQ : S.type === 'fact' ? S.fact[1] : S.type === 'game' && !own && S.game ? S.game.title + '! ' + howFirst : S.type === 'custom' ? S.custom.body : '';
+    SC.push({ d: isQuiz ? 7 : own ? 3 : 5.5, kind: 'post', say: postSay ? { who: WHO('ollie'), text: postSay, off: 0.4 } : null, draw(t) {   // 2) the post (+ last-5-seconds countdown for quizzes)
+      const D = this.d, k = t / D; cover(base, 1 + 0.04 * k);
       if (t < 0.35) { x.globalAlpha = 1 - t / 0.35; bg(); x.globalAlpha = 1; }
-      if (isQuiz) {
-        const left = Math.ceil(QD - t), frac = t % 1;
+      const left = D - t;
+      if (isQuiz && left <= 5) {
+        const n = Math.ceil(left), frac = 1 - (left % 1 || 1), hot = n <= 3;
+        if (hot) { x.fillStyle = 'rgba(239,68,68,' + (0.22 * (1 - frac)) + ')'; x.fillRect(0, 0, 1080, 1920); }
         x.fillStyle = 'rgba(0,0,0,.35)'; x.beginPath(); x.arc(940, 150, 92, 0, 7); x.fill();
-        x.strokeStyle = '#fde047'; x.lineWidth = 16; x.beginPath(); x.arc(940, 150, 80, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * (1 - k)); x.stroke();
-        x.fillStyle = '#fff'; x.font = '800 ' + Math.round(96 + 20 * (1 - frac)) + 'px "Baloo 2"'; x.fillText(String(left), 940, 184);
+        x.strokeStyle = hot ? '#f87171' : '#fde047'; x.lineWidth = 16; x.beginPath(); x.arc(940, 150, 80, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * (left / 5)); x.stroke();
+        x.fillStyle = '#fff'; x.font = '800 ' + Math.round(96 + 30 * (1 - frac)) + 'px "Baloo 2"'; x.fillText(String(n), 940, 184);
       }
-      if (OWL && isQuiz) { const ox = 150 - 260 * (1 - back((t - 0.5) / 0.5)); drawOwl(x, ox, 1640, 0.72, t, 'think', crown); if (t > 1.4 && t < QD - 0.4) bubble(x, ['Hmm… 🤔', 'Think fast!', 'Tick tock ⏰'][Math.floor(t / 2.2) % 3], 400, 1660, 380, (t - 1.4) % 2.2, 230, 1640); }
+      if (OWL && (isQuiz || this.say)) {
+        const who = this.say ? this.say.who : WHO('ollie'), talking = this.voice && t < this.say.off + this.voice.dur;
+        const ox = 150 - 260 * (1 - back((t - 0.5) / 0.5)); ch(who, ox, 1640, 0.72, t, talking ? 'talk' : 'think', this);
+        if (isQuiz && !talking && left > 0.4) bubble(x, left <= 5 ? ['Think fast! ⏰', 'Comment it! 👇', 'Tick tock…'][Math.floor(left) % 3] : 'Hmm… 🤔', 400, 1660, 380, (t % 2.2), 230, 1640);
+      }
     } });
-    if (isQuiz) SC.push({ d: 2.8, kind: 'answer', draw(t) {                   // 3) answer
-      const k = t / 2.8; cover(ans, 1.02);
+    if (isQuiz) SC.push({ d: 2.8, kind: 'answer', say: { who: WHO('dino'), text: 'The answer is ' + sayable(ansShort) + '! Did you get it right?', off: 0.35 }, draw(t) {   // 3) answer
+      const k = t / this.d, shake = t < 0.35 ? (1 - t / 0.35) * 18 : 0;
+      x.save(); x.translate(Math.sin(t * 70) * shake, Math.cos(t * 60) * shake); cover(ans, 1.02 + (t < 0.2 ? 0.06 * (1 - t / 0.2) : 0)); x.restore();
       x.globalAlpha = Math.min(1, k * 4); x.fillStyle = '#16a34a'; rr(x, 240, 90, 600, 120, 60); x.fill();
       x.fillStyle = '#fff'; x.font = '800 70px "Baloo 2"'; x.fillText('✓ Answer!', 540, 175); x.globalAlpha = 1;
-      if (OWL) { drawOwl(x, 900, 1640, 0.8, t, 'cheer', crown); bubble(x, 'Yay! 🎉', 660, 1660, 300, t - 0.3, 810, 1640); }
+      emojiBurst(t - 0.05, 540, 820);
+      if (OWL) { ch(this.say.who, 900, 1640, 0.8, t, this.voice && t > this.say.off && t < this.say.off + this.voice.dur ? 'talk' : 'cheer', this); bubble(x, (ansShort.length > 16 ? 'Yay! 🎉' : 'It’s ' + ansShort + '! 🎉'), 640, 1660, 380, t - 0.3, 810, 1640, null, progOf(this, t)); }
       confetti.forEach((p) => { const y = -40 + p.v * t; x.fillStyle = p.c; x.save(); x.translate(p.x + Math.sin(y / 60 + p.w) * 30, y); x.rotate(y / 80 + p.w); x.fillRect(-p.r, -p.r / 2, p.r * 2, p.r); x.restore(); });
     } });
     if (others.length) {                                                       // 4) gameplay montage
-      SC.push({ d: 1.3, kind: 'intro', draw(t) {
-        bg(); dots(t); const sc = back(t / 0.5);
-        x.save(); x.translate(540, 820); x.scale(sc, sc); x.rotate(Math.sin(t * 5) * 0.06);
-        if (!OWL && pad) x.drawImage(pad, -190, -190, 380, 380); x.restore();
-        if (OWL) { drawOwl(x, 540, 760, 1.6 * sc, t, 'cheer', crown); if (pad) { x.save(); x.translate(540, 880 - Math.abs(Math.sin(t * 6)) * 60); x.rotate(Math.sin(t * 8) * 0.15); x.drawImage(pad, -120, -120, 240, 240); x.restore(); } }
+      SC.push({ d: 1.6, kind: 'intro', say: { who: WHO('robo'), text: (isQuiz ? 'Then play' : 'Play') + ' 50+ free games!', off: 0.15 }, draw(t) {
+        bg(); rays(t, 540, 800, 0.15); dots(t); const sc = back(t / 0.5);
+        if (!OWL && pad) { x.save(); x.translate(540, 820); x.scale(sc, sc); x.rotate(Math.sin(t * 5) * 0.06); x.drawImage(pad, -190, -190, 380, 380); x.restore(); }
+        if (OWL) {
+          if (SQUAD) { ch('dino', 230, 900, 0.95 * sc, t, 'cheer'); ch('robo', 850, 900, 0.95 * sc, t, 'talk', this); }
+          ch('ollie', 540, 760, (SQUAD ? 1.3 : 1.6) * sc, t, SQUAD ? 'cheer' : 'talk', SQUAD ? null : this);
+          if (pad) { x.save(); x.translate(540, 880 - Math.abs(Math.sin(t * 6)) * 60); x.rotate(Math.sin(t * 8) * 0.15); x.drawImage(pad, -120, -120, 240, 240); x.restore(); }
+        }
         x.globalAlpha = ease(t * 3); x.fillStyle = '#fff'; x.font = '800 120px "Baloo 2"';
         x.fillText(isQuiz ? 'Then play' : 'Play', 540, 1170); x.fillText('50+ games!', 540, 1300); x.globalAlpha = 1;
         if (spark) { x.globalAlpha = 0.5 + 0.5 * Math.sin(t * 9); x.drawImage(spark, 780, 560, 140, 140); x.drawImage(spark, 170, 980, 110, 110); x.globalAlpha = 1; }
       } });
-      others.forEach((c, i) => { c._r = i % 2 ? 0.045 : -0.045; c._say = ['Wow! 😍', 'So fun!', 'Try it! 👉', 'Cool! 😎'][i % 4]; SC.push(gameScene(c, 2.4, '50+ FREE GAMES', i === others.length - 1 ? 'Racing · puzzles · words · 3D' : '')); });
+      const ROT = ['dino', 'ollie', 'robo'];
+      others.forEach((c, i) => { c._r = i % 2 ? 0.045 : -0.045; c._say = ['Wow! 😍', 'So fun!', 'Try it! 👉', 'Cool! 😎'][i % 4]; c._who = WHO(ROT[i % 3]); c._line = ['Wow, look at this!', 'This one is so fun!', 'Try this game!', 'So cool!'][i % 4] + ' ' + c.title + '!'; SC.push(gameScene(c, 2.4, '50+ FREE GAMES', i === others.length - 1 ? 'Racing · puzzles · words · 3D' : '')); });
     }
-    SC.push({ d: 3, kind: 'cta', draw(t) {                                     // 5) call to action
-      const k = t / 3; bg(); dots(t);
+    SC.push({ d: 3.2, kind: 'cta', say: { who: WHO('ollie'), text: 'Download Kids Quiz free on Google Play! Link in bio!', off: 0.3 }, draw(t) {   // 5) call to action
+      const k = t / this.d; bg(); rays(t, 540, 640, 0.14); dots(t);
       const sc = ease(k * 3);
       if (logo) { x.save(); x.translate(540, 640); x.scale(sc, sc); rr(x, -170, -170, 340, 340, 70); x.clip(); x.drawImage(logo, -170, -170, 340, 340); x.restore(); }
       x.fillStyle = '#fff'; x.font = '800 104px "Baloo 2"'; x.fillText('Kids Quiz', 540, 960);
       x.font = '700 58px "Baloo 2"'; x.fillText('1000s of quizzes & 50+ games', 540, 1050);
-      const pulse = 1 + Math.sin(t * 7) * 0.04; x.save(); x.translate(540, 1230); x.scale(pulse, pulse);
-      x.fillStyle = '#fff'; rr(x, -330, -75, 660, 150, 75); x.fill(); x.fillStyle = c2; x.font = '800 66px "Baloo 2"'; x.fillText('▶ Play FREE', 0, 24); x.restore();
+      const pulse = 1 + Math.sin(t * 7) * 0.05; x.save(); x.translate(540, 1230); x.scale(pulse, pulse);
+      x.fillStyle = '#fff'; rr(x, -360, -75, 720, 150, 75); x.fill(); x.fillStyle = c2; x.font = '800 62px "Baloo 2"'; x.fillText('⬇ Download FREE', 0, 22); x.restore();
       x.fillStyle = '#fff'; x.font = '800 60px "Baloo 2"'; x.fillText('👆 Link in bio', 540, 1450);
       if (party) x.drawImage(party, 760, 330, 150, 150);
       x.font = '700 40px "Baloo 2"'; x.globalAlpha = .9; x.fillText('Google Play · @kidsgames_quiz', 540, 1530); x.globalAlpha = 1;
-      if (OWL) { drawOwl(x, 880, 1360, 0.7, t, 'wave', crown); }
+      if (OWL) { ch(this.say.who, 880, 1360, 0.7, t, 'wave', this); if (SQUAD) { ch('robo', 190, 1380, 0.55, t, 'cheer'); } }
     } });
+
+    // ----- 🗣 voices: make every spoken line, then stretch scenes so nobody is cut off
+    let VOICED = $('optVoice').checked && OWL;
+    if (VOICED) {
+      try {
+        const lines = SC.filter((sc) => sc.say && sc.say.text);
+        for (let i = 0; i < lines.length; i++) { setStatus('🗣 Recording the voices… ' + (i + 1) + '/' + lines.length, 'info'); lines[i].voice = await speak(lines[i].say.text, lines[i].say.who); }
+        SC.forEach((sc) => { if (!sc.voice) return; const need = sc.say.off + sc.voice.dur + 0.45; sc.d = sc.kind === 'post' && isQuiz ? Math.max(sc.d, need + 5) : Math.max(sc.d, need); });
+      } catch (e) { VOICED = false; SC.forEach((sc) => { delete sc.voice; }); setStatus('⚠️ AI voice could not load (' + e.message + ') — making the Reel without it…', 'bad'); await new Promise((r) => setTimeout(r, 1500)); }
+    }
+    setPv('reel'); $('reelPv').style.display = 'none'; $('reelStill').style.display = 'none'; $('reelScreen').appendChild(rc);
     let acc = 0; SC.forEach((sc) => { sc.at = acc; acc += sc.d; });
-    const total = acc;
+    const total = acc, beat = 60 / ((MUSIC[MUSIC_STYLE] && MUSIC[MUSIC_STYLE].bpm) || 120);
     function frame(t) {
       const sc = SC.find((q) => t < q.at + q.d) || SC[SC.length - 1];
-      const lt = t - sc.at, z = lt < 0.25 && sc.kind !== 'splash' ? 1.06 - 0.06 * ease(lt / 0.25) : 1;
+      const lt = t - sc.at;
+      let z = lt < 0.25 ? 1.08 - 0.08 * ease(lt / 0.25) : 1;                                   // punch-in on every cut
+      if (sc.kind === 'game' || sc.kind === 'intro' || sc.kind === 'cta') z *= 1 + 0.025 * Math.max(0, 1 - ((t / beat) % 1) * 5);   // zoom pulse on the beat
       x.save(); x.textAlign = 'center'; if (z !== 1) { x.translate(540, 960); x.scale(z, z); x.translate(-540, -960); } sc.draw(lt); x.restore();
       if (lt < 0.12 && sc.at > 0) { x.fillStyle = 'rgba(255,255,255,' + (0.6 * (1 - lt / 0.12)) + ')'; x.fillRect(0, 0, 1080, 1920); }
     }
 
-    // sound: effects (ticks, dings) + background music made for each scene
+    // sound: effects (whooshes, ticks, dings) + voices + background music made for each scene
     const withAudio = /mp4a|opus/.test(mime);
     let ac = null, tracks = rc.captureStream(30).getVideoTracks();
     if (withAudio) {
@@ -988,16 +1202,19 @@ async function makeReel() {
       const comp = ac.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 4; comp.connect(out);
       const dest = ac.createGain(); dest.gain.value = 0.9; dest.connect(comp);              // effects bus
       const beep = (at, f, d, v, type) => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f; o.type = type || 'sine'; g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(v, at + 0.01); g.gain.exponentialRampToValueAtTime(0.001, at + d); o.connect(g); g.connect(dest); o.start(at); o.stop(at + d + 0.05); };
-      const t0 = ac.currentTime + 0.15;
+      const nz = ac.createBuffer(1, ac.sampleRate * 0.6, ac.sampleRate), nzd = nz.getChannelData(0); for (let i = 0; i < nzd.length; i++) nzd[i] = Math.random() * 2 - 1;
+      const whoosh = (at) => { const s = ac.createBufferSource(); s.buffer = nz; const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(400, at); f.frequency.exponentialRampToValueAtTime(3500, at + 0.3); const g = ac.createGain(); g.gain.setValueAtTime(0.0001, at); g.gain.linearRampToValueAtTime(0.25, at + 0.12); g.gain.exponentialRampToValueAtTime(0.001, at + 0.4); s.connect(f); f.connect(g); g.connect(dest); s.start(at); s.stop(at + 0.5); };
+      const t0 = ac.currentTime + 0.15, ducks = [];
       SC.forEach((sc) => {
         const at = t0 + sc.at;
-        if (sc.kind === 'splash') [523, 784, 1047].forEach((f, i) => beep(at + 0.15 + i * 0.1, f, 0.35, 0.18, 'triangle'));
-        else if (sc.kind === 'hook') { beep(at + 0.1, 660, 0.25, 0.22); beep(at + 0.3, 880, 0.3, 0.22); }
-        else if (sc.kind === 'post' && isQuiz) for (let i = 0; i < sc.d; i++) beep(at + i, i >= sc.d - 3 ? 1100 : 900, 0.08, 0.2);
+        if (sc.at > 0) whoosh(at - 0.12);
+        if (sc.kind === 'hook') { beep(at + 0.1, 660, 0.25, 0.22); beep(at + 0.3, 880, 0.3, 0.22); }
+        else if (sc.kind === 'post' && isQuiz) for (let k = 5; k >= 1; k--) beep(at + sc.d - k, k <= 3 ? 1100 : 900, 0.08, 0.2);
         else if (sc.kind === 'answer') [784, 988, 1319].forEach((f, i) => beep(at + i * 0.12, f, 0.5, 0.25));
-        else if (sc.kind === 'game') { beep(at, 300, 0.18, 0.12, 'triangle'); for (let i = 0.5; i < sc.d; i += 0.5) beep(at + i, 1250, 0.04, 0.07); }
+        else if (sc.kind === 'game') { beep(at, 300, 0.18, 0.12, 'triangle'); for (let i = 0.5; i < sc.d; i += 0.5) beep(at + i, 1250, 0.04, 0.05); }
+        if (sc.voice) { playVoice(ac, comp, sc.voice, at + sc.say.off); ducks.push({ at: sc.at + sc.say.off, d: sc.voice.dur }); }
       });
-      await addMusic(ac, comp, t0, SC, total);
+      await addMusic(ac, comp, t0, SC, total, ducks);
     }
     const rec = new MediaRecorder(new MediaStream(tracks), { mimeType: mime, videoBitsPerSecond: 6000000 });
     const chunks = []; rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
@@ -1025,7 +1242,7 @@ async function makeReel() {
     const dl = $('dlVid'); dl.href = v.src; dl.style.display = '';
     pvReel();
     setMedium('reel');
-    setStatus('Video ready ✅ (' + Math.round(blob.size / 1024 / 1024 * 10) / 10 + ' MB, ' + Math.round(total) + ' s' + soundNote + '). “Publish now” posts it as a Reel.', 'good');
+    setStatus('Video ready ✅ (' + Math.round(blob.size / 1024 / 1024 * 10) / 10 + ' MB, ' + Math.round(total) + ' s' + soundNote + (VOICED ? ' + AI voice' : '') + '). “Publish now” posts it as a Reel.', 'good');
     return ownFile;
   } catch (e) { document.querySelectorAll('#reelScreen canvas').forEach((c) => c.remove()); pvReel(); throw e; }
 }

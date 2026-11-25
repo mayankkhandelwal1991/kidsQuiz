@@ -205,7 +205,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
           <button type="button" class="hm-ibtn" id="hmAdmin" style="display:none" onclick="location.href='admin/users.html'" aria-label="Admin console" title="Admin console"><img src="images/emoji/2699.svg" alt=""><span class="hm-lbl">Admin console</span></button>
           <button type="button" class="hm-ibtn" onclick="openMyStats()" aria-label="My stats"><img src="images/emoji/1f4ca.svg" alt=""><span class="hm-lbl">My stats</span></button>
           <button type="button" class="hm-ibtn" id="hmSound" aria-label="Sound on/off" title="Sound on/off"><img src="images/emoji/1f50a.svg" alt=""><span class="hm-lbl">Sound: on</span></button>
-          <button type="button" class="hm-ibtn hm-out" id="pfAuthBtn" onclick="switchUser()">Out</button>
+          <button type="button" class="hm-ibtn hm-out" id="pfAuthBtn" onclick="authButton()">Out</button>
         </div>
       </div>
       <div class="hm-hello">
@@ -411,6 +411,27 @@ if (__cachedAuth && __cachedAuth.name) {
   // force the gate to stay put instead of auto-homing back.
   if (kqNavHop()) kqForceGate(true);
   window.location.href = 'quiz2.html';
+}
+
+/* Header "Sign in" / "Out" button. A guest inside the Android app signs in with
+   the app's native Google account chooser right here: the app hands the ID token
+   back to this page (window.onGoogleIdToken), Firebase signs in, and watchAuth
+   below turns the guest into the Google user. Signing out first instead (the old
+   way) raced the app's own login screen against the page reload, so nothing
+   seemed to happen. Guests on the website still go to the sign-in gate. */
+function authButton() {
+  if (window.isGuestUser && kqIsAndroidApp() && kqHasNativeGoogle() && window.KQ && KQ.signIn) {
+    const btn = document.getElementById('pfAuthBtn');
+    if (btn) { btn.disabled = true; btn.textContent = '…'; }
+    // re-enable if the chooser is closed or sign-in fails (the app calls this)
+    window.onGoogleSignInCancelled = function () {
+      if (btn) { btn.disabled = false; btn.textContent = 'Sign in'; }
+    };
+    setTimeout(function () { if (btn && window.isGuestUser) { btn.disabled = false; btn.textContent = 'Sign in'; } }, 20000);
+    try { KQ.signIn(); } catch (e) { window.onGoogleSignInCancelled(); }
+    return;
+  }
+  switchUser();
 }
 
 function switchUser() {
@@ -1064,6 +1085,7 @@ getOrCreateUser(currentUser);
     if (u && !u.isGuest) {
       // Signed in with Google — keep the cache/profile fresh.
       window.isGuestUser = false;
+      setCachedGuest(false);
       setCachedAuth(u);
       kqNavReset(); // authoritative signed-in state — clear any bounce state
       renderHomeProfile();

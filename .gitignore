@@ -10,3 +10,7 @@ admin/firebase-rules.json
 *firebase-adminsdk*.json
 *service-account*.json
 PlayStoreThings/kidsgames-3987c-firebase-adminsdk-fbsvc-7493436848.json
+
+# Android release builds (uploaded to Play Console, not kept in git)
+*.aab
+*.apk

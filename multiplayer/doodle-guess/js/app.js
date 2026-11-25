@@ -22,6 +22,10 @@ import { QuickMatch, claimSeat, setupPresence, watchConnectionState } from '../.
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, throttle } from '../../common/utils.js';
 import { WORDS } from './wordbank.js';
 
+// Only touch the page when something changed (this room updates ~12-25 times a second).
+const setText = (el, v) => { v = String(v); if (el && el.textContent !== v) el.textContent = v; };
+const setClass = (el, v) => { if (el && el.className !== v) el.className = v; };
+
 const GAME_ID = 'doodle-guess';
 const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
@@ -181,7 +185,7 @@ function buildColorSwatches() {
   colorSwatchesEl.innerHTML = '';
   COLORS.forEach((c) => {
     const sw = document.createElement('button');
-    sw.className = 'swatch' + (c === selectedColor ? ' selected' : '');
+    setClass(sw, 'swatch' + (c === selectedColor ? ' selected' : ''));
     sw.style.background = c;
     sw.addEventListener('click', () => {
       selectedColor = c;
@@ -410,7 +414,7 @@ function handleMatchmakingCountdown(room) {
   const iAmWaitingAlone = mySeat === 'P1' && room.status === 'waiting';
   if (!iAmWaitingAlone) { stopMatchmakingCountdown(); return; }
   if (matchmakingInterval) return;
-  matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
+  matchmakingSecondsLeft = (window.kqBotWaitSeconds ? kqBotWaitSeconds() : MATCH_WAIT_SECONDS);   // admin: App settings -> Multiplayer
   shell.showWaitingCountdown(matchmakingSecondsLeft);
   matchmakingInterval = setInterval(() => {
     matchmakingSecondsLeft -= 1;
@@ -431,13 +435,13 @@ function stopMatchmakingCountdown() {
 function manageRoundTimer(room) {
   if (roundTimerInterval) clearInterval(roundTimerInterval);
   if (room.status !== 'playing') {
-    drawTimerEl.textContent = '';
+    setText(drawTimerEl, '');
     return;
   }
   const tick = () => {
     const elapsed = (Date.now() - (room.roundStartAt || Date.now())) / 1000;
     const remaining = Math.max(0, Math.ceil((room.duration || ROUND_DURATION_MS) / 1000 - elapsed));
-    drawTimerEl.textContent = `⏱ ${remaining}s`;
+    setText(drawTimerEl, `⏱ ${remaining}s`);
     if (remaining <= 0 && roundTimeoutFired !== room.round) {
       roundTimeoutFired = room.round;
       advanceRound(room.round);
@@ -572,9 +576,9 @@ function redrawFromStrokes(strokesObj) {
 // ---------------------------------------------------------------------
 
 function renderRoom(room) {
-  roundNum.textContent = Math.min(room.round || 1, room.totalRounds || TOTAL_ROUNDS);
-  scoreP1.textContent = (room.scores && room.scores.P1) || 0;
-  scoreP2.textContent = (room.scores && room.scores.P2) || 0;
+  setText(roundNum, Math.min(room.round || 1, room.totalRounds || TOTAL_ROUNDS));
+  setText(scoreP1, (room.scores && room.scores.P1) || 0);
+  setText(scoreP2, (room.scores && room.scores.P2) || 0);
   cardP1.classList.toggle('active-turn', room.status === 'playing' && drawerOf(room.round, room.mode) === 'P1');
   cardP2.classList.toggle('active-turn', room.status === 'playing' && drawerOf(room.round, room.mode) === 'P2');
 
@@ -592,9 +596,9 @@ function renderRoom(room) {
   guessLog.innerHTML = '';
   (room.guesses || []).slice(-6).forEach((g) => {
     const div = document.createElement('div');
-    div.className = 'entry' + (g.correct ? ' correct' : '');
+    setClass(div, 'entry' + (g.correct ? ' correct' : ''));
     const label = g.seat === mySeat ? 'You' : g.seat;
-    div.textContent = g.correct ? `${label} guessed it: ${g.text}! 🎉` : `${label}: ${g.text}`;
+    setText(div, g.correct ? `${label} guessed it: ${g.text}! 🎉` : `${label}: ${g.text}`);
     guessLog.appendChild(div);
   });
 
@@ -611,9 +615,8 @@ function renderRoom(room) {
     else if (mySeat === 'spectator') text = `${room.winner} wins!`;
     else text = 'You lost — play again?';
   }
-  statusBar.textContent = text;
-  statusBar.className = 'status-bar ' + (room.status === 'finished' ? (room.winner === null ? 'status-draw' : (mySeat === room.winner ? 'status-won' : 'status-lost')) : '');
-
+  setText(statusBar, text);
+  setClass(statusBar, 'status-bar ' + (room.status === 'finished' ? (room.winner === null ? 'status-draw' : (mySeat === room.winner ? 'status-won' : 'status-lost')) : ''));
   playAgainBtn.classList.toggle('hidden', room.status !== 'finished');
 }
 
@@ -627,9 +630,9 @@ function renderPlayers() {
     else if (p.seat === 'P2') p2Name = label;
     else spectators++;
   }
-  nameP1.textContent = p1Name;
-  nameP2.textContent = p2Name;
-  spectatorCount.textContent = spectators > 0 ? `👀 ${spectators} watching` : '';
+  setText(nameP1, p1Name);
+  setText(nameP2, p2Name);
+  setText(spectatorCount, spectators > 0 ? `👀 ${spectators} watching` : '');
 }
 
 // ---------------------------------------------------------------------

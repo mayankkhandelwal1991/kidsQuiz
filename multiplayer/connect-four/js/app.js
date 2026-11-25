@@ -339,7 +339,7 @@ function handleMatchmakingCountdown(room) {
     return;
   }
   if (matchmakingInterval) return;
-  matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
+  matchmakingSecondsLeft = (window.kqBotWaitSeconds ? kqBotWaitSeconds() : MATCH_WAIT_SECONDS);   // admin: App settings -> Multiplayer
   shell.showWaitingCountdown(matchmakingSecondsLeft);
   matchmakingInterval = setInterval(() => {
     matchmakingSecondsLeft -= 1;

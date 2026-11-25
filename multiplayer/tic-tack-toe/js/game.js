@@ -7,7 +7,7 @@
  * -----------------------------------------------------------------------
  */
 
-import { NetworkManager } from './network.js';
+import { NetworkManager } from './network.js?v=20261125a';
 import { UIManager } from './ui.js';
 import { generateRoomCode, sanitizeNickname, SoundManager } from './utils.js';
 import { computeBotMove } from './bot.js';
@@ -25,7 +25,7 @@ export class Game {
     this.lastStatus = null; // used to detect status transitions for sound/toast triggers
 
     this._matchmakingCountdownInterval = null;
-    this._matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
+    this._matchmakingSecondsLeft = (window.kqBotWaitSeconds ? kqBotWaitSeconds() : MATCH_WAIT_SECONDS);   // admin: App settings -> Multiplayer
     this._botMoveTimeout = null;
     this._botMovePendingForTurn = null; // guards against scheduling more than one bot move per turn
   }
@@ -128,6 +128,12 @@ export class Game {
         this.ui.renderPlayers(this.playersMap, this.network.mySymbol, this.network.playerId);
       }
       this._handleStatusTransition(room);
+      // new round: say who moves first (it alternates every round)
+      if (room.status === 'playing' && (room.round || 1) > 1 && room.round !== this._lastRound && !Object.values(room.cells || {}).some(Boolean)) {
+        const me = this.network.mySymbol;
+        this.ui.toast(me === room.turn ? 'New round — you go first! 🎯' : `New round — ${room.turn} goes first`, 'info');
+      }
+      this._lastRound = room.round || 1;
       this.ui.renderRoom(room, this.network.mySymbol);
       this._handleMatchmakingCountdown(room);
       this._maybeTriggerBotMove(room);
@@ -188,7 +194,7 @@ export class Game {
 
     if (this._matchmakingCountdownInterval) return; // already running
 
-    this._matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
+    this._matchmakingSecondsLeft = (window.kqBotWaitSeconds ? kqBotWaitSeconds() : MATCH_WAIT_SECONDS);   // admin: App settings -> Multiplayer
     this.ui.showWaitingCountdown(this._matchmakingSecondsLeft);
 
     this._matchmakingCountdownInterval = setInterval(() => {
@@ -220,7 +226,7 @@ export class Game {
     const isBotTurn = room.mode === 'bot' && room.status === 'playing' && room.turn === 'O';
     if (!isBotTurn || this.network.mySymbol !== 'X') return;
 
-    const turnKey = Object.values(room.cells || {}).join(''); // changes every move, safe-ish dedupe key
+    const turnKey = (room.round || 1) + ':' + Object.values(room.cells || {}).join(''); // round + board: one bot move per turn
     if (this._botMovePendingForTurn === turnKey) return;
     this._botMovePendingForTurn = turnKey;
 

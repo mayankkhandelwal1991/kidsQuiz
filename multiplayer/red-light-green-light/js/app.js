@@ -23,6 +23,10 @@ import { GameShell } from '../../common/shell.js';
 import { claimSeat, setupPresence, watchConnectionState } from '../../common/net.js';
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, randInt, clamp, throttle } from '../../common/utils.js';
 
+// Only touch the page when something changed (this room updates ~12-25 times a second).
+const setText = (el, v) => { v = String(v); if (el && el.textContent !== v) el.textContent = v; };
+const setClass = (el, v) => { if (el && el.className !== v) el.className = v; };
+
 const GAME_ID = 'red-light-green-light';
 const MATCH_WAIT_SECONDS = 10;
 const SEATS = Array.from({ length: 8 }, (_, i) => `P${i + 1}`);
@@ -458,7 +462,7 @@ function handleMatchmakingCountdown(room) {
   const iAmWaitingAlone = mySeat === 'P1' && room.status === 'waiting' && occ.length === 1;
   if (!iAmWaitingAlone) { stopMatchmakingCountdown(); return; }
   if (matchmakingInterval) return;
-  matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
+  matchmakingSecondsLeft = (window.kqBotWaitSeconds ? kqBotWaitSeconds() : MATCH_WAIT_SECONDS);   // admin: App settings -> Multiplayer
   shell.showWaitingCountdown(matchmakingSecondsLeft);
   matchmakingInterval = setInterval(() => {
     matchmakingSecondsLeft -= 1;
@@ -542,14 +546,14 @@ function renderLobby(room) {
   for (const s of SEATS) {
     const p = seatOf[s];
     const div = document.createElement('div');
-    div.className = 'lobby-seat ' + (p ? `filled ${seatClass(s)}` : 'p-empty');
+    setClass(div, 'lobby-seat ' + (p ? `filled ${seatClass(s)}` : 'p-empty'));
     if (p && s === mySeat) div.classList.add('you');
     if (p) { occupiedCount++; div.textContent = `${p.nickname}${p.nickname === 'Computer' ? ' 🤖' : ''}`; }
     else div.textContent = 'Open';
     lobbySeatsEl.appendChild(div);
   }
 
-  lobbyCountEl.textContent = `(${occupiedCount}/${MAX_PLAYERS})`;
+  setText(lobbyCountEl, `(${occupiedCount}/${MAX_PLAYERS})`);
   const canStart = occupiedCount >= MIN_PLAYERS;
   startGameBtn.disabled = !canStart;
   lobbyHintEl.textContent = canStart
@@ -564,13 +568,13 @@ function renderGame(room) {
 
   if (room.status === 'playing') {
     const isGreen = room.lightState === 'green';
-    lightDot.textContent = isGreen ? '🟢' : '🔴';
-    lightText.textContent = isGreen ? 'GO! GO! GO!' : 'FREEZE!';
-    lightText.className = 'light-text ' + (isGreen ? 'green' : 'red');
+    setText(lightDot, isGreen ? '🟢' : '🔴');
+    setText(lightText, isGreen ? 'GO! GO! GO!' : 'FREEZE!');
+    setClass(lightText, 'light-text ' + (isGreen ? 'green' : 'red'));
   } else {
-    lightDot.textContent = '🏁';
-    lightText.textContent = room.status === 'finished' ? 'FINISH' : 'GET READY';
-    lightText.className = 'light-text';
+    setText(lightDot, '🏁');
+    setText(lightText, room.status === 'finished' ? 'FINISH' : 'GET READY');
+    setClass(lightText, 'light-text');
   }
 
   let text = '';
@@ -584,15 +588,13 @@ function renderGame(room) {
     else if (mySeat === room.winner) text = 'You won the race! 🎉';
     else text = `${room.winner} wins the race!`;
   }
-  statusBar.textContent = text;
-  statusBar.className = 'status-bar ' + (room.status === 'finished' ? (mySeat === room.winner ? 'status-won' : 'status-lost') : '');
-
+  setText(statusBar, text);
+  setClass(statusBar, 'status-bar ' + (room.status === 'finished' ? (mySeat === room.winner ? 'status-won' : 'status-lost') : ''));
   renderLanes(room);
 
   const canMove = room.status === 'playing' && SEATS.includes(mySeat) && !myEliminated && !myFinished;
   moveBtn.disabled = !canMove;
-  moveBtn.textContent = myEliminated ? 'OUT!' : (myFinished ? 'FINISHED!' : 'TAP TO MOVE!');
-
+  setText(moveBtn, myEliminated ? 'OUT!' : (myFinished ? 'FINISHED!' : 'TAP TO MOVE!'));
   playAgainBtn.classList.toggle('hidden', room.status !== 'finished');
 }
 
@@ -606,7 +608,7 @@ function renderLanes(room) {
     const p = seatOf[s];
     const dist = clamp(p.distance || 0, 0, FINISH_DISTANCE);
     const div = document.createElement('div');
-    div.className = 'lane' + (s === mySeat ? ' me' : '') + (p.eliminated ? ' eliminated' : '');
+    setClass(div, 'lane' + (s === mySeat ? ' me' : '') + (p.eliminated ? ' eliminated' : ''));
     div.innerHTML = `
       <span class="lane-name">${p.nickname}${s === mySeat ? ' (you)' : ''}</span>
       <div class="lane-track">

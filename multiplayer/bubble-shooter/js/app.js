@@ -1,14 +1,24 @@
 /**
- * bubble-shooter/js/app.js
+ * bubble-shooter/js/app.js — Bubble Shooter Duel (turn by turn, one shared board)
  * -----------------------------------------------------------------------
- * Each player pops bubbles on their OWN board — there's no shared board
- * state to keep in sync, so (like Typing Race / Basketball Shootout)
- * the only networked data is a shared scoreboard. Every shot, match
- * check, and cascade is resolved entirely on the shooter's own device;
- * points are pushed to `scores/{seat}` via a Firebase transaction, which
- * is contention-free because only that seat's own client ever writes it.
- * First player to reach WIN_SCORE ends the match via the same
- * transaction-guarded "attemptFinish" pattern Typing Race uses.
+ * Both players see the SAME board and take turns: my shot, your shot …
+ *
+ *  - Aim: drag on the board (dotted guide line with wall bounces), let go to
+ *    shoot. A quick tap shoots at that spot. The opponent's aim line is shown
+ *    live while they aim (room/aim/{seat}).
+ *  - The shooter's phone works out the whole shot (flight path, where it
+ *    sticks, what pops, what falls, the points) and publishes it as ONE
+ *    record (room/game) in a transaction on game.seq — only the player whose
+ *    turn it is can write, so the two phones can never disagree.
+ *  - Every phone replays that record with the same animation: the bubble
+ *    flies along the path, the group pops, loose bubbles drop, "+30" floats up.
+ *  - Points: popped bubble 10, dropped bubble 15, big combo +20, clearing the
+ *    board +50. Every 8 shots two new rows push down. First to WIN_SCORE wins;
+ *    if the bubbles reach the danger line the higher score wins.
+ *  - Turn timer: when it runs out the shot is fired for you; if a phone falls
+ *    asleep the other player skips its turn, so a game never freezes.
+ *  - Computer mode: P1's phone plays the Computer's turns. It tries many
+ *    angles and usually (not always) takes the best one.
  * -----------------------------------------------------------------------
  */
 
@@ -19,29 +29,39 @@ import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, ran
 const GAME_ID = 'bubble-shooter';
 const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
-const WIN_SCORE = 120;
+const WIN_SCORE = 250;
 
+const W = 300, H = 460;
 const R = 15;
-const COLS = 8;
+const COLS = 8;                 // even rows: 8 bubbles, odd rows: 7
 const MARGIN = 22;
 const TOP_MARGIN = 18;
 const ROWH = 26;
 const MAX_ROWS = 14;
-const CANVAS_W = 300;
-const CANVAS_H = 460;
-const SHOOTER_Y = CANVAS_H - 30;
-const BUBBLE_SPEED = 480;
-const REFILL_THRESHOLD = 12;
+const DANGER_ROW = 12;          // a bubble in this row = the board is full
+const START_ROWS = 5;
+const ADD_EVERY = 8;            // shots between new rows
+const SHOOTER_Y = H - 34;
+const SPEED = 620;              // px/s of a flying bubble (animation)
+const TURN_MS = 15000;
+const SKIP_GRACE_MS = 4000;
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
-const PALETTE = ['#33e5ff', '#ff3ec8', '#ffcf4d', '#4dffa0', '#a463ff'];
+const PALETTE = ['#22d3ee', '#f472b6', '#facc15', '#4ade80', '#a78bfa'];
+const COLOR_NAMES = ['blue', 'pink', 'yellow', 'green', 'purple'];
 
 const db = firebase.database();
 const quickMatch = new QuickMatch(db, GAME_ID);
 const shell = new GameShell({ gameTitle: 'Bubble Shooter Duel' });
 const sounds = new SoundManager();
 
+let serverOffset = 0;
+db.ref('.info/serverTimeOffset').on('value', (s) => { serverOffset = s.val() || 0; });
+const now = () => Date.now() + serverOffset;
+
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
+canvas.width = W * DPR; canvas.height = H * DPR;
 const statusBar = document.getElementById('status-bar');
 const scoreP1 = document.getElementById('score-p1');
 const scoreP2 = document.getElementById('score-p2');
@@ -51,108 +71,132 @@ const nameP1 = document.getElementById('name-p1');
 const nameP2 = document.getElementById('name-p2');
 const spectatorCount = document.getElementById('spectator-count');
 const playAgainBtn = document.getElementById('play-again-btn');
+const vsLabel = document.querySelector('.vs-label');
+const hintLine = document.querySelector('.hint-line');
+if (vsLabel) vsLabel.textContent = 'FIRST TO ' + WIN_SCORE;
+if (hintLine) hintLine.textContent = 'Your turn: drag to aim, let go to shoot. Match 3+ of the same colour to pop them!';
 
-let roomRef = null;
-let playersRef = null;
-let selfRef = null;
-let playerId = null;
-let mySeat = null;
+let roomRef = null, playersRef = null, selfRef = null, playerId = null, mySeat = null;
 let playersMap = {};
 let lastStatus = null;
-
+let listening = [];
 let matchmakingInterval = null;
 let matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
-let botInterval = null;
 
+const room = { status: 'waiting', mode: 'human', winner: null };
+let game = null;                // the shared game record
+let shown = null;               // Map key -> colour index currently drawn
+let shownSeq = -1;
+let queue = [];                 // game records waiting to be animated
+let anim = null;                // the shot being animated
+let aim = { P1: null, P2: null };
+let myAim = null;               // angle while dragging
+let aiming = false;
+let fx = [];                    // pops, falling bubbles, floating text
 let running = false;
-let canPlay = false;
-let grid = {};
-let shooterColor = PALETTE[0];
-let nextColor = PALETTE[1];
-let flying = null; // { x, y, vx, vy, color }
-let sparks = [];
-let myScore = 0;
+let decidedSeq = '';            // guards auto-shot / skip / bot from firing twice
+let namesKey = '';
+const other = (s) => (s === 'P1' ? 'P2' : 'P1');
 
 // ---------------------------------------------------------------------
-// Grid helpers
+// Board helpers (a board is a Map "r_c" -> colour index)
 // ---------------------------------------------------------------------
-
-function key(r, c) { return `${r}_${c}`; }
-
-function cellPos(r, c) {
-  const x = MARGIN + R + c * 2 * R + (r % 2 === 1 ? R : 0);
-  const y = TOP_MARGIN + R + r * ROWH;
-  return { x, y };
-}
-
-function maxColFor(r) { return r % 2 === 1 ? COLS - 2 : COLS - 1; }
-
+const key = (r, c) => r + '_' + c;
+const parse = (k) => k.split('_').map(Number);
+function cellPos(r, c) { return { x: MARGIN + R + c * 2 * R + (r % 2 === 1 ? R : 0), y: TOP_MARGIN + R + r * ROWH }; }
+const maxColFor = (r) => (r % 2 === 1 ? COLS - 2 : COLS - 1);
 function neighbors(r, c) {
-  if (r % 2 === 0) {
-    return [[r, c - 1], [r, c + 1], [r - 1, c - 1], [r - 1, c], [r + 1, c - 1], [r + 1, c]];
+  return r % 2 === 0
+    ? [[r, c - 1], [r, c + 1], [r - 1, c - 1], [r - 1, c], [r + 1, c - 1], [r + 1, c]]
+    : [[r, c - 1], [r, c + 1], [r - 1, c], [r - 1, c + 1], [r + 1, c], [r + 1, c + 1]];
+}
+function encode(b) {
+  let s = '';
+  for (let r = 0; r < MAX_ROWS; r++) for (let c = 0; c < COLS; c++) { const v = b.get(key(r, c)); s += v == null ? '.' : String(v); }
+  return s;
+}
+function decode(s) {
+  const b = new Map();
+  for (let i = 0; i < (s || '').length; i++) if (s[i] !== '.') b.set(key(Math.floor(i / COLS), i % COLS), +s[i]);
+  return b;
+}
+function maxRow(b) { let m = -1; for (const k of b.keys()) m = Math.max(m, parse(k)[0]); return m; }
+function colorsOn(b) { return [...new Set(b.values())]; }
+function pickColor(b) { const pool = colorsOn(b); return pool.length ? pool[randInt(0, pool.length - 1)] : randInt(0, PALETTE.length - 1); }
+function fillRows(b, rows) { for (let r = 0; r < rows; r++) for (let c = 0; c <= maxColFor(r); c++) b.set(key(r, c), randInt(0, PALETTE.length - 1)); }
+function pushRows(b) {           // two new rows on top (two keeps the zig-zag pattern)
+  const moved = new Map();
+  for (const [k, v] of b) { const [r, c] = parse(k); if (r + 2 < MAX_ROWS) moved.set(key(r + 2, c), v); }
+  for (let r = 0; r < 2; r++) for (let c = 0; c <= maxColFor(r); c++) moved.set(key(r, c), pickColor(b));
+  return moved;
+}
+
+/** Fly a bubble from the shooter at `angle` (radians, 0 = right, PI/2 = straight up). */
+function simulate(b, angle) {
+  let x = W / 2, y = SHOOTER_Y, vx = Math.cos(angle), vy = -Math.sin(angle);
+  const path = [[x, y]], STEP = 3;
+  for (let i = 0; i < 1200; i++) {
+    x += vx * STEP; y += vy * STEP;
+    if (x < R) { x = R; vx = -vx; path.push([x, y]); }
+    else if (x > W - R) { x = W - R; vx = -vx; path.push([x, y]); }
+    if (y - R <= TOP_MARGIN) break;
+    let hit = false;
+    for (const k of b.keys()) { const [r, c] = parse(k), p = cellPos(r, c); if ((p.x - x) ** 2 + (p.y - y) ** 2 < (2 * R - 4) ** 2) { hit = true; break; } }
+    if (hit) break;
   }
-  return [[r, c - 1], [r, c + 1], [r - 1, c], [r - 1, c + 1], [r + 1, c], [r + 1, c + 1]];
-}
-
-function randomPaletteColor() {
-  const present = [...new Set(Object.values(grid))];
-  const pool = present.length ? present : PALETTE;
-  return pool[randInt(0, pool.length - 1)];
-}
-
-function initGrid() {
-  grid = {};
-  for (let r = 0; r < 4; r++) {
+  path.push([Math.round(x * 10) / 10, Math.round(y * 10) / 10]);
+  // nearest free cell
+  const estRow = clamp(Math.round((y - TOP_MARGIN - R) / ROWH), 0, MAX_ROWS - 1);
+  let best = null, bd = Infinity;
+  for (let r = Math.max(0, estRow - 1); r <= Math.min(MAX_ROWS - 1, estRow + 1); r++) {
     for (let c = 0; c <= maxColFor(r); c++) {
-      grid[key(r, c)] = PALETTE[randInt(0, PALETTE.length - 1)];
+      if (b.has(key(r, c))) continue;
+      const p = cellPos(r, c), d = (p.x - x) ** 2 + (p.y - y) ** 2;
+      if (d < bd) { bd = d; best = { r, c }; }
     }
   }
+  if (!best) best = { r: estRow, c: clamp(Math.round((x - MARGIN - R) / (2 * R)), 0, maxColFor(estRow)) };
+  return { path, land: best };
 }
-
-function bubbleCount() { return Object.keys(grid).length; }
-
-function maxRowInGrid() {
-  let m = -1;
-  for (const k of Object.keys(grid)) {
-    const r = parseInt(k.split('_')[0], 10);
-    if (r > m) m = r;
-  }
-  return m;
-}
-
-function addRows() {
-  const mx = maxRowInGrid();
-  if (mx + 2 >= MAX_ROWS - 2) return;
-  const shifted = {};
-  for (const [k, color] of Object.entries(grid)) {
-    const [r, c] = k.split('_').map(Number);
-    shifted[key(r + 2, c)] = color;
-  }
-  grid = shifted;
-  for (let r = 0; r < 2; r++) {
-    for (let c = 0; c <= maxColFor(r); c++) {
-      grid[key(r, c)] = randomPaletteColor();
+/** Stick `color` at land, pop 3+ and drop loose bubbles. Mutates b. */
+function resolve(b, land, color) {
+  const lk = key(land.r, land.c);
+  b.set(lk, color);
+  const group = [lk], seen = new Set([lk]), stack = [[land.r, land.c]];
+  while (stack.length) {
+    const [r, c] = stack.pop();
+    for (const [nr, nc] of neighbors(r, c)) {
+      const nk = key(nr, nc);
+      if (seen.has(nk) || b.get(nk) !== color) continue;
+      seen.add(nk); stack.push([nr, nc]); group.push(nk);
     }
   }
+  if (group.length < 3) return { popped: [], dropped: [] };
+  group.forEach((k) => b.delete(k));
+  const reach = new Set(), q = [];
+  for (const k of b.keys()) if (parse(k)[0] === 0) { reach.add(k); q.push(parse(k)); }
+  while (q.length) {
+    const [r, c] = q.pop();
+    for (const [nr, nc] of neighbors(r, c)) { const nk = key(nr, nc); if (!reach.has(nk) && b.has(nk)) { reach.add(nk); q.push([nr, nc]); } }
+  }
+  const dropped = [];
+  for (const k of [...b.keys()]) if (!reach.has(k)) { dropped.push(k + ':' + b.get(k)); b.delete(k); }
+  return { popped: group, dropped };
 }
+function pathLength(path) { let L = 0; for (let i = 1; i < path.length; i++) L += Math.hypot(path[i][0] - path[i - 1][0], path[i][1] - path[i - 1][1]); return L; }
+const shotMs = (path) => pathLength(path) / SPEED * 1000 + 450;   // flight + pop time
 
-function newShooterBubbles() {
-  shooterColor = nextColor;
-  nextColor = randomPaletteColor();
+function freshGame(starter, prevSeq) {
+  const b = new Map(); fillRows(b, START_ROWS);
+  return { seq: (prevSeq || 0) + 1, turn: starter, starter, board: encode(b), cur: pickColor(b), next: pickColor(b), shots: 0,
+    scores: { P1: 0, P2: 0 }, turnStart: Math.round(now() + 1200), last: null };
 }
 
 // ---------------------------------------------------------------------
-// Boot / matchmaking (standard pattern)
+// Joining
 // ---------------------------------------------------------------------
-
 function buildInitialRoom() {
-  return {
-    createdAt: firebase.database.ServerValue.TIMESTAMP,
-    mode: 'human',
-    status: 'waiting',
-    scores: { P1: 0, P2: 0 },
-    winner: null,
-  };
+  return { createdAt: firebase.database.ServerValue.TIMESTAMP, mode: 'human', status: 'waiting', winner: null, game: freshGame('P1', 0) };
 }
 
 async function handlePlay(rawNickname) {
@@ -164,9 +208,7 @@ async function handlePlay(rawNickname) {
   } catch (err) {
     console.error(err);
     shell.showError('Could not find or create a match. Check your Firebase configuration.');
-  } finally {
-    shell.setBusy(false);
-  }
+  } finally { shell.setBusy(false); }
 }
 
 async function handleJoinCode(rawNickname, rawCode) {
@@ -175,15 +217,12 @@ async function handleJoinCode(rawNickname, rawCode) {
   if (!code) { shell.showError('Enter a room code to join.'); return; }
   shell.setBusy(true);
   try {
-    const exists = await quickMatch.roomExists(code);
-    if (!exists) { shell.showError(`Room "${code}" doesn't exist.`); return; }
+    if (!(await quickMatch.roomExists(code))) { shell.showError(`Room "${code}" doesn't exist.`); return; }
     await enterRoom(code, nickname);
   } catch (err) {
     console.error(err);
     shell.showError('Could not join room. Check your Firebase configuration.');
-  } finally {
-    shell.setBusy(false);
-  }
+  } finally { shell.setBusy(false); }
 }
 
 async function enterRoom(roomCode, nickname) {
@@ -191,55 +230,42 @@ async function enterRoom(roomCode, nickname) {
   roomRef = quickMatch.roomRef(roomCode);
   playersRef = roomRef.child('players');
   selfRef = playersRef.child(playerId);
+  game = null; shown = null; shownSeq = -1; queue = []; anim = null; fx = []; decidedSeq = '';
 
   mySeat = await claimSeat(playersRef, SEATS, playerId, nickname);
   setupPresence(selfRef);
-
   if (mySeat === 'P2') {
-    await roomRef.transaction((room) => {
-      if (room && room.status === 'waiting') room.status = 'playing';
-      return room;
+    await roomRef.transaction((r) => {
+      if (r && r.status === 'waiting') { r.status = 'playing'; r.mode = 'human'; r.winner = null; r.game = freshGame('P1', r.game && r.game.seq); r.aim = null; }
+      return r;
     });
     await quickMatch.clearIfMatches(roomCode);
   }
 
   attachListeners();
+  bindControls();
   playersMap = (await playersRef.once('value')).val() || {};
   renderPlayers();
-
   shell.showGameScreen(roomCode);
   shell.setSoundIcon(sounds.enabled);
   sounds.playJoin();
   shell.toast(mySeat === 'spectator' ? "Both seats are taken — you're spectating." : `You're ${mySeat}`, 'info');
-
-  initGrid();
-  shooterColor = randomPaletteColor();
-  nextColor = randomPaletteColor();
-  canPlay = mySeat === 'P1' || mySeat === 'P2';
-  canvas.addEventListener('pointerdown', handleAim);
   running = true;
   requestAnimationFrame(loop);
 }
 
+function on(ref, fn) { ref.on('value', fn); listening.push(ref); }
 function attachListeners() {
-  roomRef.on('value', (snap) => {
-    const room = snap.val();
-    if (!room) return;
-    handleStatusTransition(room);
-    renderRoom(room);
-    handleMatchmakingCountdown(room);
-    maybeRunBot(room);
-    canPlay = room.status === 'playing' && (mySeat === 'P1' || mySeat === 'P2');
-    if (room.status === 'playing' && bubbleCount() === 0 && Object.keys(grid).length === 0) {
-      // freshly (re)started match — grid already inited in enterRoom / playAgain
-    }
-  });
-
-  playersRef.on('value', (snap) => {
+  on(roomRef.child('status'), (s) => { room.status = s.val() || 'waiting'; onRoom(); });
+  on(roomRef.child('mode'), (s) => { room.mode = s.val() || 'human'; });
+  on(roomRef.child('winner'), (s) => { room.winner = s.val(); onRoom(); });
+  on(roomRef.child('game'), (s) => receiveGame(s.val()));
+  on(roomRef.child('aim'), (s) => { const a = s.val() || {}; aim = { P1: a.P1 ?? null, P2: a.P2 ?? null }; });
+  on(playersRef, (snap) => {
     playersMap = snap.val() || {};
-    renderPlayers();
+    const k = Object.entries(playersMap).map(([id, p]) => id + p.seat + p.nickname).sort().join('|');
+    if (k !== namesKey) { namesKey = k; renderPlayers(); }
   });
-
   playersRef.on('child_removed', (snap) => {
     const data = snap.val();
     if (data && (data.seat === 'P1' || data.seat === 'P2')) {
@@ -248,381 +274,383 @@ function attachListeners() {
       resetRoomForDisconnect();
     }
   });
-
-  watchConnectionState(db, (connected) => {
-    if (!connected) shell.toast('Connection lost — reconnecting…', 'warn');
-  });
-
+  watchConnectionState(db, (connected) => { if (!connected) shell.toast('Connection lost — reconnecting…', 'warn'); });
   shell.bindChromeActions({
     onShare: () => { sounds.playClick(); shell.shareRoom(roomRef.key); },
-    onSoundToggle: () => {
-      const next = !sounds.enabled;
-      sounds.setEnabled(next);
-      shell.setSoundIcon(next);
-    },
+    onSoundToggle: () => { const next = !sounds.enabled; sounds.setEnabled(next); shell.setSoundIcon(next); },
     onLeave: handleLeave,
   });
-
-  playAgainBtn.addEventListener('click', () => {
+  playAgainBtn.onclick = () => {
     sounds.playClick();
-    initGrid();
-    shooterColor = randomPaletteColor();
-    nextColor = randomPaletteColor();
-    myScore = 0;
-    flying = null;
-    roomRef.transaction((room) => {
-      if (!room) return room;
-      room.status = 'playing';
-      room.scores = { P1: 0, P2: 0 };
-      room.winner = null;
-      return room;
+    roomRef.transaction((r) => {
+      if (!r || r.status !== 'finished') return;             // the other player already restarted
+      const prev = (r.game && r.game.starter) || 'P1';
+      r.status = 'playing'; r.winner = null; r.aim = null;
+      r.game = freshGame(other(prev), r.game && r.game.seq);  // the first turn alternates
+      return r;
     });
-  });
+  };
 }
 
-async function resetRoomForDisconnect() {
-  await roomRef.transaction((room) => {
-    if (!room) return room;
-    room.status = 'waiting';
-    room.winner = null;
-    room.scores = { P1: 0, P2: 0 };
-    room.mode = 'human';
-    if (room.players && room.players.bot) delete room.players.bot;
-    return room;
+function onRoom() { handleStatusTransition(); renderBoard(); handleMatchmakingCountdown(); }
+
+/** A new game record arrived (from Firebase or from my own shot). */
+function receiveGame(g) {
+  if (!g || !g.board) return;
+  if (game && g.seq < game.seq) return;
+  if (game && g.seq === game.seq) { game = g; return; }        // same state (my own write coming back)
+  // first state, a new match, or we missed a turn (asleep): just show the board
+  const jump = !game || !shown || !g.last || g.seq > game.seq + 1;
+  game = g;
+  if (jump) { shown = decode(g.board); shownSeq = g.seq; queue = []; anim = null; }
+  else queue.push(g);
+  renderBoard();
+}
+
+function resetRoomForDisconnect() {
+  roomRef.transaction((r) => {
+    if (!r) return r;
+    r.status = 'waiting'; r.winner = null; r.mode = 'human'; r.aim = null;
+    r.game = freshGame('P1', r.game && r.game.seq);
+    if (r.players && r.players.bot) delete r.players.bot;
+    return r;
   });
 }
 
 // ---------------------------------------------------------------------
-// Shooting
+// Taking a shot (the player whose turn it is, or P1's phone for the Computer)
 // ---------------------------------------------------------------------
-
-function handleAim(e) {
-  if (!canPlay || flying) return;
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = CANVAS_W / rect.width;
-  const scaleY = CANVAS_H / rect.height;
-  const tx = (e.clientX - rect.left) * scaleX;
-  const ty = (e.clientY - rect.top) * scaleY;
-
-  let dx = tx - CANVAS_W / 2;
-  let dy = ty - SHOOTER_Y;
-  if (dy > -40) dy = -40; // always shoot upward
-  const len = Math.hypot(dx, dy) || 1;
-  dx /= len; dy /= len;
-
-  flying = { x: CANVAS_W / 2, y: SHOOTER_Y - R - 2, vx: dx * BUBBLE_SPEED, vy: dy * BUBBLE_SPEED, color: shooterColor };
-  sounds.playWhoosh();
+function canShoot(seat) {
+  return game && room.status === 'playing' && game.turn === seat && !anim && !queue.length && now() >= game.turnStart - 50;
+}
+function shoot(seat, angle) {
+  const g = game;
+  if (!canShoot(seat)) return false;
+  angle = clamp(angle, 0.14, Math.PI - 0.14);
+  const b = decode(g.board), color = g.cur;
+  const { path, land } = simulate(b, angle);
+  const res = resolve(b, land, color);
+  let gained = res.popped.length * 10 + res.dropped.length * 15;
+  let combo = res.popped.length + res.dropped.length >= 6;
+  if (combo) gained += 20;
+  let cleared = false, rows = false;
+  const shots = g.shots + 1;
+  let board = b;
+  if (board.size === 0) { cleared = true; gained += 50; fillRows(board, START_ROWS); }
+  else if (shots % ADD_EVERY === 0) { board = pushRows(board); rows = true; }
+  const scores = { P1: g.scores.P1 || 0, P2: g.scores.P2 || 0 };
+  scores[seat] += gained;
+  const full = maxRow(board) >= DANGER_ROW;
+  let winner = null;
+  if (scores[seat] >= WIN_SCORE) winner = seat;
+  else if (full) winner = scores.P1 === scores.P2 ? 'draw' : (scores.P1 > scores.P2 ? 'P1' : 'P2');
+  const next = {
+    seq: g.seq + 1, turn: other(seat), starter: g.starter, board: encode(board), cur: g.next, next: pickColor(board), shots, scores,
+    turnStart: Math.round(now() + shotMs(path) + 250),
+    last: { by: seat, color, path, land: key(land.r, land.c), popped: res.popped, dropped: res.dropped, gained, combo, cleared, rows, full: !!full },
+  };
+  publish(g, next, winner);
+  roomRef.child('aim').child(seat).set(null);
+  return true;
+}
+function skipTurn(seat) {                                           // phone asleep: pass the turn on
+  const g = game;
+  const next = Object.assign({}, g, { seq: g.seq + 1, turn: other(seat), turnStart: Math.round(now() + 300), last: { by: seat, skip: true } });
+  publish(g, next, null);
+}
+function publish(base, next, winner) {
+  receiveGame(next);                                                // show it on this phone right away
+  roomRef.child('game').transaction((cur) => {
+    if (cur && cur.seq !== base.seq) return;                      // someone else already moved
+    return next;
+  }, (err, committed, snap) => {
+    if (!committed && snap && snap.val()) { game = null; shown = null; receiveGame(snap.val()); }
+    else if (committed && winner) setTimeout(() => roomRef.update({ status: 'finished', winner }), shotMs(next.last && next.last.path || [[0, 0]]));
+  }, false);
 }
 
-function stepFlying(dt) {
-  if (!flying) return;
-  flying.x += flying.vx * dt;
-  flying.y += flying.vy * dt;
-
-  if (flying.x - R < 0) { flying.x = R; flying.vx = -flying.vx; }
-  else if (flying.x + R > CANVAS_W) { flying.x = CANVAS_W - R; flying.vx = -flying.vx; }
-
-  let collided = false;
-  if (flying.y - R <= TOP_MARGIN) collided = true;
-  if (!collided) {
-    for (const k of Object.keys(grid)) {
-      const [r, c] = k.split('_').map(Number);
-      const p = cellPos(r, c);
-      if (Math.hypot(p.x - flying.x, p.y - flying.y) < 2 * R - 3) { collided = true; break; }
-    }
+// Computer: try many angles on a copy of the board, usually pick the best
+function botAngle() {
+  const b0 = decode(game.board), color = game.cur, tries = [];
+  for (let i = 0; i <= 40; i++) {
+    const a = 0.2 + (Math.PI - 0.4) * i / 40, b = new Map(b0);
+    const { land } = simulate(b, a), res = resolve(b, land, color);
+    tries.push({ a, v: res.popped.length * 10 + res.dropped.length * 15 + Math.random() * 3 });
   }
-
-  if (collided) landBubble();
+  tries.sort((x, y) => y.v - x.v);
+  // kid-friendly: the best shot only half the time, otherwise one of the top 10, aimed a bit loosely
+  const pickI = Math.random() < 0.5 ? 0 : randInt(0, Math.min(9, tries.length - 1));
+  return tries[pickI].a + (Math.random() - 0.5) * 0.09;
 }
 
-function landBubble() {
-  const estRow = clamp(Math.round((flying.y - TOP_MARGIN - R) / ROWH), 0, MAX_ROWS - 1);
-  let best = null;
-  let bestDist = Infinity;
-  for (let r = Math.max(0, estRow - 1); r <= estRow + 1; r++) {
-    for (let c = -1; c <= COLS; c++) {
-      if (c < 0 || c > maxColFor(r)) continue;
-      const k = key(r, c);
-      if (grid[k]) continue;
-      const p = cellPos(r, c);
-      if (p.x < -R || p.x > CANVAS_W + R) continue;
-      const d = Math.hypot(p.x - flying.x, p.y - flying.y);
-      if (d < bestDist) { bestDist = d; best = { r, c }; }
-    }
-  }
-  if (!best) best = { r: estRow, c: clamp(Math.round((flying.x - MARGIN - R) / (2 * R)), 0, maxColFor(estRow)) };
-
-  grid[key(best.r, best.c)] = flying.color;
-  const landedColor = flying.color;
-  flying = null;
-  resolveMatches(best.r, best.c, landedColor);
-  newShooterBubbles();
-
-  if (bubbleCount() < REFILL_THRESHOLD) addRows();
+// ---------------------------------------------------------------------
+// Aiming
+// ---------------------------------------------------------------------
+function angleFrom(e) {
+  const r = canvas.getBoundingClientRect();
+  const x = (e.clientX - r.left) * (W / r.width), y = (e.clientY - r.top) * (H / r.height);
+  return clamp(Math.atan2(SHOOTER_Y - Math.min(y, SHOOTER_Y - 30), x - W / 2), 0.14, Math.PI - 0.14);
+}
+let aimSent = 0;
+function sendAim(a) {
+  const t = performance.now();
+  if (t - aimSent < 90) return;
+  aimSent = t;
+  roomRef.child('aim').child(mySeat).set(Math.round(a * 1000) / 1000);
+}
+function bindControls() {
+  canvas.onpointerdown = (e) => {
+    if (!canShoot(mySeat)) return;
+    aiming = true; myAim = angleFrom(e); sendAim(myAim);
+    try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+  };
+  canvas.onpointermove = (e) => { if (!aiming) return; myAim = angleFrom(e); sendAim(myAim); };
+  canvas.onpointerup = (e) => {
+    if (!aiming) return;
+    aiming = false; myAim = angleFrom(e);
+    if (shoot(mySeat, myAim)) sounds.playWhoosh();
+    myAim = null;
+  };
+  canvas.onpointercancel = () => { aiming = false; myAim = null; };
 }
 
-function resolveMatches(r, c, color) {
-  const visited = new Set([key(r, c)]);
-  const stack = [[r, c]];
-  const group = [[r, c]];
-  while (stack.length) {
-    const [cr, cc] = stack.pop();
-    for (const [nr, nc] of neighbors(cr, cc)) {
-      const nk = key(nr, nc);
-      if (visited.has(nk) || !grid[nk] || grid[nk] !== color) continue;
-      visited.add(nk);
-      stack.push([nr, nc]);
-      group.push([nr, nc]);
-    }
-  }
+// ---------------------------------------------------------------------
+// Loop
+// ---------------------------------------------------------------------
+let lastT = 0;
+function loop(t) {
+  if (!running) return;
+  const dt = Math.min((t - (lastT || t)) / 1000, 0.05);
+  lastT = t;
+  stepAnim(t);
+  decide();
+  fx = fx.filter((f) => t - f.t0 < f.life);
+  fx.forEach((f) => { if (f.vy != null) { f.vy += 900 * dt; f.y += f.vy * dt; f.x += f.vx * dt; } });
+  draw(t);
+  requestAnimationFrame(loop);
+}
 
-  let gained = 0;
-  if (group.length >= 3) {
-    for (const [gr, gc] of group) {
-      const p = cellPos(gr, gc);
-      sparks.push({ x: p.x, y: p.y, color, t: performance.now() });
-      delete grid[key(gr, gc)];
-    }
-    gained += group.length * 10;
-    sounds.playBlast();
-
-    // Drop floating clusters not connected to the top row.
-    const reachable = new Set();
-    const q = [];
-    for (const k of Object.keys(grid)) {
-      const [rr, cc] = k.split('_').map(Number);
-      if (rr === 0) { reachable.add(k); q.push([rr, cc]); }
-    }
-    while (q.length) {
-      const [cr, cc] = q.pop();
-      for (const [nr, nc] of neighbors(cr, cc)) {
-        const nk = key(nr, nc);
-        if (reachable.has(nk) || !grid[nk]) continue;
-        reachable.add(nk);
-        q.push([nr, nc]);
-      }
-    }
-    let dropped = 0;
-    for (const k of Object.keys(grid)) {
-      if (!reachable.has(k)) {
-        const [rr, cc] = k.split('_').map(Number);
-        const p = cellPos(rr, cc);
-        sparks.push({ x: p.x, y: p.y, color: grid[k], t: performance.now() });
-        delete grid[k];
-        dropped++;
-      }
-    }
-    gained += dropped * 5;
-  }
-
-  if (gained > 0) {
-    myScore += gained;
-    roomRef.child('scores').child(mySeat).transaction((cur) => (cur || 0) + gained);
-    if (myScore >= WIN_SCORE) attemptFinish(mySeat);
+/** Turn bookkeeping: auto-shot when my time runs out, the Computer's turn, skipping a sleeping phone. */
+function decide() {
+  const g = game;
+  if (!g || room.status !== 'playing' || anim || queue.length) return;
+  const t = now(), tag = g.seq + ':' + g.turn;
+  if (decidedSeq === tag) return;
+  if (g.turn === mySeat && t > g.turnStart + TURN_MS) {
+    decidedSeq = tag; aiming = false;
+    if (shoot(mySeat, myAim != null ? myAim : Math.PI / 2 + (Math.random() - 0.5) * 1.2)) { sounds.playWhoosh(); shell.toast('Time up — shot fired for you ⏱', 'info'); }
+  } else if (room.mode === 'bot' && mySeat === 'P1' && g.turn === 'P2' && t > g.turnStart + 900) {
+    decidedSeq = tag;
+    const a = botAngle();
+    roomRef.child('aim').child('P2').set(Math.round(a * 1000) / 1000);
+    setTimeout(() => { if (game && game.seq === g.seq && shoot('P2', a)) sounds.playWhoosh(); }, 650);   // show its aim first
+  } else if (room.mode !== 'bot' && (mySeat === 'P1' || mySeat === 'P2') && g.turn === other(mySeat) && t > g.turnStart + TURN_MS + SKIP_GRACE_MS) {
+    decidedSeq = tag;
+    skipTurn(g.turn);
   }
 }
 
-async function attemptFinish(seat) {
-  await roomRef.transaction((room) => {
-    if (!room) return room;
-    if (room.status !== 'playing') return;
-    room.status = 'finished';
-    room.winner = seat;
-    return room;
-  });
-}
-
-function maybeRunBot(room) {
-  const shouldRun = room.mode === 'bot' && room.status === 'playing' && mySeat === 'P1';
-  if (!shouldRun) {
-    if (botInterval && room.status !== 'playing') { clearInterval(botInterval); botInterval = null; }
-    return;
+function stepAnim(t) {
+  if (!anim && queue.length) {
+    const g = queue.shift(), L = g.last;
+    if (!L || L.skip) { shown = decode(g.board); shownSeq = g.seq; if (L && L.skip && L.by !== mySeat) shell.toast('Turn skipped ⏭', 'info'); renderBoard(); return; }
+    anim = { g, L, start: t, flight: pathLength(L.path) / SPEED * 1000, landed: false };
+    if (L.by !== mySeat || (room.mode === 'bot' && L.by === 'P2')) sounds.playWhoosh();
   }
-  if (botInterval) return;
-  let botScore = 0;
-  botInterval = setInterval(() => {
-    const gained = [10, 10, 20, 30][randInt(0, 3)];
-    botScore += gained;
-    roomRef.child('scores').child('P2').transaction((cur) => (cur || 0) + gained);
-    if (botScore >= WIN_SCORE) {
-      clearInterval(botInterval);
-      botInterval = null;
-      attemptFinish('P2');
-    }
-  }, randInt(1300, 2100));
+  if (!anim) return;
+  const { g, L } = anim, el = t - anim.start;
+  if (!anim.landed && el >= anim.flight) {
+    anim.landed = true;
+    // stick, then pop + drop
+    const [lr, lc] = parse(L.land);
+    const b = new Map(shown); b.set(L.land, L.color);
+    const lp = cellPos(lr, lc);
+    if (L.popped.length) {
+      sounds.playBlast();
+      L.popped.forEach((k) => { const [r, c] = parse(k), p = cellPos(r, c); fx.push({ kind: 'pop', x: p.x, y: p.y, col: L.color, t0: t, life: 380 }); b.delete(k); });
+      (L.dropped || []).forEach((d) => { const [k, col] = d.split(':'), [r, c] = parse(k), p = cellPos(r, c); b.delete(k); fx.push({ kind: 'fall', x: p.x, y: p.y, vx: (Math.random() - 0.5) * 80, vy: -120 - Math.random() * 80, col: +col, t0: t, life: 900 }); });
+    } else sounds.playHit();
+    if (L.gained) fx.push({ kind: 'text', x: lp.x, y: lp.y, text: '+' + L.gained, t0: t, life: 1100, color: '#fde047' });
+    if (L.combo) fx.push({ kind: 'text', x: W / 2, y: H / 2 - 40, text: 'COMBO! 🔥', t0: t, life: 1300, color: '#fb923c', big: true });
+    if (L.cleared) fx.push({ kind: 'text', x: W / 2, y: H / 2, text: 'Board cleared! +50 🎉', t0: t, life: 1600, color: '#4ade80', big: true });
+    if (L.rows) fx.push({ kind: 'text', x: W / 2, y: H / 2 + 40, text: 'New rows! ⬇️', t0: t, life: 1300, color: '#fff', big: true });
+    shown = b;
+  }
+  if (anim.landed && el >= anim.flight + 420) { shown = decode(g.board); shownSeq = g.seq; anim = null; renderBoard(); }
 }
 
+// ---------------------------------------------------------------------
+// Matchmaking / status
+// ---------------------------------------------------------------------
 async function activateBot() {
-  const txResult = await roomRef.transaction((room) => {
-    if (!room) return room;
-    if (room.status !== 'waiting') return;
-    room.mode = 'bot';
-    room.status = 'playing';
-    room.players = room.players || {};
-    room.players['bot'] = { nickname: 'Computer', seat: 'P2', joinedAt: Date.now() };
-    return room;
+  const tx = await roomRef.transaction((r) => {
+    if (!r || r.status !== 'waiting') return;
+    r.mode = 'bot'; r.status = 'playing'; r.winner = null; r.aim = null;
+    r.game = freshGame('P1', r.game && r.game.seq);
+    r.players = r.players || {};
+    r.players.bot = { nickname: 'Computer', seat: 'P2', joinedAt: Date.now() };
+    return r;
   });
-  if (txResult.committed) await quickMatch.clearIfMatches(roomRef.key);
+  if (tx.committed) await quickMatch.clearIfMatches(roomRef.key);
 }
-
-function handleMatchmakingCountdown(room) {
-  const iAmWaitingAlone = mySeat === 'P1' && room.status === 'waiting';
-  if (!iAmWaitingAlone) { stopMatchmakingCountdown(); return; }
+function handleMatchmakingCountdown() {
+  const alone = mySeat === 'P1' && room.status === 'waiting';
+  if (!alone) { stopMatchmakingCountdown(); return; }
   if (matchmakingInterval) return;
-  matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
+  matchmakingSecondsLeft = (window.kqBotWaitSeconds ? kqBotWaitSeconds() : MATCH_WAIT_SECONDS);   // admin: App settings -> Multiplayer
   shell.showWaitingCountdown(matchmakingSecondsLeft);
   matchmakingInterval = setInterval(() => {
     matchmakingSecondsLeft -= 1;
-    if (matchmakingSecondsLeft <= 0) {
-      stopMatchmakingCountdown();
-      activateBot();
-      return;
-    }
+    if (matchmakingSecondsLeft <= 0) { stopMatchmakingCountdown(); activateBot(); return; }
     shell.showWaitingCountdown(matchmakingSecondsLeft);
   }, 1000);
 }
-
 function stopMatchmakingCountdown() {
   if (matchmakingInterval) { clearInterval(matchmakingInterval); matchmakingInterval = null; }
   shell.hideWaitingCountdown();
 }
-
-function handleStatusTransition(room) {
+function handleStatusTransition() {
   if (lastStatus === room.status) return;
-  const prev = lastStatus;
-  lastStatus = room.status;
+  const prev = lastStatus; lastStatus = room.status;
   if (prev === null) return;
   if (room.status === 'finished') {
     try { onMultiplayerGameComplete(); } catch (e) {}
     if (mySeat === room.winner) sounds.playWin();
-    else if (mySeat !== 'spectator') sounds.playLose();
+    else if (mySeat !== 'spectator' && room.winner !== 'draw') sounds.playLose();
     try { if (window.KQ && KQ.addWin && mySeat === room.winner) KQ.addWin('multi', GAME_ID); } catch (e) {}
   }
 }
-
 async function handleLeave() {
   running = false;
   stopMatchmakingCountdown();
-  if (botInterval) { clearInterval(botInterval); botInterval = null; }
   if (selfRef) { selfRef.onDisconnect().cancel(); await selfRef.remove(); }
-  if (roomRef) roomRef.off();
+  listening.forEach((r) => r.off()); listening = [];
   if (playersRef) playersRef.off();
-  playersMap = {};
-  lastStatus = null;
-  roomRef = null;
+  playersMap = {}; lastStatus = null; roomRef = null; game = null;
   shell.showLandingScreen();
 }
 
 // ---------------------------------------------------------------------
-// Loop / rendering
+// Drawing
 // ---------------------------------------------------------------------
-
-let lastFrameTime = 0;
-
-function loop(now) {
-  if (!running) return;
-  const dt = Math.min((now - (lastFrameTime || now)) / 1000, 0.032);
-  lastFrameTime = now;
-  stepFlying(dt);
-  draw(now);
-  requestAnimationFrame(loop);
+function nameOf(seat) {
+  for (const [id, p] of Object.entries(playersMap)) if (p.seat === seat) return id === playerId ? 'You' : p.nickname;
+  return seat;
 }
-
-function draw(now) {
-  ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-  ctx.fillStyle = '#1e3a8a';
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-
-  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-  ctx.beginPath();
-  ctx.moveTo(0, TOP_MARGIN);
-  ctx.lineTo(CANVAS_W, TOP_MARGIN);
-  ctx.stroke();
-
-  for (const k of Object.keys(grid)) {
-    const [r, c] = k.split('_').map(Number);
-    const p = cellPos(r, c);
-    drawBubble(p.x, p.y, grid[k]);
+function drawBubble(x, y, col, s = 1, alpha = 1) {
+  const color = PALETTE[col] || '#fff';
+  ctx.globalAlpha = alpha;
+  const g = ctx.createRadialGradient(x - R * s * 0.35, y - R * s * 0.35, 1, x, y, R * s);
+  g.addColorStop(0, '#fff'); g.addColorStop(0.25, color); g.addColorStop(1, color);
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, R * s - 0.5, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = 'rgba(0,0,0,.18)'; ctx.lineWidth = 1.2; ctx.stroke();
+  ctx.globalAlpha = 1;
+}
+function drawGuide(angle, color, dashed, alpha) {
+  if (!shown) return;
+  const { path } = simulate(shown, angle);
+  ctx.save(); ctx.globalAlpha = alpha; ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.setLineDash(dashed ? [2, 9] : []); ctx.lineCap = 'round';
+  ctx.beginPath(); path.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.stroke();
+  ctx.restore();
+}
+function pointOnPath(path, d) {
+  for (let i = 1; i < path.length; i++) {
+    const a = path[i - 1], b = path[i], L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    if (d <= L) { const k = L ? d / L : 0; return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k]; }
+    d -= L;
   }
+  return path[path.length - 1];
+}
+function draw(t) {
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const bg = ctx.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#1e3a8a'); bg.addColorStop(1, '#312e81');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+  // danger line
+  const dy = TOP_MARGIN + R + DANGER_ROW * ROWH - R;
+  ctx.strokeStyle = 'rgba(248,113,113,.55)'; ctx.setLineDash([6, 6]); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, dy); ctx.lineTo(W, dy); ctx.stroke(); ctx.setLineDash([]);
 
-  sparks = sparks.filter((s) => now - s.t < 350);
-  for (const s of sparks) {
-    const p = (now - s.t) / 350;
-    ctx.strokeStyle = s.color;
-    ctx.globalAlpha = 1 - p;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, R * 0.6 + p * 16, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.globalAlpha = 1;
+  if (shown) for (const [k, v] of shown) { const [r, c] = parse(k), p = cellPos(r, c); drawBubble(p.x, p.y, v); }
+
+  const g = game, playing = g && room.status === 'playing';
+  // aim guides: mine while dragging, the opponent's live
+  if (playing && !anim && !queue.length) {
+    if (aiming && myAim != null) drawGuide(myAim, '#fff', true, 0.9);
+    else if (g.turn !== mySeat && aim[g.turn] != null) drawGuide(aim[g.turn], g.turn === 'P1' ? '#86efac' : '#fca5a5', true, 0.75);
   }
-
-  if (flying) drawBubble(flying.x, flying.y, flying.color);
-
-  // shooter
-  drawBubble(CANVAS_W / 2, SHOOTER_Y, shooterColor);
-  drawBubble(CANVAS_W - 30, SHOOTER_Y, nextColor, 0.65);
-  ctx.fillStyle = 'rgba(255,255,255,0.5)';
-  ctx.font = '10px Rubik, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillText('next', CANVAS_W - 30, SHOOTER_Y + R + 12);
+  // flying bubble
+  if (anim && !anim.landed) {
+    const p = pointOnPath(anim.L.path, (t - anim.start) / 1000 * SPEED);
+    drawBubble(p[0], p[1], anim.L.color);
+  }
+  // effects
+  for (const f of fx) {
+    const k = (t - f.t0) / f.life;
+    if (f.kind === 'pop') { ctx.strokeStyle = PALETTE[f.col]; ctx.globalAlpha = 1 - k; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(f.x, f.y, R * (0.6 + k * 1.2), 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1; }
+    else if (f.kind === 'fall') drawBubble(f.x, f.y, f.col, 1, 1 - k * 0.6);
+    else if (f.kind === 'text') {
+      ctx.globalAlpha = Math.min(1, (1 - k) * 2); ctx.textAlign = 'center'; ctx.font = (f.big ? '800 24px' : '800 20px') + ' "Baloo 2", Rubik, sans-serif';
+      ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.strokeText(f.text, f.x, f.y - k * 40); ctx.fillStyle = f.color; ctx.fillText(f.text, f.x, f.y - k * 40); ctx.globalAlpha = 1;
+    }
+  }
+  // shooter: current + next
+  ctx.fillStyle = 'rgba(255,255,255,.08)'; ctx.beginPath(); ctx.arc(W / 2, SHOOTER_Y, R + 9, 0, Math.PI * 2); ctx.fill();
+  if (g && !(anim && !anim.landed)) {
+    const showCur = anim || queue.length ? (queue.length ? queue[queue.length - 1].cur : g.cur) : g.cur;
+    drawBubble(W / 2, SHOOTER_Y, showCur);
+    drawBubble(W - 34, SHOOTER_Y + 6, g.next, 0.62);
+    ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.font = '600 10px Rubik, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('next', W - 34, SHOOTER_Y + 26);
+  }
+  // turn banner + timer
+  if (playing) {
+    const mine = g.turn === mySeat, busy = anim || queue.length;
+    const left = Math.max(0, (g.turnStart + TURN_MS - now()) / TURN_MS);
+    const label = busy ? '' : mine ? 'Your turn! Drag & let go 🎯' : (room.mode === 'bot' && g.turn === 'P2' ? 'Computer is aiming… 🤖' : nameOf(g.turn) + ' is aiming…');
+    if (label) {
+      ctx.textAlign = 'left'; ctx.font = '700 13px "Baloo 2", Rubik, sans-serif'; ctx.fillStyle = mine ? '#fde047' : '#e0e7ff';
+      ctx.fillText(label, 10, SHOOTER_Y + 22);
+      if (now() >= g.turnStart) { ctx.fillStyle = 'rgba(255,255,255,.15)'; ctx.fillRect(10, H - 6, W - 20, 4); ctx.fillStyle = left < 0.3 ? '#f87171' : mine ? '#fde047' : '#a5b4fc'; ctx.fillRect(10, H - 6, (W - 20) * left, 4); }
+    }
+  }
 }
 
-function drawBubble(x, y, color, scale = 1) {
-  ctx.beginPath();
-  ctx.arc(x, y, R * scale, 0, Math.PI * 2);
-  ctx.fillStyle = color;
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 8;
-  ctx.fill();
-  ctx.shadowBlur = 0;
-  ctx.strokeStyle = 'rgba(255,255,255,0.35)';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(x - R * scale * 0.32, y - R * scale * 0.32, R * scale * 0.28, 0, Math.PI * 2);
-  ctx.fillStyle = 'rgba(255,255,255,0.35)';
-  ctx.fill();
-}
-
-function renderRoom(room) {
-  const scores = room.scores || { P1: 0, P2: 0 };
-  scoreP1.textContent = scores.P1 || 0;
-  scoreP2.textContent = scores.P2 || 0;
-  cardP1.classList.toggle('active-turn', room.status === 'playing');
-  cardP2.classList.toggle('active-turn', room.status === 'playing');
-
+let lastBoardKey = '';
+function renderBoard() {
+  const g = game, sc = (g && g.scores) || { P1: 0, P2: 0 };
   let text = '';
   if (room.status === 'waiting') text = 'Waiting for an opponent to join…';
-  else if (room.status === 'playing') text = mySeat === 'spectator' ? 'Watching the pop-off…' : 'Tap to aim and shoot!';
-  else if (room.status === 'finished') {
-    if (mySeat === room.winner) text = 'You win the duel! 🎉';
-    else if (mySeat === 'spectator') text = `${room.winner} wins!`;
+  else if (room.status === 'playing') {
+    if (mySeat === 'spectator') text = 'Watching — ' + (g ? nameOf(g.turn) + '’s turn' : '');
+    else text = g && g.turn === mySeat ? 'Your turn — pop 3 or more!' : (g ? nameOf(g.turn) + '’s turn' : '');
+  } else if (room.status === 'finished') {
+    if (room.winner === 'draw') text = 'It’s a draw! 🤝';
+    else if (mySeat === room.winner) text = 'You win the duel! 🎉';
+    else if (mySeat === 'spectator') text = `${nameOf(room.winner)} wins!`;
     else text = 'You lost — play again?';
   }
+  const k = [sc.P1, sc.P2, room.status, room.winner, text, g && g.turn].join('|');
+  if (k === lastBoardKey) return;
+  lastBoardKey = k;
+  scoreP1.textContent = sc.P1 || 0;
+  scoreP2.textContent = sc.P2 || 0;
+  cardP1.classList.toggle('active-turn', room.status === 'playing' && g && g.turn === 'P1');
+  cardP2.classList.toggle('active-turn', room.status === 'playing' && g && g.turn === 'P2');
   statusBar.textContent = text;
   statusBar.className = 'status-bar ' + (room.status === 'finished' ? (mySeat === room.winner ? 'status-won' : 'status-lost') : '');
-
   playAgainBtn.classList.toggle('hidden', room.status !== 'finished');
 }
-
 function renderPlayers() {
-  let p1Name = '--';
-  let p2Name = '--';
-  let spectators = 0;
+  let p1 = '--', p2 = '--', spect = 0;
   for (const [id, p] of Object.entries(playersMap)) {
     const label = id === playerId ? `${p.nickname} (you)` : p.nickname;
-    if (p.seat === 'P1') p1Name = label;
-    else if (p.seat === 'P2') p2Name = label;
-    else spectators++;
+    if (p.seat === 'P1') p1 = label; else if (p.seat === 'P2') p2 = label; else spect++;
   }
-  nameP1.textContent = p1Name;
-  nameP2.textContent = p2Name;
-  spectatorCount.textContent = spectators > 0 ? `👀 ${spectators} watching` : '';
+  nameP1.textContent = p1; nameP2.textContent = p2;
+  spectatorCount.textContent = spect > 0 ? `👀 ${spect} watching` : '';
+  lastBoardKey = ''; renderBoard();
 }
 
-// ---------------------------------------------------------------------
-// Boot
-// ---------------------------------------------------------------------
-
 shell.bindLandingActions({ onPlay: handlePlay, onJoinCode: handleJoinCode });
+
+// read-only peek for automated tests (no game effect)
+window.__bubbleDebug = () => ({ mySeat, status: room.status, mode: room.mode, winner: room.winner, seq: game && game.seq, turn: game && game.turn, scores: game && game.scores, board: game && game.board, shownSize: shown && shown.size, anim: !!anim, queue: queue.length, canShoot: canShoot(mySeat) });
+window.__bubbleShoot = (a) => shoot(mySeat, a);   // tests only: same as drag-and-release at angle a

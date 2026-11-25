@@ -16,6 +16,10 @@ import { GameShell } from '../../common/shell.js';
 import { QuickMatch, claimSeat, setupPresence, watchConnectionState } from '../../common/net.js';
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, clamp, lerp, throttle, randInt } from '../../common/utils.js';
 
+// Only touch the page when something changed (this room updates ~12-25 times a second).
+const setText = (el, v) => { v = String(v); if (el && el.textContent !== v) el.textContent = v; };
+const setClass = (el, v) => { if (el && el.className !== v) el.className = v; };
+
 const GAME_ID = 'blaster-arena';
 const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
@@ -88,6 +92,8 @@ let botMoveTarget = { x: W - 60, y: H / 2 };
 // Guest render state
 let targetBolts = {};
 let renderBolts = {};
+let boltsAt = 0;                       // when the last bolt update arrived (guest)
+const shownOpp = { x: W - 60, y: H / 2 }; // opponent drawn here, gliding to oppPos
 let guestScores = { P1: 0, P2: 0 };
 let sparks = [];
 
@@ -186,6 +192,7 @@ function attachListeners() {
 
     if (mySeat !== 'P1') {
       targetBolts = room.bolts || {};
+      boltsAt = performance.now();
       guestScores = room.scores || guestScores;
     } else if (room.status === 'playing' && !hostRunning) {
       hostBolts = {};
@@ -431,7 +438,7 @@ function handleMatchmakingCountdown(room) {
   const iAmWaitingAlone = mySeat === 'P1' && room.status === 'waiting';
   if (!iAmWaitingAlone) { stopMatchmakingCountdown(); return; }
   if (matchmakingInterval) return;
-  matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
+  matchmakingSecondsLeft = (window.kqBotWaitSeconds ? kqBotWaitSeconds() : MATCH_WAIT_SECONDS);   // admin: App settings -> Multiplayer
   shell.showWaitingCountdown(matchmakingSecondsLeft);
   matchmakingInterval = setInterval(() => {
     matchmakingSecondsLeft -= 1;
@@ -494,13 +501,20 @@ function loop(now) {
     stepHostPhysics(dt, now);
     renderBolts = hostBolts;
   } else if (mySeat !== 'P1') {
+    // bolts fly on between the host's updates (no stutter): last position + velocity × time since
+    const age = Math.min(0.2, (now - boltsAt) / 1000);
     const next = {};
     for (const id of Object.keys(targetBolts)) {
       const t = targetBolts[id];
-      next[id] = { ...t };
+      next[id] = { ...t, x: t.x + (t.vx || 0) * age, y: t.y + (t.vy || 0) * age };
     }
     renderBolts = next;
   }
+
+  // the other player's ship glides to its latest position instead of jumping every update
+  const k = 1 - Math.exp(-dt * 15);
+  if (Math.hypot(oppPos.x - shownOpp.x, oppPos.y - shownOpp.y) > 120) { shownOpp.x = oppPos.x; shownOpp.y = oppPos.y; }
+  else { shownOpp.x += (oppPos.x - shownOpp.x) * k; shownOpp.y += (oppPos.y - shownOpp.y) * k; }
 
   draw(now);
   requestAnimationFrame(loop);
@@ -524,7 +538,7 @@ function draw(now) {
 
   const myColor = mySeat === 'P2' ? '#ff3ec8' : '#33e5ff';
   const oppColor = mySeat === 'P2' ? '#33e5ff' : '#ff3ec8';
-  const otherPos = currentMode === 'bot' && mySeat === 'P1' ? botPos : oppPos;
+  const otherPos = currentMode === 'bot' && mySeat === 'P1' ? botPos : shownOpp;
 
   drawAvatar(otherPos.x, otherPos.y, oppColor);
   drawAvatar(myPos.x, myPos.y, myColor);
@@ -569,8 +583,8 @@ function drawAvatar(x, y, color) {
 
 function renderScoreboardAndStatus(room) {
   const scores = mySeat === 'P1' ? hostScores : (room.scores || guestScores);
-  scoreP1.textContent = (scores && scores.P1) || 0;
-  scoreP2.textContent = (scores && scores.P2) || 0;
+  setText(scoreP1, (scores && scores.P1) || 0);
+  setText(scoreP2, (scores && scores.P2) || 0);
   cardP1.classList.toggle('active-turn', room.status === 'playing');
   cardP2.classList.toggle('active-turn', room.status === 'playing');
 
@@ -582,9 +596,8 @@ function renderScoreboardAndStatus(room) {
     else if (mySeat === 'spectator') text = `${room.winner} wins!`;
     else text = 'You lost — play again?';
   }
-  statusBar.textContent = text;
-  statusBar.className = 'status-bar ' + (room.status === 'finished' ? (mySeat === room.winner ? 'status-won' : 'status-lost') : '');
-
+  setText(statusBar, text);
+  setClass(statusBar, 'status-bar ' + (room.status === 'finished' ? (mySeat === room.winner ? 'status-won' : 'status-lost') : ''));
   playAgainBtn.classList.toggle('hidden', room.status !== 'finished');
 }
 
@@ -598,9 +611,9 @@ function renderPlayers() {
     else if (p.seat === 'P2') p2Name = label;
     else spectators++;
   }
-  nameP1.textContent = p1Name;
-  nameP2.textContent = p2Name;
-  spectatorCount.textContent = spectators > 0 ? `👀 ${spectators} watching` : '';
+  setText(nameP1, p1Name);
+  setText(nameP2, p2Name);
+  setText(spectatorCount, spectators > 0 ? `👀 ${spectators} watching` : '');
 }
 
 // ---------------------------------------------------------------------

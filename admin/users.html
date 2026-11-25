@@ -457,6 +457,7 @@
     offline: { enabled: false },
     share: { enabled: true },
     app: { hideLeaderboardFab: true },
+    multi: { botWaitSec: 10 },
     ads: { banner: true, interstitial: true, everyN: 2, minGapSec: 60, quit: true, quitGapSec: 90 },
     rating: { enabled: true, afterN: 3, repeatDays: 30 },
     update: { mandatory: false, minVersionCode: 0, message: 'A new version of Kids Quiz is ready with new games and fixes. Please update to keep playing.' }
@@ -544,6 +545,9 @@
       h += '<div class="tool"><h3>📤 Sharing &amp; buttons</h3>' +
         chk('sShare', c.share.enabled, 'Show "Share my score" on game results', 'Makes a picture of the score and opens the share sheet (WhatsApp, Instagram…).') +
         chk('aFab', c.app.hideLeaderboardFab, 'Hide the floating 🏆 Leaderboard button inside the app', 'The app\'s own Rank tab and result buttons are used instead.') + '</div>';
+      h += '<div class="tool"><h3>👥 Multiplayer</h3><p>When a child taps Play and nobody else is looking for a match, the Computer joins after this wait.</p>' +
+        '<div class="row" style="margin-top:6px">Computer joins after ' + num('mWait', (c.multi || {}).botWaitSec || 10, 3) + ' seconds</div>' +
+        '<p class="muted" style="font-size:13px;margin:8px 0 0">3–120 s. Longer = more chance of a real opponent; shorter = less waiting. Used by all 24 multiplayer games.</p></div>';
       const up = c.update;
       h += '<div class="tool"><h3>🔄 App update</h3><p>Make installed apps update before they can be used.</p>' +
         chk('upOn', up.mandatory, 'Update is mandatory', 'Off: nobody sees an update popup. On: phones with an older version get Google Play\'s full-screen update screen (or, if Play can\'t do it, an “Update needed” box that only opens the Play Store) and can\'t play until they update.') +
@@ -578,6 +582,7 @@
           offline: { enabled: v('oOff').checked },
           share: { enabled: v('sShare').checked },
           app: { hideLeaderboardFab: v('aFab').checked },
+          multi: { botWaitSec: Math.min(120, n('mWait', 10, 3)) },
           update: { mandatory: v('upOn').checked, minVersionCode: n('upMin', 0, 0), message: v('upMsg').value.trim() || CFG_DEFAULT.update.message },
           rating: { enabled: v('rtOn').checked, afterN: n('rtN', 3, 1), repeatDays: n('rtDays', 30, 0) },
           ads: { banner: v('adBanner').checked, interstitial: v('adInt').checked, everyN: n('adN', 2, 1), minGapSec: n('adGap', 60, 0), quit: v('adQuit').checked, quitGapSec: n('adQGap', 90, 0),

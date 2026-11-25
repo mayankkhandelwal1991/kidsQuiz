@@ -8,6 +8,9 @@
  */
 
 import { loadSavedNickname, saveNickname, useKnownName } from '../../common/utils.js';
+import { keepFieldsVisible } from '../../common/keyboard.js';
+
+keepFieldsVisible();   // the phone keyboard must not cover the nickname / room code box
 
 export class UIManager {
   constructor() {

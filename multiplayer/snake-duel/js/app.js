@@ -21,6 +21,10 @@ import { GameShell } from '../../common/shell.js';
 import { QuickMatch, claimSeat, setupPresence, watchConnectionState } from '../../common/net.js';
 import { generateRoomCode, generatePlayerId, sanitizeNickname, SoundManager, throttle, randInt } from '../../common/utils.js';
 
+// Only touch the page when something changed (this room updates ~12-25 times a second).
+const setText = (el, v) => { v = String(v); if (el && el.textContent !== v) el.textContent = v; };
+const setClass = (el, v) => { if (el && el.className !== v) el.className = v; };
+
 const GAME_ID = 'snake-duel';
 const MATCH_WAIT_SECONDS = 10;
 const SEATS = ['P1', 'P2'];
@@ -482,7 +486,7 @@ function handleMatchmakingCountdown(room) {
   const iAmWaitingAlone = mySeat === 'P1' && room.status === 'waiting';
   if (!iAmWaitingAlone) { stopMatchmakingCountdown(); return; }
   if (matchmakingInterval) return;
-  matchmakingSecondsLeft = MATCH_WAIT_SECONDS;
+  matchmakingSecondsLeft = (window.kqBotWaitSeconds ? kqBotWaitSeconds() : MATCH_WAIT_SECONDS);   // admin: App settings -> Multiplayer
   shell.showWaitingCountdown(matchmakingSecondsLeft);
   matchmakingInterval = setInterval(() => {
     matchmakingSecondsLeft -= 1;
@@ -581,8 +585,8 @@ function drawSnake(body, color, alive, cell) {
 }
 
 function renderScoreboardAndStatus(room) {
-  scoreP1.textContent = (room.scores && room.scores.P1) || 0;
-  scoreP2.textContent = (room.scores && room.scores.P2) || 0;
+  setText(scoreP1, (room.scores && room.scores.P1) || 0);
+  setText(scoreP2, (room.scores && room.scores.P2) || 0);
   cardP1.classList.toggle('active-turn', room.status === 'playing' && room.alive && room.alive.P1);
   cardP2.classList.toggle('active-turn', room.status === 'playing' && room.alive && room.alive.P2);
 
@@ -597,9 +601,8 @@ function renderScoreboardAndStatus(room) {
     else if (mySeat === 'spectator') text = `${room.winner} wins the duel!`;
     else text = 'You lost the duel — play again?';
   }
-  statusBar.textContent = text;
-  statusBar.className = 'status-bar ' + (room.status === 'finished' ? (mySeat === room.winner ? 'status-won' : 'status-lost') : '');
-
+  setText(statusBar, text);
+  setClass(statusBar, 'status-bar ' + (room.status === 'finished' ? (mySeat === room.winner ? 'status-won' : 'status-lost') : ''));
   playAgainBtn.classList.toggle('hidden', room.status !== 'finished');
 }
 
@@ -613,14 +616,14 @@ function renderPlayers() {
     else if (p.seat === 'P2') p2Name = label;
     else spectators++;
   }
-  nameP1.textContent = p1Name;
-  nameP2.textContent = p2Name;
-  spectatorCount.textContent = spectators > 0 ? `👀 ${spectators} watching` : '';
+  setText(nameP1, p1Name);
+  setText(nameP2, p2Name);
+  setText(spectatorCount, spectators > 0 ? `👀 ${spectators} watching` : '');
 }
 
 // ---------------------------------------------------------------------
 // Boot
 // ---------------------------------------------------------------------
 
-document.getElementById('win-target').textContent = WIN_SCORE;
+setText(document.getElementById('win-target'), WIN_SCORE);
 shell.bindLandingActions({ onPlay: handlePlay, onJoinCode: handleJoinCode });

@@ -10,6 +10,9 @@
  */
 
 import { loadSavedNickname, saveNickname, useKnownName } from './utils.js';
+import { keepFieldsVisible } from './keyboard.js';
+
+keepFieldsVisible();   // the phone keyboard must not cover the nickname / room code box
 
 export class GameShell {
   constructor({ gameTitle }) {

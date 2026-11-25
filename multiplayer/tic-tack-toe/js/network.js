@@ -104,7 +104,9 @@ export class NetworkManager {
       createdAt: firebase.database.ServerValue.TIMESTAMP,
       mode: 'human',
       status: 'waiting',
-      turn: 'X', // standard tic-tac-toe rule: X always moves first
+      turn: 'X', // round 1: X moves first; after that the first move alternates (playAgain)
+      starter: 'X',
+      round: 1,
       winner: null,
       winningLine: null,
       cells: EMPTY_CELLS,
@@ -351,8 +353,13 @@ export class NetworkManager {
   async playAgain() {
     await this.roomRef.transaction((room) => {
       if (!room) return room;
+      if (room.status === 'playing') return; // both tapped Play Again: only the first starts the round
+      // Fair play: the first move alternates every round (X, O, X, …).
+      const next = (room.starter || 'X') === 'X' ? 'O' : 'X';
+      room.starter = next;
+      room.round = (room.round || 1) + 1;
       room.cells = EMPTY_CELLS;
-      room.turn = 'X';
+      room.turn = next;
       room.status = 'playing';
       room.winner = null;
       room.winningLine = null;
@@ -371,6 +378,8 @@ export class NetworkManager {
       if (!room) return room;
       room.cells = EMPTY_CELLS;
       room.turn = 'X';
+      room.starter = 'X';
+      room.round = (room.round || 1) + 1;
       room.status = 'waiting';
       room.winner = null;
       room.winningLine = null;

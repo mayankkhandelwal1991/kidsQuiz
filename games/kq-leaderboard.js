@@ -679,6 +679,49 @@
   });
   function inAndroidApp() { try { return typeof Android !== "undefined" && !!Android; } catch (e) { return false; } }
 
+  /* ---- Update popup for OLD app versions -------------------------------------
+     Apps before version code 13 (e.g. 1.0.9) have no update check of their own,
+     so the page shows it: admin console -> App settings -> App update ->
+     "Update is mandatory". Newer apps (they have Android.getAppConfig) do it
+     natively with Google Play's update screen, so they are skipped here. */
+  function oldAndroidApp() { try { return inAndroidApp() && typeof Android.getAppConfig !== "function"; } catch (e) { return false; } }
+  function openStore() {
+    var url = "https://play.google.com/store/apps/details?id=com.mk.kidsquiz";
+    try { if (typeof Android.openUrl === "function") { Android.openUrl(url); return; } } catch (e) {}
+    location.href = url;
+  }
+  function webUpdatePopup(c) {
+    var u = c && c.update;
+    if (!u || !u.mandatory || !oldAndroidApp()) return;
+    if (u.minVersionCode > 0 && u.minVersionCode <= 12) return;          // these old apps are codes 10-12: a minimum at or below that means "they are fine"
+    if (document.getElementById("kqUpdate")) return;
+    var show = function () {
+      if (document.getElementById("kqUpdate") || !document.body) return;
+      var o = document.createElement("div"); o.id = "kqUpdate";
+      o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true");
+      o.style.cssText = "position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,.72);display:flex;align-items:center;justify-content:center;padding:20px;font-family:'Baloo 2',system-ui,sans-serif";
+      o.innerHTML = '<div style="background:#fff;border-radius:26px;max-width:360px;width:100%;padding:26px 22px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.35)">' +
+        '<div style="font-size:64px;line-height:1">🚀</div>' +
+        '<h2 style="margin:10px 0 6px;color:#1e1b4b;font-size:26px">Update needed</h2>' +
+        '<p style="margin:0 0 18px;color:#475569;font-size:17px;line-height:1.4"></p>' +
+        '<button type="button" style="border:0;border-radius:999px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font:800 20px \'Baloo 2\',system-ui,sans-serif;padding:14px 34px;cursor:pointer;box-shadow:0 6px 0 #15803d">⬇ Update now</button></div>';
+      o.querySelector("p").textContent = u.message || "A new version of Kids Quiz is ready with new games and fixes. Please update to keep playing.";
+      o.querySelector("button").onclick = openStore;
+      o.addEventListener("touchmove", function (e) { e.preventDefault(); }, { passive: false });
+      document.body.appendChild(o);
+    };
+    if (document.body) show(); else document.addEventListener("DOMContentLoaded", show);
+  }
+  cfgCbs.push(webUpdatePopup);
+  webUpdatePopup(APP_CFG);
+  // old apps: read the setting straight away (public REST read), without waiting for sign-in
+  if (oldAndroidApp() && window.fetch) {
+    fetch(FIREBASE_CONFIG.databaseURL.replace(/\/$/, "") + "/config/app.json", { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (c) { if (c && typeof c === "object") setAppConfig(c); })
+      .catch(function () {});
+  }
+
   /* The Android app's own login (native login screen), or null on the website /
      older app builds: { mode: 'google'|'guest'|'', name, email, photo, idToken }.
      idToken is '' when it's too old: ask the app with Android.refreshGoogleToken(). */

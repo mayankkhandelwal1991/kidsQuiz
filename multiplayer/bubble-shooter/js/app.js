@@ -297,6 +297,12 @@ function onRoom() { handleStatusTransition(); renderBoard(); handleMatchmakingCo
 /** A new game record arrived (from Firebase or from my own shot). */
 function receiveGame(g) {
   if (!g || !g.board) return;
+  // Firebase drops empty lists, so a shot that popped nothing arrives without
+  // last.popped / last.dropped — put them back before anything reads them.
+  if (g.last && !g.last.skip) {
+    g.last.popped = g.last.popped || []; g.last.dropped = g.last.dropped || [];
+    if (!Array.isArray(g.last.path) || !g.last.path.length) g.last = null;   // nothing to replay: just show the board
+  }
   if (game && g.seq < game.seq) return;
   if (game && g.seq === game.seq) { game = g; return; }        // same state (my own write coming back)
   // first state, a new match, or we missed a turn (asleep): just show the board
@@ -422,12 +428,17 @@ function loop(t) {
   if (!running) return;
   const dt = Math.min((t - (lastT || t)) / 1000, 0.05);
   lastT = t;
-  stepAnim(t);
-  decide();
-  fx = fx.filter((f) => t - f.t0 < f.life);
-  fx.forEach((f) => { if (f.vy != null) { f.vy += 900 * dt; f.y += f.vy * dt; f.x += f.vx * dt; } });
+  requestAnimationFrame(loop);          // first, so one bad frame can never stop the game
+  try {
+    stepAnim(t);
+    decide();
+    fx = fx.filter((f) => t - f.t0 < f.life);
+    fx.forEach((f) => { if (f.vy != null) { f.vy += 900 * dt; f.y += f.vy * dt; f.x += f.vx * dt; } });
+  } catch (e) {
+    console.error('[bubble] frame error', e);
+    if (game) { shown = decode(game.board); shownSeq = game.seq; } anim = null; queue = [];   // skip the replay, keep playing
+  }
   draw(t);
-  requestAnimationFrame(loop);
 }
 
 /** Turn bookkeeping: auto-shot when my time runs out, the Computer's turn, skipping a sleeping phone. */

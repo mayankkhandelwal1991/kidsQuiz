@@ -430,6 +430,9 @@ function authButton() {
     try { KQ.signIn(); } catch (e) { window.onGoogleSignInCancelled(); }
     return;
   }
+  if (window.__signingOut) return;          // already on the way out
+  const ob = document.getElementById('pfAuthBtn');
+  if (ob) { ob.disabled = true; ob.textContent = '…'; }
   switchUser();
 }
 
@@ -451,9 +454,13 @@ function switchUser() {
   // A guest has no Firebase session, so just go. A logged-in user must wait for
   // KQ.signOut() to actually complete first — otherwise the next page still
   // sees a live session and sends them right back here (the reload loop).
-  if (!wasGuest && !(window.KQ && KQ.signOut)) { try { if (typeof Android !== 'undefined' && Android && Android.googleSignOut) Android.googleSignOut(); } catch (e) {} }
+  // Tell the app first (it shows its own login screen), whatever happens on the
+  // web side. KQ.signOut() tells it too; a second call is harmless.
+  if (!wasGuest) { try { if (typeof Android !== 'undefined' && Android && Android.googleSignOut) Android.googleSignOut(); } catch (e) {} }
   if (!wasGuest && window.KQ && KQ.signOut) {
-    try { Promise.resolve(KQ.signOut()).then(done, done); } catch (e) { done(); }
+    var left = false; function go() { if (!left) { left = true; done(); } }
+    setTimeout(go, 3000); // slow / offline Firebase: don't leave the tap hanging
+    try { Promise.resolve(KQ.signOut({ webOnly: true })).then(go, go); } catch (e) { go(); }
   } else {
     done();
   }
@@ -1188,6 +1195,7 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   function open() {
     var r = btn.getBoundingClientRect();
     box.style.top = Math.round(r.bottom + 8) + 'px';
+    openY = window.scrollY;
     box.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); btn.textContent = '✕';
   }
   btn.onclick = function (e) { e.stopPropagation(); isOpen() ? close() : open(); };
@@ -1196,8 +1204,13 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   document.addEventListener('pointerdown', function (e) { if (isOpen() && !box.contains(e.target) && e.target !== btn) close(); }, true);
   box.addEventListener('click', function (e) { if (e.target.closest('button') && e.target.closest('button').id !== 'hmSound') setTimeout(close, 60); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) { close(); btn.focus(); } });
-  window.addEventListener('scroll', function () { if (isOpen()) close(); }, { passive: true });
-  window.addEventListener('resize', function () { if (isOpen()) close(); });
+  // A finger tap on a phone can nudge the page by a pixel, and the app's banner
+  // ad resizes the page: closing on those made the menu vanish under the finger,
+  // so the Out tap landed on nothing. Close only on a real scroll; on resize,
+  // just move the menu back under the ☰ button.
+  var openY = 0;
+  window.addEventListener('scroll', function () { if (isOpen() && Math.abs(window.scrollY - openY) > 40) close(); }, { passive: true });
+  window.addEventListener('resize', function () { if (isOpen()) { var r = btn.getBoundingClientRect(); box.style.top = Math.round(r.bottom + 8) + 'px'; } });
   // sound on/off (kq-fx.js loads a moment later)
   var snd = document.getElementById('hmSound');
   function paint() {

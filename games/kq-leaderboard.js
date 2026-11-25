@@ -686,9 +686,12 @@
      natively with Google Play's update screen, so they are skipped here. */
   function oldAndroidApp() { try { return inAndroidApp() && typeof Android.getAppConfig !== "function"; } catch (e) { return false; } }
   function openStore() {
-    var url = "https://play.google.com/store/apps/details?id=com.mk.kidsquiz";
-    try { if (typeof Android.openUrl === "function") { Android.openUrl(url); return; } } catch (e) {}
-    location.href = url;
+    // Old apps open https://play.google.com links INSIDE the WebView (Google then
+    // redirects to intent://, which they can't handle). Android.rateApp() opens our
+    // listing in the Play Store app itself (market://details, the Rate button's bridge).
+    try { if (typeof Android.rateApp === "function") { Android.rateApp(); return; } } catch (e) {}
+    try { if (typeof Android.openUrl === "function") { Android.openUrl("market://details?id=com.mk.kidsquiz"); return; } } catch (e) {}
+    location.href = "market://details?id=com.mk.kidsquiz";
   }
   function webUpdatePopup(c) {
     var u = c && c.update;

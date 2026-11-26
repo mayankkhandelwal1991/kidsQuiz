@@ -110,11 +110,11 @@
   // Load the shared sounds + animations module (sits next to this file).
   if (!window.KQFX) { loadScript(SELF_BASE + "kq-fx.js?v=20261124b").catch(function () {}); }
   // End-of-game animations (win / game over / lose) — on every page, even ones with their own sounds.
-  if (!window.KQEnd) { loadScript(SELF_BASE + "kq-endfx.js").catch(function () {}); }
+  if (!window.KQEnd) { loadScript(SELF_BASE + "kq-endfx.js?v=20261126b").catch(function () {}); }
   // Coins + achievements (switched on/off in the admin console)
-  if (!window.KQCoins) { loadScript(SELF_BASE + "kq-coins.js?v=20261123g").catch(function () {}); }
+  if (!window.KQCoins) { loadScript(SELF_BASE + "kq-coins.js?v=20261126b").catch(function () {}); }
   // Fun zone: owl shop, daily gift, question of the day, learning path, leagues, weekly report
-  if (!window.KQPlay) { loadScript(SELF_BASE + "kq-play.js?v=20261123a").catch(function () {}); }
+  if (!window.KQPlay) { loadScript(SELF_BASE + "kq-play.js?v=20261126b").catch(function () {}); }
   function prettify(id) {
     if (GAME_NAMES[id]) return GAME_NAMES[id];
     return String(id || "").replace(/[_-]+/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });

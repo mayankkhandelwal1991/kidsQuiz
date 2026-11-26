@@ -162,6 +162,7 @@
         child: ch ? (ch.sfx || "main") : null,
         // Children's app: only a first name is ever shown or published, never the full Google name.
         name: (ch && ch.name) || firstOnly(authUser.displayName) || "Player",
+        accountName: authUser.displayName || "",   // the Google account itself (kept in kq_cached_auth)
         photo: ch && ch.sfx ? "" : (authUser.photoURL || ""),
         email: authUser.email || "",
         isGuest: false

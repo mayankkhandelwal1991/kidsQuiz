@@ -126,7 +126,7 @@ function getCachedAuth() {
   try { return JSON.parse(localStorage.getItem('kq_cached_auth') || 'null'); } catch (e) { return null; }
 }
 function setCachedAuth(u) {
-  try { localStorage.setItem('kq_cached_auth', JSON.stringify({ name: (u && u.name) || 'Player', photo: (u && u.photo) || '', uid: (u && u.uid) || '' })); } catch (e) {}
+  try { localStorage.setItem('kq_cached_auth', JSON.stringify({ name: (u && (u.accountName || u.name)) || 'Player', photo: (u && u.photo) || '', uid: (u && u.uid) || '' })); } catch (e) {}
 }
 function clearCachedAuth() {
   try { localStorage.removeItem('kq_cached_auth'); } catch (e) {}

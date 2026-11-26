@@ -17,7 +17,7 @@
   var MAX = 6;
   var AVATARS = ['🦁', '🐼', '🦄', '🐯', '🐰', '🦊', '🐸', '🐵', '🐨', '🐙'];
   // kept for the whole device (never swapped)
-  var DEVICE = /^(kq_muted|kq_adCounter|kq_lastAdTime|kq_guest_session|kq_cached_auth|kq_dev.*|kq_app_config|kq_manifest_.*|kq_rating.*|kq_review_.*|kq_session|kq_profiles|kq_profile_active|kq_profile_data_.*|kq_story_autoplay|kq_lb_range|kq_lb_guests)$/;
+  var DEVICE = /^(kq_muted|kq_adCounter|kq_lastAdTime|kq_guest_session|kq_cached_auth|kq_dev.*|kq_app_config|kq_manifest_.*|kq_rating.*|kq_review_.*|kq_session|kq_profiles|kq_profile_active|kq_profile_data_.*|kq_story_autoplay|kq_lb_range|kq_lb_guests|kq_child_named)$/;
   function ownKey(k) { return !DEVICE.test(k) && k.indexOf(':') < 0 && !/^(firebase|goog|_|ga|google|adsby|__)/i.test(k); }
   function get(k, d) { try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } }
   function set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
@@ -89,7 +89,15 @@
         Object.keys(kids).forEach(function (k) {
           var sfx = k === 'main' ? '' : k, kd = kids[k] || {};
           var have = ev.filter(function (p) { return acctOf(p) === A && (p.sfx || '') === sfx; })[0];
-          if (have) { if (kd.n && have.id !== activeId()) { have.name = kd.n; have.av = kd.av || have.av; have.cls = kd.cls; } return; }
+          if (have) {
+            if (kd.n && kd.n !== have.name) {   // renamed on another phone
+              have.name = kd.n; added = true;
+              if (have.id === activeId()) { try { localStorage.setItem('kq_nick', kd.n); } catch (e) {} } else patchData(have.id, { kq_nick: kd.n });
+            }
+            if (kd.av && kd.av !== have.av) { have.av = kd.av; added = true; }
+            if (have.id !== activeId() && kd.cls != null && kd.cls !== '') have.cls = kd.cls;
+            return;
+          }
           if (hid.indexOf(A + ':' + sfx) >= 0) return;
           ev.push({ id: newId(), acct: A, sfx: sfx, name: kd.n || 'Player', av: kd.av || AVATARS[1], cls: kd.cls }); added = true;
         });
@@ -116,7 +124,9 @@
     if (id === activeId()) { close(); try { sessionStorage.setItem('kq_who_asked', '1'); } catch (e) {} return; }
     var p = all().filter(function (q) { return q.id === id; })[0]; if (!p) return;
     if (!saveCurrentAndClear()) { alert('Not enough space on this phone to switch.'); return; }
-    if (!loadData(id)) { try { localStorage.setItem('kq_nick', p.name || 'Player'); if (p.cls != null && p.cls !== '') localStorage.setItem('kq_last_class', String(p.cls)); } catch (e) {} }
+    var had = loadData(id);
+    // the list holds the latest name (it may have been changed while this child was saved away)
+    try { if (p.name) localStorage.setItem('kq_nick', p.name); if (!had && p.cls != null && p.cls !== '') localStorage.setItem('kq_last_class', String(p.cls)); } catch (e) {}
     try { localStorage.setItem(ACTIVE, id); } catch (e) {}
     done();
   }
@@ -130,6 +140,17 @@
     set(LIST, all().concat([p]));
     try { localStorage.setItem(ACTIVE, p.id); localStorage.setItem('kq_nick', name); localStorage.setItem('kq_last_class', String(cls)); } catch (e) {}
     setTimeout(done, A !== 'guest' ? 700 : 0);   // give the cloud write a moment
+  }
+  // change values inside a saved-away child's data
+  function patchData(id, kv) { var d = get(DATA + id, null); if (!d) return; Object.keys(kv).forEach(function (k) { d[k] = kv[k]; }); set(DATA + id, d); }
+  /** Rename a child (and change picture / class). Scores stay: the player id does not change. */
+  function rename(id, name, av, cls) {
+    var ev = all(), p = ev.filter(function (q) { return q.id === id; })[0]; if (!p) return;
+    p.name = name; if (av) p.av = av; if (cls != null) p.cls = String(cls);
+    set(LIST, ev);
+    if (id === activeId()) { try { localStorage.setItem('kq_nick', name); if (cls != null) localStorage.setItem('kq_last_class', String(cls)); } catch (e) {} }
+    else { var kv = { kq_nick: name }; if (cls != null) kv.kq_last_class = String(cls); patchData(id, kv); }
+    if (acctOf(p) !== 'guest') cloudPut(p);
   }
   function remove(id) {
     if (id === activeId()) return;
@@ -186,7 +207,7 @@
         return '<button type="button" class="kqpf-p' + (p.id === a ? ' on' : '') + '" data-id="' + esc(p.id) + '"><span class="x" data-x="' + esc(p.id) + '" aria-label="Remove">×</span><span class="av">' + emo(p.av || '🦁', 44) + '</span><b>' + esc(p.name || 'Player') + '</b><small>' + esc(clsLbl(p.cls)) + '</small></button>';
       }).join('') +
       (ps.length < MAX ? '<button type="button" class="kqpf-p kqpf-add" id="kqpfAdd"><span class="av" style="background:#fff">' + emo('➕', 36) + '</span><b>Add a child</b><small>New profile</small></button>' : '') +
-      '</div>' + (ps.length > 1 ? '<button class="kqpf-lnk" id="kqpfManage">Grown-ups: remove a profile</button>' : ''), !opts.first);
+      '</div><button class="kqpf-lnk" id="kqpfManage">✏️ Grown-ups: change a name' + (ps.length > 1 ? ' or remove' : '') + '</button>', !opts.first);
     b.querySelectorAll('[data-id]').forEach(function (el) {
       el.onclick = function (e) {
         var xid = e.target && e.target.getAttribute && e.target.getAttribute('data-x');
@@ -195,24 +216,26 @@
           if (p && confirm('Remove ' + p.name + ' from this phone? Their scores stay saved.')) { remove(xid); open(opts); }
           return;
         }
+        if (b.classList.contains('manage')) { childForm(opts, ps.filter(function (q) { return q.id === el.getAttribute('data-id'); })[0]); return; }
         switchTo(el.getAttribute('data-id'));
       };
     });
-    var ad = b.querySelector('#kqpfAdd'); if (ad) ad.onclick = function () { addForm(opts); };
+    var ad = b.querySelector('#kqpfAdd'); if (ad) ad.onclick = function () { childForm(opts); };
     var mg = b.querySelector('#kqpfManage'); if (mg) mg.onclick = function () {
-      var go = function () { b.classList.add('manage'); mg.textContent = 'Tap × to remove. Tap a child to play.'; };
+      var go = function () { b.classList.add('manage'); mg.textContent = ps.length > 1 ? 'Tap a child to change the name · × to remove' : 'Tap the child to change the name'; };
       if (typeof window.kqParentGate === 'function') window.kqParentGate(go); else go();
     };
     // Google: bring in brothers/sisters added on another phone
     if (g && !opts.synced) cloudSync(function (added) { if (added && box) open(Object.assign({}, opts, { synced: true })); });
   }
-  function addForm(opts) {
-    var av = AVATARS[(list().length) % AVATARS.length], cls = 0;
-    var b = shell('<div style="font-size:40px">🧒</div><h2>Add a child</h2><p>Just a first name or a nickname</p>' +
-      '<input id="kqpfName" maxlength="12" placeholder="Name" autocomplete="off">' + '<div class="kqpf-err" id="kqpfErr"></div>' +
+  // add a child, or (with p) change a child's name, picture and class
+  function childForm(opts, p) {
+    var av = p ? (p.av || AVATARS[0]) : AVATARS[(list().length) % AVATARS.length], cls = p ? (parseInt(p.cls, 10) || 0) : 0;
+    var b = shell('<div style="font-size:40px">' + (p ? '✏️' : '🧒') + '</div><h2>' + (opts.ask ? 'What is the child’s name?' : p ? 'Change name' : 'Add a child') + '</h2><p>' + (opts.ask ? 'This Google account shows “' + esc(p.name) + '”. Type the name of the child who plays' : p ? 'Scores, stars and coins stay the same' : 'Just a first name or a nickname') + '</p>' +
+      '<input id="kqpfName" maxlength="12" placeholder="Name" autocomplete="off" value="' + esc(p ? p.name || '' : '') + '">' + '<div class="kqpf-err" id="kqpfErr"></div>' +
       '<p style="margin:4px 0 0">Pick a picture</p><div class="kqpf-row" id="kqpfAv">' + AVATARS.map(function (e) { return '<button type="button" data-av="' + e + '"' + (e === av ? ' class="on"' : '') + '>' + emo(e, 34) + '</button>'; }).join('') + '</div>' +
       '<p style="margin:4px 0 0">Class</p><div class="kqpf-row kqpf-cls" id="kqpfCls">' + [0, -1, 1, 2, 3, 4, 5].map(function (c) { return '<button type="button" data-c="' + c + '"' + (c === cls ? ' class="on"' : '') + '>' + clsLbl(c) + '</button>'; }).join('') + '</div>' +
-      '<button class="kqpf-go" id="kqpfSave">Let’s play! 🚀</button><button class="kqpf-lnk" id="kqpfBack">‹ Back</button>', true);
+      '<button class="kqpf-go" id="kqpfSave">' + (p ? 'Save ✅' : 'Let’s play! 🚀') + '</button><button class="kqpf-lnk" id="kqpfBack">‹ Back</button>', true);
     b.querySelectorAll('[data-av]').forEach(function (x) { x.onclick = function () { av = x.getAttribute('data-av'); b.querySelectorAll('[data-av]').forEach(function (y) { y.classList.toggle('on', y === x); }); }; });
     b.querySelectorAll('[data-c]').forEach(function (x) { x.onclick = function () { cls = +x.getAttribute('data-c'); b.querySelectorAll('[data-c]').forEach(function (y) { y.classList.toggle('on', y === x); }); }; });
     b.querySelector('#kqpfBack').onclick = function () { open(opts); };
@@ -220,6 +243,7 @@
       var v = String(b.querySelector('#kqpfName').value || '').replace(/\s+/g, ' ').trim(), err = b.querySelector('#kqpfErr');
       if (v.length < 2) { err.textContent = 'Please type at least 2 letters'; return; }
       if (/[0-9@\s]/.test(v) || /[^\p{L}\p{M}'-]/u.test(v)) { err.textContent = 'Only a first name or nickname, letters only'; return; }
+      if (p) { rename(p.id, v.slice(0, 12), av, cls); if (opts.reload || p.id === activeId()) { close(); location.reload(); } else open(opts); return; }
       add(v.slice(0, 12), av, cls);
     };
     setTimeout(function () { try { b.querySelector('#kqpfName').focus(); } catch (e) {} }, 60);
@@ -232,5 +256,13 @@
     if (isGoogle()) cloudSync(go); else go();
   }
 
-  window.KQProfiles = { list: list, active: active, ensure: ensure, switchTo: switchTo, open: open, askOnStart: askOnStart, isGoogle: isGoogle, sync: cloudSync };
+  /** Open the change-name form for a child (default: the one playing now). */
+  function edit(id, ask) { var ps = ensure(), a = id || activeId(), p = ps.filter(function (q) { return q.id === a; })[0]; if (p) childForm({ reload: true, ask: !!ask }, p); }
+  /** Google: the first child is named after the account owner. Ask once for the child's real name. */
+  function askChildName() {
+    if (!isGoogle() || acct() === null || get('kq_child_named', false)) return false;
+    var p = active(); if (!p || p.sfx || String(p.name || '').toLowerCase() !== gName().toLowerCase()) return false;
+    set('kq_child_named', true); edit(p.id, true); return true;
+  }
+  window.KQProfiles = { list: list, active: active, ensure: ensure, switchTo: switchTo, open: open, edit: edit, rename: rename, askChildName: askChildName, askOnStart: askOnStart, isGoogle: isGoogle, sync: cloudSync };
 })();

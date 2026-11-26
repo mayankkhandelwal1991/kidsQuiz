@@ -392,9 +392,9 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 </div>
 
 <script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
-<script src="profiles.js?v=20261126b" charset="utf-8"></script>
+<script src="profiles.js?v=20261126c" charset="utf-8"></script>
 <script src="guide-owl.js?v=20261126b" charset="utf-8"></script>
-<script src="quiz-shared.js?v=20261126c" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261126d" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
 <script src="quiz/kids-engine.js?v=20261126a" charset="utf-8"></script>
 <script>
@@ -847,7 +847,8 @@ function displayName() {
   if (window.isGuestUser) return kqGetNick() || 'Guest';
   // Google account with child profiles: the child playing now
   try { const p = window.KQProfiles && KQProfiles.active(); if (p && p.acct && p.acct !== 'guest' && p.name) return p.name; } catch (e) {}
-  return currentUser;
+  // account not ready yet: this child's own name, else only the first name of the account
+  return kqGetNick() || String(currentUser || 'Player').trim().split(/\s+/)[0];
 }
 function editGuestName() {
   if (!window.isGuestUser) return;
@@ -856,13 +857,13 @@ function editGuestName() {
 function renderHomeProfile() {
   const nameEl = document.getElementById('currentUserDisplay');
   nameEl.textContent = displayName();
-  if (window.isGuestUser) {
+  {
     nameEl.innerHTML = '';
     nameEl.appendChild(document.createTextNode(displayName() + ' '));
     const pen = document.createElement('button');
     pen.type = 'button'; pen.className = 'pf-edit'; pen.textContent = '✏️';
     pen.setAttribute('aria-label', 'Change your name');
-    pen.onclick = editGuestName;
+    pen.onclick = function () { if (window.KQProfiles && KQProfiles.edit && (!window.isGuestUser || KQProfiles.list().length)) KQProfiles.edit(); else editGuestName(); };
     nameEl.appendChild(pen);
   }
   var _hu = document.getElementById('historyUserDisplay'); if (_hu) _hu.textContent = displayName();
@@ -1316,10 +1317,10 @@ renderTeacherTasks();
 if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   setTimeout(function () { kqAskName().then(function () { renderHomeProfile(); if (window.KQProfiles) KQProfiles.ensure(); }); }, 400);
 } else if (window.KQProfiles) {
-  setTimeout(function () { KQProfiles.askOnStart(); }, 300);
+  setTimeout(function () { if (!(KQProfiles.askChildName && KQProfiles.askChildName())) KQProfiles.askOnStart(); }, 300);
 }
 </script>
-<script src="games/kq-leaderboard.js?v=20261126f"></script>
+<script src="games/kq-leaderboard.js?v=20261126g"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>try { KQWebAds.rails(); } catch (e) {}</script>
 <script>

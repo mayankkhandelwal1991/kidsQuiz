@@ -102,6 +102,13 @@
   .auto i { display: block; height: 100%; width: 0; background: #7c3aed; border-radius: 3px; }
   .auto i.run { width: 100%; transition: width 1.6s linear; }
   .chips.gen { padding-top: 0; }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .tab { border: none; border-radius: 18px; padding: 10px 6px; background: #fff; font-weight: 800; font-size: 16px; color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 0 rgba(0,0,0,.08); }
+  .tab.on { background: linear-gradient(135deg, #f97316, #ec4899); color: #fff; box-shadow: 0 4px 0 #be185d; }
+  .txt.lines span { display: block; padding: 2px 6px; }
+  .read { color: #16a34a; font-weight: 800; font-size: 13px; }
+  .big.skip { background: #94a3b8; }
+  .qskip { display: block; margin: 14px auto 0; border: none; background: none; color: #6b7280; font-weight: 800; font-size: 15px; text-decoration: underline; }
   .chip.g { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; padding: 6px 12px; }
   .chip.g.on { background: #f59e0b; box-shadow: 0 3px 0 #b45309; }
   .q { background: #fff; border-radius: 26px; padding: 16px; box-shadow: 0 6px 18px rgba(76,29,149,.08); animation: pop .35s ease-out; }
@@ -127,7 +134,7 @@
 <div class="wrap" id="app"></div>
 
 <script src="../parent-gate.js?v=20261124a"></script>
-<script src="../quiz-shared.js?v=20261124a"></script>
+<script src="../quiz-shared.js?v=20261126a"></script>
 <script>
 window.isGuestUser = false;
 (function () {
@@ -165,7 +172,7 @@ window.KQFX_NO_MUTE = true;
   const cp = (e) => Array.from(String(e)).map((c) => c.codePointAt(0)).filter((c) => c !== 0xfe0f).map((c) => c.toString(16)).join('-');
   const emo = (e, px) => '<img class="e" src="../images/emoji/' + cp(e) + '.svg" alt="" width="' + px + '" height="' + px + '" onerror="this.replaceWith(document.createTextNode(\'' + esc(e) + '\'))">';
   const isPic = (s) => !/[A-Za-z]/.test(s);
-  const GENRES = { animals: ['🐾', 'Animals'], moral: ['💡', 'Moral'], folk: ['🪔', 'Indian tales'], science: ['🔬', 'Science'], bedtime: ['🌙', 'Bedtime'], adventure: ['🚀', 'Adventure'], funny: ['😂', 'Funny'], habits: ['🧼', 'Good habits'] };
+  const GENRES = { rhyme: ['🎵', 'Rhymes'], song: ['🎤', 'Learning songs'], hindi: ['🇮🇳', 'Hindi'], animals: ['🐾', 'Animals'], moral: ['💡', 'Moral'], folk: ['🪔', 'Indian tales'], science: ['🔬', 'Science'], bedtime: ['🌙', 'Bedtime'], adventure: ['🚀', 'Adventure'], funny: ['😂', 'Funny'], habits: ['🧼', 'Good habits'] };
   let curGenre = 'all';
   function childName() {
     let n = window.isGuestUser ? (typeof kqGetNick === 'function' ? kqGetNick() : '') : (currentUser || '');
@@ -182,13 +189,14 @@ window.KQFX_NO_MUTE = true;
   /* ---------- speech: one sentence at a time so it can be highlighted ---------- */
   let speechToken = 0;
   function stopSpeech() { speechToken++; try { speechSynthesis.cancel(); } catch (e) {} try { if (window.Android && Android.stopSpeaking) Android.stopSpeaking(); } catch (e) {} }
+  let LANG = 'en-US', PITCH = 1.1;
   function sayOne(text, rate, done) {
     const words = text.split(/\s+/).length, est = 700 + words * 430 / rate;
     let finished = false; const fin = () => { if (finished) return; finished = true; done(); };
     if (muted()) return setTimeout(fin, est);
-    try { if (typeof Android !== 'undefined' && Android && typeof Android.speak === 'function') { Android.speak(text, 'en-US'); return setTimeout(fin, est); } } catch (e) {}
+    try { if (typeof Android !== 'undefined' && Android && typeof Android.speak === 'function') { Android.speak(text, LANG); return setTimeout(fin, est); } } catch (e) {}
     try {
-      const u = new SpeechSynthesisUtterance(text); u.rate = rate; u.pitch = 1.1; u.lang = 'en-US';
+      const u = new SpeechSynthesisUtterance(text); u.rate = rate; u.pitch = PITCH; u.lang = LANG;
       u.onend = fin; u.onerror = fin; speechSynthesis.speak(u);
       setTimeout(fin, est * 1.8 + 1500);
     } catch (e) { setTimeout(fin, est); }
@@ -228,23 +236,26 @@ window.KQFX_NO_MUTE = true;
   }
 
   /* ---------- data ---------- */
-  let STORIES = null;
+  let STORIES = null, RHYMES = [];
   function load() {
     if (STORIES) return Promise.resolve(STORIES);
-    return fetch('../data/stories.json?v=20261126a', { cache: 'no-cache' }).then((r) => r.json()).then((j) => (STORIES = j.stories || []));
+    const rh = fetch('../data/rhymes.json?v=20261126a', { cache: 'no-cache' }).then((r) => r.json()).then((j) => (RHYMES = j.rhymes || [])).catch(() => {});
+    return Promise.all([fetch('../data/stories.json?v=20261126b', { cache: 'no-cache' }).then((r) => r.json()).then((j) => (STORIES = j.stories || [])), rh]);
   }
   const done = () => lsGet('kq_story_done', {});
 
   /* ---------- list ---------- */
-  function showList(level) {
-    stopSpeech();
+  function showList(level, kind) {
+    stopSpeech(); music(false);
+    kind = kind === 'r' ? 'r' : 'c';
     level = LEVELS.indexOf(level) >= 0 ? level : myLevel();
-    const all = STORIES.filter((s) => s.level === level), d = done();
+    const all = (kind === 'r' ? RHYMES : STORIES).filter((s) => s.level === level), d = done();
     const gs = Object.keys(GENRES).filter((g) => all.some((s) => (s.genres || []).indexOf(g) >= 0));
     if (curGenre !== 'all' && gs.indexOf(curGenre) < 0) curGenre = 'all';
     const list = curGenre === 'all' ? all : all.filter((s) => (s.genres || []).indexOf(curGenre) >= 0);
     let h = '<div class="bar"><button class="rb" id="home" aria-label="Home">🏠</button><h1>' + emo('📚', 30) + ' Story Time</h1><button class="rb" id="snd" aria-label="Sound on/off">' + (muted() ? '🔇' : '🔊') + '</button></div>' +
-      '<div class="hello">' + owlSvg() + '<div><h2>Hi ' + esc(childName()) + '! 👋</h2><p>Pick a story. I will read it to you!</p></div></div>' +
+      '<div class="hello">' + owlSvg() + '<div><h2>Hi ' + esc(childName()) + '! 👋</h2><p>' + (kind === 'r' ? 'Pick a rhyme. Let’s sing along!' : 'Pick a story. I will read it to you!') + '</p></div></div>' +
+      '<div class="tabs"><button class="tab' + (kind === 'c' ? ' on' : '') + '" data-k="c">' + emo('📖', 24) + ' Stories</button><button class="tab' + (kind === 'r' ? ' on' : '') + '" data-k="r">' + emo('🎵', 24) + ' Rhymes &amp; Songs</button></div>' +
       '<div class="chips">' + LEVELS.map((l) => '<button class="chip' + (l === level ? ' on' : '') + '" data-lv="' + l + '">' + LBL(l) + '</button>').join('') + '</div>' +
       '<div class="chips gen">' + ['all'].concat(gs).map((g) => '<button class="chip g' + (g === curGenre ? ' on' : '') + '" data-g="' + g + '">' + (g === 'all' ? emo('📚', 20) + ' All' : emo(GENRES[g][0], 20) + ' ' + GENRES[g][1]) + '</button>').join('') + '</div><div class="list">';
     list.forEach((s, i) => {
@@ -252,13 +263,14 @@ window.KQFX_NO_MUTE = true;
       h += '<button class="card" data-id="' + esc(s.id) + '" style="animation-delay:' + i * 0.06 + 's">' +
         (st == null ? '<span class="tag">NEW</span>' : '') + (s.personal ? '<span class="tag me">⭐ ' + esc(childName()) + '</span>' : '') +
         sceneHtml(s.pages[0].bg || s.bg, s.pages[0].actors) +
-        '<span class="info"><b>' + esc(fill(s.title)) + '</b><small>' + (s.genres || []).filter((g) => GENRES[g]).map((g) => GENRES[g][0] + ' ' + GENRES[g][1]).join(' · ') + ' · ' + s.pages.length + ' pages</small> ' +
-        (st != null ? '<span class="stars">' + '★★★'.slice(0, st) + '☆☆☆'.slice(0, 3 - st) + '</span>' : '') + '</span></button>';
+        '<span class="info"><b>' + esc(fill(s.title)) + '</b><small>' + (s.genres || []).filter((g) => GENRES[g]).map((g) => GENRES[g][0] + ' ' + GENRES[g][1]).join(' · ') + ' · ' + s.pages.length + (s.kind === 'rhyme' ? ' verses' : ' pages') + '</small> ' +
+        (st > 0 ? '<span class="stars">' + '★★★'.slice(0, st) + '☆☆☆'.slice(0, 3 - st) + '</span>' : st === 0 ? '<span class="read">✓ Done</span>' : '') + '</span></button>';
     });
-    h += '</div><div class="soon" style="margin-top:14px">' + emo('✨', 24) + ' More stories are coming soon!</div>';
+    h += '</div><div class="soon" style="margin-top:14px">' + emo('✨', 24) + ' More ' + (kind === 'r' ? 'rhymes' : 'stories') + ' are coming soon!</div>';
     $app.innerHTML = h;
-    $app.querySelectorAll('[data-lv]').forEach((b) => b.onclick = () => { tap(); curGenre = 'all'; try { localStorage.setItem('kq_last_class', b.dataset.lv); } catch (e) {} location.hash = '#/c/' + b.dataset.lv; });
-    $app.querySelectorAll('[data-g]').forEach((b) => b.onclick = () => { tap(); curGenre = b.dataset.g; showList(level); });
+    $app.querySelectorAll('[data-lv]').forEach((b) => b.onclick = () => { tap(); curGenre = 'all'; try { localStorage.setItem('kq_last_class', b.dataset.lv); } catch (e) {} location.hash = '#/' + kind + '/' + b.dataset.lv; });
+    $app.querySelectorAll('[data-g]').forEach((b) => b.onclick = () => { tap(); curGenre = b.dataset.g; showList(level, kind); });
+    $app.querySelectorAll('[data-k]').forEach((b) => b.onclick = () => { tap(); curGenre = 'all'; location.hash = '#/' + b.dataset.k + '/' + level; });
     $app.querySelectorAll('[data-id]').forEach((b) => b.onclick = () => { tap(); location.hash = '#/s/' + b.dataset.id; });
     $app.querySelector('#home').onclick = () => { stopSpeech(); location.href = '../quiz-home.html'; };
     $app.querySelectorAll('.chips').forEach((row) => { const on = row.querySelector('.chip.on'); if (on) row.scrollLeft = on.offsetLeft - 40; });
@@ -272,26 +284,28 @@ window.KQFX_NO_MUTE = true;
   /* ---------- reader ---------- */
   let R = null;
   function openStory(id) {
-    const s = STORIES.find((x) => x.id === id);
+    const s = STORIES.find((x) => x.id === id) || RHYMES.find((x) => x.id === id);
     if (!s) { location.hash = '#/c/' + myLevel(); return; }
-    R = { s, page: 0, auto: lsGet('kq_story_autoplay', true) !== false, tok: 0, rate: s.level <= 0 ? 0.82 : s.level <= 2 ? 0.9 : 0.97 };
+    const rhyme = s.kind === 'rhyme';
+    LANG = s.lang || 'en-US'; PITCH = rhyme ? 1.25 : 1.1;
+    R = { s, rhyme, page: 0, auto: lsGet('kq_story_autoplay', true) !== false, tok: 0, rate: rhyme ? 0.85 : s.level <= 0 ? 0.82 : s.level <= 2 ? 0.9 : 0.97 };
     renderPage();
   }
   function shell(inner) {
     return '<div class="bar"><button class="rb" id="back" aria-label="Back to stories">‹</button><h1>' + esc(fill(R.s.title)) + '</h1><button class="rb" id="snd" aria-label="Sound on/off">' + (muted() ? '🔇' : '🔊') + '</button></div>' + inner;
   }
   function bindShell() {
-    $app.querySelector('#back').onclick = () => { stopSpeech(); tap(); location.hash = '#/c/' + R.s.level; };
+    $app.querySelector('#back').onclick = () => { stopSpeech(); music(false); tap(); location.hash = '#/' + (R.rhyme ? 'r' : 'c') + '/' + R.s.level; };
     bindSound();
   }
-  function sentences(t) { return (t.match(/[^.!?…]+[.!?…]+["”]?|[^.!?…]+$/g) || [t]).map((x) => x.trim()).filter(Boolean); }
+  function sentences(t) { if (t.indexOf('\n') >= 0) return t.split('\n').map((x) => x.trim()).filter(Boolean); return (t.match(/[^.!?…]+[.!?…]+["”]?|[^.!?…]+$/g) || [t]).map((x) => x.trim()).filter(Boolean); }
   function renderPage() {
     stopSpeech();
     const s = R.s, p = s.pages[R.page], n = s.pages.length;
     const txt = sentences(fill(p.text));
     $app.innerHTML = shell('<div class="reader"><div class="dots">' + s.pages.map((_, k) => '<i class="' + (k === R.page ? 'on' : k < R.page ? 'done' : '') + '"></i>').join('') + '</div>' +
       sceneHtml(p.bg || s.bg, p.actors) +
-      '<div><div class="txt" style="--fs:' + FONT[String(s.level)] + 'px">' + txt.map((t) => '<span>' + esc(t) + '</span>').join(' ') + '</div>' +
+      '<div><div class="txt' + (R.rhyme ? ' lines' : '') + '" style="--fs:' + FONT[String(s.level)] + 'px">' + txt.map((t) => '<span>' + esc(t) + '</span>').join(R.rhyme ? '' : ' ') + '</div>' +
       '<div class="ctl"><button class="cb prev" id="prev" aria-label="Previous page"' + (R.page ? '' : ' disabled') + '>◀</button>' +
       '<button class="cb say' + (R.auto ? ' playing' : '') + '" id="say">' + (R.auto ? '⏸ Pause' : '▶ Play') + '</button>' +
       '<button class="cb next" id="next" aria-label="Next page">' + (R.page === n - 1 ? '✓' : '▶') + '</button></div>' +
@@ -299,18 +313,34 @@ window.KQFX_NO_MUTE = true;
     bindShell();
     const spans = [...$app.querySelectorAll('.txt span')];
     const tok = ++R.tok;
-    const goNext = () => { if (R.page < n - 1) { R.page++; renderPage(); } else startQuiz(); };
+    const goNext = () => { if (R.page < n - 1) { R.page++; renderPage(); } else theEnd(); };
+    music(R.auto && R.rhyme);
     // Auto-play: read the page, wait a moment, turn the page; after the last page, the questions.
     const play = () => readSentences(spans, R.rate, () => {
       if (!R.auto || tok !== R.tok) return;
       const bar = document.getElementById('autoBar'); if (bar) bar.classList.add('run');
       setTimeout(() => { if (R.auto && tok === R.tok) goNext(); }, 1600);
     });
-    $app.querySelector('#say').onclick = () => { tap(); R.auto = !R.auto; lsSet('kq_story_autoplay', R.auto); if (R.auto) renderPage(); else { stopSpeech(); R.tok++; renderPage(); } };
+    $app.querySelector('#say').onclick = () => { tap(); R.auto = !R.auto; lsSet('kq_story_autoplay', R.auto); if (!R.auto) { stopSpeech(); R.tok++; } renderPage(); };
     $app.querySelector('#prev').onclick = () => { if (R.page) { tap(); R.page--; renderPage(); } };
     $app.querySelector('#next').onclick = () => { tap(); goNext(); };
     spans.forEach((sp, k) => sp.onclick = () => { if (!R.auto) readSentences([sp], R.rate); });
     if (R.auto) setTimeout(() => { if (tok === R.tok) play(); }, 600);
+  }
+
+  /* ---------- the end: answer questions about the story, or skip ---------- */
+  function theEnd() {
+    stopSpeech(); music(false);
+    if (!R.s.quiz || !R.s.quiz.length) return finish(true);
+    $app.innerHTML = shell('<div class="end">' + emo(R.rhyme ? '🎵' : '📖', 72) + '<h2>' + (R.rhyme ? 'Well sung' : 'The End') + ', ' + esc(childName()) + '!</h2>' +
+      '<p style="font-weight:700;margin:6px 0 4px">Can you answer ' + R.s.quiz.length + ' questions about the ' + (R.rhyme ? 'rhyme' : 'story') + '?</p>' +
+      '<button class="big go" id="quizGo">' + emo('🦉', 26) + ' Yes, ask me!</button><button class="big skip" id="quizSkip">Skip questions ›</button>' +
+      '<button class="big alt" id="again">↺ ' + (R.rhyme ? 'Sing' : 'Read') + ' again</button></div>');
+    bindShell();
+    sayOne((R.rhyme ? 'Well sung, ' : 'The end! Well done, ') + childName() + '! Can you answer some questions?', 0.95, () => {});
+    $app.querySelector('#quizGo').onclick = () => { tap(); startQuiz(); };
+    $app.querySelector('#quizSkip').onclick = () => { tap(); finish(true); };
+    $app.querySelector('#again').onclick = () => { tap(); R.page = 0; renderPage(); };
   }
 
   /* ---------- quiz ---------- */
@@ -321,8 +351,10 @@ window.KQFX_NO_MUTE = true;
     const opts = q.o.slice().sort(() => Math.random() - 0.5);
     $app.innerHTML = shell('<div class="dots">' + R.s.quiz.map((_, k) => '<i class="' + (k === R.qi ? 'on' : k < R.qi ? 'done' : '') + '"></i>').join('') + '</div>' +
       '<div class="q"><h3>' + emo('🦉', 34) + ' ' + esc(fill(q.q)) + '</h3><div class="opts' + (pics ? ' pics n' + opts.length : '') + '">' +
-      opts.map((o, k) => '<button class="op" data-o="' + esc(o) + '" style="--c:' + OPT_COLORS[k % 4] + '">' + (pics ? emo(o, 62) : esc(fill(o))) + '</button>').join('') + '</div></div>');
+      opts.map((o, k) => '<button class="op" data-o="' + esc(o) + '" style="--c:' + OPT_COLORS[k % 4] + '">' + (pics ? emo(o, 62) : esc(fill(o))) + '</button>').join('') + '</div>' +
+      '<button class="qskip" id="qskip">Skip questions ›</button></div>');
     bindShell();
+    $app.querySelector('#qskip').onclick = () => { tap(); stopSpeech(); finish(true); };
     let locked = false;
     $app.querySelectorAll('.op').forEach((b) => b.onclick = () => {
       if (locked) return; locked = true;
@@ -337,25 +369,35 @@ window.KQFX_NO_MUTE = true;
     });
     setTimeout(() => sayOne(fill(q.q) + (pics ? '' : ' ' + opts.map(fill).join('? ') + '?'), R.rate, () => {}), 300);
   }
-  function finish() {
-    const s = R.s, stars = R.right, d = done();
+  function finish(skipped) {
+    music(false);
+    const s = R.s, stars = skipped ? 0 : R.right, d = done();
     d[s.id] = Math.max(d[s.id] || 0, stars); lsSet('kq_story_done', d);
     const plan = lsGet('kq_plan', {}); const today = new Date().toDateString();
     if (plan.d !== today) { plan.d = today; plan.done = {}; } plan.done.story = 1; lsSet('kq_plan', plan);
     try { if (stars && window.KQCoins) KQCoins.earn('quiz', 'story_' + s.id); } catch (e) {}
     try { if (stars === 3 && window.KQFX && KQFX.celebrate) KQFX.celebrate(); } catch (e) {}
     const last = s.pages[s.pages.length - 1].text;
-    const title = stars === 3 ? 'Super reader, ' + childName() + '!' : stars ? 'Well done, ' + childName() + '!' : 'Good try, ' + childName() + '!';
-    $app.innerHTML = shell('<div class="end">' + emo(stars === 3 ? '🏆' : '📚', 72) + '<h2>' + esc(title) + '</h2><div class="stars">' + '★★★'.slice(0, stars) + '☆☆☆'.slice(0, 3 - stars) + '</div>' +
-      '<p style="font-weight:700;margin:4px 0">' + stars + ' of ' + s.quiz.length + ' answers right</p>' +
-      (s.level >= 1 ? '<div class="moral">' + emo('💡', 22) + ' ' + esc(fill(last)) + '</div>' : '') +
-      '<button class="big go" id="more">' + emo('📚', 26) + ' More stories</button><button class="big alt" id="again">↺ Read again</button></div>');
+    const nm = childName();
+    const title = skipped ? (R.rhyme ? 'Well sung, ' : 'Well read, ') + nm + '!' : stars === 3 ? 'Super ' + (R.rhyme ? 'singer' : 'reader') + ', ' + nm + '!' : stars ? 'Well done, ' + nm + '!' : 'Good try, ' + nm + '!';
+    $app.innerHTML = shell('<div class="end">' + emo(!skipped && stars === 3 ? '🏆' : R.rhyme ? '🎵' : '📚', 72) + '<h2>' + esc(title) + '</h2>' +
+      (skipped ? '' : '<div class="stars">' + '★★★'.slice(0, stars) + '☆☆☆'.slice(0, 3 - stars) + '</div><p style="font-weight:700;margin:4px 0">' + stars + ' of ' + s.quiz.length + ' answers right</p>') +
+      (s.level >= 1 && !R.rhyme ? '<div class="moral">' + emo('💡', 22) + ' ' + esc(fill(last)) + '</div>' : '') +
+      '<button class="big go" id="more">' + emo(R.rhyme ? '🎵' : '📚', 26) + ' More ' + (R.rhyme ? 'rhymes' : 'stories') + '</button><button class="big alt" id="again">↺ ' + (R.rhyme ? 'Sing' : 'Read') + ' again</button></div>');
     bindShell();
-    sayOne(title + ' You got ' + stars + ' out of ' + s.quiz.length + '.', 0.95, () => {});
-    $app.querySelector('#more').onclick = () => { tap(); location.hash = '#/c/' + s.level; };
+    sayOne(skipped ? title : title + ' You got ' + stars + ' out of ' + s.quiz.length + '.', 0.95, () => {});
+    $app.querySelector('#more').onclick = () => { tap(); location.hash = '#/' + (R.rhyme ? 'r' : 'c') + '/' + s.level; };
     $app.querySelector('#again').onclick = () => { tap(); R.page = 0; renderPage(); };
   }
 
+  /* soft background music while a rhyme plays */
+  let bgm = null;
+  function music(on) {
+    try {
+      if (on && !muted()) { if (!bgm) { bgm = new Audio('../games/sounds/bgm-loop.mp3'); bgm.loop = true; bgm.volume = 0.12; } const p = bgm.play(); if (p && p.catch) p.catch(() => {}); }
+      else if (bgm) bgm.pause();
+    } catch (e) {}
+  }
   function owlSvg() {
     return '<svg class="owl" viewBox="0 0 120 120" aria-hidden="true"><path d="M30 30 L40 12 L50 30Z" fill="#7c3aed"/><path d="M70 30 L80 12 L90 30Z" fill="#7c3aed"/><ellipse cx="60" cy="70" rx="42" ry="44" fill="#8b5cf6"/><ellipse cx="60" cy="82" rx="26" ry="28" fill="#ede9fe"/><circle cx="44" cy="50" r="17" fill="#fff"/><circle cx="76" cy="50" r="17" fill="#fff"/><circle cx="46" cy="51" r="8" fill="#1e1b4b"/><circle cx="74" cy="51" r="8" fill="#1e1b4b"/><path d="M54 62 L66 62 L60 72Z" fill="#f59e0b"/><rect x="34" y="92" width="52" height="20" rx="4" fill="#f472b6"/><rect x="58" y="92" width="4" height="20" fill="#be185d"/></svg>';
   }
@@ -364,15 +406,17 @@ window.KQFX_NO_MUTE = true;
     const parts = (location.hash || '').replace(/^#\/?/, '').split('/').filter(Boolean);
     window.scrollTo(0, 0);
     if (parts[0] === 's' && parts[1]) return openStory(decodeURIComponent(parts[1]));
-    if (parts[0] === 'c' && parts[1] != null) return showList(parseInt(parts[1], 10));
+    if ((parts[0] === 'c' || parts[0] === 'r') && parts[1] != null) return showList(parseInt(parts[1], 10), parts[0]);
+    if (parts[0] === 'r') return showList(myLevel(), 'r');
     showList(myLevel());
   }
   window.addEventListener('hashchange', route);
-  window.addEventListener('pagehide', stopSpeech);
+  window.addEventListener('pagehide', () => { stopSpeech(); music(false); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { stopSpeech(); music(false); } });
   load().then(route).catch(() => { $app.innerHTML = '<div class="soon" style="margin-top:40px">' + emo('📡', 40) + '<br>Stories could not load. Check the internet and try again.</div>'; });
 })();
 </script>
-<script src="../games/kq-leaderboard.js?v=20261125b"></script>
+<script src="../games/kq-leaderboard.js?v=20261126a"></script>
 <script src="../web-ads.js?v=20261123a"></script>
 </body>
 </html>

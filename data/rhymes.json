@@ -1,0 +1,2246 @@
+{
+  "version": 1,
+  "about": "Rhymes & songs. Same format as stories.json. lang = TTS language (hi-IN for Hindi). original = written for this app; others are traditional / public domain. Lines are split by \\n.",
+  "rhymes": [
+    {
+      "id": "twinkle",
+      "level": 0,
+      "kind": "rhyme",
+      "title": "Twinkle, Twinkle, Little Star",
+      "cover": "⭐",
+      "bg": "night",
+      "genres": [
+        "rhyme"
+      ],
+      "pages": [
+        {
+          "text": "Twinkle, twinkle, little star,\nHow I wonder what you are!",
+          "actors": [
+            [
+              "⭐",
+              50,
+              60,
+              26,
+              "spin"
+            ],
+            [
+              "🌙",
+              82,
+              26,
+              12,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Up above the world so high,\nLike a diamond in the sky.",
+          "actors": [
+            [
+              "💎",
+              50,
+              56,
+              20,
+              "grow"
+            ],
+            [
+              "⭐",
+              20,
+              30,
+              8,
+              "spin"
+            ],
+            [
+              "⭐",
+              80,
+              40,
+              8,
+              "spin"
+            ]
+          ]
+        },
+        {
+          "text": "Twinkle, twinkle, little star,\nHow I wonder what you are!",
+          "actors": [
+            [
+              "⭐",
+              50,
+              60,
+              26,
+              "spin"
+            ],
+            [
+              "🧒",
+              50,
+              96,
+              18,
+              "bob"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What twinkles in the sky?",
+          "a": "⭐",
+          "o": [
+            "⭐",
+            "🍎",
+            "🚗"
+          ]
+        },
+        {
+          "q": "When do we see stars?",
+          "a": "🌙",
+          "o": [
+            "🌙",
+            "🌞",
+            "🌈"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "baa_baa",
+      "level": 0,
+      "kind": "rhyme",
+      "title": "Baa, Baa, Black Sheep",
+      "cover": "🐑",
+      "bg": "meadow",
+      "genres": [
+        "rhyme",
+        "animals"
+      ],
+      "pages": [
+        {
+          "text": "Baa, baa, black sheep,\nHave you any wool?",
+          "actors": [
+            [
+              "🐑",
+              50,
+              88,
+              30,
+              "bob"
+            ],
+            [
+              "❓",
+              72,
+              40,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Yes sir, yes sir,\nThree bags full!",
+          "actors": [
+            [
+              "🐑",
+              30,
+              88,
+              24,
+              "hop"
+            ],
+            [
+              "🛍️",
+              60,
+              88,
+              12,
+              "bob"
+            ],
+            [
+              "🛍️",
+              72,
+              88,
+              12,
+              "bob"
+            ],
+            [
+              "🛍️",
+              84,
+              88,
+              12,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "One for the master, one for the dame,\nAnd one for the little boy who lives down the lane.",
+          "actors": [
+            [
+              "👨",
+              24,
+              88,
+              18,
+              "bob"
+            ],
+            [
+              "👩",
+              50,
+              88,
+              18,
+              "bob"
+            ],
+            [
+              "👦",
+              76,
+              88,
+              16,
+              "hop"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Who has the wool?",
+          "a": "🐑",
+          "o": [
+            "🐑",
+            "🐶",
+            "🐟"
+          ]
+        },
+        {
+          "q": "How many bags?",
+          "a": "3️⃣",
+          "o": [
+            "3️⃣",
+            "5️⃣",
+            "8️⃣"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "machli",
+      "level": 0,
+      "kind": "rhyme",
+      "title": "मछली जल की रानी है (Machli Jal Ki Rani)",
+      "cover": "🐟",
+      "bg": "river",
+      "genres": [
+        "rhyme",
+        "hindi",
+        "animals"
+      ],
+      "lang": "hi-IN",
+      "pages": [
+        {
+          "text": "मछली जल की रानी है,\nजीवन उसका पानी है।",
+          "actors": [
+            [
+              "🐟",
+              50,
+              92,
+              22,
+              "walk"
+            ],
+            [
+              "👑",
+              50,
+              64,
+              10,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "हाथ लगाओ, डर जाएगी,",
+          "actors": [
+            [
+              "✋",
+              36,
+              60,
+              16,
+              "shake"
+            ],
+            [
+              "🐟",
+              66,
+              92,
+              18,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "बाहर निकालो, मर जाएगी।\nमछली को पानी में रहने दो!",
+          "actors": [
+            [
+              "🐟",
+              50,
+              92,
+              22,
+              "hop"
+            ],
+            [
+              "💧",
+              30,
+              70,
+              8,
+              "bob"
+            ],
+            [
+              "💧",
+              70,
+              74,
+              8,
+              "bob"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "मछली कहाँ रहती है? (Where does the fish live?)",
+          "a": "🌊",
+          "o": [
+            "🌊",
+            "🌳",
+            "🏠"
+          ]
+        },
+        {
+          "q": "मछली की रानी कौन? Who is the queen of water?",
+          "a": "🐟",
+          "o": [
+            "🐟",
+            "🐶",
+            "🐘"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "humpty",
+      "level": -1,
+      "kind": "rhyme",
+      "title": "Humpty Dumpty",
+      "cover": "🥚",
+      "bg": "village",
+      "genres": [
+        "rhyme",
+        "funny"
+      ],
+      "pages": [
+        {
+          "text": "Humpty Dumpty sat on a wall,",
+          "actors": [
+            [
+              "🧱",
+              50,
+              92,
+              40,
+              ""
+            ],
+            [
+              "🥚",
+              50,
+              64,
+              18,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Humpty Dumpty had a great fall!",
+          "actors": [
+            [
+              "🥚",
+              56,
+              88,
+              18,
+              "shake"
+            ],
+            [
+              "💥",
+              40,
+              70,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "All the king's horses and all the king's men",
+          "actors": [
+            [
+              "🐴",
+              30,
+              88,
+              22,
+              "walk"
+            ],
+            [
+              "🤴",
+              70,
+              88,
+              22,
+              "bob flip"
+            ]
+          ]
+        },
+        {
+          "text": "Couldn't put Humpty together again!",
+          "actors": [
+            [
+              "🥚",
+              50,
+              88,
+              16,
+              "shake"
+            ],
+            [
+              "😢",
+              70,
+              44,
+              10,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Where did Humpty sit?",
+          "a": "🧱",
+          "o": [
+            "🧱",
+            "🌳",
+            "🚗",
+            "🛏️"
+          ]
+        },
+        {
+          "q": "What is Humpty?",
+          "a": "🥚",
+          "o": [
+            "🥚",
+            "🍎",
+            "⚽",
+            "🧸"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "johny",
+      "level": -1,
+      "kind": "rhyme",
+      "title": "Johny Johny Yes Papa",
+      "cover": "🍬",
+      "bg": "palace",
+      "genres": [
+        "rhyme",
+        "funny",
+        "habits"
+      ],
+      "pages": [
+        {
+          "text": "Johny, Johny!\nYes, Papa?",
+          "actors": [
+            [
+              "👨",
+              30,
+              88,
+              24,
+              "bob"
+            ],
+            [
+              "👦",
+              70,
+              88,
+              20,
+              "bob flip"
+            ]
+          ]
+        },
+        {
+          "text": "Eating sugar?\nNo, Papa!",
+          "actors": [
+            [
+              "🍬",
+              50,
+              60,
+              14,
+              "shake"
+            ],
+            [
+              "👦",
+              70,
+              88,
+              20,
+              "shake flip"
+            ]
+          ]
+        },
+        {
+          "text": "Telling lies?\nNo, Papa!",
+          "actors": [
+            [
+              "👨",
+              30,
+              88,
+              24,
+              "shake"
+            ],
+            [
+              "👦",
+              70,
+              88,
+              20,
+              "shake flip"
+            ]
+          ]
+        },
+        {
+          "text": "Open your mouth!\nHa, ha, ha!",
+          "actors": [
+            [
+              "👦",
+              50,
+              88,
+              26,
+              "hop"
+            ],
+            [
+              "😂",
+              70,
+              40,
+              12,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What was Johny eating?",
+          "a": "🍬",
+          "o": [
+            "🍬",
+            "🍎",
+            "🥕",
+            "🍞"
+          ]
+        },
+        {
+          "q": "Who called Johny?",
+          "a": "👨",
+          "o": [
+            "👨",
+            "👵",
+            "🐶",
+            "🧸"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aloo_kachaloo",
+      "level": -1,
+      "kind": "rhyme",
+      "title": "आलू कचालू (Aloo Kachaloo)",
+      "cover": "🥔",
+      "bg": "village",
+      "genres": [
+        "rhyme",
+        "hindi",
+        "funny"
+      ],
+      "lang": "hi-IN",
+      "pages": [
+        {
+          "text": "आलू कचालू बेटा, कहाँ गए थे?",
+          "actors": [
+            [
+              "🥔",
+              50,
+              80,
+              24,
+              "bob"
+            ],
+            [
+              "❓",
+              72,
+              40,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "बंदर की टोकरी में सो रहे थे।",
+          "actors": [
+            [
+              "🐒",
+              30,
+              88,
+              20,
+              "bob"
+            ],
+            [
+              "🧺",
+              62,
+              88,
+              22,
+              ""
+            ],
+            [
+              "🥔",
+              62,
+              68,
+              10,
+              "bob"
+            ],
+            [
+              "💤",
+              76,
+              46,
+              8,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "बंदर ने लात मारी, रो रहे थे,",
+          "actors": [
+            [
+              "🐒",
+              30,
+              88,
+              20,
+              "shake"
+            ],
+            [
+              "🥔",
+              62,
+              80,
+              12,
+              "shake"
+            ],
+            [
+              "😢",
+              76,
+              46,
+              8,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "मम्मी ने प्यार किया, हँस रहे थे!",
+          "actors": [
+            [
+              "👩",
+              34,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "🥔",
+              62,
+              80,
+              14,
+              "hop"
+            ],
+            [
+              "😊",
+              76,
+              46,
+              8,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "आलू कहाँ सो रहे थे? Where was Aloo sleeping?",
+          "a": "🧺",
+          "o": [
+            "🧺",
+            "🛏️",
+            "🚗",
+            "🌊"
+          ]
+        },
+        {
+          "q": "Who kicked the basket?",
+          "a": "🐒",
+          "o": [
+            "🐒",
+            "🐶",
+            "🐘",
+            "🐔"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jack_jill",
+      "level": 1,
+      "kind": "rhyme",
+      "title": "Jack and Jill",
+      "cover": "🪣",
+      "bg": "meadow",
+      "genres": [
+        "rhyme"
+      ],
+      "pages": [
+        {
+          "text": "Jack and Jill went up the hill\nTo fetch a pail of water.",
+          "actors": [
+            [
+              "👦",
+              34,
+              80,
+              18,
+              "walk"
+            ],
+            [
+              "👧",
+              54,
+              82,
+              18,
+              "walk"
+            ],
+            [
+              "🪣",
+              70,
+              82,
+              10,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Jack fell down and broke his crown,",
+          "actors": [
+            [
+              "👦",
+              40,
+              88,
+              18,
+              "shake"
+            ],
+            [
+              "💥",
+              54,
+              60,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "And Jill came tumbling after!",
+          "actors": [
+            [
+              "👧",
+              54,
+              88,
+              18,
+              "shake"
+            ],
+            [
+              "🪣",
+              74,
+              88,
+              10,
+              "shake"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Why did they go up the hill?",
+          "a": "To fetch water",
+          "o": [
+            "To fetch water",
+            "To fly a kite",
+            "To sleep"
+          ]
+        },
+        {
+          "q": "Who fell down first?",
+          "a": "Jack",
+          "o": [
+            "Jack",
+            "Jill",
+            "The pail"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rain_rain",
+      "level": 1,
+      "kind": "rhyme",
+      "title": "Rain, Rain, Go Away",
+      "cover": "🌧️",
+      "bg": "sky",
+      "genres": [
+        "rhyme",
+        "science"
+      ],
+      "pages": [
+        {
+          "text": "Rain, rain, go away,\nCome again another day.",
+          "actors": [
+            [
+              "🌧️",
+              50,
+              56,
+              30,
+              "bob"
+            ],
+            [
+              "💧",
+              30,
+              86,
+              8,
+              "fly"
+            ],
+            [
+              "💧",
+              70,
+              90,
+              8,
+              "fly"
+            ]
+          ]
+        },
+        {
+          "bg": "park",
+          "text": "Little children want to play,\nRain, rain, go away!",
+          "actors": [
+            [
+              "🧒",
+              34,
+              92,
+              20,
+              "hop"
+            ],
+            [
+              "⚽",
+              62,
+              92,
+              10,
+              "bob"
+            ],
+            [
+              "☂️",
+              74,
+              60,
+              14,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "bg": "park",
+          "text": "Sun, sun, come and stay,\nNow it's time to run and play!",
+          "actors": [
+            [
+              "🌞",
+              50,
+              40,
+              24,
+              "spin"
+            ],
+            [
+              "🧒",
+              40,
+              92,
+              18,
+              "hop"
+            ],
+            [
+              "🌈",
+              70,
+              70,
+              24,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What do the children want?",
+          "a": "To play outside",
+          "o": [
+            "To play outside",
+            "To sleep",
+            "To eat"
+          ]
+        },
+        {
+          "q": "What do we use in the rain?",
+          "a": "An umbrella",
+          "o": [
+            "An umbrella",
+            "Sunglasses",
+            "A kite"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "days_week",
+      "level": 1,
+      "kind": "rhyme",
+      "title": "The Days of the Week Song",
+      "cover": "📅",
+      "bg": "park",
+      "genres": [
+        "song",
+        "science"
+      ],
+      "original": true,
+      "pages": [
+        {
+          "text": "Monday, Tuesday, here we go,\nWednesday, Thursday, on we go!",
+          "actors": [
+            [
+              "📅",
+              50,
+              64,
+              24,
+              "bob"
+            ],
+            [
+              "🧒",
+              20,
+              92,
+              16,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "Friday, Saturday, time to play,\nSunday is a family day!",
+          "actors": [
+            [
+              "⚽",
+              30,
+              88,
+              12,
+              "hop"
+            ],
+            [
+              "👨‍👩‍👧",
+              66,
+              88,
+              24,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Seven days make one whole week,\nSay them all, it's fun to speak!",
+          "actors": [
+            [
+              "7️⃣",
+              50,
+              64,
+              20,
+              "grow"
+            ],
+            [
+              "⭐",
+              24,
+              30,
+              10,
+              "spin"
+            ],
+            [
+              "⭐",
+              76,
+              30,
+              10,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "How many days are in a week?",
+          "a": "Seven",
+          "o": [
+            "Seven",
+            "Five",
+            "Ten"
+          ]
+        },
+        {
+          "q": "Which day comes after Monday?",
+          "a": "Tuesday",
+          "o": [
+            "Tuesday",
+            "Friday",
+            "Sunday"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hickory",
+      "level": 2,
+      "kind": "rhyme",
+      "title": "Hickory Dickory Dock",
+      "cover": "🕰️",
+      "bg": "palace",
+      "genres": [
+        "rhyme",
+        "animals"
+      ],
+      "pages": [
+        {
+          "text": "Hickory, dickory, dock,\nThe mouse ran up the clock.",
+          "actors": [
+            [
+              "🕰️",
+              50,
+              90,
+              34,
+              ""
+            ],
+            [
+              "🐭",
+              50,
+              50,
+              10,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "The clock struck one,\nThe mouse ran down!",
+          "actors": [
+            [
+              "🔔",
+              30,
+              40,
+              12,
+              "shake"
+            ],
+            [
+              "🕰️",
+              50,
+              90,
+              34,
+              ""
+            ],
+            [
+              "🐭",
+              60,
+              90,
+              10,
+              "walk"
+            ]
+          ]
+        },
+        {
+          "text": "Hickory, dickory, dock!\nTick, tock, tick, tock.",
+          "actors": [
+            [
+              "🕰️",
+              50,
+              90,
+              34,
+              "shake"
+            ],
+            [
+              "🐭",
+              80,
+              90,
+              10,
+              "hop"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Where did the mouse run?",
+          "a": "Up the clock",
+          "o": [
+            "Up the clock",
+            "Into a hole",
+            "Up a tree"
+          ]
+        },
+        {
+          "q": "What time did the clock strike?",
+          "a": "One",
+          "o": [
+            "One",
+            "Two",
+            "Ten"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "row_boat",
+      "level": 2,
+      "kind": "rhyme",
+      "title": "Row, Row, Row Your Boat",
+      "cover": "🚣",
+      "bg": "river",
+      "genres": [
+        "rhyme"
+      ],
+      "pages": [
+        {
+          "text": "Row, row, row your boat,\nGently down the stream.",
+          "actors": [
+            [
+              "🚣",
+              44,
+              90,
+              26,
+              "walk"
+            ],
+            [
+              "🌳",
+              84,
+              70,
+              18,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "Merrily, merrily, merrily, merrily,\nLife is but a dream!",
+          "actors": [
+            [
+              "🚣",
+              56,
+              90,
+              26,
+              "bob"
+            ],
+            [
+              "🦆",
+              24,
+              92,
+              10,
+              "walk"
+            ],
+            [
+              "☀️",
+              80,
+              26,
+              12,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Where is the boat going?",
+          "a": "Down the stream",
+          "o": [
+            "Down the stream",
+            "Up a mountain",
+            "Into space"
+          ]
+        },
+        {
+          "q": "How do we row?",
+          "a": "Gently",
+          "o": [
+            "Gently",
+            "Angrily",
+            "Never"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "months_song",
+      "level": 2,
+      "kind": "rhyme",
+      "title": "The Months of the Year Song",
+      "cover": "🗓️",
+      "bg": "meadow",
+      "genres": [
+        "song",
+        "science"
+      ],
+      "original": true,
+      "pages": [
+        {
+          "text": "January, February, March, April too,\nMay and June, the sky is blue!",
+          "actors": [
+            [
+              "❄️",
+              24,
+              40,
+              12,
+              "spin"
+            ],
+            [
+              "🌸",
+              50,
+              88,
+              12,
+              "grow"
+            ],
+            [
+              "🌞",
+              78,
+              30,
+              14,
+              "spin"
+            ]
+          ]
+        },
+        {
+          "text": "July, August, the rain comes down,\nSeptember, October, leaves turn brown!",
+          "actors": [
+            [
+              "🌧️",
+              30,
+              46,
+              18,
+              "bob"
+            ],
+            [
+              "🍂",
+              70,
+              80,
+              14,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "November, December, the year is done,\nTwelve months of learning and lots of fun!",
+          "actors": [
+            [
+              "🗓️",
+              50,
+              70,
+              24,
+              "grow"
+            ],
+            [
+              "🎉",
+              80,
+              36,
+              12,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "How many months are in a year?",
+          "a": "Twelve",
+          "o": [
+            "Twelve",
+            "Ten",
+            "Seven"
+          ]
+        },
+        {
+          "q": "Which month comes first?",
+          "a": "January",
+          "o": [
+            "January",
+            "March",
+            "December"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "itsy_spider",
+      "level": 3,
+      "kind": "rhyme",
+      "title": "The Itsy Bitsy Spider",
+      "cover": "🕷️",
+      "bg": "garden",
+      "genres": [
+        "rhyme",
+        "animals",
+        "science"
+      ],
+      "pages": [
+        {
+          "text": "The itsy bitsy spider\nClimbed up the water spout.",
+          "actors": [
+            [
+              "🕷️",
+              50,
+              50,
+              12,
+              "hop"
+            ],
+            [
+              "🚰",
+              50,
+              92,
+              20,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "Down came the rain\nAnd washed the spider out.",
+          "actors": [
+            [
+              "🌧️",
+              50,
+              30,
+              20,
+              "bob"
+            ],
+            [
+              "🕷️",
+              50,
+              88,
+              10,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "Out came the sun\nAnd dried up all the rain,",
+          "actors": [
+            [
+              "🌞",
+              50,
+              40,
+              26,
+              "spin"
+            ]
+          ]
+        },
+        {
+          "text": "And the itsy bitsy spider\nClimbed up the spout again!",
+          "actors": [
+            [
+              "🕷️",
+              50,
+              50,
+              12,
+              "hop"
+            ],
+            [
+              "🚰",
+              50,
+              92,
+              20,
+              ""
+            ],
+            [
+              "⭐",
+              76,
+              30,
+              8,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What washed the spider out?",
+          "a": "The rain",
+          "o": [
+            "The rain",
+            "The wind",
+            "A cat"
+          ]
+        },
+        {
+          "q": "What does the spider teach us?",
+          "a": "Never give up",
+          "o": [
+            "Never give up",
+            "Stay in bed",
+            "Run away"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "old_macdonald",
+      "level": 3,
+      "kind": "rhyme",
+      "title": "Old MacDonald Had a Farm",
+      "cover": "🐄",
+      "bg": "village",
+      "genres": [
+        "rhyme",
+        "animals"
+      ],
+      "pages": [
+        {
+          "text": "Old MacDonald had a farm, E-I-E-I-O!\nAnd on that farm he had a cow, E-I-E-I-O!",
+          "actors": [
+            [
+              "👴",
+              24,
+              88,
+              20,
+              "bob"
+            ],
+            [
+              "🐄",
+              64,
+              88,
+              26,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "With a moo moo here and a moo moo there,\nHere a moo, there a moo, everywhere a moo moo!",
+          "actors": [
+            [
+              "🐄",
+              30,
+              88,
+              22,
+              "hop"
+            ],
+            [
+              "🐄",
+              72,
+              88,
+              22,
+              "hop flip"
+            ]
+          ]
+        },
+        {
+          "text": "And on that farm he had a duck, E-I-E-I-O!\nWith a quack quack here and a quack quack there!",
+          "actors": [
+            [
+              "🦆",
+              34,
+              88,
+              16,
+              "hop"
+            ],
+            [
+              "🦆",
+              66,
+              88,
+              16,
+              "hop flip"
+            ]
+          ]
+        },
+        {
+          "text": "And on that farm he had a pig, E-I-E-I-O!\nWith an oink oink here and an oink oink there!",
+          "actors": [
+            [
+              "🐖",
+              40,
+              88,
+              24,
+              "hop"
+            ],
+            [
+              "👴",
+              80,
+              88,
+              18,
+              "bob flip"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What sound does a cow make?",
+          "a": "Moo",
+          "o": [
+            "Moo",
+            "Quack",
+            "Oink"
+          ]
+        },
+        {
+          "q": "Which animal says oink?",
+          "a": "Pig",
+          "o": [
+            "Pig",
+            "Duck",
+            "Cow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "good_habits",
+      "level": 3,
+      "kind": "rhyme",
+      "title": "The Good Habits Song",
+      "cover": "🪥",
+      "bg": "park",
+      "genres": [
+        "song",
+        "habits"
+      ],
+      "original": true,
+      "pages": [
+        {
+          "text": "Wake up early, brush your teeth,\nWash your face, so fresh and neat!",
+          "actors": [
+            [
+              "⏰",
+              24,
+              40,
+              12,
+              "shake"
+            ],
+            [
+              "🪥",
+              50,
+              80,
+              16,
+              "bob"
+            ],
+            [
+              "😁",
+              76,
+              50,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Wash your hands before you eat,\nKeep your room all clean and sweet!",
+          "actors": [
+            [
+              "🧼",
+              30,
+              80,
+              14,
+              "bob"
+            ],
+            [
+              "🍽️",
+              56,
+              80,
+              16,
+              ""
+            ],
+            [
+              "🛏️",
+              80,
+              88,
+              18,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "Say please and thank you every day,\nHelp your friends at work and play!",
+          "actors": [
+            [
+              "🙏",
+              34,
+              70,
+              16,
+              "grow"
+            ],
+            [
+              "🤝",
+              66,
+              70,
+              16,
+              "bob"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "When should we wash our hands?",
+          "a": "Before we eat",
+          "o": [
+            "Before we eat",
+            "Never",
+            "Only on Sunday"
+          ]
+        },
+        {
+          "q": "Which are kind words?",
+          "a": "Please and thank you",
+          "o": [
+            "Please and thank you",
+            "Go away",
+            "Be quiet"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "planets_song",
+      "level": 4,
+      "kind": "rhyme",
+      "title": "The Planets Song",
+      "cover": "🪐",
+      "bg": "space",
+      "genres": [
+        "song",
+        "science"
+      ],
+      "original": true,
+      "pages": [
+        {
+          "text": "Mercury is closest, small and hot,\nVenus is cloudy, warm a lot!",
+          "actors": [
+            [
+              "☀️",
+              14,
+              50,
+              20,
+              "spin"
+            ],
+            [
+              "🌑",
+              44,
+              56,
+              8,
+              "bob"
+            ],
+            [
+              "🟠",
+              70,
+              56,
+              12,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Earth is our home, so blue and green,\nMars is red, the dustiest seen!",
+          "actors": [
+            [
+              "🌍",
+              36,
+              60,
+              22,
+              "spin"
+            ],
+            [
+              "🔴",
+              72,
+              58,
+              12,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Jupiter's biggest, round and grand,\nSaturn has rings like a shiny band!",
+          "actors": [
+            [
+              "🪐",
+              50,
+              70,
+              36,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Uranus and Neptune, icy and blue,\nEight planets circle the Sun, it's true!",
+          "actors": [
+            [
+              "🔵",
+              34,
+              56,
+              12,
+              "bob"
+            ],
+            [
+              "🔵",
+              66,
+              60,
+              10,
+              "bob"
+            ],
+            [
+              "☀️",
+              50,
+              96,
+              30,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Which planet is our home?",
+          "a": "Earth",
+          "o": [
+            "Earth",
+            "Mars",
+            "Venus"
+          ]
+        },
+        {
+          "q": "Which planet has rings?",
+          "a": "Saturn",
+          "o": [
+            "Saturn",
+            "Mercury",
+            "Mars"
+          ]
+        },
+        {
+          "q": "How many planets circle the Sun?",
+          "a": "Eight",
+          "o": [
+            "Eight",
+            "Nine",
+            "Six"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "water_cycle_song",
+      "level": 4,
+      "kind": "rhyme",
+      "title": "The Water Cycle Song",
+      "cover": "💧",
+      "bg": "river",
+      "genres": [
+        "song",
+        "science"
+      ],
+      "original": true,
+      "pages": [
+        {
+          "text": "The Sun heats the water, up it goes,\nEvaporation, everybody knows!",
+          "actors": [
+            [
+              "☀️",
+              76,
+              30,
+              18,
+              "spin"
+            ],
+            [
+              "💨",
+              40,
+              56,
+              14,
+              "float"
+            ],
+            [
+              "🌊",
+              40,
+              96,
+              30,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "bg": "sky",
+          "text": "It cools in the sky and clouds appear,\nCondensation, the clouds are here!",
+          "actors": [
+            [
+              "☁️",
+              50,
+              44,
+              30,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "bg": "sky",
+          "text": "The drops get heavy, down comes rain,\nPrecipitation, again and again!",
+          "actors": [
+            [
+              "🌧️",
+              50,
+              46,
+              30,
+              "bob"
+            ],
+            [
+              "💧",
+              40,
+              86,
+              8,
+              "fly"
+            ]
+          ]
+        },
+        {
+          "text": "It flows to the rivers and the sea,\nCollection! Then round again, whee!",
+          "actors": [
+            [
+              "🌊",
+              50,
+              96,
+              40,
+              "bob"
+            ],
+            [
+              "🔄",
+              50,
+              40,
+              16,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Water going up as vapour is…",
+          "a": "Evaporation",
+          "o": [
+            "Evaporation",
+            "Collection",
+            "Precipitation"
+          ]
+        },
+        {
+          "q": "Rain falling is called…",
+          "a": "Precipitation",
+          "o": [
+            "Precipitation",
+            "Condensation",
+            "Evaporation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buckle_shoe",
+      "level": 4,
+      "kind": "rhyme",
+      "title": "One, Two, Buckle My Shoe",
+      "cover": "👟",
+      "bg": "village",
+      "genres": [
+        "rhyme"
+      ],
+      "pages": [
+        {
+          "text": "One, two, buckle my shoe;\nThree, four, knock at the door;",
+          "actors": [
+            [
+              "👟",
+              30,
+              88,
+              16,
+              "bob"
+            ],
+            [
+              "🚪",
+              70,
+              88,
+              24,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "Five, six, pick up sticks;\nSeven, eight, lay them straight;",
+          "actors": [
+            [
+              "🪵",
+              36,
+              88,
+              18,
+              "bob"
+            ],
+            [
+              "🪵",
+              62,
+              88,
+              18,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Nine, ten, a big fat hen!",
+          "actors": [
+            [
+              "🐔",
+              50,
+              88,
+              28,
+              "hop"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What do we do at 'three, four'?",
+          "a": "Knock at the door",
+          "o": [
+            "Knock at the door",
+            "Pick up sticks",
+            "Buckle a shoe"
+          ]
+        },
+        {
+          "q": "What comes at 'nine, ten'?",
+          "a": "A big fat hen",
+          "o": [
+            "A big fat hen",
+            "A small cat",
+            "A red bus"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "matter_song",
+      "level": 5,
+      "kind": "rhyme",
+      "title": "The States of Matter Song",
+      "cover": "🧊",
+      "bg": "palace",
+      "genres": [
+        "song",
+        "science"
+      ],
+      "original": true,
+      "pages": [
+        {
+          "text": "A solid has a shape that stays,\nLike ice and stone and wooden trays.",
+          "actors": [
+            [
+              "🧊",
+              30,
+              80,
+              16,
+              "bob"
+            ],
+            [
+              "🪨",
+              56,
+              88,
+              14,
+              ""
+            ],
+            [
+              "🪵",
+              80,
+              88,
+              16,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "A liquid flows and takes the shape\nOf any cup, like juice from grape.",
+          "actors": [
+            [
+              "🥤",
+              36,
+              82,
+              16,
+              "bob"
+            ],
+            [
+              "🧃",
+              64,
+              82,
+              14,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "A gas spreads out to fill the space,\nLike air and steam all round the place.",
+          "actors": [
+            [
+              "💨",
+              40,
+              50,
+              18,
+              "float"
+            ],
+            [
+              "♨️",
+              66,
+              70,
+              16,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "Heat it up or cool it down,\nMatter changes all around!",
+          "actors": [
+            [
+              "🔥",
+              30,
+              86,
+              14,
+              "shake"
+            ],
+            [
+              "❄️",
+              70,
+              50,
+              14,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Which one is a solid?",
+          "a": "Ice",
+          "o": [
+            "Ice",
+            "Juice",
+            "Steam"
+          ]
+        },
+        {
+          "q": "What does a liquid do?",
+          "a": "Flows and takes the shape of its container",
+          "o": [
+            "Flows and takes the shape of its container",
+            "Keeps its own shape",
+            "Disappears"
+          ]
+        },
+        {
+          "q": "Steam is a…",
+          "a": "Gas",
+          "o": [
+            "Gas",
+            "Solid",
+            "Liquid"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "india_song",
+      "level": 5,
+      "kind": "rhyme",
+      "title": "India, My Land",
+      "cover": "🇮🇳",
+      "bg": "meadow",
+      "genres": [
+        "song"
+      ],
+      "original": true,
+      "pages": [
+        {
+          "text": "From the snowy Himalayas high,\nTo the seas where the waves roll by,",
+          "actors": [
+            [
+              "🏔️",
+              30,
+              80,
+              28,
+              ""
+            ],
+            [
+              "🌊",
+              74,
+              92,
+              24,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Many languages, one big heart,\nEvery state a special part.",
+          "actors": [
+            [
+              "🗣️",
+              34,
+              70,
+              16,
+              "bob"
+            ],
+            [
+              "❤️",
+              66,
+              60,
+              16,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Saffron, white and green we wave,\nIndia, land of the kind and brave!",
+          "actors": [
+            [
+              "🇮🇳",
+              50,
+              70,
+              30,
+              "bob"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Which mountains are in the north of India?",
+          "a": "The Himalayas",
+          "o": [
+            "The Himalayas",
+            "The Alps",
+            "The Rockies"
+          ]
+        },
+        {
+          "q": "What are the colours of our flag?",
+          "a": "Saffron, white and green",
+          "o": [
+            "Saffron, white and green",
+            "Red and blue",
+            "Black and yellow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "body_song",
+      "level": 5,
+      "kind": "rhyme",
+      "title": "My Amazing Body Song",
+      "cover": "🫀",
+      "bg": "park",
+      "genres": [
+        "song",
+        "science"
+      ],
+      "original": true,
+      "pages": [
+        {
+          "text": "My heart goes thump, it pumps the blood,\nAll day and night, the way it should!",
+          "actors": [
+            [
+              "🫀",
+              50,
+              70,
+              26,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "My lungs breathe in, my lungs breathe out,\nThey bring the oxygen about!",
+          "actors": [
+            [
+              "🫁",
+              50,
+              70,
+              26,
+              "grow"
+            ],
+            [
+              "💨",
+              76,
+              40,
+              10,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "My brain thinks fast, it's in control,\nMy bones and muscles help me roll!",
+          "actors": [
+            [
+              "🧠",
+              30,
+              64,
+              20,
+              "bob"
+            ],
+            [
+              "🦴",
+              58,
+              70,
+              16,
+              "bob"
+            ],
+            [
+              "💪",
+              80,
+              70,
+              14,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Eat good food and play and rest,\nThen my body works its best!",
+          "actors": [
+            [
+              "🍎",
+              30,
+              80,
+              14,
+              "bob"
+            ],
+            [
+              "⚽",
+              54,
+              86,
+              12,
+              "hop"
+            ],
+            [
+              "😴",
+              78,
+              66,
+              12,
+              "bob"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What does the heart pump?",
+          "a": "Blood",
+          "o": [
+            "Blood",
+            "Air",
+            "Food"
+          ]
+        },
+        {
+          "q": "Which organ controls the body?",
+          "a": "The brain",
+          "o": [
+            "The brain",
+            "The heart",
+            "The lungs"
+          ]
+        }
+      ]
+    }
+  ]
+}

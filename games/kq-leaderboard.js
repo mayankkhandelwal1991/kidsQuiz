@@ -133,6 +133,7 @@
     }
     return v;
   }
+  function firstOnly(n) { return String(n || "").trim().split(/\s+/)[0].slice(0, 14); }
   function guestNick() {
     try { return localStorage.getItem("kq_nick") || ""; } catch (e) { return ""; }
   }
@@ -148,7 +149,8 @@
       return {
         key: authUser.uid,
         uid: authUser.uid,
-        name: authUser.displayName || (authUser.email ? authUser.email.split("@")[0] : "Player"),
+        // Children's app: only a first name is ever shown or published, never the full Google name.
+        name: firstOnly(authUser.displayName) || "Player",
         photo: authUser.photoURL || "",
         email: authUser.email || "",
         isGuest: false
@@ -366,10 +368,10 @@
       return ref.transaction(function (cur) {
         if (cur && typeof cur.score === "number") {
           var better = lower ? score < cur.score : score > cur.score;
-          if (!better) { cur.name = u.name; cur.photo = u.photo; if (CC) cur.cc = CC; return cur; } // keep best, refresh name
+          if (!better) { cur.name = u.name; cur.photo = ""; if (CC) cur.cc = CC; return cur; } // keep best, refresh name
         }
         return {
-          name: u.name, photo: u.photo, uid: u.uid || null, guest: u.isGuest,
+          name: u.name, photo: "", uid: u.uid || null, guest: u.isGuest,
           score: score, lowerIsBetter: lower, meta: opts.meta || null, cc: CC || null,
           updatedAt: firebase.database.ServerValue.TIMESTAMP
         };
@@ -387,8 +389,8 @@
       logAttempt(cat, gameId, 1, { result: "win" });
       var ref = playerRef(cat, gameId);
       return ref.transaction(function (cur) {
-        cur = cur || { name: u.name, photo: u.photo, uid: u.uid || null, guest: u.isGuest, score: 0 };
-        cur.name = u.name; cur.photo = u.photo; if (CC) cur.cc = CC;
+        cur = cur || { name: u.name, photo: "", uid: u.uid || null, guest: u.isGuest, score: 0 };
+        cur.name = u.name; cur.photo = ""; if (CC) cur.cc = CC;
         cur.score = (Number(cur.score) || 0) + 1;
         cur.updatedAt = firebase.database.ServerValue.TIMESTAMP;
         return cur;
@@ -407,7 +409,7 @@
         snap.forEach(function (c) {
           var v = c.val() || {};
           rows.push({
-            key: c.key, name: v.name || "Player", photo: v.photo || "",
+            key: c.key, name: firstOnly(v.name) || "Player", photo: "",
             score: Number(v.score) || 0, lowerIsBetter: !!v.lowerIsBetter,
             guest: !!v.guest, updatedAt: v.updatedAt || 0
           });

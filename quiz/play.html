@@ -162,9 +162,9 @@
   .show .sw { width: 70px; height: 70px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
   .show .plus { font-size: 40px; font-weight: 800; }
   .show .gone { opacity: .25; transform: translateY(-16px) rotate(-10deg); filter: grayscale(.4); }
-  .opts { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
-  .opts.c3 { grid-template-columns: repeat(3, 1fr); }
-  .opts.c1 { grid-template-columns: 1fr; }
+  .opts { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .opts.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .opts.c1 { grid-template-columns: minmax(0, 1fr); }
   .opt {
     border: 4px solid #fff; background: #fff; border-radius: 26px; min-height: 120px; padding: 10px;
     display: grid; place-items: center; box-shadow: 0 7px 0 rgba(0,0,0,.12); font-size: 22px; font-weight: 800; color: var(--ink);
@@ -174,6 +174,13 @@
   .opt:active { transform: translateY(4px) scale(.98); box-shadow: 0 3px 0 rgba(0,0,0,.12); }
   .opt.txt { font-size: 24px; min-height: 84px; }
   .opt.bigtxt { font-size: 58px; min-height: 120px; color: var(--accent); }
+  .opt { min-width: 0; overflow-wrap: anywhere; line-height: 1.15; }
+  /* long answers (e.g. 6-digit sums) shrink to fit the phone */
+  .opt.bigtxt.l4 { font-size: clamp(30px, 10vw, 54px); }
+  .opt.bigtxt.l6 { font-size: clamp(24px, 7.5vw, 46px); }
+  .opt.bigtxt.l8 { font-size: clamp(20px, 6vw, 38px); }
+  .opts.c3 .opt.bigtxt.l4, .opts.c3 .opt.bigtxt.l6 { font-size: clamp(20px, 6vw, 40px); }
+  .opt.txt.l14 { font-size: 19px; } .opt.txt.l24 { font-size: 16px; }
   body[data-theme="space"] .opt.bigtxt { color: #4338ca; }
   .opt.ok { border-color: #22c55e; background: #dcfce7; animation: yay .5s ease; }
   .opt.no { border-color: #f43f5e; background: #ffe4e6; animation: shake .45s ease; }
@@ -240,7 +247,7 @@
     .kgrid { grid-template-columns: repeat(4, 1fr) !important; }
     .pgrid { grid-template-columns: repeat(6, 1fr); }
     .opt { min-height: 150px; }
-    .opts.c4 { grid-template-columns: repeat(4, 1fr); }
+    .opts.c4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .bubble { font-size: 26px; }
     .owl { width: 120px; height: 120px; }
     .ccard.wide { grid-column: span 3; }
@@ -273,7 +280,7 @@
 </div>
 
 <script src="../parent-gate.js?v=20261124a"></script>
-<script src="../quiz-shared.js?v=20261124a"></script>
+<script src="../quiz-shared.js?v=20261126a"></script>
 <script src="../emoji-images.js?v=20261120i"></script>
 <script src="kids-engine.js?v=20261126a"></script>
 <script src="kids-sound.js?v=20261120i"></script>
@@ -300,7 +307,7 @@ function registerQuiz(subject, level, questions) {
 window.KQ_NO_WIDGET = true;
 window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, isMuted: isSoundMuted };
 </script>
-<script src="../games/kq-leaderboard.js?v=20261125b"></script>
+<script src="../games/kq-leaderboard.js?v=20261126a"></script>
 <script src="../web-ads.js?v=20261123a"></script>
 <script>
 (function () {
@@ -640,6 +647,11 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     }
   }
 
+  // size class from the longest answer text: l4 / l6 / l8 (numbers), l14 / l24 (words)
+  function lenCls(q) {
+    const m = Math.max.apply(null, (q.options || []).map((o) => String(o.text == null ? '' : o.text).length));
+    return m >= 24 ? ' l24' : m >= 14 ? ' l14' : m >= 8 ? ' l8' : m >= 6 ? ' l6' : m >= 4 ? ' l4' : '';
+  }
   function renderQ() {
     const P = playing, q = P.qs[P.i], pre = isPre(P.level);
     P.busy = false;
@@ -657,7 +669,7 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     if (q.type === 'count') {
       h += '<div class="mat" id="mat">' + q.items.map((it, i) => '<button class="ci" data-i="' + i + '">' + img(it.pic, q.items.length > 7 ? 56 : 68) + '</button>').join('') + '</div>' +
         '<div class="counted" id="counted">Tap each one to count!</div>';
-      h += '<div class="opts c' + Math.min(q.options.length, 4) + '">' + q.options.map((o) => '<button class="opt bigtxt" data-id="' + esc(o.id) + '">' + esc(o.text) + '</button>').join('') + '</div>';
+      h += '<div class="opts c' + Math.min(q.options.length, 4) + '">' + q.options.map((o) => '<button class="opt bigtxt' + lenCls(q) + '" data-id="' + esc(o.id) + '">' + esc(o.text) + '</button>').join('') + '</div>';
     } else if (q.type === 'tapall') {
       const need = q.items.filter((i) => i.target).length;
       h += '<div class="found-count" id="fc">Found 0 of ' + need + '</div><div class="tgrid">' +
@@ -668,7 +680,7 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
       const cols = q.cols || (n === 3 ? 3 : 2);
       const textOpt = q.options.every((o) => o.text != null && !o.pic);
       h += '<div class="opts c' + cols + (n === 4 && !textOpt ? ' c4' : '') + '">' + q.options.map((o, i) =>
-        '<button class="opt' + (textOpt ? (q.big ? ' bigtxt' : ' txt') : '') + '" data-id="' + esc(o.id) + '" style="animation-delay:' + i * 60 + 'ms" aria-label="' + esc(o.say || o.text || '') + '">' + optHtml(o, q) + '</button>').join('') + '</div>';
+        '<button class="opt' + (textOpt ? (q.big ? ' bigtxt' : ' txt') + lenCls(q) : '') + '" data-id="' + esc(o.id) + '" style="animation-delay:' + i * 60 + 'ms" aria-label="' + esc(o.say || o.text || '') + '">' + optHtml(o, q) + '</button>').join('') + '</div>';
     }
     h += '<div class="feedback" id="fb"></div></div>';
     $app.innerHTML = h;

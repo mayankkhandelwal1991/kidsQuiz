@@ -548,7 +548,7 @@ function kqGetNick() {
   try { return (localStorage.getItem('kq_nick') || '').trim(); } catch (e) { return ''; }
 }
 function kqSetNick(name) {
-  name = String(name || '').replace(/\s+/g, ' ').trim().slice(0, 20);
+  name = String(name || '').replace(/\s+/g, ' ').trim().split(' ')[0].slice(0, 12);
   if (!name) return '';
   if (window.KQ && KQ.setNick) KQ.setNick(name);
   else { try { localStorage.setItem('kq_nick', name); } catch (e) {} }
@@ -570,8 +570,8 @@ function kqAskName(opts) {
       '<form style="background:#fff;color:#1e1b4b;border-radius:26px;padding:22px 18px 18px;width:100%;max-width:360px;box-shadow:0 24px 60px rgba(0,0,0,.35);text-align:center;font-family:inherit">' +
         '<div style="font-size:42px;line-height:1">🧒</div>' +
         '<div style="font-size:20px;font-weight:900;margin:8px 0 2px">' + (opts.title || 'What’s your name?') + '</div>' +
-        '<div style="font-size:13px;color:#6b7280;font-weight:700;margin-bottom:14px">It will show on the leaderboard 🏆</div>' +
-        '<input name="nm" maxlength="20" autocomplete="nickname" placeholder="Type your name" style="width:100%;box-sizing:border-box;border:2px solid #ddd6fe;border-radius:14px;padding:12px 14px;font-size:17px;font-weight:800;color:#1e1b4b;outline:none;text-align:center;font-family:inherit">' +
+        '<div style="font-size:13px;color:#6b7280;font-weight:700;margin-bottom:14px">Just your first name or a nickname. It shows on the leaderboard 🏆</div>' +
+        '<input name="nm" maxlength="12" autocomplete="nickname" placeholder="Type your name" style="width:100%;box-sizing:border-box;border:2px solid #ddd6fe;border-radius:14px;padding:12px 14px;font-size:17px;font-weight:800;color:#1e1b4b;outline:none;text-align:center;font-family:inherit">' +
         '<div data-err style="color:#dc2626;font-size:12px;font-weight:800;min-height:16px;margin-top:6px"></div>' +
         '<div style="display:flex;gap:8px;margin-top:4px">' +
           (opts.canCancel ? '<button type="button" data-cancel style="flex:1;border:none;border-radius:14px;padding:12px;font-size:15px;font-weight:900;background:#f1f0fb;color:#4c1d95;cursor:pointer;font-family:inherit">Cancel</button>' : '') +
@@ -586,6 +586,8 @@ function kqAskName(opts) {
       e.preventDefault();
       var v = input.value.replace(/\s+/g, ' ').trim();
       if (v.length < 2) { err.textContent = 'Please type at least 2 letters'; input.focus(); return; }
+      // Children's privacy: one word, letters only (no numbers, emails or phone numbers).
+      if (/[0-9@]/.test(v) || /\s/.test(v) || /[^\p{L}\p{M}'-]/u.test(v)) { err.textContent = 'Only your first name or a nickname, letters only'; input.focus(); return; }
       var saved = kqSetNick(v);
       box.remove();
       resolve(saved);

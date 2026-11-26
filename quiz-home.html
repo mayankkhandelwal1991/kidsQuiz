@@ -211,6 +211,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
         <button type="button" class="hm-ibtn hm-menu-btn" id="hmMenuBtn" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="hmActions">☰</button>
         <div class="hm-actions" id="hmActions">
           <button type="button" class="hm-ibtn" id="hmAdmin" style="display:none" onclick="location.href='admin/users.html'" aria-label="Admin console" title="Admin console"><img src="images/emoji/2699.svg" alt=""><span class="hm-lbl">Admin console</span></button>
+          <button type="button" class="hm-ibtn" onclick="KQProfiles.open()" aria-label="Switch child" title="Switch child"><img src="images/emoji/1f46a.svg" alt=""><span class="hm-lbl">Switch child</span></button>
           <button type="button" class="hm-ibtn" onclick="openMyStats()" aria-label="My stats"><img src="images/emoji/1f4ca.svg" alt=""><span class="hm-lbl">My stats</span></button>
           <button type="button" class="hm-ibtn" id="hmSound" aria-label="Sound on/off" title="Sound on/off"><img src="images/emoji/1f50a.svg" alt=""><span class="hm-lbl">Sound: on</span></button>
           <button type="button" class="hm-ibtn hm-out" id="pfAuthBtn" onclick="authButton()">Out</button>
@@ -388,7 +389,8 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 </div>
 
 <script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
-<script src="quiz-shared.js?v=20261124a" charset="utf-8"></script>
+<script src="profiles.js?v=20261126a" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261126a" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
 <script src="quiz/kids-engine.js?v=20261126a" charset="utf-8"></script>
 <script>
@@ -421,6 +423,8 @@ if (__cachedAuth && __cachedAuth.name) {
    way) raced the app's own login screen against the page reload, so nothing
    seemed to happen. Guests on the website still go to the sign-in gate. */
 function authButton() {
+  // Signing in with Google is for a grown-up: ask the parent question first.
+  if (window.isGuestUser && !window.__parentOk && typeof kqParentGate === 'function') { kqParentGate(function () { window.__parentOk = true; authButton(); window.__parentOk = false; }); return; }
   if (window.isGuestUser && kqIsAndroidApp() && kqHasNativeGoogle() && window.KQ && KQ.signIn) {
     const btn = document.getElementById('pfAuthBtn');
     if (btn) { btn.disabled = true; btn.textContent = '…'; }
@@ -873,9 +877,12 @@ function renderHomeProfile() {
     const nm = (displayName() || 'Player').trim();
     const ini = nm.charAt(0).toUpperCase() || '🙂';
     av.classList.add('kh-av');
+    const prof = (window.isGuestUser && window.KQProfiles) ? KQProfiles.active() : null;
     av.innerHTML = photo
       ? '<img class="pf-av" src="' + photo + '" referrerpolicy="no-referrer" alt="">'
-      : '<div class="pf-avph">' + ini + '</div>';
+      : prof && prof.av ? '<img src="images/emoji/' + Array.from(prof.av).map((c) => c.codePointAt(0)).filter((c) => c !== 0xfe0f).map((c) => c.toString(16)).join('-') + '.svg" alt="" style="width:70%;height:70%">' : '<div class="pf-avph">' + ini + '</div>';
+    av.style.cursor = 'pointer'; av.title = 'Switch child';
+    av.onclick = function () { if (window.KQProfiles) KQProfiles.open(); };
   }
   renderStatTiles();
   loadAccountStats();
@@ -930,6 +937,7 @@ const GOAL_MIN = 15;
    child's LKG/UKG class, otherwise at LKG. */
 const SKILLS = [
   { t: 'Stories', s: 'Read along', ic: '1f4d6', go: 'stories/index.html', a: '#f97316', b: '#ec4899', isNew: 1 },
+  { t: 'Rhymes', s: 'Sing along', ic: '1f3b5', go: 'stories/index.html#/r/', a: '#db2777', b: '#a855f7', isNew: 1 },
   { t: 'ABC', s: 'Letters', ic: '1f524', go: 'k_abc', a: '#8b5cf6', b: '#a78bfa' },
   { t: 'Phonics', s: 'Sounds', ic: '1f50a', go: 'k_phonics', a: '#0d9488', b: '#2dd4bf', isNew: 1 },
   { t: 'Tracing', s: 'Write A–Z', ic: '270f', go: 'games/word/tracing.html', a: '#7c3aed', b: '#ec4899', isNew: 1 },
@@ -1025,7 +1033,7 @@ function renderSkills() {
   let lv = null; try { lv = parseInt(localStorage.getItem('kq_last_class'), 10); } catch (e) {}
   const pre = (lv === 0 || lv === UKG_LEVEL) ? lv : 0;
   el.innerHTML = SKILLS.map(function (k) {
-    const href = /^k_/.test(k.go) ? 'quiz/play.html#/c/' + pre + '/' + k.go : k.go;
+    const href = /^k_/.test(k.go) ? 'quiz/play.html#/c/' + pre + '/' + k.go : /#\/r\/$/.test(k.go) ? k.go + (lv != null && !isNaN(lv) ? lv : 0) : k.go;
     return '<a class="hm-sk" href="' + href + '" style="--a:' + k.a + ';--b:' + k.b + '"><span class="bub"><img src="images/emoji/' + k.ic + '.svg" alt="">' + (k.isNew ? '<span class="new">NEW</span>' : '') + '</span><b>' + k.t + '</b><small>' + k.s + '</small></a>';
   }).join('');
 }
@@ -1250,10 +1258,12 @@ loadPlanStories();
 owlTalk();
 // Guests who never gave a name (older sessions) are asked once.
 if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
-  setTimeout(function () { kqAskName().then(renderHomeProfile); }, 400);
+  setTimeout(function () { kqAskName().then(function () { renderHomeProfile(); if (window.KQProfiles) KQProfiles.ensure(); }); }, 400);
+} else if (window.isGuestUser && window.KQProfiles) {
+  setTimeout(function () { KQProfiles.askOnStart(); }, 300);
 }
 </script>
-<script src="games/kq-leaderboard.js?v=20261125b"></script>
+<script src="games/kq-leaderboard.js?v=20261126a"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>try { KQWebAds.rails(); } catch (e) {}</script>
 <script>

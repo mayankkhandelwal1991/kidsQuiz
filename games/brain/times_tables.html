@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<link rel="icon" href="../../images/favicon/favicon.ico" sizes="any"><link rel="icon" href="../../images/favicon/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../../images/favicon/apple-touch-icon.png"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Times Tables</title>
+<style>
+.tt { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: 74px 14px 24px; font-family: 'Baloo 2', sans-serif; color: #1e1b4b;
+  background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.16) 0 2px, transparent 3px) 0 0 / 44px 44px, linear-gradient(170deg, #7c2d12, #ea580c 55%, #facc15); }
+.tt-card { width: 100%; max-width: 480px; background: #fff; border-radius: 28px; padding: 14px; text-align: center; box-shadow: 0 8px 0 rgba(0,0,0,.18); }
+.tt-h { font-size: 22px; font-weight: 800; margin: 0 0 8px; color: #9a3412; }
+.tt-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.tt-t { border: none; border-radius: 18px; padding: 6px 2px 4px; font: 800 22px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,.2); display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+.tt-t small { font-size: 11px; letter-spacing: 1px; min-height: 13px; }
+.tt-t.mix { grid-column: span 2; font-size: 17px; }
+.tt-t:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.2); }
+.tt-chart { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; text-align: left; font-size: 21px; font-weight: 800; margin: 6px 0 12px; }
+.tt-chart span { padding: 2px 8px; border-radius: 10px; transition: background .2s; } .tt-chart span.on { background: #fef3c7; }
+.tt-chart b { color: #ea580c; }
+.tt-go { width: 100%; border: none; border-radius: 20px; padding: 12px; font: 800 21px 'Baloo 2', sans-serif; color: #fff; background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 6px 0 #15803d; cursor: pointer; }
+.tt-prog { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; }
+.tt-prog i { width: 22px; height: 8px; border-radius: 4px; background: #ffedd5; } .tt-prog i.ok { background: #22c55e; } .tt-prog i.no { background: #f87171; } .tt-prog i.cur { background: #fb923c; }
+.tt-q { display: inline-block; background: #fff7ed; border-radius: 24px; padding: 8px 22px; margin: 4px 0 12px; font-size: 50px; font-weight: 800; color: #7c2d12; white-space: nowrap; animation: ttIn .35s cubic-bezier(.34,1.56,.64,1); }
+.tt-q u { text-decoration: none; color: #ea580c; }
+@keyframes ttIn { from { transform: scale(.5); opacity: 0; } }
+.tt-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tt-o { border: none; border-radius: 20px; min-height: 78px; font: 800 34px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,.2); }
+.tt-o:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,.2); }
+.tt-o.ok { background: #22c55e !important; animation: ttPop .4s; } .tt-o.no { background: #ef4444 !important; animation: ttShake .4s; } .tt-o.dim { opacity: .45; }
+@keyframes ttPop { 50% { transform: scale(1.08); } } @keyframes ttShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.tt-hint { margin-top: 10px; font-size: 14px; font-weight: 700; color: #9a3412; min-height: 20px; }
+@media (max-width: 360px) { .tt-chart { font-size: 17px; } .tt-q { font-size: 40px; } }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261124c"></script>
+<script src="../ads.js"></script>
+<script>
+/* Times Tables — pick a table (2–20 or a mix), see it, then 10 questions. Stars are saved per table. */
+const COLS = ['#f43f5e', '#f59e0b', '#06b6d4', '#8b5cf6'];
+const TILE = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#14b8a6', '#0ea5e9', '#6366f1', '#a855f7', '#ec4899'];
+const MIXES = [{ id: 'm1', name: 'Mix 2–10', from: 2, to: 10 }, { id: 'm2', name: 'Mix 11–20', from: 11, to: 20 }];
+const G = KQ3D.init({
+  id: 'times_tables', title: 'Times Tables', bestKey: 'ttBest', music: true,
+  hero: ['✖️', '🦉', '⭐'], colors: ['#ea580c', '#facc15'],
+  how: [['🔢', 'Pick a table from 2 to 20, or a mix'], ['👀', 'Look at the table — it is read out loud'], ['✖️', 'Answer 10 questions — fast answers get bonus points'], ['⭐', 'Get 3 stars on every table!']],
+  scoreIcon: '✖️', stars: [60, 100, 140],
+  onReset: () => reset()
+});
+const box = document.createElement('div'); box.className = 'tt'; G.scene.appendChild(box);
+let table, qs, i, score, results, streak, t0, locked;
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const shuffle = (a) => a.slice().sort(() => Math.random() - 0.5);
+function say(t) {
+  try { if (localStorage.getItem('kq_muted') === '1') return; } catch (e) {}
+  try { if (window.Android && Android.speak) { Android.speak(t, 'en'); return; } } catch (e) {}
+  try { const u = new SpeechSynthesisUtterance(t); u.rate = 0.9; u.pitch = 1.1; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}
+}
+function loadStars() { try { return JSON.parse(localStorage.getItem('kq_tt_stars') || '{}') || {}; } catch (e) { return {}; } }
+function saveStars(id, n) { const s = loadStars(); if (n > (s[id] || 0)) { s[id] = n; try { localStorage.setItem('kq_tt_stars', JSON.stringify(s)); } catch (e) {} } }
+const starTxt = (n) => '★★★'.slice(0, n) + '☆☆☆'.slice(0, 3 - (n || 0));
+
+function reset() {
+  score = 0; G.score(0);
+  const st = loadStars();
+  let h = '<div class="tt-card"><div class="tt-h">Which table?</div><div class="tt-grid">';
+  for (let n = 2; n <= 20; n++) h += '<button type="button" class="tt-t" data-t="' + n + '" style="background:' + TILE[(n - 2) % TILE.length] + '">×' + n + '<small>' + (st[n] ? starTxt(st[n]) : '') + '</small></button>';
+  h += MIXES.map((m) => '<button type="button" class="tt-t mix" data-t="' + m.id + '" style="background:#1e1b4b">🎲 ' + m.name + '<small>' + (st[m.id] ? starTxt(st[m.id]) : '') + '</small></button>').join('');
+  box.innerHTML = h + '</div></div>';
+  box.querySelectorAll('.tt-t').forEach((b) => b.onclick = () => { KQ3D.sfx('pop'); pick(b.dataset.t); });
+  box.scrollTop = 0;
+}
+function pick(t) {
+  const mix = MIXES.find((m) => m.id === t);
+  table = mix ? { id: mix.id, name: mix.name, from: mix.from, to: mix.to } : { id: t, name: '×' + t, from: +t, to: +t };
+  if (mix) return start();
+  const n = +t;
+  box.innerHTML = '<div class="tt-card"><div class="tt-h">The ' + n + ' times table</div><div class="tt-chart">' +
+    Array.from({ length: 10 }, (_, k) => '<span data-k="' + k + '">' + n + ' × ' + (k + 1) + ' = <b>' + n * (k + 1) + '</b></span>').join('') +
+    '</div><button type="button" class="tt-go" id="ttGo">I’m ready! ▶</button></div>';
+  document.getElementById('ttGo').onclick = start;
+  readChart(n, 0);
+}
+function readChart(n, k) {
+  if (k >= 10 || !document.querySelector('.tt-chart')) return;
+  box.querySelectorAll('.tt-chart span').forEach((s) => s.classList.toggle('on', +s.dataset.k === k));
+  say(n + ' times ' + (k + 1) + ' is ' + n * (k + 1));
+  G.later(() => readChart(n, k + 1), 2100);
+}
+function make(k, j) {
+  const a = rnd(table.from, table.to), b = (table.from === table.to) ? k + 1 : rnd(2, 10), ans = a * b;
+  const missing = j >= 5 && Math.random() < 0.4;
+  const right = missing ? b : ans;
+  const opts = new Set([right]);
+  const near = missing ? [b - 1, b + 1, b + 2, b - 2] : [ans + a, ans - a, ans + 1, ans - 1, ans + 10, ans - b];
+  shuffle(near).forEach((v) => { if (opts.size < 4 && v > 0) opts.add(v); });
+  while (opts.size < 4) opts.add(right + opts.size + 2);
+  return { a, b, ans, missing, right, opts: shuffle([...opts]) };
+}
+function start() {
+  i = 0; score = 0; results = []; streak = 0; G.score(0);
+  qs = shuffle(Array.from({ length: 10 }, (_, k) => k)).map((k, j) => make(k, j));
+  show();
+}
+function show() {
+  const q = qs[i]; locked = false; t0 = performance.now();
+  box.innerHTML = '<div class="tt-card"><div class="tt-prog">' + qs.map((_, k) => '<i class="' + (results[k] === true ? 'ok' : results[k] === false ? 'no' : k === i ? 'cur' : '') + '"></i>').join('') + '</div>' +
+    '<div class="tt-q">' + q.a + ' × ' + (q.missing ? '<u>?</u>' : q.b) + ' = ' + (q.missing ? q.ans : '<u>?</u>') + '</div>' +
+    '<div class="tt-opts">' + q.opts.map((v, k) => '<button type="button" class="tt-o" data-v="' + v + '" style="background:' + COLS[k] + '">' + v + '</button>').join('') + '</div>' +
+    '<div class="tt-hint">' + table.name + '</div></div>';
+  box.querySelectorAll('.tt-o').forEach((b) => b.onclick = () => answer(b, +b.dataset.v, q));
+  setTimeout(() => say(q.missing ? q.a + ' times what is ' + q.ans + '?' : q.a + ' times ' + q.b), 200);
+}
+function answer(b, v, q) {
+  if (G.state !== 'play' || locked) return; locked = true;
+  const ok = v === q.right, secs = (performance.now() - t0) / 1000;
+  results[i] = ok;
+  if (ok) {
+    streak++; const pts = 10 + (secs < 4 ? 3 : 0) + (streak >= 3 ? 2 : 0); score += pts; G.score(score);
+    b.classList.add('ok'); KQ3D.sfx(streak >= 3 ? 'coin' : 'success');
+    const r = b.getBoundingClientRect(); G.pop('+' + pts + (secs < 4 ? ' ⚡' : ''), r.left + r.width / 2, r.top, '#fde047');
+  } else {
+    streak = 0; b.classList.add('no'); KQ3D.sfx('wrong');
+    box.querySelectorAll('.tt-o').forEach((x) => { if (+x.dataset.v === q.right) x.classList.add('ok'); else if (x !== b) x.classList.add('dim'); });
+    box.querySelector('.tt-hint').textContent = q.a + ' × ' + q.b + ' = ' + q.ans;
+  }
+  say(q.a + ' times ' + q.b + ' is ' + q.ans);
+  G.later(() => { i++; if (i >= qs.length) finish(); else show(); }, ok ? 1000 : 2000);
+}
+function finish() {
+  const right = results.filter(Boolean).length, stars = right === 10 ? 3 : right >= 8 ? 2 : right >= 5 ? 1 : 0;
+  saveStars(table.id, stars);
+  G.over({ score, title: right === 10 ? 'Table master! ✖️' : right >= 7 ? 'Great job!' : 'Keep practising!', lines: ['✅ ' + right + ' / 10 right', '✖️ ' + table.name + '  ' + starTxt(stars)] });
+}
+reset();
+</script>
+</body></html>

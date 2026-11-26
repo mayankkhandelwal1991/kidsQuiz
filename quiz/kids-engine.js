@@ -118,6 +118,16 @@
     K: 'kite', L: 'lion', M: 'monkey', N: 'nose', O: 'orange', P: 'pig', Q: 'queen', R: 'rabbit', S: 'sun', T: 'tiger',
     U: 'umbrella', V: 'violin', W: 'watermelon', Y: 'yoyo', Z: 'zebra',
   };
+  // Phonics: letter -> [sound to say, words that start with that sound]. C is the hard "k" sound, so there is no K.
+  const SOUND_WORDS = {
+    B: ['buh', ['ball', 'bus', 'bee', 'banana', 'bear', 'bed']], C: ['kuh', ['cat', 'cow', 'car', 'cake', 'carrot', 'cookie']],
+    D: ['duh', ['dog', 'drum', 'duck', 'dice']], F: ['fff', ['fish', 'fox', 'frog', 'fire']], G: ['guh', ['goat', 'grapes', 'gift']],
+    H: ['hah', ['hat', 'hen', 'horse', 'house', 'heart']], L: ['lll', ['lion', 'lemon', 'leaf']], M: ['mmm', ['monkey', 'moon', 'mouse', 'mango', 'milk']],
+    P: ['puh', ['pig', 'panda', 'pizza', 'pear', 'pencil']], R: ['rrr', ['rabbit', 'robot', 'rocket', 'rainbow']], S: ['sss', ['sun', 'snake', 'star', 'spoon', 'snail', 'soap']],
+    T: ['tuh', ['tiger', 'tree', 'train', 'tomato', 'turtle']], W: ['wuh', ['watermelon', 'whale']], Z: ['zzz', ['zebra']],
+  };
+  const RHYMES = [['cat', 'hat'], ['frog', 'dog'], ['bee', 'tree'], ['cake', 'snake'], ['moon', 'spoon'], ['star', 'car'], ['house', 'mouse'], ['bear', 'pear'], ['rain', 'train'], ['snail', 'whale']];
+  const CVC = ['cat', 'dog', 'sun', 'pig', 'hat', 'bus', 'bed', 'hen'];
   const LOOKALIKE = { b: ['d', 'p', 'q'], d: ['b', 'p', 'q'], p: ['q', 'b', 'd'], q: ['p', 'g', 'd'], m: ['n', 'w', 'u'], n: ['m', 'h', 'u'], u: ['n', 'v', 'w'], w: ['m', 'v', 'u'] };
 
   const ANIMAL_SOUND = { dog: 'Woof woof', cat: 'Meow meow', cow: 'Moo moo', lion: 'Roar', duck: 'Quack quack', hen: 'Cluck cluck', sheep: 'Baa baa', horse: 'Neigh', pig: 'Oink oink', frog: 'Ribbit ribbit', owl: 'Hoot hoot', bee: 'Buzz buzz', snake: 'Hiss', goat: 'Maa maa', mouse: 'Squeak squeak', monkey: 'Ooh ooh aah aah' };
@@ -330,6 +340,23 @@
       return { type: 'pick', cue: { kind: 'after', text: all[i] }, prompt: `What letter comes after ${all[i]}?`, say: `What letter comes after ${all[i]}?`, options: shuffleR(r, [ans].concat(wrong)).map((x) => optText(x)), answer: ans, big: true };
     },
 
+    k_phonics(r, L) {
+      const kind = isU(L) ? ri(r, 0, 2) : ri(r, 0, 1);
+      if (kind === 0) {
+        const letters = Object.keys(SOUND_WORDS), l = pickR(r, letters), [snd, words] = SOUND_WORDS[l];
+        const right = pickR(r, words);
+        const wrong = sampleR(r, others(letters, [l]), NO(L) - 1).map((x) => pickR(r, SOUND_WORDS[x][1]));
+        return { type: 'pick', cue: { kind: 'listen' }, prompt: `Which one starts with the “${l.toLowerCase()}” sound?`, say: `${snd}, ${snd}. Which picture starts with the sound ${snd}?`, show: { text: l + ' ' + l.toLowerCase() }, options: shuffleR(r, [right].concat(wrong)).map(optPic), answer: right };
+      }
+      if (kind === 1) {
+        const pair = pickR(r, RHYMES), flip = r() < 0.5, a = flip ? pair[1] : pair[0], b = flip ? pair[0] : pair[1];
+        const wrong = sampleR(r, RHYMES.filter((p) => p !== pair).map((p) => pickR(r, p)), NO(L) - 1);
+        return { type: 'pick', cue: { kind: 'listen' }, prompt: `What rhymes with ${nm(a).toLowerCase()}?`, say: `What rhymes with ${nm(a)}?`, show: { pic: pic(a) }, options: shuffleR(r, [b].concat(wrong)).map(optPic), answer: b };
+      }
+      const w = pickR(r, CVC), sounds = nm(w).toLowerCase().split('');
+      return { type: 'pick', cue: { kind: 'listen' }, prompt: `Sound it out: ${sounds.join(' – ')}`, say: `Sound it out. ${sounds.join(', ')}. Which picture is it?`, show: { text: sounds.join(' ') }, options: picOptions(r, w, others(CVC, [w]), NO(L)), answer: w };
+    },
+
     k_animals(r, L) {
       const pool = isU(L) ? G.animals : G.easyAnimals;
       const kind = isU(L) ? ri(r, 0, 4) : ri(r, 0, 2);
@@ -525,6 +552,7 @@
     { id: 'k_colours', icon: '🎨', title: 'Colours', blurb: 'Rainbow fun', c: ['#ec4899', '#f472b6'], levels: [0, -1] },
     { id: 'k_shapes', icon: '🔺', title: 'Shapes', blurb: 'Circle, square…', c: ['#14b8a6', '#2dd4bf'], levels: [0, -1] },
     { id: 'k_abc', icon: '🔤', title: 'ABC', blurb: 'Letters & sounds', c: ['#8b5cf6', '#a78bfa'], levels: [0, -1] },
+    { id: 'k_phonics', icon: '🔊', title: 'Phonics', blurb: 'Sounds & rhymes', c: ['#0d9488', '#2dd4bf'], levels: [0, -1] },
     { id: 'k_animals', icon: '🦁', title: 'Animals', blurb: 'Find the animal', c: ['#f59e0b', '#fbbf24'], levels: [0, -1] },
     { id: 'k_sounds', icon: '🎵', title: 'Who Says?', blurb: 'Listen & tap', c: ['#0ea5e9', '#38bdf8'], levels: [0, -1] },
     { id: 'k_fruits', icon: '🍎', title: 'Fruits & Veggies', blurb: 'Yummy!', c: ['#ef4444', '#f87171'], levels: [0, -1] },

@@ -81,13 +81,6 @@ body.pg-home { background: linear-gradient(180deg, #e0f2fe 0%, #f5f3ff 45%, #fdf
 .hm-stats .pf-stat img { width: 24px; height: 24px; display: block; margin: 0 auto 2px; }
 .hm-stats .pf-stat b { display: block; font-size: 19px; font-weight: 800; color: #1e1b4b; line-height: 1.1; }
 .hm-stats .pf-stat span { font-size: 10.5px; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: .03em; }
-.hm-goal { margin-top: 14px; background: #fff; border-radius: 20px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 6px 18px rgba(30,27,75,.07); }
-.hm-goal:empty { display: none; }
-.hm-goal img { width: 38px; height: 38px; flex: 0 0 auto; }
-.hm-goal .g { flex: 1; min-width: 0; }
-.hm-goal b { font-size: 15px; } .hm-goal small { display: block; font-size: 12px; font-weight: 700; color: #6b7280; }
-.hm-goal .gbar { margin-top: 5px; height: 10px; border-radius: 5px; background: #ecfeff; overflow: hidden; }
-.hm-goal .gbar i { display: block; height: 100%; border-radius: 5px; background: linear-gradient(90deg, #22d3ee, #22c55e); transition: width .6s; }
 .hm-h { display: flex; align-items: center; gap: 8px; margin: 18px 4px 10px; font-size: 20px; font-weight: 800; color: #4c1d95; }
 .hm-h img { width: 26px; height: 26px; }
 .hm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -95,32 +88,20 @@ body.pg-home { background: linear-gradient(180deg, #e0f2fe 0%, #f5f3ff 45%, #fdf
 .hm-tile:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--sh), 0 6px 12px rgba(30,27,75,.14); }
 .hm-tile::before { content: ''; position: absolute; width: 150px; height: 150px; right: -50px; top: -60px; border-radius: 50%; background: rgba(255,255,255,.18); }
 .hm-tile::after { content: ''; position: absolute; width: 90px; height: 90px; left: -30px; bottom: -40px; border-radius: 50%; background: rgba(255,255,255,.12); }
-.t-quiz { background: linear-gradient(140deg, #818cf8, #6366f1); --sh: #4338ca; grid-column: 1 / -1; min-height: 0; display: grid !important; grid-template-columns: auto 1fr; grid-template-rows: auto auto auto; column-gap: 14px; align-items: center; }
-.t-quiz .hm-art { grid-row: 1 / 4; }
-.t-quiz .hm-subj { grid-column: 2; margin-top: 0; }
-.t-quiz .hm-tt, .t-quiz .hm-ts, .t-quiz .hm-go { grid-column: 2; }
-.t-quiz .hm-tt { padding-top: 4px; margin-top: 0; }
-.t-quiz .hm-go { justify-self: start; margin-top: 6px; }
+.t-quiz { background: linear-gradient(140deg, #818cf8, #6366f1); --sh: #4338ca; }
 .t-games { background: linear-gradient(140deg, #fb923c, #f43f5e); --sh: #be123c; }
 .t-multi { background: linear-gradient(140deg, #38bdf8, #0284c7); --sh: #075985; }
 .t-olym { background: linear-gradient(140deg, #34d399, #0d9488); --sh: #0f766e; }
-.t-lead { background: linear-gradient(140deg, #fcd34d, #f59e0b); --sh: #b45309; }
 .hm-art { position: relative; z-index: 1; width: 64px; height: 64px; border-radius: 20px; background: #fff; display: grid; place-items: center; box-shadow: 0 5px 0 rgba(0,0,0,.12); }
 .hm-art > img { width: 42px; height: 42px; animation: hmWig 3.2s ease-in-out infinite; }
 .hm-art i { position: absolute; right: -14px; bottom: -10px; width: 34px; height: 34px; border-radius: 12px; background: #fff; display: grid; place-items: center; box-shadow: 0 3px 0 rgba(0,0,0,.12); }
 .hm-art i img { width: 22px; height: 22px; }
 @keyframes hmWig { 0%,80%,100% { transform: rotate(0); } 86% { transform: rotate(-12deg) scale(1.1); } 93% { transform: rotate(10deg) scale(1.1); } }
-.t-games .hm-art > img { animation-delay: .5s; } .t-multi .hm-art > img { animation-delay: 1s; } .t-olym .hm-art > img { animation-delay: 1.5s; } .t-lead .hm-art > img { animation-delay: 2s; }
+.t-games .hm-art > img { animation-delay: .5s; } .t-multi .hm-art > img { animation-delay: 1s; } .t-olym .hm-art > img { animation-delay: 1.5s; }
 .hm-tt { position: relative; z-index: 1; margin-top: auto; padding-top: 10px; font-size: 22px; font-weight: 800; line-height: 1.05; text-shadow: 0 2px 0 rgba(0,0,0,.15); }
 .hm-ts { position: relative; z-index: 1; font-size: 12.5px; font-weight: 700; opacity: .95; line-height: 1.25; margin-top: 2px; }
 .hm-go { position: relative; z-index: 1; align-self: flex-start; margin-top: 8px; background: rgba(255,255,255,.95); color: #1e1b4b; border-radius: 999px; padding: 2px 12px; font-size: 13px; font-weight: 800; }
-.t-quiz .hm-art { width: 78px; height: 78px; border-radius: 24px; } .t-quiz .hm-art > img { width: 52px; height: 52px; }
-.t-quiz .hm-tt { font-size: 26px; } .t-quiz .hm-ts { font-size: 13px; }
-.t-quiz .hm-go { font-size: 16px; padding: 4px 16px; animation: hmPulse 1.6s ease-in-out infinite; }
 body.pg-home .container { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; background: transparent !important; box-shadow: none !important; border: 0 !important; border-radius: 0 !important; }
-.hm-subj { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
-.hm-subj img { width: 28px; height: 28px; padding: 4px; border-radius: 10px; background: rgba(255,255,255,.25); }
-.hm-subj img:nth-child(odd) { animation: hmBob 3s ease-in-out infinite; } .hm-subj img:nth-child(even) { animation: hmBob 3s ease-in-out infinite .8s; }
 .hm-row2 { display: grid; gap: 12px; margin-top: 14px; }
 .hm-daily { margin: 0 !important; }
 .hm-cont { width: 100%; border: none; cursor: pointer; display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 22px; padding: 10px 12px; text-align: left; font-family: inherit; box-shadow: 0 6px 0 #ede9fe, 0 8px 18px rgba(30,27,75,.07); }
@@ -130,23 +111,12 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 .hm-cont .ct { flex: 1; min-width: 0; } .hm-cont .ct small { display: block; font-size: 11px; font-weight: 800; color: #f97316; text-transform: uppercase; letter-spacing: .05em; }
 .hm-cont .ct b { display: block; font-size: 17px; color: #1e1b4b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hm-cont .cg { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; border-radius: 14px; padding: 6px 14px; font-weight: 800; box-shadow: 0 3px 0 #15803d; }
-.hm-love { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.hm-chip { border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 20px; font-family: inherit; text-align: left; color: #fff; box-shadow: 0 5px 0 var(--sh); }
-.hm-chip:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--sh); }
-.hm-chip img { width: 34px; height: 34px; background: #fff; border-radius: 12px; padding: 4px; flex: 0 0 auto; }
-.hm-chip b { display: block; font-size: 15px; line-height: 1.1; } .hm-chip small { font-size: 11.5px; font-weight: 700; opacity: .95; }
-.c-rate { background: linear-gradient(135deg, #fbbf24, #f97316); --sh: #c2410c; } .c-share { background: linear-gradient(135deg, #34d399, #059669); --sh: #047857; }
-.c-apps { background: linear-gradient(135deg, #a78bfa, #7c3aed); --sh: #5b21b6; } .c-insta { background: linear-gradient(135deg, #f472b6, #e11d48); --sh: #9f1239; }
 @media (min-width: 760px) {
   .hm-sky { border-radius: 0 0 44px 44px; padding: 18px 40px 80px; }
   .hm-sky > * { max-width: 1040px; margin-left: auto; margin-right: auto; }
   .hm-owl { width: 130px; } .hm-owl svg { width: 130px; height: 130px; } .hm-bubble { right: 120px; top: 0; width: 200px; font-size: 14px; }
   .hm-grid { grid-template-columns: repeat(4, 1fr); }
-  .t-quiz { grid-template-columns: auto auto 1fr; }
-  .t-quiz .hm-subj { grid-column: 3; grid-row: 1 / 4; justify-content: flex-end; }
-  .hm-subj img { width: 40px; height: 40px; padding: 6px; }
   .hm-row2 { grid-template-columns: 1fr 1fr; align-items: stretch; }
-  .hm-love { grid-template-columns: repeat(4, 1fr); }
   .hm-stats .pf-stat b { font-size: 24px; }
 }
 @media (max-width: 380px) {
@@ -159,8 +129,6 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   .hm-stats { gap: 6px; } .hm-stats .pf-stat img { width: 20px; height: 20px; } .hm-stats .pf-stat b { font-size: 16px; } .hm-stats .pf-stat span { font-size: 9px; }
   .hm-tt { font-size: 19px; } .hm-ts { font-size: 11.5px; } .hm-tile { min-height: 118px; padding: 10px; }
   .hm-art { width: 54px; height: 54px; border-radius: 16px; } .hm-art > img { width: 36px; height: 36px; }
-  .t-quiz .hm-art { width: 64px; height: 64px; } .t-quiz .hm-tt { font-size: 22px; } .t-quiz .hm-subj img { width: 24px; height: 24px; }
-  .hm-chip { padding: 8px 10px; } .hm-chip b { font-size: 13px; } .hm-chip img { width: 28px; height: 28px; }
 }
 @media (max-height: 560px) and (orientation: landscape) {
   .hm-sky { padding-bottom: 46px; } .hm-hello { margin-top: 6px; } .hm-owl { width: 70px; } .hm-owl svg { width: 70px; height: 70px; }
@@ -170,18 +138,30 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 </style>
 
 <style>
-  /* Learn & Play section cards (home) */
+  /* Home: skill row, Today-tile goal bar, grown-ups strip */
   .hm-more { margin-left: auto; font-size: 14px; color: #7c3aed; text-decoration: none; font-weight: 800; }
-  .hm-learn { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0 0 6px; }
-  .hm-lc { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; padding: 10px 4px 8px; border-radius: 20px; color: #fff; text-decoration: none; background: linear-gradient(150deg, var(--a), var(--b)); box-shadow: 0 5px 0 rgba(0,0,0,.18); min-height: 104px; animation: hmLc .45s cubic-bezier(.34,1.56,.64,1) backwards; }
-  .hm-lc:nth-child(2) { animation-delay: .05s; } .hm-lc:nth-child(3) { animation-delay: .1s; } .hm-lc:nth-child(4) { animation-delay: .15s; } .hm-lc:nth-child(5) { animation-delay: .2s; }
-  @keyframes hmLc { from { transform: scale(.7); opacity: 0; } }
-  .hm-lc:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
-  .hm-lc img { width: 40px; height: 40px; }
-  .hm-lc b { font-size: 15px; line-height: 1.05; }
-  .hm-lc small { font-size: 11px; font-weight: 700; opacity: .95; line-height: 1.1; }
-  @media (max-width: 380px) { .hm-learn { grid-template-columns: repeat(3, 1fr); } }
-  .hm-chip.c-parents { background: #ede9fe; }
+  .hm-skills { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x proximity; padding: 2px 4px 10px; margin: 0 -14px; padding-left: 14px; padding-right: 14px; scrollbar-width: none; }
+  .hm-skills::-webkit-scrollbar { display: none; }
+  .hm-sk { flex: 0 0 auto; width: 92px; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: #1e1b4b; }
+  .hm-sk .bub { position: relative; width: 76px; height: 76px; border-radius: 26px; display: grid; place-items: center; background: linear-gradient(150deg, var(--a), var(--b)); box-shadow: 0 5px 0 rgba(0,0,0,.16); }
+  .hm-sk .bub img { width: 46px; height: 46px; }
+  .hm-sk:active .bub { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.16); }
+  .hm-sk b { font-size: 14px; line-height: 1.05; text-align: center; }
+  .hm-sk small { font-size: 10.5px; font-weight: 800; color: #6b7280; line-height: 1; }
+  .hm-sk .new { position: absolute; top: -6px; right: -8px; background: #facc15; color: #713f12; border: 2px solid #fff; border-radius: 999px; font-size: 10px; font-weight: 800; padding: 0 6px; }
+  .hm-stats .pf-stat .gb { display: block; height: 5px; margin: 3px 8px 0; border-radius: 3px; background: #ecfeff; overflow: hidden; }
+  .hm-stats .pf-stat .gb i { display: block; height: 100%; background: linear-gradient(90deg, #22d3ee, #22c55e); }
+  .hm-grown { margin-top: 18px; display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 22px; padding: 8px; box-shadow: 0 6px 18px rgba(30,27,75,.07); }
+  .hm-gp { flex: 1; min-width: 0; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 16px; background: #ede9fe; font-family: inherit; text-align: left; color: #4c1d95; }
+  .hm-gp img { width: 34px; height: 34px; flex: 0 0 auto; }
+  .hm-gp b { display: block; font-size: 15px; line-height: 1.1; } .hm-gp small { display: block; font-size: 11px; font-weight: 700; color: #6b7280; }
+  .hm-gi { display: flex; gap: 4px; }
+  .hm-gi button { border: none; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 4px 2px; width: 44px; font-family: inherit; color: #6b7280; }
+  .hm-gi img { width: 26px; height: 26px; } .hm-gi small { font-size: 10px; font-weight: 800; }
+  @media (max-width: 520px) { .hm-grown { flex-wrap: wrap; } .hm-gp { flex: 1 1 100%; } .hm-gi { flex: 1 1 100%; justify-content: space-around; } }
+  .hm .kqp-home:has(> :nth-child(4):last-child) { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 760px) { .hm .kqp-home:has(> :nth-child(4):last-child) { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 760px) { .hm-skills { flex-wrap: wrap; overflow: visible; margin: 0; padding: 2px 0 10px; } }
 </style>
 </head>
 <body class="pg-home">
@@ -198,7 +178,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
         <svg class="hm-hills" viewBox="0 0 1200 200" preserveAspectRatio="none"><path d="M0 110 Q 220 20 460 100 T 900 80 T 1200 95 V200 H0Z" fill="#86efac"/><path d="M0 150 Q 280 85 560 145 T 1040 130 T 1200 140 V200 H0Z" fill="#4ade80"/></svg>
       </div>
       <div class="hm-top">
-        <div class="hm-logo"><img src="images/app-logo.png" alt="Kids Quiz logo"><div><b>Kids Quiz</b><small>LKG – Class 5</small></div></div>
+        <div class="hm-logo"><img src="images/app-logo.png" alt="Kids Quiz logo"><div><b>Kids Quiz</b><small>Ages 3–10 · LKG – Class 5</small></div></div>
         <button type="button" class="hm-ibtn hm-menu-btn" id="hmMenuBtn" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="hmActions">☰</button>
         <div class="hm-actions" id="hmActions">
           <button type="button" class="hm-ibtn" id="hmAdmin" style="display:none" onclick="location.href='admin/users.html'" aria-label="Admin console" title="Admin console"><img src="images/emoji/2699.svg" alt=""><span class="hm-lbl">Admin console</span></button>
@@ -224,57 +204,51 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
     <main class="hm-body">
       <div class="pf-stats hm-stats" id="pfStats"></div>
 
-      <div class="hm-h"><img src="images/emoji/1f3ae.svg" alt=""> Let’s Learn &amp; Play!</div>
-      <div class="hm-grid">
-        <button type="button" class="hm-tile t-quiz" onclick="openQuizFlow()">
-          <span class="hm-art"><img src="images/emoji/1f3af.svg" alt=""><i class="a2"><img src="images/emoji/1f4da.svg" alt=""></i></span>
-          <span class="hm-subj"><img src="images/emoji/1f522.svg" alt=""><img src="images/emoji/1f43e.svg" alt=""><img src="images/emoji/1f524.svg" alt=""><img src="images/emoji/1f30d.svg" alt=""><img src="images/emoji/1f52c.svg" alt=""><img src="images/emoji/1f3a8.svg" alt=""></span>
-          <span class="hm-tt">Quiz</span><span class="hm-ts">Fun questions for LKG – Class 5</span><span class="hm-go">Start ›</span>
-        </button>
-        <button type="button" class="hm-tile t-games" onclick="openSinglePlayer()">
-          <span class="hm-art"><img src="images/emoji/1f3ae.svg" alt=""><i class="a2"><img src="images/emoji/1f680.svg" alt=""></i></span>
-          <span class="hm-tt">Games</span><span class="hm-ts">50+ games &amp; 3D fun</span><span class="hm-go">Play ›</span>
-        </button>
-        <button type="button" class="hm-tile t-multi" onclick="openMultiplayer()">
-          <span class="hm-art"><img src="images/emoji/1f465.svg" alt=""><i class="a2"><img src="images/emoji/1f3b2.svg" alt=""></i></span>
-          <span class="hm-tt">With Friends</span><span class="hm-ts">Play online, 2–8 players</span><span class="hm-go">Join ›</span>
-        </button>
-        <button type="button" class="hm-tile t-olym" onclick="window.location.href='Olympiad/index.html'">
-          <span class="hm-art"><img src="images/emoji/1f3c5.svg" alt=""><i class="a2"><img src="images/emoji/1f9e0.svg" alt=""></i></span>
-          <span class="hm-tt">Olympiad</span><span class="hm-ts">8 subjects · test papers</span><span class="hm-go">Try ›</span>
-        </button>
-        <button type="button" class="hm-tile t-lead" onclick="openLeaderboardHub()">
-          <span class="hm-art"><img src="images/emoji/1f3c6.svg" alt=""><i class="a2"><img src="images/emoji/1f451.svg" alt=""></i></span>
-          <span class="hm-tt">Leaders</span><span class="hm-ts">Top players &amp; stats</span><span class="hm-go">See ›</span>
-        </button>
-      </div>
-
-      <div class="hm-h"><img src="images/emoji/1f4da.svg" alt=""> Learn &amp; Play <a class="hm-more" href="learn.html">See all ›</a></div>
-      <div class="hm-learn">
-        <a class="hm-lc" href="learn.html#quiz" style="--a:#ef4444;--b:#f97316"><img src="images/emoji/1f3af.svg" alt=""><b>Quizzes</b><small>Fun questions</small></a>
-        <a class="hm-lc" href="learn.html#math" style="--a:#f59e0b;--b:#eab308"><img src="images/emoji/1f522.svg" alt=""><b>Math</b><small>+ − × ÷ games</small></a>
-        <a class="hm-lc" href="learn.html#science" style="--a:#16a34a;--b:#0d9488"><img src="images/emoji/1f52c.svg" alt=""><b>Science</b><small>Facts &amp; quizzes</small></a>
-        <a class="hm-lc" href="learn.html#brain" style="--a:#8b5cf6;--b:#6366f1"><img src="images/emoji/1f9e0.svg" alt=""><b>Brain</b><small>Patterns &amp; memory</small></a>
-        <a class="hm-lc" href="learn.html#learn" style="--a:#0ea5e9;--b:#2563eb"><img src="images/emoji/1f524.svg" alt=""><b>Words</b><small>Spell &amp; read</small></a>
-      </div>
-
-      <div class="hm-h"><img src="images/emoji/2728.svg" alt=""> Fun zone</div>
-      <div class="kqp-home" id="kqpHome"></div>
-
+      <!-- 1. Today: the one thing to do next -->
+      <div class="hm-h"><img src="images/emoji/1f31f.svg" alt=""> Today</div>
       <div class="hm-row2">
         <button type="button" class="daily-card kh-daily hm-daily" id="dailyCard" onclick="startDailyChallenge()"></button>
         <div id="hmContinue"></div>
       </div>
 
-      <div class="hm-goal" id="hmGoal"></div>
+      <!-- 2. The four main places -->
+      <div class="hm-h"><img src="images/emoji/1f3ae.svg" alt=""> Learn &amp; Play</div>
+      <div class="hm-grid">
+        <button type="button" class="hm-tile t-quiz" onclick="openQuizFlow()">
+          <span class="hm-art"><img src="images/emoji/1f3af.svg" alt=""><i class="a2"><img src="images/emoji/1f4da.svg" alt=""></i></span>
+          <span class="hm-tt">Quiz</span><span class="hm-ts">20 subjects</span><span class="hm-go">Start ›</span>
+        </button>
+        <button type="button" class="hm-tile t-games" onclick="openSinglePlayer()">
+          <span class="hm-art"><img src="images/emoji/1f3ae.svg" alt=""><i class="a2"><img src="images/emoji/1f680.svg" alt=""></i></span>
+          <span class="hm-tt">Games</span><span class="hm-ts">50+ games</span><span class="hm-go">Play ›</span>
+        </button>
+        <button type="button" class="hm-tile t-multi" onclick="openMultiplayer()">
+          <span class="hm-art"><img src="images/emoji/1f465.svg" alt=""><i class="a2"><img src="images/emoji/1f3b2.svg" alt=""></i></span>
+          <span class="hm-tt">Friends</span><span class="hm-ts">Play online</span><span class="hm-go">Join ›</span>
+        </button>
+        <button type="button" class="hm-tile t-olym" onclick="window.location.href='Olympiad/index.html'">
+          <span class="hm-art"><img src="images/emoji/1f3c5.svg" alt=""><i class="a2"><img src="images/emoji/1f9e0.svg" alt=""></i></span>
+          <span class="hm-tt">Olympiad</span><span class="hm-ts">Test papers</span><span class="hm-go">Try ›</span>
+        </button>
+      </div>
 
-      <div class="hm-h"><img src="images/emoji/2764.svg" alt=""> Love the app?</div>
-      <div class="hm-love">
-        <button type="button" class="hm-chip c-parents" onclick="kqOpenParents()"><img src="images/emoji/1f46a.svg" alt=""><span><b>Parents</b><small>Share &amp; settings</small></span></button>
-        <button type="button" class="hm-chip c-rate" onclick="kqParentGate(rateApp)"><img src="images/emoji/2b50.svg" alt=""><span><b>Rate us</b><small>★★★★★</small></span></button>
-        <button type="button" class="hm-chip c-share" onclick="kqParentGate(shareApp)"><img src="images/emoji/1f680.svg" alt=""><span><b>Share</b><small>Invite friends</small></span></button>
-        <button type="button" class="hm-chip c-apps" onclick="kqParentGate(moreGames)"><img src="images/emoji/1f3ae.svg" alt=""><span><b>More apps</b><small>Google Play</small></span></button>
-        <button type="button" class="hm-chip c-insta" onclick="kqParentGate(openInstagram)"><img src="images/emoji/1f4f7.svg" alt=""><span><b>Instagram</b><small>Follow us</small></span></button>
+      <!-- 3. Jump straight to a skill (one swipeable row) -->
+      <div class="hm-h"><img src="images/emoji/1f4da.svg" alt=""> Pick a skill <a class="hm-more" href="learn.html">See all ›</a></div>
+      <div class="hm-skills" id="hmSkills"></div>
+
+      <!-- 4. Daily extras -->
+      <div class="hm-h"><img src="images/emoji/2728.svg" alt=""> Fun zone</div>
+      <div class="kqp-home" id="kqpHome"></div>
+
+      <!-- 5. Grown-ups (everything here is behind the parent gate) -->
+      <div class="hm-grown">
+        <button type="button" class="hm-gp" onclick="kqOpenParents()"><img src="images/emoji/1f46a.svg" alt=""><span><b>For parents</b><small>Reports, settings &amp; share</small></span></button>
+        <div class="hm-gi">
+          <button type="button" onclick="kqParentGate(rateApp)" aria-label="Rate us"><img src="images/emoji/2b50.svg" alt=""><small>Rate</small></button>
+          <button type="button" onclick="kqParentGate(shareApp)" aria-label="Share the app"><img src="images/emoji/1f680.svg" alt=""><small>Share</small></button>
+          <button type="button" onclick="kqParentGate(moreGames)" aria-label="More apps"><img src="images/emoji/1f3ae.svg" alt=""><small>Apps</small></button>
+          <button type="button" onclick="kqParentGate(openInstagram)" aria-label="Instagram"><img src="images/emoji/1f4f7.svg" alt=""><small>Insta</small></button>
+        </div>
       </div>
     </main>
 
@@ -388,7 +362,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 <script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
 <script src="quiz-shared.js?v=20261124a" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
-<script src="quiz/kids-engine.js?v=20261120i" charset="utf-8"></script>
+<script src="quiz/kids-engine.js?v=20261126a" charset="utf-8"></script>
 <script>
 /* ============================================================
    AUTH GUARD
@@ -902,9 +876,12 @@ function renderStatTiles() {
   const acc = (a && a.answered) ? a.accuracy : local.accuracy;
   const fmt = (n) => (Math.round(n * 100) / 100).toLocaleString();
   const today = (window.KQ && KQ.todaySeconds) ? KQ.todaySeconds() : 0;
-  const tile = (ic, v, l) => '<div class="pf-stat"><img src="images/emoji/' + ic + '.svg" alt=""><b>' + v + '</b><span>' + l + '</span></div>';
-  st.innerHTML = tile('1f3ae', fmt(played), 'Played') + tile('2b50', fmt(points), 'Points') + tile('1f3af', acc + '%', 'Accuracy') + tile('23f1', fmtMin(today), 'Today');
-  renderLevel(points); renderGoal(today);
+  const tile = (ic, v, l, extra) => '<div class="pf-stat"><img src="images/emoji/' + ic + '.svg" alt=""><b>' + v + '</b><span>' + l + '</span>' + (extra || '') + '</div>';
+  // Today tile doubles as the daily play goal (GOAL_MIN minutes)
+  const goalPct = Math.min(100, Math.round((today || 0) / (GOAL_MIN * 60) * 100));
+  st.innerHTML = tile('1f3ae', fmt(played), 'Played') + tile('2b50', fmt(points), 'Points') + tile('1f3af', acc + '%', 'Accuracy') +
+    tile(goalPct >= 100 ? '1f3c6' : '23f1', fmtMin(today), 'Today', '<span class="gb" title="' + GOAL_MIN + ' minute goal"><i style="width:' + goalPct + '%"></i></span>');
+  renderLevel(points);
   st.onclick = function () { window.location.href = 'leaderboard.html?user=' + encodeURIComponent(me); };
   st.style.cursor = me ? 'pointer' : '';
   st.title = 'See your full history';
@@ -922,11 +899,29 @@ function renderLevel(points) {
     '<div class="bar"><i style="width:' + pct + '%"></i></div><div class="nx">' + Math.max(0, Math.ceil(hi - p)) + ' points to Level ' + (lvl + 1) + '</div>';
 }
 const GOAL_MIN = 15;
-function renderGoal(today) {
-  const el = document.getElementById('hmGoal'); if (!el) return;
-  const m = Math.floor((today || 0) / 60), done = m >= GOAL_MIN, pct = Math.min(100, Math.round((today || 0) / (GOAL_MIN * 60) * 100));
-  el.innerHTML = '<img src="images/emoji/' + (done ? '1f3c6' : '23f1') + '.svg" alt=""><div class="g"><b>' + (done ? 'Goal done! Great job 🎉' : 'Today’s play goal') + '</b>' +
-    '<small>' + fmtMin(today) + ' of ' + GOAL_MIN + ' min played today</small><div class="gbar"><i style="width:' + pct + '%"></i></div></div>';
+/* "Pick a skill" row: straight into one skill. Picture topics (k_*) open at the
+   child's LKG/UKG class, otherwise at LKG. */
+const SKILLS = [
+  { t: 'ABC', s: 'Letters', ic: '1f524', go: 'k_abc', a: '#8b5cf6', b: '#a78bfa' },
+  { t: 'Phonics', s: 'Sounds', ic: '1f50a', go: 'k_phonics', a: '#0d9488', b: '#2dd4bf', isNew: 1 },
+  { t: 'Tracing', s: 'Write A–Z', ic: '270f', go: 'games/word/tracing.html', a: '#7c3aed', b: '#ec4899', isNew: 1 },
+  { t: 'Counting', s: '1 to 20', ic: '1f522', go: 'k_count', a: '#f97316', b: '#fb923c' },
+  { t: 'Colours', s: 'Rainbow', ic: '1f3a8', go: 'k_colours', a: '#ec4899', b: '#f472b6' },
+  { t: 'Shapes', s: 'Circle…', ic: '1f53a', go: 'k_shapes', a: '#14b8a6', b: '#2dd4bf' },
+  { t: 'Tables', s: '2 to 20', ic: '2716', go: 'games/brain/times_tables.html', a: '#ea580c', b: '#facc15', isNew: 1 },
+  { t: 'Spelling', s: 'Spell it', ic: '1f41d', go: 'games/word/spelling_bee.html', a: '#eab308', b: '#f59e0b' },
+  { t: 'Maths', s: '+ − × ÷', ic: '2795', go: 'learn.html#math', a: '#f59e0b', b: '#ef4444' },
+  { t: 'Science', s: 'Facts', ic: '1f52c', go: 'learn.html#science', a: '#16a34a', b: '#0d9488' },
+  { t: 'Brain', s: 'Puzzles', ic: '1f9e0', go: 'learn.html#brain', a: '#6366f1', b: '#8b5cf6' },
+];
+function renderSkills() {
+  const el = document.getElementById('hmSkills'); if (!el) return;
+  let lv = null; try { lv = parseInt(localStorage.getItem('kq_last_class'), 10); } catch (e) {}
+  const pre = (lv === 0 || lv === UKG_LEVEL) ? lv : 0;
+  el.innerHTML = SKILLS.map(function (k) {
+    const href = /^k_/.test(k.go) ? 'quiz/play.html#/c/' + pre + '/' + k.go : k.go;
+    return '<a class="hm-sk" href="' + href + '" style="--a:' + k.a + ';--b:' + k.b + '"><span class="bub"><img src="images/emoji/' + k.ic + '.svg" alt="">' + (k.isNew ? '<span class="new">NEW</span>' : '') + '</span><b>' + k.t + '</b><small>' + k.s + '</small></a>';
+  }).join('');
 }
 function renderContinue() {
   const box = document.getElementById('hmContinue'); if (!box) return;
@@ -941,7 +936,7 @@ function renderContinue() {
   const pick = (m) => { const g = m && (m.games || []).find((x) => (x.id || x.file) === ids[0]); if (g) show(g); };
   if (man) pick(man); else fetch('data/games.json', { cache: 'no-cache' }).then((r) => r.json()).then(pick).catch(() => {});
 }
-const OWL_TIPS = ['Let’s learn and play!', 'Try today’s daily mission! 🎯', 'New 3D games are here! 🚀', 'Play with friends online 👫', 'Can you beat your best score?', 'Olympiad papers make you smarter 🧠', 'Collect points to level up ⭐'];
+const OWL_TIPS = ['Let’s learn and play!', 'Try tracing letters! ✏️', 'Learn your times tables ✖️', 'Try today’s daily mission! 🎯', 'New 3D games are here! 🚀', 'Play with friends online 👫', 'Can you beat your best score?', 'Olympiad papers make you smarter 🧠', 'Collect points to level up ⭐'];
 function owlTalk() {
   const b = document.getElementById('hmBubble'); if (!b) return;
   const h = new Date().getHours(), greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
@@ -1144,6 +1139,7 @@ getOrCreateUser(currentUser);
 renderHomeProfile();
 renderDailyCard();
 renderContinue();
+renderSkills();
 owlTalk();
 // Guests who never gave a name (older sessions) are asked once.
 if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {

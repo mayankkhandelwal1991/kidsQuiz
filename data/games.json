@@ -646,6 +646,28 @@
       "badge": "NEW",
       "featured": true,
       "order": 63
+    },
+    {
+      "id": "tracing",
+      "file": "word/tracing.html",
+      "icon": "✏️",
+      "title": "Letter Tracing",
+      "how": "Trace capital letters, small letters or numbers 0–9 with your finger. Fill the dotted letter and stay on the lines for 3 stars! Every letter is read aloud: A is for Apple.",
+      "category": "word",
+      "badge": "NEW",
+      "featured": true,
+      "order": 64
+    },
+    {
+      "id": "times_tables",
+      "file": "brain/times_tables.html",
+      "icon": "✖️",
+      "title": "Times Tables",
+      "how": "Pick any table from 2 to 20 (or a mix). See the table read aloud, then answer 10 questions. Get 3 stars on every table!",
+      "category": "brain",
+      "badge": "NEW",
+      "featured": true,
+      "order": 65
     }
   ]
 }

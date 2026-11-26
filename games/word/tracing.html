@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<link rel="icon" href="../../images/favicon/favicon.ico" sizes="any"><link rel="icon" href="../../images/favicon/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../../images/favicon/apple-touch-icon.png"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Letter Tracing</title>
+<style>
+.tr { position: absolute; inset: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: 70px 12px 18px; font-family: 'Baloo 2', sans-serif; color: #1e1b4b;
+  background: radial-gradient(circle at 75% 25%, rgba(255,255,255,.18) 0 2px, transparent 3px) 0 0 / 42px 42px, linear-gradient(170deg, #312e81, #7c3aed 55%, #ec4899); }
+.tr-top { width: 100%; max-width: 440px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.tr-top img { width: 58px; height: 58px; flex: 0 0 auto; animation: trBob 3s ease-in-out infinite; }
+@keyframes trBob { 50% { transform: translateY(-5px) rotate(-4deg); } }
+.tr-say { flex: 1; background: #fff; border-radius: 18px 18px 18px 4px; padding: 7px 12px; font-size: 15px; font-weight: 800; line-height: 1.25; color: #5b21b6; box-shadow: 0 4px 0 rgba(0,0,0,.15); }
+.tr-card { width: 100%; max-width: 440px; background: #fff; border-radius: 28px; padding: 10px; box-shadow: 0 8px 0 rgba(0,0,0,.18); text-align: center; }
+.tr-prog { display: flex; gap: 4px; justify-content: center; margin-bottom: 6px; }
+.tr-prog i { width: 26px; height: 8px; border-radius: 4px; background: #ede9fe; } .tr-prog i.ok { background: #22c55e; } .tr-prog i.cur { background: #a78bfa; }
+.tr-pad { position: relative; width: 100%; aspect-ratio: 1; border-radius: 22px; background: #fffbeb; background-image: linear-gradient(#fde68a 2px, transparent 2px); background-size: 100% 33.33%; background-position: 0 -1px; overflow: hidden; touch-action: none; }
+.tr-pad canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+.tr-meter { height: 10px; border-radius: 5px; background: #f1f5f9; overflow: hidden; margin: 8px 4px 0; }
+.tr-meter i { display: block; height: 100%; width: 0; border-radius: 5px; background: linear-gradient(90deg, #a78bfa, #22c55e); transition: width .2s; }
+.tr-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.tr-b { border: none; border-radius: 16px; padding: 9px; font: 800 17px 'Baloo 2', sans-serif; color: #fff; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,.2); }
+.tr-b:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.2); }
+.tr-clear { background: #f97316; } .tr-skip { background: #64748b; }
+.tr-win { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,.82); animation: trIn .35s cubic-bezier(.34,1.56,.64,1); }
+.tr-win img { width: 96px; height: 96px; } .tr-win b { font-size: 30px; color: #16a34a; } .tr-win span { font-size: 26px; color: #f59e0b; letter-spacing: 3px; }
+@keyframes trIn { from { transform: scale(.5); opacity: 0; } }
+</style>
+</head><body>
+<script src="../threed/kq3d.js?v=20261124c"></script>
+<script src="../ads.js"></script>
+<script>
+/* Letter Tracing — trace capital letters, small letters or numbers with a finger.
+   The letter is drawn from the font onto hidden canvases: one to measure how much
+   of the letter is covered, a wider one to check the ink stays on the letter. */
+const WORD = { A: ['Apple', '🍎'], B: ['Ball', '⚽'], C: ['Cat', '🐱'], D: ['Dog', '🐶'], E: ['Egg', '🥚'], F: ['Fish', '🐟'], G: ['Grapes', '🍇'], H: ['Hat', '🎩'], I: ['Ice cream', '🍦'], J: ['Juice', '🧃'], K: ['Kite', '🪁'], L: ['Lion', '🦁'], M: ['Monkey', '🐒'], N: ['Nose', '👃'], O: ['Orange', '🍊'], P: ['Pig', '🐷'], Q: ['Queen', '👸'], R: ['Rabbit', '🐰'], S: ['Sun', '🌞'], T: ['Tiger', '🐯'], U: ['Umbrella', '☂️'], V: ['Violin', '🎻'], W: ['Watermelon', '🍉'], X: ['Xylophone', '🎵'], Y: ['Yo-yo', '🪀'], Z: ['Zebra', '🦓'] };
+const NUM = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+const MODES = [
+  { icon: '🔤', name: 'ABC', key: 'up', set: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('') },
+  { icon: '✏️', name: 'abc', key: 'low', set: 'abcdefghijklmnopqrstuvwxyz'.split('') },
+  { icon: '🔢', name: '123', key: 'num', set: '0123456789'.split('') },
+];
+const PER_GAME = 5, DONE_AT = 0.62, INK = ['#7c3aed', '#ec4899', '#0ea5e9', '#22c55e', '#f97316'];
+const G = KQ3D.init({
+  id: 'tracing', title: 'Letter Tracing', bestKey: 'traceBest', music: false,
+  hero: ['✏️', '🔤', '⭐'], colors: ['#7c3aed', '#ec4899'],
+  how: [['👆', 'Trace the dotted letter with your finger'], ['🌈', 'Fill the letter — the bar shows how much is done'], ['🔊', 'Hear each letter and a word that starts with it'], ['⭐', 'Stay on the lines to get 3 stars!']],
+  scoreIcon: '✏️', stars: [60, 110, 140],
+  pick: { label: 'What do you want to trace?', options: MODES },
+  onReset: (m) => reset(m)
+});
+const box = document.createElement('div'); box.className = 'tr'; G.scene.appendChild(box);
+let mode, list, startPos, i, score, got, cv, ctx, need, allow, pts, drawn, size, dpr, down, last, won;
+
+function say(t) {
+  try { if (localStorage.getItem('kq_muted') === '1') return; } catch (e) {}
+  try { if (window.Android && Android.speak) { Android.speak(t, 'en'); return; } } catch (e) {}
+  try { const u = new SpeechSynthesisUtterance(t); u.rate = 0.85; u.pitch = 1.2; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}
+}
+function spoken(ch) {
+  if (/\d/.test(ch)) return ch + '. ' + NUM[+ch];
+  const w = WORD[ch.toUpperCase()];
+  return (ch === ch.toUpperCase() ? 'Capital ' : 'Small ') + ch.toUpperCase() + '. ' + ch.toUpperCase() + ' is for ' + w[0];
+}
+function posKey() { return 'kq_trace_pos_' + mode.key; }
+function reset(m) {
+  mode = m || MODES[0]; i = 0; score = 0; got = []; G.score(0);
+  let p = 0; try { p = parseInt(localStorage.getItem(posKey()) || '0', 10) || 0; } catch (e) {}
+  startPos = p;
+  list = Array.from({ length: PER_GAME }, (_, k) => mode.set[(p + k) % mode.set.length]);
+  show();
+}
+function fontFor(ch, s) { return '800 ' + Math.round(s * (/[a-z]/.test(ch) ? 0.9 : 0.78)) + "px 'Baloo 2', 'Arial Rounded MT Bold', Arial, sans-serif"; }
+function glyphCanvas(ch, s, stroke) {
+  const c = document.createElement('canvas'); c.width = c.height = s;
+  const g = c.getContext('2d'); g.font = fontFor(ch, s); g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillStyle = g.strokeStyle = '#000'; g.lineJoin = 'round';
+  const y = s * (/[a-z]/.test(ch) ? 0.44 : 0.53);
+  g.fillText(ch, s / 2, y);
+  if (stroke) { g.lineWidth = stroke; g.strokeText(ch, s / 2, y); }
+  return { c, g, y };
+}
+function show() {
+  const ch = list[i]; won = false;
+  const w = /\d/.test(ch) ? null : WORD[ch.toUpperCase()];
+  box.innerHTML = '<div class="tr-top"><img src="' + KQ3D.emojiFile(w ? w[1] : '🦉') + '" alt=""><div class="tr-say">Trace ' + (/\d/.test(ch) ? 'the number ' + ch : (ch === ch.toUpperCase() ? 'capital ' : 'small ') + ch) + (w ? ' — ' + ch + ' is for ' + w[0] : '') + '</div></div>' +
+    '<div class="tr-card"><div class="tr-prog">' + list.map((_, k) => '<i class="' + (got[k] ? 'ok' : k === i ? 'cur' : '') + '"></i>').join('') + '</div>' +
+    '<div class="tr-pad" id="trPad"><canvas id="trGuide"></canvas><canvas id="trInk"></canvas></div>' +
+    '<div class="tr-meter"><i id="trM"></i></div>' +
+    '<div class="tr-btns"><button type="button" class="tr-b tr-clear" id="trClear">↺ Again</button><button type="button" class="tr-b tr-skip" id="trSkip">Skip ›</button></div></div>';
+  document.getElementById('trClear').onclick = () => { KQ3D.sfx('pop'); setup(ch); };
+  document.getElementById('trSkip').onclick = () => { KQ3D.sfx('whoosh'); got[i] = 0; next(); };
+  const go = () => { setup(ch); setTimeout(() => say(spoken(ch)), 200); };
+  (document.fonts && document.fonts.ready) ? document.fonts.ready.then(go, go) : go();
+}
+function setup(ch) {
+  const pad = document.getElementById('trPad'); if (!pad) return;
+  dpr = Math.min(2, window.devicePixelRatio || 1);
+  size = Math.round(pad.clientWidth);
+  const S = Math.round(size * dpr);
+  const guide = document.getElementById('trGuide'); guide.width = guide.height = S;
+  const gg = guide.getContext('2d'); gg.scale(dpr, dpr);
+  const base = glyphCanvas(ch, size, 0);
+  gg.font = fontFor(ch, size); gg.textAlign = 'center'; gg.textBaseline = 'middle';
+  gg.fillStyle = '#ede9fe'; gg.fillText(ch, size / 2, base.y);
+  // dashed outer edge only: fonts overlap strokes inside a letter, so erase the dashes that fall inside it
+  const ol = document.createElement('canvas'); ol.width = ol.height = S;
+  const og = ol.getContext('2d'); og.scale(dpr, dpr);
+  og.font = gg.font; og.textAlign = 'center'; og.textBaseline = 'middle'; og.lineJoin = 'round';
+  og.setLineDash([size * 0.02, size * 0.025]); og.lineWidth = Math.max(4, size * 0.016); og.strokeStyle = '#a78bfa';
+  og.strokeText(ch, size / 2, base.y);
+  og.globalCompositeOperation = 'destination-out'; og.setLineDash([]); og.fillText(ch, size / 2, base.y);
+  gg.setTransform(1, 0, 0, 1, 0, 0); gg.drawImage(ol, 0, 0);
+  cv = document.getElementById('trInk'); cv.width = cv.height = S;
+  ctx = cv.getContext('2d'); ctx.scale(dpr, dpr); ctx.lineCap = ctx.lineJoin = 'round';
+  ctx.lineWidth = size * 0.075; ctx.strokeStyle = INK[i % INK.length];
+  // sample points inside the letter (to cover), and a wider "allowed" area (to stay on)
+  const nd = base.g.getImageData(0, 0, size, size).data;
+  const ad = glyphCanvas(ch, size, size * 0.12).g.getImageData(0, 0, size, size).data;
+  need = []; const step = Math.max(4, Math.round(size / 70));
+  for (let y = 0; y < size; y += step) for (let x = 0; x < size; x += step) if (nd[(y * size + x) * 4 + 3] > 128) need.push([x, y]);
+  allow = (x, y) => { x = Math.round(x); y = Math.round(y); return x >= 0 && y >= 0 && x < size && y < size && ad[(y * size + x) * 4 + 3] > 64; };
+  pts = { in: 0, all: 0 }; drawn = new Uint8Array(need.length); down = false;
+  document.getElementById('trM').style.width = '0';
+  cv.onpointerdown = (e) => { if (G.state !== 'play' || won) return; down = true; cv.setPointerCapture(e.pointerId); last = pos(e); dot(last); };
+  cv.onpointermove = (e) => { if (!down) return; const p = pos(e); line(last, p); last = p; };
+  cv.onpointerup = cv.onpointercancel = () => { if (!down) return; down = false; check(true); };
+}
+function pos(e) { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * size / r.width, (e.clientY - r.top) * size / r.height]; }
+function dot(p) { ctx.beginPath(); ctx.arc(p[0], p[1], ctx.lineWidth / 2, 0, Math.PI * 2); ctx.fillStyle = ctx.strokeStyle; ctx.fill(); mark(p); }
+function line(a, b) {
+  ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+  const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 4));
+  for (let k = 1; k <= n; k++) mark([a[0] + (b[0] - a[0]) * k / n, a[1] + (b[1] - a[1]) * k / n]);
+  check(false);
+}
+function mark(p) {
+  pts.all++; if (allow(p[0], p[1])) pts.in++;
+  const r2 = Math.pow(ctx.lineWidth * 0.6, 2);
+  for (let k = 0; k < need.length; k++) if (!drawn[k]) { const dx = need[k][0] - p[0], dy = need[k][1] - p[1]; if (dx * dx + dy * dy <= r2) drawn[k] = 1; }
+}
+function check(lifted) {
+  if (won || !need.length) return;
+  let c = 0; for (let k = 0; k < drawn.length; k++) c += drawn[k];
+  const cover = c / need.length, acc = pts.all ? pts.in / pts.all : 0;
+  document.getElementById('trM').style.width = Math.min(100, Math.round(cover / DONE_AT * 100)) + '%';
+  if (cover >= DONE_AT && acc >= 0.55) return win(acc);
+  if (lifted && acc < 0.55 && pts.all > 40) { const s = box.querySelector('.tr-say'); if (s) s.textContent = 'Stay on the dotted lines! Tap ↺ Again to try once more.'; }
+}
+function win(acc) {
+  won = true; down = false;
+  const stars = acc >= 0.85 ? 3 : acc >= 0.7 ? 2 : 1, pts10 = stars * 10;
+  got[i] = stars; score += pts10; G.score(score);
+  KQ3D.sfx(stars === 3 ? 'levelup' : 'success');
+  const r = cv.getBoundingClientRect(); G.pop('+' + pts10, r.left + r.width / 2, r.top + 30, '#fde047');
+  const ch = list[i], w = /\d/.test(ch) ? null : WORD[ch.toUpperCase()];
+  const wn = document.createElement('div'); wn.className = 'tr-win';
+  wn.innerHTML = '<img src="' + KQ3D.emojiFile(w ? w[1] : '🎉') + '" alt=""><b>' + (stars === 3 ? 'Perfect!' : stars === 2 ? 'Great!' : 'Good!') + '</b><span>' + '★★★'.slice(0, stars) + '☆☆☆'.slice(0, 3 - stars) + '</span>';
+  document.getElementById('trPad').appendChild(wn);
+  say(w ? ch.toUpperCase() + ' is for ' + w[0] : 'Well done! ' + NUM[+ch]);
+  G.later(next, 1900);
+}
+function next() {
+  i++;
+  if (i >= list.length) {
+    const done = got.filter((x) => x > 0).length, stars = got.reduce((s, x) => s + (x || 0), 0);
+    try { localStorage.setItem(posKey(), String((startPos + PER_GAME) % mode.set.length)); } catch (e) {}
+    return G.over({ score, title: stars >= 13 ? 'Super writer! ✏️' : done >= 3 ? 'Great tracing!' : 'Keep practising!', lines: ['✏️ ' + done + ' / ' + list.length + ' traced', '⭐ ' + stars + ' stars', mode.icon + ' ' + list.join(' ')] });
+  }
+  show();
+}
+window.addEventListener('resize', () => {
+  const pad = document.getElementById('trPad');
+  if (G.state === 'play' && !won && list && pad && Math.round(pad.clientWidth) !== size) setup(list[i]);
+});
+reset(G.choice);
+</script>
+</body></html>

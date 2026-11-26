@@ -1,4 +1,4 @@
-# Play Store listing — Kids Quiz (version 1.0.13)
+# Play Store listing — Kids Quiz (updated 2026-11-26)
 
 Everything to paste into **Play Console → Grow users → Store presence → Main store listing**.
 Images are in this folder:
@@ -18,28 +18,39 @@ To remake the images after the app changes: `./make-assets.sh` (needs the local 
 
 Pick one. The first words matter most for search.
 
-1. `Kids Quiz: GK & Olympiad Games` ← recommended (30)
-2. `Kids Quiz – Learning Games` (26)
-3. `Kids Quiz: GK, Maths & Games` (28)
+1. `Kids Quiz: ABC, Maths & GK` ← recommended (26). Parents search for subjects ("ABC", "maths", "GK"), so every word is a search term.
+2. `Kids Quiz: GK & Olympiad Games` (30) — the older name, for India-first search
+3. `Kids Quiz – Learning Games` (26)
 
 ## Short description (max 80 characters)
 
 ```
-GK quiz, maths & Olympiad practice for LKG–Class 5. Fun games & badges!
+ABC, phonics, counting, maths quiz & GK games for ages 3–10. LKG to Class 5!
 ```
+(76 characters.) It leads with the age range and subjects, the way Khan Academy Kids and ABCmouse do.
 
 Alternative (A/B test it in Store listing experiments):
 
 ```
-Learn with fun quizzes, 50+ games & Olympiad papers. LKG to Class 5.
+Letter tracing, times tables, GK quiz & Olympiad practice. Ages 3–10.
 ```
 
 ## Full description (max 4000 characters)
 
 ```
-Kids Quiz makes learning feel like playing! Fun quizzes, brain games and Olympiad practice papers for children from LKG and UKG to Class 5 — with stars, badges, coins and a friendly owl to cheer them on.
+Learning games for kids ages 3–10: preschool, kindergarten, LKG, UKG and Class 1–5. ABCs, phonics, letter tracing, colours, shapes, counting, times tables, a kids maths quiz and a GK quiz for kids, all in one app, with stars, badges and a friendly owl to cheer them on.
 
-🎯 FUN QUIZZES IN 14 SUBJECTS
+🔤 ABC, PHONICS & TRACING (AGES 3–6)
+• ABC: find letters, capital and small letters, and "A is for Apple"
+• Phonics: letter sounds, rhyming words and sounding out c-a-t
+• Letter tracing: trace A–Z, a–z and numbers 0–9 with a finger
+• Counting 1 to 20, colours, shapes, patterns and an animal quiz for kids
+Every question is read aloud, so children who can't read yet can play on their own.
+
+✖️ MATHS GAMES & TIMES TABLES
+Times tables from 2 to 20 with a read-aloud table chart and stars for every table. Plus add & subtract, division, quick maths and number puzzles.
+
+🎯 FUN QUIZZES IN 20 SUBJECTS
 GK, English, Hindi, Science, Maths (add & subtract, multiplication, division), Animals, Plants, Space, Human Body, Geography, Computers, Sports, History and Capitals. Questions are made for each class, from picture questions with read-aloud for LKG and UKG to Class 5 GK quiz questions with answers.
 
 🗺️ MY LEARNING PATH
@@ -73,7 +84,9 @@ Collect badges for quizzes, games, streaks and Olympiad papers. Join the weekly 
 • Play as a guest, or sign in with Google to keep progress on every device
 
 Perfect for:
-✔ LKG, UKG and Class 1, 2, 3, 4, 5 students
+✔ Kids ages 3–10: preschool, kindergarten, LKG, UKG and Class 1–5
+✔ ABC, phonics and letter tracing for little ones
+✔ Times tables and a kids maths quiz
 ✔ GK quiz for kids and general knowledge practice
 ✔ Olympiad preparation (maths, science, English, GK)
 ✔ Learning English, Hindi and maths through play
@@ -82,7 +95,16 @@ Perfect for:
 Download Kids Quiz and make learning the best part of the day! 🦉
 ```
 
-## What's new in 1.0.13 (release notes, max 500 characters)
+## What's new (release notes, max 500 characters)
+
+```
+✏️ New: Letter tracing — trace A–Z, a–z and 0–9 with your finger
+🔊 New: Phonics — letter sounds, rhymes and sounding out words
+✖️ New: Times tables 2 to 20 with stars for every table
+🏠 A simpler home screen: Today, Learn & Play, and a "Pick a skill" row
+```
+
+## Release notes 1.0.13 (for reference)
 
 ```
 🎉 New Fun zone!
@@ -99,6 +121,7 @@ Download Kids Quiz and make learning the best part of the day! 🦉
 
 - **Category:** Education (secondary tag ideas: Educational games, Quiz, Brain games)
 - **Tags** (Store settings → Tags): Educational, Quiz, Trivia, Puzzle, Learning, Kids
+- **Screenshots:** after this update, add shots of Letter tracing, Phonics and Times tables, and A/B test a tracing shot as the first screenshot (top preschool apps lead with letters and tracing).
 - **Contact email / website / privacy policy:** keep your current ones (privacy policy page: `privacy_policy.html`)
 - **Target audience (Policy → App content):** ages 5 & under, 6–8 and 9–12 → the app is in the **Families program**. Keep "Teacher Approved" consideration on.
 

@@ -15,24 +15,13 @@
   Reads Firebase:  leaderboards/<cat>/<gameId>/<player>   (best score per board)
                    attempts/<player>/<pushId>              (every attempt, dated)
 
-  FIREBASE RULES NOTE — Firebase Console → Realtime Database → Rules.
-  Paste these two blocks inside "rules": { ... } next to "leaderboards"
-  (keep your existing entries; mind the commas), then Publish:
-      "attempts": {
-        ".read": true,
-        "$player": {
-          ".indexOn": ["at"],
-          "$id": { ".write": "!data.exists()",
-            ".validate": "newData.hasChildren(['cat','gameId','score']) && newData.child('score').isNumber()" } }
-      },
-      "sessions": {
-        ".read": true,
-        "$player": { "$sid": { ".write": true,
-          ".validate": "newData.hasChildren(['start','dur']) && newData.child('dur').isNumber()" } }
-      },
-  attempts = every play (with "dur" = seconds played); sessions = every visit
-  (active seconds, per-section split). Without them, the page still works
-  from best scores; the timeline, time played and Stats charts stay empty.
+  FIREBASE RULES — publish admin/firebase-rules.json (whole file) in Firebase
+  Console → Realtime Database → Rules. It has:
+    attempts  every play (public, no names beyond a first name)
+    playtime  daily seconds per player (public) → "time played" here
+    sessions  every visit (ADMIN ONLY — children's visit times are private)
+  Players other than the admin can't read sessions; that is intended, so the
+  page only warns when attempts or playtime are blocked.
 -->
 <style>
   .flag { margin-left: 6px; font-size: 1.05em; line-height: 1; vertical-align: -1px; }
@@ -851,8 +840,9 @@
       '<div class="kpi"><span>Time played</span><b class="tm">' + fmtDur(D.total) + '</b><small>total</small></div>' +
       '<div class="kpi"><span>Avg session</span><b class="tm">' + (D.sessions ? fmtDur(D.total / D.sessions) : '—') + '</b><small>per visit</small></div>' +
       '<div class="kpi"><span>Plays</span><b>' + D.plays + '</b><small>games &amp; quizzes</small></div></div>';
-    const BLOCKED = ['sessions', 'attempts'].filter((n) => KQ.denied && KQ.denied[n]);
-    if (BLOCKED.length) h += '<div class="note">⚠️ Firebase rules are blocking the <b>' + BLOCKED.join('</b> and <b>') + '</b> data, so time played and these charts can\'t be saved or shown. Add the rules from the note at the top of leaderboard.html in Firebase Console → Realtime Database → Rules.</div>';
+    // sessions are admin-only on purpose, so only playtime / attempts count as "blocked"
+    const BLOCKED = ['playtime', 'attempts'].filter((n) => KQ.denied && KQ.denied[n]);
+    if (BLOCKED.length) h += '<div class="note">⚠️ Firebase rules are blocking the <b>' + BLOCKED.join('</b> and <b>') + '</b> data, so time played and these charts can\'t be shown. Publish <b>admin/firebase-rules.json</b> in Firebase Console → Realtime Database → Rules.</div>';
     else if (!SES_OK && !ALLATT.length) h += '<div class="note">⚠️ No session or attempt data yet. Time tracking has started — check back after kids play.</div>';
     const secs = S.sec === 'all' ? ['quiz', 'single', 'multi', 'olympiad', 'home'] : [S.sec];
     h += '<div class="charts-grid">' +

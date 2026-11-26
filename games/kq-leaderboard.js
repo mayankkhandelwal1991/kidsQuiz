@@ -516,7 +516,7 @@
   function fetchPlaytime() {
     return ready.then(function () {
       if (!db) return {};
-      return db.ref("playtime").once("value").then(function (snap) { return snap.val() || {}; }).catch(function () { return {}; });
+      return db.ref("playtime").once("value").then(function (snap) { return snap.val() || {}; }).catch(function (e) { denied.playtime = !!(e && /permission/i.test(e.code + " " + e.message)); return {}; });
     });
   }
   function fetchSessions() {

@@ -14,3 +14,6 @@ PlayStoreThings/kidsgames-3987c-firebase-adminsdk-fbsvc-7493436848.json
 # Android release builds (uploaded to Play Console, not kept in git)
 *.aab
 *.apk
+
+# promo video build output (make-promo.py)
+PlayStoreThings/store-listing/video/

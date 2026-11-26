@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>promo recorder</title>
+<!-- Used by make-promo.py: plays recorded frames into a canvas at 25 fps with an
+     original music track (Web Audio) and records it with MediaRecorder (MP4). -->
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+window.recordPromo = function (dir, n, w, h, withMusic, saveAs) {
+  return new Promise(function (resolve) {
+    const cv = document.getElementById('c'); cv.width = w; cv.height = h;
+    const g = cv.getContext('2d'), FPS = 25;
+    const frames = new Array(n);
+    // a frame that failed to load is retried (the local server can refuse one under load)
+    const load = (i) => { if (i >= n || (frames[i] && !(frames[i].complete && !frames[i].naturalWidth))) return; const im = new Image(); im.src = dir + '/' + String(i + 1).padStart(5, '0') + '.jpg?r=' + Math.random().toString(36).slice(2, 6); frames[i] = im; };
+    const ok = (im) => im && im.complete && im.naturalWidth > 0;
+    for (let i = 0; i < 25; i++) load(i);
+    const stream = cv.captureStream(FPS);
+    let ac = null;
+    if (withMusic) {
+      ac = new AudioContext(); const dest = ac.createMediaStreamDestination();
+      music(ac, dest, n / FPS);
+      dest.stream.getAudioTracks().forEach((t) => stream.addTrack(t));
+    }
+    const type = withMusic ? 'video/mp4;codecs=avc1,opus' : 'video/mp4;codecs=avc1';
+    const rec = new MediaRecorder(stream, { mimeType: type, videoBitsPerSecond: 8000000, audioBitsPerSecond: 160000 });
+    rec.onerror = (e) => { window.__rec = Object.assign(window.__rec || {}, { err: String(e.error || e) }); };
+    const chunks = []; rec.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+    rec.onstop = () => {
+      const b = new Blob(chunks, { type: 'video/mp4' });
+      if (saveAs) { window.__blob = b; resolve(b.size); return; }   // read in pieces by make-promo.py
+      const fr = new FileReader(); fr.onload = () => resolve(fr.result.split(',')[1]); fr.readAsDataURL(b);
+    };
+    const wait = (im) => im.complete ? Promise.resolve() : new Promise((r) => { im.onload = im.onerror = r; });
+    wait(frames[0]).then(() => {
+      g.drawImage(frames[0], 0, 0, w, h);
+      rec.start(1000);
+      const t0 = performance.now(); let shown = 0;
+      (function tick() {
+        const i = Math.min(n - 1, Math.floor((performance.now() - t0) / 1000 * FPS));
+        for (let k = i; k < i + 25; k++) load(k);
+        try { if (i !== shown && ok(frames[i])) { g.drawImage(frames[i], 0, 0, w, h); shown = i; } } catch (e) {}
+        window.__rec = { shown: shown, state: rec.state, chunks: chunks.length, err: window.__rec && window.__rec.err };
+        if (performance.now() - t0 < n / FPS * 1000 + 150) setTimeout(tick, 8); else { rec.stop(); if (ac) ac.close(); }
+      })();
+    });
+  });
+};
+
+/* Original happy backing track (I–V–vi–IV in C, 120 bpm): bass, arpeggio, little
+   melody, soft claps; fades out at the end. Written for this video. */
+function music(ac, out, secs) {
+  const master = ac.createGain(); master.gain.value = 0.55; master.connect(out);
+  const t0 = ac.currentTime + 0.05, beat = 0.5;
+  const N = (m) => 440 * Math.pow(2, (m - 69) / 12);
+  const note = (m, t, d, type, vol) => { const o = ac.createOscillator(), e = ac.createGain(); o.type = type; o.frequency.value = N(m); e.gain.setValueAtTime(0, t); e.gain.linearRampToValueAtTime(vol, t + 0.015); e.gain.exponentialRampToValueAtTime(0.0008, t + d); o.connect(e); e.connect(master); o.start(t); o.stop(t + d + 0.05); };
+  const clap = (t) => { const len = 0.08, b = ac.createBuffer(1, Math.floor(ac.sampleRate * len), ac.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 3); const s = ac.createBufferSource(), f = ac.createBiquadFilter(), e = ac.createGain(); f.type = 'highpass'; f.frequency.value = 1500; e.gain.value = 0.16; s.buffer = b; s.connect(f); f.connect(e); e.connect(master); s.start(t); };
+  const CH = [[48, 60, 64, 67], [43, 59, 62, 67], [45, 60, 64, 69], [41, 60, 65, 69]]; // C G Am F
+  const MEL = [76, 74, 72, 74, 76, 76, 76, -1, 74, 74, 74, -1, 76, 79, 79, -1, 76, 74, 72, 74, 76, 76, 76, 76, 74, 74, 76, 74, 72, -1, -1, -1];
+  const bars = Math.ceil(secs / (beat * 4));
+  for (let bar = 0; bar < bars; bar++) {
+    const c = CH[bar % 4], tb = t0 + bar * beat * 4;
+    for (let b = 0; b < 4; b++) {
+      const t = tb + b * beat;
+      note(c[0], t, 0.42, 'sine', 0.34);
+      [1, 2, 3, 2].forEach((k, j) => note(c[k], t + j * beat / 4 * 2 / 2, 0.2, 'triangle', 0.07));
+      if (b % 2 === 1 && bar > 0) clap(t);
+    }
+    if (bar >= 2) for (let s = 0; s < 8; s++) { const m = MEL[(bar * 8 + s) % MEL.length]; if (m > 0) note(m, tb + s * beat / 2, 0.3, 'square', 0.035); }
+  }
+  master.gain.setValueAtTime(0.55, t0 + secs - 2); master.gain.linearRampToValueAtTime(0.0, t0 + secs);
+}
+</script>
+</body>
+</html>

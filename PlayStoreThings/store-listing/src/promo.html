@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kids Quiz promo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<!--
+  30-second promo, played with the REAL app pages in an iframe:
+    0–3 s intro · 3–11 s letter tracing · 11–19 s story read aloud ·
+    19–25 s quiz answered · 25–30 s end card.
+  ?land=1 → 16:9 (phone on the left, captions on the right) for YouTube / Play;
+  default 9:16 for Instagram Reels / YouTube Shorts.
+  Recorded by make-promo.py (headless Chrome, frame by frame).
+-->
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; font-family: 'Baloo 2', system-ui, sans-serif; }
+  body { background: linear-gradient(160deg, #7c3aed, #ec4899 55%, #f97316); color: #fff; }
+  .stage { position: absolute; inset: 0; }
+  .phone { position: absolute; left: 50%; top: 150px; width: 400px; height: 711px; margin-left: -200px; border-radius: 34px; background: #111827; padding: 10px; box-shadow: 0 30px 60px rgba(0,0,0,.35); transition: opacity .4s, transform .4s; }
+  .phone iframe { width: 100%; height: 100%; border: 0; border-radius: 26px; background: #fff; position: absolute; inset: 10px; width: calc(100% - 20px); height: calc(100% - 20px); opacity: 0; transition: opacity .35s; }
+  .phone iframe.on { opacity: 1; }
+  .cap { position: absolute; left: 20px; right: 20px; top: 34px; text-align: center; font-size: 40px; font-weight: 800; line-height: 1.05; text-shadow: 0 3px 0 rgba(0,0,0,.18); transition: opacity .3s, transform .3s; }
+  .cap small { display: block; font-size: 22px; font-weight: 700; opacity: .95; margin-top: 4px; }
+  .cap.out { opacity: 0; transform: translateY(-14px); }
+  .card { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px; transition: opacity .45s, transform .45s; }
+  .card.hide { opacity: 0; transform: scale(.92); pointer-events: none; }
+  .card h1 { font-size: 68px; margin: 8px 0 0; line-height: 1; text-shadow: 0 4px 0 rgba(0,0,0,.18); }
+  .card p { font-size: 28px; font-weight: 800; margin: 10px 0 0; }
+  .logo { width: 170px; height: 170px; border-radius: 40px; box-shadow: 0 16px 34px rgba(0,0,0,.3); background: #fff; animation: pop .7s cubic-bezier(.34,1.56,.64,1) both; }
+  .owl { width: 220px; height: 220px; animation: bob 2s ease-in-out infinite; filter: drop-shadow(0 12px 14px rgba(0,0,0,.25)); }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 22px; max-width: 480px; }
+  .chips span { background: rgba(255,255,255,.95); color: #4c1d95; border-radius: 999px; padding: 6px 16px; font-size: 22px; font-weight: 800; animation: pop .5s cubic-bezier(.34,1.56,.64,1) both; }
+  .gp { margin-top: 26px; background: #111827; color: #fff; border-radius: 18px; padding: 12px 26px; font-size: 26px; font-weight: 800; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 24px rgba(0,0,0,.3); }
+  .gp b { display: block; font-size: 15px; font-weight: 700; opacity: .8; line-height: 1; }
+  .float { position: absolute; font-size: 54px; animation: fl 6s ease-in-out infinite; opacity: .9; }
+  @keyframes bob { 50% { transform: translateY(-14px) rotate(-4deg); } }
+  @keyframes pop { from { transform: scale(.3); opacity: 0; } }
+  @keyframes fl { 50% { transform: translateY(-26px) rotate(10deg); } }
+  /* landscape */
+  body.land .phone { left: 90px; top: 32px; margin-left: 0; width: 266px; height: 476px; border-radius: 26px; padding: 8px; }
+  body.land .phone iframe { inset: 8px; width: calc(100% - 16px); height: calc(100% - 16px); border-radius: 20px; }
+  body.land .cap { left: 410px; right: 40px; top: 190px; text-align: left; font-size: 48px; }
+  body.land .cap small { font-size: 26px; }
+  body.land .card h1 { font-size: 64px; } body.land .owl { width: 170px; height: 170px; } body.land .logo { width: 130px; height: 130px; }
+  body.land .chips { max-width: 700px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="float" style="left:6%;top:8%">⭐</div><div class="float" style="right:8%;top:14%;animation-delay:-2s">🎈</div>
+  <div class="float" style="left:10%;bottom:10%;animation-delay:-4s">🔤</div><div class="float" style="right:10%;bottom:16%;animation-delay:-1s">🚀</div>
+  <div class="phone" id="phone"><iframe id="f1"></iframe><iframe id="f2"></iframe><iframe id="f3"></iframe></div>
+  <div class="cap out" id="cap"></div>
+  <div class="card" id="intro">
+    <svg class="owl" viewBox="0 0 120 120"><path d="M30 30 L40 12 L50 30Z" fill="#fde047"/><path d="M70 30 L80 12 L90 30Z" fill="#fde047"/><ellipse cx="60" cy="70" rx="42" ry="44" fill="#8b5cf6"/><ellipse cx="60" cy="82" rx="26" ry="28" fill="#ede9fe"/><circle cx="44" cy="50" r="17" fill="#fff"/><circle cx="76" cy="50" r="17" fill="#fff"/><circle cx="46" cy="51" r="8" fill="#1e1b4b"/><circle cx="74" cy="51" r="8" fill="#1e1b4b"/><circle cx="49" cy="48" r="3" fill="#fff"/><circle cx="77" cy="48" r="3" fill="#fff"/><path d="M54 62 L66 62 L60 72Z" fill="#f59e0b"/><path d="M38 24 Q60 0 82 24Z" fill="#facc15"/><circle cx="60" cy="8" r="5" fill="#f43f5e"/></svg>
+    <h1>Learning that<br>feels like play!</h1><p>Ages 3–10 · LKG to Class 5</p>
+  </div>
+  <div class="card hide" id="end">
+    <img class="logo" src="../../../images/app-logo.png" alt="">
+    <h1>Kids Quiz</h1>
+    <div class="chips"><span>📖 Stories</span><span>🎵 Rhymes</span><span>✏️ Tracing</span><span>🎯 Quizzes</span><span>🎮 50+ Games</span><span>🏅 Olympiad</span></div>
+    <div class="gp">▶<span><b>FREE on</b>Google Play</span></div>
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+  const land = /land=1/.test(location.search);
+  if (land) document.body.classList.add('land');
+  const ROOT = '../../../';
+  const $ = (id) => document.getElementById(id);
+  const at = (s, fn) => setTimeout(fn, s * 1000);
+  // a guest child "Aarav", class UKG, sound off (the video has its own music)
+  try {
+    localStorage.setItem('kq_guest_session', '1'); localStorage.setItem('kq_nick', 'Aarav'); localStorage.setItem('kq_muted', '1');
+    localStorage.setItem('kq_last_class', '-1'); localStorage.setItem('kq_story_autoplay', 'true'); localStorage.setItem('kq_time_limit', '0');
+    localStorage.setItem('k3pick_tracing', '0'); localStorage.removeItem('kq_trace_pos_up');
+  } catch (e) {}
+  function cap(t, sub) { const c = $('cap'); c.classList.add('out'); setTimeout(() => { c.innerHTML = t + (sub ? '<small>' + sub + '</small>' : ''); c.classList.remove('out'); }, 250); }
+  function show(id) { ['f1', 'f2', 'f3'].forEach((f) => $(f).classList.toggle('on', f === id)); }
+  const W = (id) => $(id).contentWindow;
+
+  // preload the three app screens
+  $('f1').src = ROOT + 'games/word/tracing.html';
+  $('f2').src = ROOT + 'stories/index.html#/c/-1';
+  $('f3').src = ROOT + 'quiz/play.html#/c/-1';
+  $('phone').style.opacity = '0';
+
+  // ---------- 0–3 s intro ----------
+  at(1.0, () => { try { W('f1').document.getElementById('k3play').click(); } catch (e) {} });   // countdown runs off-screen
+
+  // ---------- 3–11 s tracing ----------
+  at(3.0, () => { $('intro').classList.add('hide'); $('phone').style.opacity = '1'; show('f1'); cap('✏️ Trace letters', 'with your finger — A is for Apple!'); });
+  at(4.2, () => {
+    try {
+      const w = W('f1'), cv = w.document.getElementById('trInk'), size = w.eval('size'), need = w.eval('need');
+      const R = cv.getBoundingClientRect(), k = R.width / size;
+      const ev = (t, x, y) => cv.dispatchEvent(new w.PointerEvent(t, { pointerId: 1, bubbles: true, clientX: R.left + x * k, clientY: R.top + y * k }));
+      const rows = {}; need.forEach((p) => { (rows[p[1]] = rows[p[1]] || []).push(p[0]); });
+      const segs = []; Object.keys(rows).map(Number).sort((a, b) => a - b).forEach((y) => { const xs = rows[y]; let s = xs[0], prev = xs[0]; xs.slice(1).forEach((x) => { if (x - prev > 8) { segs.push([y, s, prev]); s = x; } prev = x; }); segs.push([y, s, prev]); });
+      const per = 4200 / segs.length;
+      // keep the friendly instruction on screen while tracing (no "almost" hints in the promo)
+      const say = w.document.querySelector('.tr-say'), keep = say ? say.textContent : '';
+      if (say) new w.MutationObserver(() => { if (!w.eval('won') && say.textContent !== keep) say.textContent = keep; }).observe(say, { childList: true, characterData: true, subtree: true });
+      segs.forEach((sg, n) => setTimeout(() => { ev('pointerdown', sg[1], sg[0]); for (let x = sg[1]; x <= sg[2]; x += 6) ev('pointermove', x, sg[0]); ev('pointerup', sg[2], sg[0]); }, n * per));
+    } catch (e) { console.log('trace', e); }
+  });
+
+  // ---------- 11–19 s story ----------
+  at(10.6, () => { try { W('f2').location.hash = '#/s/thirsty_crow'; } catch (e) {} });
+  at(11.0, () => { show('f2'); cap('📖 Stories read aloud', 'every word lights up as it’s read'); });
+  at(15.2, () => { try { W('f2').document.getElementById('next').click(); } catch (e) {} });
+
+  // ---------- 19–25 s quiz ----------
+  at(18.6, () => { try { W('f3').location.hash = '#/play/-1/k_animals/2'; } catch (e) {} });
+  at(19.0, () => { show('f3'); cap('🎯 Fun quizzes', 'pictures and voice for little ones'); });
+  at(21.6, () => {
+    try {
+      const w = W('f3'), q = w.KidsQuiz.makePaper('k_animals', -1, 2)[0];
+      const b = w.document.querySelector('[data-id="' + q.answer + '"]'); if (b) b.click();
+    } catch (e) { console.log('quiz', e); }
+  });
+
+  // ---------- 25–30 s end card ----------
+  at(25.0, () => { $('cap').classList.add('out'); $('phone').style.opacity = '0'; $('end').classList.remove('hide'); });
+  window.PROMO_LENGTH = 30;
+})();
+</script>
+</body>
+</html>

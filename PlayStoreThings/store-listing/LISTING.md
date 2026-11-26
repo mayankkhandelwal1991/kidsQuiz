@@ -47,6 +47,12 @@ Learning games for kids ages 3–10: preschool, kindergarten, LKG, UKG and Class
 • Counting 1 to 20, colours, shapes, patterns and an animal quiz for kids
 Every question is read aloud, so children who can't read yet can play on their own.
 
+📖 STORY TIME
+Picture stories for every class, read aloud with each sentence highlighted: The Thirsty Crow, The Lion and the Mouse, The Hare and the Tortoise, Birbal and Tenali Raman. Some stories star your child by name! Each story ends with 3 questions.
+
+🦉 A DAILY PLAN FROM THE OWL
+Every day the owl makes a 3-step plan just for your child: read a story, learn a skill, play a game.
+
 ✖️ MATHS GAMES & TIMES TABLES
 Times tables from 2 to 20 with a read-aloud table chart and stars for every table. Plus add & subtract, division, quick maths and number puzzles.
 
@@ -98,6 +104,8 @@ Download Kids Quiz and make learning the best part of the day! 🦉
 ## What's new (release notes, max 500 characters)
 
 ```
+📖 New: Story Time — picture stories read aloud, for LKG to Class 5
+🦉 New: A daily plan from the owl, made for your child
 ✏️ New: Letter tracing — trace A–Z, a–z and 0–9 with your finger
 🔊 New: Phonics — letter sounds, rhymes and sounding out words
 ✖️ New: Times tables 2 to 20 with stars for every table

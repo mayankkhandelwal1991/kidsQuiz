@@ -161,6 +161,35 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   @media (max-width: 520px) { .hm-grown { flex-wrap: wrap; } .hm-gp { flex: 1 1 100%; } .hm-gi { flex: 1 1 100%; justify-content: space-around; } }
   .hm .kqp-home:has(> :nth-child(4):last-child) { grid-template-columns: repeat(2, 1fr); }
   @media (min-width: 760px) { .hm .kqp-home:has(> :nth-child(4):last-child) { grid-template-columns: repeat(4, 1fr); } }
+  /* 7-tab dock */
+  .hm-dock { grid-template-columns: repeat(7, 1fr) !important; gap: 2px !important; padding-left: 6px !important; padding-right: 6px !important; }
+  .hm-dock .kh-tab { min-width: 0; padding: 6px 0; }
+  .hm-dock .kh-tab i { font-size: 20px; }
+  .hm-dock .kh-tab b { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @media (max-width: 340px) { .hm-dock .kh-tab b { font-size: 9px; } .hm-dock .kh-tab i { font-size: 18px; } }
+  /* Today's plan */
+  .hm-plan { background: #fff; border-radius: 26px; padding: 12px; box-shadow: 0 7px 0 #ede9fe, 0 10px 22px rgba(30,27,75,.08); }
+  .hm-plan:empty { display: none; }
+  .pl-top { display: flex; align-items: center; gap: 8px; }
+  .pl-top svg { width: 46px; height: 46px; flex: 0 0 auto; }
+  .pl-top .t { flex: 1; min-width: 0; } .pl-top .t b { display: block; font-size: 18px; line-height: 1.1; color: #4c1d95; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pl-top .t small { font-size: 12px; font-weight: 800; color: #6b7280; }
+  .pl-cls, .pl-say { flex: 0 0 auto; border: none; border-radius: 999px; background: #f5f3ff; color: #6d28d9; font: 800 14px 'Baloo 2', sans-serif; padding: 6px 12px; cursor: pointer; box-shadow: 0 3px 0 #ddd6fe; }
+  .pl-say { padding: 4px 8px; } .pl-say img { width: 22px; height: 22px; display: block; }
+  .pl-steps { display: grid; gap: 8px; margin-top: 10px; }
+  .pl-step { display: flex; align-items: center; gap: 10px; width: 100%; border: none; cursor: pointer; text-align: left; border-radius: 18px; padding: 8px 10px; font-family: inherit; color: #fff; background: linear-gradient(135deg, var(--a), var(--b)); box-shadow: 0 4px 0 rgba(0,0,0,.15); }
+  .pl-step:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.15); }
+  .pl-step .n { width: 30px; height: 30px; flex: 0 0 auto; border-radius: 50%; background: rgba(255,255,255,.9); color: #4c1d95; display: grid; place-items: center; font-weight: 800; font-size: 16px; }
+  .pl-step .ic { width: 40px; height: 40px; flex: 0 0 auto; }
+  .pl-step .tx { flex: 1; min-width: 0; } .pl-step .tx b { display: block; font-size: 16px; line-height: 1.1; } .pl-step .tx small { display: block; font-size: 12.5px; font-weight: 700; opacity: .95; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pl-step .go { flex: 0 0 auto; background: #fff; color: #1e1b4b; border-radius: 999px; padding: 2px 12px; font-weight: 800; font-size: 14px; }
+  .pl-step.done { background: #f0fdf4; color: #166534; box-shadow: 0 4px 0 #bbf7d0; } .pl-step.done .n { background: #22c55e; color: #fff; } .pl-step.done .go { background: #dcfce7; color: #166534; }
+  .pl-step.next { outline: 3px solid #facc15; outline-offset: 2px; }
+  .pl-done { margin-top: 10px; text-align: center; background: #fef9c3; border-radius: 16px; padding: 8px; font-weight: 800; color: #854d0e; }
+  .pl-pick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .pl-pick button { flex: 1 1 28%; border: none; border-radius: 16px; padding: 10px 4px; font: 800 16px 'Baloo 2', sans-serif; color: #fff; background: #7c3aed; box-shadow: 0 4px 0 #5b21b6; cursor: pointer; }
+  .pl-pick button.on { background: #f59e0b; box-shadow: 0 4px 0 #b45309; }
+  @media (min-width: 760px) { .pl-steps { grid-template-columns: repeat(3, 1fr); } }
   @media (min-width: 760px) { .hm-skills { flex-wrap: wrap; overflow: visible; margin: 0; padding: 2px 0 10px; } }
 </style>
 </head>
@@ -206,10 +235,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 
       <!-- 1. Today: the one thing to do next -->
       <div class="hm-h"><img src="images/emoji/1f31f.svg" alt=""> Today</div>
-      <div class="hm-row2">
-        <button type="button" class="daily-card kh-daily hm-daily" id="dailyCard" onclick="startDailyChallenge()"></button>
-        <div id="hmContinue"></div>
-      </div>
+      <div class="hm-plan" id="hmPlan"></div>
 
       <!-- 2. The four main places -->
       <div class="hm-h"><img src="images/emoji/1f3ae.svg" alt=""> Learn &amp; Play</div>
@@ -233,11 +259,11 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
       </div>
 
       <!-- 3. Jump straight to a skill (one swipeable row) -->
-      <div class="hm-h"><img src="images/emoji/1f4da.svg" alt=""> Pick a skill <a class="hm-more" href="learn.html">See all ›</a></div>
+      <div class="hm-h" id="hmSkillsH"><img src="images/emoji/1f4da.svg" alt=""> Pick a skill <a class="hm-more" href="learn.html">See all ›</a></div>
       <div class="hm-skills" id="hmSkills"></div>
 
       <!-- 4. Daily extras -->
-      <div class="hm-h"><img src="images/emoji/2728.svg" alt=""> Fun zone</div>
+      <div class="hm-h" id="hmFunH"><img src="images/emoji/2728.svg" alt=""> Fun zone</div>
       <div class="kqp-home" id="kqpHome"></div>
 
       <!-- 5. Grown-ups (everything here is behind the parent gate) -->
@@ -253,11 +279,13 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
     </main>
 
     <nav class="kh-dock hm-dock" aria-label="Main">
-      <button type="button" class="kh-tab on" onclick="showScreen('menuScreen')"><i>🏠</i><b>Home</b></button>
+      <button type="button" class="kh-tab on" onclick="hmDockTo('top')"><i>🏠</i><b>Home</b></button>
       <button type="button" class="kh-tab" onclick="openQuizFlow()"><i>🎯</i><b>Quiz</b></button>
+      <button type="button" class="kh-tab" onclick="hmDockTo('hmSkillsH')"><i>📚</i><b>Skills</b></button>
+      <button type="button" class="kh-tab" onclick="location.href='stories/index.html'"><i>📖</i><b>Stories</b></button>
       <button type="button" class="kh-tab" onclick="showGameOptions()"><i>🎮</i><b>Play</b></button>
+      <button type="button" class="kh-tab" onclick="hmDockTo('hmFunH')"><i>✨</i><b>Fun</b></button>
       <button type="button" class="kh-tab" onclick="openLeaderboardHub()"><i>🏆</i><b>Rank</b></button>
-      <button type="button" class="kh-tab kh-badges" onclick="if (window.KQCoins) KQCoins.openBadges()"><i>🏅</i><b>Badges</b></button>
     </nav>
   </div>
 
@@ -901,6 +929,7 @@ const GOAL_MIN = 15;
 /* "Pick a skill" row: straight into one skill. Picture topics (k_*) open at the
    child's LKG/UKG class, otherwise at LKG. */
 const SKILLS = [
+  { t: 'Stories', s: 'Read along', ic: '1f4d6', go: 'stories/index.html', a: '#f97316', b: '#ec4899', isNew: 1 },
   { t: 'ABC', s: 'Letters', ic: '1f524', go: 'k_abc', a: '#8b5cf6', b: '#a78bfa' },
   { t: 'Phonics', s: 'Sounds', ic: '1f50a', go: 'k_phonics', a: '#0d9488', b: '#2dd4bf', isNew: 1 },
   { t: 'Tracing', s: 'Write A–Z', ic: '270f', go: 'games/word/tracing.html', a: '#7c3aed', b: '#ec4899', isNew: 1 },
@@ -913,6 +942,84 @@ const SKILLS = [
   { t: 'Science', s: 'Facts', ic: '1f52c', go: 'learn.html#science', a: '#16a34a', b: '#0d9488' },
   { t: 'Brain', s: 'Puzzles', ic: '1f9e0', go: 'learn.html#brain', a: '#6366f1', b: '#8b5cf6' },
 ];
+/* ---------- Today's plan: the owl's 3 steps for this child (story, learn, play) ---------- */
+const PLAN_LEVELS = [0, -1, 1, 2, 3, 4, 5];
+const PRE_TOPICS = ['k_abc', 'k_phonics', 'k_count', 'k_colours', 'k_shapes', 'k_numbers', 'k_animals'];
+let __stories = null;
+function planLevel() { let l = null; try { l = parseInt(localStorage.getItem('kq_last_class'), 10); } catch (e) {} return PLAN_LEVELS.indexOf(l) >= 0 ? l : null; }
+function planState() {
+  let p = {}; try { p = JSON.parse(localStorage.getItem('kq_plan') || '{}') || {}; } catch (e) {}
+  const today = new Date().toDateString();
+  if (p.d !== today) p = { d: today, done: {} };
+  return p;
+}
+function planMark(k) { const p = planState(); p.done[k] = 1; try { localStorage.setItem('kq_plan', JSON.stringify(p)); } catch (e) {} }
+function firstName() { return String(displayName() || 'Champ').trim().split(/\s+/)[0].slice(0, 14) || 'Champ'; }
+function planSteps(lv) {
+  const day = Math.floor(Date.now() / 86400000);
+  let doneS = {}; try { doneS = JSON.parse(localStorage.getItem('kq_story_done') || '{}') || {}; } catch (e) {}
+  const mine = (__stories || []).filter((x) => x.level === lv);
+  const st = mine.find((x) => doneS[x.id] == null) || mine[day % Math.max(1, mine.length)];
+  const story = st ? { k: 'story', t: 'Read a story', s: st.title.replace(/\{name\}/g, firstName()), ic: '1f4d6', href: 'stories/index.html#/s/' + st.id, a: '#f97316', b: '#ec4899', say: 'read the story ' + st.title.replace(/\{name\}/g, firstName()) }
+    : { k: 'story', t: 'Read a story', s: 'Story Time', ic: '1f4d6', href: 'stories/index.html', a: '#f97316', b: '#ec4899', say: 'read a story' };
+  let learn;
+  if (lv <= 0) {
+    const id = PRE_TOPICS[day % PRE_TOPICS.length], c = getCatInfo(id) || { title: 'ABC', icon: '🔤' };
+    learn = { k: 'learn', t: 'Learn: ' + c.title, s: c.blurb || 'Picture quiz', ic: null, emo: c.icon, href: 'quiz/play.html#/c/' + lv + '/' + id, a: '#8b5cf6', b: '#6366f1', say: 'learn ' + c.title };
+  } else {
+    const cats = (typeof quizCategoriesFor === 'function' ? quizCategoriesFor(lv) : []);
+    const c = cats.length ? cats[day % cats.length] : { id: 'gk', title: 'GK', icon: '🌍' };
+    learn = { k: 'learn', t: 'Quiz: ' + c.title, s: classLabel(lv) + ' · 10 questions', ic: null, emo: c.icon, href: 'quiz/play.html#/c/' + lv + '/' + c.id, a: '#8b5cf6', b: '#6366f1', say: 'do the ' + c.title + ' quiz' };
+  }
+  const play = lv <= 1
+    ? { k: 'play', t: 'Trace letters', s: lv <= 0 ? 'ABC with your finger' : 'abc and 123', ic: '270f', href: 'games/word/tracing.html', a: '#0ea5e9', b: '#22c55e', say: 'trace some letters' }
+    : { k: 'play', t: 'Times tables', s: 'Win 3 stars on a table', ic: '2716', href: 'games/brain/times_tables.html', a: '#0ea5e9', b: '#22c55e', say: 'practise times tables' };
+  return [story, learn, play];
+}
+function renderPlan() {
+  const el = document.getElementById('hmPlan'); if (!el) return;
+  const lv = planLevel(), nm = firstName();
+  const owl = '<svg viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="70" rx="42" ry="44" fill="#8b5cf6"/><ellipse cx="60" cy="82" rx="26" ry="28" fill="#ede9fe"/><circle cx="44" cy="50" r="17" fill="#fff"/><circle cx="76" cy="50" r="17" fill="#fff"/><circle cx="46" cy="51" r="8" fill="#1e1b4b"/><circle cx="74" cy="51" r="8" fill="#1e1b4b"/><path d="M54 62 L66 62 L60 72Z" fill="#f59e0b"/><path d="M30 30 L40 12 L50 30Z" fill="#7c3aed"/><path d="M70 30 L80 12 L90 30Z" fill="#7c3aed"/></svg>';
+  if (lv === null || el.dataset.pick === '1') {
+    el.innerHTML = '<div class="pl-top">' + owl + '<div class="t"><b>' + (lv === null ? 'Hi ' + nm + '! Which class are you in?' : 'Change your class') + '</b><small>I will make a plan just for you</small></div></div>' +
+      '<div class="pl-pick">' + PLAN_LEVELS.map((l) => '<button type="button" data-lv="' + l + '" class="' + (l === lv ? 'on' : '') + '">' + classLabel(l) + '</button>').join('') + '</div>';
+    el.querySelectorAll('[data-lv]').forEach((b) => b.onclick = () => {
+      try { localStorage.setItem('kq_last_class', b.dataset.lv); } catch (e) {}
+      el.dataset.pick = ''; renderPlan(); renderSkills();
+    });
+    return;
+  }
+  const steps = planSteps(lv), st = planState(), nDone = steps.filter((x) => st.done[x.k]).length;
+  const next = steps.find((x) => !st.done[x.k]);
+  el.innerHTML = '<div class="pl-top">' + owl + '<div class="t"><b>' + hmEsc(nm) + '’s plan</b><small>For today · ' + nDone + ' of 3 done</small></div>' +
+    '<button type="button" class="pl-cls" id="plCls" aria-label="Change class">🎒 ' + classLabel(lv) + ' ▾</button>' +
+    '<button type="button" class="pl-say" id="plSay" aria-label="Read the plan to me"><img src="images/emoji/1f50a.svg" alt=""></button></div>' +
+    '<div class="pl-steps">' + steps.map((x, i) => {
+      const d = !!st.done[x.k], icon = x.ic ? '<img class="ic" src="images/emoji/' + x.ic + '.svg" alt="">' : (typeof emojiImgHtml === 'function' ? emojiImgHtml(x.emo, 40, '') : x.emo);
+      return '<button type="button" class="pl-step' + (d ? ' done' : '') + (x === next ? ' next' : '') + '" data-i="' + i + '" style="--a:' + x.a + ';--b:' + x.b + '"><span class="n">' + (d ? '✓' : i + 1) + '</span>' + icon +
+        '<span class="tx"><b>' + hmEsc(x.t) + '</b><small>' + hmEsc(x.s) + '</small></span><span class="go">' + (d ? 'Again' : 'Go ›') + '</span></button>';
+    }).join('') + '</div>' +
+    (nDone === 3 ? '<div class="pl-done">🎉 All done! You are a star, ' + hmEsc(nm) + '!</div>' : '');
+  el.querySelectorAll('[data-i]').forEach((b) => b.onclick = () => {
+    const x = steps[+b.dataset.i]; if (x.k !== 'story') planMark(x.k); location.href = x.href;
+  });
+  document.getElementById('plCls').onclick = () => { el.dataset.pick = '1'; renderPlan(); };
+  document.getElementById('plSay').onclick = () => {
+    const txt = next ? 'Hi ' + nm + '! Here is your plan. ' + steps.map((x, i) => (i ? (i === 1 ? 'Then, ' : 'And then, ') : 'First, ') + x.say + '.').join(' ') + ' Tap ' + next.t + ' to start!'
+      : 'Wow ' + nm + '! You finished your plan today. You are a star!';
+    if (typeof speak === 'function') speak(txt, { raw: true, rate: 0.9 });
+  };
+  window.__planTip = next ? nm + ', let’s ' + next.say + '! ' + (next.k === 'story' ? '📖' : next.k === 'learn' ? '🎯' : '✏️') : 'You finished your plan! 🎉';
+}
+function loadPlanStories() {
+  fetch('data/stories.json?v=20261126a', { cache: 'no-cache' }).then((r) => r.json()).then((j) => { __stories = j.stories || []; renderPlan(); }).catch(() => {});
+}
+function hmEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function hmDockTo(id) {
+  if (id === 'top') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+  const el = document.getElementById(id); if (!el) return;
+  window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 12, behavior: 'smooth' });
+}
 function renderSkills() {
   const el = document.getElementById('hmSkills'); if (!el) return;
   let lv = null; try { lv = parseInt(localStorage.getItem('kq_last_class'), 10); } catch (e) {}
@@ -940,7 +1047,7 @@ function owlTalk() {
   const b = document.getElementById('hmBubble'); if (!b) return;
   const h = new Date().getHours(), greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
   let i = 0; b.textContent = greet + ', ' + (displayName() || 'friend') + '! 👋';
-  setInterval(() => { b.textContent = OWL_TIPS[i++ % OWL_TIPS.length]; }, 6000);
+  setInterval(() => { i++; b.textContent = (i % 2 && window.__planTip) ? window.__planTip : OWL_TIPS[i % OWL_TIPS.length]; }, 6000);
 }
 setInterval(function () { if (!document.hidden) try { renderStatTiles(); } catch (e) {} }, 20000);
 
@@ -1137,8 +1244,9 @@ getOrCreateUser(currentUser);
 
 renderHomeProfile();
 renderDailyCard();
-renderContinue();
 renderSkills();
+renderPlan();
+loadPlanStories();
 owlTalk();
 // Guests who never gave a name (older sessions) are asked once.
 if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {

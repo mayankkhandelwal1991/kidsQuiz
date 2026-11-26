@@ -84,6 +84,8 @@
   .ccard .big { width: 74px; height: 74px; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: inset 0 -5px 0 rgba(0,0,0,.08); }
   .ccard .t { font-size: 24px; font-weight: 800; line-height: 1; margin-top: 6px; text-shadow: 0 2px 0 rgba(0,0,0,.15); }
   .ccard .s { font-size: 13px; font-weight: 700; opacity: .95; }
+  .ccard.last { outline: 5px solid #fff; outline-offset: -2px; box-shadow: 0 0 0 4px #facc15, 0 8px 0 rgba(0,0,0,.15); }
+  .ccard .lastTag { position: absolute; top: 8px; right: 8px; z-index: 1; background: #facc15; color: #713f12; border-radius: 999px; padding: 1px 10px; font-size: 12px; font-weight: 800; }
   .ccard.wide { grid-column: span 2; flex-direction: row; justify-content: flex-start; gap: 14px; text-align: left; min-height: 120px; padding: 16px 20px; }
   .ccard .bob { animation: bob 2.4s ease-in-out infinite; }
   @keyframes bob { 50% { transform: translateY(-6px) rotate(-4deg); } }
@@ -467,10 +469,12 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     const levels = quizLevels();
     let h = '<div class="screen on"><div class="bar"><button class="round-btn" id="homeBtn" aria-label="Home">🏠</button><h1>Quiz Time!</h1>' + muteBtn() + '</div>' +
       '<div class="hello">' + owl() + '<div><h2>Hi ' + esc(nameOf()) + '! 👋</h2><p>Which class are you in?</p></div></div><div class="grid classes">';
+    let last = null; try { last = localStorage.getItem('kq_last_class'); } catch (e) {}
     levels.forEach((lv, i) => {
       const m = CLASS_META[String(lv)];
-      const wide = isPre(lv);
-      h += '<button class="ccard' + (wide ? ' wide' : '') + '" data-lv="' + lv + '" style="background:linear-gradient(135deg,' + m.c[0] + ',' + m.c[1] + ');animation-delay:' + i * 50 + 'ms">' +
+      const wide = isPre(lv), isLast = last !== null && String(lv) === last;
+      h += '<button class="ccard' + (wide ? ' wide' : '') + (isLast ? ' last' : '') + '" data-lv="' + lv + '" style="background:linear-gradient(135deg,' + m.c[0] + ',' + m.c[1] + ');animation-delay:' + i * 50 + 'ms">' +
+        (isLast ? '<span class="lastTag">⭐ My class</span>' : '') +
         '<span class="big bob">' + img(m.icon, 48) + '</span><span><span class="t">' + m.t + '</span><br><span class="s">' + esc(m.s) + '</span></span></button>';
     });
     h += '</div></div>';

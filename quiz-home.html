@@ -583,12 +583,11 @@ function goToQuiz(level) {
   window.location.href = 'quiz/index.html?cat=' + encodeURIComponent(currentCategory) + '&level=' + level;
 }
 
-/* New Quiz flow: Class -> Category -> Paper -> Play (quiz/play.html).
-   Opens straight at the class the child picked last time. */
+/* Quiz flow: Class -> Category -> Paper -> Play (quiz/play.html).
+   Always starts at the class picker (last class is highlighted there), so a
+   child can always change class. */
 function openQuizFlow() {
-  let last = null;
-  try { last = localStorage.getItem('kq_last_class'); } catch (e) {}
-  window.location.href = 'quiz/play.html' + (last != null && last !== '' ? '#/c/' + parseInt(last, 10) : '');
+  window.location.href = 'quiz/play.html';
 }
 function showQuizCategoryModal() {
   const grid = document.getElementById('quizCategoryGrid');

@@ -65,6 +65,10 @@
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   tr.row { cursor: pointer; }
   tr.row:hover td { background: color-mix(in srgb, var(--chip) 50%, transparent); }
+  tr.fam td { background: color-mix(in srgb, var(--google) 8%, transparent); font-weight: 700; font-size: 13px; padding-top: 6px; padding-bottom: 6px; }
+  tr.row.kid td:nth-child(2) { padding-left: 26px; }
+  tr.row.kid td:nth-child(2) .nm::before { content: '↳'; color: var(--muted); margin-right: 2px; }
+  .tag.f { color: #7c3aed; background: color-mix(in srgb, #7c3aed 14%, transparent); }
   .nm { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .av { width: 30px; height: 30px; border-radius: 50%; flex: none; display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #fff; background: var(--brand); overflow: hidden; }
   .av img { width: 100%; height: 100%; object-fit: cover; }
@@ -225,7 +229,13 @@
   // common admin header (admin-nav.js) switches it without reloading.
   const TAB_IDS = ['dash', 'players', 'coins', 'app', 'tools'];
   const tabFromHash = () => { const h = (location.hash || '').slice(1); return TAB_IDS.indexOf(h) !== -1 ? h : 'dash'; };
-  const S = { q: '', type: 'all', sort: 'last', sel: new Set(), tab: tabFromHash(), range: 30, cc: 'all' };
+  const S = { q: '', type: 'all', sort: 'last', sel: new Set(), tab: tabFromHash(), range: 30, cc: 'all', fam: true };
+  // Children added on one Google account play as "<uid>_c<code>" (profiles.js); the
+  // child who first used the account keeps the plain uid. famOf() gives the account uid.
+  const KID_RE = /^(.+)_(c[a-z0-9]{3,8})$/;
+  const famOf = (key) => { if (/^g_/.test(key)) return key; const m = KID_RE.exec(key); return m ? m[1] : key; };
+  const isKid = (key) => !/^g_/.test(key) && KID_RE.test(key);
+  let FAMS = new Map();   // uid -> [players], only accounts with 2+ players or a child key
   let loaded = false;
   window.addEventListener('hashchange', () => { const t = tabFromHash(); if (t === S.tab) return; S.tab = t; if (loaded) render(); window.scrollTo(0, 0); });
   let RAW = { lb: {}, ses: {}, att: {} };
@@ -285,7 +295,12 @@
     PLAYERS.forEach((p) => { const w = (RAW.wal || {})[p.key]; p.coins = w ? (+w.coins || 0) : null; p.badges = w && w.ach ? Object.keys(w.ach).length : 0; });
     PLAYERS.forEach((p) => { if (!p.name) p.name = p.guest ? 'Guest' : 'Player'; p.attempts.sort((a, b) => b.at - a.at); p.sessions.sort((a, b) => b.start - a.start); p.boards.sort((a, b) => b.at - a.at); });
     S.sel = new Set([...S.sel].filter((k) => BYKEY.has(k)));
+    const by = new Map();
+    PLAYERS.forEach((p) => { p.fam = famOf(p.key); p.kid = isKid(p.key); (by.get(p.fam) || by.set(p.fam, []).get(p.fam)).push(p); });
+    FAMS = new Map();
+    by.forEach((m, f) => { if (m.some((p) => p.kid)) { m.sort((a, b) => (a.kid - b.kid) || (a.first - b.first)); FAMS.set(f, m); } });
   }
+  const famLabel = (f) => { const m = FAMS.get(f) || []; const main = m.find((p) => !p.kid); return (main ? main.name + '’s family' : 'Family') + ' · ' + m.length + ' children'; };
 
   /* ---------- list ---------- */
   function filtered() {
@@ -296,7 +311,17 @@
       time: (a, b) => b.time - a.time, name: (a, b) => a.name.localeCompare(b.name), first: (a, b) => b.first - a.first,
       country: (a, b) => ccName(a.cc).localeCompare(ccName(b.cc)) || b.last - a.last,
       coins: (a, b) => (b.coins || 0) - (a.coins || 0) }[S.sort];
-    return list.sort(by);
+    list.sort(by);
+    if (!S.fam) return list;
+    // keep each family together, placed where its best-ranked child is
+    const shown = new Set(list.map((p) => p.key)), done = new Set(), out = [];
+    list.forEach((p) => {
+      const m = FAMS.get(p.fam);
+      if (!m) { out.push(p); return; }
+      if (done.has(p.fam)) return; done.add(p.fam);
+      m.filter((x) => shown.has(x.key)).forEach((x) => out.push(x));
+    });
+    return out;
   }
   function tabsHtml() { return ''; }   // sections are in the common admin header (admin-nav.js)
   function oldTabsHtml() {
@@ -719,6 +744,7 @@
     const list = filtered();
     let h = '<div class="kpis">' + k(PLAYERS.length, 'Players') + k(google, 'Google') + k(PLAYERS.length - google, 'Guests') +
       k(PLAYERS.filter((p) => now - p.last < DAY).length, 'Active 24h') + k(PLAYERS.filter((p) => now - p.last < 7 * DAY).length, 'Active 7 days') +
+      k(FAMS.size, 'Families') +
       k(fmtNum(PLAYERS.reduce((s, p) => s + p.attempts.length, 0)), 'Plays') + k(fmtDur(PLAYERS.reduce((s, p) => s + p.time, 0)), 'Time played') + '</div>';
     h += '<div class="tools"><input type="search" id="q" placeholder="Search name or ID…" value="' + esc(S.q) + '">' +
       '<div class="seg">' + [['all', 'All'], ['google', 'Google'], ['guest', 'Guests']].map(([v, l]) => '<button data-type="' + v + '" class="' + (S.type === v ? 'on' : '') + '">' + l + '</button>').join('') + '</div>' +
@@ -726,6 +752,7 @@
         return '<select id="ccSel" aria-label="Country"><option value="all">🌍 All countries</option>' + Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]).map((c) =>
           '<option value="' + esc(c) + '"' + (S.cc === c ? ' selected' : '') + '>' + esc(ccName(c)) + ' (' + cnt[c] + ')</option>').join('') + '</select>'; })() +
       '<select id="sort">' + [['last', 'Last active'], ['first', 'Newest'], ['points', 'Points'], ['plays', 'Plays'], ['time', 'Time played'], ['coins', 'Coins'], ['name', 'Name'], ['country', 'Country']].map(([v, l]) => '<option value="' + v + '"' + (S.sort === v ? ' selected' : '') + '>Sort: ' + l + '</option>').join('') + '</select>' +
+      '<button id="famT" class="' + (S.fam ? 'on' : '') + '" title="Show children of one Google account together">👨‍👩‍👧 ' + (S.fam ? 'Families: grouped' : 'Families: off') + '</button>' +
       '<button id="csv">⬇ CSV</button><button id="reload">↻ Refresh</button>' +
       '<button class="danger" id="delsel"' + (S.sel.size ? '' : ' disabled') + '>🗑 Delete selected (' + S.sel.size + ')</button></div>';
     if (!list.length) h += '<div class="card empty">No players match.</div>';
@@ -733,13 +760,21 @@
       const allSel = list.every((p) => S.sel.has(p.key));
       h += '<table><thead><tr><th style="width:34px"><input type="checkbox" id="selall"' + (allSel ? ' checked' : '') + ' aria-label="Select all shown"></th><th>Player</th><th class="hide-sm">Type</th><th>Country</th>' +
         '<th class="num">Points</th><th class="num hide-sm">🪙</th><th class="num hide-sm">Plays</th><th class="num hide-sm">Time</th><th class="num">Last active</th></tr></thead><tbody>' +
-        list.slice(0, 500).map((p) => '<tr class="row" data-key="' + esc(p.key) + '"><td><input type="checkbox" class="sel" data-key="' + esc(p.key) + '"' + (S.sel.has(p.key) ? ' checked' : '') + ' aria-label="Select"></td>' +
+        (() => { let prev = null; return list.slice(0, 500).map((p) => { const inFam = S.fam && FAMS.has(p.fam);
+          const head = inFam && p.fam !== prev ? (() => { const m = FAMS.get(p.fam);
+            return '<tr class="fam"><td></td><td colspan="8">👨‍👩‍👧 ' + esc(famLabel(p.fam)) + ' <span class="muted">· ' + fmtNum(m.reduce((s, x) => s + x.points, 0)) + ' points · ' +
+              m.reduce((s, x) => s + x.attempts.length, 0) + ' plays · last ' + esc(ago(Math.max(...m.map((x) => x.last)))) + '</span></td></tr>'; })() : '';
+          prev = inFam ? p.fam : null;
+          return head + rowHtml(p, inFam); }).join(''); })() + '</tbody></table>' +
+        (list.length > 500 ? '<p class="muted">Showing 500 of ' + list.length + ' — use search to narrow down.</p>' : '');
+    }
+    function rowHtml(p, inFam) {
+      return '<tr class="row' + (inFam ? ' kid' : '') + '" data-key="' + esc(p.key) + '"><td><input type="checkbox" class="sel" data-key="' + esc(p.key) + '"' + (S.sel.has(p.key) ? ' checked' : '') + ' aria-label="Select"></td>' +
           '<td><div class="nm">' + avatar(p) + '<div style="min-width:0"><div><b>' + esc(p.name) + '</b></div><div class="key">' + esc(p.key) + '</div></div></div></td>' +
-          '<td class="hide-sm"><span class="tag ' + (p.guest ? 'u">Guest' : 'g">Google') + '</span></td>' +
+          '<td class="hide-sm"><span class="tag ' + (p.guest ? 'u">Guest' : 'g">Google') + '</span>' + (FAMS.has(p.fam) ? ' <span class="tag f">' + (p.kid ? 'Sibling' : 'Main') + '</span>' : '') + '</td>' +
           '<td title="' + esc(ccName(p.cc)) + '">' + flag(p.cc) + ' <span class="hide-sm">' + esc(p.cc ? ccName(p.cc) : '') + '</span></td>' +
           '<td class="num">' + fmtNum(p.points) + '</td><td class="num hide-sm">' + (p.coins == null ? '—' : fmtNum(p.coins)) + '</td><td class="num hide-sm">' + p.attempts.length + '</td><td class="num hide-sm">' + fmtDur(p.time) + '</td>' +
-          '<td class="num" title="' + esc(fmtDate(p.last)) + '">' + ago(p.last) + '</td></tr>').join('') + '</tbody></table>' +
-        (list.length > 500 ? '<p class="muted">Showing 500 of ' + list.length + ' — use search to narrow down.</p>' : '');
+          '<td class="num" title="' + esc(fmtDate(p.last)) + '">' + ago(p.last) + '</td></tr>';
     }
     $app.innerHTML = tabsHtml() + h; bindTabs();
     const q = document.getElementById('q');
@@ -748,6 +783,7 @@
     document.getElementById('sort').onchange = (e) => { S.sort = e.target.value; render(); };
     document.getElementById('ccSel').onchange = (e) => { S.cc = e.target.value; render(); };
     document.getElementById('reload').onclick = load;
+    document.getElementById('famT').onclick = () => { S.fam = !S.fam; render(); };
     document.getElementById('csv').onclick = () => csv(list);
     document.getElementById('delsel').onclick = () => confirmDelete([...S.sel].map((k2) => BYKEY.get(k2)).filter(Boolean));
     const sa = document.getElementById('selall');
@@ -757,8 +793,8 @@
   }
   function csv(list) {
     const q = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
-    const rows = [['id', 'name', 'type', 'country', 'points', 'best_scores', 'plays', 'sessions', 'time_seconds', 'first_seen', 'last_active']]
-      .concat(list.map((p) => [p.key, p.name, p.guest ? 'guest' : 'google', p.cc || '', p.points, p.boards.length, p.attempts.length, p.sessions.length, p.time,
+    const rows = [['id', 'family', 'name', 'type', 'country', 'points', 'best_scores', 'plays', 'sessions', 'time_seconds', 'first_seen', 'last_active']]
+      .concat(list.map((p) => [p.key, FAMS.has(p.fam) ? p.fam : '', p.name, p.guest ? 'guest' : 'google', p.cc || '', p.points, p.boards.length, p.attempts.length, p.sessions.length, p.time,
         p.first ? new Date(p.first).toISOString() : '', p.last ? new Date(p.last).toISOString() : '']));
     const blob = new Blob([rows.map((r) => r.map(q).join(',')).join('\n')], { type: 'text/csv' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'kidsquiz-players.csv'; a.click();
@@ -775,6 +811,9 @@
       '<div class="key">' + esc(p.key) + '</div></div></div>' +
       '<p class="muted" style="margin:10px 0 0">' + flag(p.cc) + ' ' + esc(ccName(p.cc)) + ' · First seen ' + esc(fmtDate(p.first)) + ' · Last active ' + esc(fmtDate(p.last)) + '<br>' +
       fmtNum(p.points) + ' points · ' + p.boards.length + ' best scores · ' + p.attempts.length + ' plays · ' + p.sessions.length + ' visits · ' + fmtDur(p.time) + ' played</p>';
+    if (FAMS.has(p.fam)) h += '<h4>👨‍👩‍👧 ' + esc(famLabel(p.fam)) + '</h4><p class="muted" style="margin:0 0 4px">Same Google account; each child has their own scores and coins.</p><div class="list">' +
+      FAMS.get(p.fam).map((x) => '<div class="li" data-sib="' + esc(x.key) + '" style="cursor:' + (x === p ? 'default' : 'pointer') + '"><span>' + (x === p ? '▶ ' : '') + '<b>' + esc(x.name) + '</b> <span class="key">' + esc(x.key) + '</span></span><small>' +
+        fmtNum(x.points) + ' pts · ' + x.attempts.length + ' plays · ' + esc(ago(x.last)) + '</small></div>').join('') + '</div>';
     h += '<h4>Best scores (' + p.boards.length + ')</h4>' + (p.boards.length ? '<div class="list">' + p.boards.map((b) =>
       li(esc(CAT[b.cat] || b.cat) + ' · ' + esc(b.game.replace(/__/g, ' · ')), '<b>' + fmtNum(b.score) + '</b>' + (b.lower ? ' (low)' : '') + ' · ' + esc(ago(b.at)))).join('') + '</div>' : '<p class="muted">None</p>');
     h += '<h4>Recent plays (' + p.attempts.length + ')</h4>' + (p.attempts.length ? '<div class="list">' + p.attempts.slice(0, 50).map((a) =>
@@ -805,6 +844,7 @@
       }).then(() => { toast((applied >= 0 ? '+' : '') + applied + ' coins for ' + p.name); closeModal(); load(); }, (e) => toast(/permission/i.test(e.message || '') ? 'Permission denied — add the "wallets" rule (README-admin.md).' : e.message));
     };
     document.getElementById('cl').onclick = closeModal;
+    $modal.querySelectorAll('[data-sib]').forEach((d) => { if (d.dataset.sib !== p.key) d.onclick = () => detail(BYKEY.get(d.dataset.sib)); });
     document.getElementById('del').onclick = () => confirmDelete([p]);
   }
 

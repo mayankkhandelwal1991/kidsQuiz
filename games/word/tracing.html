@@ -38,7 +38,7 @@ const MODES = [
   { icon: '✏️', name: 'abc', key: 'low', set: 'abcdefghijklmnopqrstuvwxyz'.split('') },
   { icon: '🔢', name: '123', key: 'num', set: '0123456789'.split('') },
 ];
-const PER_GAME = 5, DONE_AT = 0.62, INK = ['#7c3aed', '#ec4899', '#0ea5e9', '#22c55e', '#f97316'];
+const PER_GAME = 5, DONE_AT = 0.9, PART_AT = 0.75, INK = ['#7c3aed', '#ec4899', '#0ea5e9', '#22c55e', '#f97316'];
 const G = KQ3D.init({
   id: 'tracing', title: 'Letter Tracing', bestKey: 'traceBest', music: false,
   hero: ['✏️', '🔤', '⭐'], colors: ['#7c3aed', '#ec4899'],
@@ -48,7 +48,7 @@ const G = KQ3D.init({
   onReset: (m) => reset(m)
 });
 const box = document.createElement('div'); box.className = 'tr'; G.scene.appendChild(box);
-let mode, list, startPos, i, score, got, cv, ctx, need, allow, pts, drawn, size, dpr, down, last, won;
+let part, mode, list, startPos, i, score, got, cv, ctx, need, allow, pts, drawn, size, dpr, down, last, won;
 
 function say(t) {
   try { if (localStorage.getItem('kq_muted') === '1') return; } catch (e) {}
@@ -113,14 +113,28 @@ function setup(ch) {
   ctx = cv.getContext('2d'); ctx.scale(dpr, dpr); ctx.lineCap = ctx.lineJoin = 'round';
   ctx.lineWidth = size * 0.075; ctx.strokeStyle = INK[i % INK.length];
   // sample points inside the letter (to cover), and a wider "allowed" area (to stay on)
-  const nd = base.g.getImageData(0, 0, size, size).data;
+  // Points to cover = the CENTRE of each stroke (the letter with its edges trimmed off),
+  // so a child has to go along every part of the letter, not just scribble near it.
   const ad = glyphCanvas(ch, size, size * 0.12).g.getImageData(0, 0, size, size).data;
-  need = []; const step = Math.max(4, Math.round(size / 70));
-  for (let y = 0; y < size; y += step) for (let x = 0; x < size; x += step) if (nd[(y * size + x) * 4 + 3] > 128) need.push([x, y]);
+  const step = Math.max(3, Math.round(size / 90));
+  const sample = (trim) => {
+    const gc = glyphCanvas(ch, size, 0);
+    if (trim) { gc.g.globalCompositeOperation = 'destination-out'; gc.g.lineWidth = trim; gc.g.lineJoin = 'round'; gc.g.strokeText(ch, size / 2, gc.y); }
+    const d = gc.g.getImageData(0, 0, size, size).data, out = [];
+    for (let y = 0; y < size; y += step) for (let x = 0; x < size; x += step) if (d[(y * size + x) * 4 + 3] > 128) out.push([x, y]);
+    return out;
+  };
+  need = sample(size * 0.075);
+  if (need.length < 30) need = sample(size * 0.04);
+  if (need.length < 30) need = sample(0);
+  // 3 x 3 parts of the letter: each part with points must be traced too
+  const xs = need.map((p) => p[0]), ys = need.map((p) => p[1]);
+  const x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs) + 1, y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys) + 1;
+  part = need.map((p) => Math.min(2, Math.floor((p[0] - x0) / (x1 - x0) * 3)) + 3 * Math.min(2, Math.floor((p[1] - y0) / (y1 - y0) * 3)));
   allow = (x, y) => { x = Math.round(x); y = Math.round(y); return x >= 0 && y >= 0 && x < size && y < size && ad[(y * size + x) * 4 + 3] > 64; };
   pts = { in: 0, all: 0 }; drawn = new Uint8Array(need.length); down = false;
   document.getElementById('trM').style.width = '0';
-  cv.onpointerdown = (e) => { if (G.state !== 'play' || won) return; down = true; cv.setPointerCapture(e.pointerId); last = pos(e); dot(last); };
+  cv.onpointerdown = (e) => { if (G.state !== 'play' || won) return; down = true; try { cv.setPointerCapture(e.pointerId); } catch (er) {} last = pos(e); dot(last); };
   cv.onpointermove = (e) => { if (!down) return; const p = pos(e); line(last, p); last = p; };
   cv.onpointerup = cv.onpointercancel = () => { if (!down) return; down = false; check(true); };
 }
@@ -134,15 +148,19 @@ function line(a, b) {
 }
 function mark(p) {
   pts.all++; if (allow(p[0], p[1])) pts.in++;
-  const r2 = Math.pow(ctx.lineWidth * 0.6, 2);
+  const r2 = Math.pow(size * 0.045, 2);
   for (let k = 0; k < need.length; k++) if (!drawn[k]) { const dx = need[k][0] - p[0], dy = need[k][1] - p[1]; if (dx * dx + dy * dy <= r2) drawn[k] = 1; }
 }
 function check(lifted) {
   if (won || !need.length) return;
-  let c = 0; for (let k = 0; k < drawn.length; k++) c += drawn[k];
+  let c = 0; const pc = [0, 0, 0, 0, 0, 0, 0, 0, 0], pn = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  for (let k = 0; k < drawn.length; k++) { c += drawn[k]; pn[part[k]]++; pc[part[k]] += drawn[k]; }
   const cover = c / need.length, acc = pts.all ? pts.in / pts.all : 0;
-  document.getElementById('trM').style.width = Math.min(100, Math.round(cover / DONE_AT * 100)) + '%';
-  if (cover >= DONE_AT && acc >= 0.55) return win(acc);
+  const partsOk = pn.every((n, k) => n < 4 || pc[k] / n >= PART_AT);
+  document.getElementById('trM').style.width = Math.min(partsOk ? 100 : 92, Math.round(cover / DONE_AT * 100)) + '%';
+  // finish only when the finger is lifted, never in the middle of a stroke
+  if (lifted && cover >= DONE_AT && partsOk && acc >= 0.55) return win(acc);
+  if (lifted && cover >= 0.6 && !partsOk) { const s = box.querySelector('.tr-say'); if (s) s.textContent = 'Almost! Trace the parts you missed 👆'; }
   if (lifted && acc < 0.55 && pts.all > 40) { const s = box.querySelector('.tr-say'); if (s) s.textContent = 'Stay on the dotted lines! Tap ↺ Again to try once more.'; }
 }
 function win(acc) {

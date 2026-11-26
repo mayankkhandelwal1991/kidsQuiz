@@ -17,7 +17,7 @@
   var MAX = 6;
   var AVATARS = ['🦁', '🐼', '🦄', '🐯', '🐰', '🦊', '🐸', '🐵', '🐨', '🐙'];
   // kept for the whole device (never swapped)
-  var DEVICE = /^(kq_muted|kq_adCounter|kq_lastAdTime|kq_guest_session|kq_cached_auth|kq_dev.*|kq_app_config|kq_manifest_.*|kq_rating.*|kq_review_.*|kq_session|kq_profiles|kq_profile_active|kq_profile_data_.*|kq_story_autoplay|kq_lb_range|kq_lb_guests|kq_child_named)$/;
+  var DEVICE = /^(kq_muted|kq_adCounter|kq_lastAdTime|kq_guest_session|kq_cached_auth|kq_dev.*|kq_app_config|kq_manifest_.*|kq_rating.*|kq_review_.*|kq_session|kq_profiles|kq_profile_active|kq_profile_data_.*|kq_story_autoplay|kq_lb_range|kq_lb_guests|kq_child_named|kq_profiles_hidden)$/;
   function ownKey(k) { return !DEVICE.test(k) && k.indexOf(':') < 0 && !/^(firebase|goog|_|ga|google|adsby|__)/i.test(k); }
   function get(k, d) { try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } }
   function set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
@@ -79,7 +79,7 @@
   function cloudPut(p) {
     var u = acctOf(p); if (u === 'guest' || !window.KQ || !KQ.ready) return Promise.resolve();
     // t = when this phone last changed the child; a newer local change is never undone by an older cloud copy
-    return KQ.ready.then(function () { var d = db(); if (d) return d.ref('users/' + u + '/kids/' + (p.sfx || 'main')).set({ n: p.name || 'Player', av: p.av || AVATARS[0], cls: p.cls == null ? '' : String(p.cls), t: p.t || 0 }); }).catch(function () {});
+    return KQ.ready.then(function () { var d = db(); if (d) return d.ref('users/' + u + '/kids/' + (p.sfx || 'main')).set({ n: p.name || 'Player', av: p.av || AVATARS[0], cls: p.cls == null ? '' : String(p.cls), t: p.t || 0, h: !!p.h }); }).catch(function () {});
   }
   function cloudSync(after) {
     var A = acct(); if (!A || A === 'guest' || !window.KQ || !KQ.ready) { if (after) after(); return; }
@@ -90,6 +90,10 @@
         Object.keys(kids).forEach(function (k) {
           var sfx = k === 'main' ? '' : k, kd = kids[k] || {};
           var have = ev.filter(function (p) { return acctOf(p) === A && (p.sfx || '') === sfx; })[0];
+          if (kd.h) {   // removed (on this or another phone); scores stay in Firebase
+            if (have && have.id !== activeId()) { ev = ev.filter(function (p) { return p !== have; }); try { localStorage.removeItem(DATA + have.id); } catch (e) {} added = true; }
+            return;
+          }
           if (have) {
             var ct = +kd.t || 0, lt = +have.t || 0;
             if (ct > lt) {   // changed on another phone after this one
@@ -160,7 +164,10 @@
   function remove(id) {
     if (id === activeId()) return;
     var p = all().filter(function (q) { return q.id === id; })[0];
-    if (p && acctOf(p) !== 'guest') set('kq_profiles_hidden', hidden().concat([acctOf(p) + ':' + (p.sfx || '')]));
+    if (p && acctOf(p) !== 'guest') {
+      set('kq_profiles_hidden', hidden().concat([acctOf(p) + ':' + (p.sfx || '')]));
+      p.h = true; p.t = Date.now(); cloudPut(p);   // every phone with this account removes it too
+    }
     set(LIST, all().filter(function (q) { return q.id !== id; }));
     try { localStorage.removeItem(DATA + id); } catch (e) {}
   }

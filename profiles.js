@@ -4,7 +4,11 @@
    stars, coins, best scores, guest leaderboard id …). Switching saves the
    current child's keys into kq_profile_data_<id> and restores the other
    child's, then reloads. Device settings (sound, ads, sign-in) are shared.
-   Profiles are for guest play; a Google account is one person.
+   Guest play: each child gets their own guest id. Google sign-in: the child who
+   already used the account keeps its id (the uid), every other child gets
+   "<uid>_<sfx>"; the children list is kept in Firebase users/<uid>/kids so every
+   phone signed in with that account shows the same children. Nothing is ever
+   deleted from Firebase: removing a child only hides it on this phone.
    ============================================================ */
 (function () {
   'use strict';
@@ -27,30 +31,80 @@
   function clsLbl(n) { n = parseInt(n, 10); return n === 0 ? 'LKG' : n === -1 ? 'UKG' : (n >= 1 ? 'Class ' + n : ''); }
   function isGoogle() { try { var a = JSON.parse(localStorage.getItem('kq_cached_auth') || 'null'); return !!(a && a.name) && localStorage.getItem('kq_guest_session') !== '1'; } catch (e) { return false; } }
 
-  function list() { return get(LIST, []); }
+  function uid() { try { var a = JSON.parse(localStorage.getItem('kq_cached_auth') || 'null'); return (a && a.uid) || ''; } catch (e) { return ''; } }
+  function gName() { try { return ((JSON.parse(localStorage.getItem('kq_cached_auth') || '{}').name) || 'Player').split(' ')[0]; } catch (e) { return 'Player'; } }
+  // the account children belong to: a Google uid, 'guest', or null (Google, uid not known yet)
+  function acct() { return isGoogle() ? (uid() || null) : 'guest'; }
+  function acctOf(p) { return p.acct || 'guest'; }
+  function all() { return get(LIST, []); }
+  function hidden() { return get('kq_profiles_hidden', []); }
+  function list() { var a = acct(); return all().filter(function (p) { return a === null || acctOf(p) === a; }); }
   function activeId() { return raw(ACTIVE); }
-  function ensure() {
-    var ps = list();
-    if (!ps.length) {
-      var id = 'p' + Date.now().toString(36);
-      ps = [{ id: id, name: (raw('kq_nick') || 'Player').split(' ')[0], av: AVATARS[0], cls: raw('kq_last_class') }];
-      set(LIST, ps); try { localStorage.setItem(ACTIVE, id); } catch (e) {}
-    } else if (!activeId() || !ps.some(function (p) { return p.id === activeId(); })) {
-      try { localStorage.setItem(ACTIVE, ps[0].id); } catch (e) {}
-    }
-    // keep the active card's name / class up to date
-    var a = activeId(), nick = raw('kq_nick'), cls = raw('kq_last_class'), changed = false;
-    ps.forEach(function (p) { if (p.id === a) { if (nick && p.name !== nick.split(' ')[0]) { p.name = nick.split(' ')[0]; changed = true; } if (cls != null && p.cls !== cls) { p.cls = cls; changed = true; } } });
-    if (changed) set(LIST, ps);
-    return ps;
-  }
-  function active() { var a = activeId(); return ensure().filter(function (p) { return p.id === a; })[0] || null; }
-
+  function newId() { return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 4); }
   function snapshot() {
     var data = {}, keys = [];
     for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && ownKey(k)) keys.push(k); }
     keys.forEach(function (k) { data[k] = localStorage.getItem(k); });
     return { data: data, keys: keys };
+  }
+  function clearOwn() { snapshot().keys.forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} }); }
+  function loadData(id) { var d = get(DATA + id, null); if (!d) return false; clearOwn(); Object.keys(d).forEach(function (k) { try { localStorage.setItem(k, d[k]); } catch (e) {} }); try { localStorage.removeItem(DATA + id); } catch (e) {} return true; }
+  function ensure() {
+    var A = acct(), every = all(), cur = every.filter(function (p) { return p.id === activeId(); })[0];
+    if (A !== null) {
+      if (cur && acctOf(cur) !== A) {
+        // signed in or out: keep a copy for the other account's child, switch to this account's children
+        set(DATA + cur.id, snapshot().data);
+        var mine = every.filter(function (p) { return acctOf(p) === A; });
+        if (mine.length) { loadData(mine[0].id); try { localStorage.setItem(ACTIVE, mine[0].id); } catch (e) {} }
+      }
+      if (!every.some(function (p) { return acctOf(p) === A; })) {
+        var id = newId();
+        every.push({ id: id, acct: A, sfx: '', name: (A === 'guest' ? (raw('kq_nick') || 'Player') : (raw('kq_nick') || gName())).split(' ')[0], av: AVATARS[0], cls: raw('kq_last_class') });
+        set(LIST, every); try { localStorage.setItem(ACTIVE, id); } catch (e) {}
+      }
+    }
+    var ps = list();
+    if (ps.length && (!activeId() || !ps.some(function (p) { return p.id === activeId(); }))) { try { localStorage.setItem(ACTIVE, ps[0].id); } catch (e) {} }
+    // keep the active card's name / class up to date
+    var a = activeId(), nick = raw('kq_nick'), cls = raw('kq_last_class'), ev = all(), changed = false;
+    ev.forEach(function (p) { if (p.id === a) { if (nick && p.name !== nick.split(' ')[0]) { p.name = nick.split(' ')[0]; changed = true; } if (cls != null && p.cls !== cls) { p.cls = cls; changed = true; } if (changed && acctOf(p) !== 'guest') cloudPut(p); } });
+    if (changed) set(LIST, ev);
+    return list();
+  }
+  function active() { var ps = ensure(), a = activeId(); return ps.filter(function (p) { return p.id === a; })[0] || null; }
+
+  /* ---- Google: children list in Firebase (users/<uid>/kids/<sfx or "main">) ---- */
+  function db() { try { return (window.firebase && firebase.database) ? firebase.database() : null; } catch (e) { return null; } }
+  function cloudPut(p) {
+    var u = acctOf(p); if (u === 'guest' || !window.KQ || !KQ.ready) return;
+    KQ.ready.then(function () { var d = db(); if (d) d.ref('users/' + u + '/kids/' + (p.sfx || 'main')).set({ n: p.name || 'Player', av: p.av || AVATARS[0], cls: p.cls == null ? '' : String(p.cls) }).catch(function () {}); });
+  }
+  function cloudSync(after) {
+    var A = acct(); if (!A || A === 'guest' || !window.KQ || !KQ.ready) { if (after) after(); return; }
+    KQ.ready.then(function () {
+      var d = db(); if (!d) { if (after) after(); return; }
+      d.ref('users/' + A + '/kids').once('value').then(function (snap) {
+        var kids = snap.val() || {}, ev = all(), hid = hidden(), added = false;
+        Object.keys(kids).forEach(function (k) {
+          var sfx = k === 'main' ? '' : k, kd = kids[k] || {};
+          var have = ev.filter(function (p) { return acctOf(p) === A && (p.sfx || '') === sfx; })[0];
+          if (have) { if (kd.n && have.id !== activeId()) { have.name = kd.n; have.av = kd.av || have.av; have.cls = kd.cls; } return; }
+          if (hid.indexOf(A + ':' + sfx) >= 0) return;
+          ev.push({ id: newId(), acct: A, sfx: sfx, name: kd.n || 'Player', av: kd.av || AVATARS[1], cls: kd.cls }); added = true;
+        });
+        set(LIST, ev);
+        // make sure this phone's children are in the list too
+        ev.filter(function (p) { return acctOf(p) === A && !kids[p.sfx || 'main']; }).forEach(cloudPut);
+        if (after) after(added);
+      }).catch(function () { if (after) after(); });
+    });
+  }
+
+  function done() {
+    try { sessionStorage.setItem('kq_who_asked', '1'); } catch (e) {}
+    if (!isGoogle()) { try { localStorage.setItem('kq_guest_session', '1'); } catch (e) {} }
+    location.reload();
   }
   function saveCurrentAndClear() {
     var s = snapshot(), a = activeId();
@@ -58,32 +112,30 @@
     s.keys.forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
     return true;
   }
-  function done() {
-    try { sessionStorage.setItem('kq_who_asked', '1'); } catch (e) {}
-    try { localStorage.setItem('kq_guest_session', '1'); } catch (e) {}
-    location.reload();
-  }
   function switchTo(id) {
     if (id === activeId()) { close(); try { sessionStorage.setItem('kq_who_asked', '1'); } catch (e) {} return; }
+    var p = all().filter(function (q) { return q.id === id; })[0]; if (!p) return;
     if (!saveCurrentAndClear()) { alert('Not enough space on this phone to switch.'); return; }
-    var d = get(DATA + id, {});
-    Object.keys(d).forEach(function (k) { try { localStorage.setItem(k, d[k]); } catch (e) {} });
-    try { localStorage.removeItem(DATA + id); localStorage.setItem(ACTIVE, id); } catch (e) {}
+    if (!loadData(id)) { try { localStorage.setItem('kq_nick', p.name || 'Player'); if (p.cls != null && p.cls !== '') localStorage.setItem('kq_last_class', String(p.cls)); } catch (e) {} }
+    try { localStorage.setItem(ACTIVE, id); } catch (e) {}
     done();
   }
   function add(name, av, cls) {
-    var ps = ensure();
-    if (ps.length >= MAX) return;
+    var A = acct() || 'guest';
+    if (list().length >= MAX) return;
+    ensure();
     if (!saveCurrentAndClear()) { alert('Not enough space on this phone to add a child.'); return; }
-    var id = 'p' + Date.now().toString(36);
-    ps.push({ id: id, name: name, av: av, cls: String(cls) });
-    set(LIST, ps);
-    try { localStorage.setItem(ACTIVE, id); localStorage.setItem('kq_nick', name); localStorage.setItem('kq_last_class', String(cls)); } catch (e) {}
-    done();
+    var p = { id: newId(), acct: A, name: name, av: av, cls: String(cls) };
+    if (A !== 'guest') { p.sfx = 'c' + Math.random().toString(36).slice(2, 7); cloudPut(p); }
+    set(LIST, all().concat([p]));
+    try { localStorage.setItem(ACTIVE, p.id); localStorage.setItem('kq_nick', name); localStorage.setItem('kq_last_class', String(cls)); } catch (e) {}
+    setTimeout(done, A !== 'guest' ? 700 : 0);   // give the cloud write a moment
   }
   function remove(id) {
     if (id === activeId()) return;
-    set(LIST, ensure().filter(function (p) { return p.id !== id; }));
+    var p = all().filter(function (q) { return q.id === id; })[0];
+    if (p && acctOf(p) !== 'guest') set('kq_profiles_hidden', hidden().concat([acctOf(p) + ':' + (p.sfx || '')]));
+    set(LIST, all().filter(function (q) { return q.id !== id; }));
     try { localStorage.removeItem(DATA + id); } catch (e) {}
   }
 
@@ -125,14 +177,11 @@
   }
   function open(opts) {
     opts = opts || {};
-    if (isGoogle()) {
-      var b0 = shell('<div style="font-size:46px">👪</div><h2>Switch account</h2><p>You are signed in with Google. To let a brother or sister play with their own progress, sign out and choose “Continue as Guest”. Then you can add a profile for each child.</p>' +
-        '<button class="kqpf-go" id="kqpfOut">Sign out to switch</button>', true);
-      b0.querySelector('#kqpfOut').onclick = function () { close(); if (typeof window.switchUser === 'function') window.switchUser(); };
-      return;
+    if (acct() === null) {   // Google, account id not known yet (first open after the update)
+      var b0 = shell('<div style="font-size:40px">⏳</div><h2>One moment…</h2><p>Getting your account ready. Please try again in a few seconds.</p>', true); return;
     }
-    var ps = ensure(), a = activeId();
-    var b = shell('<div style="font-size:40px">👋</div><h2>Who is playing?</h2><p>Each child has their own stars, coins and progress</p><div class="kqpf-g">' +
+    var ps = ensure(), a = activeId(), g = isGoogle();
+    var b = shell('<div style="font-size:40px">👋</div><h2>Who is playing?</h2><p>Each child has their own stars, coins and leaderboard name' + (g ? ' — on every phone with this Google account' : '') + '</p><div class="kqpf-g">' +
       ps.map(function (p) {
         return '<button type="button" class="kqpf-p' + (p.id === a ? ' on' : '') + '" data-id="' + esc(p.id) + '"><span class="x" data-x="' + esc(p.id) + '" aria-label="Remove">×</span><span class="av">' + emo(p.av || '🦁', 44) + '</span><b>' + esc(p.name || 'Player') + '</b><small>' + esc(clsLbl(p.cls)) + '</small></button>';
       }).join('') +
@@ -143,7 +192,7 @@
         var xid = e.target && e.target.getAttribute && e.target.getAttribute('data-x');
         if (xid && b.classList.contains('manage')) {
           var p = ps.filter(function (q) { return q.id === xid; })[0];
-          if (p && confirm('Remove ' + p.name + '’s profile and progress from this phone?')) { remove(xid); open(opts); }
+          if (p && confirm('Remove ' + p.name + ' from this phone? Their scores stay saved.')) { remove(xid); open(opts); }
           return;
         }
         switchTo(el.getAttribute('data-id'));
@@ -154,6 +203,8 @@
       var go = function () { b.classList.add('manage'); mg.textContent = 'Tap × to remove. Tap a child to play.'; };
       if (typeof window.kqParentGate === 'function') window.kqParentGate(go); else go();
     };
+    // Google: bring in brothers/sisters added on another phone
+    if (g && !opts.synced) cloudSync(function (added) { if (added && box) open(Object.assign({}, opts, { synced: true })); });
   }
   function addForm(opts) {
     var av = AVATARS[(list().length) % AVATARS.length], cls = 0;
@@ -175,10 +226,11 @@
   }
   /** Ask "Who is playing?" once per app session when there is more than one child. */
   function askOnStart() {
-    if (isGoogle()) return;
+    if (acct() === null) return;
     var asked = false; try { asked = sessionStorage.getItem('kq_who_asked') === '1'; } catch (e) {}
-    if (!asked && ensure().length > 1) open({ first: true });
+    var go = function () { if (!asked && ensure().length > 1) open({ first: true, synced: true }); };
+    if (isGoogle()) cloudSync(go); else go();
   }
 
-  window.KQProfiles = { list: list, active: active, ensure: ensure, switchTo: switchTo, open: open, askOnStart: askOnStart, isGoogle: isGoogle };
+  window.KQProfiles = { list: list, active: active, ensure: ensure, switchTo: switchTo, open: open, askOnStart: askOnStart, isGoogle: isGoogle, sync: cloudSync };
 })();

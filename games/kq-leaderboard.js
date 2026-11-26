@@ -144,14 +144,25 @@
   var authCbs = [];
   var readyResolve, ready = new Promise(function (r) { readyResolve = r; });
 
+  /* Child profiles on a Google account (profiles.js): the child who first used the
+     account plays as the uid; brothers/sisters as "<uid>_<sfx>", with their own name. */
+  function googleChild(uid) {
+    try {
+      var id = localStorage.getItem("kq_profile_active"), ps = JSON.parse(localStorage.getItem("kq_profiles") || "[]");
+      for (var i = 0; i < ps.length; i++) if (ps[i].id === id && ps[i].acct === uid) return ps[i];
+    } catch (e) {}
+    return null;
+  }
   function currentUser() {
     if (authUser) {
+      var ch = googleChild(authUser.uid);
       return {
-        key: authUser.uid,
+        key: ch && ch.sfx ? authUser.uid + "_" + ch.sfx : authUser.uid,
         uid: authUser.uid,
+        child: ch ? (ch.sfx || "main") : null,
         // Children's app: only a first name is ever shown or published, never the full Google name.
-        name: firstOnly(authUser.displayName) || "Player",
-        photo: authUser.photoURL || "",
+        name: (ch && ch.name) || firstOnly(authUser.displayName) || "Player",
+        photo: ch && ch.sfx ? "" : (authUser.photoURL || ""),
         email: authUser.email || "",
         isGuest: false
       };
@@ -603,16 +614,18 @@
   }
   // A finished quiz/game/paper/match ('complete') or leaving early ('quit').
   function adBreak(reason) {
-    var shown = adBreakAd(reason);
-    if (reason !== "quit") { try { maybeAskReview(shown); } catch (e) {} }
-    return shown;
+    // the rating sheet waits only when a full-screen ad REALLY showed at this finish
+    return adBreakAd(reason, function (adShown) { if (reason !== "quit") { try { maybeAskReview(adShown); } catch (e) {} } });
   }
+  /* A finished story / rhyme / activity: counts towards the rating sheet, no ad. */
+  function finished() { try { maybeAskReview(false); } catch (e) {} }
 
   /* ---- Native Play rating sheet (Google In-App Review) --------------------
      After N finished quizzes/games (admin: App settings -> Rating, default 3)
      the app shows Google's star-rating sheet inside the app. Not on top of a
      full-screen ad (waits for the next finish), then waits repeatDays before
      asking again. Google also limits how often a person actually sees it. */
+  var reviewPending = false;
   function maybeAskReview(adShown) {
     if (typeof Android === "undefined" || !Android || typeof Android.requestReview !== "function") return;
     var r = (APP_CFG && APP_CFG.rating) || {};
@@ -621,29 +634,38 @@
     var n = (+(localStorage.getItem("kq_review_n") || 0)) + 1;
     localStorage.setItem("kq_review_n", n);
     var last = +(localStorage.getItem("kq_review_last") || 0);
-    if (n < afterN || adShown) return;
+    if (n < afterN || adShown || reviewPending) return;
     if (last && Date.now() - last < repeatDays * 86400000) return;
-    localStorage.setItem("kq_review_n", 0);
-    localStorage.setItem("kq_review_last", Date.now());
-    setTimeout(function () { try { Android.requestReview(); } catch (e) {} }, 2500); // after the result screen + animation
+    reviewPending = true;
+    // after the result screen + animation; only counts as "asked" if the child is
+    // still here (leaving the page cancels it, and the next finish tries again)
+    setTimeout(function () {
+      reviewPending = false;
+      if (document.hidden) return;
+      localStorage.setItem("kq_review_n", 0);
+      localStorage.setItem("kq_review_last", Date.now());
+      try { Android.requestReview(); } catch (e) {}
+    }, 2500);
   }
 
-  function adBreakAd(reason) {
+  function adBreakAd(reason, after) {
+    var done = function (v) { if (after) { try { after(v); } catch (e) {} after = null; } };
     try {
-      if (typeof Android === "undefined" || !Android || typeof Android.showAd !== "function") return false;
-      var rule = adRules(); if (!rule.on) return false;
+      if (typeof Android === "undefined" || !Android || typeof Android.showAd !== "function") { done(false); return false; }
+      var rule = adRules(); if (!rule.on) { done(false); return false; }
       var now = Date.now(), last = +(localStorage.getItem("kq_lastAdTime") || 0), n = null;
       if (reason === "quit") {
-        if (!rule.quit || now - last < rule.quitGapMs) return false;
+        if (!rule.quit || now - last < rule.quitGapMs) { done(false); return false; }
       } else {
         n = (+(localStorage.getItem("kq_adCounter") || 0)) + 1;
         localStorage.setItem("kq_adCounter", n);
-        if (n % rule.everyN !== 0 || now - last < rule.minGapMs) return false;
+        if (n % rule.everyN !== 0 || now - last < rule.minGapMs) { done(false); return false; }
       }
       localStorage.setItem("kq_lastAdTime", now);
       setTimeout(function () {
         var shown;
         try { shown = Android.showAd("interstitial"); } catch (e) { shown = false; }
+        done(shown !== false);
         // The app answers false when no ad was ready (it starts loading one).
         // Then this break doesn't count: the next finished game tries again.
         // (Older app versions return nothing - treated as shown.)
@@ -655,7 +677,7 @@
         }
       }, reason === "quit" ? 0 : AD_RULES.completeDelayMs);
       return true;
-    } catch (e) { return false; }
+    } catch (e) { done(false); return false; }
   }
 
   /* ---- App settings from the admin console (config/app in Firebase) -------
@@ -1006,6 +1028,7 @@
     country: countryCode,
     gate: gate,
     adBreak: adBreak,
+    finished: finished,
     appConfig: function () { return APP_CFG; },
     onConfig: function (fn) { if (typeof fn === "function") { cfgCbs.push(fn); try { fn(APP_CFG); } catch (e) {} } },
     inApp: inAndroidApp,

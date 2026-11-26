@@ -37,7 +37,7 @@
 </head>
 <body>
 <div class="wrap" id="app"></div>
-<script src="../quiz-shared.js?v=20261126b"></script>
+<script src="../quiz-shared.js?v=20261126c"></script>
 <script>
 (function () {
   'use strict';
@@ -84,6 +84,7 @@
       '<p class="how">Moving makes your body and brain happy. Have a drink of water 💧</p><button class="btn" id="again">↺ Move again</button><button class="btn alt" id="back">🏠 Back home</button></div>';
     bind();
     say('Great moving! You moved like ' + N + ' animals!');
+    try { if (window.KQ && KQ.finished) KQ.finished(); } catch (e) {}
     document.getElementById('again').onclick = start;
     document.getElementById('back').onclick = () => { location.href = '../quiz-home.html'; };
   }
@@ -91,5 +92,7 @@
   start();
 })();
 </script>
+<script>window.KQ_NO_WIDGET = true; window.KQFX_NO_MUTE = true;</script>
+<script src="../games/kq-leaderboard.js?v=20261126f"></script>
 </body>
 </html>

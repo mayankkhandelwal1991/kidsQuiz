@@ -392,9 +392,9 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 </div>
 
 <script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
-<script src="profiles.js?v=20261126a" charset="utf-8"></script>
+<script src="profiles.js?v=20261126b" charset="utf-8"></script>
 <script src="guide-owl.js?v=20261126b" charset="utf-8"></script>
-<script src="quiz-shared.js?v=20261126b" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261126c" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
 <script src="quiz/kids-engine.js?v=20261126a" charset="utf-8"></script>
 <script>
@@ -845,6 +845,8 @@ function getQuizStats() {
    name they typed (local history is still stored under 'Guest'). */
 function displayName() {
   if (window.isGuestUser) return kqGetNick() || 'Guest';
+  // Google account with child profiles: the child playing now
+  try { const p = window.KQProfiles && KQProfiles.active(); if (p && p.acct && p.acct !== 'guest' && p.name) return p.name; } catch (e) {}
   return currentUser;
 }
 function editGuestName() {
@@ -881,7 +883,8 @@ function renderHomeProfile() {
     const nm = (displayName() || 'Player').trim();
     const ini = nm.charAt(0).toUpperCase() || '🙂';
     av.classList.add('kh-av');
-    const prof = (window.isGuestUser && window.KQProfiles) ? KQProfiles.active() : null;
+    const prof = window.KQProfiles ? KQProfiles.active() : null;
+    if (prof && prof.sfx) photo = '';   // a brother/sister on the Google account: their own picture
     av.innerHTML = photo
       ? '<img class="pf-av" src="' + photo + '" referrerpolicy="no-referrer" alt="">'
       : prof && prof.av ? '<img src="images/emoji/' + Array.from(prof.av).map((c) => c.codePointAt(0)).filter((c) => c !== 0xfe0f).map((c) => c.toString(16)).join('-') + '.svg" alt="" style="width:70%;height:70%">' : '<div class="pf-avph">' + ini + '</div>';
@@ -1312,11 +1315,11 @@ renderTeacherTasks();
 // Guests who never gave a name (older sessions) are asked once.
 if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   setTimeout(function () { kqAskName().then(function () { renderHomeProfile(); if (window.KQProfiles) KQProfiles.ensure(); }); }, 400);
-} else if (window.isGuestUser && window.KQProfiles) {
+} else if (window.KQProfiles) {
   setTimeout(function () { KQProfiles.askOnStart(); }, 300);
 }
 </script>
-<script src="games/kq-leaderboard.js?v=20261126d"></script>
+<script src="games/kq-leaderboard.js?v=20261126f"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>try { KQWebAds.rails(); } catch (e) {}</script>
 <script>

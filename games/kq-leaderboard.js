@@ -112,7 +112,7 @@
   // End-of-game animations (win / game over / lose) — on every page, even ones with their own sounds.
   if (!window.KQEnd) { loadScript(SELF_BASE + "kq-endfx.js?v=20261126b").catch(function () {}); }
   // Coins + achievements (switched on/off in the admin console)
-  if (!window.KQCoins) { loadScript(SELF_BASE + "kq-coins.js?v=20261126b").catch(function () {}); }
+  if (!window.KQCoins) { loadScript(SELF_BASE + "kq-coins.js?v=20261126c").catch(function () {}); }
   // Fun zone: owl shop, daily gift, question of the day, learning path, leagues, weekly report
   if (!window.KQPlay) { loadScript(SELF_BASE + "kq-play.js?v=20261126b").catch(function () {}); }
   function prettify(id) {

@@ -8,9 +8,8 @@
      cost.{quiz,single,multi,olympiad}   coins to start one
      items.{"<section>/<id>"}            price for one quiz/game/subject
    Wallet: Firebase wallets/<player> { coins, earned, spent, stats, ach }.
-   Not enough coins -> a friendly "Play anyway" (no reward videos: Google Play
-   Families policy does not allow rewarded ads that block play for children)
-   (kids are never stuck).
+   Not enough coins -> "Watch an ad & play": one interstitial ad, then play.
+   No ad ready / not in the app -> play straight away (kids are never stuck).
 
    API: KQCoins.gate(section, id, start, onCancel)   KQCoins.earn(section, id)
         KQCoins.balance()  KQCoins.enabled()  KQCoins.price(section, id)
@@ -236,27 +235,47 @@
     askVideo(sec, id, p, start, onCancel);
   }
 
-  var pendingReward = {};
-  window.onRewardResult = function (token, status) { var f = pendingReward[token]; delete pendingReward[token]; if (f) f(status); };
-  function inApp() { try { return typeof Android !== 'undefined' && Android && typeof Android.showRewardFor === 'function'; } catch (e) { return false; } }
 
-  /* Not enough coins. Google Play Families policy does not allow rewarded /
-     opt-in video ads in children's apps unless they can be closed after 5 s,
-     and a "watch the video to play" ad cannot. So no video here: the child
-     is told how to earn coins and can always play anyway (coins never go
-     below 0). */
+  /* Not enough coins: offer a short full-screen (interstitial) ad, then play.
+     No rewarded video. If no ad is ready, or we're not in the app, the child
+     simply plays — never blocked. */
+  function canShowAd() { try { return typeof Android !== 'undefined' && Android && typeof Android.showAd === 'function'; } catch (e) { return false; } }
+  function watchAdThenPlay(start) {
+    var done = false, appeared = false;
+    var prevClosed = window.onAdClosed;
+    function finish() {
+      if (done) return; done = true;
+      window.onAdClosed = prevClosed;
+      document.removeEventListener('visibilitychange', onVis);
+      window.removeEventListener('blur', onBlur); window.removeEventListener('focus', onFocus);
+      start();
+    }
+    function onVis() { if (document.hidden) appeared = true; else if (appeared) setTimeout(finish, 600); }
+    function onBlur() { appeared = true; }
+    function onFocus() { if (appeared) setTimeout(finish, 600); }
+    window.onAdClosed = function (t) { try { if (prevClosed) prevClosed(t); } catch (e) {} finish(); };
+    document.addEventListener('visibilitychange', onVis);
+    window.addEventListener('blur', onBlur); window.addEventListener('focus', onFocus);
+    var shown;
+    try { shown = Android.showAd('interstitial'); } catch (e) { shown = false; }
+    if (shown === false) { finish(); return; }            // no ad ready: play now
+    try { localStorage.setItem('kq_lastAdTime', Date.now()); } catch (e) {}
+    setTimeout(function () { if (!appeared) finish(); }, 3000);  // ad never appeared: play
+    setTimeout(finish, 90000);                                    // safety net
+  }
   function askVideo(sec, id, p, start, onCancel) {
+    if (!canShowAd()) { start(); return; }                  // website: no ads to watch, just play
     css();
     var box = document.createElement('div'); box.className = 'kqc-ov';
     var have = W ? W.coins : 0;
-    box.innerHTML = '<div class="kqc-card"><div class="kqc-big">🪙</div><h3>You need ' + p + ' coins</h3>' +
-      '<p>You have <b>' + have + '</b>. Finish quizzes and games to earn more coins! 🌟</p>' +
-      '<button class="kqc-go" data-a="play">▶️ Play anyway</button>' +
+    box.innerHTML = '<div class="kqc-card"><div class="kqc-big">' + coinImg(56) + '</div><h3>You need ' + p + ' coins</h3>' +
+      '<p>You have <b>' + have + '</b>. Watch a short ad to play now, or earn coins by finishing quizzes and games! 🌟</p>' +
+      '<button class="kqc-go" data-a="ad">📺 Watch an ad &amp; play</button>' +
       '<button class="kqc-alt" data-a="back">Not now</button></div>';
     document.body.appendChild(box);
     var close = function () { box.remove(); };
     box.querySelector('[data-a=back]').onclick = function () { close(); if (onCancel) onCancel(); };
-    box.querySelector('[data-a=play]').onclick = function () { close(); start(); };
+    box.querySelector('[data-a=ad]').onclick = function () { close(); watchAdThenPlay(start); };
   }
 
   /* ---------- UI: coin chip, price tags, toasts, badges ---------- */

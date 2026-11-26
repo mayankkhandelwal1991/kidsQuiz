@@ -80,7 +80,8 @@ window.KQ_NO_WIDGET = true;
     document.getElementById('make').onclick = () => {
       const name = document.getElementById('cname').value.trim().slice(0, 40), code = newCode(), msg = document.getElementById('msg');
       msg.textContent = 'Making…';
-      db().ref('classes/' + code).set({ owner: me.uid, name: name || '' }).then(() => {
+      // rules: the owner is written first (only once), then the owner may write the name
+      db().ref('classes/' + code + '/owner').set(me.uid).then(() => db().ref('classes/' + code + '/name').set(name || '')).then(() => {
         const a = myCodes(); a.unshift({ code, name }); saveCodes(a); openClass(code);
       }).catch((e) => { msg.textContent = /permission/i.test(e.message || '') ? 'Teacher mode is not switched on yet: the app owner needs to publish the new Firebase rules.' : 'Could not make the code. Check the internet and try again.'; });
     };

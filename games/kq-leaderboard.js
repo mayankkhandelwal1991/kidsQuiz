@@ -262,7 +262,9 @@
         auth.onAuthStateChanged(function (u) {
           authUser = u || null;
           // Persist Google name as the guest nick fallback too (nice for quiz).
-          if (u && u.displayName) { try { localStorage.setItem("kq_nick", u.displayName); } catch (e) {} }
+          // Only when the child has no name yet: kq_nick is the playing child's own name
+          // (child profiles / rename), never to be overwritten by the account's name.
+          if (u && u.displayName) { try { if (!localStorage.getItem("kq_nick")) localStorage.setItem("kq_nick", firstOnly(u.displayName)); } catch (e) {} }
           if (!firstAuth) { firstAuth = true; readyResolve(); }
           notifyAuth();
         });

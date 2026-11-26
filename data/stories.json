@@ -9469,6 +9469,1090 @@
           ]
         }
       ]
+    },
+    {
+      "id": "happy_day",
+      "level": 0,
+      "title": "{name} Feels Happy",
+      "cover": "😊",
+      "bg": "meadow",
+      "genres": [
+        "feelings"
+      ],
+      "personal": true,
+      "pages": [
+        {
+          "text": "{name} gets a hug. {name} feels happy!",
+          "actors": [
+            [
+              "🧒",
+              40,
+              88,
+              26,
+              "hop"
+            ],
+            [
+              "🤗",
+              66,
+              46,
+              14,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Happy makes us smile.",
+          "actors": [
+            [
+              "😊",
+              50,
+              60,
+              30,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Happy makes us want to dance!",
+          "actors": [
+            [
+              "🧒",
+              50,
+              88,
+              26,
+              "hop"
+            ],
+            [
+              "🎵",
+              74,
+              40,
+              10,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "What makes you happy?",
+          "actors": [
+            [
+              "🎈",
+              30,
+              50,
+              12,
+              "bob"
+            ],
+            [
+              "🐶",
+              56,
+              88,
+              16,
+              "hop"
+            ],
+            [
+              "🍦",
+              78,
+              80,
+              12,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Share a smile with a friend!",
+          "actors": [
+            [
+              "😊",
+              36,
+              60,
+              18,
+              "bob"
+            ],
+            [
+              "😊",
+              64,
+              60,
+              18,
+              "bob"
+            ],
+            [
+              "❤️",
+              50,
+              30,
+              10,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "How does a happy face look?",
+          "a": "😊",
+          "o": [
+            "😊",
+            "😢",
+            "😠"
+          ]
+        },
+        {
+          "q": "What made {name} happy?",
+          "a": "🤗",
+          "o": [
+            "🤗",
+            "🌧️",
+            "💥"
+          ]
+        },
+        {
+          "q": "What can we share?",
+          "a": "😊",
+          "o": [
+            "😊",
+            "😠",
+            "😢"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sad_ok",
+      "level": 0,
+      "title": "It's Okay to Feel Sad",
+      "cover": "😢",
+      "bg": "sky",
+      "genres": [
+        "feelings"
+      ],
+      "pages": [
+        {
+          "bg": "meadow",
+          "text": "Teddy broke. Bunny feels sad.",
+          "actors": [
+            [
+              "🐰",
+              40,
+              88,
+              26,
+              "shake"
+            ],
+            [
+              "🧸",
+              66,
+              88,
+              16,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "Sad makes tears come out. That's okay.",
+          "actors": [
+            [
+              "😢",
+              50,
+              60,
+              28,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "bg": "meadow",
+          "text": "Bunny tells Mama, \"I feel sad.\"",
+          "actors": [
+            [
+              "🐰",
+              34,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "🐇",
+              66,
+              88,
+              26,
+              "bob flip"
+            ]
+          ]
+        },
+        {
+          "bg": "meadow",
+          "text": "Mama gives a big hug.",
+          "actors": [
+            [
+              "🤗",
+              50,
+              60,
+              26,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "bg": "meadow",
+          "text": "Now Bunny feels better!",
+          "actors": [
+            [
+              "🐰",
+              50,
+              88,
+              26,
+              "hop"
+            ],
+            [
+              "😊",
+              70,
+              40,
+              12,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "How did Bunny feel?",
+          "a": "😢",
+          "o": [
+            "😢",
+            "😊",
+            "😠"
+          ]
+        },
+        {
+          "q": "Who helped Bunny?",
+          "a": "🐇",
+          "o": [
+            "🐇",
+            "🐟",
+            "🐘"
+          ]
+        },
+        {
+          "q": "What helps when we are sad?",
+          "a": "🤗",
+          "o": [
+            "🤗",
+            "💥",
+            "🔥"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "turtle_calm",
+      "level": -1,
+      "title": "Calm Like a Turtle",
+      "cover": "🐢",
+      "bg": "garden",
+      "genres": [
+        "feelings",
+        "habits"
+      ],
+      "pages": [
+        {
+          "text": "Tiny Turtle felt angry. His face went red!",
+          "actors": [
+            [
+              "🐢",
+              50,
+              88,
+              28,
+              "shake"
+            ],
+            [
+              "😠",
+              72,
+              40,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Grandpa Turtle said, \"Let's go inside our shell.\"",
+          "actors": [
+            [
+              "🐢",
+              30,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "🐢",
+              66,
+              88,
+              30,
+              "bob flip"
+            ]
+          ]
+        },
+        {
+          "text": "Stop. Go in your shell. Close your eyes.",
+          "actors": [
+            [
+              "🐢",
+              50,
+              88,
+              30,
+              "bob"
+            ],
+            [
+              "🛑",
+              76,
+              40,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Breathe in slowly… and breathe out slowly.",
+          "actors": [
+            [
+              "🐢",
+              50,
+              88,
+              30,
+              "stretch"
+            ],
+            [
+              "💨",
+              72,
+              50,
+              12,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "Count to three. One, two, three!",
+          "actors": [
+            [
+              "1️⃣",
+              30,
+              50,
+              12,
+              "grow"
+            ],
+            [
+              "2️⃣",
+              50,
+              50,
+              12,
+              "grow"
+            ],
+            [
+              "3️⃣",
+              70,
+              50,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Tiny Turtle felt calm. Now he could talk about it.",
+          "actors": [
+            [
+              "🐢",
+              50,
+              88,
+              28,
+              "hop"
+            ],
+            [
+              "😊",
+              72,
+              40,
+              12,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "How did Tiny Turtle feel first?",
+          "a": "😠",
+          "o": [
+            "😠",
+            "😊",
+            "😴",
+            "😢"
+          ]
+        },
+        {
+          "q": "What do we do to calm down?",
+          "a": "💨",
+          "o": [
+            "💨",
+            "🔥",
+            "💥",
+            "🍬"
+          ]
+        },
+        {
+          "q": "How did he feel at the end?",
+          "a": "😊",
+          "o": [
+            "😊",
+            "😠",
+            "😱",
+            "😢"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sharing_friends",
+      "level": -1,
+      "title": "{name} Learns to Share",
+      "cover": "🧸",
+      "bg": "park",
+      "genres": [
+        "feelings",
+        "moral"
+      ],
+      "personal": true,
+      "pages": [
+        {
+          "text": "{name} had a new red ball.",
+          "actors": [
+            [
+              "🧒",
+              40,
+              88,
+              24,
+              "bob"
+            ],
+            [
+              "⚽",
+              64,
+              80,
+              12,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "A new boy watched. He had no toy.",
+          "actors": [
+            [
+              "👦",
+              70,
+              88,
+              20,
+              "bob flip"
+            ],
+            [
+              "😢",
+              70,
+              44,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "{name} felt shy. Then {name} said, \"Let's play together!\"",
+          "actors": [
+            [
+              "🧒",
+              34,
+              88,
+              22,
+              "hop"
+            ],
+            [
+              "⚽",
+              52,
+              80,
+              10,
+              "bob"
+            ],
+            [
+              "👦",
+              72,
+              88,
+              20,
+              "bob flip"
+            ]
+          ]
+        },
+        {
+          "text": "They kicked the ball. They laughed and laughed!",
+          "actors": [
+            [
+              "🧒",
+              30,
+              88,
+              20,
+              "hop"
+            ],
+            [
+              "⚽",
+              50,
+              70,
+              10,
+              "fly"
+            ],
+            [
+              "👦",
+              72,
+              88,
+              20,
+              "hop flip"
+            ]
+          ]
+        },
+        {
+          "text": "Sharing made a new friend.",
+          "actors": [
+            [
+              "🧒",
+              36,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "👦",
+              64,
+              88,
+              20,
+              "bob flip"
+            ],
+            [
+              "❤️",
+              50,
+              34,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "When we share, everyone feels happy!",
+          "actors": [
+            [
+              "😊",
+              36,
+              56,
+              18,
+              "bob"
+            ],
+            [
+              "😊",
+              64,
+              56,
+              18,
+              "bob"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What did {name} share?",
+          "a": "⚽",
+          "o": [
+            "⚽",
+            "🍎",
+            "📚",
+            "🚗"
+          ]
+        },
+        {
+          "q": "How did the new boy feel first?",
+          "a": "😢",
+          "o": [
+            "😢",
+            "😊",
+            "😠",
+            "😴"
+          ]
+        },
+        {
+          "q": "What did sharing make?",
+          "a": "❤️",
+          "o": [
+            "❤️",
+            "💥",
+            "🌧️",
+            "🔥"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reader_i_see",
+      "level": -1,
+      "title": "Easy Reader: I Can See",
+      "cover": "👀",
+      "bg": "garden",
+      "genres": [
+        "reader"
+      ],
+      "pages": [
+        {
+          "text": "I can see a cat.",
+          "actors": [
+            [
+              "🐱",
+              50,
+              88,
+              30,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "I can see a dog.",
+          "actors": [
+            [
+              "🐶",
+              50,
+              88,
+              30,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "I can see a big red ball.",
+          "actors": [
+            [
+              "⚽",
+              50,
+              84,
+              26,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "I can see a little yellow bird.",
+          "actors": [
+            [
+              "🐤",
+              50,
+              70,
+              20,
+              "fly"
+            ]
+          ]
+        },
+        {
+          "text": "I can see you!",
+          "actors": [
+            [
+              "🧒",
+              50,
+              88,
+              30,
+              "hop"
+            ],
+            [
+              "👀",
+              70,
+              40,
+              12,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What can I see first?",
+          "a": "🐱",
+          "o": [
+            "🐱",
+            "🐘",
+            "🚗",
+            "🍎"
+          ]
+        },
+        {
+          "q": "What colour is the bird?",
+          "a": "🟡",
+          "o": [
+            "🟡",
+            "🔵",
+            "🔴",
+            "🟢"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reader_play",
+      "level": -1,
+      "title": "Easy Reader: We Like to Play",
+      "cover": "🛝",
+      "bg": "park",
+      "genres": [
+        "reader"
+      ],
+      "pages": [
+        {
+          "text": "We like to play.",
+          "actors": [
+            [
+              "🧒",
+              36,
+              88,
+              22,
+              "hop"
+            ],
+            [
+              "👧",
+              64,
+              88,
+              22,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "We run and jump.",
+          "actors": [
+            [
+              "🧒",
+              40,
+              80,
+              22,
+              "hop"
+            ],
+            [
+              "👧",
+              62,
+              80,
+              22,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "We go up. We go down.",
+          "actors": [
+            [
+              "🛝",
+              50,
+              88,
+              36,
+              ""
+            ],
+            [
+              "🧒",
+              40,
+              40,
+              14,
+              "fly"
+            ]
+          ]
+        },
+        {
+          "text": "Come and play with me!",
+          "actors": [
+            [
+              "👧",
+              50,
+              88,
+              26,
+              "hop"
+            ],
+            [
+              "⚽",
+              72,
+              86,
+              12,
+              "bob"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What do we like to do?",
+          "a": "⚽",
+          "o": [
+            "⚽",
+            "😴",
+            "🛁",
+            "📺"
+          ]
+        },
+        {
+          "q": "Who says come and play?",
+          "a": "👧",
+          "o": [
+            "👧",
+            "🐘",
+            "🐟",
+            "🤖"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reader_frog",
+      "level": 1,
+      "title": "Easy Reader: The Little Frog",
+      "cover": "🐸",
+      "bg": "river",
+      "genres": [
+        "reader"
+      ],
+      "pages": [
+        {
+          "text": "Look at the little green frog.",
+          "actors": [
+            [
+              "🐸",
+              50,
+              90,
+              22,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "The frog can jump. Jump, frog, jump!",
+          "actors": [
+            [
+              "🐸",
+              50,
+              70,
+              22,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "The frog saw a fly. He was hungry.",
+          "actors": [
+            [
+              "🐸",
+              40,
+              90,
+              20,
+              "bob"
+            ],
+            [
+              "🪰",
+              66,
+              40,
+              10,
+              "fly"
+            ]
+          ]
+        },
+        {
+          "text": "Yum! Now the frog is not hungry.",
+          "actors": [
+            [
+              "🐸",
+              50,
+              90,
+              22,
+              "hop"
+            ],
+            [
+              "😋",
+              70,
+              44,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "He went to sleep on a big leaf. Good night, frog!",
+          "actors": [
+            [
+              "🍃",
+              50,
+              92,
+              34,
+              ""
+            ],
+            [
+              "🐸",
+              50,
+              80,
+              18,
+              "bob"
+            ],
+            [
+              "💤",
+              66,
+              50,
+              10,
+              "float"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What colour is the frog?",
+          "a": "Green",
+          "o": [
+            "Green",
+            "Blue",
+            "Red"
+          ]
+        },
+        {
+          "q": "What did the frog see?",
+          "a": "A fly",
+          "o": [
+            "A fly",
+            "A cat",
+            "A ball"
+          ]
+        },
+        {
+          "q": "Where did he sleep?",
+          "a": "On a leaf",
+          "o": [
+            "On a leaf",
+            "In a bed",
+            "In a car"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reader_rain",
+      "level": 2,
+      "title": "Easy Reader: Why Do We Wash?",
+      "cover": "🧼",
+      "bg": "park",
+      "genres": [
+        "reader"
+      ],
+      "pages": [
+        {
+          "text": "We play in the park. Our hands get dirty.",
+          "actors": [
+            [
+              "🧒",
+              40,
+              88,
+              22,
+              "hop"
+            ],
+            [
+              "✋",
+              70,
+              60,
+              14,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "We must wash our hands before we eat.",
+          "actors": [
+            [
+              "🧼",
+              40,
+              80,
+              14,
+              "bob"
+            ],
+            [
+              "💧",
+              60,
+              70,
+              10,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Germs are very small. We cannot see them.",
+          "actors": [
+            [
+              "🦠",
+              40,
+              50,
+              12,
+              "float"
+            ],
+            [
+              "🔍",
+              64,
+              70,
+              14,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Soap and water wash the germs away.",
+          "actors": [
+            [
+              "🫧",
+              36,
+              40,
+              12,
+              "float"
+            ],
+            [
+              "✋",
+              56,
+              80,
+              16,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "Clean hands help us stay well. Always wash!",
+          "actors": [
+            [
+              "🧒",
+              50,
+              88,
+              24,
+              "hop"
+            ],
+            [
+              "⭐",
+              72,
+              36,
+              10,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "When must we wash our hands?",
+          "a": "Before we eat",
+          "o": [
+            "Before we eat",
+            "After we sleep",
+            "Never"
+          ]
+        },
+        {
+          "q": "Can we see germs?",
+          "a": "No, they are very small",
+          "o": [
+            "No, they are very small",
+            "Yes, they are big",
+            "Only at night"
+          ]
+        }
+      ]
     }
   ]
 }

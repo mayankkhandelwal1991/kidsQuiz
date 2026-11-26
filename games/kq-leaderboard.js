@@ -1030,3 +1030,38 @@
     gameName: prettify
   };
 })();
+
+/* ⏱️ Daily play time limit (set by a grown-up in Parents). Checked on every page;
+   when today's play time reaches the limit, a "time for a break" screen covers the
+   app. A grown-up can answer a sum to add 15 minutes. */
+(function () {
+  'use strict';
+  function J(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+  function limitMin() { var l = +(localStorage.getItem('kq_time_limit') || 0); var x = J('kq_time_extra'); return l > 0 ? l + (x && x.d === new Date().toDateString() ? x.m : 0) : 0; }
+  function playedMin() { return (window.KQ && KQ.todaySeconds) ? KQ.todaySeconds() / 60 : 0; }
+  var box = null;
+  function show() {
+    if (box) return;
+    var nick = ''; try { nick = (localStorage.getItem('kq_nick') || '').split(' ')[0]; } catch (e) {}
+    box = document.createElement('div');
+    box.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:linear-gradient(180deg,#312e81,#7c3aed);display:flex;align-items:center;justify-content:center;padding:20px;font-family:"Baloo 2",system-ui,sans-serif;color:#fff;text-align:center';
+    var a = 6 + Math.floor(Math.random() * 4), b = 3 + Math.floor(Math.random() * 7);
+    box.innerHTML = '<div style="max-width:380px"><div style="font-size:84px;line-height:1">🦉</div><h2 style="font-size:30px;margin:8px 0">Time for a break' + (nick ? ', ' + nick.replace(/[<>&]/g, '') : '') + '!</h2>' +
+      '<p style="font-size:18px;font-weight:700;opacity:.95;margin:0 0 18px">You played ' + Math.round(playedMin()) + ' minutes today. Rest your eyes, drink some water and play outside. See you tomorrow! 🌳</p>' +
+      '<div style="background:rgba(255,255,255,.14);border-radius:20px;padding:12px"><b>Grown-ups: add 15 minutes</b><div style="margin:8px 0">What is ' + a + ' × ' + b + '?</div>' +
+      '<input inputmode="numeric" style="width:120px;border:none;border-radius:12px;padding:10px;font:800 20px inherit;text-align:center" aria-label="Answer">' +
+      '<button style="margin-left:6px;border:none;border-radius:12px;padding:10px 16px;font:800 18px inherit;font-family:inherit;background:#facc15;color:#1e1b4b;cursor:pointer">OK</button><div data-err style="min-height:20px;color:#fecaca;font-weight:800"></div></div></div>';
+    document.body.appendChild(box);
+    var inp = box.querySelector('input');
+    box.querySelector('button').onclick = function () {
+      if (+inp.value === a * b) {
+        var x = J('kq_time_extra'), d = new Date().toDateString(); x = x && x.d === d ? x : { d: d, m: 0 }; x.m += 15;
+        try { localStorage.setItem('kq_time_extra', JSON.stringify(x)); } catch (e) {}
+        box.remove(); box = null;
+      } else { box.querySelector('[data-err]').textContent = 'Not quite — ask a grown-up 🙂'; inp.value = ''; }
+    };
+  }
+  function check() { var l = limitMin(); if (l > 0 && playedMin() >= l) show(); }
+  setTimeout(check, 1500);
+  setInterval(check, 30000);
+})();

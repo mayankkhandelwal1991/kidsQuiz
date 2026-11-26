@@ -69,6 +69,8 @@
   .a-grow img { animation: grow 1.8s ease-in-out infinite; }
   .a-spin img { animation: spin 10s linear infinite; }
   .a-float img { animation: float 4s ease-in-out infinite; }
+  .a-stretch img { animation: stretchy 2.4s ease-in-out infinite; transform-origin: bottom; }
+  @keyframes stretchy { 50% { transform: scaleY(1.12); } }
   .a-gold img { filter: drop-shadow(0 0 8px #fde047); }
   .sc .ac .fl { position: relative; }
   .sc .ac .gm { position: absolute; inset: 0; background: linear-gradient(135deg, #fef08a, #f59e0b 60%, #b45309); mix-blend-mode: multiply; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; pointer-events: none; }
@@ -89,8 +91,11 @@
   .dots { display: flex; gap: 5px; justify-content: center; margin: 10px 0 8px; flex-wrap: wrap; }
   .dots i { width: 22px; height: 8px; border-radius: 4px; background: #e9d5ff; } .dots i.on { background: #7c3aed; } .dots i.done { background: #c4b5fd; }
   .txt { background: #fff; border-radius: 24px; padding: 14px 16px; font-size: var(--fs, 21px); font-weight: 700; line-height: 1.45; min-height: 96px; box-shadow: 0 6px 18px rgba(76,29,149,.08); animation: pop .35s ease-out; }
-  .txt span { border-radius: 8px; transition: background .2s, color .2s; padding: 0 2px; }
-  .txt span.on { background: #fef08a; color: #1e1b4b; }
+  .txt .sn { border-radius: 8px; transition: background .2s; padding: 0 2px; }
+  .txt .sn.on { background: #fef9c3; }
+  .txt .w { font-style: normal; border-radius: 6px; padding: 0 1px; cursor: pointer; transition: background .12s, color .12s; }
+  .txt .w.now { background: #facc15; color: #1e1b4b; box-shadow: 0 2px 0 #eab308; }
+  .txt .w.tap { animation: grow .4s; }
   .ctl { display: grid; grid-template-columns: 64px 1fr 64px; gap: 10px; margin-top: 12px; align-items: center; }
   .cb { height: 60px; border: none; border-radius: 20px; font-size: 26px; font-weight: 800; color: #fff; box-shadow: 0 5px 0 rgba(0,0,0,.18); display: flex; align-items: center; justify-content: center; gap: 8px; }
   .cb:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
@@ -105,7 +110,7 @@
   .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
   .tab { border: none; border-radius: 18px; padding: 10px 6px; background: #fff; font-weight: 800; font-size: 16px; color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 0 rgba(0,0,0,.08); }
   .tab.on { background: linear-gradient(135deg, #f97316, #ec4899); color: #fff; box-shadow: 0 4px 0 #be185d; }
-  .txt.lines span { display: block; padding: 2px 6px; }
+  .txt.lines .sn { display: block; padding: 2px 6px; }
   .read { color: #16a34a; font-weight: 800; font-size: 13px; }
   .big.skip { background: #94a3b8; }
   .qskip { display: block; margin: 14px auto 0; border: none; background: none; color: #6b7280; font-weight: 800; font-size: 15px; text-decoration: underline; }
@@ -134,7 +139,7 @@
 <div class="wrap" id="app"></div>
 
 <script src="../parent-gate.js?v=20261124a"></script>
-<script src="../quiz-shared.js?v=20261126a"></script>
+<script src="../quiz-shared.js?v=20261126b"></script>
 <script>
 window.isGuestUser = false;
 (function () {
@@ -172,7 +177,7 @@ window.KQFX_NO_MUTE = true;
   const cp = (e) => Array.from(String(e)).map((c) => c.codePointAt(0)).filter((c) => c !== 0xfe0f).map((c) => c.toString(16)).join('-');
   const emo = (e, px) => '<img class="e" src="../images/emoji/' + cp(e) + '.svg" alt="" width="' + px + '" height="' + px + '" onerror="this.replaceWith(document.createTextNode(\'' + esc(e) + '\'))">';
   const isPic = (s) => !/[A-Za-z]/.test(s);
-  const GENRES = { rhyme: ['🎵', 'Rhymes'], song: ['🎤', 'Learning songs'], hindi: ['🇮🇳', 'Hindi'], animals: ['🐾', 'Animals'], moral: ['💡', 'Moral'], folk: ['🪔', 'Indian tales'], science: ['🔬', 'Science'], bedtime: ['🌙', 'Bedtime'], adventure: ['🚀', 'Adventure'], funny: ['😂', 'Funny'], habits: ['🧼', 'Good habits'] };
+  const GENRES = { reader: ['📚', 'Easy readers'], feelings: ['💛', 'Feelings'], rhyme: ['🎵', 'Rhymes'], song: ['🎤', 'Learning songs'], hindi: ['🇮🇳', 'Hindi'], animals: ['🐾', 'Animals'], moral: ['💡', 'Moral'], folk: ['🪔', 'Indian tales'], science: ['🔬', 'Science'], bedtime: ['🌙', 'Bedtime'], adventure: ['🚀', 'Adventure'], funny: ['😂', 'Funny'], habits: ['🧼', 'Good habits'] };
   let curGenre = 'all';
   function childName() {
     let n = window.isGuestUser ? (typeof kqGetNick === 'function' ? kqGetNick() : '') : (currentUser || '');
@@ -190,16 +195,28 @@ window.KQFX_NO_MUTE = true;
   let speechToken = 0;
   function stopSpeech() { speechToken++; try { speechSynthesis.cancel(); } catch (e) {} try { if (window.Android && Android.stopSpeaking) Android.stopSpeaking(); } catch (e) {} }
   let LANG = 'en-US', PITCH = 1.1;
-  function sayOne(text, rate, done) {
-    const words = text.split(/\s+/).length, est = 700 + words * 430 / rate;
-    let finished = false; const fin = () => { if (finished) return; finished = true; done(); };
-    if (muted()) return setTimeout(fin, est);
-    try { if (typeof Android !== 'undefined' && Android && typeof Android.speak === 'function') { Android.speak(text, LANG); return setTimeout(fin, est); } } catch (e) {}
+  // onWord(i): called as word i starts (from the voice's word events, or timed by word length)
+  function sayOne(text, rate, done, onWord) {
+    const words = text.split(/\s+/).filter(Boolean), est = 700 + words.length * 430 / rate;
+    let finished = false; const timers = [];
+    const fin = () => { if (finished) return; finished = true; timers.forEach(clearTimeout); done(); };
+    const timed = () => {
+      if (!onWord) return;
+      const total = words.reduce((a, w) => a + w.length + 2, 0), span = est - 500; let t = 150;
+      words.forEach((w, i) => { timers.push(setTimeout(() => { if (!finished) onWord(i); }, t)); t += span * (w.length + 2) / total; });
+    };
+    if (muted()) { timed(); return setTimeout(fin, est); }
+    try { if (typeof Android !== 'undefined' && Android && typeof Android.speak === 'function') { Android.speak(text, LANG); timed(); return setTimeout(fin, est); } } catch (e) {}
     try {
       const u = new SpeechSynthesisUtterance(text); u.rate = rate; u.pitch = PITCH; u.lang = LANG;
+      // word starts -> word index
+      const starts = []; text.replace(/\S+/g, (m, at) => { starts.push(at); return m; });
+      let gotBoundary = false;
+      u.onboundary = (e) => { if (e.name !== 'word' || !onWord) return; gotBoundary = true; let i = 0; while (i + 1 < starts.length && starts[i + 1] <= e.charIndex) i++; onWord(i); };
+      u.onstart = () => { setTimeout(() => { if (!gotBoundary && !finished) timed(); }, 400); };
       u.onend = fin; u.onerror = fin; speechSynthesis.speak(u);
-      setTimeout(fin, est * 1.8 + 1500);
-    } catch (e) { setTimeout(fin, est); }
+      timers.push(setTimeout(fin, est * 1.8 + 1500));
+    } catch (e) { timed(); setTimeout(fin, est); }
   }
   function readSentences(spans, rate, onDone) {
     stopSpeech(); const my = speechToken;
@@ -207,8 +224,11 @@ window.KQFX_NO_MUTE = true;
     const step = () => {
       if (my !== speechToken) return;
       spans.forEach((s, j) => s.classList.toggle('on', j === k));
+      $app.querySelectorAll('.w.now').forEach((w) => w.classList.remove('now'));
       if (k >= spans.length) { if (onDone) onDone(); return; }
-      sayOne(spans[k].textContent.replace(/[“”"]/g, ''), rate, () => { k++; step(); });
+      const ws = [...spans[k].querySelectorAll('.w')];
+      sayOne(spans[k].textContent.replace(/[“”"]/g, ''), rate, () => { k++; step(); },
+        (i) => { if (my !== speechToken) return; ws.forEach((w, j) => w.classList.toggle('now', j === i)); });
     };
     step();
   }
@@ -240,7 +260,7 @@ window.KQFX_NO_MUTE = true;
   function load() {
     if (STORIES) return Promise.resolve(STORIES);
     const rh = fetch('../data/rhymes.json?v=20261126a', { cache: 'no-cache' }).then((r) => r.json()).then((j) => (RHYMES = j.rhymes || [])).catch(() => {});
-    return Promise.all([fetch('../data/stories.json?v=20261126b', { cache: 'no-cache' }).then((r) => r.json()).then((j) => (STORIES = j.stories || [])), rh]);
+    return Promise.all([fetch('../data/stories.json?v=20261126c', { cache: 'no-cache' }).then((r) => r.json()).then((j) => (STORIES = j.stories || [])), rh]);
   }
   const done = () => lsGet('kq_story_done', {});
 
@@ -295,7 +315,7 @@ window.KQFX_NO_MUTE = true;
     return '<div class="bar"><button class="rb" id="back" aria-label="Back to stories">‹</button><h1>' + esc(fill(R.s.title)) + '</h1><button class="rb" id="snd" aria-label="Sound on/off">' + (muted() ? '🔇' : '🔊') + '</button></div>' + inner;
   }
   function bindShell() {
-    $app.querySelector('#back').onclick = () => { stopSpeech(); music(false); tap(); location.hash = '#/' + (R.rhyme ? 'r' : 'c') + '/' + R.s.level; };
+    $app.querySelector('#back').onclick = () => { stopSpeech(); music(false); songStop(); tap(); location.hash = '#/' + (R.rhyme ? 'r' : 'c') + '/' + R.s.level; };
     bindSound();
   }
   function sentences(t) { if (t.indexOf('\n') >= 0) return t.split('\n').map((x) => x.trim()).filter(Boolean); return (t.match(/[^.!?…]+[.!?…]+["”]?|[^.!?…]+$/g) || [t]).map((x) => x.trim()).filter(Boolean); }
@@ -305,15 +325,16 @@ window.KQFX_NO_MUTE = true;
     const txt = sentences(fill(p.text));
     $app.innerHTML = shell('<div class="reader"><div class="dots">' + s.pages.map((_, k) => '<i class="' + (k === R.page ? 'on' : k < R.page ? 'done' : '') + '"></i>').join('') + '</div>' +
       sceneHtml(p.bg || s.bg, p.actors) +
-      '<div><div class="txt' + (R.rhyme ? ' lines' : '') + '" style="--fs:' + FONT[String(s.level)] + 'px">' + txt.map((t) => '<span>' + esc(t) + '</span>').join(R.rhyme ? '' : ' ') + '</div>' +
+      '<div><div class="txt' + (R.rhyme ? ' lines' : '') + '" style="--fs:' + FONT[String(s.level)] + 'px">' + txt.map((t) => '<span class="sn">' + t.split(/\s+/).filter(Boolean).map((w) => '<i class="w">' + esc(w) + '</i>').join(' ') + '</span>').join(R.rhyme ? '' : ' ') + '</div>' +
       '<div class="ctl"><button class="cb prev" id="prev" aria-label="Previous page"' + (R.page ? '' : ' disabled') + '>◀</button>' +
       '<button class="cb say' + (R.auto ? ' playing' : '') + '" id="say">' + (R.auto ? '⏸ Pause' : '▶ Play') + '</button>' +
       '<button class="cb next" id="next" aria-label="Next page">' + (R.page === n - 1 ? '✓' : '▶') + '</button></div>' +
       '<div class="auto"><i id="autoBar"></i></div></div></div>');
     bindShell();
-    const spans = [...$app.querySelectorAll('.txt span')];
+    const spans = [...$app.querySelectorAll('.txt .sn')];
     const tok = ++R.tok;
     const goNext = () => { if (R.page < n - 1) { R.page++; renderPage(); } else theEnd(); };
+    if (R.rhyme && s.audio) return songPage(spans, tok, goNext);
     music(R.auto && R.rhyme);
     // Auto-play: read the page, wait a moment, turn the page; after the last page, the questions.
     const play = () => readSentences(spans, R.rate, () => {
@@ -324,13 +345,49 @@ window.KQFX_NO_MUTE = true;
     $app.querySelector('#say').onclick = () => { tap(); R.auto = !R.auto; lsSet('kq_story_autoplay', R.auto); if (!R.auto) { stopSpeech(); R.tok++; } renderPage(); };
     $app.querySelector('#prev').onclick = () => { if (R.page) { tap(); R.page--; renderPage(); } };
     $app.querySelector('#next').onclick = () => { tap(); goNext(); };
-    spans.forEach((sp, k) => sp.onclick = () => { if (!R.auto) readSentences([sp], R.rate); });
+    // tap any word to hear it (pauses auto-play so the child can explore)
+    $app.querySelectorAll('.txt .w').forEach((w) => w.onclick = (e) => {
+      e.stopPropagation();
+      if (R.auto) { R.auto = false; lsSet('kq_story_autoplay', false); const b = $app.querySelector('#say'); if (b) { b.textContent = '▶ Play'; b.classList.remove('playing'); } R.tok++; }
+      stopSpeech();
+      $app.querySelectorAll('.w.now').forEach((x) => x.classList.remove('now')); w.classList.add('now', 'tap');
+      setTimeout(() => w.classList.remove('tap'), 500);
+      sayOne(w.textContent.replace(/[^\p{L}\p{N}'’-]/gu, ''), 0.8, () => {});
+    });
     if (R.auto) setTimeout(() => { if (tok === R.tok) play(); }, 600);
+  }
+
+  /* ---------- recorded song for a rhyme (data: "audio": "audio/rhymes/x.mp3",
+     optional "pageAt": [seconds each verse starts]). Lines light up in turn. ---------- */
+  let SONG = null, songTick = null;
+  function songStop() { clearInterval(songTick); if (SONG) { try { SONG.pause(); } catch (e) {} } }
+  function songPage(spans, tok, goNext) {
+    const s = R.s, n = s.pages.length;
+    if (!SONG || SONG.dataset.id !== s.id) { songStop(); SONG = new Audio('../' + s.audio); SONG.dataset.id = s.id; SONG.preload = 'auto'; }
+    const starts = () => (s.pageAt && s.pageAt.length === n) ? s.pageAt : s.pages.map((_, i) => (SONG.duration || n * 8) * i / n);
+    const jump = () => { const st = starts()[R.page] || 0; if (Math.abs(SONG.currentTime - st) > 1.2) SONG.currentTime = st; };
+    $app.querySelector('#say').onclick = () => { tap(); R.auto = !R.auto; lsSet('kq_story_autoplay', R.auto); renderPage(); };
+    $app.querySelector('#prev').onclick = () => { if (R.page) { tap(); R.page--; renderPage(); } };
+    $app.querySelector('#next').onclick = () => { tap(); if (R.page < n - 1) { R.page++; renderPage(); } else { songStop(); theEnd(); } };
+    SONG.onended = () => { if (tok === R.tok) { songStop(); theEnd(); } };
+    clearInterval(songTick);
+    if (!R.auto || muted()) { SONG.pause(); return; }
+    const begin = () => { jump(); const p = SONG.play(); if (p && p.catch) p.catch(() => {}); };
+    if (SONG.readyState >= 1) begin(); else SONG.addEventListener('loadedmetadata', begin, { once: true });
+    songTick = setInterval(() => {
+      if (tok !== R.tok) return clearInterval(songTick);
+      const st = starts(), t = SONG.currentTime;
+      let pg = 0; for (let i = 0; i < n; i++) if (t >= st[i]) pg = i;
+      if (pg !== R.page) { R.page = pg; return renderPage(); }
+      const end = pg + 1 < n ? st[pg + 1] : (SONG.duration || t + 1), frac = (t - st[pg]) / Math.max(0.5, end - st[pg]);
+      const k = Math.min(spans.length - 1, Math.floor(frac * spans.length));
+      spans.forEach((sp, j) => sp.classList.toggle('on', j === k));
+    }, 200);
   }
 
   /* ---------- the end: answer questions about the story, or skip ---------- */
   function theEnd() {
-    stopSpeech(); music(false);
+    stopSpeech(); music(false); songStop();
     if (!R.s.quiz || !R.s.quiz.length) return finish(true);
     $app.innerHTML = shell('<div class="end">' + emo(R.rhyme ? '🎵' : '📖', 72) + '<h2>' + (R.rhyme ? 'Well sung' : 'The End') + ', ' + esc(childName()) + '!</h2>' +
       '<p style="font-weight:700;margin:6px 0 4px">Can you answer ' + R.s.quiz.length + ' questions about the ' + (R.rhyme ? 'rhyme' : 'story') + '?</p>' +
@@ -376,6 +433,7 @@ window.KQFX_NO_MUTE = true;
     const plan = lsGet('kq_plan', {}); const today = new Date().toDateString();
     if (plan.d !== today) { plan.d = today; plan.done = {}; } plan.done.story = 1; lsSet('kq_plan', plan);
     try { if (stars && window.KQCoins) KQCoins.earn('quiz', 'story_' + s.id); } catch (e) {}
+    try { if (typeof kqTaskDone === 'function') kqTaskDone('story', s.id, s.level, skipped ? '✓' : stars + '★'); } catch (e) {}
     try { if (stars === 3 && window.KQFX && KQFX.celebrate) KQFX.celebrate(); } catch (e) {}
     const last = s.pages[s.pages.length - 1].text;
     const nm = childName();
@@ -411,12 +469,12 @@ window.KQFX_NO_MUTE = true;
     showList(myLevel());
   }
   window.addEventListener('hashchange', route);
-  window.addEventListener('pagehide', () => { stopSpeech(); music(false); });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { stopSpeech(); music(false); } });
+  window.addEventListener('pagehide', () => { stopSpeech(); music(false); songStop(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) { stopSpeech(); music(false); songStop(); } });
   load().then(route).catch(() => { $app.innerHTML = '<div class="soon" style="margin-top:40px">' + emo('📡', 40) + '<br>Stories could not load. Check the internet and try again.</div>'; });
 })();
 </script>
-<script src="../games/kq-leaderboard.js?v=20261126c"></script>
+<script src="../games/kq-leaderboard.js?v=20261126d"></script>
 <script src="../web-ads.js?v=20261123a"></script>
 </body>
 </html>

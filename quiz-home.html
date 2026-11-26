@@ -169,15 +169,16 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   @media (max-width: 340px) { .hm-dock .kh-tab b { font-size: 9px; } .hm-dock .kh-tab i { font-size: 18px; } }
   /* Today's plan */
   .hm-plan { background: #fff; border-radius: 26px; padding: 12px; box-shadow: 0 7px 0 #ede9fe, 0 10px 22px rgba(30,27,75,.08); }
-  .hm-plan:empty { display: none; }
-  .pl-top { display: flex; align-items: center; gap: 8px; }
+  .hm-plan:empty { display: none !important; }
+  .pl-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .pl-top svg { width: 46px; height: 46px; flex: 0 0 auto; }
-  .pl-top .t { flex: 1; min-width: 0; } .pl-top .t b { display: block; font-size: 18px; line-height: 1.1; color: #4c1d95; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pl-top .t { flex: 1 1 150px; min-width: 0; } .pl-top .t b { display: block; font-size: 18px; line-height: 1.1; color: #4c1d95; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pl-top .t small { display: block; }
   .pl-top .t small { font-size: 12px; font-weight: 800; color: #6b7280; }
   .pl-cls, .pl-say { flex: 0 0 auto; border: none; border-radius: 999px; background: #f5f3ff; color: #6d28d9; font: 800 14px 'Baloo 2', sans-serif; padding: 6px 12px; cursor: pointer; box-shadow: 0 3px 0 #ddd6fe; }
   .pl-say { padding: 4px 8px; } .pl-say img { width: 22px; height: 22px; display: block; }
-  .pl-steps { display: grid; gap: 8px; margin-top: 10px; }
-  .pl-step { display: flex; align-items: center; gap: 10px; width: 100%; border: none; cursor: pointer; text-align: left; border-radius: 18px; padding: 8px 10px; font-family: inherit; color: #fff; background: linear-gradient(135deg, var(--a), var(--b)); box-shadow: 0 4px 0 rgba(0,0,0,.15); }
+  .pl-steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin-top: 10px; }
+  .pl-step { display: flex; align-items: center; gap: 10px; width: 100%; min-width: 0; box-sizing: border-box; border: none; cursor: pointer; text-align: left; border-radius: 18px; padding: 8px 10px; font-family: inherit; color: #fff; background: linear-gradient(135deg, var(--a), var(--b)); box-shadow: 0 4px 0 rgba(0,0,0,.15); }
   .pl-step:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.15); }
   .pl-step .n { width: 30px; height: 30px; flex: 0 0 auto; border-radius: 50%; background: rgba(255,255,255,.9); color: #4c1d95; display: grid; place-items: center; font-weight: 800; font-size: 16px; }
   .pl-step .ic { width: 40px; height: 40px; flex: 0 0 auto; }
@@ -189,7 +190,8 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   .pl-pick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .pl-pick button { flex: 1 1 28%; border: none; border-radius: 16px; padding: 10px 4px; font: 800 16px 'Baloo 2', sans-serif; color: #fff; background: #7c3aed; box-shadow: 0 4px 0 #5b21b6; cursor: pointer; }
   .pl-pick button.on { background: #f59e0b; box-shadow: 0 4px 0 #b45309; }
-  @media (min-width: 760px) { .pl-steps { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 760px) { .pl-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 380px) { .pl-step { gap: 7px; padding: 8px; } .pl-step .ic { width: 32px; height: 32px; } .pl-step .go { padding: 2px 9px; font-size: 13px; } }
   @media (min-width: 760px) { .hm-skills { flex-wrap: wrap; overflow: visible; margin: 0; padding: 2px 0 10px; } }
 </style>
 </head>
@@ -258,6 +260,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
       <!-- Today: the owl's plan for this child -->
       <div class="hm-h"><img src="images/emoji/1f31f.svg" alt=""> Today</div>
       <div class="hm-plan" id="hmPlan"></div>
+      <div class="hm-plan hm-tasks" id="hmTasks" style="margin-top:12px"></div>
 
       <!-- 3. Jump straight to a skill (one swipeable row) -->
       <div class="hm-h" id="hmSkillsH"><img src="images/emoji/1f4da.svg" alt=""> Pick a skill <a class="hm-more" href="learn.html">See all ›</a></div>
@@ -390,8 +393,8 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 
 <script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
 <script src="profiles.js?v=20261126a" charset="utf-8"></script>
-<script src="guide-owl.js?v=20261126a" charset="utf-8"></script>
-<script src="quiz-shared.js?v=20261126a" charset="utf-8"></script>
+<script src="guide-owl.js?v=20261126b" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261126b" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
 <script src="quiz/kids-engine.js?v=20261126a" charset="utf-8"></script>
 <script>
@@ -939,6 +942,9 @@ const GOAL_MIN = 15;
 const SKILLS = [
   { t: 'Stories', s: 'Read along', ic: '1f4d6', go: 'stories/index.html', a: '#f97316', b: '#ec4899', isNew: 1 },
   { t: 'Rhymes', s: 'Sing along', ic: '1f3b5', go: 'stories/index.html#/r/', a: '#db2777', b: '#a855f7', isNew: 1 },
+  { t: 'Read', s: 'Sight words', ic: '1f4da', go: 'activities/read.html#go', a: '#0ea5e9', b: '#6366f1', isNew: 1 },
+  { t: 'Create', s: 'Colour & music', ic: '1f3a8', go: 'activities/create.html', a: '#ec4899', b: '#f59e0b', isNew: 1 },
+  { t: 'Move', s: 'Animal moves', ic: '1f438', go: 'activities/move.html', a: '#22c55e', b: '#14b8a6', isNew: 1 },
   { t: 'ABC', s: 'Letters', ic: '1f524', go: 'k_abc', a: '#8b5cf6', b: '#a78bfa' },
   { t: 'Phonics', s: 'Sounds', ic: '1f50a', go: 'k_phonics', a: '#0d9488', b: '#2dd4bf', isNew: 1 },
   { t: 'Tracing', s: 'Write A–Z', ic: '270f', go: 'games/word/tracing.html', a: '#7c3aed', b: '#ec4899', isNew: 1 },
@@ -976,14 +982,38 @@ function planSteps(lv) {
     const id = PRE_TOPICS[day % PRE_TOPICS.length], c = getCatInfo(id) || { title: 'ABC', icon: '🔤' };
     learn = { k: 'learn', t: 'Learn: ' + c.title, s: c.blurb || 'Picture quiz', ic: null, emo: c.icon, href: 'quiz/play.html#/c/' + lv + '/' + id, a: '#8b5cf6', b: '#6366f1', say: 'learn ' + c.title };
   } else {
-    const cats = (typeof quizCategoriesFor === 'function' ? quizCategoriesFor(lv) : []);
-    const c = cats.length ? cats[day % cats.length] : { id: 'gk', title: 'GK', icon: '🌍' };
-    learn = { k: 'learn', t: 'Quiz: ' + c.title, s: classLabel(lv) + ' · 10 questions', ic: null, emo: c.icon, href: 'quiz/play.html#/c/' + lv + '/' + c.id, a: '#8b5cf6', b: '#6366f1', say: 'do the ' + c.title + ' quiz' };
+    learn = adaptiveLearn(lv, day);
   }
   const play = lv <= 1
     ? { k: 'play', t: 'Trace letters', s: lv <= 0 ? 'ABC with your finger' : 'abc and 123', ic: '270f', href: 'games/word/tracing.html', a: '#0ea5e9', b: '#22c55e', say: 'trace some letters' }
     : { k: 'play', t: 'Times tables', s: 'Win 3 stars on a table', ic: '2716', href: 'games/brain/times_tables.html', a: '#0ea5e9', b: '#22c55e', say: 'practise times tables' };
   return [story, learn, play];
+}
+/* Adaptive quiz step: practise the weakest subject (under 70%), else a subject never
+   tried, else rotate. Class goes up after a very good run, down after a hard one. */
+function quizAccuracy(lv) {
+  let hist = []; try { const u = loadStorage().users[currentUser]; hist = (u && u.history) || []; } catch (e) {}
+  const by = {}, mine = hist.filter((h) => +h.level === lv);
+  mine.forEach((h) => { const b = by[h.cat] || (by[h.cat] = { c: 0, w: 0, n: 0 }); b.c += +h.correct || 0; b.w += +h.wrong || 0; b.n++; });
+  const recent = mine.slice(-8), rc = recent.reduce((a, h) => a + (+h.correct || 0), 0), rw = recent.reduce((a, h) => a + (+h.wrong || 0), 0);
+  return { by, recentN: recent.length, recentAcc: rc + rw ? rc / (rc + rw) : null };
+}
+function adaptiveLearn(lv, day) {
+  const st = quizAccuracy(lv);
+  let qlv = lv, tag = '';
+  if (st.recentN >= 4 && st.recentAcc >= 0.9 && lv < 5) { qlv = lv + 1; tag = 'Challenge'; }
+  else if (st.recentN >= 4 && st.recentAcc < 0.4 && lv > 1) { qlv = lv - 1; tag = 'Easier start'; }
+  const cats = (typeof quizCategoriesFor === 'function' ? quizCategoriesFor(qlv) : []);
+  const acc = (id) => { const b = st.by[id]; return b && b.c + b.w ? b.c / (b.c + b.w) : null; };
+  let c = null;
+  if (!tag) {
+    const weak = cats.filter((x) => acc(x.id) !== null && acc(x.id) < 0.7).sort((x, y) => acc(x.id) - acc(y.id));
+    if (weak.length) { c = weak[0]; tag = 'Needs practice'; }
+    else { const fresh = cats.filter((x) => !st.by[x.id]); if (fresh.length) { c = fresh[day % fresh.length]; tag = 'New for you'; } }
+  }
+  if (!c) c = cats.length ? cats[day % cats.length] : { id: 'gk', title: 'GK', icon: '🌍' };
+  return { k: 'learn', t: 'Quiz: ' + c.title, s: (tag ? tag + ' · ' : '') + classLabel(qlv), ic: null, emo: c.icon, href: 'quiz/play.html#/c/' + qlv + '/' + c.id, a: '#8b5cf6', b: '#6366f1',
+    say: (tag === 'Needs practice' ? 'practise ' : tag === 'Challenge' ? 'try a harder ' : 'do the ') + c.title + ' quiz' };
 }
 function renderPlan() {
   const el = document.getElementById('hmPlan'); if (!el) return;
@@ -1021,9 +1051,28 @@ function renderPlan() {
   window.__planTip = next ? nm + ', let’s ' + next.say + '! ' + (next.k === 'story' ? '📖' : next.k === 'learn' ? '🎯' : '✏️') : 'You finished your plan! 🎉';
 }
 function loadPlanStories() {
-  fetch('data/stories.json?v=20261126a', { cache: 'no-cache' }).then((r) => r.json()).then((j) => { __stories = j.stories || []; renderPlan(); }).catch(() => {});
+  fetch('data/stories.json?v=20261126c', { cache: 'no-cache' }).then((r) => r.json()).then((j) => { __stories = j.stories || []; renderPlan(); }).catch(() => {});
 }
 function hmEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+/* 📝 Tasks from the teacher (child joined a class code in Fun zone → League) */
+function renderTeacherTasks(n) {
+  const el = document.getElementById('hmTasks'); if (!el) return;
+  const w = window.KQCoins && KQCoins.wallet ? KQCoins.wallet() : null;
+  if (!w) { if ((n || 0) < 40) setTimeout(() => renderTeacherTasks((n || 0) + 1), 500); return; }
+  if (!w.code || !window.KQ || !KQ.ready) { el.innerHTML = ''; return; }
+  KQ.ready.then(() => firebase.database().ref('tasks/' + w.code).limitToLast(10).once('value')).then((snap) => {
+    const v = snap.val() || {}, me = KQ.user().key;
+    const todo = Object.keys(v).reverse().filter((id) => !(v[id].done && v[id].done[me])).slice(0, 3);
+    if (!todo.length) { el.innerHTML = ''; return; }
+    el.innerHTML = '<div class="pl-top"><img src="images/emoji/1f3eb.svg" alt="" style="width:40px;height:40px"><div class="t"><b>From your teacher</b><small>Class code ' + hmEsc(w.code) + '</small></div></div><div class="pl-steps">' +
+      todo.map((id, i) => { const t = v[id]; return '<button type="button" class="pl-step" data-tid="' + hmEsc(id) + '" style="--a:#0ea5e9;--b:#6366f1"><span class="n">📝</span><span class="tx"><b>' + hmEsc(t.title) + '</b><small>' + (t.type === 'story' ? 'Story' : 'Quiz') + ' · ' + hmEsc(classLabel(t.lv)) + '</small></span><span class="go">Go ›</span></button>'; }).join('') + '</div>';
+    el.querySelectorAll('[data-tid]').forEach((b) => b.onclick = () => {
+      const id = b.dataset.tid, t = v[id];
+      kqTaskStart({ code: w.code, id, type: t.type, ref: t.ref, lv: t.lv });
+      location.href = t.type === 'story' ? 'stories/index.html#/s/' + encodeURIComponent(t.ref) : 'quiz/play.html#/c/' + t.lv + '/' + encodeURIComponent(t.ref);
+    });
+  }).catch(() => { el.innerHTML = ''; });
+}
 function hmDockTo(id) {
   if (id === 'top') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
   const el = document.getElementById(id); if (!el) return;
@@ -1259,6 +1308,7 @@ loadPlanStories();
 owlTalk();
 // 🦉 Guide owl: home page only (never inside quizzes or games)
 try { KQGuide.start({ name: firstName }); } catch (e) {}
+renderTeacherTasks();
 // Guests who never gave a name (older sessions) are asked once.
 if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   setTimeout(function () { kqAskName().then(function () { renderHomeProfile(); if (window.KQProfiles) KQProfiles.ensure(); }); }, 400);
@@ -1266,7 +1316,7 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   setTimeout(function () { KQProfiles.askOnStart(); }, 300);
 }
 </script>
-<script src="games/kq-leaderboard.js?v=20261126c"></script>
+<script src="games/kq-leaderboard.js?v=20261126d"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>try { KQWebAds.rails(); } catch (e) {}</script>
 <script>

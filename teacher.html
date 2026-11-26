@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="images/favicon/favicon.ico" sizes="any"><link rel="icon" href="images/favicon/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Teacher Mode</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<!--
+  Teacher mode: a teacher (signed in with Google) makes a class code, assigns a
+  quiz or a story, and sees which children finished it (first name + score).
+  Children join with the same code in Fun zone → League → Class code.
+  Firebase: classes/<code>/{owner,name}, tasks/<code>/<id>/{type,…, done/<player>}
+  (rules in admin/firebase-rules.json).
+-->
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; min-height: 100%; }
+  body { font-family: 'Baloo 2', system-ui, sans-serif; color: #1e1b4b; background: #f5f3ff; min-height: 100dvh; }
+  button, select, input { font-family: inherit; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: max(10px, env(safe-area-inset-top)) 14px 30px; }
+  .bar { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bar h1 { flex: 1; margin: 0; font-size: 22px; }
+  .rb { width: 46px; height: 46px; border: none; border-radius: 14px; background: #fff; font-size: 20px; box-shadow: 0 3px 0 rgba(0,0,0,.08); cursor: pointer; }
+  .card { background: #fff; border-radius: 20px; padding: 14px; box-shadow: 0 6px 18px rgba(30,27,75,.07); margin-top: 12px; }
+  .card h2 { margin: 0 0 6px; font-size: 19px; }
+  .note { color: #6b7280; font-weight: 700; font-size: 14px; margin: 4px 0; }
+  .btn { border: none; border-radius: 14px; padding: 10px 14px; font-weight: 800; font-size: 15px; color: #fff; background: #7c3aed; cursor: pointer; }
+  .btn.g { background: #16a34a; } .btn.l { background: #ede9fe; color: #5b21b6; } .btn.r { background: #fee2e2; color: #b91c1c; }
+  .code { font-size: 30px; font-weight: 800; letter-spacing: .12em; color: #4338ca; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+  select, input { border: 2px solid #ddd6fe; border-radius: 12px; padding: 8px 10px; font-size: 15px; font-weight: 700; color: #1e1b4b; background: #fff; max-width: 100%; }
+  .cls { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 14px; background: #faf5ff; margin-top: 8px; cursor: pointer; border: none; width: 100%; text-align: left; }
+  .cls b { font-size: 18px; letter-spacing: .08em; } .cls span { flex: 1; font-weight: 700; color: #6b7280; }
+  .task { border: 2px solid #ede9fe; border-radius: 16px; padding: 10px; margin-top: 10px; }
+  .task .t { display: flex; align-items: center; gap: 8px; } .task .t b { flex: 1; }
+  .kids { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .kids span { background: #dcfce7; color: #166534; border-radius: 999px; padding: 2px 10px; font-weight: 800; font-size: 14px; }
+  .empty { color: #9ca3af; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><p class="note">Loading…</p></div>
+<script src="parent-gate.js?v=20261124a"></script>
+<script src="quiz-shared.js?v=20261126b"></script>
+<script src="quiz/kids-engine.js?v=20261126a"></script>
+<script>
+window.isGuestUser = false;
+(function () { const a = getCachedAuth(); if (a && a.name) currentUser = a.name; else if (getCachedGuest()) { window.isGuestUser = true; currentUser = 'Guest'; } else location.href = 'quiz2.html'; })();
+window.KQ_NO_WIDGET = true;
+</script>
+<script src="games/kq-leaderboard.js?v=20261126d"></script>
+<script>
+(function () {
+  'use strict';
+  const $app = document.getElementById('app');
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const LEVELS = [0, -1, 1, 2, 3, 4, 5];
+  let STORIES = [], me = null;
+  const db = () => firebase.database();
+  const myCodes = () => { try { return JSON.parse(localStorage.getItem('kq_teacher_codes') || '[]'); } catch (e) { return []; } };
+  const saveCodes = (a) => { try { localStorage.setItem('kq_teacher_codes', JSON.stringify(a)); } catch (e) {} };
+  const bar = (t, back) => '<div class="bar"><button class="rb" id="back" aria-label="Back">' + (back ? '‹' : '🏠') + '</button><h1>' + t + '</h1></div>';
+  function newCode() { const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let c = ''; for (let i = 0; i < 6; i++) c += A[Math.floor(Math.random() * A.length)]; return c; }
+
+  function needSignIn() {
+    $app.innerHTML = bar('🏫 Teacher mode') + '<div class="card"><h2>Sign in with Google first</h2><p class="note">Teacher mode keeps your classes safe with your Google account. On the home screen, open the ☰ menu → Sign in (a grown-up question comes first), then come back here.</p>' +
+      '<button class="btn" id="home2">Go to home</button></div>';
+    document.getElementById('back').onclick = document.getElementById('home2').onclick = () => { location.href = 'quiz-home.html'; };
+  }
+  function home() {
+    const codes = myCodes();
+    $app.innerHTML = bar('🏫 Teacher mode') +
+      '<div class="card"><h2>How it works</h2><p class="note">1. Make a class code. 2. Children enter it in <b>Fun zone → League → Class code</b>. 3. Give them a quiz or a story. 4. See who finished, with their score.</p><p class="note">Children appear by first name only.</p></div>' +
+      '<div class="card"><h2>My classes</h2>' + (codes.length ? codes.map((c) => '<button class="cls" data-c="' + esc(c.code) + '"><b>' + esc(c.code) + '</b><span>' + esc(c.name || '') + '</span>›</button>').join('') : '<p class="empty">No classes yet.</p>') +
+      '<div class="row"><input id="cname" maxlength="40" placeholder="Class name, e.g. Class 3 B"><button class="btn g" id="make">+ Make a class code</button></div><p class="note" id="msg"></p></div>';
+    document.getElementById('back').onclick = () => { location.href = 'quiz-home.html'; };
+    $app.querySelectorAll('[data-c]').forEach((b) => b.onclick = () => openClass(b.dataset.c));
+    document.getElementById('make').onclick = () => {
+      const name = document.getElementById('cname').value.trim().slice(0, 40), code = newCode(), msg = document.getElementById('msg');
+      msg.textContent = 'Making…';
+      db().ref('classes/' + code).set({ owner: me.uid, name: name || '' }).then(() => {
+        const a = myCodes(); a.unshift({ code, name }); saveCodes(a); openClass(code);
+      }).catch((e) => { msg.textContent = /permission/i.test(e.message || '') ? 'Teacher mode is not switched on yet: the app owner needs to publish the new Firebase rules.' : 'Could not make the code. Check the internet and try again.'; });
+    };
+  }
+  function openClass(code) {
+    const info = myCodes().find((c) => c.code === code) || { code };
+    $app.innerHTML = bar('Class ' + esc(code), true) +
+      '<div class="card"><div class="code">' + esc(code) + '</div><p class="note">' + esc(info.name || '') + '</p><div class="row"><button class="btn l" id="share">📤 Share the code</button></div></div>' +
+      '<div class="card"><h2>Give a task</h2><div class="row"><select id="type"><option value="quiz">🎯 Quiz</option><option value="story">📖 Story</option></select>' +
+      '<select id="lv">' + LEVELS.map((l) => '<option value="' + l + '">' + classLabel(l) + '</option>').join('') + '</select><select id="what"></select></div>' +
+      '<div class="row"><button class="btn g" id="give">Give to the class</button></div><p class="note" id="gmsg"></p></div>' +
+      '<div class="card"><h2>Tasks</h2><div id="tasks"><p class="empty">Loading…</p></div></div>';
+    document.getElementById('back').onclick = home;
+    document.getElementById('share').onclick = () => { const t = 'Join my Kids Quiz class! Open Fun zone → League → Class code and type: ' + code; if (navigator.share) navigator.share({ text: t }).catch(() => {}); else { try { navigator.clipboard.writeText(t); } catch (e) {} alert(t); } };
+    const typeEl = document.getElementById('type'), lvEl = document.getElementById('lv'), whatEl = document.getElementById('what');
+    function fill() {
+      const lv = +lvEl.value;
+      if (typeEl.value === 'quiz') {
+        const cats = quizCategoriesFor(lv);
+        whatEl.innerHTML = cats.map((c) => '<option value="' + esc(c.id) + '">' + esc(c.icon + ' ' + c.title) + '</option>').join('');
+      } else {
+        const st = STORIES.filter((s) => s.level === lv);
+        whatEl.innerHTML = st.map((s) => '<option value="' + esc(s.id) + '">' + esc(s.title.replace(/\{name\}/g, '…')) + '</option>').join('') || '<option value="">(none)</option>';
+      }
+    }
+    typeEl.onchange = lvEl.onchange = fill; fill();
+    document.getElementById('give').onclick = () => {
+      const type = typeEl.value, lv = +lvEl.value, id = whatEl.value, msg = document.getElementById('gmsg'); if (!id) return;
+      const title = whatEl.options[whatEl.selectedIndex].text;
+      const task = { type, lv, ref: id, title: title.slice(0, 60), at: firebase.database.ServerValue.TIMESTAMP };
+      db().ref('tasks/' + code).push(task).then(() => { msg.textContent = '✅ Given: ' + title; loadTasks(code); }).catch(() => { msg.textContent = 'Could not save. Is this your class code?'; });
+    };
+    loadTasks(code);
+  }
+  function loadTasks(code) {
+    const box = document.getElementById('tasks'); if (!box) return;
+    db().ref('tasks/' + code).limitToLast(30).once('value').then((snap) => {
+      const v = snap.val() || {}, ids = Object.keys(v).reverse();
+      if (!ids.length) { box.innerHTML = '<p class="empty">No tasks yet.</p>'; return; }
+      box.innerHTML = ids.map((id) => {
+        const t = v[id], done = t.done || {}, kids = Object.keys(done).map((k) => done[k]);
+        return '<div class="task"><div class="t"><span>' + (t.type === 'story' ? '📖' : '🎯') + '</span><b>' + esc(t.title) + ' · ' + esc(classLabel(t.lv)) + '</b><button class="btn r" data-del="' + esc(id) + '">Remove</button></div>' +
+          '<div class="note">' + kids.length + ' finished</div><div class="kids">' + kids.map((k) => '<span>' + esc(k.n) + (k.s != null ? ' · ' + esc(k.s) : '') + '</span>').join('') + '</div></div>';
+      }).join('');
+      box.querySelectorAll('[data-del]').forEach((b) => b.onclick = () => { if (confirm('Remove this task?')) db().ref('tasks/' + code + '/' + b.dataset.del).remove().then(() => loadTasks(code)); });
+    }).catch(() => { box.innerHTML = '<p class="empty">Could not load tasks.</p>'; });
+  }
+
+  fetch('data/stories.json?v=20261126c', { cache: 'no-cache' }).then((r) => r.json()).then((j) => { STORIES = j.stories || []; }).catch(() => {});
+  (function wait(n) {
+    if (!window.KQ || !KQ.ready) { if (n < 80) setTimeout(() => wait(n + 1), 100); return; }
+    KQ.ready.then(() => { me = KQ.user(); if (!me || me.isGuest || !me.uid) needSignIn(); else home(); });
+  })(0);
+})();
+</script>
+</body>
+</html>

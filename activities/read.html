@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="../images/favicon/favicon.ico" sizes="any"><link rel="icon" href="../images/favicon/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sight Words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<!-- Sight words (Dolch lists, public domain) by reading level: word cards and a
+     "find the word" listening game. Learned words are kept per child (kq_sight). -->
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; min-height: 100%; }
+  body { font-family: 'Baloo 2', system-ui, sans-serif; color: #1e1b4b; background: linear-gradient(180deg, #e0f2fe, #ede9fe 60%, #fce7f3); min-height: 100dvh; }
+  button { font-family: inherit; cursor: pointer; }
+  .wrap { max-width: 620px; margin: 0 auto; padding: max(10px, env(safe-area-inset-top)) 14px 24px; }
+  .bar { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bar h1 { flex: 1; margin: 0; font-size: 22px; }
+  .rb { width: 48px; height: 48px; border: none; border-radius: 16px; background: #fff; font-size: 22px; box-shadow: 0 4px 0 rgba(0,0,0,.1); flex: 0 0 auto; }
+  .lv { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .lvb { border: none; border-radius: 22px; padding: 12px; text-align: left; color: #fff; box-shadow: 0 5px 0 rgba(0,0,0,.15); }
+  .lvb b { display: block; font-size: 18px; } .lvb small { display: block; font-weight: 700; opacity: .95; }
+  .lvb .pb { height: 8px; border-radius: 4px; background: rgba(255,255,255,.35); margin-top: 6px; overflow: hidden; } .lvb .pb i { display: block; height: 100%; background: #fff; }
+  .card { background: #fff; border-radius: 28px; padding: 18px 14px; text-align: center; box-shadow: 0 8px 0 rgba(124,58,237,.12), 0 12px 26px rgba(30,27,75,.08); margin-top: 12px; }
+  .big { font-size: clamp(56px, 18vw, 96px); font-weight: 800; line-height: 1.1; color: #4338ca; margin: 6px 0; letter-spacing: .02em; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .b { border: none; border-radius: 18px; padding: 13px 8px; font-size: 18px; font-weight: 800; color: #fff; box-shadow: 0 4px 0 rgba(0,0,0,.18); }
+  .b.ok { background: linear-gradient(135deg, #22c55e, #16a34a); } .b.no { background: #f59e0b; } .b.say { background: #0ea5e9; width: 100%; margin-top: 6px; } .b.alt { background: #7c3aed; width: 100%; margin-top: 10px; }
+  .modes { display: grid; gap: 10px; margin-top: 12px; }
+  .mode { border: none; border-radius: 22px; padding: 14px; display: flex; align-items: center; gap: 12px; text-align: left; background: #fff; box-shadow: 0 5px 0 #ddd6fe; color: #1e1b4b; }
+  .mode img { width: 48px; height: 48px; } .mode b { display: block; font-size: 19px; } .mode small { color: #6b7280; font-weight: 700; }
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .op { border: none; border-radius: 20px; min-height: 84px; font-size: 30px; font-weight: 800; color: #fff; box-shadow: 0 5px 0 rgba(0,0,0,.18); }
+  .op.right { background: #22c55e !important; } .op.wrong { background: #ef4444 !important; } .op.dim { opacity: .45; }
+  .prog { display: flex; gap: 4px; justify-content: center; } .prog i { width: 20px; height: 8px; border-radius: 4px; background: #ede9fe; } .prog i.on { background: #a78bfa; } .prog i.ok { background: #22c55e; } .prog i.no { background: #f87171; }
+  .words { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+  .words span { padding: 2px 10px; border-radius: 999px; background: #f1f5f9; font-weight: 800; } .words span.k { background: #dcfce7; color: #166534; }
+  .stars { font-size: 44px; color: #f59e0b; letter-spacing: 4px; }
+  p.note { color: #6b7280; font-weight: 700; margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script src="../quiz-shared.js?v=20261126b"></script>
+<script>
+(function () {
+  'use strict';
+  const LEVELS = [
+    { id: 'pre', t: 'Pre-primer', s: 'UKG', c: ['#f97316', '#ec4899'], w: 'a and away big blue can come down find for funny go help here I in is it jump little look make me my not one play red run said see the three to two up we where yellow you' },
+    { id: 'pri', t: 'Primer', s: 'Class 1', c: ['#8b5cf6', '#6366f1'], w: 'all am are at ate be black brown but came did do eat four get good have he into like must new no now on our out please pretty ran ride saw say she so soon that there they this too under want was well went what white who will with yes' },
+    { id: 'g1', t: 'Grade 1', s: 'Class 1–2', c: ['#0ea5e9', '#22c55e'], w: 'after again an any as ask by could every fly from give going had has her him his how just know let live may of old once open over put round some stop take thank them then think walk were when' },
+    { id: 'g2', t: 'Grade 2', s: 'Class 2', c: ['#eab308', '#f97316'], w: 'always around because been before best both buy call cold does don\'t fast first five found gave goes green its made many off or pull read right sing sit sleep tell their these those upon us use very wash which why wish work would write your' },
+  ].map((L) => Object.assign(L, { words: L.w.split(' ') }));
+  const COLS = ['#f43f5e', '#f59e0b', '#06b6d4', '#8b5cf6'];
+  const $app = document.getElementById('app');
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const shuffle = (a) => a.slice().sort(() => Math.random() - 0.5);
+  const say = (t, slow) => { try { if (typeof speak === 'function') speak(t, { raw: true, rate: slow ? 0.7 : 0.9, pitch: 1.15 }); } catch (e) {} };
+  const get = () => { try { return JSON.parse(localStorage.getItem('kq_sight') || '{}') || {}; } catch (e) { return {}; } };
+  const put = (o) => { try { localStorage.setItem('kq_sight', JSON.stringify(o)); } catch (e) {} };
+  const known = (L) => (get()[L.id] || {});
+  const learned = (L) => L.words.filter((w) => (known(L)[w] || 0) >= 2).length;
+  function mark(L, w, ok) { const o = get(), m = o[L.id] || (o[L.id] = {}); m[w] = ok ? (m[w] || 0) + 1 : 0; put(o); }
+  function bar(title, back) { return '<div class="bar"><button class="rb" id="back" aria-label="Back">' + (back ? '‹' : '🏠') + '</button><h1>' + title + '</h1></div>'; }
+  function bindBack(fn) { document.getElementById('back').onclick = fn || (() => { location.href = '../quiz-home.html'; }); }
+  function defaultLevel() { const c = parseInt(localStorage.getItem('kq_last_class'), 10); return c === 2 ? 3 : c >= 1 ? 1 : 0; }
+
+  function home() {
+    $app.innerHTML = bar('📖 Sight words') + '<p class="note">Words we see again and again. Learn them and reading gets easy!</p><div class="lv">' +
+      LEVELS.map((L, k) => { const n = learned(L); return '<button class="lvb" data-k="' + k + '" style="background:linear-gradient(135deg,' + L.c[0] + ',' + L.c[1] + ')"><b>' + L.t + '</b><small>' + L.s + ' · ' + n + ' / ' + L.words.length + ' words</small><span class="pb" style="display:block"><i style="width:' + Math.round(n / L.words.length * 100) + '%"></i></span></button>'; }).join('') +
+      '</div><div class="modes"><a class="mode" href="../stories/index.html#/c/' + (parseInt(localStorage.getItem('kq_last_class'), 10) || 0) + '" style="text-decoration:none"><img src="../images/emoji/1f4da.svg" alt=""><span><b>Easy readers</b><small>Little books in Story Time</small></span></a></div>';
+    bindBack();
+    $app.querySelectorAll('[data-k]').forEach((b) => b.onclick = () => level(LEVELS[+b.dataset.k]));
+  }
+  function level(L) {
+    const k = known(L);
+    $app.innerHTML = bar(L.t + ' · ' + L.s, true) +
+      '<div class="modes"><button class="mode" id="cards"><img src="../images/emoji/1f4c7.svg" alt=""><span><b>Word cards</b><small>Read the word, tap to hear it</small></span></button>' +
+      '<button class="mode" id="find"><img src="../images/emoji/1f3af.svg" alt=""><span><b>Find the word</b><small>Listen and tap the right word</small></span></button></div>' +
+      '<div class="card"><b>' + learned(L) + ' of ' + L.words.length + ' words learned</b><div class="words">' + L.words.map((w) => '<span class="' + ((k[w] || 0) >= 2 ? 'k' : '') + '">' + esc(w) + '</span>').join('') + '</div></div>';
+    bindBack(home);
+    document.getElementById('cards').onclick = () => cards(L);
+    document.getElementById('find').onclick = () => find(L);
+  }
+  function order(L) { const k = known(L); return shuffle(L.words).sort((a, b) => (k[a] || 0) - (k[b] || 0)).slice(0, 10); }
+  function cards(L) {
+    const list = order(L); let i = 0;
+    const show = () => {
+      if (i >= list.length) return done(L, null);
+      const w = list[i];
+      $app.innerHTML = bar('Word cards', true) + '<div class="card"><div class="prog">' + list.map((_, j) => '<i class="' + (j < i ? 'ok' : j === i ? 'on' : '') + '"></i>').join('') + '</div>' +
+        '<div class="big">' + esc(w) + '</div><button class="b say" id="hear">🔊 Hear it</button>' +
+        '<div class="row"><button class="b no" id="no">↻ Not yet</button><button class="b ok" id="ok">✓ I can read it!</button></div></div>';
+      bindBack(() => level(L));
+      document.getElementById('hear').onclick = () => say(w, true);
+      document.getElementById('ok').onclick = () => { mark(L, w, true); i++; show(); };
+      document.getElementById('no').onclick = () => { say(w, true); mark(L, w, false); i++; setTimeout(show, 900); };
+    };
+    show();
+  }
+  function find(L) {
+    const list = order(L); let i = 0, right = 0; const res = [];
+    const show = () => {
+      if (i >= list.length) return done(L, right);
+      const w = list[i], opts = shuffle([w].concat(shuffle(L.words.filter((x) => x !== w)).slice(0, 3)));
+      $app.innerHTML = bar('Find the word', true) + '<div class="card"><div class="prog">' + list.map((_, j) => '<i class="' + (res[j] === true ? 'ok' : res[j] === false ? 'no' : j === i ? 'on' : '') + '"></i>').join('') + '</div>' +
+        '<button class="b say" id="hear">🔊 Listen again</button><div class="opts">' + opts.map((o, k) => '<button class="op" data-w="' + esc(o) + '" style="background:' + COLS[k] + '">' + esc(o) + '</button>').join('') + '</div></div>';
+      bindBack(() => level(L));
+      document.getElementById('hear').onclick = () => say('Find the word: ' + w);
+      setTimeout(() => say('Find the word: ' + w), 250);
+      let lock = false;
+      $app.querySelectorAll('.op').forEach((b) => b.onclick = () => {
+        if (lock) return; lock = true;
+        const ok = b.dataset.w === w; res[i] = ok; if (ok) right++;
+        mark(L, w, ok);
+        b.classList.add(ok ? 'right' : 'wrong');
+        if (!ok) $app.querySelectorAll('.op').forEach((x) => { if (x.dataset.w === w) x.classList.add('right'); else if (x !== b) x.classList.add('dim'); });
+        say(ok ? 'Yes! ' + w : 'This one says ' + w);
+        setTimeout(() => { i++; show(); }, ok ? 1100 : 1900);
+      });
+    };
+    show();
+  }
+  function done(L, right) {
+    const stars = right == null ? 3 : right >= 9 ? 3 : right >= 6 ? 2 : right >= 3 ? 1 : 0;
+    $app.innerHTML = bar('Well done!', true) + '<div class="card"><div class="stars">' + '★★★'.slice(0, stars) + '☆☆☆'.slice(0, 3 - stars) + '</div>' +
+      (right == null ? '<h2>10 word cards done!</h2>' : '<h2>' + right + ' of 10 right!</h2>') +
+      '<p class="note">' + learned(L) + ' of ' + L.words.length + ' ' + L.t + ' words learned</p>' +
+      '<button class="b alt" id="more">Play again</button></div>';
+    bindBack(() => level(L));
+    say(right == null ? 'Great reading!' : 'You got ' + right + ' out of 10!');
+    document.getElementById('more').onclick = () => (right == null ? cards(L) : find(L));
+  }
+  const d = defaultLevel();
+  home();
+  if (location.hash === '#go') level(LEVELS[d]);
+})();
+</script>
+</body>
+</html>

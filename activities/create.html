@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="../images/favicon/favicon.ico" sizes="any"><link rel="icon" href="../images/favicon/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Creative Corner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<!-- Creative corner: tap-to-colour pictures, a drawing pad and a xylophone
+     (with traditional rhyme tunes to play along). Nothing leaves the phone. -->
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; min-height: 100%; }
+  body { font-family: 'Baloo 2', system-ui, sans-serif; color: #1e1b4b; background: linear-gradient(180deg, #fce7f3, #fef9c3 55%, #dbeafe); min-height: 100dvh; }
+  button { font-family: inherit; cursor: pointer; }
+  .wrap { max-width: 620px; margin: 0 auto; padding: max(10px, env(safe-area-inset-top)) 12px 24px; }
+  .bar { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .bar h1 { flex: 1; margin: 0; font-size: 22px; }
+  .rb { width: 48px; height: 48px; border: none; border-radius: 16px; background: #fff; font-size: 22px; box-shadow: 0 4px 0 rgba(0,0,0,.1); flex: 0 0 auto; }
+  .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+  .tab { border: none; border-radius: 16px; padding: 9px 4px; background: #fff; font-weight: 800; font-size: 15px; color: #1e1b4b; box-shadow: 0 4px 0 rgba(0,0,0,.08); }
+  .tab.on { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; }
+  .panel { background: #fff; border-radius: 24px; padding: 10px; box-shadow: 0 8px 22px rgba(30,27,75,.1); }
+  .pal { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 8px 0 4px; }
+  .pal button { width: 34px; height: 34px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px #e5e7eb; }
+  .pal button.on { box-shadow: 0 0 0 3px #1e1b4b; transform: scale(1.12); }
+  .pics { display: flex; gap: 6px; overflow-x: auto; padding: 4px 2px 8px; scrollbar-width: none; }
+  .pics button { flex: 0 0 auto; border: 2px solid #e5e7eb; background: #fff; border-radius: 14px; padding: 4px 10px; font-weight: 800; font-size: 14px; }
+  .pics button.on { border-color: #8b5cf6; background: #f5f3ff; }
+  .cv svg { width: 100%; height: auto; display: block; touch-action: manipulation; }
+  .cv svg .f { cursor: pointer; transition: fill .15s; }
+  .tools { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+  .tools button { border: none; border-radius: 14px; padding: 8px 12px; font-weight: 800; font-size: 14px; background: #f1f5f9; color: #1e1b4b; }
+  .tools button.on { background: #1e1b4b; color: #fff; }
+  #pad { width: 100%; aspect-ratio: 1; border-radius: 18px; background: #fff; border: 2px dashed #e5e7eb; touch-action: none; display: block; }
+  .xylo { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; align-items: center; height: 260px; }
+  .bar8 { border: none; border-radius: 12px; color: #fff; font-weight: 800; font-size: 15px; box-shadow: 0 5px 0 rgba(0,0,0,.2); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; }
+  .bar8.hit { transform: translateY(4px) scaleY(.97); box-shadow: 0 1px 0 rgba(0,0,0,.2); filter: brightness(1.2); }
+  .songs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
+  .songs button { border: none; border-radius: 999px; padding: 7px 14px; font-weight: 800; background: #ede9fe; color: #5b21b6; }
+  p.note { text-align: center; color: #6b7280; font-weight: 700; margin: 6px 0 0; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar"><button class="rb" id="home" aria-label="Home">🏠</button><h1>🎨 Creative Corner</h1></div>
+  <div class="tabs"><button class="tab on" data-t="colour">🖍️ Colour</button><button class="tab" data-t="draw">✏️ Draw</button><button class="tab" data-t="music">🎹 Music</button></div>
+  <div id="out"></div>
+</div>
+<script>
+(function () {
+  'use strict';
+  const COLOURS = ['#ef4444', '#f97316', '#facc15', '#22c55e', '#14b8a6', '#3b82f6', '#8b5cf6', '#ec4899', '#a16207', '#111827', '#9ca3af', '#ffffff'];
+  const S = 'stroke="#1e1b4b" stroke-width="3" stroke-linejoin="round"';
+  const F = (el) => el.replace(/^<(\w+)/, '<$1 class="f" fill="#fff" ' + S);
+  const PICS = {
+    'House 🏠': [ '<rect x="0" y="250" width="400" height="80" fill="#fff" ' + S + ' class="f"/>', F('<circle cx="330" cy="70" r="40"/>'), F('<polygon points="70,150 200,50 330,150"/>'), F('<rect x="90" y="150" width="220" height="130"/>'), F('<rect x="175" y="200" width="50" height="80"/>'), F('<rect x="110" y="175" width="45" height="40"/>'), F('<rect x="245" y="175" width="45" height="40"/>'), F('<rect x="250" y="70" width="30" height="50"/>') ],
+    'Fish 🐟': [ F('<rect x="0" y="0" width="400" height="330"/>'), F('<ellipse cx="190" cy="165" rx="120" ry="75"/>'), F('<polygon points="300,165 370,105 370,225"/>'), F('<path d="M160 95 Q190 50 230 95Z"/>'), F('<circle cx="120" cy="150" r="16"/>'), F('<path d="M200 150 Q230 165 200 185 Q215 165 200 150Z"/>'), F('<circle cx="70" cy="80" r="12"/>'), F('<circle cx="50" cy="45" r="8"/>') ],
+    'Butterfly 🦋': [ F('<ellipse cx="135" cy="115" rx="85" ry="70"/>'), F('<ellipse cx="265" cy="115" rx="85" ry="70"/>'), F('<ellipse cx="150" cy="230" rx="60" ry="55"/>'), F('<ellipse cx="250" cy="230" rx="60" ry="55"/>'), F('<circle cx="120" cy="110" r="22"/>'), F('<circle cx="280" cy="110" r="22"/>'), F('<ellipse cx="200" cy="170" rx="16" ry="100"/>'), '<path d="M195 75 Q170 25 150 20 M205 75 Q230 25 250 20" fill="none" ' + S + '/>' ],
+    'Flower 🌸': [ F('<rect x="190" y="170" width="20" height="110"/>'), F('<ellipse cx="150" cy="230" rx="40" ry="16" transform="rotate(-25 150 230)"/>'), F('<ellipse cx="250" cy="215" rx="40" ry="16" transform="rotate(25 250 215)"/>'), F('<polygon points="140,270 260,270 240,325 160,325"/>'), ...[0, 60, 120, 180, 240, 300].map((a) => F('<circle cx="' + (200 + 50 * Math.cos(a * Math.PI / 180)).toFixed(1) + '" cy="' + (115 + 50 * Math.sin(a * Math.PI / 180)).toFixed(1) + '" r="34"/>')), F('<circle cx="200" cy="115" r="30"/>') ],
+    'Car 🚗': [ F('<path d="M40 220 L60 160 L120 150 L160 100 L270 100 L320 150 L360 165 L365 220Z"/>'), F('<path d="M170 115 L210 115 L210 150 L135 150Z"/>'), F('<path d="M222 115 L262 115 L300 150 L222 150Z"/>'), F('<circle cx="115" cy="225" r="38"/>'), F('<circle cx="290" cy="225" r="38"/>'), F('<circle cx="115" cy="225" r="14"/>'), F('<circle cx="290" cy="225" r="14"/>'), F('<rect x="335" y="175" width="25" height="15"/>') ],
+    'Rocket 🚀': [ F('<path d="M200 20 Q260 80 260 200 L140 200 Q140 80 200 20Z"/>'), F('<path d="M140 150 L95 230 L140 210Z"/>'), F('<path d="M260 150 L305 230 L260 210Z"/>'), F('<circle cx="200" cy="110" r="28"/>'), F('<path d="M160 200 L240 200 L225 230 L175 230Z"/>'), F('<path d="M175 230 Q200 320 225 230Z"/>'), F('<circle cx="70" cy="70" r="10"/>'), F('<circle cx="330" cy="60" r="8"/>') ],
+  };
+  const $out = document.getElementById('out');
+  let colour = COLOURS[0], pic = Object.keys(PICS)[0];
+  const ac = () => { if (!window.__ac) { try { window.__ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } if (window.__ac && window.__ac.state === 'suspended') window.__ac.resume(); return window.__ac; };
+  const muted = () => { try { return localStorage.getItem('kq_muted') === '1'; } catch (e) { return false; } };
+  function tone(f, dur, type, vol) {
+    const a = ac(); if (!a || muted()) return;
+    const o = a.createOscillator(), g = a.createGain(); o.type = type || 'triangle'; o.frequency.value = f;
+    g.gain.setValueAtTime(0, a.currentTime); g.gain.linearRampToValueAtTime(vol || 0.35, a.currentTime + 0.01); g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + (dur || 0.6));
+    o.connect(g); g.connect(a.destination); o.start(); o.stop(a.currentTime + (dur || 0.6) + 0.05);
+  }
+  const pop = () => tone(880, 0.12, 'sine', 0.15);
+  function palette() { return '<div class="pal">' + COLOURS.map((c) => '<button data-c="' + c + '" style="background:' + c + '" class="' + (c === colour ? 'on' : '') + '" aria-label="colour"></button>').join('') + '</div>'; }
+  function bindPal(after) { $out.querySelectorAll('[data-c]').forEach((b) => b.onclick = () => { colour = b.dataset.c; $out.querySelectorAll('[data-c]').forEach((x) => x.classList.toggle('on', x === b)); pop(); if (after) after(); }); }
+
+  /* ---------- colouring ---------- */
+  function colourTab() {
+    const saved = (() => { try { return JSON.parse(localStorage.getItem('kq_colour_' + pic) || '[]'); } catch (e) { return []; } })();
+    $out.innerHTML = '<div class="panel"><div class="pics">' + Object.keys(PICS).map((k) => '<button data-p="' + k + '" class="' + (k === pic ? 'on' : '') + '">' + k + '</button>').join('') + '</div>' +
+      '<div class="cv"><svg viewBox="0 0 400 330">' + PICS[pic].join('') + '</svg></div>' + palette() +
+      '<div class="tools"><button id="clr">↺ Start again</button></div><p class="note">Pick a colour, then tap a part of the picture</p></div>';
+    const parts = [...$out.querySelectorAll('svg .f')];
+    parts.forEach((el, i) => { if (saved[i]) el.setAttribute('fill', saved[i]); el.onclick = () => { el.setAttribute('fill', colour); pop(); save(); }; });
+    function save() { try { localStorage.setItem('kq_colour_' + pic, JSON.stringify(parts.map((p) => p.getAttribute('fill')))); } catch (e) {} }
+    $out.querySelectorAll('[data-p]').forEach((b) => b.onclick = () => { pic = b.dataset.p; colourTab(); });
+    document.getElementById('clr').onclick = () => { parts.forEach((p) => p.setAttribute('fill', '#fff')); save(); };
+    bindPal();
+  }
+
+  /* ---------- drawing ---------- */
+  let size = 8, eraser = false;
+  function drawTab() {
+    $out.innerHTML = '<div class="panel"><canvas id="pad"></canvas>' + palette() +
+      '<div class="tools"><button data-s="4">• Thin</button><button data-s="8" class="on">● Medium</button><button data-s="18">⬤ Thick</button><button id="er">🧽 Rubber</button><button id="clr">🗑️ Clear</button></div></div>';
+    const cv = document.getElementById('pad'), dpr = Math.min(2, window.devicePixelRatio || 1);
+    const W = cv.clientWidth; cv.width = cv.height = W * dpr;
+    const g = cv.getContext('2d'); g.scale(dpr, dpr); g.lineCap = g.lineJoin = 'round';
+    g.fillStyle = '#fff'; g.fillRect(0, 0, W, W);
+    try { const d = localStorage.getItem('kq_drawing'); if (d) { const im = new Image(); im.onload = () => g.drawImage(im, 0, 0, W, W); im.src = d; } } catch (e) {}
+    let down = false, last = null;
+    const pos = (e) => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * W / r.width, (e.clientY - r.top) * W / r.height]; };
+    const save = () => { try { localStorage.setItem('kq_drawing', cv.toDataURL('image/png')); } catch (e) {} };
+    cv.onpointerdown = (e) => { down = true; try { cv.setPointerCapture(e.pointerId); } catch (er) {} last = pos(e); g.beginPath(); g.arc(last[0], last[1], size / 2, 0, 7); g.fillStyle = eraser ? '#fff' : colour; g.fill(); };
+    cv.onpointermove = (e) => { if (!down) return; const p = pos(e); g.strokeStyle = eraser ? '#fff' : colour; g.lineWidth = eraser ? size * 2.5 : size; g.beginPath(); g.moveTo(last[0], last[1]); g.lineTo(p[0], p[1]); g.stroke(); last = p; };
+    cv.onpointerup = cv.onpointercancel = () => { if (down) { down = false; save(); } };
+    $out.querySelectorAll('[data-s]').forEach((b) => b.onclick = () => { size = +b.dataset.s; eraser = false; $out.querySelectorAll('.tools button').forEach((x) => x.classList.toggle('on', x === b)); });
+    document.getElementById('er').onclick = (e) => { eraser = true; $out.querySelectorAll('.tools button').forEach((x) => x.classList.toggle('on', x === e.currentTarget)); };
+    document.getElementById('clr').onclick = () => { g.fillStyle = '#fff'; g.fillRect(0, 0, W, W); save(); };
+    bindPal(() => { eraser = false; document.getElementById('er').classList.remove('on'); });
+  }
+
+  /* ---------- music ---------- */
+  const NOTES = [['C', 261.6], ['D', 293.7], ['E', 329.6], ['F', 349.2], ['G', 392.0], ['A', 440.0], ['B', 493.9], ['C', 523.3]];
+  const BAR_COLS = ['#ef4444', '#f97316', '#facc15', '#22c55e', '#14b8a6', '#3b82f6', '#8b5cf6', '#ec4899'];
+  // traditional public-domain tunes, as bar numbers (0 = low C … 7 = high C), '-' = rest
+  const SONGS = {
+    'Twinkle Twinkle ⭐': '0 0 4 4 5 5 4 - 3 3 2 2 1 1 0 - 4 4 3 3 2 2 1 - 4 4 3 3 2 2 1 - 0 0 4 4 5 5 4 - 3 3 2 2 1 1 0',
+    'Baa Baa Black Sheep 🐑': '0 0 4 4 5 5 5 5 4 - 3 3 2 2 1 1 0',
+    'Mary Had a Little Lamb 🐑': '2 1 0 1 2 2 2 - 1 1 1 - 2 4 4 - 2 1 0 1 2 2 2 2 1 1 2 1 0',
+    'Row Your Boat 🚣': '0 0 0 1 2 - 2 1 2 3 4 - 7 7 7 4 4 4 2 2 2 0 0 0 4 3 2 1 0',
+  };
+  let songTimer = null;
+  function hit(i) {
+    tone(NOTES[i][1], 0.9, 'triangle', 0.4); tone(NOTES[i][1] * 2, 0.3, 'sine', 0.06);
+    const b = $out.querySelector('[data-n="' + i + '"]'); if (b) { b.classList.add('hit'); setTimeout(() => b.classList.remove('hit'), 160); }
+  }
+  function musicTab() {
+    $out.innerHTML = '<div class="panel"><div class="xylo">' + NOTES.map((n, i) => '<button class="bar8" data-n="' + i + '" style="background:' + BAR_COLS[i] + ';height:' + (100 - i * 6) + '%">' + n[0] + '</button>').join('') + '</div>' +
+      '<p class="note">Tap the bars to play! Or let me play a song:</p><div class="songs">' + Object.keys(SONGS).map((k) => '<button data-song="' + k + '">' + k + '</button>').join('') + '<button id="stop">⏹ Stop</button></div></div>';
+    $out.querySelectorAll('[data-n]').forEach((b) => b.onpointerdown = () => hit(+b.dataset.n));
+    $out.querySelectorAll('[data-song]').forEach((b) => b.onclick = () => {
+      clearInterval(songTimer); const seq = SONGS[b.dataset.song].split(' '); let k = 0;
+      songTimer = setInterval(() => { if (k >= seq.length || !document.querySelector('.xylo')) return clearInterval(songTimer); if (seq[k] !== '-') hit(+seq[k]); k++; }, 420);
+    });
+    document.getElementById('stop').onclick = () => clearInterval(songTimer);
+  }
+
+  const TABS = { colour: colourTab, draw: drawTab, music: musicTab };
+  document.querySelectorAll('.tab').forEach((t) => t.onclick = () => { clearInterval(songTimer); document.querySelectorAll('.tab').forEach((x) => x.classList.toggle('on', x === t)); TABS[t.dataset.t](); });
+  document.getElementById('home').onclick = () => { clearInterval(songTimer); location.href = '../quiz-home.html'; };
+  window.addEventListener('pagehide', () => clearInterval(songTimer));
+  const start = (location.hash || '').slice(1);
+  (TABS[start] ? document.querySelector('[data-t="' + start + '"]') : document.querySelector('.tab')).click();
+})();
+</script>
+</body>
+</html>

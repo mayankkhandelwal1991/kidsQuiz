@@ -606,6 +606,34 @@ function kqAskName(opts) {
    choice to guess). Passing it is remembered for 5 minutes.
    ============================================ */
 /* kqParentGate(onPass) lives in parent-gate.js (also used by the games). */
+/* Parents: progress per subject (from this child's quiz history on the phone), reading,
+   stories, and the daily time limit. */
+function kqParentProgressHtml() {
+  const J = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } };
+  let hist = []; try { const u = loadStorage().users[currentUser || 'Guest']; hist = (u && u.history) || []; } catch (e) {}
+  const by = {};
+  hist.forEach((h) => { const b = by[h.cat] || (by[h.cat] = { c: 0, w: 0, n: 0 }); b.c += +h.correct || 0; b.w += +h.wrong || 0; b.n++; });
+  const rows = Object.keys(by).map((id) => { const b = by[id], ci = getCatInfo(id) || { icon: '📘', title: id }; return { ci, n: b.n, acc: b.c + b.w ? Math.round(b.c / (b.c + b.w) * 100) : 0 }; })
+    .sort((a, b) => b.n - a.n).slice(0, 8);
+  const bar = (r) => '<div style="display:flex;align-items:center;gap:8px;margin:6px 0"><span style="width:118px;font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + r.ci.icon + ' ' + r.ci.title + '</span>' +
+    '<span style="flex:1;height:12px;border-radius:6px;background:#f1f5f9;overflow:hidden"><i style="display:block;height:100%;width:' + r.acc + '%;background:' + (r.acc >= 70 ? '#22c55e' : r.acc >= 50 ? '#f59e0b' : '#ef4444') + '"></i></span>' +
+    '<b style="width:42px;text-align:right;font-size:14px">' + r.acc + '%</b></div>';
+  const weak = rows.filter((r) => r.acc < 70 && r.n >= 1).map((r) => r.ci.icon + ' ' + r.ci.title);
+  const stories = Object.keys(J('kq_story_done', {})).length, sight = J('kq_sight', {});
+  const words = Object.keys(sight).reduce((a, k) => a + Object.values(sight[k] || {}).filter((v) => v >= 2).length, 0);
+  const tables = Object.keys(J('kq_tt_stars', {})).length;
+  const today = (window.KQ && KQ.todaySeconds) ? Math.round(KQ.todaySeconds() / 60) : 0;
+  const lim = +(localStorage.getItem('kq_time_limit') || 0);
+  const chip = (v, t) => '<button type="button" data-a="limit" data-v="' + v + '" style="border:none;border-radius:999px;padding:7px 12px;font:800 14px inherit;font-family:inherit;cursor:pointer;background:' + (lim === v ? '#7c3aed;color:#fff' : '#f1f5f9;color:#1e1b4b') + '">' + t + '</button>';
+  return '<div style="margin-top:12px;background:#faf5ff;border-radius:20px;padding:12px 14px">' +
+    '<b style="font-size:18px">📈 Progress</b><div style="font-size:13px;color:#6b7280;font-weight:700">Quiz answers right, per subject (this child, this phone)</div>' +
+    (rows.length ? rows.map(bar).join('') : '<p style="margin:8px 0;font-weight:700;color:#6b7280">No quizzes yet.</p>') +
+    (weak.length ? '<div style="margin-top:6px;background:#fff7ed;border-radius:14px;padding:8px 10px;font-weight:700;font-size:14px;color:#9a3412">🎯 Needs practice: ' + weak.join(', ') + '<br><small>The owl’s daily plan gives these first.</small></div>' : '') +
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;text-align:center">' +
+    [['📖', stories, 'stories'], ['🔤', words, 'sight words'], ['✖️', tables, 'tables'], ['⏱️', today + 'm', 'today']].map((x) => '<div style="background:#fff;border-radius:14px;padding:6px 2px"><div style="font-size:20px">' + x[0] + '</div><b style="font-size:17px">' + x[1] + '</b><div style="font-size:11px;color:#6b7280;font-weight:800">' + x[2] + '</div></div>').join('') + '</div>' +
+    '<div style="margin-top:12px"><b>⏱️ Daily play time limit</b><div style="font-size:13px;color:#6b7280;font-weight:700">After this, the app shows “Time for a break”. A grown-up can add 15 minutes.</div>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">' + chip(0, 'Off') + chip(30, '30 min') + chip(45, '45 min') + chip(60, '1 hour') + chip(90, '1½ hours') + '</div></div></div>';
+}
 function kqOpenParents() {
   kqParentGate(function () {
     const old = document.getElementById('kqParents'); if (old) old.remove();
@@ -615,13 +643,16 @@ function kqOpenParents() {
     const btn = (id, ic, t, sub, bg) => '<button type="button" data-a="' + id + '" style="display:flex;align-items:center;gap:12px;width:100%;min-height:64px;border:none;border-radius:20px;padding:10px 14px;margin-top:10px;background:' + bg + ';color:#1e1b4b;font-family:inherit;text-align:left;cursor:pointer"><span style="font-size:30px">' + ic + '</span><span style="flex:1"><b style="font-size:18px;display:block;line-height:1.1">' + t + '</b><small style="color:#4b5563;font-weight:700">' + sub + '</small></span><span style="font-size:20px;color:#6b7280">›</span></button>';
     w.innerHTML = '<div style="background:#fff;color:#1e1b4b;border-radius:28px 28px 0 0;padding:18px 16px max(18px,env(safe-area-inset-bottom));width:100%;max-width:560px;max-height:92vh;overflow-y:auto">' +
       '<div style="display:flex;align-items:center;gap:10px"><span style="font-size:36px">👨‍👩‍👧</span><h2 style="margin:0;flex:1;font-size:24px">For parents</h2><button type="button" data-a="close" aria-label="Close" style="width:44px;height:44px;border-radius:50%;border:none;background:#f3f4f6;font-size:20px;cursor:pointer">✕</button></div>' +
+      kqParentProgressHtml() +
+      (window.KQProfiles ? btn('kids', '👪', 'Children on this phone', 'Add or switch a brother or sister', '#fce7f3') : '') +
+      btn('teacher', '🏫', 'Teacher mode', 'Give quizzes and stories to a class, see who finished', '#e0f2fe') +
       btn('share', '📤', 'Share Kids Quiz', 'Tell other parents — opens your phone’s share menu', '#ede9fe') +
       btn('rate', '⭐', 'Rate us on Google Play', 'Your review helps other families find us', '#fef3c7') +
       (window.KQPlay && KQPlay.openReport ? btn('report', '📊', 'Weekly report', 'Quizzes and games your child finished', '#dcfce7') : '') +
       btn('sound', muted ? '🔇' : '🔊', 'Sounds: ' + (muted ? 'off' : 'on'), 'Tap to turn ' + (muted ? 'on' : 'off'), '#e0f2fe') +
       btn('privacy', '🔒', 'Privacy policy', 'What we collect and why', '#f3f4f6') +
       '<div style="margin-top:14px;background:#f0fdf4;border-radius:18px;padding:12px 14px;font-size:14px;font-weight:600;color:#166534;line-height:1.4">' +
-      '✅ Made for children: no chat with strangers, leagues show first names only.<br>✅ Ads are child-safe (rated G) and never personalised. No rewards for watching ads.<br>✅ Sharing and links to other apps are only here, for grown-ups.</div></div>';
+      '✅ Made for children: no chat with strangers, leagues show first names only.<br>✅ Ads are child-safe (rated G) and never personalised.<br>✅ Sharing and links to other apps are only here, for grown-ups.</div></div>';
     document.body.appendChild(w);
     w.addEventListener('click', (e) => {
       const b = e.target.closest('[data-a]'); if (!b) { if (e.target === w) w.remove(); return; }
@@ -630,8 +661,29 @@ function kqOpenParents() {
       else if (a === 'share') shareApp();
       else if (a === 'rate') rateApp();
       else if (a === 'report') { w.remove(); KQPlay.openReport(); }
+      else if (a === 'kids') { w.remove(); KQProfiles.open(); }
+      else if (a === 'teacher') { location.href = (location.pathname.indexOf('/quiz/') >= 0 || location.pathname.indexOf('/stories/') >= 0 ? '../' : '') + 'teacher.html'; }
+      else if (a === 'limit') { try { localStorage.setItem('kq_time_limit', b.dataset.v); localStorage.removeItem('kq_time_extra'); } catch (er) {} w.remove(); kqOpenParents(); }
       else if (a === 'privacy') kqOpenExternal('https://mayankkhandelwal1991.github.io/kidsQuiz/privacy_policy.html');
       else if (a === 'sound') { try { localStorage.setItem('kq_muted', muted ? '0' : '1'); } catch (er) {} w.remove(); kqOpenParents(); }
     });
   });
+}
+
+/* ============================================
+   TEACHER TASKS — a child opened a task from their teacher (kq_task_active);
+   when they finish that quiz/story, report it (first name + score).
+   ============================================ */
+function kqTaskStart(t) { try { localStorage.setItem('kq_task_active', JSON.stringify(t)); } catch (e) {} }
+function kqTaskDone(type, ref, lv, score) {
+  let t = null; try { t = JSON.parse(localStorage.getItem('kq_task_active') || 'null'); } catch (e) {}
+  if (!t || t.type !== type || t.ref !== ref || (type === 'quiz' && +t.lv !== +lv)) return;
+  const go = function () {
+    try {
+      const u = KQ.user(), nm = String(u.name || 'Player').split(' ')[0].slice(0, 14);
+      firebase.database().ref('tasks/' + t.code + '/' + t.id + '/done/' + u.key).set({ n: nm, at: Date.now(), s: String(score == null ? '' : score).slice(0, 12) })
+        .then(function () { try { localStorage.removeItem('kq_task_active'); } catch (e) {} }).catch(function () {});
+    } catch (e) {}
+  };
+  if (window.KQ && KQ.ready) KQ.ready.then(go); else setTimeout(function () { if (window.KQ && KQ.ready) KQ.ready.then(go); }, 2000);
 }

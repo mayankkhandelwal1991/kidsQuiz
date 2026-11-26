@@ -34,6 +34,9 @@
     { id: 'tables', ic: '2716', t: 'Times Tables', say: 'win stars on the times tables', go: 'games/brain/times_tables.html', tried: function () { return !!ls('kq_tt_stars'); }, when: function () { return lvl() >= 2; } },
     { id: 'phonics', ic: '1f50a', t: 'Phonics', say: 'play with letter sounds', go: function () { return 'quiz/play.html#/c/' + (pre() ? lvl() : 0) + '/k_phonics'; }, when: pre },
     { id: 'olympiad', ic: '1f3c5', t: 'Olympiad', say: 'try an Olympiad paper and win a certificate', go: 'Olympiad/index.html', tried: function () { return lsJ('olympiadHistory', []).length > 0; }, when: function () { return lvl() >= 1; } },
+    { id: 'read', ic: '1f4da', t: 'Sight words', say: 'learn some new words to read', go: 'activities/read.html#go', tried: function () { return !!ls('kq_sight'); }, when: function () { return lvl() >= -1 && lvl() <= 2; } },
+    { id: 'create', ic: '1f3a8', t: 'Creative corner', say: 'colour a picture or play music', go: 'activities/create.html', tried: function () { return !!ls('kq_drawing') || hasKey('kq_colour_'); } },
+    { id: 'move', ic: '1f438', t: 'Move like an animal', say: 'hop like a frog and stretch like a giraffe', go: 'activities/move.html' },
     { id: 'friends', ic: '1f465', t: 'Play with Friends', say: 'play a game with a friend', go: 'multiplayer/index.html' },
     { id: 'path', ic: '1f5fa', t: 'My learning path', say: 'win stars on your learning map', fn: function () { if (window.KQPlay && KQPlay.openMap) KQPlay.openMap(); } },
     { id: 'qotd', ic: '2753', t: 'Question of the day', say: 'answer today’s question', fn: function () { if (window.KQPlay && KQPlay.openQotd) KQPlay.openQotd(); } },
@@ -44,7 +47,7 @@
   ];
 
   // learning ideas first, then the fun extras; rotate daily; skip what was said "Later" to today
-  var LEARN = ['stories', 'rhymes', 'tracing', 'tables', 'phonics', 'olympiad'];
+  var LEARN = ['stories', 'rhymes', 'read', 'tracing', 'tables', 'phonics', 'olympiad'];
   function pick() {
     var ex = explored(), skip = day().skip || [], dayN = Math.floor(Date.now() / 86400000);
     var ok = IDEAS.filter(function (x) { return (!x.when || x.when()) && skip.indexOf(x.id) < 0 && (!current || x.id !== current.id); });

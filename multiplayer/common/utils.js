@@ -22,13 +22,17 @@ export function generatePlayerId() {
   return 'p_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 }
 
-/** Sanitize a nickname: trim, strip HTML, cap length, fall back to a random default. */
+/** Sanitize a nickname: first word, letters only, 12 max, fall back to a random default. */
 export function sanitizeNickname(name) {
+  // Children's app: a first name / nickname only — one word, letters only
+  // (no numbers, emails, links or messages to other players).
   const clean = (name || '')
     .toString()
     .replace(/<[^>]*>?/gm, '')
     .trim()
-    .slice(0, 14);
+    .split(/\s+/)[0]
+    .replace(/[^\p{L}\p{M}'-]/gu, '')
+    .slice(0, 12);
   return clean.length ? clean : 'Player' + (Math.floor(Math.random() * 900) + 100);
 }
 

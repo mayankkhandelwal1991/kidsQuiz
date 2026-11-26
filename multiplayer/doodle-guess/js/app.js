@@ -300,7 +300,8 @@ async function resetRoomForDisconnect() {
 
 function submitGuess() {
   if (!latestRoom) return;
-  const text = guessInput.value.trim();
+  // Kids' safety: one word, letters only — guesses can't be used as messages.
+  const text = guessInput.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 14);
   if (!text) return;
   guessInput.value = '';
   attemptGuess(mySeat, text);
@@ -598,7 +599,9 @@ function renderRoom(room) {
     const div = document.createElement('div');
     setClass(div, 'entry' + (g.correct ? ' correct' : ''));
     const label = g.seat === mySeat ? 'You' : g.seat;
-    setText(div, g.correct ? `${label} guessed it: ${g.text}! 🎉` : `${label}: ${g.text}`);
+    // Another player's text is shown only if it is a word from our own word bank.
+    const safe = g.seat === mySeat || WORDS.indexOf(String(g.text || '').toUpperCase()) >= 0;
+    setText(div, g.correct ? `${label} guessed it: ${g.text}! 🎉` : `${label}: ${safe ? g.text : '❌ Not quite'}`);
     guessLog.appendChild(div);
   });
 

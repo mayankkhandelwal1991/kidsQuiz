@@ -5621,6 +5621,3854 @@
           ]
         }
       ]
+    },
+    {
+      "id": "rainbow_colours",
+      "level": 0,
+      "title": "Colours of the Rainbow",
+      "cover": "🌈",
+      "bg": "sky",
+      "genres": [
+        "science"
+      ],
+      "pages": [
+        {
+          "text": "Look! A rainbow in the sky!",
+          "actors": [
+            [
+              "🌈",
+              50,
+              70,
+              50,
+              "grow"
+            ],
+            [
+              "☁️",
+              20,
+              80,
+              16,
+              "float"
+            ]
+          ]
+        },
+        {
+          "bg": "meadow",
+          "text": "Red, like an apple.",
+          "actors": [
+            [
+              "🍎",
+              50,
+              80,
+              26,
+              "bob"
+            ],
+            [
+              "🔴",
+              80,
+              40,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Yellow, like the sun.",
+          "actors": [
+            [
+              "🌞",
+              50,
+              70,
+              30,
+              "spin"
+            ]
+          ]
+        },
+        {
+          "bg": "meadow",
+          "text": "Green, like a leaf.",
+          "actors": [
+            [
+              "🍃",
+              50,
+              80,
+              26,
+              "float"
+            ],
+            [
+              "🟢",
+              80,
+              40,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "bg": "river",
+          "text": "Blue, like the sea. So pretty!",
+          "actors": [
+            [
+              "🌊",
+              50,
+              92,
+              40,
+              "bob"
+            ],
+            [
+              "🔵",
+              80,
+              40,
+              10,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What did we see in the sky?",
+          "a": "🌈",
+          "o": [
+            "🌈",
+            "🚗",
+            "🍕"
+          ]
+        },
+        {
+          "q": "Which one is red?",
+          "a": "🍎",
+          "o": [
+            "🍎",
+            "🍌",
+            "🥦"
+          ]
+        },
+        {
+          "q": "Which one is yellow?",
+          "a": "🌞",
+          "o": [
+            "🌞",
+            "🍃",
+            "🌊"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "teddy_bath",
+      "level": 0,
+      "title": "Teddy's Bath",
+      "cover": "🧸",
+      "bg": "garden",
+      "genres": [
+        "habits"
+      ],
+      "pages": [
+        {
+          "text": "Teddy played in the mud.",
+          "actors": [
+            [
+              "🧸",
+              50,
+              88,
+              28,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "Oh no! Teddy is dirty.",
+          "actors": [
+            [
+              "🧸",
+              50,
+              88,
+              28,
+              "shake"
+            ],
+            [
+              "😮",
+              72,
+              40,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "bg": "palace",
+          "text": "Splash! Time for a bath.",
+          "actors": [
+            [
+              "🛁",
+              50,
+              90,
+              40,
+              "bob"
+            ],
+            [
+              "🧸",
+              50,
+              60,
+              18,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "bg": "palace",
+          "text": "Soap and bubbles. Rub, rub!",
+          "actors": [
+            [
+              "🧼",
+              30,
+              80,
+              14,
+              "bob"
+            ],
+            [
+              "🫧",
+              60,
+              40,
+              12,
+              "float"
+            ],
+            [
+              "🫧",
+              76,
+              56,
+              9,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "Clean Teddy! Hug, hug!",
+          "actors": [
+            [
+              "🧸",
+              42,
+              88,
+              28,
+              "bob"
+            ],
+            [
+              "❤️",
+              66,
+              40,
+              12,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Who is the story about?",
+          "a": "🧸",
+          "o": [
+            "🧸",
+            "🐶",
+            "🚗"
+          ]
+        },
+        {
+          "q": "What did Teddy need?",
+          "a": "🛁",
+          "o": [
+            "🛁",
+            "🍕",
+            "⚽"
+          ]
+        },
+        {
+          "q": "What makes bubbles?",
+          "a": "🧼",
+          "o": [
+            "🧼",
+            "🍎",
+            "🎈"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "where_puppy",
+      "level": 0,
+      "title": "Where Is Puppy?",
+      "cover": "🐶",
+      "bg": "garden",
+      "genres": [
+        "animals"
+      ],
+      "pages": [
+        {
+          "text": "Where is Puppy? Let's look!",
+          "actors": [
+            [
+              "🧒",
+              40,
+              88,
+              26,
+              "bob"
+            ],
+            [
+              "❓",
+              66,
+              40,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Is Puppy in the box? No!",
+          "actors": [
+            [
+              "📦",
+              50,
+              88,
+              26,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "Is Puppy under the tree? No!",
+          "actors": [
+            [
+              "🌳",
+              50,
+              88,
+              40,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "Is Puppy behind the ball? No!",
+          "actors": [
+            [
+              "⚽",
+              50,
+              88,
+              24,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "Woof! Here is Puppy! Hello!",
+          "actors": [
+            [
+              "🐶",
+              50,
+              88,
+              28,
+              "hop"
+            ],
+            [
+              "🧒",
+              24,
+              88,
+              22,
+              "hop"
+            ],
+            [
+              "❤️",
+              74,
+              40,
+              10,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Who was hiding?",
+          "a": "🐶",
+          "o": [
+            "🐶",
+            "🐱",
+            "🐟"
+          ]
+        },
+        {
+          "q": "Was Puppy in the box?",
+          "a": "❌",
+          "o": [
+            "❌",
+            "✅"
+          ]
+        },
+        {
+          "q": "How did Puppy feel at the end?",
+          "a": "😊",
+          "o": [
+            "😊",
+            "😢",
+            "😠"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "little_red_hen",
+      "level": -1,
+      "title": "The Little Red Hen",
+      "cover": "🐔",
+      "bg": "village",
+      "genres": [
+        "moral",
+        "animals"
+      ],
+      "pages": [
+        {
+          "text": "Little Red Hen found some wheat seeds.",
+          "actors": [
+            [
+              "🐔",
+              40,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "🌾",
+              66,
+              88,
+              14,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "\"Who will help me plant?\" \"Not I!\" said all.",
+          "actors": [
+            [
+              "🐔",
+              30,
+              88,
+              20,
+              "bob"
+            ],
+            [
+              "🐶",
+              56,
+              88,
+              16,
+              "shake"
+            ],
+            [
+              "🐱",
+              76,
+              88,
+              14,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "So she planted the seeds herself.",
+          "actors": [
+            [
+              "🐔",
+              40,
+              88,
+              20,
+              "hop"
+            ],
+            [
+              "🌱",
+              64,
+              88,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "She cut the wheat and made bread.",
+          "actors": [
+            [
+              "🌾",
+              30,
+              88,
+              16,
+              "bob"
+            ],
+            [
+              "🍞",
+              62,
+              80,
+              16,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "\"Who will eat the bread?\" \"Me! Me!\" said all.",
+          "actors": [
+            [
+              "🍞",
+              50,
+              60,
+              14,
+              "bob"
+            ],
+            [
+              "🐶",
+              30,
+              88,
+              16,
+              "hop"
+            ],
+            [
+              "🐱",
+              72,
+              88,
+              14,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "\"You did not help. I will eat it!\"",
+          "actors": [
+            [
+              "🐔",
+              44,
+              88,
+              22,
+              "hop"
+            ],
+            [
+              "🍞",
+              66,
+              80,
+              12,
+              "bob"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Who found the seeds?",
+          "a": "🐔",
+          "o": [
+            "🐔",
+            "🐶",
+            "🐱",
+            "🐷"
+          ]
+        },
+        {
+          "q": "What did she make?",
+          "a": "🍞",
+          "o": [
+            "🍞",
+            "🍕",
+            "🍦",
+            "🍪"
+          ]
+        },
+        {
+          "q": "Did the friends help?",
+          "a": "❌",
+          "o": [
+            "❌",
+            "✅"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zoo_visit",
+      "level": -1,
+      "title": "{name} at the Zoo",
+      "cover": "🦁",
+      "bg": "forest",
+      "genres": [
+        "animals",
+        "adventure"
+      ],
+      "personal": true,
+      "pages": [
+        {
+          "text": "{name} went to the zoo!",
+          "actors": [
+            [
+              "🧒",
+              40,
+              88,
+              24,
+              "hop"
+            ],
+            [
+              "🎈",
+              62,
+              44,
+              12,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "The lion said, \"Roar!\"",
+          "actors": [
+            [
+              "🦁",
+              50,
+              88,
+              30,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "The tall giraffe ate leaves.",
+          "actors": [
+            [
+              "🦒",
+              50,
+              88,
+              36,
+              "bob"
+            ],
+            [
+              "🌳",
+              80,
+              88,
+              26,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "The monkey swung from a tree.",
+          "actors": [
+            [
+              "🐒",
+              50,
+              50,
+              18,
+              "fly"
+            ],
+            [
+              "🌳",
+              50,
+              88,
+              40,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "The big elephant splashed water!",
+          "actors": [
+            [
+              "🐘",
+              44,
+              88,
+              32,
+              "bob"
+            ],
+            [
+              "💧",
+              70,
+              50,
+              8,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "What a fun day, {name}!",
+          "actors": [
+            [
+              "🧒",
+              50,
+              88,
+              24,
+              "hop"
+            ],
+            [
+              "⭐",
+              30,
+              34,
+              10,
+              "spin"
+            ],
+            [
+              "⭐",
+              70,
+              34,
+              10,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Who said roar?",
+          "a": "🦁",
+          "o": [
+            "🦁",
+            "🐒",
+            "🦒",
+            "🐘"
+          ]
+        },
+        {
+          "q": "Who is very tall?",
+          "a": "🦒",
+          "o": [
+            "🦒",
+            "🐒",
+            "🐭",
+            "🐢"
+          ]
+        },
+        {
+          "q": "Who splashed water?",
+          "a": "🐘",
+          "o": [
+            "🐘",
+            "🦁",
+            "🐱",
+            "🐦"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "butterfly_life",
+      "level": -1,
+      "title": "The Butterfly's Journey",
+      "cover": "🦋",
+      "bg": "garden",
+      "genres": [
+        "science",
+        "animals"
+      ],
+      "pages": [
+        {
+          "text": "A tiny egg sat on a leaf.",
+          "actors": [
+            [
+              "🍃",
+              50,
+              80,
+              30,
+              ""
+            ],
+            [
+              "🥚",
+              50,
+              60,
+              8,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Pop! Out came a little caterpillar.",
+          "actors": [
+            [
+              "🐛",
+              50,
+              80,
+              16,
+              "walk"
+            ],
+            [
+              "🍃",
+              76,
+              88,
+              18,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "It ate and ate. It grew big!",
+          "actors": [
+            [
+              "🐛",
+              50,
+              84,
+              26,
+              "grow"
+            ],
+            [
+              "🍃",
+              24,
+              88,
+              14,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "It made a cosy home called a cocoon.",
+          "actors": [
+            [
+              "🌳",
+              50,
+              88,
+              40,
+              ""
+            ],
+            [
+              "🥜",
+              54,
+              58,
+              8,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Then out came a beautiful butterfly!",
+          "actors": [
+            [
+              "🦋",
+              50,
+              50,
+              24,
+              "fly"
+            ]
+          ]
+        },
+        {
+          "text": "Egg, caterpillar, cocoon, butterfly!",
+          "actors": [
+            [
+              "🥚",
+              18,
+              80,
+              8,
+              ""
+            ],
+            [
+              "🐛",
+              40,
+              80,
+              12,
+              ""
+            ],
+            [
+              "🥜",
+              62,
+              80,
+              8,
+              ""
+            ],
+            [
+              "🦋",
+              84,
+              70,
+              14,
+              "fly"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What came out of the egg?",
+          "a": "🐛",
+          "o": [
+            "🐛",
+            "🐦",
+            "🐟",
+            "🐸"
+          ]
+        },
+        {
+          "q": "What did the caterpillar become?",
+          "a": "🦋",
+          "o": [
+            "🦋",
+            "🐝",
+            "🐜",
+            "🐞"
+          ]
+        },
+        {
+          "q": "Where was the egg?",
+          "a": "🍃",
+          "o": [
+            "🍃",
+            "🏠",
+            "🚗",
+            "🌊"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proud_rose",
+      "level": 1,
+      "title": "The Proud Rose",
+      "cover": "🌹",
+      "bg": "desert",
+      "genres": [
+        "moral"
+      ],
+      "pages": [
+        {
+          "text": "A pretty rose grew next to a cactus.",
+          "actors": [
+            [
+              "🌹",
+              34,
+              88,
+              20,
+              "bob"
+            ],
+            [
+              "🌵",
+              68,
+              88,
+              24,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "\"You are so ugly and prickly!\" said the proud rose.",
+          "actors": [
+            [
+              "🌹",
+              34,
+              88,
+              20,
+              "shake"
+            ],
+            [
+              "🌵",
+              68,
+              88,
+              24,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "Summer came. There was no rain at all.",
+          "actors": [
+            [
+              "☀️",
+              78,
+              28,
+              18,
+              "spin"
+            ],
+            [
+              "🌹",
+              34,
+              88,
+              18,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "The rose drooped. Birds drank water stored in the cactus.",
+          "actors": [
+            [
+              "🥀",
+              34,
+              88,
+              18,
+              ""
+            ],
+            [
+              "🐦",
+              62,
+              50,
+              12,
+              "fly"
+            ],
+            [
+              "🌵",
+              68,
+              88,
+              24,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "The cactus shared its water with the rose too.",
+          "actors": [
+            [
+              "🌵",
+              62,
+              88,
+              24,
+              "bob"
+            ],
+            [
+              "💧",
+              46,
+              66,
+              8,
+              "bob"
+            ],
+            [
+              "🌹",
+              30,
+              88,
+              18,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "\"Thank you. I was wrong,\" said the rose.",
+          "actors": [
+            [
+              "🌹",
+              34,
+              88,
+              20,
+              "bob"
+            ],
+            [
+              "🌵",
+              66,
+              88,
+              24,
+              "bob"
+            ],
+            [
+              "❤️",
+              50,
+              34,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Never judge others by how they look.",
+          "actors": [
+            [
+              "⭐",
+              30,
+              30,
+              10,
+              "spin"
+            ],
+            [
+              "🌵",
+              50,
+              88,
+              24,
+              "bob"
+            ],
+            [
+              "⭐",
+              70,
+              30,
+              10,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Who was proud?",
+          "a": "The rose",
+          "o": [
+            "The rose",
+            "The cactus",
+            "The bird"
+          ]
+        },
+        {
+          "q": "What did the cactus store?",
+          "a": "Water",
+          "o": [
+            "Water",
+            "Honey",
+            "Sand"
+          ]
+        },
+        {
+          "q": "What is the lesson?",
+          "a": "Don't judge by looks",
+          "o": [
+            "Don't judge by looks",
+            "Roses are best",
+            "Cactus is ugly"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rainy_day",
+      "level": 1,
+      "title": "{name}'s Rainy Day",
+      "cover": "☔",
+      "bg": "park",
+      "genres": [
+        "science"
+      ],
+      "personal": true,
+      "pages": [
+        {
+          "bg": "night",
+          "text": "Dark clouds filled the sky. Boom! Thunder!",
+          "actors": [
+            [
+              "⛈️",
+              50,
+              50,
+              30,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "bg": "sky",
+          "text": "Pitter-patter! Rain started to fall.",
+          "actors": [
+            [
+              "🌧️",
+              50,
+              50,
+              30,
+              "bob"
+            ],
+            [
+              "💧",
+              30,
+              80,
+              8,
+              "fly"
+            ],
+            [
+              "💧",
+              70,
+              86,
+              8,
+              "fly"
+            ]
+          ]
+        },
+        {
+          "text": "{name} took an umbrella and boots.",
+          "actors": [
+            [
+              "🧒",
+              44,
+              88,
+              24,
+              "bob"
+            ],
+            [
+              "☂️",
+              56,
+              52,
+              16,
+              "bob"
+            ],
+            [
+              "👢",
+              76,
+              88,
+              10,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "Splash! {name} jumped in a puddle.",
+          "actors": [
+            [
+              "🧒",
+              50,
+              80,
+              24,
+              "hop"
+            ],
+            [
+              "💧",
+              36,
+              88,
+              8,
+              "bob"
+            ],
+            [
+              "💧",
+              64,
+              88,
+              8,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Rain gives water to plants and fills our rivers.",
+          "actors": [
+            [
+              "🌱",
+              30,
+              88,
+              14,
+              "grow"
+            ],
+            [
+              "🌊",
+              70,
+              92,
+              26,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Then the sun came out. A rainbow!",
+          "actors": [
+            [
+              "🌞",
+              20,
+              30,
+              16,
+              "spin"
+            ],
+            [
+              "🌈",
+              56,
+              60,
+              44,
+              "grow"
+            ],
+            [
+              "🧒",
+              50,
+              92,
+              18,
+              "hop"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What did {name} take outside?",
+          "a": "An umbrella",
+          "o": [
+            "An umbrella",
+            "A kite",
+            "A book"
+          ]
+        },
+        {
+          "q": "Why is rain useful?",
+          "a": "It gives water to plants",
+          "o": [
+            "It gives water to plants",
+            "It makes us hot",
+            "It stops the wind"
+          ]
+        },
+        {
+          "q": "What came after the rain?",
+          "a": "A rainbow",
+          "o": [
+            "A rainbow",
+            "Snow",
+            "Night"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sun_wind",
+      "level": 1,
+      "title": "The Sun and the Wind",
+      "cover": "🌬️",
+      "bg": "meadow",
+      "genres": [
+        "moral",
+        "science"
+      ],
+      "pages": [
+        {
+          "text": "The Wind said, \"I am stronger than you, Sun!\"",
+          "actors": [
+            [
+              "🌬️",
+              30,
+              40,
+              20,
+              "shake"
+            ],
+            [
+              "🌞",
+              74,
+              34,
+              20,
+              "spin"
+            ]
+          ]
+        },
+        {
+          "text": "\"Let's see who can take off that man's coat.\"",
+          "actors": [
+            [
+              "🧥",
+              50,
+              88,
+              20,
+              "bob"
+            ],
+            [
+              "🌬️",
+              24,
+              40,
+              14,
+              "bob"
+            ],
+            [
+              "🌞",
+              78,
+              30,
+              14,
+              "spin"
+            ]
+          ]
+        },
+        {
+          "text": "The Wind blew hard. Whoosh!",
+          "actors": [
+            [
+              "🌬️",
+              30,
+              44,
+              26,
+              "shake"
+            ],
+            [
+              "🧥",
+              62,
+              88,
+              20,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "The man held his coat even tighter.",
+          "actors": [
+            [
+              "🧥",
+              50,
+              88,
+              22,
+              "shake"
+            ],
+            [
+              "🥶",
+              72,
+              44,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Then the Sun shone gently and warmly.",
+          "actors": [
+            [
+              "🌞",
+              50,
+              36,
+              30,
+              "spin"
+            ],
+            [
+              "🧥",
+              50,
+              94,
+              18,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "The man felt hot and took off his coat!",
+          "actors": [
+            [
+              "🌞",
+              74,
+              30,
+              18,
+              "spin"
+            ],
+            [
+              "🧥",
+              30,
+              88,
+              16,
+              "fly"
+            ],
+            [
+              "😅",
+              56,
+              60,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Kindness works better than force.",
+          "actors": [
+            [
+              "🌞",
+              50,
+              50,
+              26,
+              "bob"
+            ],
+            [
+              "⭐",
+              24,
+              30,
+              10,
+              "spin"
+            ],
+            [
+              "⭐",
+              76,
+              30,
+              10,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What did they want the man to take off?",
+          "a": "His coat",
+          "o": [
+            "His coat",
+            "His hat",
+            "His shoes"
+          ]
+        },
+        {
+          "q": "Who won?",
+          "a": "The Sun",
+          "o": [
+            "The Sun",
+            "The Wind",
+            "The man"
+          ]
+        },
+        {
+          "q": "What is the lesson?",
+          "a": "Kindness works better than force",
+          "o": [
+            "Kindness works better than force",
+            "Wind is the strongest",
+            "Always wear a coat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "greedy_dog",
+      "level": 2,
+      "title": "The Greedy Dog",
+      "cover": "🦴",
+      "bg": "river",
+      "genres": [
+        "moral",
+        "animals"
+      ],
+      "pages": [
+        {
+          "text": "A dog found a big bone. He was very happy.",
+          "actors": [
+            [
+              "🐕",
+              40,
+              72,
+              24,
+              "hop"
+            ],
+            [
+              "🦴",
+              62,
+              60,
+              12,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "He walked across a bridge over a river.",
+          "actors": [
+            [
+              "🐕",
+              50,
+              72,
+              22,
+              "walk"
+            ],
+            [
+              "🌉",
+              50,
+              96,
+              60,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "He looked down and saw another dog with a bone!",
+          "actors": [
+            [
+              "🐕",
+              50,
+              72,
+              22,
+              "shake"
+            ],
+            [
+              "🐕",
+              50,
+              96,
+              18,
+              "flip"
+            ]
+          ]
+        },
+        {
+          "text": "\"I want that bone too!\" he thought greedily.",
+          "actors": [
+            [
+              "🐕",
+              44,
+              72,
+              22,
+              "shake"
+            ],
+            [
+              "💭",
+              66,
+              40,
+              14,
+              "float"
+            ],
+            [
+              "🦴",
+              66,
+              36,
+              8,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "He barked. Woof! His bone fell into the river.",
+          "actors": [
+            [
+              "🐕",
+              50,
+              72,
+              22,
+              "shake"
+            ],
+            [
+              "🦴",
+              54,
+              94,
+              10,
+              "shake"
+            ],
+            [
+              "💧",
+              44,
+              88,
+              8,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "It was only his reflection. Now he had no bone at all.",
+          "actors": [
+            [
+              "🐕",
+              50,
+              72,
+              22,
+              "bob"
+            ],
+            [
+              "😢",
+              68,
+              40,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Be happy with what you have.",
+          "actors": [
+            [
+              "⭐",
+              30,
+              30,
+              10,
+              "spin"
+            ],
+            [
+              "🐕",
+              50,
+              72,
+              22,
+              "bob"
+            ],
+            [
+              "⭐",
+              70,
+              30,
+              10,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What did the dog have?",
+          "a": "A bone",
+          "o": [
+            "A bone",
+            "A ball",
+            "A fish"
+          ]
+        },
+        {
+          "q": "What did he see in the water?",
+          "a": "His own reflection",
+          "o": [
+            "His own reflection",
+            "A real dog",
+            "A cat"
+          ]
+        },
+        {
+          "q": "What is the lesson?",
+          "a": "Be happy with what you have",
+          "o": [
+            "Be happy with what you have",
+            "Always bark loudly",
+            "Never cross bridges"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "four_friends",
+      "level": 2,
+      "title": "The Four Friends",
+      "cover": "🐢",
+      "bg": "forest",
+      "genres": [
+        "folk",
+        "animals"
+      ],
+      "pages": [
+        {
+          "text": "A crow, a mouse, a tortoise and a deer were best friends.",
+          "actors": [
+            [
+              "🐦‍⬛",
+              20,
+              40,
+              12,
+              "fly"
+            ],
+            [
+              "🐭",
+              36,
+              88,
+              10,
+              "bob"
+            ],
+            [
+              "🐢",
+              56,
+              88,
+              14,
+              "bob"
+            ],
+            [
+              "🦌",
+              80,
+              88,
+              20,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "One day, the deer was caught in a hunter's net!",
+          "actors": [
+            [
+              "🦌",
+              50,
+              88,
+              24,
+              "shake"
+            ],
+            [
+              "🕸️",
+              50,
+              84,
+              36,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "The crow flew fast to tell the others.",
+          "actors": [
+            [
+              "🐦‍⬛",
+              50,
+              40,
+              16,
+              "fly"
+            ]
+          ]
+        },
+        {
+          "text": "The mouse chewed the net. The deer was free!",
+          "actors": [
+            [
+              "🐭",
+              40,
+              88,
+              10,
+              "shake"
+            ],
+            [
+              "🦌",
+              66,
+              88,
+              22,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "But the slow tortoise was caught by the hunter.",
+          "actors": [
+            [
+              "🐢",
+              50,
+              88,
+              16,
+              "shake"
+            ],
+            [
+              "🎒",
+              68,
+              70,
+              14,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "The deer pretended to be hurt. The hunter ran after it.",
+          "actors": [
+            [
+              "🦌",
+              76,
+              88,
+              20,
+              "walk"
+            ],
+            [
+              "🐢",
+              30,
+              88,
+              14,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "The mouse freed the tortoise. Together, friends are strong!",
+          "actors": [
+            [
+              "🐭",
+              36,
+              88,
+              10,
+              "hop"
+            ],
+            [
+              "🐢",
+              56,
+              88,
+              14,
+              "hop"
+            ],
+            [
+              "🦌",
+              80,
+              88,
+              18,
+              "hop"
+            ],
+            [
+              "❤️",
+              50,
+              34,
+              10,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Who was caught in the net first?",
+          "a": "The deer",
+          "o": [
+            "The deer",
+            "The crow",
+            "The mouse"
+          ]
+        },
+        {
+          "q": "Who chewed the net?",
+          "a": "The mouse",
+          "o": [
+            "The mouse",
+            "The tortoise",
+            "The crow"
+          ]
+        },
+        {
+          "q": "What is the lesson?",
+          "a": "Friends together are strong",
+          "o": [
+            "Friends together are strong",
+            "Deer are fast",
+            "Hunters are kind"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "healthy_heroes",
+      "level": 2,
+      "title": "{name} and the Food Heroes",
+      "cover": "🥦",
+      "bg": "park",
+      "genres": [
+        "habits",
+        "science"
+      ],
+      "personal": true,
+      "pages": [
+        {
+          "text": "{name} only wanted chips and sweets every day.",
+          "actors": [
+            [
+              "🧒",
+              34,
+              88,
+              22,
+              "shake"
+            ],
+            [
+              "🍟",
+              62,
+              80,
+              12,
+              "bob"
+            ],
+            [
+              "🍬",
+              78,
+              80,
+              10,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "bg": "night",
+          "text": "One night, {name} dreamed of the Food Heroes!",
+          "actors": [
+            [
+              "🧒",
+              40,
+              88,
+              20,
+              "bob"
+            ],
+            [
+              "💤",
+              60,
+              44,
+              10,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "\"I am Captain Carrot! I help your eyes see.\"",
+          "actors": [
+            [
+              "🥕",
+              50,
+              80,
+              26,
+              "hop"
+            ],
+            [
+              "👀",
+              76,
+              44,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "\"I am Milk Man! I make your bones and teeth strong.\"",
+          "actors": [
+            [
+              "🥛",
+              50,
+              80,
+              22,
+              "hop"
+            ],
+            [
+              "🦷",
+              76,
+              44,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "\"I am Super Spinach! I give you energy to play.\"",
+          "actors": [
+            [
+              "🥬",
+              50,
+              80,
+              24,
+              "hop"
+            ],
+            [
+              "⚡",
+              76,
+              44,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Next morning, {name} ate fruits, vegetables and milk.",
+          "actors": [
+            [
+              "🍎",
+              26,
+              80,
+              12,
+              "bob"
+            ],
+            [
+              "🥦",
+              46,
+              80,
+              14,
+              "bob"
+            ],
+            [
+              "🥛",
+              66,
+              80,
+              12,
+              "bob"
+            ],
+            [
+              "🧒",
+              86,
+              88,
+              16,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "Eat healthy food to grow strong!",
+          "actors": [
+            [
+              "💪",
+              50,
+              70,
+              24,
+              "grow"
+            ],
+            [
+              "⭐",
+              24,
+              30,
+              10,
+              "spin"
+            ],
+            [
+              "⭐",
+              76,
+              30,
+              10,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What did {name} want every day?",
+          "a": "Chips and sweets",
+          "o": [
+            "Chips and sweets",
+            "Rice",
+            "Fruit"
+          ]
+        },
+        {
+          "q": "Which food helps your eyes?",
+          "a": "Carrot",
+          "o": [
+            "Carrot",
+            "Candy",
+            "Chips"
+          ]
+        },
+        {
+          "q": "What makes bones strong?",
+          "a": "Milk",
+          "o": [
+            "Milk",
+            "Soda",
+            "Chocolate"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cap_seller",
+      "level": 3,
+      "title": "The Cap Seller and the Monkeys",
+      "cover": "🧢",
+      "bg": "forest",
+      "genres": [
+        "folk",
+        "funny"
+      ],
+      "pages": [
+        {
+          "text": "A cap seller walked from village to village selling caps.",
+          "actors": [
+            [
+              "🧔",
+              40,
+              88,
+              22,
+              "walk"
+            ],
+            [
+              "🧢",
+              40,
+              50,
+              10,
+              "bob"
+            ],
+            [
+              "🧢",
+              50,
+              46,
+              10,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "He felt tired and took a nap under a tree.",
+          "actors": [
+            [
+              "🌳",
+              60,
+              88,
+              40,
+              ""
+            ],
+            [
+              "🧔",
+              40,
+              88,
+              20,
+              "bob"
+            ],
+            [
+              "💤",
+              52,
+              50,
+              10,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "Monkeys came down and took all his caps!",
+          "actors": [
+            [
+              "🐒",
+              40,
+              50,
+              14,
+              "fly"
+            ],
+            [
+              "🐒",
+              64,
+              40,
+              14,
+              "fly"
+            ],
+            [
+              "🧢",
+              52,
+              60,
+              8,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "He woke up and shouted. The monkeys shouted back!",
+          "actors": [
+            [
+              "🧔",
+              30,
+              88,
+              20,
+              "shake"
+            ],
+            [
+              "🐒",
+              64,
+              44,
+              14,
+              "shake"
+            ],
+            [
+              "🐒",
+              78,
+              56,
+              12,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "He shook his fist. The monkeys copied him!",
+          "actors": [
+            [
+              "🧔",
+              30,
+              88,
+              20,
+              "shake"
+            ],
+            [
+              "🐒",
+              64,
+              44,
+              14,
+              "shake"
+            ],
+            [
+              "😂",
+              50,
+              30,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Then he had an idea. He threw his own cap down.",
+          "actors": [
+            [
+              "💡",
+              30,
+              40,
+              10,
+              "grow"
+            ],
+            [
+              "🧢",
+              40,
+              88,
+              10,
+              "bob"
+            ],
+            [
+              "🧔",
+              26,
+              88,
+              20,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "The monkeys threw their caps down too! A clever idea saves the day.",
+          "actors": [
+            [
+              "🧢",
+              40,
+              88,
+              10,
+              ""
+            ],
+            [
+              "🧢",
+              56,
+              88,
+              10,
+              ""
+            ],
+            [
+              "🧢",
+              70,
+              88,
+              10,
+              ""
+            ],
+            [
+              "🐒",
+              64,
+              40,
+              14,
+              "hop"
+            ],
+            [
+              "🧔",
+              22,
+              88,
+              20,
+              "hop"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What did the man sell?",
+          "a": "Caps",
+          "o": [
+            "Caps",
+            "Shoes",
+            "Fruit"
+          ]
+        },
+        {
+          "q": "What did the monkeys do?",
+          "a": "They copied him",
+          "o": [
+            "They copied him",
+            "They ran away",
+            "They ate the caps"
+          ]
+        },
+        {
+          "q": "How did he get his caps back?",
+          "a": "He threw his cap down",
+          "o": [
+            "He threw his cap down",
+            "He climbed the tree",
+            "He gave them bananas"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mango_tree",
+      "level": 3,
+      "title": "The Old Man and the Mango Tree",
+      "cover": "🥭",
+      "bg": "garden",
+      "genres": [
+        "moral",
+        "folk"
+      ],
+      "pages": [
+        {
+          "text": "An old man was planting a tiny mango seed.",
+          "actors": [
+            [
+              "👴",
+              36,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "🌱",
+              64,
+              88,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "A king passed by. \"Why plant it? You won't live to eat its mangoes!\"",
+          "actors": [
+            [
+              "🤴",
+              70,
+              88,
+              22,
+              "shake flip"
+            ],
+            [
+              "👴",
+              30,
+              88,
+              20,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "The old man smiled. \"I eat mangoes from trees my grandfather planted.\"",
+          "actors": [
+            [
+              "👴",
+              36,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "🌳",
+              70,
+              88,
+              34,
+              ""
+            ],
+            [
+              "🥭",
+              66,
+              44,
+              8,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "\"This tree is for the children who come after me.\"",
+          "actors": [
+            [
+              "🌳",
+              50,
+              88,
+              40,
+              "grow"
+            ],
+            [
+              "🧒",
+              22,
+              88,
+              16,
+              "hop"
+            ],
+            [
+              "🧒",
+              80,
+              88,
+              16,
+              "hop"
+            ]
+          ]
+        },
+        {
+          "text": "The king was very happy. He gave him a gift.",
+          "actors": [
+            [
+              "🤴",
+              40,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "💰",
+              60,
+              70,
+              12,
+              "grow"
+            ],
+            [
+              "👴",
+              80,
+              88,
+              18,
+              "hop flip"
+            ]
+          ]
+        },
+        {
+          "text": "Trees take years to grow. We plant them for the future.",
+          "actors": [
+            [
+              "🌳",
+              30,
+              88,
+              30,
+              "bob"
+            ],
+            [
+              "🌳",
+              70,
+              88,
+              24,
+              "bob"
+            ],
+            [
+              "🌍",
+              50,
+              40,
+              14,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What was the old man planting?",
+          "a": "A mango seed",
+          "o": [
+            "A mango seed",
+            "A rose",
+            "Rice"
+          ]
+        },
+        {
+          "q": "Who will eat the mangoes?",
+          "a": "Children in the future",
+          "o": [
+            "Children in the future",
+            "Only the king",
+            "Nobody"
+          ]
+        },
+        {
+          "q": "What is the lesson?",
+          "a": "Plant trees for the future",
+          "o": [
+            "Plant trees for the future",
+            "Mangoes are sour",
+            "Kings are greedy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lost_bee",
+      "level": 3,
+      "title": "{name} and the Busy Bee",
+      "cover": "🐝",
+      "bg": "garden",
+      "genres": [
+        "science",
+        "animals"
+      ],
+      "personal": true,
+      "pages": [
+        {
+          "text": "In the garden, {name} met a busy bee. \"Buzz! I am Bella!\"",
+          "actors": [
+            [
+              "🧒",
+              30,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "🐝",
+              64,
+              46,
+              12,
+              "fly"
+            ]
+          ]
+        },
+        {
+          "text": "\"I drink sweet nectar from flowers,\" said Bella.",
+          "actors": [
+            [
+              "🐝",
+              50,
+              50,
+              12,
+              "fly"
+            ],
+            [
+              "🌸",
+              40,
+              88,
+              14,
+              "bob"
+            ],
+            [
+              "🌼",
+              64,
+              88,
+              14,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Yellow powder called pollen stuck to her legs.",
+          "actors": [
+            [
+              "🐝",
+              50,
+              56,
+              20,
+              "bob"
+            ],
+            [
+              "✨",
+              66,
+              70,
+              8,
+              "spin"
+            ]
+          ]
+        },
+        {
+          "text": "She carried pollen to the next flower. This is pollination!",
+          "actors": [
+            [
+              "🌸",
+              24,
+              88,
+              14,
+              ""
+            ],
+            [
+              "🐝",
+              50,
+              50,
+              12,
+              "fly"
+            ],
+            [
+              "🌼",
+              76,
+              88,
+              14,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Pollination helps flowers make seeds and fruits.",
+          "actors": [
+            [
+              "🌼",
+              24,
+              88,
+              14,
+              ""
+            ],
+            [
+              "🍎",
+              50,
+              80,
+              14,
+              "grow"
+            ],
+            [
+              "🍓",
+              76,
+              80,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Back at the hive, the bees turn nectar into honey!",
+          "actors": [
+            [
+              "🐝",
+              30,
+              50,
+              10,
+              "fly"
+            ],
+            [
+              "🍯",
+              60,
+              80,
+              20,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "\"Thank you, bees! You help us have food,\" said {name}.",
+          "actors": [
+            [
+              "🧒",
+              34,
+              88,
+              22,
+              "hop"
+            ],
+            [
+              "🐝",
+              64,
+              44,
+              12,
+              "fly"
+            ],
+            [
+              "❤️",
+              50,
+              30,
+              10,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What do bees drink from flowers?",
+          "a": "Nectar",
+          "o": [
+            "Nectar",
+            "Milk",
+            "Rain"
+          ]
+        },
+        {
+          "q": "Carrying pollen from flower to flower is…",
+          "a": "Pollination",
+          "o": [
+            "Pollination",
+            "Evaporation",
+            "Hibernation"
+          ]
+        },
+        {
+          "q": "What do bees make from nectar?",
+          "a": "Honey",
+          "o": [
+            "Honey",
+            "Jam",
+            "Juice"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "magic_sticks",
+      "level": 4,
+      "title": "Birbal's Magic Sticks",
+      "cover": "🪄",
+      "bg": "palace",
+      "genres": [
+        "folk"
+      ],
+      "pages": [
+        {
+          "text": "A diamond ring was stolen from Akbar's palace.",
+          "actors": [
+            [
+              "🤴",
+              34,
+              88,
+              22,
+              "shake"
+            ],
+            [
+              "💍",
+              66,
+              60,
+              12,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Birbal called all the servants and gave each a stick.",
+          "actors": [
+            [
+              "🧑",
+              22,
+              88,
+              18,
+              "bob"
+            ],
+            [
+              "🧍",
+              46,
+              88,
+              16,
+              "bob"
+            ],
+            [
+              "🧍",
+              64,
+              88,
+              16,
+              "bob"
+            ],
+            [
+              "🧍",
+              82,
+              88,
+              16,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "\"These are magic sticks. The thief's stick will grow longer by morning!\"",
+          "actors": [
+            [
+              "🧑",
+              34,
+              88,
+              20,
+              "bob"
+            ],
+            [
+              "🪄",
+              62,
+              60,
+              14,
+              "spin"
+            ]
+          ]
+        },
+        {
+          "bg": "night",
+          "text": "That night, the thief got scared. He cut two inches off his stick.",
+          "actors": [
+            [
+              "🧍",
+              40,
+              88,
+              18,
+              "shake"
+            ],
+            [
+              "🪄",
+              62,
+              70,
+              10,
+              "shake"
+            ],
+            [
+              "🌙",
+              80,
+              26,
+              12,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "In the morning, one stick was shorter than all the others!",
+          "actors": [
+            [
+              "🪄",
+              30,
+              80,
+              14,
+              ""
+            ],
+            [
+              "🪄",
+              50,
+              80,
+              14,
+              ""
+            ],
+            [
+              "🪄",
+              70,
+              82,
+              10,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "\"Here is the thief!\" said Birbal. The sticks were never magic.",
+          "actors": [
+            [
+              "🧑",
+              30,
+              88,
+              20,
+              "hop"
+            ],
+            [
+              "🧍",
+              70,
+              88,
+              18,
+              "shake"
+            ],
+            [
+              "💍",
+              50,
+              50,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "A guilty mind gives itself away.",
+          "actors": [
+            [
+              "🤴",
+              34,
+              88,
+              22,
+              "hop"
+            ],
+            [
+              "⭐",
+              60,
+              30,
+              10,
+              "spin"
+            ],
+            [
+              "🧑",
+              76,
+              88,
+              18,
+              "bob flip"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What was stolen?",
+          "a": "A diamond ring",
+          "o": [
+            "A diamond ring",
+            "A crown",
+            "A horse"
+          ]
+        },
+        {
+          "q": "What did the thief do to his stick?",
+          "a": "Cut it shorter",
+          "o": [
+            "Cut it shorter",
+            "Painted it",
+            "Threw it away"
+          ]
+        },
+        {
+          "q": "Were the sticks really magic?",
+          "a": "No",
+          "o": [
+            "No",
+            "Yes",
+            "Only one"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "body_trip",
+      "level": 4,
+      "title": "{name} Inside the Human Body",
+      "cover": "🫀",
+      "bg": "space",
+      "genres": [
+        "science"
+      ],
+      "personal": true,
+      "pages": [
+        {
+          "text": "{name} shrank to the size of an ant and went on a tour inside the body!",
+          "actors": [
+            [
+              "🧑‍🚀",
+              50,
+              70,
+              18,
+              "float"
+            ],
+            [
+              "🔬",
+              80,
+              50,
+              12,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "First stop: the heart. It pumps blood all day and night. Thump, thump!",
+          "actors": [
+            [
+              "🫀",
+              50,
+              72,
+              32,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Next: the lungs. They take in oxygen when we breathe in.",
+          "actors": [
+            [
+              "🫁",
+              50,
+              72,
+              32,
+              "grow"
+            ],
+            [
+              "💨",
+              76,
+              40,
+              10,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "Then the stomach, which breaks down food into energy.",
+          "actors": [
+            [
+              "🍎",
+              30,
+              60,
+              12,
+              "bob"
+            ],
+            [
+              "⚡",
+              66,
+              60,
+              14,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "The brain is the boss! It controls everything we do and think.",
+          "actors": [
+            [
+              "🧠",
+              50,
+              72,
+              32,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Our bones hold us up, and muscles help us move.",
+          "actors": [
+            [
+              "🦴",
+              34,
+              70,
+              18,
+              "bob"
+            ],
+            [
+              "💪",
+              66,
+              70,
+              18,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "What an amazing machine our body is! Take care of it.",
+          "actors": [
+            [
+              "🧑‍🚀",
+              50,
+              70,
+              20,
+              "hop"
+            ],
+            [
+              "⭐",
+              24,
+              30,
+              10,
+              "spin"
+            ],
+            [
+              "⭐",
+              76,
+              30,
+              10,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Which organ pumps blood?",
+          "a": "The heart",
+          "o": [
+            "The heart",
+            "The brain",
+            "The stomach"
+          ]
+        },
+        {
+          "q": "What do the lungs take in?",
+          "a": "Oxygen",
+          "o": [
+            "Oxygen",
+            "Food",
+            "Water"
+          ]
+        },
+        {
+          "q": "Which organ controls everything?",
+          "a": "The brain",
+          "o": [
+            "The brain",
+            "The lungs",
+            "The bones"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "elephants_mice",
+      "level": 4,
+      "title": "The Elephants and the Mice",
+      "cover": "🐭",
+      "bg": "forest",
+      "genres": [
+        "folk",
+        "animals",
+        "moral"
+      ],
+      "pages": [
+        {
+          "text": "Many mice lived in an old town near a lake.",
+          "actors": [
+            [
+              "🐭",
+              30,
+              88,
+              10,
+              "bob"
+            ],
+            [
+              "🐭",
+              44,
+              88,
+              10,
+              "hop"
+            ],
+            [
+              "🐭",
+              58,
+              88,
+              10,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Elephants walked through the town to the lake and crushed the mice's homes.",
+          "actors": [
+            [
+              "🐘",
+              50,
+              88,
+              34,
+              "walk"
+            ],
+            [
+              "🐭",
+              82,
+              88,
+              10,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "The mouse king asked politely, \"Please take another path.\" The elephant king agreed.",
+          "actors": [
+            [
+              "🐭",
+              30,
+              88,
+              12,
+              "bob"
+            ],
+            [
+              "🐘",
+              66,
+              88,
+              30,
+              "bob flip"
+            ]
+          ]
+        },
+        {
+          "text": "\"Call us if you ever need help,\" said the mouse king. The elephants smiled.",
+          "actors": [
+            [
+              "🐭",
+              30,
+              88,
+              12,
+              "hop"
+            ],
+            [
+              "🐘",
+              66,
+              88,
+              30,
+              "bob flip"
+            ],
+            [
+              "😄",
+              66,
+              40,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Later, hunters trapped the elephants with strong ropes.",
+          "actors": [
+            [
+              "🐘",
+              50,
+              88,
+              32,
+              "shake"
+            ],
+            [
+              "🪢",
+              50,
+              70,
+              20,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "Thousands of mice came and chewed through the ropes!",
+          "actors": [
+            [
+              "🐭",
+              24,
+              88,
+              10,
+              "shake"
+            ],
+            [
+              "🐭",
+              40,
+              88,
+              10,
+              "shake"
+            ],
+            [
+              "🐘",
+              64,
+              88,
+              30,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "The elephants were free. Kindness to others always comes back to you.",
+          "actors": [
+            [
+              "🐘",
+              40,
+              88,
+              30,
+              "hop"
+            ],
+            [
+              "🐭",
+              70,
+              88,
+              12,
+              "hop"
+            ],
+            [
+              "❤️",
+              56,
+              34,
+              10,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What problem did the mice have?",
+          "a": "Elephants crushed their homes",
+          "o": [
+            "Elephants crushed their homes",
+            "They had no food",
+            "Cats chased them"
+          ]
+        },
+        {
+          "q": "How did the mice help the elephants?",
+          "a": "They chewed the ropes",
+          "o": [
+            "They chewed the ropes",
+            "They called the king",
+            "They scared the hunters"
+          ]
+        },
+        {
+          "q": "What is the lesson?",
+          "a": "Kindness comes back to you",
+          "o": [
+            "Kindness comes back to you",
+            "Big animals win",
+            "Never go to a lake"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "monkey_wedge",
+      "level": 5,
+      "title": "The Monkey and the Wedge",
+      "cover": "🪵",
+      "bg": "village",
+      "genres": [
+        "folk",
+        "funny",
+        "moral"
+      ],
+      "pages": [
+        {
+          "text": "Carpenters were cutting a big log. A wedge held the cut open.",
+          "actors": [
+            [
+              "🪵",
+              50,
+              88,
+              40,
+              ""
+            ],
+            [
+              "🪚",
+              76,
+              70,
+              14,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "text": "At lunchtime, they left the log and went to eat.",
+          "actors": [
+            [
+              "🧔",
+              76,
+              88,
+              18,
+              "walk"
+            ],
+            [
+              "🪵",
+              36,
+              88,
+              34,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "A curious monkey came and sat on the log.",
+          "actors": [
+            [
+              "🐒",
+              44,
+              76,
+              16,
+              "hop"
+            ],
+            [
+              "🪵",
+              50,
+              88,
+              40,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "\"What is this?\" he wondered, and pulled at the wedge.",
+          "actors": [
+            [
+              "🐒",
+              50,
+              76,
+              16,
+              "shake"
+            ],
+            [
+              "❓",
+              68,
+              40,
+              10,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Snap! The wedge came out and the log closed on his tail!",
+          "actors": [
+            [
+              "🐒",
+              50,
+              76,
+              16,
+              "shake"
+            ],
+            [
+              "😱",
+              70,
+              40,
+              10,
+              "grow"
+            ],
+            [
+              "🪵",
+              50,
+              88,
+              40,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "He cried until the carpenters came back and set him free.",
+          "actors": [
+            [
+              "🧔",
+              24,
+              88,
+              18,
+              "walk"
+            ],
+            [
+              "🐒",
+              60,
+              76,
+              14,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Don't meddle with things you don't understand.",
+          "actors": [
+            [
+              "⭐",
+              30,
+              30,
+              10,
+              "spin"
+            ],
+            [
+              "🐒",
+              50,
+              80,
+              18,
+              "bob"
+            ],
+            [
+              "⭐",
+              70,
+              30,
+              10,
+              "spin"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What held the log open?",
+          "a": "A wedge",
+          "o": [
+            "A wedge",
+            "A rope",
+            "A stone"
+          ]
+        },
+        {
+          "q": "Why did the monkey pull it?",
+          "a": "He was curious",
+          "o": [
+            "He was curious",
+            "He was hungry",
+            "He wanted to help"
+          ]
+        },
+        {
+          "q": "What is the lesson?",
+          "a": "Don't meddle with what you don't understand",
+          "o": [
+            "Don't meddle with what you don't understand",
+            "Monkeys are carpenters",
+            "Always eat lunch"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "circuit",
+      "level": 5,
+      "title": "{name} Lights Up the Bulb",
+      "cover": "💡",
+      "bg": "palace",
+      "genres": [
+        "science"
+      ],
+      "personal": true,
+      "pages": [
+        {
+          "bg": "night",
+          "text": "The power went out during a storm. {name} wanted to make light!",
+          "actors": [
+            [
+              "🧒",
+              34,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "🌩️",
+              70,
+              36,
+              16,
+              "shake"
+            ]
+          ]
+        },
+        {
+          "bg": "night",
+          "text": "Grandpa gave {name} a battery, some wires and a small bulb.",
+          "actors": [
+            [
+              "🔋",
+              30,
+              80,
+              14,
+              "bob"
+            ],
+            [
+              "🧵",
+              50,
+              80,
+              12,
+              "bob"
+            ],
+            [
+              "💡",
+              72,
+              70,
+              14,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "{name} joined them in a closed loop. The bulb glowed! This loop is a circuit.",
+          "actors": [
+            [
+              "🔋",
+              30,
+              80,
+              14,
+              ""
+            ],
+            [
+              "💡",
+              66,
+              60,
+              18,
+              "grow"
+            ],
+            [
+              "✨",
+              80,
+              40,
+              8,
+              "spin"
+            ]
+          ]
+        },
+        {
+          "bg": "night",
+          "text": "A switch can open the loop. Click! The light goes off.",
+          "actors": [
+            [
+              "🎚️",
+              50,
+              70,
+              16,
+              "shake"
+            ],
+            [
+              "💡",
+              74,
+              60,
+              14,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "{name} tried a spoon and an eraser in the circuit.",
+          "actors": [
+            [
+              "🥄",
+              34,
+              80,
+              14,
+              "bob"
+            ],
+            [
+              "🧽",
+              64,
+              80,
+              14,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "Metal let electricity flow. It is a conductor. Rubber did not. It is an insulator.",
+          "actors": [
+            [
+              "🥄",
+              30,
+              80,
+              14,
+              "grow"
+            ],
+            [
+              "✅",
+              30,
+              44,
+              8,
+              ""
+            ],
+            [
+              "🧽",
+              68,
+              80,
+              14,
+              ""
+            ],
+            [
+              "❌",
+              68,
+              44,
+              8,
+              ""
+            ]
+          ]
+        },
+        {
+          "text": "Remember: never play with electric plugs at home. Stay safe!",
+          "actors": [
+            [
+              "🔌",
+              50,
+              72,
+              20,
+              "shake"
+            ],
+            [
+              "⚠️",
+              76,
+              40,
+              12,
+              "grow"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "What is a closed loop of electricity called?",
+          "a": "A circuit",
+          "o": [
+            "A circuit",
+            "A battery",
+            "A switch"
+          ]
+        },
+        {
+          "q": "Which one is a conductor?",
+          "a": "A metal spoon",
+          "o": [
+            "A metal spoon",
+            "A rubber eraser",
+            "A plastic ruler"
+          ]
+        },
+        {
+          "q": "What does a switch do?",
+          "a": "Opens or closes the circuit",
+          "o": [
+            "Opens or closes the circuit",
+            "Makes the battery bigger",
+            "Changes the bulb colour"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "story_of_paper",
+      "level": 5,
+      "title": "The Story of Paper",
+      "cover": "📄",
+      "bg": "village",
+      "genres": [
+        "science",
+        "adventure"
+      ],
+      "pages": [
+        {
+          "text": "Long ago, people wrote on stone, clay and leaves.",
+          "actors": [
+            [
+              "🪨",
+              30,
+              88,
+              16,
+              ""
+            ],
+            [
+              "🍃",
+              64,
+              80,
+              16,
+              "float"
+            ]
+          ]
+        },
+        {
+          "text": "About 2,000 years ago, a man in China named Cai Lun made paper.",
+          "actors": [
+            [
+              "🧑",
+              34,
+              88,
+              22,
+              "bob"
+            ],
+            [
+              "📜",
+              66,
+              70,
+              16,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Today, paper is made from wood. Trees are cut into small chips.",
+          "actors": [
+            [
+              "🌳",
+              24,
+              88,
+              26,
+              ""
+            ],
+            [
+              "🪵",
+              60,
+              88,
+              22,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "The chips are mixed with water to make a soft pulp.",
+          "actors": [
+            [
+              "💧",
+              36,
+              70,
+              10,
+              "bob"
+            ],
+            [
+              "🥣",
+              60,
+              82,
+              20,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "The pulp is pressed flat and dried into sheets of paper.",
+          "actors": [
+            [
+              "📄",
+              44,
+              80,
+              16,
+              "grow"
+            ],
+            [
+              "📄",
+              60,
+              80,
+              16,
+              "grow"
+            ]
+          ]
+        },
+        {
+          "text": "Making paper uses many trees and lots of water.",
+          "actors": [
+            [
+              "🌳",
+              30,
+              88,
+              22,
+              "shake"
+            ],
+            [
+              "💧",
+              66,
+              70,
+              10,
+              "bob"
+            ]
+          ]
+        },
+        {
+          "text": "So use both sides of the page and recycle old paper!",
+          "actors": [
+            [
+              "♻️",
+              50,
+              64,
+              24,
+              "spin"
+            ],
+            [
+              "📄",
+              24,
+              82,
+              12,
+              "bob"
+            ]
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "q": "Where was paper first made?",
+          "a": "China",
+          "o": [
+            "China",
+            "India",
+            "Egypt"
+          ]
+        },
+        {
+          "q": "What is paper made from today?",
+          "a": "Wood",
+          "o": [
+            "Wood",
+            "Plastic",
+            "Glass"
+          ]
+        },
+        {
+          "q": "How can we save paper?",
+          "a": "Use both sides and recycle",
+          "o": [
+            "Use both sides and recycle",
+            "Throw it away",
+            "Burn it"
+          ]
+        }
+      ]
     }
   ]
 }

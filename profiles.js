@@ -68,7 +68,7 @@
     if (ps.length && (!activeId() || !ps.some(function (p) { return p.id === activeId(); }))) { try { localStorage.setItem(ACTIVE, ps[0].id); } catch (e) {} }
     // keep the active card's name / class up to date
     var a = activeId(), nick = raw('kq_nick'), cls = raw('kq_last_class'), ev = all(), changed = false;
-    ev.forEach(function (p) { if (p.id === a) { if (nick && p.name !== nick.split(' ')[0]) { p.name = nick.split(' ')[0]; changed = true; } if (cls != null && p.cls !== cls) { p.cls = cls; changed = true; } if (changed && acctOf(p) !== 'guest') cloudPut(p); } });
+    ev.forEach(function (p) { if (p.id === a) { if (nick && p.name !== nick.split(' ')[0]) { p.name = nick.split(' ')[0]; p.t = Date.now(); changed = true; } if (cls != null && p.cls !== cls) { p.cls = cls; changed = true; } if (changed && acctOf(p) !== 'guest') cloudPut(p); } });
     if (changed) set(LIST, ev);
     return list();
   }
@@ -77,8 +77,9 @@
   /* ---- Google: children list in Firebase (users/<uid>/kids/<sfx or "main">) ---- */
   function db() { try { return (window.firebase && firebase.database) ? firebase.database() : null; } catch (e) { return null; } }
   function cloudPut(p) {
-    var u = acctOf(p); if (u === 'guest' || !window.KQ || !KQ.ready) return;
-    KQ.ready.then(function () { var d = db(); if (d) d.ref('users/' + u + '/kids/' + (p.sfx || 'main')).set({ n: p.name || 'Player', av: p.av || AVATARS[0], cls: p.cls == null ? '' : String(p.cls) }).catch(function () {}); });
+    var u = acctOf(p); if (u === 'guest' || !window.KQ || !KQ.ready) return Promise.resolve();
+    // t = when this phone last changed the child; a newer local change is never undone by an older cloud copy
+    return KQ.ready.then(function () { var d = db(); if (d) return d.ref('users/' + u + '/kids/' + (p.sfx || 'main')).set({ n: p.name || 'Player', av: p.av || AVATARS[0], cls: p.cls == null ? '' : String(p.cls), t: p.t || 0 }); }).catch(function () {});
   }
   function cloudSync(after) {
     var A = acct(); if (!A || A === 'guest' || !window.KQ || !KQ.ready) { if (after) after(); return; }
@@ -90,16 +91,20 @@
           var sfx = k === 'main' ? '' : k, kd = kids[k] || {};
           var have = ev.filter(function (p) { return acctOf(p) === A && (p.sfx || '') === sfx; })[0];
           if (have) {
-            if (kd.n && kd.n !== have.name) {   // renamed on another phone
-              have.name = kd.n; added = true;
-              if (have.id === activeId()) { try { localStorage.setItem('kq_nick', kd.n); } catch (e) {} } else patchData(have.id, { kq_nick: kd.n });
-            }
-            if (kd.av && kd.av !== have.av) { have.av = kd.av; added = true; }
-            if (have.id !== activeId() && kd.cls != null && kd.cls !== '') have.cls = kd.cls;
+            var ct = +kd.t || 0, lt = +have.t || 0;
+            if (ct > lt) {   // changed on another phone after this one
+              if (kd.n && kd.n !== have.name) {
+                have.name = kd.n; added = true;
+                if (have.id === activeId()) { try { localStorage.setItem('kq_nick', kd.n); } catch (e) {} } else patchData(have.id, { kq_nick: kd.n });
+              }
+              if (kd.av && kd.av !== have.av) { have.av = kd.av; added = true; }
+              if (have.id !== activeId() && kd.cls != null && kd.cls !== '') have.cls = kd.cls;
+              have.t = ct;
+            } else if (lt > ct || kd.n !== have.name || (kd.av && kd.av !== have.av)) cloudPut(have);   // this phone is newer: save it
             return;
           }
           if (hid.indexOf(A + ':' + sfx) >= 0) return;
-          ev.push({ id: newId(), acct: A, sfx: sfx, name: kd.n || 'Player', av: kd.av || AVATARS[1], cls: kd.cls }); added = true;
+          ev.push({ id: newId(), acct: A, sfx: sfx, name: kd.n || 'Player', av: kd.av || AVATARS[1], cls: kd.cls, t: +kd.t || 0 }); added = true;
         });
         set(LIST, ev);
         // make sure this phone's children are in the list too
@@ -146,11 +151,11 @@
   /** Rename a child (and change picture / class). Scores stay: the player id does not change. */
   function rename(id, name, av, cls) {
     var ev = all(), p = ev.filter(function (q) { return q.id === id; })[0]; if (!p) return;
-    p.name = name; if (av) p.av = av; if (cls != null) p.cls = String(cls);
+    p.name = name; if (av) p.av = av; if (cls != null) p.cls = String(cls); p.t = Date.now();
     set(LIST, ev);
     if (id === activeId()) { try { localStorage.setItem('kq_nick', name); if (cls != null) localStorage.setItem('kq_last_class', String(cls)); } catch (e) {} }
     else { var kv = { kq_nick: name }; if (cls != null) kv.kq_last_class = String(cls); patchData(id, kv); }
-    if (acctOf(p) !== 'guest') cloudPut(p);
+    return acctOf(p) !== 'guest' ? cloudPut(p) : Promise.resolve();
   }
   function remove(id) {
     if (id === activeId()) return;
@@ -243,7 +248,12 @@
       var v = String(b.querySelector('#kqpfName').value || '').replace(/\s+/g, ' ').trim(), err = b.querySelector('#kqpfErr');
       if (v.length < 2) { err.textContent = 'Please type at least 2 letters'; return; }
       if (/[0-9@\s]/.test(v) || /[^\p{L}\p{M}'-]/u.test(v)) { err.textContent = 'Only a first name or nickname, letters only'; return; }
-      if (p) { rename(p.id, v.slice(0, 12), av, cls); if (opts.reload || p.id === activeId()) { close(); location.reload(); } else open(opts); return; }
+      if (p) {
+        var sv = b.querySelector('#kqpfSave'); sv.disabled = true; sv.textContent = 'Saving…';
+        var next = function () { if (next.done) return; next.done = true; if (opts.reload || p.id === activeId()) { close(); location.reload(); } else open(opts); };
+        rename(p.id, v.slice(0, 12), av, cls).then(next, next); setTimeout(next, 2500);   // wait for the cloud save (not forever)
+        return;
+      }
       add(v.slice(0, 12), av, cls);
     };
     setTimeout(function () { try { b.querySelector('#kqpfName').focus(); } catch (e) {} }, 60);
@@ -257,7 +267,7 @@
   }
 
   /** Open the change-name form for a child (default: the one playing now). */
-  function edit(id, ask) { var ps = ensure(), a = id || activeId(), p = ps.filter(function (q) { return q.id === a; })[0]; if (p) childForm({ reload: true, ask: !!ask }, p); }
+  function edit(id, ask) { var ps = ensure(), a = id || activeId(), p = ps.filter(function (q) { return q.id === a; })[0]; if (p) childForm({ reload: true, ask: !!ask }, p); else open(); }
   /** Google: the first child is named after the account owner. Ask once for the child's real name. */
   function askChildName() {
     if (!isGoogle() || acct() === null || get('kq_child_named', false)) return false;

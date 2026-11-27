@@ -834,14 +834,15 @@ class MainActivity : ComponentActivity() {
     // ==================================================
     // READ ALOUD (Android.speak)
     // ==================================================
-    private fun speakText(text: String?, lang: String?) {
+    private fun speakText(text: String?, lang: String?, rate: Float = 0.9f, pitch: Float = 1.0f) {
         if (!ttsReady || text.isNullOrBlank() || adOnScreen) return
         val locale = when (lang?.lowercase()?.take(2)) {
             "hi" -> Locale("hi", "IN")
             else -> Locale.US
         }
         tts?.language = locale
-        tts?.setSpeechRate(0.9f)
+        tts?.setSpeechRate(rate.coerceIn(0.5f, 1.6f))
+        tts?.setPitch(pitch.coerceIn(0.5f, 2.0f))
         tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "kq")
     }
 
@@ -1459,6 +1460,15 @@ class MainActivity : ComponentActivity() {
         @JavascriptInterface
         fun speak(text: String?, lang: String?) {
             runOnUiThread { speakText(text, lang) }
+        }
+
+        // Read aloud with a speed and pitch (story characters: a deep lion, a squeaky mouse).
+        // Usage in JS:  Android.speakEx("Hello!", "en-US", "0.9", "1.4");
+        @JavascriptInterface
+        fun speakEx(text: String?, lang: String?, rate: String?, pitch: String?) {
+            val r = rate?.toFloatOrNull() ?: 0.9f
+            val p = pitch?.toFloatOrNull() ?: 1.0f
+            runOnUiThread { speakText(text, lang, r, p) }
         }
 
         // Stop the read-aloud voice now (stories, ads).

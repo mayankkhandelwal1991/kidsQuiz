@@ -87,6 +87,50 @@
   @keyframes float { 50% { transform: translate(4%, -10%); } }
   @keyframes pop { from { transform: scale(.85); opacity: 0; } }
 
+
+  /* ---------- storyteller: camera, spotlight, life in the scene ---------- */
+  .sc .cam { position: absolute; inset: 0; }
+  .reader .sc .cam { animation: kb 18s ease-in-out infinite alternate; transform-origin: 50% 75%; }
+  @keyframes kb { to { transform: scale(1.08) translate(-1.2%, .8%); } }
+  .sc .ac { transition: scale .3s cubic-bezier(.34,1.56,.64,1); }
+  .sc .ac.talk { scale: 1.16; z-index: 3; }
+  .sc .ac.talk img { filter: drop-shadow(0 0 6px #fde047) drop-shadow(0 0 14px rgba(253,224,71,.8)); }
+  .sc .ac .bub { position: absolute; left: 62%; top: -34%; width: 42%; min-width: 20px; z-index: 4; animation: pop .3s cubic-bezier(.34,1.56,.64,1); }
+  .sc .ac .bub img { animation: bob 1.2s ease-in-out infinite; filter: none; }
+  .sc .amb { position: absolute; z-index: 1; pointer-events: none; width: 7%; }
+  .sc .amb img { display: block; width: 100%; height: auto; }
+  .sc .amb.drift { animation: ambDrift var(--d, 22s) linear infinite; animation-delay: var(--dl, 0s); }
+  .sc .amb.drift.rev { animation-name: ambDriftR; }
+  .sc .amb.flut img { animation: flut 1.6s ease-in-out infinite; }
+  .sc .amb.fall { animation: ambFall var(--d, 9s) linear infinite; animation-delay: var(--dl, 0s); }
+  .sc .amb.fall img { animation: sway 2.2s ease-in-out infinite; }
+  .sc .amb.tw img { animation: twinkle var(--d, 2.4s) ease-in-out infinite; animation-delay: var(--dl, 0s); }
+  .sc .amb.jump img { animation: fishJump var(--d, 4s) ease-in-out infinite; animation-delay: var(--dl, 0s); opacity: 0; }
+  .sc .amb.shoot { animation: shoot var(--d, 7s) ease-in infinite; animation-delay: var(--dl, 0s); opacity: 0; }
+  .sc .amb.rise { animation: rise var(--d, 5s) linear infinite; animation-delay: var(--dl, 0s); opacity: 0; }
+  @keyframes ambDrift { from { left: -12%; } to { left: 108%; } }
+  @keyframes ambDriftR { from { left: 108%; transform: scaleX(-1); } to { left: -12%; transform: scaleX(-1); } }
+  @keyframes flut { 50% { transform: translateY(-30%) rotate(-12deg); } }
+  @keyframes ambFall { from { top: -10%; } to { top: 92%; } }
+  @keyframes sway { 0%, 100% { transform: translateX(-40%) rotate(-25deg); } 50% { transform: translateX(40%) rotate(25deg); } }
+  @keyframes twinkle { 0%, 100% { opacity: .25; transform: scale(.7); } 50% { opacity: 1; transform: scale(1.1); } }
+  @keyframes fishJump { 0%, 55%, 100% { opacity: 0; transform: translateY(40%) rotate(40deg); } 65% { opacity: 1; } 75% { transform: translateY(-70%) rotate(0deg); opacity: 1; } 88% { transform: translateY(30%) rotate(-40deg); opacity: 1; } }
+  @keyframes shoot { 0%, 70% { opacity: 0; transform: translate(0, 0); } 75% { opacity: 1; } 100% { opacity: 0; transform: translate(420%, 260%); } }
+  @keyframes rise { 0% { opacity: 0; transform: translateY(0) scale(.6); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-260%) scale(1.1) rotate(15deg); } }
+  /* rhymes: everyone dances to the beat, hands clap */
+  .sc.dance .ac img { animation: danceBeat var(--beat, 1.1s) ease-in-out infinite !important; }
+  @keyframes danceBeat { 0%, 100% { transform: translateY(0) rotate(0); } 25% { transform: translateY(-9%) rotate(-6deg); } 75% { transform: translateY(-9%) rotate(6deg); } }
+  .sc .amb.clap img { animation: clapIt calc(var(--beat, 1.1s) / 2) ease-in-out infinite; }
+  @keyframes clapIt { 50% { transform: scale(1.25) rotate(-8deg); } }
+  /* the storyteller owl next to the words, and its thinking bubble */
+  .tell { display: flex; gap: 6px; align-items: flex-start; }
+  .tell .txt { flex: 1; min-width: 0; }
+  .teller { flex: 0 0 auto; width: 48px; margin-top: 4px; }
+  .teller .owl { width: 48px; height: 48px; animation: none; }
+  .teller.on .owl { animation: tellTalk .32s ease-in-out infinite alternate; }
+  @keyframes tellTalk { to { transform: translateY(-4px) rotate(-4deg) scale(1.04); } }
+  .sc .think { position: absolute; left: 50%; top: 7%; transform: translateX(-50%); z-index: 6; background: #fff; border-radius: 22px; padding: 6px 14px; font-weight: 800; font-size: clamp(15px, 4.2vw, 20px); color: #4c1d95; box-shadow: 0 6px 16px rgba(0,0,0,.18); white-space: nowrap; animation: pop .35s cubic-bezier(.34,1.56,.64,1); display: flex; align-items: center; gap: 6px; }
+  @media (prefers-reduced-motion: reduce) { .reader .sc .cam, .sc .amb { animation: none !important; } }
   /* ---------- reader ---------- */
   .dots { display: flex; gap: 5px; justify-content: center; margin: 10px 0 8px; flex-wrap: wrap; }
   .dots i { width: 22px; height: 8px; border-radius: 4px; background: #e9d5ff; } .dots i.on { background: #7c3aed; } .dots i.done { background: #c4b5fd; }
@@ -194,10 +238,10 @@ window.KQFX_NO_MUTE = true;
 
   /* ---------- speech: one sentence at a time so it can be highlighted ---------- */
   let speechToken = 0;
-  function stopSpeech() { speechToken++; try { speechSynthesis.cancel(); } catch (e) {} try { if (window.Android && Android.stopSpeaking) Android.stopSpeaking(); } catch (e) {} }
+  function stopSpeech() { speechToken++; teller(false); try { if (sfxNow) sfxNow.pause(); } catch (e) {} try { speechSynthesis.cancel(); } catch (e) {} try { if (window.Android && Android.stopSpeaking) Android.stopSpeaking(); } catch (e) {} }
   let LANG = 'en-US', PITCH = 1.1;
   // onWord(i): called as word i starts (from the voice's word events, or timed by word length)
-  function sayOne(text, rate, done, onWord) {
+  function sayOne(text, rate, done, onWord, pitch) {
     const words = text.split(/\s+/).filter(Boolean), est = 700 + words.length * 430 / rate;
     let finished = false; const timers = [];
     const fin = () => { if (finished) return; finished = true; timers.forEach(clearTimeout); done(); };
@@ -207,9 +251,12 @@ window.KQFX_NO_MUTE = true;
       words.forEach((w, i) => { timers.push(setTimeout(() => { if (!finished) onWord(i); }, t)); t += span * (w.length + 2) / total; });
     };
     if (muted()) { timed(); return setTimeout(fin, est); }
-    try { if (typeof Android !== 'undefined' && Android && typeof Android.speak === 'function') { Android.speak(text, LANG); timed(); return setTimeout(fin, est); } } catch (e) {}
     try {
-      const u = new SpeechSynthesisUtterance(text); u.rate = rate; u.pitch = PITCH; u.lang = LANG;
+      if (typeof Android !== 'undefined' && Android && typeof Android.speakEx === 'function') { Android.speakEx(text, LANG, String(rate), String(pitch || PITCH)); timed(); return setTimeout(fin, est); }
+      if (typeof Android !== 'undefined' && Android && typeof Android.speak === 'function') { Android.speak(text, LANG); timed(); return setTimeout(fin, est); }
+    } catch (e) {}
+    try {
+      const u = new SpeechSynthesisUtterance(text); u.rate = rate; u.pitch = pitch || PITCH; u.lang = LANG;
       // word starts -> word index
       const starts = []; text.replace(/\S+/g, (m, at) => { starts.push(at); return m; });
       let gotBoundary = false;
@@ -232,8 +279,14 @@ window.KQFX_NO_MUTE = true;
       const line = () => {
         if (my !== speechToken) return;
         if (chanting()) KQChant.duck(true);
-        sayOne(spans[k].textContent.replace(/[“”"]/g, ''), rate, () => { if (chanting()) KQChant.duck(false); k++; step(); },
-          (i) => { if (my !== speechToken) return; ws.forEach((w, j) => w.classList.toggle('now', j === i)); });
+        const story = R && !R.rhyme, v = story ? tellVoice(spans, k, rate) : { rate: rate, pitch: undefined, pause: 0 };
+        const lag = story ? (spotlight(spans, k), sfx(spans[k].textContent)) : 0;
+        teller(true);
+        setTimeout(() => {
+          if (my !== speechToken) return;
+          sayOne(spans[k].textContent.replace(/[“”"]/g, ''), v.rate, () => { teller(false); if (chanting()) KQChant.duck(false); if (!story && R && R.rhyme) sfx(spans[k].textContent); k++; setTimeout(step, v.pause); },
+            (i) => { if (my !== speechToken) return; ws.forEach((w, j) => w.classList.toggle('now', j === i)); }, v.pitch);
+        }, lag);
       };
       // a rhyme with music: each line starts on the beat, like a song
       if (chanting()) KQChant.waitBeat(line, 2); else line();
@@ -241,10 +294,134 @@ window.KQFX_NO_MUTE = true;
     step();
   }
 
+  /* ---------- the storyteller ----------
+     Told like a grown-up reading to a child: a warm narrator voice, characters
+     speak in their own voice (big animals low and slow, little ones high), little
+     pauses, the character being talked about lights up (💬 when it speaks), and
+     sound effects for animals, water, wind, magic … */
+  const CAST = [
+    [/\b(lion|king|giant|elephant|bear|wolf|tiger|crocodile|ogre|bull|grandfather|grandpa|old man|farmer|father|papa|dad|guard|monster|dragon|rhino|hippo)\b/i, 0.72, 0.82],
+    [/\b(mouse|mice|bird|sparrow|bunny|rabbit|hare|chick|ant|bee|butterfly|baby|kitten|puppy|squirrel|fairy|caterpillar|ladybird|fish|duckling|little)\b/i, 1.65, 1.0],
+    [/\b(mother|mom|mummy|mama|teacher|queen|grandmother|grandma|granny|lady|woman|aunt|princess)\b/i, 1.2, 0.88],
+    [/\b(girl|boy|child|children|sister|brother|kids?|friends?)\b/i, 1.45, 0.95],
+    [/\b(fox|monkey|crow|cat|duck|frog|dog|tortoise|turtle|owl|hen|goat|sheep|cow|deer|horse|pig|parrot|peacock)\b/i, 1.3, 0.92],
+  ];
+  function voiceOf(t) { if (!t) return null; if (childName() && new RegExp('\\b' + childName() + '\\b', 'i').test(t)) return [1.45, 0.95]; for (const c of CAST) if (c[0].test(t)) return [c[1], c[2]]; return null; }
+  const isTalk = (t) => /[“"]/.test(t);
+  const outsideQuotes = (t) => t.replace(/[“"][^”"]*[”"]?/g, ' ');
+  // who speaks this line: words around the quote ('Fox said, "…"'), or the next sentence when it
+  // says who spoke ('"…" he said.' / '"…" laughed Tenali.'), then the one before it ('Hare was fast.')
+  const SAID = /\b(said|says|asked|cried|shouted|replied|laughed|called|whispered|roared|squeaked|yelled|answered|thought|sang|told)\b/i;
+  function speakerCtx(spans, k) {
+    const same = outsideQuotes(spans[k].textContent), nx = spans[k + 1] ? spans[k + 1].textContent : '', pv = spans[k - 1] ? outsideQuotes(spans[k - 1].textContent) : '';
+    if (SAID.test(same)) return [same];
+    if (nx && !isTalk(nx) && SAID.test(nx)) return [nx, pv];
+    if (pv && SAID.test(pv) && /[:,]\s*$/.test(spans[k - 1].textContent.trim())) return [pv];
+    return [same];
+  }
+  function tellVoice(spans, k, rate) {
+    const t = spans[k].textContent.trim();
+    let pitch = /^hi/.test(LANG) ? 1.1 : 1.05, r = rate, pause = 380;
+    if (isTalk(t)) { const ctx = speakerCtx(spans, k); let v = null; ctx.some((c) => (v = voiceOf(c))); v = v || [1.35, 0.95]; pitch = v[0]; r = rate * v[1] / 0.9; }
+    if (/!\s*[”"]?$/.test(t)) { pitch += 0.08; r *= 1.05; }
+    else if (/\?\s*[”"]?$/.test(t)) pitch += 0.06;
+    if (/(…|\.\.\.)\s*[”"]?$/.test(t)) pause = 850;
+    if (/^once upon a time/i.test(t)) r *= 0.9;
+    return { rate: r, pitch: pitch, pause: pause };
+  }
+  // which picture is which character
+  const WHO = {
+    '🐰': 'bunny|rabbit|hare', '🐇': 'bunny|rabbit|hare', '🐢': 'tortoise|turtle', '🦁': 'lion', '🐭': 'mouse|mice', '🦊': 'fox', '🐦‍⬛': 'crow', '🐘': 'elephant',
+    '🐒': 'monkey', '🦆': 'duck', '🐜': 'ant', '🐝': 'bee', '🐊': 'crocodile', '🐕': 'dog|puppy', '🐶': 'dog|puppy', '🐈': 'cat|kitten', '🐱': 'cat|kitten',
+    '🐸': 'frog', '🦉': 'owl', '🐻': 'bear', '🐺': 'wolf', '🐯': 'tiger', '🐑': 'sheep|lamb', '🐔': 'hen', '🐤': 'chick', '🐦': 'bird|sparrow', '🦌': 'deer',
+    '🐟': 'fish', '🐄': 'cow', '🦋': 'butterfly', '🐛': 'caterpillar', '🕷️': 'spider', '🦒': 'giraffe', '🐴': 'horse', '🐖': 'pig', '🕊️': 'dove|pigeon', '🪿': 'goose',
+    '🧒': 'boy|child|NAME', '👦': 'boy|NAME', '👧': 'girl|NAME', '👴': 'grandfather|grandpa|old man', '🧔': 'man|father|uncle', '👵': 'grandmother|grandma|granny|old woman',
+    '👩': 'mother|mom|mummy|woman|lady|teacher', '👨': 'father|man|dad|papa', '🤴': 'king|prince', '👑': 'king|queen', '🧑‍🌾': 'farmer', '👨‍🌾': 'farmer', '🧚': 'fairy',
+    '🧑‍🚀': 'astronaut', '🤖': 'robot', '🌞': 'sun', '☀️': 'sun', '🌙': 'moon', '🌕': 'moon', '⭐': 'star', '🌳': 'tree', '🌧️': 'rain', '🌱': 'seed|plant', '🥚': 'egg', '🎈': 'balloon'
+  };
+  function whoRe(e) { const w = WHO[e]; return w ? new RegExp('\\b(' + w.replace('NAME', childName()) + ')s?\\b', 'i') : null; }
+  function spotlight(spans, k) {
+    const acts = [...$app.querySelectorAll('.reader .sc .ac')]; if (!acts.length) return;
+    const t = spans[k].textContent, talk = isTalk(t), ctx = talk ? speakerCtx(spans, k) : [t];
+    $app.querySelectorAll('.reader .sc .bub').forEach((b) => b.remove());
+    let speaker = null;
+    acts.forEach((a) => {
+      const re = whoRe(a.dataset.e), on = !!re && ctx.some((c) => re.test(c));
+      a.classList.toggle('talk', on);
+      if (on && talk && !speaker) speaker = a;
+    });
+    if (speaker) { const b = document.createElement('span'); b.className = 'bub'; b.innerHTML = '<img src="../images/emoji/1f4ac.svg" alt="">'; speaker.appendChild(b); }
+  }
+  // sound effects: real animal sounds, water, wind, magic …  (one per sentence, each once a page)
+  const SFX = [
+    [/\b(moo|cows?)\b/i, 'a:cow'], [/\b(bark|barked|woof|dogs?|pupp(y|ies))\b/i, 'a:dog'], [/\b(meow|cats?|kittens?)\b/i, 'a:cat'], [/\b(roar|roared|lions?)\b/i, 'a:lion'],
+    [/\b(quack|ducks?)\b/i, 'a:duck'], [/\b(hens?|cluck|chicks?)\b/i, 'a:hen'], [/\b(baa|sheep|lambs?)\b/i, 'a:sheep'], [/\b(neigh|horses?)\b/i, 'a:horse'], [/\b(oink|pigs?)\b/i, 'a:pig'],
+    [/\b(frogs?|croak|ribbit)\b/i, 'a:frog'], [/\b(owls?|hoot)\b/i, 'a:owl'], [/\b(bees?|buzz|buzzed)\b/i, 'a:bee'], [/\b(goats?)\b/i, 'a:goat'], [/\b(monkeys?)\b/i, 'a:monkey'], [/\b(mouse|mice|squeak)\b/i, 'a:mouse'],
+    [/\b(splash|pond|river|swim|swam|jumped into|lake|sea)\b/i, 's:splash'], [/\b(wind|blew|blow|whoosh|flew|flying)\b/i, 's:whoosh'],
+    [/\b(magic|twinkle|sparkle|shine|shining|shiny|golden|wish|fairy)\b/i, 's:chime'], [/\b(hop|hopped|jump|jumped|bounce|bounced)\b/i, 's:boing'],
+    [/\b(bell|ring|rang|ding)\b/i, 's:ding'], [/\b(rain|raining|drops?|drip)\b/i, 's:drop'], [/\b(fell|crash|boom|thunder|bang)\b/i, 's:crash'],
+    [/\b(pop|popped|bubbles?)\b/i, 's:pop'], [/\b(hooray|yay|won|clap|clapped|party|celebrate)\b/i, 's:success']
+  ];
+  let sfxDone = new Set(), sfxNow = null;
+  function sfx(t) {
+    if (muted()) return 0;
+    for (const x of SFX) {
+      if (!x[0].test(t) || sfxDone.has(x[1])) continue;
+      sfxDone.add(x[1]);
+      const animal = x[1][0] === 'a';
+      try { sfxNow = new Audio(animal ? '../audio/animals/' + x[1].slice(2) + '.wav' : '../games/sounds/' + x[1].slice(2) + '.mp3'); sfxNow.volume = animal ? 0.55 : 0.35; const p = sfxNow.play(); if (p && p.catch) p.catch(() => {}); } catch (e) {}
+      return animal ? 650 : 200;   // the voice starts just after
+    }
+    return 0;
+  }
+  function teller(on) { const t = document.getElementById('teller'); if (t) t.classList.toggle('on', !!on); }
+  function introText() {
+    const nm = childName(), t = fill(R.s.title), hi = /^hi/.test(LANG);
+    if (R.rhyme) return hi ? 'नमस्ते ' + nm + '! चलो साथ में गाते हैं — ' + t + '! ताली बजाओ!' : 'Hello ' + nm + '! Let’s sing ' + t + ' together. Clap your hands with me!';
+    return hi ? 'नमस्ते ' + nm + '! आओ, पास बैठो। आज की कहानी है — ' + t + '। चलो शुरू!' : 'Hello ' + nm + '! Come, sit close. Today’s story is… ' + t + '. Ready? Let’s begin!';
+  }
+  function tellIntro(tok, go) {
+    stopSpeech(); const my = speechToken;
+    teller(true); if (chanting()) KQChant.duck(true);
+    sayOne(introText(), 0.9, () => { teller(false); if (chanting()) KQChant.duck(false); if (my !== speechToken || tok !== R.tok) return; setTimeout(go, 350); }, null, 1.15);
+  }
+  // halfway through a story: "What do you think will happen next?"
+  function thinkMoment(tok, next) {
+    const n = R.s.pages.length;
+    if (R.rhyme || R.thought || n < 4 || R.page !== Math.floor((n - 1) / 2)) return next();
+    R.thought = true;
+    const sc = $app.querySelector('.reader .sc'), hi = /^hi/.test(LANG), nm = childName();
+    if (sc) { const b = document.createElement('div'); b.className = 'think'; b.innerHTML = emo('🤔', 26) + (hi ? ' आगे क्या होगा?' : ' What happens next?'); sc.appendChild(b); }
+    stopSpeech(); const my = speechToken; teller(true);
+    sayOne(hi ? 'अब आगे क्या होगा, ' + nm + '? सोचो!' : 'Hmm… what do you think will happen next, ' + nm + '?', 0.9, () => {
+      teller(false); if (my !== speechToken || tok !== R.tok) return;
+      setTimeout(() => { const b = $app.querySelector('.think'); if (b) b.remove(); if (tok === R.tok) next(); }, 1800);
+    }, null, 1.2);
+  }
+
   /* ---------- scene ---------- */
-  function sceneHtml(bgId, actors, extraCls) {
+  // little things that move in each kind of place: [emoji, kind, left%, top%, size%, duration s, delay s]
+  const AMB = {
+    meadow: [['🦋', 'drift flut', 0, 22, 6, 19, 0], ['☁️', 'drift', 0, 6, 14, 40, -12], ['🐦', 'drift rev', 0, 14, 6, 15, -6]],
+    garden: [['🦋', 'drift flut', 0, 26, 6, 17, 0], ['🦋', 'drift flut rev', 0, 12, 5, 23, -9], ['🐝', 'drift flut', 0, 34, 5, 13, -4], ['☁️', 'drift', 0, 5, 13, 44, -20]],
+    park: [['🐦', 'drift', 0, 12, 6, 14, -3], ['☁️', 'drift rev', 0, 6, 15, 42, -10], ['🦋', 'drift flut', 0, 28, 5, 20, -7]],
+    sky: [['☁️', 'drift', 0, 10, 16, 30, 0], ['☁️', 'drift rev', 0, 30, 12, 38, -15], ['🕊️', 'drift', 0, 20, 7, 16, -5]],
+    desert: [['☁️', 'drift', 0, 8, 12, 46, -8], ['🦅', 'drift rev', 0, 16, 7, 18, -4]],
+    river: [['🐟', 'jump', 18, 84, 7, 4.5, 0], ['🐟', 'jump', 70, 86, 6, 5.5, -2.4], ['☁️', 'drift', 0, 6, 14, 40, -18], ['🐦', 'drift', 0, 16, 5, 16, -9]],
+    forest: [['🍂', 'fall', 20, 0, 5, 9, 0], ['🍃', 'fall', 62, 0, 5, 11, -4], ['🍂', 'fall', 84, 0, 4, 8, -6], ['🐦', 'drift rev', 0, 14, 5, 17, -3]],
+    village: [['🐦', 'drift', 0, 12, 6, 15, 0], ['☁️', 'drift', 0, 6, 14, 42, -16], ['🦋', 'drift flut rev', 0, 30, 5, 21, -8]],
+    palace: [['✨', 'tw', 14, 16, 6, 2.2, 0], ['✨', 'tw', 82, 12, 7, 2.8, -1], ['✨', 'tw', 50, 6, 5, 2.5, -1.6]],
+    night: [['⭐', 'tw', 12, 10, 5, 2.4, 0], ['⭐', 'tw', 34, 22, 4, 3, -1], ['⭐', 'tw', 72, 8, 5, 2.6, -1.8], ['🌠', 'shoot', 6, 4, 8, 8, -3]],
+    space: [['🌠', 'shoot', 4, 6, 9, 6, -1], ['✨', 'tw', 80, 18, 6, 2.2, 0], ['✨', 'tw', 22, 30, 5, 3, -1.4], ['🛸', 'drift', 0, 20, 8, 24, -6]],
+  };
+  function ambHtml(bgId, rhyme) {
+    const list = (AMB[bgId] || AMB.meadow).slice();
+    if (rhyme) list.push(['👏', 'clap', 4, 6, 9, 0, 0], ['👏', 'clap', 87, 6, 9, 0, 0], ['🎵', 'rise', 20, 70, 6, 5, 0], ['🎶', 'rise', 74, 72, 6, 5, -2.5]);
+    return list.map((a) => '<div class="amb ' + a[1] + '" style="left:' + a[2] + '%;top:' + a[3] + '%;width:' + a[4] + '%;--d:' + a[5] + 's;--dl:' + a[6] + 's"><img src="../images/emoji/' + cp(a[0]) + '.svg" alt=""></div>').join('');
+  }
+  function sceneHtml(bgId, actors, extraCls, life) {
     const B = BG[bgId] || BG.meadow;
-    let h = '<div class="sc ' + (extraCls || '') + '" style="--s1:' + B.s[0] + ';--s2:' + B.s[1] + '">';
+    let h = '<div class="sc ' + (extraCls || '') + '" style="--s1:' + B.s[0] + ';--s2:' + B.s[1] + '"><div class="cam">';
     if (B.stars) h += '<div class="stars-bg"></div>';
     if (B.arches) h += '<svg class="gd" style="height:100%" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">' + [40, 140, 240, 340].map((x) => '<path d="M' + (x - 34) + ' 230 V120 Q' + x + ' 50 ' + (x + 34) + ' 120 V230Z" fill="#fcd34d" opacity=".55"/>').join('') + '<rect y="230" width="400" height="70" fill="' + B.floor + '"/><rect y="230" width="400" height="8" fill="#92400e"/></svg>';
     if (B.h) {
@@ -257,10 +434,11 @@ window.KQFX_NO_MUTE = true;
     (actors || []).forEach((a, i) => {
       const anim = String(a[4] || '').split(/\s+/).filter(Boolean);
       const cls = anim.filter((x) => x !== 'flip').map((x) => 'a-' + x).join(' ') + (anim.indexOf('flip') >= 0 ? ' flip' : '');
-      h += '<div class="ac ' + cls + '" style="left:' + a[1] + '%;top:' + a[2] + '%;width:' + a[3] + '%;animation-delay:' + (i * 0.12) + 's"><span class="fl"><img src="../images/emoji/' + cp(a[0]) + '.svg" alt="" style="animation-delay:' + (i * 0.3) + 's">' +
+      h += '<div class="ac ' + cls + '" data-e="' + esc(a[0]) + '" style="left:' + a[1] + '%;top:' + a[2] + '%;width:' + a[3] + '%;animation-delay:' + (i * 0.12) + 's"><span class="fl"><img src="../images/emoji/' + cp(a[0]) + '.svg" alt="" style="animation-delay:' + (i * 0.3) + 's">' +
         (anim.indexOf('gold') >= 0 ? '<span class="gm" style="-webkit-mask-image:url(../images/emoji/' + cp(a[0]) + '.svg);mask-image:url(../images/emoji/' + cp(a[0]) + '.svg)"></span>' : '') + '</span></div>';
     });
-    return h + '</div>';
+    if (life) h += ambHtml(bgId, life === 'rhyme');
+    return h + '</div></div>';
   }
 
   /* ---------- data ---------- */
@@ -332,8 +510,8 @@ window.KQFX_NO_MUTE = true;
     const s = R.s, p = s.pages[R.page], n = s.pages.length;
     const txt = sentences(fill(p.text));
     $app.innerHTML = shell('<div class="reader"><div class="dots">' + s.pages.map((_, k) => '<i class="' + (k === R.page ? 'on' : k < R.page ? 'done' : '') + '"></i>').join('') + '</div>' +
-      sceneHtml(p.bg || s.bg, p.actors) +
-      '<div><div class="txt' + (R.rhyme ? ' lines' : '') + '" style="--fs:' + FONT[String(s.level)] + 'px">' + txt.map((t) => '<span class="sn">' + t.split(/\s+/).filter(Boolean).map((w) => '<i class="w">' + esc(w) + '</i>').join(' ') + '</span>').join(R.rhyme ? '' : ' ') + '</div>' +
+      sceneHtml(p.bg || s.bg, p.actors, '', R.rhyme ? 'rhyme' : 'story') +
+      '<div><div class="tell"><div class="teller" id="teller">' + owlSvg() + '</div><div class="txt' + (R.rhyme ? ' lines' : '') + '" style="--fs:' + FONT[String(s.level)] + 'px">' + txt.map((t) => '<span class="sn">' + t.split(/\s+/).filter(Boolean).map((w) => '<i class="w">' + esc(w) + '</i>').join(' ') + '</span>').join(R.rhyme ? '' : ' ') + '</div></div>' +
       '<div class="ctl"><button class="cb prev" id="prev" aria-label="Previous page"' + (R.page ? '' : ' disabled') + '>◀</button>' +
       '<button class="cb say' + (R.auto ? ' playing' : '') + '" id="say">' + (R.auto ? '⏸ Pause' : '▶ Play') + '</button>' +
       '<button class="cb next" id="next" aria-label="Next page">' + (R.page === n - 1 ? '✓' : '▶') + '</button></div>' +
@@ -344,12 +522,19 @@ window.KQFX_NO_MUTE = true;
     const goNext = () => { if (R.page < n - 1) { R.page++; renderPage(); } else theEnd(); };
     if (R.rhyme && s.audio) return songPage(spans, tok, goNext);
     music(R.auto && R.rhyme);
-    // Auto-play: read the page, wait a moment, turn the page; after the last page, the questions.
-    const play = () => readSentences(spans, R.rate, () => {
+    sfxDone = new Set();
+    // rhymes: everyone in the picture dances to the beat
+    if (R.rhyme && chanting()) { const sc = $app.querySelector('.reader .sc'); if (sc) { sc.classList.add('dance'); sc.style.setProperty('--beat', Math.round(KQChant.beatMs() * 2) + 'ms'); } }
+    // Auto-play: (hello first) read the page, wait a moment, turn the page; after the last page, the questions.
+    const after = () => {
       if (!R.auto || tok !== R.tok) return;
       const bar = document.getElementById('autoBar'); if (bar) bar.classList.add('run');
       setTimeout(() => { if (R.auto && tok === R.tok) goNext(); }, 1600);
-    });
+    };
+    const play = () => {
+      const go = () => readSentences(spans, R.rate, () => { if (R.auto && tok === R.tok) thinkMoment(tok, after); });
+      if (R.page === 0 && !R.introDone) { R.introDone = true; tellIntro(tok, go); } else go();
+    };
     $app.querySelector('#say').onclick = () => { tap(); R.auto = !R.auto; lsSet('kq_story_autoplay', R.auto); if (!R.auto) { stopSpeech(); R.tok++; } renderPage(); };
     $app.querySelector('#prev').onclick = () => { if (R.page) { tap(); R.page--; renderPage(); } };
     $app.querySelector('#next').onclick = () => { tap(); goNext(); };

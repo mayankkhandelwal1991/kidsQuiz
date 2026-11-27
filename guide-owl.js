@@ -69,6 +69,11 @@
     }
     var rot = function (a) { if (!a.length) return a; var k = dayN % a.length; return a.slice(k).concat(a.slice(0, k)); };
     var order = rot(ok.filter(function (x) { return LEARN.indexOf(x.id) >= 0; })).concat(rot(ok.filter(function (x) { return LEARN.indexOf(x.id) < 0; })));
+    // what the child said they like (onboard.js) goes first
+    var LIKE_IDEAS = { abc: ['tracing', 'phonics', 'read'], maths: ['tables', 'path'], stories: ['stories', 'rhymes'], science: ['olympiad', 'qotd'], english: ['read', 'stories'], hindi: ['rhymes'], art: ['create'], brain: ['games3d', 'qotd'] };
+    var pr = null; try { pr = JSON.parse(localStorage.getItem('kq_prefs') || 'null'); } catch (e) {}
+    var fav = []; ((pr && pr.likes) || []).forEach(function (k) { fav = fav.concat(LIKE_IDEAS[k] || []); }); if (pr && pr.friends) fav.push('friends');
+    if (fav.length) order = order.filter(function (x) { return fav.indexOf(x.id) >= 0; }).concat(order.filter(function (x) { return fav.indexOf(x.id) < 0; }));
     var fresh = order.filter(function (x) { return !ex[x.id] && !(x.tried && x.tried()); });
     if (fresh.length) return fresh[0];
     return order[Math.floor(Math.random() * order.length)];

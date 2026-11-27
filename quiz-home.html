@@ -172,6 +172,8 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   .hm-plan:empty { display: none !important; }
   .pl-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .pl-top svg { width: 46px; height: 46px; flex: 0 0 auto; }
+  .pl-likes { display: block; width: 100%; margin-top: 10px; border: 2px dashed #ddd6fe; background: #faf5ff; border-radius: 14px; padding: 6px 10px; font: 800 13px 'Baloo 2', sans-serif; color: #6d28d9; text-align: left; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pl-likes b { float: right; margin-left: 6px; }
   .pl-top .t { flex: 1 1 150px; min-width: 0; } .pl-top .t b { display: block; font-size: 18px; line-height: 1.1; color: #4c1d95; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .pl-top .t small { display: block; }
   .pl-top .t small { font-size: 12px; font-weight: 800; color: #6b7280; }
@@ -236,6 +238,11 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
     <main class="hm-body">
       <div class="pf-stats hm-stats" id="pfStats"></div>
 
+      <!-- Today: the owl's plan for this child, built from their answers (onboard.js) -->
+      <div class="hm-h"><img src="images/emoji/1f31f.svg" alt=""> Today for you</div>
+      <div class="hm-plan" id="hmPlan"></div>
+      <div class="hm-plan hm-tasks" id="hmTasks" style="margin-top:12px"></div>
+
       <!-- The four main places -->
       <div class="hm-h"><img src="images/emoji/1f3ae.svg" alt=""> Learn &amp; Play</div>
       <div class="hm-grid">
@@ -257,10 +264,6 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
         </button>
       </div>
 
-      <!-- Today: the owl's plan for this child -->
-      <div class="hm-h"><img src="images/emoji/1f31f.svg" alt=""> Today</div>
-      <div class="hm-plan" id="hmPlan"></div>
-      <div class="hm-plan hm-tasks" id="hmTasks" style="margin-top:12px"></div>
 
       <!-- 3. Jump straight to a skill (one swipeable row) -->
       <div class="hm-h" id="hmSkillsH"><img src="images/emoji/1f4da.svg" alt=""> Pick a skill <a class="hm-more" href="learn.html">See all ›</a></div>
@@ -393,7 +396,8 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 
 <script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
 <script src="profiles.js?v=20261126e" charset="utf-8"></script>
-<script src="guide-owl.js?v=20261127a" charset="utf-8"></script>
+<script src="guide-owl.js?v=20261127b" charset="utf-8"></script>
+<script src="onboard.js?v=20261127a" charset="utf-8"></script>
 <script src="quiz-shared.js?v=20261126d" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
 <script src="quiz/kids-engine.js?v=20261127a" charset="utf-8"></script>
@@ -979,19 +983,33 @@ function planSteps(lv) {
   let doneS = {}; try { doneS = JSON.parse(localStorage.getItem('kq_story_done') || '{}') || {}; } catch (e) {}
   const mine = (__stories || []).filter((x) => x.level === lv);
   const st = mine.find((x) => doneS[x.id] == null) || mine[day % Math.max(1, mine.length)];
+  const likes = myLikes(), likes_ = (k) => likes.indexOf(k) >= 0, prefs = myPrefs() || {};
+  const create = { k: 'make', t: 'Draw & make music', s: 'Creative corner', ic: '1f3a8', href: 'activities/create.html', a: '#ec4899', b: '#f59e0b', say: 'draw a picture or play music' };
+  const puzzle = { k: 'brain', t: 'Brain puzzle', s: 'Think and win', ic: '1f9e9', href: 'learn.html#brain', a: '#6366f1', b: '#8b5cf6', say: 'solve a brain puzzle' };
   const story = st ? { k: 'story', t: 'Read a story', s: st.title.replace(/\{name\}/g, firstName()), ic: '1f4d6', href: 'stories/index.html#/s/' + st.id, a: '#f97316', b: '#ec4899', say: 'read the story ' + st.title.replace(/\{name\}/g, firstName()) }
     : { k: 'story', t: 'Read a story', s: 'Story Time', ic: '1f4d6', href: 'stories/index.html', a: '#f97316', b: '#ec4899', say: 'read a story' };
   let learn;
   if (lv <= 0) {
-    const id = PRE_TOPICS[day % PRE_TOPICS.length], c = getCatInfo(id) || { title: 'ABC', icon: '🔤' };
+    const fav = [].concat.apply([], likes.map((k) => LIKE_PRE[k] || [])).filter((id) => (typeof quizCategoriesFor !== 'function') || quizCategoriesFor(lv).some((c) => c.id === id));
+    const pool = fav.length ? fav : PRE_TOPICS;
+    const id = pool[day % pool.length], c = getCatInfo(id) || { title: 'ABC', icon: '🔤' };
     learn = { k: 'learn', t: 'Learn: ' + c.title, s: c.blurb || 'Picture quiz', ic: null, emo: c.icon, href: 'quiz/play.html#/c/' + lv + '/' + id, a: '#8b5cf6', b: '#6366f1', say: 'learn ' + c.title };
   } else {
-    learn = adaptiveLearn(lv, day);
+    learn = adaptiveLearn(lv, day, [].concat.apply([], likes.map((k) => LIKE_QUIZ[k] || [])));
   }
   const play = lv <= 1
     ? { k: 'play', t: 'Trace letters', s: lv <= 0 ? 'ABC with your finger' : 'abc and 123', ic: '270f', href: 'games/word/tracing.html', a: '#0ea5e9', b: '#22c55e', say: 'trace some letters' }
     : { k: 'play', t: 'Times tables', s: 'Win 3 stars on a table', ic: '2716', href: 'games/brain/times_tables.html', a: '#0ea5e9', b: '#22c55e', say: 'practise times tables' };
-  return [story, learn, play];
+  // first step: a story, unless the child picked drawing or puzzles and not stories
+  const first = (!likes.length || likes_('stories')) ? story : likes_('art') ? create : likes_('brain') ? puzzle : story;
+  // last step: friends (every other day), times tables for maths fans, drawing, puzzles, else tracing / tables
+  const friends = { k: 'friends', t: 'Play with a friend', s: 'Quiz battles online', ic: '1f465', href: 'multiplayer/index.html', a: '#0ea5e9', b: '#6366f1', say: 'play a game with a friend' };
+  let last = play;
+  if (prefs.friends === true && day % 2 === 0) last = friends;
+  else if (likes_('maths') && lv >= 2) last = play;
+  else if (likes_('art') && first !== create) last = create;
+  else if (likes_('brain') && first !== puzzle) last = puzzle;
+  return [first, learn, last];
 }
 /* Adaptive quiz step: practise the weakest subject (under 70%), else a subject never
    tried, else rotate. Class goes up after a very good run, down after a hard one. */
@@ -1002,7 +1020,7 @@ function quizAccuracy(lv) {
   const recent = mine.slice(-8), rc = recent.reduce((a, h) => a + (+h.correct || 0), 0), rw = recent.reduce((a, h) => a + (+h.wrong || 0), 0);
   return { by, recentN: recent.length, recentAcc: rc + rw ? rc / (rc + rw) : null };
 }
-function adaptiveLearn(lv, day) {
+function adaptiveLearn(lv, day, prefer) {
   const st = quizAccuracy(lv);
   let qlv = lv, tag = '';
   if (st.recentN >= 4 && st.recentAcc >= 0.9 && lv < 5) { qlv = lv + 1; tag = 'Challenge'; }
@@ -1013,7 +1031,13 @@ function adaptiveLearn(lv, day) {
   if (!tag) {
     const weak = cats.filter((x) => acc(x.id) !== null && acc(x.id) < 0.7).sort((x, y) => acc(x.id) - acc(y.id));
     if (weak.length) { c = weak[0]; tag = 'Needs practice'; }
-    else { const fresh = cats.filter((x) => !st.by[x.id]); if (fresh.length) { c = fresh[day % fresh.length]; tag = 'New for you'; } }
+    else {
+      // what the child likes first
+      const liked = cats.filter((x) => (prefer || []).indexOf(x.id) >= 0), pool = liked.length ? liked : cats;
+      const fresh = pool.filter((x) => !st.by[x.id]);
+      if (fresh.length) { c = fresh[day % fresh.length]; tag = 'New for you'; }
+      else if (liked.length) { c = liked[day % liked.length]; tag = 'You like this'; }
+    }
   }
   if (!c) c = cats.length ? cats[day % cats.length] : { id: 'gk', title: 'GK', icon: '🌍' };
   return { k: 'learn', t: 'Quiz: ' + c.title, s: (tag ? tag + ' · ' : '') + classLabel(qlv), ic: null, emo: c.icon, href: 'quiz/play.html#/c/' + qlv + '/' + c.id, a: '#8b5cf6', b: '#6366f1',
@@ -1042,11 +1066,13 @@ function renderPlan() {
       return '<button type="button" class="pl-step' + (d ? ' done' : '') + (x === next ? ' next' : '') + '" data-i="' + i + '" style="--a:' + x.a + ';--b:' + x.b + '"><span class="n">' + (d ? '✓' : i + 1) + '</span>' + icon +
         '<span class="tx"><b>' + hmEsc(x.t) + '</b><small>' + hmEsc(x.s) + '</small></span><span class="go">' + (d ? 'Again' : 'Go ›') + '</span></button>';
     }).join('') + '</div>' +
-    (nDone === 3 ? '<div class="pl-done">🎉 All done! You are a star, ' + hmEsc(nm) + '!</div>' : '');
+    (nDone === 3 ? '<div class="pl-done">🎉 All done! You are a star, ' + hmEsc(nm) + '!</div>' : '') +
+    (window.KQOnboard ? '<button type="button" class="pl-likes" id="plLikes">❤️ ' + (myLikes().length ? myLikes().map((k) => { const x = KQOnboard.LIKES.find((y) => y.id === k); return x ? x.t : k; }).map(hmEsc).join(' · ') : 'Tell me what you like') + ' <b>✏️ Change</b></button>' : '');
   el.querySelectorAll('[data-i]').forEach((b) => b.onclick = () => {
     const x = steps[+b.dataset.i]; if (x.k !== 'story') planMark(x.k); location.href = x.href;
   });
   document.getElementById('plCls').onclick = () => { el.dataset.pick = '1'; renderPlan(); };
+  const lk = document.getElementById('plLikes'); if (lk) lk.onclick = () => { KQOnboard.open().then(() => { renderPlan(); renderSkills(); }); };
   document.getElementById('plSay').onclick = () => {
     const txt = next ? 'Hi ' + nm + '! Here is your plan. ' + steps.map((x, i) => (i ? (i === 1 ? 'Then, ' : 'And then, ') : 'First, ') + x.say + '.').join(' ') + ' Tap ' + next.t + ' to start!'
       : 'Wow ' + nm + '! You finished your plan today. You are a star!';
@@ -1082,11 +1108,19 @@ function hmDockTo(id) {
   const el = document.getElementById(id); if (!el) return;
   window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 12, behavior: 'smooth' });
 }
+// what each answer in "What would you like to learn?" means on home
+const LIKE_SKILLS = { abc: ['ABC', 'Phonics', 'Tracing', 'Read'], maths: ['Counting', 'Maths', 'Tables', 'Shapes'], stories: ['Stories', 'Rhymes'], science: ['Science'], english: ['Read', 'Spelling'], hindi: [], art: ['Create', 'Colours'], brain: ['Brain'] };
+const LIKE_PRE = { abc: ['k_abc', 'k_phonics'], maths: ['k_count', 'k_numbers', 'k_shapes'], science: ['k_animals', 'k_weather', 'k_body', 'k_fruits'], english: ['english', 'k_abc'], hindi: ['hindi'], brain: ['k_think', 'k_pattern'], art: ['k_colours'] };
+const LIKE_QUIZ = { abc: ['english'], maths: ['addsub', 'multiply', 'divide', 'mixedmath', 'k_addsub'], science: ['science', 'animals', 'plants', 'humanbody', 'space', 'gk'], english: ['english'], hindi: ['hindi'], brain: ['riddles', 'patterns', 'reasoning'] };
+function myPrefs() { return (window.KQOnboard && KQOnboard.prefs()) || null; }
+function myLikes() { const p = myPrefs(); return (p && p.likes) || []; }
 function renderSkills() {
   const el = document.getElementById('hmSkills'); if (!el) return;
+  const fav = [].concat.apply([], myLikes().map((k) => LIKE_SKILLS[k] || []));
+  const SK = SKILLS.slice().sort((x, y) => (fav.indexOf(x.t) < 0 ? 99 : fav.indexOf(x.t)) - (fav.indexOf(y.t) < 0 ? 99 : fav.indexOf(y.t)));
   let lv = null; try { lv = parseInt(localStorage.getItem('kq_last_class'), 10); } catch (e) {}
   const pre = (lv === 0 || lv === UKG_LEVEL) ? lv : 0;
-  el.innerHTML = SKILLS.map(function (k) {
+  el.innerHTML = SK.map(function (k) {
     const href = /^k_/.test(k.go) ? 'quiz/play.html#/c/' + pre + '/' + k.go : /#\/r\/$/.test(k.go) ? k.go + (lv != null && !isNaN(lv) ? lv : 0) : k.go;
     return '<a class="hm-sk" href="' + href + '" style="--a:' + k.a + ';--b:' + k.b + '"><span class="bub"><img src="images/emoji/' + k.ic + '.svg" alt="">' + (k.isNew ? '<span class="new">NEW</span>' : '') + '</span><b>' + k.t + '</b><small>' + k.s + '</small></a>';
   }).join('');
@@ -1314,11 +1348,23 @@ owlTalk();
 try { KQGuide.start({ name: firstName }); } catch (e) {}
 renderTeacherTasks();
 // Guests who never gave a name (older sessions) are asked once.
-if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
-  setTimeout(function () { kqAskName().then(function () { renderHomeProfile(); if (window.KQProfiles) KQProfiles.ensure(); }); }, 400);
-} else if (window.KQProfiles) {
-  setTimeout(function () { if (!(KQProfiles.askChildName && KQProfiles.askChildName())) KQProfiles.askOnStart(); }, 300);
+// Then (once per child) the 3 "getting to know you" questions, and home is built from the answers.
+function askPrefs() {
+  if (!window.KQOnboard || KQOnboard.prefs()) return;
+  let calm = 0, n = 0;
+  (function wait() {   // not on top of the name box / "Who is playing?"
+    const busy = document.querySelector('.kqpf, #kqNameBox');
+    calm = busy ? 0 : calm + 1;
+    if (calm < 2 && n++ < 60) return setTimeout(wait, 500);
+    if (document.querySelector('.kqpf')) return;
+    KQOnboard.ask().then(function () { renderPlan(); renderSkills(); renderHomeProfile(); });
+  })();
 }
+if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
+  setTimeout(function () { kqAskName().then(function () { renderHomeProfile(); if (window.KQProfiles) KQProfiles.ensure(); askPrefs(); }); }, 400);
+} else if (window.KQProfiles) {
+  setTimeout(function () { if (!(KQProfiles.askChildName && KQProfiles.askChildName())) { KQProfiles.askOnStart(); askPrefs(); } }, 300);
+} else askPrefs();
 </script>
 <script src="games/kq-leaderboard.js?v=20261127b"></script>
 <script src="web-ads.js?v=20261123a"></script>

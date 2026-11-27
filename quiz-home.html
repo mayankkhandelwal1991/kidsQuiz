@@ -38,6 +38,9 @@ body.pg-home { background: linear-gradient(180deg, #e0f2fe 0%, #f5f3ff 45%, #fdf
 .hm-actions { display: flex; gap: 8px; }
 .hm-ibtn { height: 42px; min-width: 42px; padding: 0 12px; border: none; border-radius: 14px; background: rgba(255,255,255,.92); color: #0369a1; font: 800 14px 'Baloo 2', sans-serif; display: grid; place-items: center; box-shadow: 0 4px 0 rgba(3,105,161,.25); cursor: pointer; }
 .hm-ibtn img { width: 24px; height: 24px; }
+.hm-ibtn.hm-parent { display: flex; align-items: center; gap: 6px; margin-left: auto; color: #6d28d9; }
+.hm-ibtn.hm-parent img { width: 22px; height: 22px; }
+@media (max-width: 340px) { .hm-ibtn.hm-parent span { display: none; } }
 .hm-ibtn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(3,105,161,.25); }
 .hm-lbl { display: none; }
 .hm-menu-btn { display: none; }
@@ -227,6 +230,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
       </div>
       <div class="hm-top">
         <div class="hm-logo"><img src="images/app-logo.png" alt="Kids Quiz logo"><div><b>Kids Quiz</b><small>Ages 3–10 · LKG – Class 5</small></div></div>
+        <button type="button" class="hm-ibtn hm-parent" onclick="kqOpenParents()" aria-label="For parents" title="For parents"><img src="images/emoji/1f46a.svg" alt=""><span>Parents</span></button>
         <button type="button" class="hm-ibtn hm-menu-btn" id="hmMenuBtn" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="hmActions">☰</button>
         <div class="hm-actions" id="hmActions">
           <button type="button" class="hm-ibtn" id="hmAdmin" style="display:none" onclick="location.href='admin/users.html'" aria-label="Admin console" title="Admin console"><img src="images/emoji/2699.svg" alt=""><span class="hm-lbl">Admin console</span></button>
@@ -420,7 +424,8 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 <script src="profiles.js?v=20261127a" charset="utf-8"></script>
 <script src="guide-owl.js?v=20261127c" charset="utf-8"></script>
 <script src="onboard.js?v=20261127b" charset="utf-8"></script>
-<script src="quiz-shared.js?v=20261127a" charset="utf-8"></script>
+<script src="parent-report.js?v=20261127a" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261127b" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
 <script src="quiz/kids-engine.js?v=20261127a" charset="utf-8"></script>
 <script>

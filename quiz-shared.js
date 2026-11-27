@@ -650,7 +650,7 @@ function kqOpenParents() {
       btn('teacher', '🏫', 'Teacher mode', 'Give quizzes and stories to a class, see who finished', '#e0f2fe') +
       btn('share', '📤', 'Share Kids Quiz', 'Tell other parents — opens your phone’s share menu', '#ede9fe') +
       btn('rate', '⭐', 'Rate us on Google Play', 'Your review helps other families find us', '#fef3c7') +
-      (window.KQPlay && KQPlay.openReport ? btn('report', '📊', 'Weekly report', 'Quizzes and games your child finished', '#dcfce7') : '') +
+      (window.KQReport || (window.KQPlay && KQPlay.openReport) ? btn('report', '📊', 'Weekly progress report', 'Last 7 days: subjects, stories, play time · share on WhatsApp', '#dcfce7') : '') +
       btn('sound', muted ? '🔇' : '🔊', 'Sounds: ' + (muted ? 'off' : 'on'), 'Tap to turn ' + (muted ? 'on' : 'off'), '#e0f2fe') +
       btn('friends', kqFriendsOff() ? '🚫' : '👫', 'Play with friends: ' + (kqFriendsOff() ? 'off' : 'on'), 'Online games with friends (no chat). Tap to turn ' + (kqFriendsOff() ? 'on' : 'off') + ' for this child', '#e0f2fe') +
       (window.KQOnboard && KQOnboard.promise ? btn('promise', '🤝', 'Our promise to parents', 'No chat, no real money, child-safe ads', '#f0fdf4') : '') +
@@ -666,7 +666,7 @@ function kqOpenParents() {
       else if (a === 'friends') { try { localStorage.setItem('kq_friends_off', kqFriendsOff() ? '0' : '1'); } catch (er) {} w.remove(); kqOpenParents(); }
       else if (a === 'promise') { w.remove(); KQOnboard.promise(true); }
       else if (a === 'rate') rateApp();
-      else if (a === 'report') { w.remove(); KQPlay.openReport(); }
+      else if (a === 'report') { w.remove(); if (window.KQReport) KQReport.open(); else KQPlay.openReport(); }
       else if (a === 'kids') { w.remove(); KQProfiles.open(); }
       else if (a === 'teacher') { location.href = (location.pathname.indexOf('/quiz/') >= 0 || location.pathname.indexOf('/stories/') >= 0 ? '../' : '') + 'teacher.html'; }
       else if (a === 'limit') { try { localStorage.setItem('kq_time_limit', b.dataset.v); localStorage.removeItem('kq_time_extra'); } catch (er) {} w.remove(); kqOpenParents(); }

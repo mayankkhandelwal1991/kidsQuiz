@@ -183,7 +183,7 @@
 <div class="wrap" id="app"></div>
 
 <script src="../parent-gate.js?v=20261124a"></script>
-<script src="../quiz-shared.js?v=20261127a"></script>
+<script src="../quiz-shared.js?v=20261127b"></script>
 <script src="../games/kq-chant.js?v=20261127a"></script>
 <script>
 window.isGuestUser = false;
@@ -624,6 +624,8 @@ window.KQFX_NO_MUTE = true;
     music(false);
     const s = R.s, stars = skipped ? 0 : R.right, d = done();
     d[s.id] = Math.max(d[s.id] || 0, stars); lsSet('kq_story_done', d);
+    // dated log for the weekly parent report (parent-report.js)
+    const log = lsGet('kq_story_log', []); log.push({ id: s.id, at: Date.now() }); lsSet('kq_story_log', log.slice(-80));
     const plan = lsGet('kq_plan', {}); const today = new Date().toDateString();
     if (plan.d !== today) { plan.d = today; plan.done = {}; } plan.done.story = 1; lsSet('kq_plan', plan);
     try { if (stars && window.KQCoins) KQCoins.earn('quiz', 'story_' + s.id); } catch (e) {}

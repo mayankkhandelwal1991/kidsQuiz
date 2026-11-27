@@ -87,6 +87,7 @@
     var c = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
     if (!c || !menu.contains(c)) return false;
     var acts = document.getElementById('hmActions'); if (acts && acts.classList.contains('open')) return false;
+    var more = document.getElementById('hmMore'); if (more && more.classList.contains('open')) return false;
     return true;
   }
 

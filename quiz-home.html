@@ -92,6 +92,21 @@ body.pg-home { background: linear-gradient(180deg, #e0f2fe 0%, #f5f3ff 45%, #fdf
 .t-games { background: linear-gradient(140deg, #fb923c, #f43f5e); --sh: #be123c; }
 .t-multi { background: linear-gradient(140deg, #38bdf8, #0284c7); --sh: #075985; }
 .t-olym { background: linear-gradient(140deg, #34d399, #0d9488); --sh: #0f766e; }
+.t-story { background: linear-gradient(140deg, #fb7185, #c026d3); --sh: #a21caf; }
+.hm-tile.wide { grid-column: 1 / -1; min-height: 96px; }
+.hm-morebtn { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 14px; border: none; border-radius: 22px; padding: 12px 14px; background: #fff; color: #4c1d95; font-family: inherit; text-align: left; cursor: pointer; box-shadow: 0 5px 0 #ddd6fe, 0 10px 20px rgba(76,29,149,.08); }
+.hm-morebtn img { width: 40px; height: 40px; flex: 0 0 auto; }
+.hm-morebtn span { flex: 1; min-width: 0; } .hm-morebtn b { display: block; font-size: 19px; line-height: 1.1; } .hm-morebtn small { display: block; font-size: 12.5px; font-weight: 700; color: #6b7280; }
+.hm-morebtn i { font-style: normal; font-size: 28px; font-weight: 800; color: #a78bfa; }
+.hm-morebtn:active { transform: translateY(3px); box-shadow: 0 2px 0 #ddd6fe; }
+.hm-moresheet { position: fixed; inset: 0; z-index: 50; background: linear-gradient(180deg, #fef3c7, #fce7f3 55%, #ede9fe); display: flex; flex-direction: column; transform: translateY(100%); transition: transform .3s cubic-bezier(.2,.8,.2,1); visibility: hidden; }
+.hm-moresheet.open { transform: none; visibility: visible; }
+.hm-mhead { display: flex; align-items: center; justify-content: space-between; padding: max(12px, env(safe-area-inset-top)) 16px 6px; font-size: 21px; color: #4c1d95; max-width: 760px; width: 100%; margin: 0 auto; }
+.hm-mx { width: 44px; height: 44px; border: none; border-radius: 14px; background: #fff; font-size: 20px; font-weight: 800; color: #4c1d95; box-shadow: 0 3px 0 rgba(0,0,0,.08); cursor: pointer; }
+.hm-mbody { flex: 1; overflow-y: auto; padding: 0 14px calc(90px + env(safe-area-inset-bottom)); max-width: 760px; width: 100%; margin: 0 auto; }
+.hm-mbody .hm-h:first-child { margin-top: 6px; }
+.hm-skills.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); overflow: visible; margin: 0; padding: 2px 0 6px; gap: 12px 6px; }
+.hm-skills.grid .hm-sk { width: auto; }
 .hm-art { position: relative; z-index: 1; width: 64px; height: 64px; border-radius: 20px; background: #fff; display: grid; place-items: center; box-shadow: 0 5px 0 rgba(0,0,0,.12); }
 .hm-art > img { width: 42px; height: 42px; animation: hmWig 3.2s ease-in-out infinite; }
 .hm-art i { position: absolute; right: -14px; bottom: -10px; width: 34px; height: 34px; border-radius: 12px; background: #fff; display: grid; place-items: center; box-shadow: 0 3px 0 rgba(0,0,0,.12); }
@@ -162,7 +177,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   .hm .kqp-home:has(> :nth-child(4):last-child) { grid-template-columns: repeat(2, 1fr); }
   @media (min-width: 760px) { .hm .kqp-home:has(> :nth-child(4):last-child) { grid-template-columns: repeat(4, 1fr); } }
   /* 7-tab dock */
-  .hm-dock { grid-template-columns: repeat(7, 1fr) !important; gap: 2px !important; padding-left: 6px !important; padding-right: 6px !important; }
+  .hm-dock { grid-template-columns: repeat(4, 1fr) !important; gap: 2px !important; padding-left: 6px !important; padding-right: 6px !important; }
   .hm-dock .kh-tab { min-width: 0; padding: 6px 0; }
   .hm-dock .kh-tab i { font-size: 20px; }
   .hm-dock .kh-tab b { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -243,35 +258,33 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
       <div class="hm-plan" id="hmPlan"></div>
       <div class="hm-plan hm-tasks" id="hmTasks" style="margin-top:12px"></div>
 
-      <!-- The four main places -->
+      <!-- The five main places (everything else is under "More") -->
       <div class="hm-h"><img src="images/emoji/1f3ae.svg" alt=""> Learn &amp; Play</div>
       <div class="hm-grid">
         <button type="button" class="hm-tile t-quiz" onclick="openQuizFlow()">
           <span class="hm-art"><img src="images/emoji/1f3af.svg" alt=""><i class="a2"><img src="images/emoji/1f4da.svg" alt=""></i></span>
           <span class="hm-tt">Quiz</span><span class="hm-ts">20 subjects</span><span class="hm-go">Start ›</span>
         </button>
+        <button type="button" class="hm-tile t-story" onclick="location.href='stories/index.html'">
+          <span class="hm-art"><img src="images/emoji/1f4d6.svg" alt=""><i class="a2"><img src="images/emoji/1f3b5.svg" alt=""></i></span>
+          <span class="hm-tt">Stories</span><span class="hm-ts">&amp; Rhymes</span><span class="hm-go">Listen ›</span>
+        </button>
         <button type="button" class="hm-tile t-games" onclick="openSinglePlayer()">
           <span class="hm-art"><img src="images/emoji/1f3ae.svg" alt=""><i class="a2"><img src="images/emoji/1f680.svg" alt=""></i></span>
           <span class="hm-tt">Games</span><span class="hm-ts">50+ games</span><span class="hm-go">Play ›</span>
-        </button>
-        <button type="button" class="hm-tile t-multi" onclick="openMultiplayer()">
-          <span class="hm-art"><img src="images/emoji/1f465.svg" alt=""><i class="a2"><img src="images/emoji/1f3b2.svg" alt=""></i></span>
-          <span class="hm-tt">Friends</span><span class="hm-ts">Play online</span><span class="hm-go">Join ›</span>
         </button>
         <button type="button" class="hm-tile t-olym" onclick="window.location.href='Olympiad/index.html'">
           <span class="hm-art"><img src="images/emoji/1f3c5.svg" alt=""><i class="a2"><img src="images/emoji/1f9e0.svg" alt=""></i></span>
           <span class="hm-tt">Olympiad</span><span class="hm-ts">Test papers</span><span class="hm-go">Try ›</span>
         </button>
+        <button type="button" class="hm-tile t-multi wide" onclick="openMultiplayer()">
+          <span class="hm-art"><img src="images/emoji/1f465.svg" alt=""><i class="a2"><img src="images/emoji/1f3b2.svg" alt=""></i></span>
+          <span class="hm-tt">Friends</span><span class="hm-ts">Play online</span><span class="hm-go">Join ›</span>
+        </button>
       </div>
 
 
-      <!-- 3. Jump straight to a skill (one swipeable row) -->
-      <div class="hm-h" id="hmSkillsH"><img src="images/emoji/1f4da.svg" alt=""> Pick a skill <a class="hm-more" href="learn.html">See all ›</a></div>
-      <div class="hm-skills" id="hmSkills"></div>
-
-      <!-- 4. Daily extras -->
-      <div class="hm-h" id="hmFunH"><img src="images/emoji/2728.svg" alt=""> Fun zone</div>
-      <div class="kqp-home" id="kqpHome"></div>
+      <button type="button" class="hm-morebtn" onclick="hmOpenMore()"><img src="images/emoji/2728.svg" alt=""><span><b>More</b><small>Skills, Fun zone, badges, league &amp; leaderboard</small></span><i>›</i></button>
 
       <!-- 5. Grown-ups (everything here is behind the parent gate) -->
       <div class="hm-grown">
@@ -285,14 +298,23 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
       </div>
     </main>
 
+    <!-- MORE: everything that is not one of the five main places -->
+    <div class="hm-moresheet" id="hmMore" role="dialog" aria-label="More" aria-hidden="true">
+      <div class="hm-mhead"><b>✨ More to explore</b><button type="button" class="hm-mx" onclick="hmCloseMore()" aria-label="Close">✕</button></div>
+      <div class="hm-mbody">
+        <div class="hm-h" id="hmSkillsH"><img src="images/emoji/1f4da.svg" alt=""> Pick a skill <a class="hm-more" href="learn.html">See all ›</a></div>
+        <div class="hm-skills grid" id="hmSkills"></div>
+        <div class="hm-h" id="hmFunH"><img src="images/emoji/2728.svg" alt=""> Fun zone</div>
+        <div class="kqp-home" id="kqpHome"></div>
+        <button type="button" class="hm-morebtn" onclick="openLeaderboardHub()"><img src="images/emoji/1f3c6.svg" alt=""><span><b>Leaderboard</b><small>Best scores in every game and quiz</small></span><i>›</i></button>
+      </div>
+    </div>
+
     <nav class="kh-dock hm-dock" aria-label="Main">
-      <button type="button" class="kh-tab on" onclick="hmDockTo('top')"><i>🏠</i><b>Home</b></button>
-      <button type="button" class="kh-tab" onclick="openQuizFlow()"><i>🎯</i><b>Quiz</b></button>
-      <button type="button" class="kh-tab" onclick="hmDockTo('hmSkillsH')"><i>📚</i><b>Skills</b></button>
+      <button type="button" class="kh-tab on" onclick="hmCloseMore(); hmDockTo('top')"><i>🏠</i><b>Home</b></button>
       <button type="button" class="kh-tab" onclick="location.href='stories/index.html'"><i>📖</i><b>Stories</b></button>
-      <button type="button" class="kh-tab" onclick="showGameOptions()"><i>🎮</i><b>Play</b></button>
-      <button type="button" class="kh-tab" onclick="hmDockTo('hmFunH')"><i>✨</i><b>Fun</b></button>
-      <button type="button" class="kh-tab" onclick="openLeaderboardHub()"><i>🏆</i><b>Rank</b></button>
+      <button type="button" class="kh-tab" onclick="showGameOptions()"><i>🎮</i><b>Games</b></button>
+      <button type="button" class="kh-tab" onclick="hmOpenMore()"><i>✨</i><b>More</b></button>
     </nav>
   </div>
 
@@ -396,7 +418,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 
 <script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
 <script src="profiles.js?v=20261126e" charset="utf-8"></script>
-<script src="guide-owl.js?v=20261127b" charset="utf-8"></script>
+<script src="guide-owl.js?v=20261127c" charset="utf-8"></script>
 <script src="onboard.js?v=20261127a" charset="utf-8"></script>
 <script src="quiz-shared.js?v=20261126d" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
@@ -1103,7 +1125,22 @@ function renderTeacherTasks(n) {
     });
   }).catch(() => { el.innerHTML = ''; });
 }
+function hmOpenMore(sectionId) {
+  const m = document.getElementById('hmMore'); if (!m) return;
+  document.querySelectorAll('.hm-dock .kh-tab').forEach((t, i) => t.classList.toggle('on', i === 3));
+  if (!m.classList.contains('open')) { m.classList.add('open'); m.setAttribute('aria-hidden', 'false'); try { history.pushState({ more: 1 }, '', '#more'); } catch (e) {} }
+  const t = sectionId && document.getElementById(sectionId), body = m.querySelector('.hm-mbody');
+  if (body) body.scrollTop = t ? t.offsetTop - 8 : 0;
+}
+function hmCloseMore(fromBack) {
+  const m = document.getElementById('hmMore'); if (!m || !m.classList.contains('open')) return;
+  m.classList.remove('open'); m.setAttribute('aria-hidden', 'true');
+  document.querySelectorAll('.hm-dock .kh-tab').forEach((t, i) => t.classList.toggle('on', i === 0));
+  if (!fromBack && history.state && history.state.more) { try { history.back(); } catch (e) {} }
+}
+window.addEventListener('popstate', function () { hmCloseMore(true); });
 function hmDockTo(id) {
+  if (id === 'hmSkillsH' || id === 'hmFunH') { hmOpenMore(id); return; }
   if (id === 'top') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
   const el = document.getElementById(id); if (!el) return;
   window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 12, behavior: 'smooth' });

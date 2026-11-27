@@ -675,7 +675,11 @@ window.KQFX_NO_MUTE = true;
   }
   window.addEventListener('hashchange', route);
   window.addEventListener('pagehide', () => { stopSpeech(); music(false); songStop(); });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) { stopSpeech(); music(false); songStop(); } });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { stopSpeech(); music(false); songStop(); return; }
+    // back from the background (or an ad): carry on reading where we were
+    if (R && R.auto && $app.querySelector('.reader')) setTimeout(() => { if (!document.hidden) renderPage(); }, 500);
+  });
   load().then(route).catch(() => { $app.innerHTML = '<div class="soon" style="margin-top:40px">' + emo('📡', 40) + '<br>Stories could not load. Check the internet and try again.</div>'; });
 })();
 </script>

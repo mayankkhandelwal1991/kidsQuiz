@@ -67,7 +67,7 @@ object Reminders {
         val text = p.getString("text", "") ?: ""
         // Nothing played this week (text is from an older week): no notification.
         if (text.isBlank() || System.currentTimeMillis() > p.getLong("until", 0L)) return
-        notify(ctx, NOTIF_WEEKLY, p.getString("title", "") ?: "Your week in Kids Quiz", text)
+        notify(ctx, NOTIF_WEEKLY, p.getString("title", "") ?: "Your week in Kids Quiz", text, "report")
     }
 
     private fun pending(ctx: Context): PendingIntent =
@@ -134,7 +134,10 @@ object Reminders {
         try { NotificationManagerCompat.from(ctx).notify(NOTIF_ID, n) } catch (e: SecurityException) { }
     }
 
-    private fun notify(ctx: Context, id: Int, title: String, body: String) {
+    // Extra on the notification's intent: what the app should open ("report" = weekly parent report).
+    const val EXTRA_ACTION = "kq_action"
+
+    private fun notify(ctx: Context, id: Int, title: String, body: String, action: String = "") {
         if (Build.VERSION.SDK_INT >= 33 &&
             ContextCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
         ) return
@@ -147,8 +150,9 @@ object Reminders {
             )
         }
         val open = PendingIntent.getActivity(
-            ctx, 1,
-            Intent(ctx, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP),
+            ctx, if (action.isEmpty()) 1 else 3,
+            Intent(ctx, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                .apply { if (action.isNotEmpty()) putExtra(EXTRA_ACTION, action) },
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val n = NotificationCompat.Builder(ctx, CHANNEL_ID)

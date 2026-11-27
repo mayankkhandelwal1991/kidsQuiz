@@ -261,7 +261,16 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (::webView.isInitialized) webView.onResume()   // the page sees "visible" again
         checkMandatoryUpdate(AppConfig.load(this))   // came back from the Play Store / Google's update screen
+    }
+
+    // App in the background, or a full-screen ad on top: stop the read-aloud voice and tell the
+    // page it is hidden, so rhyme music, stories and games pause (they listen for visibilitychange).
+    override fun onPause() {
+        tts?.stop()
+        if (::webView.isInitialized) webView.onPause()
+        super.onPause()
     }
 
     private fun applyConfig(cfg: JSONObject, fromNetwork: Boolean) {
@@ -398,8 +407,22 @@ class MainActivity : ComponentActivity() {
                 capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 
+    // What the page should open after a notification tap ("report" = weekly parent report).
+    // The home page asks once with Android.consumeLaunchAction().
+    @Volatile private var launchAction: String = ""
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val a = intent.getStringExtra(Reminders.EXTRA_ACTION) ?: ""
+        if (a.isNotEmpty()) {
+            launchAction = a
+            sendToPage("window.kqLaunchAction && window.kqLaunchAction('" + a.replace("'", "") + "')")
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        launchAction = intent?.getStringExtra(Reminders.EXTRA_ACTION) ?: ""
 
         // Debug builds only: allow Chrome DevTools to inspect the WebView (never in release).
         if (0 != (applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE)) {
@@ -1470,6 +1493,10 @@ class MainActivity : ComponentActivity() {
             val p = pitch?.toFloatOrNull() ?: 1.0f
             runOnUiThread { speakText(text, lang, r, p) }
         }
+
+        // What to open after a notification tap, once ("report" or ""). Usage: Android.consumeLaunchAction()
+        @JavascriptInterface
+        fun consumeLaunchAction(): String { val a = launchAction; launchAction = ""; return a }
 
         // Stop the read-aloud voice now (stories, ads).
         // Usage in JS:  Android.stopSpeaking();

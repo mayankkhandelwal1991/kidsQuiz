@@ -1392,6 +1392,11 @@ owlTalk();
 try { KQGuide.start({ name: firstName }); } catch (e) {}
 renderTeacherTasks();
 // Guests who never gave a name (older sessions) are asked once.
+// The app's Sunday notification ("📊 Aarav's week") opens the weekly report, behind the grown-up question.
+window.kqLaunchAction = function (a) {
+  if (a === 'report' && window.KQReport) setTimeout(function () { kqParentGate(function () { KQReport.open(); }); }, 900);
+};
+try { if (window.Android && Android.consumeLaunchAction) { const la = Android.consumeLaunchAction(); if (la) kqLaunchAction(la); } } catch (e) {}
 // Then (once per child) the 3 "getting to know you" questions, and home is built from the answers.
 function askPrefs() {
   if (!window.KQOnboard || KQOnboard.prefs()) return;

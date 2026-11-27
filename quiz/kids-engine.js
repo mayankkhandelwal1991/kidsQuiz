@@ -393,7 +393,9 @@
       const keys = Object.keys(map);
       const a = pickR(r, keys);
       const q = `Who says “${map[a]}”?`;
-      return { type: 'pick', listen: true, cue: { kind: 'listen' }, prompt: q, say: `Listen! ${map[a]}! ${map[a]}! Who makes this sound?`, options: shuffleR(r, [a].concat(sampleR(r, others(keys, [a]), NO(L) - 1))).map(optPic), answer: a };
+      // animals: a real recording (audio/animals/<name>.wav, credits in audio/animals/CREDITS.md); snake: a made hiss
+      const snd = useThings ? null : (a === 'snake' ? 'hiss' : 'animals/' + a + '.wav');
+      return { type: 'pick', listen: true, snd, cue: { kind: 'listen' }, prompt: q, say: `Listen! ${map[a]}! ${map[a]}! Who makes this sound?`, options: shuffleR(r, [a].concat(sampleR(r, others(keys, [a]), NO(L) - 1))).map(optPic), answer: a };
     },
 
     k_fruits(r, L) {

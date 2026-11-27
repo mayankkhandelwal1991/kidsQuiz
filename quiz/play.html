@@ -288,7 +288,7 @@
 <script src="../parent-gate.js?v=20261124a"></script>
 <script src="../quiz-shared.js?v=20261126d"></script>
 <script src="../emoji-images.js?v=20261120i"></script>
-<script src="kids-engine.js?v=20261126a"></script>
+<script src="kids-engine.js?v=20261127a"></script>
 <script src="kids-sound.js?v=20261120i"></script>
 <script src="math-gen.js?v=20261120i"></script>
 <script>
@@ -440,6 +440,37 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
   function sayIt(text, level, cat) {
     if (!text) return;
     speak(text, { rate: isPre(level) ? 0.82 : 0.95, lang: cat === 'hindi' ? 'hi-IN' : 'en-US', raw: false });
+  }
+  /* "Who says?": the real animal sound, then the question. Falls back to the voice. */
+  let clip = null;
+  function playSound(q) {
+    if (isSoundMuted()) return;
+    try { speechSynthesis.cancel(); } catch (e) {}
+    const qi = playing && playing.i, P0 = playing;
+    const ask = () => { if (playing === P0 && playing.i === qi && !playing.results[qi] && playing.results[qi] !== false) sayIt('Who makes this sound?', playing.level, playing.cat); };
+    if (q.snd === 'hiss') { hiss(); setTimeout(ask, 1900); return; }
+    try {
+      if (clip) { clip.onended = clip.onerror = null; clip.pause(); }
+      clip = new Audio('../audio/' + q.snd); clip.volume = 1;
+      let asked = false; const after = () => { if (asked) return; asked = true; setTimeout(ask, 250); };
+      clip.onended = after;
+      clip.onerror = () => { asked = true; sayIt(q.say || q.prompt, playing.level, playing.cat); };
+      const pr = clip.play(); if (pr && pr.catch) pr.catch(() => { if (!asked) { asked = true; sayIt(q.say || q.prompt, playing.level, playing.cat); } });
+    } catch (e) { sayIt(q.say || q.prompt, playing.level, playing.cat); }
+  }
+  // a snake's "ssss": soft filtered noise, twice
+  function hiss() {
+    try {
+      const ac = new (window.AudioContext || window.webkitAudioContext)(), len = ac.sampleRate * 0.8, b = ac.createBuffer(1, len, ac.sampleRate), d = b.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      [0, 0.95].forEach((t0) => {
+        const s = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain(), t = ac.currentTime + 0.05 + t0;
+        s.buffer = b; f.type = 'bandpass'; f.frequency.value = 6500; f.Q.value = 0.9;
+        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.5, t + 0.12); g.gain.setValueAtTime(0.5, t + 0.55); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.8);
+        s.connect(f); f.connect(g); g.connect(ac.destination); s.start(t); s.stop(t + 0.85);
+      });
+      setTimeout(() => { try { ac.close(); } catch (e) {} }, 2500);
+    } catch (e) {}
   }
   function confetti(n) {
     const cols = ['#f43f5e', '#f59e0b', '#22c55e', '#3b82f6', '#a855f7', '#ec4899', '#facc15'];
@@ -692,7 +723,7 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     $app.innerHTML = h;
     bindCommon();
     document.getElementById('quitBtn').onclick = () => document.getElementById('quitModal').classList.add('on');
-    const say = () => sayIt(q.say || q.prompt, P.level, P.cat);
+    const say = () => q.snd ? playSound(q) : sayIt(q.say || q.prompt, P.level, P.cat);
     document.getElementById('sayBtn').onclick = () => { KidSound.unlock(); say(); };
     if (pre || q.listen) setTimeout(say, 350);
 

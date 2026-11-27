@@ -180,8 +180,9 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   .hm .kqp-home:has(> :nth-child(4):last-child) { grid-template-columns: repeat(2, 1fr); }
   @media (min-width: 760px) { .hm .kqp-home:has(> :nth-child(4):last-child) { grid-template-columns: repeat(4, 1fr); } }
   /* 7-tab dock */
-  .hm-dock { grid-template-columns: repeat(4, 1fr) !important; gap: 2px !important; padding-left: 6px !important; padding-right: 6px !important; }
+  .hm-dock { grid-template-columns: repeat(7, 1fr) !important; gap: 0 !important; padding-left: 6px !important; padding-right: 6px !important; }
   .hm-dock .kh-tab { min-width: 0; padding: 6px 0; }
+  .hm-dock .kh-tab b { font-size: 10px; letter-spacing: -.1px; }
   .hm-dock .kh-tab i { font-size: 20px; }
   .hm-dock .kh-tab b { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   @media (max-width: 340px) { .hm-dock .kh-tab b { font-size: 9px; } .hm-dock .kh-tab i { font-size: 18px; } }
@@ -315,10 +316,13 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
     </div>
 
     <nav class="kh-dock hm-dock" aria-label="Main">
-      <button type="button" class="kh-tab on" onclick="hmCloseMore(); hmDockTo('top')"><i>🏠</i><b>Home</b></button>
-      <button type="button" class="kh-tab" onclick="location.href='stories/index.html'"><i>📖</i><b>Stories</b></button>
-      <button type="button" class="kh-tab" onclick="showGameOptions()"><i>🎮</i><b>Games</b></button>
-      <button type="button" class="kh-tab" onclick="hmOpenMore()"><i>✨</i><b>More</b></button>
+      <button type="button" class="kh-tab on" data-tab="home" onclick="hmCloseMore(); hmDockTo('top')"><i>🏠</i><b>Home</b></button>
+      <button type="button" class="kh-tab" data-tab="quiz" onclick="hmCloseMore(); openQuizFlow()"><i>🎯</i><b>Quiz</b></button>
+      <button type="button" class="kh-tab" data-tab="stories" onclick="location.href='stories/index.html'"><i>📖</i><b>Stories</b></button>
+      <button type="button" class="kh-tab" data-tab="games" onclick="hmCloseMore(); showGameOptions()"><i>🎮</i><b>Games</b></button>
+      <button type="button" class="kh-tab" data-tab="skills" onclick="hmOpenMore('hmSkillsH')"><i>📚</i><b>Skills</b></button>
+      <button type="button" class="kh-tab" data-tab="ranks" onclick="hmCloseMore(); openLeaderboardHub()"><i>🏆</i><b>Leaders</b></button>
+      <button type="button" class="kh-tab" data-tab="more" onclick="hmOpenMore()"><i>✨</i><b>More</b></button>
     </nav>
   </div>
 
@@ -1135,7 +1139,7 @@ function renderTeacherTasks(n) {
 }
 function hmOpenMore(sectionId) {
   const m = document.getElementById('hmMore'); if (!m) return;
-  document.querySelectorAll('.hm-dock .kh-tab').forEach((t, i) => t.classList.toggle('on', i === 3));
+  document.querySelectorAll('.hm-dock .kh-tab').forEach((t) => t.classList.toggle('on', t.dataset.tab === (sectionId === 'hmSkillsH' ? 'skills' : 'more')));
   if (!m.classList.contains('open')) { m.classList.add('open'); m.setAttribute('aria-hidden', 'false'); try { history.pushState({ more: 1 }, '', '#more'); } catch (e) {} }
   const t = sectionId && document.getElementById(sectionId), body = m.querySelector('.hm-mbody');
   if (body) body.scrollTop = t ? t.offsetTop - 8 : 0;
@@ -1143,7 +1147,7 @@ function hmOpenMore(sectionId) {
 function hmCloseMore(fromBack) {
   const m = document.getElementById('hmMore'); if (!m || !m.classList.contains('open')) return;
   m.classList.remove('open'); m.setAttribute('aria-hidden', 'true');
-  document.querySelectorAll('.hm-dock .kh-tab').forEach((t, i) => t.classList.toggle('on', i === 0));
+  document.querySelectorAll('.hm-dock .kh-tab').forEach((t) => t.classList.toggle('on', t.dataset.tab === 'home'));
   if (!fromBack && history.state && history.state.more) { try { history.back(); } catch (e) {} }
 }
 window.addEventListener('popstate', function () { hmCloseMore(true); });

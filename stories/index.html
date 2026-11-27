@@ -183,7 +183,7 @@
 <div class="wrap" id="app"></div>
 
 <script src="../parent-gate.js?v=20261124a"></script>
-<script src="../quiz-shared.js?v=20261127b"></script>
+<script src="../quiz-shared.js?v=20261127c"></script>
 <script src="../games/kq-chant.js?v=20261127a"></script>
 <script>
 window.isGuestUser = false;
@@ -638,10 +638,12 @@ window.KQFX_NO_MUTE = true;
     $app.innerHTML = shell('<div class="end">' + emo(!skipped && stars === 3 ? '🏆' : R.rhyme ? '🎵' : '📚', 72) + '<h2>' + esc(title) + '</h2>' +
       (skipped ? '' : '<div class="stars">' + '★★★'.slice(0, stars) + '☆☆☆'.slice(0, 3 - stars) + '</div><p style="font-weight:700;margin:4px 0">' + stars + ' of ' + s.quiz.length + ' answers right</p>') +
       (s.level >= 1 && !R.rhyme ? '<div class="moral">' + emo('💡', 22) + ' ' + esc(fill(last)) + '</div>' : '') +
+      (window.KQPlay && KQPlay.certificate ? '<button class="big alt" id="cert" style="background:linear-gradient(135deg,#f59e0b,#ec4899)">🎓 Get your certificate</button>' : '') +
       '<button class="big go" id="more">' + emo(R.rhyme ? '🎵' : '📚', 26) + ' More ' + (R.rhyme ? 'rhymes' : 'stories') + '</button><button class="big alt" id="again">↺ ' + (R.rhyme ? 'Sing' : 'Read') + ' again</button></div>');
     bindShell();
     sayOne(skipped ? title : title + ' You got ' + stars + ' out of ' + s.quiz.length + '.', 0.95, () => {});
     $app.querySelector('#more').onclick = () => { tap(); location.hash = '#/' + (R.rhyme ? 'r' : 'c') + '/' + s.level; };
+    const ce = $app.querySelector('#cert'); if (ce) ce.onclick = () => { tap(); KQPlay.certificate({ icon: R.rhyme ? '🎵' : '📖', heading: R.rhyme ? 'Super Singer' : 'Story Star', title: fill(s.title).slice(0, 34), line: (R.rhyme ? 'Sang the whole rhyme' : 'Finished the story') + (skipped ? '' : ' and answered ' + stars + ' of ' + s.quiz.length + ' questions'), text: (R.rhyme ? 'Sang “' : 'Finished the story “') + fill(s.title) + '” on Kids Quiz! 📚' }); };
     $app.querySelector('#again').onclick = () => { tap(); R.page = 0; renderPage(); };
   }
 
@@ -676,7 +678,7 @@ window.KQFX_NO_MUTE = true;
   load().then(route).catch(() => { $app.innerHTML = '<div class="soon" style="margin-top:40px">' + emo('📡', 40) + '<br>Stories could not load. Check the internet and try again.</div>'; });
 })();
 </script>
-<script src="../games/kq-leaderboard.js?v=20261127c"></script>
+<script src="../games/kq-leaderboard.js?v=20261127d"></script>
 <script src="../web-ads.js?v=20261123a"></script>
 </body>
 </html>

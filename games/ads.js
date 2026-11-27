@@ -89,7 +89,7 @@ function onGameComplete() {
   // Load the shared leaderboard module (sits next to ads.js in /Game).
   if (!window.KQ) {
     var s = document.createElement('script');
-    s.src = ADS_BASE + 'kq-leaderboard.js?v=20261127c';
+    s.src = ADS_BASE + 'kq-leaderboard.js?v=20261127d';
     s.async = false;
     document.head.appendChild(s);
   }

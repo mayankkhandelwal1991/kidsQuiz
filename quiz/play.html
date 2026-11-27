@@ -286,7 +286,7 @@
 </div>
 
 <script src="../parent-gate.js?v=20261124a"></script>
-<script src="../quiz-shared.js?v=20261127b"></script>
+<script src="../quiz-shared.js?v=20261127c"></script>
 <script src="../emoji-images.js?v=20261120i"></script>
 <script src="kids-engine.js?v=20261127a"></script>
 <script src="kids-sound.js?v=20261120i"></script>
@@ -313,7 +313,7 @@ function registerQuiz(subject, level, questions) {
 window.KQ_NO_WIDGET = true;
 window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, isMuted: isSoundMuted };
 </script>
-<script src="../games/kq-leaderboard.js?v=20261127c"></script>
+<script src="../games/kq-leaderboard.js?v=20261127d"></script>
 <script src="../web-ads.js?v=20261123a"></script>
 <script>
 (function () {
@@ -834,7 +834,7 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
       '<h2>' + title + '</h2><div class="stars3" id="st"><span>⭐</span><span>⭐</span><span>⭐</span></div>' +
       '<div class="score">' + correct + ' / ' + total + ' correct</div>' +
       '<div class="cheer">' + esc(cheerLine(correct, total)) + '</div>' +
-      '<div class="btns">' + (P.paper < n ? '<button class="btn" id="nextP">Next quiz ▶</button>' : nextCat ? '<button class="btn" id="nextC">Next quiz: ' + esc(nextCat.title) + ' ▶</button>' : '') +
+      '<div class="btns">' + (correct / total >= 0.8 && window.KQPlay && KQPlay.certificate ? '<button class="btn" id="cert" style="background:linear-gradient(135deg,#f59e0b,#ec4899)">🎓 Get your certificate</button>' : '') + (P.paper < n ? '<button class="btn" id="nextP">Next quiz ▶</button>' : nextCat ? '<button class="btn" id="nextC">Next quiz: ' + esc(nextCat.title) + ' ▶</button>' : '') +
       '<div class="row2"><button class="btn alt" id="again">↻ Play again</button><button class="btn alt" id="papers">📄 Papers</button></div>' +
       '<div class="row2"><button class="btn alt" id="topics">📚 Topics</button><button class="btn alt" id="board">🏆 Leaderboard</button></div></div></div>' +
       '<div class="ad-slot" id="adSlot"></div></div>';
@@ -845,6 +845,10 @@ window.KQFX = window.KQFX || { play: function () {}, celebrate: function () {}, 
     if (isPre(P.level)) setTimeout(() => speak(title + ' You got ' + correct + ' out of ' + total + '!', { raw: true, pitch: 1.3 }), 900);
     const base = '#/c/' + P.level + '/' + encodeURIComponent(P.cat);
     const nx = document.getElementById('nextP'); if (nx) nx.onclick = () => go('#/play/' + P.level + '/' + encodeURIComponent(P.cat) + '/' + (P.paper + 1));
+    const ce = document.getElementById('cert'); if (ce) ce.onclick = () => {
+      const c = (typeof getCatInfo === 'function' && getCatInfo(P.cat)) || { title: 'Quiz', icon: '🏆' };
+      KQPlay.certificate({ icon: c.icon || '🏆', heading: 'Certificate of Achievement', title: c.title + ' Star', line: 'Scored ' + correct + ' out of ' + total + ' (' + Math.round(correct / total * 100) + '%) · ' + classLabel(P.level), text: 'A ' + c.title + ' star on Kids Quiz: ' + correct + '/' + total + '! 🎉' });
+    };
     const nc = document.getElementById('nextC'); if (nc) nc.onclick = () => go('#/c/' + P.level + '/' + encodeURIComponent(nextCat.id));
     document.getElementById('again').onclick = () => { playing = null; route(); };
     document.getElementById('papers').onclick = () => go(base);

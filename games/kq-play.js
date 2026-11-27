@@ -539,10 +539,12 @@
       ctx.fillStyle = '#4338ca'; ctx.font = '800 34px ' + F; ctx.textAlign = 'left'; ctx.fillText('Kids Quiz', W0 / 2 - 165, 773);
       ctx.fillStyle = '#9ca3af'; ctx.font = '600 16px ' + F; ctx.textAlign = 'right'; ctx.fillText('Emoji graphics by Twemoji, CC-BY 4.0', W0 - 70, H0 - 66);
       var url = cv.toDataURL('image/png');
-      var text = o.text || (name + ' earned "' + o.title + '" in Kids Quiz! 🎉');
+      var text = (o.text || (name + ' earned "' + o.title + '" in Kids Quiz! 🎉')) + '\nhttps://play.google.com/store/apps/details?id=com.mk.kidsquiz';
       s.body.innerHTML = '<div class="kqp-cert"><img src="' + url + '" alt="Certificate"></div><div style="margin-top:12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">' +
-        '<button type="button" class="kqp-btn" id="kqpCertShare">📤 Share</button><a class="kqp-btn alt" id="kqpCertSave" href="' + url + '" download="kids-quiz-certificate.png" style="text-decoration:none">⬇️ Save</a></div>';
-      document.getElementById('kqpCertShare').onclick = function () {
+        '<button type="button" class="kqp-btn" id="kqpCertShare">📤 Grown-up: share</button><a class="kqp-btn alt" id="kqpCertSave" href="' + url + '" download="kids-quiz-certificate.png" style="text-decoration:none">⬇️ Save</a></div>';
+      document.getElementById('kqpCertShare').onclick = function () { if (typeof kqParentGate === 'function') kqParentGate(shareNow); else shareNow(); };
+      var shareNow = function () {
+        try { if (window.KQEvents) KQEvents.log('share_tapped'); } catch (e) {}
         try { if (window.Android && Android.shareImage) { Android.shareImage(url, text); return; } } catch (e) {}
         cv.toBlob(function (b) {
           var f = b && window.File ? new File([b], 'kids-quiz-certificate.png', { type: 'image/png' }) : null;

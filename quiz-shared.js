@@ -653,6 +653,7 @@ function kqOpenParents() {
       (window.KQReport || (window.KQPlay && KQPlay.openReport) ? btn('report', '📊', 'Weekly progress report', 'Last 7 days: subjects, stories, play time · share on WhatsApp', '#dcfce7') : '') +
       btn('sound', muted ? '🔇' : '🔊', 'Sounds: ' + (muted ? 'off' : 'on'), 'Tap to turn ' + (muted ? 'on' : 'off'), '#e0f2fe') +
       btn('friends', kqFriendsOff() ? '🚫' : '👫', 'Play with friends: ' + (kqFriendsOff() ? 'off' : 'on'), 'Online games with friends (no chat). Tap to turn ' + (kqFriendsOff() ? 'on' : 'off') + ' for this child', '#e0f2fe') +
+      (window.KQRef ? btn('invite', '🎁', 'Invite a family', 'Both families get bonus coins · or enter a code', '#fef3c7') : '') +
       (window.KQOnboard && KQOnboard.promise ? btn('promise', '🤝', 'Our promise to parents', 'No chat, no real money, child-safe ads', '#f0fdf4') : '') +
       btn('privacy', '🔒', 'Privacy policy', 'What we collect and why', '#f3f4f6') +
       '<div style="margin-top:14px;background:#f0fdf4;border-radius:18px;padding:12px 14px;font-size:14px;font-weight:600;color:#166534;line-height:1.4">' +
@@ -665,6 +666,7 @@ function kqOpenParents() {
       else if (a === 'share') shareApp();
       else if (a === 'friends') { try { localStorage.setItem('kq_friends_off', kqFriendsOff() ? '0' : '1'); } catch (er) {} w.remove(); kqOpenParents(); }
       else if (a === 'promise') { w.remove(); KQOnboard.promise(true); }
+      else if (a === 'invite') { w.remove(); KQRef.open(); }
       else if (a === 'rate') rateApp();
       else if (a === 'report') { w.remove(); if (window.KQReport) KQReport.open(); else KQPlay.openReport(); }
       else if (a === 'kids') { w.remove(); KQProfiles.open(); }

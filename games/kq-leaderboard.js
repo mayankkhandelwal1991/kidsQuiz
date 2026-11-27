@@ -616,12 +616,15 @@
     };
   }
   // A finished quiz/game/paper/match ('complete') or leaving early ('quit').
+  // finished quizzes / games / papers since the owl last spoke (guide-owl.js on home)
+  function countFinish() { try { localStorage.setItem("kq_owl_done", String((parseInt(localStorage.getItem("kq_owl_done"), 10) || 0) + 1)); } catch (e) {} }
   function adBreak(reason) {
+    if (reason !== "quit") countFinish();
     // the rating sheet waits only when a full-screen ad REALLY showed at this finish
     return adBreakAd(reason, function (adShown) { if (reason !== "quit") { try { maybeAskReview(adShown); } catch (e) {} } });
   }
   /* A finished story / rhyme / activity: counts towards the rating sheet, no ad. */
-  function finished() { try { maybeAskReview(false); } catch (e) {} }
+  function finished() { countFinish(); try { maybeAskReview(false); } catch (e) {} }
 
   /* ---- Native Play rating sheet (Google In-App Review) --------------------
      After N finished quizzes/games (admin: App settings -> Rating, default 3)

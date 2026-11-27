@@ -4,13 +4,17 @@
    • After the child has been idle on home for a while: the next idea.
    • Prefers things this child has never tried (stories, rhymes, tracing,
      tables, Olympiad, friends, Fun zone …).
+   • Back on home after finishing a few quizzes / papers / games: "Great playing!"
+     and a feature to try next (leaderboard, daily gift, question of the day,
+     Fun zone, league, badges …). Finishes are counted by kq-leaderboard.js
+     (kq_owl_done). The screen dims behind the owl so the message stands out.
    Only on the home page — never inside a quiz, game, story or paper — and
    it waits while any popup, menu or name box is open.
    ============================================================ */
 (function () {
   'use strict';
   if (window.KQGuide) return;
-  var IDLE_MS = 40000, FIRST_MS = 2500, PER_VISIT = 3, PER_DAY = 8;
+  var IDLE_MS = 40000, FIRST_MS = 2500, PER_VISIT = 3, PER_DAY = 8, AFTER_N = 2;
   var shownThisVisit = 0, idleTimer = null, el = null, current = null, nameFn = function () { return 'friend'; };
 
   function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
@@ -43,14 +47,26 @@
     { id: 'league', ic: '1f3c6', t: 'Weekly league', say: 'see the weekly league', fn: function () { if (window.KQPlay && KQPlay.openLeague) KQPlay.openLeague(); } },
     { id: 'games3d', ic: '1f680', t: '3D Games', say: 'play a 3D game', go: 'games/index.html', tried: function () { return lsJ('kq_recent_games_single', []).length > 0; } },
     { id: 'badges', ic: '1f3c5', t: 'Badges', say: 'see which badges you can win', fn: function () { if (window.KQCoins && KQCoins.openBadges) KQCoins.openBadges(); } },
+    { id: 'leaderboard', ic: '1f3c6', t: 'Leaderboard', say: 'see where you are on the leaderboard', go: 'leaderboard.html' },
+    { id: 'funzone', ic: '2728', t: 'Fun zone', say: 'open the Fun zone — gifts, shop and more', fn: function () { if (typeof hmDockTo === 'function') hmDockTo('hmFunH'); } },
+    { id: 'gift', ic: '1f381', t: 'Daily gift', say: 'open today’s free gift', fn: function () { if (window.KQPlay && KQPlay.openGift) KQPlay.openGift(); } },
+    { id: 'shop', ic: '1f6cd', t: 'Coin shop', say: 'spend your coins on fun new looks', fn: function () { if (window.KQPlay && KQPlay.openShop) KQPlay.openShop(); } },
     { id: 'siblings', ic: '1f46a', t: 'Brother or sister?', say: 'add a profile for your brother or sister', fn: function () { if (window.KQProfiles) KQProfiles.open(); }, when: function () { return window.KQProfiles && !KQProfiles.isGoogle() && KQProfiles.list().length < 2; } },
   ];
 
   // learning ideas first, then the fun extras; rotate daily; skip what was said "Later" to today
   var LEARN = ['stories', 'rhymes', 'read', 'tracing', 'tables', 'phonics', 'olympiad'];
-  function pick() {
+  // after playing: the app's extras, in this order
+  var AFTER = ['leaderboard', 'qotd', 'gift', 'funzone', 'league', 'badges', 'path', 'shop', 'friends', 'games3d'];
+  function pick(afterPlay) {
     var ex = explored(), skip = day().skip || [], dayN = Math.floor(Date.now() / 86400000);
     var ok = IDEAS.filter(function (x) { return (!x.when || x.when()) && skip.indexOf(x.id) < 0 && (!current || x.id !== current.id); });
+    if (afterPlay) {
+      var aft = AFTER.map(function (id) { return ok.filter(function (x) { return x.id === id; })[0]; }).filter(Boolean);
+      var newA = aft.filter(function (x) { return !ex[x.id] && !(x.tried && x.tried()); });
+      if (newA.length) return newA[0];
+      if (aft.length) return aft[dayN % aft.length];
+    }
     var rot = function (a) { if (!a.length) return a; var k = dayN % a.length; return a.slice(k).concat(a.slice(0, k)); };
     var order = rot(ok.filter(function (x) { return LEARN.indexOf(x.id) >= 0; })).concat(rot(ok.filter(function (x) { return LEARN.indexOf(x.id) < 0; })));
     var fresh = order.filter(function (x) { return !ex[x.id] && !(x.tried && x.tried()); });
@@ -75,6 +91,9 @@
     st.textContent =
       '.kqgo{position:fixed;right:10px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;align-items:flex-end;gap:6px;max-width:min(360px,calc(100vw - 20px));font-family:"Baloo 2",system-ui,sans-serif;animation:kqgoIn .45s cubic-bezier(.34,1.56,.64,1)}' +
       '.kqgo.out{animation:kqgoOut .3s ease-in forwards}' +
+      '.kqgo-bg{position:fixed;inset:0;z-index:59;background:rgba(15,10,40,.62);animation:kqgoFade .3s ease-out}.kqgo-bg.out{animation:kqgoFadeOut .3s ease-in forwards}' +
+      '@keyframes kqgoFade{from{opacity:0}}@keyframes kqgoFadeOut{to{opacity:0}}' +
+      '.kqgo-b b{font-size:16.5px!important}.kqgo-b{box-shadow:0 0 0 4px rgba(250,204,21,.9),0 14px 34px rgba(0,0,0,.4)!important}' +
       '@keyframes kqgoIn{from{transform:translateY(40px) scale(.6);opacity:0}}@keyframes kqgoOut{to{transform:translateY(40px) scale(.6);opacity:0}}' +
       '.kqgo-b{position:relative;flex:1;min-width:0;background:#fff;border-radius:22px 22px 6px 22px;padding:10px 12px;box-shadow:0 12px 30px rgba(30,27,75,.28);color:#1e1b4b}' +
       '.kqgo-b .h{display:flex;align-items:center;gap:8px}.kqgo-b .h img{width:38px;height:38px;flex:0 0 auto}' +
@@ -94,6 +113,7 @@
     if (!el) return;
     if (dismissed && current) { var d = day(); d.skip = (d.skip || []).concat(current.id); saveDay(d); }
     var e = el; el = null; e.classList.add('out'); setTimeout(function () { e.remove(); }, 320);
+    var bg = document.querySelector('.kqgo-bg'); if (bg) { bg.classList.add('out'); setTimeout(function () { bg.remove(); }, 320); }
     if (dismissed) armIdle();
   }
   function go(idea) {
@@ -101,17 +121,22 @@
     if (idea.fn) { idea.fn(); armIdle(); return; }
     location.href = typeof idea.go === 'function' ? idea.go() : idea.go;
   }
-  function show(greet) {
+  function doneCount() { var n = parseInt(ls('kq_owl_done'), 10); return isNaN(n) ? 0 : n; }
+  function show(greet, afterPlay) {
     if (el || !free()) { armIdle(); return; }
     var d = day(); if (d.n >= PER_DAY || shownThisVisit >= PER_VISIT) return;
-    var idea = pick(); if (!idea) return;
+    var played = afterPlay ? doneCount() : 0;
+    var idea = pick(afterPlay); if (!idea) return;
+    if (afterPlay) { try { localStorage.setItem('kq_owl_done', '0'); } catch (e) {} }
     current = idea; shownThisVisit++; d.n++; if (greet) d.greeted = true; saveDay(d);
     css();
     var nm = nameFn(), h = new Date().getHours();
-    var line = greet ? (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ', ' + nm + '! Let’s ' + idea.say + '!'
+    var line = afterPlay ? 'Great playing, ' + nm + '! You finished ' + played + ' games and quizzes. Now let’s ' + idea.say + '!'
+      : greet ? (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ', ' + nm + '! Let’s ' + idea.say + '!'
       : nm + ', let’s ' + idea.say + '!';
+    var bg = document.createElement('div'); bg.className = 'kqgo-bg'; bg.onclick = function () { hide(true); }; document.body.appendChild(bg);
     el = document.createElement('div'); el.className = 'kqgo'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Owl guide');
-    el.innerHTML = '<div class="kqgo-b"><button class="kqgo-x" aria-label="Close">×</button><div class="h"><img src="images/emoji/' + idea.ic + '.svg" alt=""><span><b>' + line.replace(/[<>&]/g, '') + '</b><small>Explore: ' + idea.t + '</small></span></div>' +
+    el.innerHTML = '<div class="kqgo-b"><button class="kqgo-x" aria-label="Close">×</button><div class="h"><img src="images/emoji/' + idea.ic + '.svg" alt=""><span><b>' + line.replace(/[<>&]/g, '') + '</b><small>' + (afterPlay ? '🎉 New for you: ' : 'Explore: ') + idea.t + '</small></span></div>' +
       '<div class="kqgo-r"><button class="kqgo-go">Let’s go! ▶</button><button class="kqgo-no">Later</button></div></div>' + OWL;
     document.body.appendChild(el);
     el.querySelector('.kqgo-go').onclick = function () { go(idea); };
@@ -134,7 +159,8 @@
     ['pointerdown', 'keydown', 'scroll'].forEach(function (ev) { window.addEventListener(ev, function () { if (!el) armIdle(); }, { passive: true }); });
     document.addEventListener('visibilitychange', function () { if (document.hidden) { clearTimeout(idleTimer); hide(false); } else armIdle(); });
     var d = day();
-    if (!d.greeted) setTimeout(function () { show(true); }, FIRST_MS); else armIdle();
+    if (doneCount() >= AFTER_N) setTimeout(function () { show(!d.greeted, true); }, FIRST_MS);
+    else if (!d.greeted) setTimeout(function () { show(true); }, FIRST_MS); else armIdle();
   }
 
   window.KQGuide = { start: start, show: show, hide: hide };

@@ -439,6 +439,7 @@ function submitTest() {
 }
 
 function showOlympiadCompletionAd() {
+  try { if (window.KQ && KQ.finished) KQ.finished(); } catch (e) {}   // counts for the owl guide and the rating sheet
   try {
     if (typeof Android !== "undefined" && Android.showAd && Android.showAd("interstitial") !== false) { try { if (window.KQ && KQ.adQuiet) KQ.adQuiet(true); } catch (e) {} }
   } catch (e) {

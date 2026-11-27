@@ -1,163 +1,157 @@
-# Play Store listing — Kids Quiz (updated 2026-11-26)
+# Play Store listing — Kids Quiz (updated 2026-11-27)
 
 Everything to paste into **Play Console → Grow users → Store presence → Main store listing**.
-Images are in this folder:
+This version leads with **parents and learning**; games come later.
 
 | What | File | Play Console field |
 |---|---|---|
-| Phone screenshots (8) | `screenshots/01…08-*.png` (1080 × 1920) | Phone screenshots — upload in this order |
+| Phone screenshots (8) | `screenshots/01…08-*.png` (1080 × 1920) | Phone screenshots, in the order and with the captions below |
 | Feature graphic | `feature-graphic.png` (1024 × 500) | Feature graphic |
-| App icon | your current 512 × 512 icon (no change needed) | App icon |
+| App icon | your current 512 × 512 icon | App icon |
 
-The same screenshots can also go into **7-inch and 10-inch tablet screenshots**.
 To remake the images after the app changes: `./make-assets.sh` (needs the local web server).
 
 ---
 
 ## App name (max 30 characters)
 
-Pick one. The first words matter most for search.
-
-1. `Kids Quiz: ABC, Maths & GK` ← recommended (26). Parents search for subjects ("ABC", "maths", "GK"), so every word is a search term.
-2. `Kids Quiz: GK & Olympiad Games` (30) — the older name, for India-first search
-3. `Kids Quiz – Learning Games` (26)
+1. `Kids Quiz: LKG to Class 5` (25) ← recommended: says who it is for in one look
+2. `Kids Quiz: ABC, Maths & GK` (26)
+3. `Kids Quiz – Learning App` (24)
 
 ## Short description (max 80 characters)
 
 ```
-ABC, phonics, counting, maths quiz & GK games for ages 3–10. LKG to Class 5!
+LKG to Class 5 learning: story time, read-aloud quizzes, Olympiad. Free & safe
 ```
-(76 characters.) It leads with the age range and subjects, the way Khan Academy Kids and ABCmouse do.
+(78 characters.)
 
-Alternative (A/B test it in Store listing experiments):
-
-```
-Letter tracing, times tables, GK quiz & Olympiad practice. Ages 3–10.
-```
-
-## Full description (max 4000 characters)
+A/B test alternative (Store listing experiments):
 
 ```
-Learning games for kids ages 3–10: preschool, kindergarten, LKG, UKG and Class 1–5. ABCs, phonics, letter tracing, colours, shapes, counting, times tables, a kids maths quiz and a GK quiz for kids, all in one app, with stars, badges and a friendly owl to cheer them on.
+Story time, Hindi rhymes, picture quizzes & Olympiad practice for LKG–Class 5
+```
+(77 characters.)
 
-🔤 ABC, PHONICS & TRACING (AGES 3–6)
-• ABC: find letters, capital and small letters, and "A is for Apple"
-• Phonics: letter sounds, rhyming words and sounding out c-a-t
-• Letter tracing: trace A–Z, a–z and numbers 0–9 with a finger
-• Counting 1 to 20, colours, shapes, patterns and an animal quiz for kids
-Every question is read aloud, so children who can't read yet can play on their own.
+## Keywords to keep in the text
 
-📖 STORY TIME
-Picture stories for every class, read aloud with each sentence highlighted: The Thirsty Crow, The Lion and the Mouse, The Hare and the Tortoise, Birbal and Tenali Raman. Some stories star your child by name! Each story ends with 3 questions.
+Play has no keyword field; these phrases are already in the full description below. Keep them if you edit it:
+`LKG UKG learning app` · `Olympiad practice Class 1-5` · `Hindi rhymes for kids` · `kids quiz free` · `story time for kids` · `read aloud` · `kids learning app India` · `GK quiz for kids` · `times tables` · `phonics`
 
-🦉 A DAILY PLAN FROM THE OWL
-Every day the owl makes a 3-step plan just for your child: read a story, learn a skill, play a game.
+## Full description (max 4000 characters, this one is about 3,430)
 
-✖️ MATHS GAMES & TIMES TABLES
-Times tables from 2 to 20 with a read-aloud table chart and stars for every table. Plus add & subtract, division, quick maths and number puzzles.
+```
+LKG to Class 5 learning with story time, read-aloud picture quizzes, Hindi rhymes and Olympiad practice. Kids Quiz is a free, safe LKG UKG learning app for children aged 3–10, made so parents can see what their child learns every week.
 
-🎯 FUN QUIZZES IN 20 SUBJECTS
-GK, English, Hindi, Science, Maths (add & subtract, multiplication, division), Animals, Plants, Space, Human Body, Geography, Computers, Sports, History and Capitals. Questions are made for each class, from picture questions with read-aloud for LKG and UKG to Class 5 GK quiz questions with answers.
+👨‍👩‍👧 MADE FOR PARENTS
+• A plan for your child: answer 3 quick questions (what they like, their class, friends or not) and the owl makes a 3-step plan every day
+• Weekly progress report: quizzes, stories, play time, best subject and what needs practice, with one suggested next step. Share it with family on WhatsApp (first name only)
+• Up to 6 children on one phone, each with their own progress. With Google sign-in, brothers and sisters appear on every phone of the family
+• Daily time limit you control
+• Certificates when your child scores 80% or finishes a story
 
-🗺️ MY LEARNING PATH
-Every class has its own colourful map. Finish a quiz to win stars ⭐ — get 1, 2 or 3 stars and unlock the next stop. Children always know what to play next.
+📖 STORY TIME & HINDI RHYMES
+57 picture stories and 21 rhymes for LKG to Class 5, told like a real storyteller: the owl says hello by name, characters speak in their own voices, real animal sounds, and every word lights up as it is read. Moral stories, Birbal and Tenali Raman, feelings and good habits. Hindi rhymes for kids like "Machli Jal Ki Rani Hai" and English rhymes, each with its own sing-along music. Short questions after each story (they can skip).
 
-🏅 OLYMPIAD PRACTICE PAPERS
-Practice papers for Maths, Science, English, GK, Computers, Social Studies, Reasoning and Creative Arts Olympiads. Great for school Olympiad preparation — and every finished paper earns a certificate.
+🔤 READ-ALOUD PICTURE QUIZZES (LKG & UKG)
+Every question is spoken, with big pictures and big buttons, so children who can't read yet can play alone: ABC, phonics, counting, colours, shapes, animals, "Who says?" with real animal sounds, fruits, body, weather and good habits.
+✏️ Letter tracing A–Z, a–z and 0–9 with a finger.
 
-🎮 50+ BRAIN GAMES & 3D GAMES
-Puzzles, word games, spelling, quick maths, memory match, racing and 3D runner games. Play alone or with friends online (2–8 players).
+🎯 KIDS QUIZ FOR CLASS 1–5 (20 SUBJECTS)
+Maths (add & subtract, multiplication, division), English, Hindi, GK, Science, EVS topics (animals, plants, human body, space), Geography, History, Computers, Sports, Capitals, Riddles and Reasoning, made for each class at NCERT level. The plan practises your child's weakest subject first and gets harder after a great week.
 
-🎁 SOMETHING NEW EVERY DAY
-• Question of the day with bonus coins
-• Daily gift calendar — day 7 is a big treasure chest!
-• Daily mission and play streaks 🔥
+🏅 OLYMPIAD PRACTICE CLASS 1-5
+5 practice papers per subject for Maths, Science, English, GK, Computer, Social Studies, Reasoning and Creative Arts Olympiads, with a timer, marks and a full answer review.
 
-🛍️ DRESS UP YOUR OWL
-Earn coins by learning and spend them in the owl shop: crowns, hats, cool glasses, photo frames and colourful home themes.
+✖️ TIMES TABLES & MATHS
+Tables 2 to 20 as a sing-along chant, then 10 questions and 3 stars per table.
 
-🏆 56 BADGES & WEEKLY LEAGUES
-Collect badges for quizzes, games, streaks and Olympiad papers. Join the weekly league for your class, or make a class code so classmates and friends can compete together.
+🏫 FOR TEACHERS & TUITION CLASSES
+Make a class code, share it on WhatsApp, give a quiz or a story as homework, and see who finished with their score (first names only). Download results as CSV.
 
-👨‍👩‍👧 MADE FOR PARENTS TOO
-• Weekly report every Sunday: how many quizzes and games your child finished
-• Shareable certificates for badges and Olympiad papers — send them to family on WhatsApp
-• Play history and accuracy for each subject
+🎮 GAMES AFTER LEARNING
+54 brain, word, puzzle and 3D games, plus 24 games to play with friends online (no chat). Stars, badges, a weekly league, a daily gift and a question of the day keep children coming back.
 
-🔒 SAFE FOR KIDS
-• No chat with strangers — leagues show only first names and country flags
-• Child-friendly ads only (rated G)
-• Play as a guest, or sign in with Google to keep progress on every device
+🔒 SAFE FOR CHILDREN — OUR PROMISE
+• No chat. Games with friends show only a first name and game moves, and parents can switch them off
+• No real money. Coins are only for fun; there is nothing to buy
+• Child-safe ads only, never personalised, shown only after a quiz or game — never while your child plays
+• First names only on leaderboards. Sharing, links and settings are behind a grown-up question
 
 Perfect for:
-✔ Kids ages 3–10: preschool, kindergarten, LKG, UKG and Class 1–5
-✔ ABC, phonics and letter tracing for little ones
-✔ Times tables and a kids maths quiz
-✔ GK quiz for kids and general knowledge practice
-✔ Olympiad preparation (maths, science, English, GK)
-✔ Learning English, Hindi and maths through play
-✔ Parents and teachers looking for educational games
+✔ LKG, UKG, preschool and kindergarten (ages 3–6)
+✔ Class 1 to Class 5 (ages 6–10)
+✔ Olympiad practice Class 1-5
+✔ Hindi rhymes for kids and English stories read aloud
+✔ Parents who want a free kids quiz app they can trust
+✔ Teachers and tuition centres giving homework
 
-Download Kids Quiz and make learning the best part of the day! 🦉
+Download Kids Quiz free and make learning the best part of the day! 🦉
 ```
+
+## Screenshot captions (8, in this order)
+
+Put each caption at the top of its screenshot (big, 2 lines max). Screens to capture are in brackets.
+
+1. **"A learning plan made for your child"** [home: Today for you + the five cards]
+2. **"Stories told like a storyteller"** [a story page with the speech bubble and highlighted words]
+3. **"Hindi & English rhymes to sing along"** [a rhyme page, characters dancing]
+4. **"Read-aloud quizzes for LKG & UKG"** [a picture quiz, e.g. "How many bananas?"]
+5. **"20 subjects for Class 1 to 5"** [quiz subject list for a class]
+6. **"Olympiad practice papers with answers"** [Olympiad result + answer review]
+7. **"See your child's week"** [weekly progress report with subject bars]
+8. **"Safe: no chat, no real money"** [the parent promise screen]
 
 ## What's new (release notes, max 500 characters)
 
 ```
-📖 New: Story Time — picture stories read aloud, for LKG to Class 5
-🦉 New: A daily plan from the owl, made for your child
-✏️ New: Letter tracing — trace A–Z, a–z and 0–9 with your finger
-🔊 New: Phonics — letter sounds, rhymes and sounding out words
-✖️ New: Times tables 2 to 20 with stars for every table
-🏠 A simpler home screen: Today, Learn & Play, and a "Pick a skill" row
-```
-
-## Release notes 1.0.13 (for reference)
-
-```
-🎉 New Fun zone!
-• 🗺️ My learning path — win stars to unlock the next subject
-• 🎁 Daily gift calendar and ❓ Question of the day
-• 🛍️ Owl shop — hats, glasses, frames and themes for your coins
-• 🏆 Weekly leagues by class or with a class code
-• 🏅 56 badges and certificates to share
-• 📊 Weekly report for parents every Sunday
-• Faster ads, bug fixes and a new badges screen
+👨‍👩‍👧 New for parents: weekly progress report you can share on WhatsApp
+🎯 3 quick questions, then a daily plan made for your child
+📖 Stories told like a storyteller, rhymes with their own music
+🐄 Real animal sounds in the "Who says?" quiz
+🏫 Teachers: share a class code on WhatsApp and see homework results
+🎓 Certificates after a great quiz or a story
+🎁 Invite a family: both get bonus coins
+🏠 A simpler home: five big cards
 ```
 
 ## Store settings
 
-- **Category:** Education (secondary tag ideas: Educational games, Quiz, Brain games)
-- **Tags** (Store settings → Tags): Educational, Quiz, Trivia, Puzzle, Learning, Kids
-- **Screenshots:** after this update, add shots of Letter tracing, Phonics and Times tables, and A/B test a tracing shot as the first screenshot (top preschool apps lead with letters and tracing).
-- **Contact email / website / privacy policy:** keep your current ones (privacy policy page: `privacy_policy.html`)
-- **Target audience (Policy → App content):** ages 5 & under, 6–8 and 9–12 → the app is in the **Families program**. Keep "Teacher Approved" consideration on.
+- **Category:** Education. **Tags:** Educational, Learning, Kids, Quiz, Puzzle.
+- **Target audience (Policy → App content):** ages 5 & under, 6–8 and 9–12 → **Families program**. Keep "Teacher Approved" consideration on.
+- **Contact email / website / privacy policy:** keep your current ones (`privacy_policy.html`).
 
-## Before you upload 1.0.13 — App content updates
+## Play Families policy — what to declare with this update
 
-1. **Data safety form** — new ad SDKs (Chartboost, Unity Ads, Liftoff/Vungle, DT Exchange) collect *device or other IDs* and *app interactions* for advertising and analytics. Update the form: Play Console → Policy → App content → Data safety. Each network publishes a "Google Play Data safety" guide — use it.
-2. **Ads declaration:** "Yes, my app contains ads" (already).
-3. **app-ads.txt** on your developer website: add the lines each network gives you (Chartboost, Unity, Liftoff, DT Exchange) next to the AdMob line in `PlayStoreThings/ads.txt`.
-4. **Firebase rule for leagues** — see `admin/README-admin.md` → "Weekly leagues". Without it the league screen shows "Leagues are not switched on yet".
+Checked against Google Play's Families policies (November 2026):
+
+1. **Content rating questionnaire → "Users can interact / share information": Yes.** "Play with friends" lets children play with others (game moves, nicknames; drawings in Doodle Guess). The app shows an in-app *"Be safe online"* reminder before children play with others, and parents can switch Friends off in For parents. Both are Families requirements for social features.
+2. **Data safety form:**
+   - *App activity / app interactions*: yes. Anonymous daily usage totals (quizzes, stories, games finished) for app improvement, not linked to the child.
+   - *Device or other IDs*: yes. A random ID made by the app (no advertising ID, no IMEI or MAC) to count installs and returning devices, plus whatever your ad networks declare.
+   - *Name*: first name or nickname only (leaderboards, teacher results).
+3. **Ads:** only Families self-certified ad SDKs, child-directed, no personalised ads; ads only after a quiz or game.
+4. **Referral coins:** the invite code is shared by a parent (behind the grown-up question); coins are in-app only, nothing to buy.
+5. **New Firebase rules:** publish `admin/firebase-rules.proposed.json` (class members, invite codes, usage totals) as described in the release notes for the team.
 
 ## Custom store listing for India (Hindi / Hinglish)
 
 Play Console → Store presence → Custom store listings → **Create** → Country: India, Language: Hindi.
 
-- **Name:** `Kids Quiz: GK Hindi & English` (29)
+- **Name:** `Kids Quiz: LKG से Class 5` (24)
 - **Short description:**
   ```
-  बच्चों के लिए GK quiz, maths, Hindi, English, Olympiad practice – LKG से Class 5
+  LKG से Class 5: कहानियाँ, Hindi rhymes, बोलकर पढ़ने वाले quiz और Olympiad
   ```
 - **Full description:** start with
   ```
-  Kids Quiz – बच्चों के लिए मज़ेदार GK quiz, Maths, Hindi, English और Olympiad practice papers! LKG, UKG और Class 1 से 5 तक के बच्चों के लिए। हर दिन Question of the day, daily gift, 56 badges, weekly league और parents के लिए weekly report.
+  Kids Quiz – LKG, UKG और Class 1 से 5 के बच्चों के लिए free learning app: कहानियाँ जो owl बोलकर सुनाता है, Hindi rhymes, picture quiz, Olympiad practice papers और parents के लिए weekly progress report जो WhatsApp पर share कर सकते हैं। No chat, no real money, child-safe ads.
   ```
-  then paste the English full description below it (Indian parents search in both).
+  then paste the English full description below it.
 
 ## Store listing experiments (free A/B tests)
 
-Play Console → Grow users → Store listing experiments. Run one at a time for 2–3 weeks:
+Play Console → Grow users → Store listing experiments. One at a time, 2–3 weeks each:
 1. Short description A vs B (above)
-2. First screenshot: "Learn & play" (01) vs "Your own learning path" (02)
-3. Feature graphic: current vs a version with a child-friendly photo / mascot close-up
+2. First screenshot: "A learning plan made for your child" (1) vs "Stories told like a storyteller" (2)
+3. App name 1 vs 2

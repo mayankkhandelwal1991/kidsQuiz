@@ -369,10 +369,35 @@
     })();
   }
 
+  /* ---- Anonymous usage counters (admin "How the app is used") ----
+     stats/<YYYYMMDD>/e/<event> and stats/<YYYYMMDD>/f/<feature> are plain daily totals:
+     no player key, no name, no device id. Each write adds exactly 1 (Firebase rules check it). */
+  function statDay() { var d = new Date(); return d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0"); }
+  function logEvent(name, feature) {
+    if (!/^[a-z_]{3,30}$/.test(String(name))) return;
+    ready.then(function () {
+      if (!db) return;
+      var day = statDay(), bump = function (path) { db.ref(path).transaction(function (v) { return (+v || 0) + 1; }).catch(function () {}); };
+      bump("stats/" + day + "/e/" + name);
+      var f = String(feature || "").toLowerCase().replace(/[^a-z0-9_-]+/g, "-").slice(0, 40);
+      if (f.length >= 2) bump("stats/" + day + "/f/" + f);
+    }).catch(function () {});
+  }
+  window.KQEvents = { log: logEvent };
+  // one app_open per app session
+  try { if (!sessionStorage.getItem("kq_open_logged")) { sessionStorage.setItem("kq_open_logged", "1"); logEvent("app_open", inAndroidApp() ? "open-app" : "open-web"); } } catch (e) {}
+
   function submit(cat, gameId, score, opts) {
     opts = opts || {};
     score = Number(score);
     if (!isFinite(score)) return Promise.resolve(false);
+    try {   // what was finished (quiz paper, game, friends game, Olympiad paper)
+      var gid = String(gameId || "").split("__")[0];
+      if (cat === "quiz") logEvent("quiz_done", "quiz-" + gid);
+      else if (cat === "olympiad") logEvent("quiz_done", "olympiad-" + gid);
+      else if (cat === "multi") logEvent("game_done", "friends-" + gid);
+      else logEvent("game_done", "game-" + gid);
+    } catch (e) {}
     return ready.then(function () {
       if (!db) return false;
       var u = currentUser();

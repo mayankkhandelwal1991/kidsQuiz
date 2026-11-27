@@ -183,7 +183,7 @@
 <div class="wrap" id="app"></div>
 
 <script src="../parent-gate.js?v=20261124a"></script>
-<script src="../quiz-shared.js?v=20261127c"></script>
+<script src="../quiz-shared.js?v=20261127d"></script>
 <script src="../games/kq-chant.js?v=20261127a"></script>
 <script>
 window.isGuestUser = false;
@@ -630,6 +630,7 @@ window.KQFX_NO_MUTE = true;
     if (plan.d !== today) { plan.d = today; plan.done = {}; } plan.done.story = 1; lsSet('kq_plan', plan);
     try { if (stars && window.KQCoins) KQCoins.earn('quiz', 'story_' + s.id); } catch (e) {}
     try { if (window.KQ && KQ.finished) KQ.finished(); } catch (e) {}
+    try { if (window.KQEvents) KQEvents.log('story_done', R.rhyme ? 'rhymes' : 'stories'); } catch (e) {}
     try { if (typeof kqTaskDone === 'function') kqTaskDone('story', s.id, s.level, skipped ? '✓' : stars + '★'); } catch (e) {}
     try { if (stars === 3 && window.KQFX && KQFX.celebrate) KQFX.celebrate(); } catch (e) {}
     const last = s.pages[s.pages.length - 1].text;
@@ -678,7 +679,7 @@ window.KQFX_NO_MUTE = true;
   load().then(route).catch(() => { $app.innerHTML = '<div class="soon" style="margin-top:40px">' + emo('📡', 40) + '<br>Stories could not load. Check the internet and try again.</div>'; });
 })();
 </script>
-<script src="../games/kq-leaderboard.js?v=20261127d"></script>
+<script src="../games/kq-leaderboard.js?v=20261127e"></script>
 <script src="../web-ads.js?v=20261123a"></script>
 </body>
 </html>

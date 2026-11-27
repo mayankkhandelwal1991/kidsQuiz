@@ -113,8 +113,12 @@
     Promise.all([
       db.ref('growth/d').once('value').then((s) => s.val() || {}, (e) => { denied = true; return {}; }),
       db.ref('growth/manual').once('value').then((s) => s.val() || {}, () => ({})),
-      db.ref('growth/meta').once('value').then((s) => s.val() || {}, () => ({}))
-    ]).then(([d, m, meta]) => { DEV = d; MAN = m; META = meta; render(); });
+      db.ref('growth/meta').once('value').then((s) => s.val() || {}, () => ({})),
+      // anonymous daily totals (no player keys, no names): stats/<YYYYMMDD>/{e,f}
+      db.ref('stats').once('value').then((s) => s.val() || {}, () => { statsDenied = true; return {}; }),
+      db.ref('classes').once('value').then((s) => s.val() || {}, () => ({})),
+      db.ref('tasks').once('value').then((s) => s.val() || {}, () => ({}))
+    ]).then(([d, m, meta, st, cl, tk]) => { DEV = d; MAN = m; META = meta; STATS = st; CLASSES = cl; TASKS = tk; render(); });
   }
 
   /* ---------- numbers from the app ---------- */
@@ -140,6 +144,36 @@
     const newIn = days.reduce((a, k) => a + (newBy[k] || 0), 0);
     const avgDau = days.reduce((a, k) => a + (actBy[k] || 0), 0) / days.length;
     return { days, today, newBy, actBy, cohorts, total, app, web, newIn, avgDau, d1, d1n, d7, d7n };
+  }
+  /* ---------- how the app is used (anonymous counters + teacher mode) ---------- */
+  let STATS = {}, CLASSES = {}, TASKS = {}, statsDenied = false;
+  const EVN = { app_open: 'App opens', quiz_done: 'Quizzes & Olympiad papers', story_done: 'Stories & rhymes', game_done: 'Games', homework_finished: 'Homework finished', homework_assigned: 'Homework given', teacher_class_created: 'Teacher classes made', share_tapped: 'Share taps', referral_used: 'Invite codes used' };
+  function featName(f) {
+    const [kind, ...rest] = f.split('-'), id = rest.join(' ').replace(/_/g, ' ');
+    const K = { quiz: 'Quiz', olympiad: 'Olympiad', game: 'Game', friends: 'Friends', homework: 'Homework', share: 'Share', open: 'Opened in' };
+    if (f === 'stories') return 'Stories'; if (f === 'rhymes') return 'Rhymes';
+    return (K[kind] || kind) + (id ? ': ' + id : '');
+  }
+  function usageCard(days) {
+    const ev = {}, ft = {};
+    days.forEach((k) => { const d = STATS[k] || {}; Object.keys(d.e || {}).forEach((n) => { ev[n] = (ev[n] || 0) + (+d.e[n] || 0); }); Object.keys(d.f || {}).forEach((n) => { if (/^(open|share|homework)-/.test(n)) return; ft[n] = (ft[n] || 0) + (+d.f[n] || 0); }); });
+    const top = Object.keys(ft).sort((a, b) => ft[b] - ft[a]).slice(0, 5), tmax = Math.max(1, ...top.map((k) => ft[k]));
+    // teacher mode: classes, homework given, completion = finished / (children in the class, or finished if more)
+    const codes = Object.keys(CLASSES).filter((c) => CLASSES[c] && CLASSES[c].owner);
+    let given = 0, slots = 0, finished = 0;
+    codes.forEach((c) => {
+      const members = Object.keys((CLASSES[c] && CLASSES[c].members) || {}).length, ts = TASKS[c] || {};
+      Object.keys(ts).forEach((id) => { const n = Object.keys((ts[id] && ts[id].done) || {}).length; given++; finished += n; slots += Math.max(members, n); });
+    });
+    const kp = (v, l, sub) => '<div class="kpi"><b>' + v + '</b><span>' + l + '</span>' + (sub ? '<br><i>' + sub + '</i>' : '') + '</div>';
+    let h = '<div class="card"><h2>How the app is used · ' + RANGE + ' days</h2>';
+    if (statsDenied) h += '<p class="muted small">⚠️ Publish the <b>stats</b> rule (admin/firebase-rules.proposed.json) to start counting. Teacher numbers below already work.</p>';
+    else h += '<p class="muted small">Anonymous daily totals: no names, no player ids, no device ids.</p>';
+    h += '<div class="kpis">' + ['quiz_done', 'story_done', 'game_done', 'share_tapped', 'referral_used', 'app_open'].map((n) => kp(num(ev[n] || 0), EVN[n])).join('') +
+      kp(num(codes.length), 'Teacher classes (all time)', num(ev.teacher_class_created || 0) + ' made in ' + RANGE + ' days') +
+      kp(slots ? pct(finished, slots) : '—', 'Homework completion', num(finished) + ' finished of ' + num(slots) + ' (' + num(given) + ' homework given)') + '</div>';
+    h += '<h3 style="margin:14px 0 6px">Top 5 features</h3>' + (top.length ? top.map((k) => '<div class="hb" style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="flex:0 0 42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(featName(k)) + '</span><span style="flex:1;background:var(--chip,#eef);border-radius:6px;height:14px;overflow:hidden"><i style="display:block;height:100%;width:' + (ft[k] / tmax * 100) + '%;background:var(--bar,#7c3aed)"></i></span><b style="min-width:42px;text-align:right">' + num(ft[k]) + '</b></div>').join('') : '<p class="muted">No data yet.</p>');
+    return h + '</div>';
   }
   /* ---------- numbers typed in from Play Console ---------- */
   function manualStats(days) {
@@ -175,6 +209,7 @@
     h += '<div class="card"><h2>Retention by first day</h2><p class="muted small">Of the devices first seen that day, how many came back on day 1, on day 7, and at any time in their first week.</p><div class="scroll"><table><tr><th>First day</th><th>New devices</th><th>Day 1</th><th>Day 7</th><th>Back within 7 days</th></tr>' +
       (rows.length ? rows.map((k) => { const c = A.cohorts[k], ok1 = addDays(k, 1) < A.today, ok7 = addDays(k, 7) < A.today; return '<tr><td>' + label(k) + '</td><td>' + c.n + '</td><td>' + (ok1 ? pct(c.d1, c.n) : '…') + '</td><td>' + (ok7 ? pct(c.d7, c.n) : '…') + '</td><td>' + (ok1 ? pct(c.w, c.n) : '…') + '</td></tr>'; }).join('') : '<tr><td colspan="5" class="muted">No new devices in this range yet.</td></tr>') +
       '</table></div></div>';
+    h += usageCard(A.days);
     $app.innerHTML = h + manualCard() + tips();
     bindForm();
   }

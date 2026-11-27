@@ -429,6 +429,7 @@ const KQ_SHARE_TEXT = 'Looking for fun educational games for children? Discover 
   'Explore fun quizzes, learning activities and brain challenges.\n\nDownload here:\n' + KQ_LINKS.play;
 async function shareApp() {
   const playStoreLink = KQ_LINKS.play, shareText = KQ_SHARE_TEXT;
+  try { if (window.KQEvents) KQEvents.log('share_tapped', 'share-app'); } catch (e) {}
   if (typeof Android !== "undefined" && Android.shareText) { Android.shareText(shareText); return; }      // native Android share sheet
   if (typeof Android !== "undefined" && Android.shareAppContent) { Android.shareAppContent('Kids Quiz', shareText); return; }
   if (typeof Android !== "undefined" && Android.shareApp) { Android.shareApp(); return; }
@@ -686,6 +687,7 @@ function kqTaskStart(t) { try { localStorage.setItem('kq_task_active', JSON.stri
 function kqTaskDone(type, ref, lv, score) {
   let t = null; try { t = JSON.parse(localStorage.getItem('kq_task_active') || 'null'); } catch (e) {}
   if (!t || t.type !== type || t.ref !== ref || (type === 'quiz' && +t.lv !== +lv)) return;
+  try { if (window.KQEvents) KQEvents.log('homework_finished', 'homework-' + type); } catch (e) {}
   const go = function () {
     try {
       const u = KQ.user(), nm = String(u.name || 'Player').split(' ')[0].slice(0, 14);

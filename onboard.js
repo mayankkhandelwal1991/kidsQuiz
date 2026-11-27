@@ -52,7 +52,9 @@
       '.kqob-go:disabled{opacity:.45}' +
       '.kqob-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}' +
       '.kqob-l{border:none;background:none;color:#6d28d9;font:800 14px "Baloo 2",sans-serif;cursor:pointer;padding:6px}' +
-      '.kqob-hint{font-size:12.5px;color:#7c3aed;font-weight:800;min-height:16px;margin-top:4px}';
+      '.kqob-hint{font-size:12.5px;color:#7c3aed;font-weight:800;min-height:16px;margin-top:4px}' +
+      '.kqob-pr{display:flex;flex-direction:column;gap:8px;text-align:left}.kqob-pi{display:flex;gap:10px;align-items:flex-start;background:#fff;border-radius:16px;padding:8px 10px;box-shadow:0 3px 0 #ede9fe}' +
+      '.kqob-pi img{width:34px;height:34px;flex:0 0 auto}.kqob-pi b{display:block;font-size:16px;line-height:1.15}.kqob-pi small{display:block;font-size:13px;font-weight:700;color:#4b5563;line-height:1.3}';
     document.head.appendChild(st);
   }
   var OWL = '<svg class="kqob-owl" viewBox="0 0 120 120" aria-hidden="true"><path d="M30 30 L40 12 L50 30Z" fill="#7c3aed"/><path d="M70 30 L80 12 L90 30Z" fill="#7c3aed"/><ellipse cx="60" cy="70" rx="42" ry="44" fill="#8b5cf6"/><ellipse cx="60" cy="82" rx="26" ry="28" fill="#ede9fe"/><circle cx="44" cy="50" r="17" fill="#fff"/><circle cx="76" cy="50" r="17" fill="#fff"/><circle cx="46" cy="51" r="8" fill="#1e1b4b"/><circle cx="74" cy="51" r="8" fill="#1e1b4b"/><circle cx="49" cy="48" r="3" fill="#fff"/><circle cx="77" cy="48" r="3" fill="#fff"/><path d="M54 62 L66 62 L60 72Z" fill="#f59e0b"/><path d="M38 24 Q60 0 82 24Z" fill="#facc15"/><circle cx="60" cy="8" r="5" fill="#f43f5e"/></svg>';
@@ -124,8 +126,33 @@
       draw();
     });
   }
-  /** Ask once, when this child has not answered yet. */
-  function ask() { return get() ? Promise.resolve(get()) : open(); }
+  /* ---- A promise to parents: once per phone, after the questions; re-open from For parents ---- */
+  var PROMISE = [
+    ['1f6ab', 'No chat', 'Children never chat with strangers. Games with friends show only a first name and game moves.'],
+    ['1fa99', 'No real money', 'Coins are just for fun inside the app. There is nothing to buy, ever.'],
+    ['1f6e1', 'Child-safe ads', 'Only family-safe ads, only after a quiz or game is finished, never while your child plays.'],
+    ['1f4ca', 'Your child’s progress is for you', 'Other players only ever see a first name and score. Your weekly report is in For parents.']
+  ];
+  function promise(force) {
+    var seen = false; try { seen = localStorage.getItem('kq_promise_seen') === '1'; } catch (e) {}
+    if (seen && !force) return Promise.resolve();
+    css(); close();
+    return new Promise(function (resolve) {
+      box = document.createElement('div'); box.className = 'kqob'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', 'Our promise to parents');
+      box.innerHTML = '<div class="kqob-c">' + OWL + '<h2>Our promise to parents</h2><p>What you can expect from Kids Quiz</p>' +
+        '<div class="kqob-pr">' + PROMISE.map(function (x) { return '<div class="kqob-pi">' + img(x[0]) + '<span><b>' + esc(x[1]) + '</b><small>' + esc(x[2]) + '</small></span></div>'; }).join('') + '</div>' +
+        '<button class="kqob-go" id="kqobOk">' + (force ? 'OK' : 'Let’s play! 🚀') + '</button>' +
+        (force ? '' : '<div class="kqob-row"><span></span><button class="kqob-l" id="kqobSkip">Skip</button></div>') + '</div>';
+      document.body.appendChild(box);
+      try { localStorage.setItem('kq_promise_seen', '1'); } catch (e) {}
+      say('A promise to parents. No chat. No real money. Child-safe ads. And your child’s progress is for you.');
+      var done = function () { try { if (window.speechSynthesis) speechSynthesis.cancel(); if (window.Android && Android.stopSpeaking) Android.stopSpeaking(); } catch (e) {} close(); resolve(); };
+      box.querySelector('#kqobOk').onclick = done;
+      var sk = box.querySelector('#kqobSkip'); if (sk) sk.onclick = done;
+    });
+  }
+  /** Ask once, when this child has not answered yet (then the parent promise, once per phone). */
+  function ask() { return get() ? Promise.resolve(get()) : open().then(function (v) { return promise(false).then(function () { return v; }); }); }
 
-  window.KQOnboard = { ask: ask, open: function () { return open({ edit: true }); }, prefs: get, LIKES: LIKES };
+  window.KQOnboard = { ask: ask, open: function () { return open({ edit: true }); }, prefs: get, LIKES: LIKES, promise: promise };
 })();

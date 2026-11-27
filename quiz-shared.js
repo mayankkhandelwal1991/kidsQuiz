@@ -634,6 +634,8 @@ function kqParentProgressHtml() {
     '<div style="margin-top:12px"><b>⏱️ Daily play time limit</b><div style="font-size:13px;color:#6b7280;font-weight:700">After this, the app shows “Time for a break”. A grown-up can add 15 minutes.</div>' +
     '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">' + chip(0, 'Off') + chip(30, '30 min') + chip(45, '45 min') + chip(60, '1 hour') + chip(90, '1½ hours') + '</div></div></div>';
 }
+/** A grown-up can switch off online games with friends for this child (Play Families: adults manage social features). */
+function kqFriendsOff() { try { return localStorage.getItem('kq_friends_off') === '1'; } catch (e) { return false; } }
 function kqOpenParents() {
   kqParentGate(function () {
     const old = document.getElementById('kqParents'); if (old) old.remove();
@@ -650,6 +652,8 @@ function kqOpenParents() {
       btn('rate', '⭐', 'Rate us on Google Play', 'Your review helps other families find us', '#fef3c7') +
       (window.KQPlay && KQPlay.openReport ? btn('report', '📊', 'Weekly report', 'Quizzes and games your child finished', '#dcfce7') : '') +
       btn('sound', muted ? '🔇' : '🔊', 'Sounds: ' + (muted ? 'off' : 'on'), 'Tap to turn ' + (muted ? 'on' : 'off'), '#e0f2fe') +
+      btn('friends', kqFriendsOff() ? '🚫' : '👫', 'Play with friends: ' + (kqFriendsOff() ? 'off' : 'on'), 'Online games with friends (no chat). Tap to turn ' + (kqFriendsOff() ? 'on' : 'off') + ' for this child', '#e0f2fe') +
+      (window.KQOnboard && KQOnboard.promise ? btn('promise', '🤝', 'Our promise to parents', 'No chat, no real money, child-safe ads', '#f0fdf4') : '') +
       btn('privacy', '🔒', 'Privacy policy', 'What we collect and why', '#f3f4f6') +
       '<div style="margin-top:14px;background:#f0fdf4;border-radius:18px;padding:12px 14px;font-size:14px;font-weight:600;color:#166534;line-height:1.4">' +
       '✅ Made for children: no chat with strangers, leagues show first names only.<br>✅ Ads are child-safe (rated G) and never personalised.<br>✅ Sharing and links to other apps are only here, for grown-ups.</div></div>';
@@ -659,6 +663,8 @@ function kqOpenParents() {
       const a = b.dataset.a;
       if (a === 'close') w.remove();
       else if (a === 'share') shareApp();
+      else if (a === 'friends') { try { localStorage.setItem('kq_friends_off', kqFriendsOff() ? '0' : '1'); } catch (er) {} w.remove(); kqOpenParents(); }
+      else if (a === 'promise') { w.remove(); KQOnboard.promise(true); }
       else if (a === 'rate') rateApp();
       else if (a === 'report') { w.remove(); KQPlay.openReport(); }
       else if (a === 'kids') { w.remove(); KQProfiles.open(); }

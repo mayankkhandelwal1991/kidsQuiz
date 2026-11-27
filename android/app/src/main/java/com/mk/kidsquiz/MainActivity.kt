@@ -1518,6 +1518,13 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        /** class.js: the teacher classes this child is in, with the newest test already seen.
+         *  The phone checks them every few hours and shows "New test from …" (ClassWatch). */
+        @JavascriptInterface
+        fun watchClasses(json: String?) {
+            try { ClassWatch.save(this@MainActivity, json ?: "[]") } catch (e: Exception) { Log.w("KidsQuizClass", "watch failed", e) }
+        }
+
         // What to open after a notification tap, once ("report" or ""). Usage: Android.consumeLaunchAction()
         @JavascriptInterface
         fun consumeLaunchAction(): String { val a = launchAction; launchAction = ""; return a }

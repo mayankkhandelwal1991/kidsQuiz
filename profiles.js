@@ -17,7 +17,7 @@
   var MAX = 6;
   var AVATARS = ['🦁', '🐼', '🦄', '🐯', '🐰', '🦊', '🐸', '🐵', '🐨', '🐙'];
   // kept for the whole device (never swapped)
-  var DEVICE = /^(kq_muted|kq_adCounter|kq_lastAdTime|kq_guest_session|kq_cached_auth|kq_dev.*|kq_app_config|kq_manifest_.*|kq_rating.*|kq_review_.*|kq_session|kq_profiles|kq_profile_active|kq_profile_data_.*|kq_story_autoplay|kq_lb_range|kq_lb_guests|kq_child_named|kq_profiles_hidden|kq_promise_seen|kq_ref_code|kq_ref_used|kq_push_off)$/;
+  var DEVICE = /^(kq_muted|kq_adCounter|kq_lastAdTime|kq_guest_session|kq_cached_auth|kq_dev.*|kq_app_config|kq_manifest_.*|kq_rating.*|kq_review_.*|kq_session|kq_profiles|kq_profile_active|kq_profile_data_.*|kq_story_autoplay|kq_lb_range|kq_lb_guests|kq_child_named|kq_profiles_hidden|kq_promise_seen|kq_ref_code|kq_ref_used|kq_push_off|kq_role|kq_role_asked|kq_teacher_codes|kq_teacher_name|kq_teacher_guide)$/;
   function ownKey(k) { return !DEVICE.test(k) && k.indexOf(':') < 0 && !/^(firebase|goog|_|ga|google|adsby|__)/i.test(k); }
   function get(k, d) { try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } }
   function set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }

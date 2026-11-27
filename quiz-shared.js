@@ -673,7 +673,7 @@ function kqOpenParents() {
       else if (a === 'rate') rateApp();
       else if (a === 'report') { w.remove(); if (window.KQReport) KQReport.open(); else KQPlay.openReport(); }
       else if (a === 'kids') { w.remove(); KQProfiles.open(); }
-      else if (a === 'teacher') { location.href = (location.pathname.indexOf('/quiz/') >= 0 || location.pathname.indexOf('/stories/') >= 0 ? '../' : '') + 'teacher.html'; }
+      else if (a === 'teacher') { if (window.KQRole) KQRole.set('teacher'); location.href = (location.pathname.indexOf('/quiz/') >= 0 || location.pathname.indexOf('/stories/') >= 0 ? '../' : '') + 'teacher.html'; }
       else if (a === 'limit') { try { localStorage.setItem('kq_time_limit', b.dataset.v); localStorage.removeItem('kq_time_extra'); } catch (er) {} w.remove(); kqOpenParents(); }
       else if (a === 'privacy') kqOpenExternal('https://mayankkhandelwal1991.github.io/kidsQuiz/privacy_policy.html');
       else if (a === 'sound') { try { localStorage.setItem('kq_muted', muted ? '0' : '1'); } catch (er) {} w.remove(); kqOpenParents(); }
@@ -689,6 +689,7 @@ function kqTaskStart(t) { try { localStorage.setItem('kq_task_active', JSON.stri
 function kqTaskDone(type, ref, lv, score) {
   let t = null; try { t = JSON.parse(localStorage.getItem('kq_task_active') || 'null'); } catch (e) {}
   if (!t || t.type !== type || t.ref !== ref || (type === 'quiz' && +t.lv !== +lv)) return;
+  if (window.KQRole && KQRole.isTeacher()) return;   // teacher preview
   try { if (window.KQEvents) KQEvents.log('homework_finished', 'homework-' + type); } catch (e) {}
   const go = function () {
     try {

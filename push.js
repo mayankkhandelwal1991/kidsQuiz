@@ -26,7 +26,7 @@
     t.push(isGoogle() ? 'google' : 'guest');
     (p.likes || []).forEach(function (k) { if (/^[a-z]{2,20}$/.test(k)) t.push('like_' + k); });
     if (p.friends === true) t.push('friends');
-    if ((lsJ('kq_teacher_codes', []) || []).length) t.push('teachers');
+    if (ls('kq_role') === 'teacher' || (lsJ('kq_teacher_codes', []) || []).length) t.push('teachers');
     return t;
   }
   function inApp() { try { return typeof Android !== 'undefined' && Android && typeof Android.pushRegister === 'function'; } catch (e) { return false; } }

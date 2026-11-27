@@ -215,6 +215,8 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
   @media (max-width: 380px) { .pl-step { gap: 7px; padding: 8px; } .pl-step .ic { width: 32px; height: 32px; } .pl-step .go { padding: 2px 9px; font-size: 13px; } }
   @media (min-width: 760px) { .hm-skills { flex-wrap: wrap; overflow: visible; margin: 0; padding: 2px 0 10px; } }
 </style>
+<script src="role.js?v=20261128a" charset="utf-8"></script>
+<script>try { if (KQRole.isTeacher()) location.replace('teacher.html'); } catch (e) {}</script>
 </head>
 <body class="pg-home">
 
@@ -257,6 +259,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 
     <main class="hm-body">
       <div class="pf-stats hm-stats" id="pfStats"></div>
+      <div id="hmRole"></div>
 
       <!-- Today: the owl's plan for this child, built from their answers (onboard.js) -->
       <div class="hm-h"><img src="images/emoji/1f31f.svg" alt=""> Today for you</div>
@@ -311,6 +314,7 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
         <div class="hm-skills grid" id="hmSkills"></div>
         <div class="hm-h" id="hmFunH"><img src="images/emoji/2728.svg" alt=""> Fun zone</div>
         <div class="kqp-home" id="kqpHome"></div>
+        <button type="button" class="hm-morebtn" onclick="hmCloseMore(); KQClass.openJoin(renderTeacherTasks)"><img src="images/emoji/1f3eb.svg" alt=""><span><b>Join my teacher’s class</b><small>Class code, or find your teacher by name</small></span><i>›</i></button>
         <button type="button" class="hm-morebtn" onclick="openLeaderboardHub()"><img src="images/emoji/1f3c6.svg" alt=""><span><b>Leaderboard</b><small>Best scores in every game and quiz</small></span><i>›</i></button>
       </div>
     </div>
@@ -425,13 +429,14 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 </div>
 
 <script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
-<script src="profiles.js?v=20261127c" charset="utf-8"></script>
+<script src="profiles.js?v=20261128a" charset="utf-8"></script>
 <script src="guide-owl.js?v=20261127c" charset="utf-8"></script>
 <script src="onboard.js?v=20261127b" charset="utf-8"></script>
 <script src="parent-report.js?v=20261127a" charset="utf-8"></script>
 <script src="referral.js?v=20261127a" charset="utf-8"></script>
-<script src="push.js?v=20261127a" charset="utf-8"></script>
-<script src="quiz-shared.js?v=20261127e" charset="utf-8"></script>
+<script src="push.js?v=20261128a" charset="utf-8"></script>
+<script src="class.js?v=20261128a" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261128a" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
 <script src="quiz/kids-engine.js?v=20261127a" charset="utf-8"></script>
 <script>
@@ -1117,25 +1122,13 @@ function loadPlanStories() {
   fetch('data/stories.json?v=20261126c', { cache: 'no-cache' }).then((r) => r.json()).then((j) => { __stories = j.stories || []; renderPlan(); }).catch(() => {});
 }
 function hmEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-/* 📝 Tasks from the teacher (child joined a class code in Fun zone → League) */
-function renderTeacherTasks(n) {
-  const el = document.getElementById('hmTasks'); if (!el) return;
-  const w = window.KQCoins && KQCoins.wallet ? KQCoins.wallet() : null;
-  if (!w) { if ((n || 0) < 40) setTimeout(() => renderTeacherTasks((n || 0) + 1), 500); return; }
-  if (!w.code || !window.KQ || !KQ.ready) { el.innerHTML = ''; return; }
-  KQ.ready.then(() => firebase.database().ref('tasks/' + w.code).limitToLast(10).once('value')).then((snap) => {
-    const v = snap.val() || {}, me = KQ.user().key;
-    const todo = Object.keys(v).reverse().filter((id) => !(v[id].done && v[id].done[me])).slice(0, 3);
-    if (!todo.length) { el.innerHTML = ''; return; }
-    const tn = (todo.map((id) => v[id].tn).filter(Boolean)[0]) || '';
-    el.innerHTML = '<div class="pl-top"><img src="images/emoji/1f3eb.svg" alt="" style="width:40px;height:40px"><div class="t"><b>Homework from ' + hmEsc(tn || 'your teacher') + '</b><small>Class code ' + hmEsc(w.code) + ' · ' + todo.length + ' to do</small></div></div><div class="pl-steps">' +
-      todo.map((id, i) => { const t = v[id]; return '<button type="button" class="pl-step" data-tid="' + hmEsc(id) + '" style="--a:#0ea5e9;--b:#6366f1"><span class="n">📝</span><span class="tx"><b>' + hmEsc(t.title) + '</b><small>' + (t.type === 'story' ? 'Story' : 'Quiz') + ' · ' + hmEsc(classLabel(t.lv)) + (t.tn ? ' · ' + hmEsc(t.tn) : '') + '</small></span><span class="go">Go ›</span></button>'; }).join('') + '</div>';
-    el.querySelectorAll('[data-tid]').forEach((b) => b.onclick = () => {
-      const id = b.dataset.tid, t = v[id];
-      kqTaskStart({ code: w.code, id, type: t.type, ref: t.ref, lv: t.lv });
-      location.href = t.type === 'story' ? 'stories/index.html#/s/' + encodeURIComponent(t.ref) : 'quiz/play.html#/c/' + t.lv + '/' + encodeURIComponent(t.ref);
-    });
-  }).catch(() => { el.innerHTML = ''; });
+/* 🏫 My class: tests from the teacher (class.js) + the Student / Teacher mode switch */
+function renderTeacherTasks() {
+  const el = document.getElementById('hmTasks'); if (el && window.KQClass) KQClass.renderHome(el);
+}
+function renderRoleToggle() {
+  const el = document.getElementById('hmRole'); if (!el || !window.KQRole) return;
+  el.innerHTML = KQRole.toggleHtml(); KQRole.bindToggle(el);
 }
 function hmOpenMore(sectionId) {
   const m = document.getElementById('hmMore'); if (!m) return;
@@ -1396,6 +1389,7 @@ owlTalk();
 // 🦉 Guide owl: home page only (never inside quizzes or games)
 try { KQGuide.start({ name: firstName }); } catch (e) {}
 renderTeacherTasks();
+renderRoleToggle();
 // Guests who never gave a name (older sessions) are asked once.
 // The app's Sunday notification ("📊 Aarav's week") opens the weekly report, behind the grown-up question.
 window.kqLaunchAction = function (a) {
@@ -1416,13 +1410,18 @@ function askPrefs() {
     KQOnboard.ask().then(function () { renderPlan(); renderSkills(); renderHomeProfile(); });
   })();
 }
-if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
-  setTimeout(function () { kqAskName().then(function () { renderHomeProfile(); if (window.KQProfiles) KQProfiles.ensure(); askPrefs(); }); }, 400);
-} else if (window.KQProfiles) {
-  setTimeout(function () { if (!(KQProfiles.askChildName && KQProfiles.askChildName())) { KQProfiles.askOnStart(); askPrefs(); } }, 300);
-} else askPrefs();
+function hmStartFlow() {
+  if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
+    setTimeout(function () { kqAskName().then(function () { renderHomeProfile(); if (window.KQProfiles) KQProfiles.ensure(); askPrefs(); }); }, 400);
+  } else if (window.KQProfiles) {
+    setTimeout(function () { if (!(KQProfiles.askChildName && KQProfiles.askChildName())) { KQProfiles.askOnStart(); askPrefs(); } }, 300);
+  } else askPrefs();
+}
+// After Google sign-in, first ask once: a child or a teacher? (role.js)
+if (window.KQRole && KQRole.needAsk()) setTimeout(function () { KQRole.ask().then(function (r) { if (r === 'student') hmStartFlow(); }); }, 300);
+else hmStartFlow();
 </script>
-<script src="games/kq-leaderboard.js?v=20261127e"></script>
+<script src="games/kq-leaderboard.js?v=20261128a"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>try { KQWebAds.rails(); } catch (e) {}</script>
 <script>

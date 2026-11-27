@@ -249,3 +249,12 @@ How phones are grouped: `push.js` subscribes each phone to topics (`all`, `class
 `push/tokens/<player>` for "selected players". Parents can switch notifications off in For parents.
 Needs the `push` and `pushlog` rules from `admin/firebase-rules.proposed.json`.
 Children's app (Play Families): keep messages friendly and useful — no ads or offers for other apps.
+
+## Teacher mode and classes (2026-11-28)
+
+- **Mode switch** (`role.js`, phone-wide `kq_role`): after Google sign-in the app asks once "A child / A teacher". Home has a Student mode / Teacher mode toggle; Teacher mode is behind the grown-up question. In Teacher mode home is `teacher.html` (Classes · Quizzes · Stories · Results) and quizzes/stories are previews: no leaderboard, coins or homework result.
+- **Teacher's classes** are now kept with the Google account (`teachers/<uid>/classes`), so they show on any phone and after switching child profiles. Old codes found on the phone are moved there automatically.
+- **Students** (`class.js`): join with the class code, or find the teacher by name (only classes with "Students can find this class" on, `tdir/<code>`) and send a request the teacher accepts. A child can be in up to 10 classes; all tests show on home under "My class(es)", with "See all".
+- **Ranking**: per test, the teacher switches "🏆 Ranking: shown/hidden" (`tasks/<code>/<id>/pub`). Students then see who came first (best score, then who finished first).
+- **New test notification**: the app (1.0.15+) checks the child's classes every ~3 hours (`ClassWatch.kt`, public `tasks/<code>` read) and shows "📝 New test from Mrs Sharma". No server needed. On home a "🔔 New test" banner shows too.
+- **Rules**: publish `admin/firebase-rules.proposed.json` (adds `teachers`, `tdir`, `classes/<code>/tn`, `classes/<code>/requests`, `tasks/.../pub`).

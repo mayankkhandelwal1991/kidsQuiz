@@ -112,7 +112,7 @@
   // End-of-game animations (win / game over / lose) — on every page, even ones with their own sounds.
   if (!window.KQEnd) { loadScript(SELF_BASE + "kq-endfx.js?v=20261126b").catch(function () {}); }
   // Coins + achievements (switched on/off in the admin console)
-  if (!window.KQCoins) { loadScript(SELF_BASE + "kq-coins.js?v=20261127a").catch(function () {}); }
+  if (!window.KQCoins) { loadScript(SELF_BASE + "kq-coins.js?v=20261128a").catch(function () {}); }
   // Fun zone: owl shop, daily gift, question of the day, learning path, leagues, weekly report
   if (!window.KQPlay) { loadScript(SELF_BASE + "kq-play.js?v=20261127b").catch(function () {}); }
   function prettify(id) {
@@ -389,6 +389,7 @@
 
   function submit(cat, gameId, score, opts) {
     opts = opts || {};
+    try { if (localStorage.getItem('kq_role') === 'teacher') return Promise.resolve(false); } catch (e) {}   // teacher preview
     score = Number(score);
     if (!isFinite(score)) return Promise.resolve(false);
     try {   // what was finished (quiz paper, game, friends game, Olympiad paper)

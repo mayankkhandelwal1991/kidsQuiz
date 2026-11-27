@@ -35,12 +35,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         const val PREFS = "kq_push"
 
         // type -> channel id, name, description
-        private val CHANNELS = mapOf(
+        val CHANNEL_INFO = mapOf(
             "news" to Triple("kq_news", "News & new things", "New stories, games and announcements"),
             "reminder" to Triple("kq_remind", "Play reminders", "A friendly reminder to learn and play"),
             "homework" to Triple("kq_homework", "Homework & teachers", "Messages for teachers and classes"),
             "report" to Triple("kq_report", "Parent reports", "Your child's weekly progress")
         )
+
+        /** Local notification in the same channels (ClassWatch: new test from the teacher). */
+        fun showLocal(ctx: Context, type: String, title: String, body: String, link: String, id: Int) {
+            if (isOff(ctx)) return
+            kqShowNotification(ctx, type, title, body, link, id)
+        }
 
         fun isOff(ctx: Context): Boolean = ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean("off", false)
 
@@ -69,18 +75,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val title = (d["title"] ?: remoteMessage.notification?.title ?: "Kids Quiz").take(80)
         val body = (d["body"] ?: remoteMessage.notification?.body ?: "").take(300)
         if (body.isBlank()) return
-        val type = d["type"]?.takeIf { CHANNELS.containsKey(it) } ?: "news"
+        val type = d["type"]?.takeIf { CHANNEL_INFO.containsKey(it) } ?: "news"
         val link = d["link"] ?: ""
-        show(type, title, body, link, (d["id"] ?: System.currentTimeMillis().toString()).hashCode())
+        kqShowNotification(this, type, title, body, link, (d["id"] ?: System.currentTimeMillis().toString()).hashCode())
     }
+}
 
-    private fun show(type: String, title: String, body: String, link: String, id: Int) {
+private fun kqShowNotification(ctx: Context, type: String, title: String, body: String, link: String, id: Int) {
+        val CHANNELS = MyFirebaseMessagingService.CHANNEL_INFO
         if (Build.VERSION.SDK_INT >= 33 &&
-            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
         ) return
         val ch = CHANNELS[type] ?: CHANNELS.getValue("news")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            val nm = ctx.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             if (nm.getNotificationChannel(ch.first) == null) {
                 nm.createNotificationChannel(NotificationChannel(ch.first, ch.second, NotificationManager.IMPORTANCE_DEFAULT).apply { description = ch.third })
             }
@@ -91,12 +99,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             link.matches(Regex("^[A-Za-z0-9_\\-/.]+(\\.html)?(#[A-Za-z0-9_\\-/.]*)?$")) -> "open:$link"
             else -> ""
         }
-        val intent = Intent(this, MainActivity::class.java).apply {
+        val intent = Intent(ctx, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             if (action.isNotEmpty()) putExtra(Reminders.EXTRA_ACTION, action)
         }
-        val pi = PendingIntent.getActivity(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val n = NotificationCompat.Builder(this, ch.first)
+        val pi = PendingIntent.getActivity(ctx, id, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val n = NotificationCompat.Builder(ctx, ch.first)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(title)
             .setContentText(body)
@@ -104,6 +112,5 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setContentIntent(pi)
             .build()
-        try { NotificationManagerCompat.from(this).notify(id, n) } catch (e: SecurityException) { Log.w(TAG, "no permission") }
+        try { NotificationManagerCompat.from(ctx).notify(id, n) } catch (e: SecurityException) { Log.w("FCMService", "no permission") }
     }
-}

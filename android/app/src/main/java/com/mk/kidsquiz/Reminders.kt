@@ -80,6 +80,7 @@ object Reminders {
     /** (Re)schedule from the saved settings; cancels when reminders are off. */
     fun schedule(ctx: Context) {
         scheduleWeekly(ctx)
+        try { ClassWatch.schedule(ctx) } catch (e: Exception) { }
         val am = ctx.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val pi = pending(ctx)
         am.cancel(pi)
@@ -170,6 +171,11 @@ object Reminders {
 /** Fires the reminder, then schedules the next one. */
 class ReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action == ClassWatch.ACTION) {   // network: off the main thread
+            val done = goAsync()
+            Thread { try { ClassWatch.check(context.applicationContext) } finally { done.finish() } }.start()
+            return
+        }
         when (intent.action) {
             Reminders.ACTION_FIRE -> Reminders.show(context)
             Reminders.ACTION_WEEKLY -> Reminders.showWeekly(context)

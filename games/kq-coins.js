@@ -200,6 +200,7 @@
   // coins are only earned / shown when coins are used.
   function earn(sec, id) {
     if (SECTIONS.indexOf(sec) < 0) return;
+    try { if (localStorage.getItem('kq_role') === 'teacher') return; } catch (e) {}   // teacher preview
     var k = sec + '/' + id, now = Date.now();
     if (lastEarn[k] && now - lastEarn[k] < 4000) return;   // same finish reported twice
     lastEarn[k] = now;

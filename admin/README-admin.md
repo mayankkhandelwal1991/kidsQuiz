@@ -227,3 +227,25 @@ The public leaderboard's "time played" uses `playtime/<player>/<YYYYMMDD>` = sec
 (no times of day, names or country), written by `games/kq-leaderboard.js`. Both rules are in
 `admin/firebase-rules.json` (`sessions` `.read` = admin, new `playtime` block) — **publish them
 in Firebase** together.
+
+## 🔔 Notifications (users.html#push)
+
+Send a push notification to phones with the Android app **1.0.15 or newer**.
+
+1. Open the admin console **from your computer** (`http://localhost/mayank/MK/kidsQuiz/admin/users.html#push`)
+   or from the `start-public.sh` link — sending runs in `admin/api.php`, which uses the Firebase
+   service-account key on this computer (`PlayStoreThings/*firebase-adminsdk*.json`, never in git;
+   or set `fcm_service_account` in `config.php`).
+2. Type the admin password (`admin_password` in `config.php`) and press **Check** → "✅ Ready".
+3. Pick a **type** (News · Reminder · Homework & teachers · Parent report — each is its own
+   Android channel, so parents can mute one kind), what it **opens** on tap, a title and a message.
+4. Pick **who**: everyone, classes (LKG–Class 5), teachers (phones with a teacher-mode class),
+   an interest from the 3 starting questions, children who like friends, Google families, guests,
+   or **selected players** (tick them in 👥 Players → "🔔 Notify selected").
+5. **Send.** Everything sent is listed under 📜 Sent (`pushlog/`).
+
+How phones are grouped: `push.js` subscribes each phone to topics (`all`, `class_lkg`…`class_5`,
+`teachers`, `google`/`guest`, `like_<interest>`, `friends`) and saves its token in
+`push/tokens/<player>` for "selected players". Parents can switch notifications off in For parents.
+Needs the `push` and `pushlog` rules from `admin/firebase-rules.proposed.json`.
+Children's app (Play Families): keep messages friendly and useful — no ads or offers for other apps.

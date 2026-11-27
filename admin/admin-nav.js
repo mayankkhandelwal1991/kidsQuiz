@@ -19,7 +19,8 @@
       ['users.html#players', '👥', 'Players'],
       ['users.html#coins', '🪙', 'Coins'],
       ['users.html#app', '📱', 'App settings'],
-      ['users.html#tools', '🛠', 'Tools']
+      ['users.html#tools', '🛠', 'Tools'],
+      ['users.html#push', '🔔', 'Notifications']
     ]],
     ['Growth', [
       ['growth.html', '📈', 'Growth'],

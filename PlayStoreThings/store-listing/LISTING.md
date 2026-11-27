@@ -129,6 +129,7 @@ Checked against Google Play's Families policies (November 2026):
 2. **Data safety form:**
    - *App activity / app interactions*: yes. Anonymous daily usage totals (quizzes, stories, games finished) for app improvement, not linked to the child.
    - *Device or other IDs*: yes. A random ID made by the app (no advertising ID, no IMEI or MAC) to count installs and returning devices, plus whatever your ad networks declare.
+   - *Device or other IDs* (also): the Firebase Cloud Messaging token, to send notifications (news, reminders, homework, weekly report). Parents can switch them off in For parents.
    - *Name*: first name or nickname only (leaderboards, teacher results).
 3. **Ads:** only Families self-certified ad SDKs, child-directed, no personalised ads; ads only after a quiz or game.
 4. **Referral coins:** the invite code is shared by a parent (behind the grown-up question); coins are in-app only, nothing to buy.

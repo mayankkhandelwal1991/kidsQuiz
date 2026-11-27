@@ -653,6 +653,7 @@ function kqOpenParents() {
       btn('rate', '⭐', 'Rate us on Google Play', 'Your review helps other families find us', '#fef3c7') +
       (window.KQReport || (window.KQPlay && KQPlay.openReport) ? btn('report', '📊', 'Weekly progress report', 'Last 7 days: subjects, stories, play time · share on WhatsApp', '#dcfce7') : '') +
       btn('sound', muted ? '🔇' : '🔊', 'Sounds: ' + (muted ? 'off' : 'on'), 'Tap to turn ' + (muted ? 'on' : 'off'), '#e0f2fe') +
+      (window.KQPush && KQPush.inApp() ? btn('push', KQPush.off() ? '🔕' : '🔔', 'Notifications: ' + (KQPush.off() ? 'off' : 'on'), 'News, reminders and the weekly report. Tap to turn ' + (KQPush.off() ? 'on' : 'off'), '#fef9c3') : '') +
       btn('friends', kqFriendsOff() ? '🚫' : '👫', 'Play with friends: ' + (kqFriendsOff() ? 'off' : 'on'), 'Online games with friends (no chat). Tap to turn ' + (kqFriendsOff() ? 'on' : 'off') + ' for this child', '#e0f2fe') +
       (window.KQRef ? btn('invite', '🎁', 'Invite a family', 'Both families get bonus coins · or enter a code', '#fef3c7') : '') +
       (window.KQOnboard && KQOnboard.promise ? btn('promise', '🤝', 'Our promise to parents', 'No chat, no real money, child-safe ads', '#f0fdf4') : '') +
@@ -667,6 +668,7 @@ function kqOpenParents() {
       else if (a === 'share') shareApp();
       else if (a === 'friends') { try { localStorage.setItem('kq_friends_off', kqFriendsOff() ? '0' : '1'); } catch (er) {} w.remove(); kqOpenParents(); }
       else if (a === 'promise') { w.remove(); KQOnboard.promise(true); }
+      else if (a === 'push') { KQPush.setOff(!KQPush.off()); w.remove(); kqOpenParents(); }
       else if (a === 'invite') { w.remove(); KQRef.open(); }
       else if (a === 'rate') rateApp();
       else if (a === 'report') { w.remove(); if (window.KQReport) KQReport.open(); else KQPlay.openReport(); }

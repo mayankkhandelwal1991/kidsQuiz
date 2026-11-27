@@ -53,13 +53,14 @@
 <body>
 <div class="wrap" id="app"><p class="note">Loading…</p></div>
 <script src="parent-gate.js?v=20261124a"></script>
-<script src="quiz-shared.js?v=20261127d"></script>
+<script src="quiz-shared.js?v=20261127e"></script>
 <script src="quiz/kids-engine.js?v=20261127a"></script>
 <script>
 window.isGuestUser = false;
 (function () { const a = getCachedAuth(); if (a && a.name) currentUser = a.name; else if (getCachedGuest()) { window.isGuestUser = true; currentUser = 'Guest'; } else location.href = 'quiz2.html'; })();
 window.KQ_NO_WIDGET = true;
 </script>
+<script src="push.js?v=20261127a"></script>
 <script src="games/kq-leaderboard.js?v=20261127e"></script>
 <script>
 (function () {
@@ -121,7 +122,7 @@ window.KQ_NO_WIDGET = true;
       msg.textContent = 'Making…';
       // rules: the owner is written first (only once), then the owner may write the name
       db().ref('classes/' + code + '/owner').set(me.uid).then(() => db().ref('classes/' + code + '/name').set(name || '')).then(() => {
-        const a = myCodes(); a.unshift({ code, name }); saveCodes(a); ev('teacher_class_created'); openClass(code);
+        const a = myCodes(); a.unshift({ code, name }); saveCodes(a); ev('teacher_class_created'); try { if (window.KQPush) KQPush.sync(); } catch (e) {} openClass(code);
       }).catch((e) => { msg.textContent = /permission/i.test(e.message || '') ? 'Teacher mode is not switched on yet: the app owner needs to publish the new Firebase rules.' : 'Could not make the code. Check the internet and try again.'; });
     };
   }

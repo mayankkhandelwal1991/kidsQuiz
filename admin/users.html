@@ -227,7 +227,7 @@
   let PLAYERS = [], BYKEY = new Map();
   // The section comes from the URL hash (#dash #players #coins #app #tools), so the
   // common admin header (admin-nav.js) switches it without reloading.
-  const TAB_IDS = ['dash', 'players', 'coins', 'app', 'tools'];
+  const TAB_IDS = ['dash', 'players', 'coins', 'app', 'tools', 'push'];
   const tabFromHash = () => { const h = (location.hash || '').slice(1); return TAB_IDS.indexOf(h) !== -1 ? h : 'dash'; };
   const S = { q: '', type: 'all', sort: 'last', sel: new Set(), tab: tabFromHash(), range: 30, cc: 'all', fam: true };
   // Children added on one Google account play as "<uid>_c<code>" (profiles.js); the
@@ -332,6 +332,7 @@
   function render() {
     if (S.tab === 'dash') return renderDash();
     if (S.tab === 'tools') return renderTools();
+    if (S.tab === 'push') return renderPush();
     if (S.tab === 'app') return renderAppSettings();
     if (S.tab === 'coins') return renderCoins();
     return renderPlayers();
@@ -677,6 +678,96 @@
   }
 
   /* ---------- tools ---------- */
+
+  /* ---------- 🔔 Notifications: push to the Android app (admin/api.php → Firebase Cloud Messaging) ----------
+     Sent as data messages {type, title, body, link}. Audience = FCM topics the app subscribes to
+     (push.js: all, class_lkg…class_5, teachers, google/guest, like_<interest>, friends)
+     or the tokens of players ticked in 👥 Players (push/tokens/<player>). History: pushlog/. */
+  const PUSH_TYPES = [['news', '📢', 'News & new things'], ['reminder', '⏰', 'Reminder to play'], ['homework', '🏫', 'Homework & teachers'], ['report', '📊', 'Parent report']];
+  const PUSH_LINKS = [['', 'Home'], ['stories/index.html', 'Stories'], ['stories/index.html#/r/', 'Rhymes'], ['quiz/play.html', 'Quiz'], ['games/index.html', 'Games'], ['Olympiad/index.html', 'Olympiad'], ['multiplayer/index.html', 'Play with friends'], ['report', 'Weekly report (parents, grown-up question)'], ['teacher.html', 'Teacher mode'], ['games/word/tracing.html', 'Letter tracing'], ['games/brain/times_tables.html', 'Times tables']];
+  const PUSH_CLASSES = [['lkg', 'LKG'], ['ukg', 'UKG'], ['1', 'Class 1'], ['2', 'Class 2'], ['3', 'Class 3'], ['4', 'Class 4'], ['5', 'Class 5']];
+  const PUSH_LIKES = [['abc', 'ABC & Phonics'], ['maths', 'Numbers & Maths'], ['stories', 'Stories & Rhymes'], ['science', 'Science & Nature'], ['english', 'English & Words'], ['hindi', 'Hindi'], ['art', 'Drawing & Music'], ['brain', 'Puzzles']];
+  const P = { api: (() => { try { return localStorage.getItem('kq_admin_api') || 'api.php'; } catch (e) { return 'api.php'; } })(), key: (() => { try { return sessionStorage.getItem('kq_admin_key') || ''; } catch (e) { return ''; } })(), status: null, log: null, draft: { type: 'news', title: '', body: '', link: '', aud: 'all', classes: [], like: 'abc' } };
+  function pushApi(action, body) {
+    return fetch(P.api + (P.api.indexOf('?') >= 0 ? '&' : '?') + 'action=' + action, { method: body ? 'POST' : 'GET', headers: { 'X-Admin-Key': P.key, 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined })
+      .then((r) => r.json()).catch(() => ({ ok: false, error: 'Cannot reach ' + P.api + '. Open the admin console from your computer (Apache: http://localhost/…/admin/users.html#push) or run admin/start-public.sh.' }));
+  }
+  function audienceOf(d) {
+    if (d.aud === 'sel') return { label: S.sel.size + ' selected players', sel: [...S.sel] };
+    if (d.aud === 'classes') { const c = d.classes.slice(); return { label: c.map((x) => (PUSH_CLASSES.find((y) => y[0] === x) || [0, x])[1]).join(', ') || 'no class picked', groups: chunk(c.map((x) => 'class_' + x), 5) }; }
+    if (d.aud === 'like') return { label: 'children who like ' + (PUSH_LIKES.find((y) => y[0] === d.like) || [0, d.like])[1], topic: 'like_' + d.like };
+    const T = { all: ['Everyone with the app', 'all'], teachers: ['Teachers (phones with a class)', 'teachers'], google: ['Google sign-in families', 'google'], guest: ['Guests', 'guest'], friends: ['Children who like playing with friends', 'friends'] }[d.aud] || ['Everyone', 'all'];
+    return { label: T[0], topic: T[1] };
+  }
+  function chunk(a, n) { const o = []; for (let i = 0; i < a.length; i += n) o.push(a.slice(i, i + n)); return o; }
+  function loadPushLog() { db.ref('pushlog').limitToLast(25).once('value').then((s) => { P.log = s.val() || {}; if (S.tab === 'push') renderPush(); }, () => { P.log = {}; }); }
+  function renderPush() {
+    const d = P.draft, aud = audienceOf(d), ty = PUSH_TYPES.find((t) => t[0] === d.type) || PUSH_TYPES[0];
+    if (P.log === null) loadPushLog();
+    const opt = (arr, v) => arr.map((x) => '<option value="' + esc(x[0]) + '"' + (x[0] === v ? ' selected' : '') + '>' + esc(x.length > 2 ? x[1] + ' ' + x[2] : x[1]) + '</option>').join('');
+    let h = tabsHtml() +
+      '<div class="tool"><h3>🔌 Sending from this computer</h3><p>Notifications are sent by <code>admin/api.php</code> with your Firebase key, so this tab works when the admin console is opened from your computer (or the start-public.sh link).</p>' +
+      '<div class="row">API <input id="pApi" style="width:240px;' + inpStyle + '" value="' + esc(P.api) + '"> Admin password <input id="pKey" type="password" style="width:160px;' + inpStyle + '" value="' + esc(P.key) + '"><button id="pCheck">Check</button><span class="muted" id="pStat">' + (P.status ? esc(P.status) : '') + '</span></div></div>' +
+      '<div class="tool"><h3>✍️ New notification</h3>' +
+      '<div class="row">Type <select id="pType" style="' + inpStyle + '">' + opt(PUSH_TYPES, d.type) + '</select> Opens <select id="pLink" style="' + inpStyle + '">' + opt(PUSH_LINKS, d.link) + '</select></div>' +
+      '<div class="row" style="margin-top:8px"><input id="pTitle" maxlength="65" placeholder="Title (max 65), e.g. New stories are here! 📖" style="flex:1;min-width:220px;' + inpStyle + '" value="' + esc(d.title) + '"></div>' +
+      '<div class="row" style="margin-top:8px"><textarea id="pBody" maxlength="240" rows="3" placeholder="Message (max 240)" style="flex:1;min-width:220px;' + inpStyle + '">' + esc(d.body) + '</textarea></div>' +
+      '<p class="muted" style="font-size:13px">For children: friendly and useful only. No ads or offers for other apps (Play Families policy). Parents can switch notifications off.</p>' +
+      '<h3 style="margin-top:12px">👥 Who gets it</h3><div class="row" style="flex-wrap:wrap;gap:10px">' +
+      [['all', 'Everyone'], ['classes', 'Classes'], ['teachers', 'Teachers'], ['like', 'Interest'], ['friends', 'Likes friends'], ['google', 'Google families'], ['guest', 'Guests'], ['sel', 'Selected players (' + S.sel.size + ')']].map((a) =>
+        '<label style="display:flex;gap:5px;align-items:center"><input type="radio" name="pAud" value="' + a[0] + '"' + (d.aud === a[0] ? ' checked' : '') + '>' + esc(a[1]) + '</label>').join('') + '</div>' +
+      (d.aud === 'classes' ? '<div class="row" style="flex-wrap:wrap;gap:10px;margin-top:6px">' + PUSH_CLASSES.map((c) => '<label style="display:flex;gap:4px;align-items:center"><input type="checkbox" class="pCls" value="' + c[0] + '"' + (d.classes.indexOf(c[0]) >= 0 ? ' checked' : '') + '>' + c[1] + '</label>').join('') + '</div>' : '') +
+      (d.aud === 'like' ? '<div class="row" style="margin-top:6px"><select id="pLike" style="' + inpStyle + '">' + opt(PUSH_LIKES, d.like) + '</select></div>' : '') +
+      (d.aud === 'sel' ? '<p class="muted">Tick players in 👥 Players first. Only players who opened the new app version (1.0.15+) can get it.</p>' : '') +
+      '<div style="margin-top:12px;max-width:380px;border-radius:16px;background:#0f172a;color:#e2e8f0;padding:10px 12px;font:14px/1.35 system-ui"><div style="font-size:12px;opacity:.7">Kids Quiz · ' + esc(ty[2]) + '</div><b style="display:block;color:#fff">' + esc(d.title || 'Title') + '</b><span>' + esc(d.body || 'Your message') + '</span></div>' +
+      '<div class="row" style="margin-top:12px"><button class="primary" id="pSend">🔔 Send to ' + esc(aud.label) + '</button><span id="pRes" class="muted"></span></div></div>';
+    const log = P.log ? Object.keys(P.log).sort().reverse().map((k) => P.log[k]) : [];
+    h += '<div class="tool"><h3>📜 Sent</h3>' + (log.length ? '<table><thead><tr><th>When</th><th>Notification</th><th>To</th><th class="num">Sent</th></tr></thead><tbody>' + log.map((x) =>
+      '<tr><td class="muted" style="white-space:nowrap">' + esc(fmtDate(x.at)) + '</td><td><b>' + esc((PUSH_TYPES.find((t) => t[0] === x.type) || ['', ''])[1] + ' ' + x.title) + '</b><br><span class="muted">' + esc(x.body) + '</span></td><td>' + esc(x.aud) + '</td><td class="num">' + esc(x.sent) + (x.failed ? ' <span class="muted">(' + esc(x.failed) + ' failed)</span>' : '') + '</td></tr>').join('') + '</tbody></table>' : '<p class="muted">Nothing sent yet.</p>') + '</div>';
+    $app.innerHTML = h; bindTabs();
+    const keep = () => { d.type = $('pType').value; d.link = $('pLink').value; d.title = $('pTitle').value; d.body = $('pBody').value; const l = document.getElementById('pLike'); if (l) d.like = l.value; d.classes = [...document.querySelectorAll('.pCls:checked')].map((x) => x.value); };
+    ['pType', 'pLink'].forEach((id) => { $(id).onchange = () => { keep(); renderPush(); }; });
+    ['pTitle', 'pBody'].forEach((id) => { $(id).onchange = keep; });
+    document.querySelectorAll('[name=pAud]').forEach((r) => r.onchange = () => { keep(); d.aud = r.value; renderPush(); });
+    document.querySelectorAll('.pCls').forEach((c) => c.onchange = () => { keep(); renderPush(); });
+    const pl = document.getElementById('pLike'); if (pl) pl.onchange = () => { keep(); renderPush(); };
+    $('pApi').onchange = () => { P.api = $('pApi').value.trim() || 'api.php'; try { localStorage.setItem('kq_admin_api', P.api); } catch (e) {} };
+    $('pKey').onchange = () => { P.key = $('pKey').value; try { sessionStorage.setItem('kq_admin_key', P.key); } catch (e) {} };
+    $('pCheck').onclick = () => { P.api = $('pApi').value.trim() || 'api.php'; P.key = $('pKey').value; try { sessionStorage.setItem('kq_admin_key', P.key); localStorage.setItem('kq_admin_api', P.api); } catch (e) {}
+      $('pStat').textContent = 'Checking…'; pushApi('pushstatus').then((r) => { P.status = r.ok ? '✅ Ready · project ' + r.project : '⚠️ ' + (r.error || 'not ready'); $('pStat').textContent = P.status; }); };
+    $('pSend').onclick = () => {
+      keep(); const a = audienceOf(d), res = $('pRes');
+      if (!d.title.trim() || !d.body.trim()) { res.textContent = 'Write a title and a message.'; return; }
+      if (d.aud === 'classes' && !d.classes.length) { res.textContent = 'Pick at least one class.'; return; }
+      if (d.aud === 'sel' && !S.sel.size) { res.textContent = 'Tick players in 👥 Players first.'; return; }
+      if (!confirm('Send "' + d.title + '" to ' + a.label + '?')) return;
+      const id = String(Date.now()), base = { type: d.type, title: d.title.trim(), body: d.body.trim(), link: d.link, id };
+      res.textContent = 'Sending…'; $('pSend').disabled = true;
+      let jobs;
+      if (d.aud === 'sel') {
+        jobs = Promise.all(a.sel.map((k) => db.ref('push/tokens/' + k).once('value').then((s) => ({ k, v: s.val() || {} }), () => ({ k, v: {} })))).then((rows) => {
+          const map = {}; rows.forEach((r) => Object.keys(r.v).forEach((h) => { if (r.v[h] && r.v[h].t) map[r.v[h].t] = r.k + '/' + h; }));
+          const toks = Object.keys(map);
+          if (!toks.length) return [{ ok: false, sent: 0, failed: 0, error: 'None of these players has the new app with notifications yet.' }];
+          return pushApi('push', Object.assign({}, base, { to: { tokens: toks } })).then((r) => {
+            // forget tokens that no longer work (app removed)
+            (r.dead || []).forEach((t) => { if (map[t]) db.ref('push/tokens/' + map[t]).remove().catch(() => {}); });
+            return [r];
+          });
+        });
+      } else if (a.groups) jobs = Promise.all(a.groups.map((g) => pushApi('push', Object.assign({}, base, { to: { condition: g.map((t) => "'" + t + "' in topics").join(' || ') } }))));
+      else jobs = pushApi('push', Object.assign({}, base, { to: { topic: a.topic } })).then((r) => [r]);
+      jobs.then((rs) => {
+        const sent = rs.reduce((s, r) => s + (r.sent || 0), 0), failed = rs.reduce((s, r) => s + (r.failed || 0), 0), err = rs.map((r) => r.error || (r.errors || [])[0]).filter(Boolean)[0];
+        $('pSend').disabled = false;
+        if (!sent) { res.textContent = '⚠️ ' + (err || 'Not sent.'); return; }
+        res.textContent = '✅ Sent' + (d.aud === 'sel' ? ' to ' + sent + ' phone' + (sent === 1 ? '' : 's') : '') + (failed ? ' · ' + failed + ' failed' : '');
+        const row = { at: Date.now(), type: d.type, title: base.title, body: base.body, link: d.link, aud: a.label, sent: d.aud === 'sel' ? sent : 'topic', failed };
+        db.ref('pushlog/' + id).set(row).then(() => { P.log = P.log || {}; P.log[id] = row; d.title = ''; d.body = ''; renderPush(); }, () => {});
+      });
+    };
+  }
+  function $(id) { return document.getElementById(id); }
   function renderTools() {
     const boards = [];
     Object.keys(RAW.lb || {}).forEach((cat) => Object.keys(RAW.lb[cat] || {}).forEach((g) => boards.push({ cat, g, n: Object.keys(RAW.lb[cat][g] || {}).length })));
@@ -754,6 +845,7 @@
       '<select id="sort">' + [['last', 'Last active'], ['first', 'Newest'], ['points', 'Points'], ['plays', 'Plays'], ['time', 'Time played'], ['coins', 'Coins'], ['name', 'Name'], ['country', 'Country']].map(([v, l]) => '<option value="' + v + '"' + (S.sort === v ? ' selected' : '') + '>Sort: ' + l + '</option>').join('') + '</select>' +
       '<button id="famT" class="' + (S.fam ? 'on' : '') + '" title="Show children of one Google account together">👨‍👩‍👧 ' + (S.fam ? 'Families: grouped' : 'Families: off') + '</button>' +
       '<button id="csv">⬇ CSV</button><button id="reload">↻ Refresh</button>' +
+      '<button id="notifysel"' + (S.sel.size ? '' : ' disabled') + '>🔔 Notify selected (' + S.sel.size + ')</button>' +
       '<button class="danger" id="delsel"' + (S.sel.size ? '' : ' disabled') + '>🗑 Delete selected (' + S.sel.size + ')</button></div>';
     if (!list.length) h += '<div class="card empty">No players match.</div>';
     else {
@@ -785,6 +877,7 @@
     document.getElementById('reload').onclick = load;
     document.getElementById('famT').onclick = () => { S.fam = !S.fam; render(); };
     document.getElementById('csv').onclick = () => csv(list);
+    document.getElementById('notifysel').onclick = () => { P.draft.aud = 'sel'; location.hash = 'push'; };
     document.getElementById('delsel').onclick = () => confirmDelete([...S.sel].map((k2) => BYKEY.get(k2)).filter(Boolean));
     const sa = document.getElementById('selall');
     if (sa) sa.onchange = () => { list.forEach((p) => sa.checked ? S.sel.add(p.key) : S.sel.delete(p.key)); render(); };

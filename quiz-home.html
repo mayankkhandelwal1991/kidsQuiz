@@ -421,12 +421,13 @@ body.pg-home .container { max-width: none !important; width: 100% !important; pa
 </div>
 
 <script src="parent-gate.js?v=20261124a" charset="utf-8"></script>
-<script src="profiles.js?v=20261127b" charset="utf-8"></script>
+<script src="profiles.js?v=20261127c" charset="utf-8"></script>
 <script src="guide-owl.js?v=20261127c" charset="utf-8"></script>
 <script src="onboard.js?v=20261127b" charset="utf-8"></script>
 <script src="parent-report.js?v=20261127a" charset="utf-8"></script>
 <script src="referral.js?v=20261127a" charset="utf-8"></script>
-<script src="quiz-shared.js?v=20261127d" charset="utf-8"></script>
+<script src="push.js?v=20261127a" charset="utf-8"></script>
+<script src="quiz-shared.js?v=20261127e" charset="utf-8"></script>
 <script src="emoji-images.js?v=20261120i" charset="utf-8"></script>
 <script src="quiz/kids-engine.js?v=20261127a" charset="utf-8"></script>
 <script>
@@ -1395,6 +1396,8 @@ renderTeacherTasks();
 // The app's Sunday notification ("📊 Aarav's week") opens the weekly report, behind the grown-up question.
 window.kqLaunchAction = function (a) {
   if (a === 'report' && window.KQReport) setTimeout(function () { kqParentGate(function () { KQReport.open(); }); }, 900);
+  // a pushed notification for a page of the app (e.g. "stories/index.html")
+  else if (/^open:[A-Za-z0-9_\-\/.]+(\.html)?(#[A-Za-z0-9_\-\/.]*)?$/.test(a)) location.href = a.slice(5);
 };
 try { if (window.Android && Android.consumeLaunchAction) { const la = Android.consumeLaunchAction(); if (la) kqLaunchAction(la); } } catch (e) {}
 // Then (once per child) the 3 "getting to know you" questions, and home is built from the answers.

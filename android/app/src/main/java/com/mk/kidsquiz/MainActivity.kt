@@ -414,7 +414,13 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         val a = intent.getStringExtra(Reminders.EXTRA_ACTION) ?: ""
-        if (a.isNotEmpty()) {
+        if (a.startsWith("open:")) {
+            // a notification for a page of the app: go there now
+            val path = a.removePrefix("open:")
+            if (::webView.isInitialized && path.matches(Regex("^[A-Za-z0-9_\\-/.]+(\\.html)?(#[A-Za-z0-9_\\-/.]*)?$"))) {
+                runOnUiThread { webView.loadUrl("https://mayankkhandelwal1991.github.io/kidsQuiz/" + path) }
+            }
+        } else if (a.isNotEmpty()) {
             launchAction = a
             sendToPage("window.kqLaunchAction && window.kqLaunchAction('" + a.replace("'", "") + "')")
         }
@@ -1492,6 +1498,24 @@ class MainActivity : ComponentActivity() {
             val r = rate?.toFloatOrNull() ?: 0.9f
             val p = pitch?.toFloatOrNull() ?: 1.0f
             runOnUiThread { speakText(text, lang, r, p) }
+        }
+
+        // Push notifications: subscribe to these topics (JSON array) and hand the page this
+        // phone's token (window.onPushToken) so the admin can message selected players.
+        // enabled=false (parent switched notifications off): no topics, nothing shown.
+        // Usage in JS:  Android.pushRegister('["all","class_1"]', true)
+        @JavascriptInterface
+        fun pushRegister(topicsJson: String?, enabled: Boolean) {
+            val list = mutableListOf<String>()
+            try { val arr = org.json.JSONArray(topicsJson ?: "[]"); for (i in 0 until minOf(arr.length(), 30)) list.add(arr.optString(i)) } catch (e: Exception) { }
+            runOnUiThread {
+                try {
+                    MyFirebaseMessagingService.syncTopics(this@MainActivity, list, enabled)
+                    if (enabled) com.google.firebase.messaging.FirebaseMessaging.getInstance().token.addOnSuccessListener { t ->
+                        if (t.matches(Regex("^[A-Za-z0-9:_\\-]{20,300}$"))) sendToPage("window.onPushToken && window.onPushToken('" + t + "')")
+                    }
+                } catch (e: Exception) { Log.w("KidsQuizPush", "push setup failed", e) }
+            }
         }
 
         // What to open after a notification tap, once ("report" or ""). Usage: Android.consumeLaunchAction()

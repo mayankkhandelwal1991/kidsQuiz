@@ -17,6 +17,52 @@ $MEDIA_DIR = __DIR__ . '/media';
 
 function out(array $d, int $code = 200): void { http_response_code($code); echo json_encode($d, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); exit; }
 function cfg(string $k, $def = '') { global $CFG; return isset($CFG[$k]) && $CFG[$k] !== '' ? $CFG[$k] : $def; }
+
+/* ---------- Push notifications (Firebase Cloud Messaging, HTTP v1) ----------
+   The service-account key stays on this computer: config "fcm_service_account" (path),
+   or the *firebase-adminsdk*.json in PlayStoreThings/ (git-ignored). */
+function fcm_sa(): array {
+    $p = (string)cfg('fcm_service_account');
+    if ($p === '') { $g = glob(dirname(__DIR__) . '/PlayStoreThings/*firebase-adminsdk*.json') ?: []; $p = $g[0] ?? ''; }
+    if ($p === '' || !is_file($p)) throw new RuntimeException('No Firebase service-account key. Put its path in admin/config.php as fcm_service_account.');
+    $j = json_decode((string)file_get_contents($p), true);
+    if (!is_array($j) || empty($j['private_key']) || empty($j['client_email']) || empty($j['project_id'])) throw new RuntimeException('The service-account key file is not valid.');
+    return $j;
+}
+function b64u(string $s): string { return rtrim(strtr(base64_encode($s), '+/', '-_'), '='); }
+function fcm_token(array $sa): string {
+    $cache = sys_get_temp_dir() . '/kq_fcm_' . md5($sa['client_email']) . '.json';
+    $c = is_file($cache) ? json_decode((string)file_get_contents($cache), true) : null;
+    if (is_array($c) && ($c['exp'] ?? 0) > time() + 60) return (string)$c['t'];
+    $now = time();
+    $jwt = b64u(json_encode(['alg' => 'RS256', 'typ' => 'JWT'])) . '.' . b64u(json_encode([
+        'iss' => $sa['client_email'], 'scope' => 'https://www.googleapis.com/auth/firebase.messaging',
+        'aud' => $sa['token_uri'] ?? 'https://oauth2.googleapis.com/token', 'iat' => $now, 'exp' => $now + 3600]));
+    if (!openssl_sign($jwt, $sig, $sa['private_key'], 'sha256WithRSAEncryption')) throw new RuntimeException('Could not sign with the service-account key.');
+    $jwt .= '.' . b64u($sig);
+    $ch = curl_init($sa['token_uri'] ?? 'https://oauth2.googleapis.com/token');
+    curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 30, CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => http_build_query(['grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer', 'assertion' => $jwt])]);
+    $r = json_decode((string)curl_exec($ch), true); curl_close($ch);
+    if (empty($r['access_token'])) throw new RuntimeException('Google sign-in failed: ' . ($r['error_description'] ?? $r['error'] ?? 'no token'));
+    @file_put_contents($cache, json_encode(['t' => $r['access_token'], 'exp' => $now + (int)($r['expires_in'] ?? 3600)]));
+    @chmod($cache, 0600);
+    return (string)$r['access_token'];
+}
+/** One FCM message. $to = ['topic'=>..] | ['condition'=>..] | ['token'=>..]. Returns [ok, error, code]. */
+function fcm_send(array $sa, string $tok, array $to, array $data): array {
+    $msg = array_merge($to, ['data' => array_map('strval', $data), 'android' => ['priority' => 'high', 'ttl' => '172800s']]);
+    $ch = curl_init('https://fcm.googleapis.com/v1/projects/' . rawurlencode($sa['project_id']) . '/messages:send');
+    curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 30, CURLOPT_POST => true,
+        CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $tok, 'Content-Type: application/json'],
+        CURLOPT_POSTFIELDS => json_encode(['message' => $msg], JSON_UNESCAPED_UNICODE)]);
+    $raw = curl_exec($ch); $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE); curl_close($ch);
+    $j = json_decode((string)$raw, true);
+    if ($code >= 200 && $code < 300) return [true, '', $code];
+    $st = $j['error']['details'][0]['errorCode'] ?? ($j['error']['status'] ?? '');
+    return [false, (string)($j['error']['message'] ?? "HTTP $code") . ($st ? " ($st)" : ''), $code, (string)$st];
+}
+
 function ig_ready(): bool { return cfg('ig_user_id') !== '' && cfg('ig_access_token') !== ''; }
 // Public https address of this admin folder: config "public_base_url", or (when that
 // is empty) the address this page was opened from - e.g. a Cloudflare quick tunnel
@@ -75,6 +121,37 @@ if ($action !== 'ping') {
 
 try {
     switch ($action) {
+        case 'pushstatus':   // is sending set up on this computer?
+            try { $sa = fcm_sa(); fcm_token($sa); out(['ok' => true, 'project' => $sa['project_id']]); }
+            catch (Throwable $e) { out(['ok' => false, 'error' => $e->getMessage()]); }
+
+        case 'push':   // JSON {type, title, body, link, id, to: {topic|condition|tokens:[]}}
+            $in = json_decode((string)file_get_contents('php://input'), true) ?: [];
+            $types = ['news', 'reminder', 'homework', 'report'];
+            $type = in_array($in['type'] ?? '', $types, true) ? $in['type'] : 'news';
+            $title = trim(mb_substr((string)($in['title'] ?? ''), 0, 65));
+            $body = trim(mb_substr((string)($in['body'] ?? ''), 0, 240));
+            $link = (string)($in['link'] ?? '');
+            if ($link !== '' && $link !== 'report' && !preg_match('~^[A-Za-z0-9_\-/.]+(\.html)?(#[A-Za-z0-9_\-/.]*)?$~', $link)) out(['ok' => false, 'error' => 'That link is not allowed (use a page of the app).'], 400);
+            if ($title === '' || $body === '') out(['ok' => false, 'error' => 'Title and message are needed.'], 400);
+            $id = preg_replace('/[^A-Za-z0-9_-]/', '', (string)($in['id'] ?? '')) ?: (string)time();
+            $data = ['type' => $type, 'title' => $title, 'body' => $body, 'link' => $link, 'id' => $id];
+            $to = (array)($in['to'] ?? []);
+            $sa = fcm_sa(); $tok = fcm_token($sa);
+            $sent = 0; $failed = 0; $errors = []; $dead = [];
+            if (!empty($to['tokens'])) {
+                foreach (array_slice(array_values(array_unique(array_map('strval', (array)$to['tokens']))), 0, 500) as $t) {
+                    if (!preg_match('/^[A-Za-z0-9:_\-]{20,300}$/', $t)) { $failed++; continue; }
+                    $r = fcm_send($sa, $tok, ['token' => $t], $data);
+                    if ($r[0]) $sent++; else { $failed++; if (in_array($r[3] ?? '', ['UNREGISTERED', 'INVALID_ARGUMENT'], true) || ($r[2] ?? 0) === 404) $dead[] = $t; else $errors[] = $r[1]; }
+                }
+            } elseif (!empty($to['condition']) && preg_match("~^[a-z0-9_'|&() -]{3,400}$~", (string)$to['condition'])) {
+                $r = fcm_send($sa, $tok, ['condition' => (string)$to['condition']], $data); if ($r[0]) $sent++; else { $failed++; $errors[] = $r[1]; }
+            } elseif (!empty($to['topic']) && preg_match('/^[a-z0-9_-]{2,60}$/', (string)$to['topic'])) {
+                $r = fcm_send($sa, $tok, ['topic' => (string)$to['topic']], $data); if ($r[0]) $sent++; else { $failed++; $errors[] = $r[1]; }
+            } else out(['ok' => false, 'error' => 'Choose who gets it.'], 400);
+            out(['ok' => $sent > 0, 'sent' => $sent, 'failed' => $failed, 'dead' => $dead, 'errors' => array_slice(array_values(array_unique($errors)), 0, 5)]);
+
         case 'ping':
             out(['ok' => true, 'configured' => is_file($CFG_FILE), 'php' => PHP_VERSION]);
 

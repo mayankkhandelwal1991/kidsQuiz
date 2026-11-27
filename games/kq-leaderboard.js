@@ -114,7 +114,7 @@
   // Coins + achievements (switched on/off in the admin console)
   if (!window.KQCoins) { loadScript(SELF_BASE + "kq-coins.js?v=20261127a").catch(function () {}); }
   // Fun zone: owl shop, daily gift, question of the day, learning path, leagues, weekly report
-  if (!window.KQPlay) { loadScript(SELF_BASE + "kq-play.js?v=20261126b").catch(function () {}); }
+  if (!window.KQPlay) { loadScript(SELF_BASE + "kq-play.js?v=20261127a").catch(function () {}); }
   function prettify(id) {
     if (GAME_NAMES[id]) return GAME_NAMES[id];
     return String(id || "").replace(/[_-]+/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });

@@ -1121,8 +1121,9 @@ function renderTeacherTasks(n) {
     const v = snap.val() || {}, me = KQ.user().key;
     const todo = Object.keys(v).reverse().filter((id) => !(v[id].done && v[id].done[me])).slice(0, 3);
     if (!todo.length) { el.innerHTML = ''; return; }
-    el.innerHTML = '<div class="pl-top"><img src="images/emoji/1f3eb.svg" alt="" style="width:40px;height:40px"><div class="t"><b>From your teacher</b><small>Class code ' + hmEsc(w.code) + '</small></div></div><div class="pl-steps">' +
-      todo.map((id, i) => { const t = v[id]; return '<button type="button" class="pl-step" data-tid="' + hmEsc(id) + '" style="--a:#0ea5e9;--b:#6366f1"><span class="n">📝</span><span class="tx"><b>' + hmEsc(t.title) + '</b><small>' + (t.type === 'story' ? 'Story' : 'Quiz') + ' · ' + hmEsc(classLabel(t.lv)) + '</small></span><span class="go">Go ›</span></button>'; }).join('') + '</div>';
+    const tn = (todo.map((id) => v[id].tn).filter(Boolean)[0]) || '';
+    el.innerHTML = '<div class="pl-top"><img src="images/emoji/1f3eb.svg" alt="" style="width:40px;height:40px"><div class="t"><b>Homework from ' + hmEsc(tn || 'your teacher') + '</b><small>Class code ' + hmEsc(w.code) + ' · ' + todo.length + ' to do</small></div></div><div class="pl-steps">' +
+      todo.map((id, i) => { const t = v[id]; return '<button type="button" class="pl-step" data-tid="' + hmEsc(id) + '" style="--a:#0ea5e9;--b:#6366f1"><span class="n">📝</span><span class="tx"><b>' + hmEsc(t.title) + '</b><small>' + (t.type === 'story' ? 'Story' : 'Quiz') + ' · ' + hmEsc(classLabel(t.lv)) + (t.tn ? ' · ' + hmEsc(t.tn) : '') + '</small></span><span class="go">Go ›</span></button>'; }).join('') + '</div>';
     el.querySelectorAll('[data-tid]').forEach((b) => b.onclick = () => {
       const id = b.dataset.tid, t = v[id];
       kqTaskStart({ code: w.code, id, type: t.type, ref: t.ref, lv: t.lv });
@@ -1408,7 +1409,7 @@ if (window.isGuestUser && (!kqGetNick() || kqGetNick() === 'Guest')) {
   setTimeout(function () { if (!(KQProfiles.askChildName && KQProfiles.askChildName())) { KQProfiles.askOnStart(); askPrefs(); } }, 300);
 } else askPrefs();
 </script>
-<script src="games/kq-leaderboard.js?v=20261127b"></script>
+<script src="games/kq-leaderboard.js?v=20261127c"></script>
 <script src="web-ads.js?v=20261123a"></script>
 <script>try { KQWebAds.rails(); } catch (e) {}</script>
 <script>

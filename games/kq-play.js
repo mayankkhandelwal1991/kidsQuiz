@@ -429,7 +429,8 @@
       } else if (w.code) {
         el.innerHTML = '<p class="kqp-note" style="margin:0">Your class code — share it with classmates:</p><div class="kqp-code">' + esc(w.code) + '</div>' +
           '<button type="button" class="kqp-btn sm alt" id="kqpShareCode">📤 Share code</button> <button type="button" class="kqp-btn sm alt" id="kqpLeave">Leave</button><div id="kqpLgList" style="margin-top:8px"></div>';
-        document.getElementById('kqpShareCode').onclick = function () { shareText('Join my Kids Quiz class league! Code: ' + w.code); };
+        document.getElementById('kqpShareCode').onclick = function () { var go = function () { shareText('Join my Kids Quiz class league! Code: ' + w.code); }; if (typeof kqParentGate === 'function') kqParentGate(go); else go(); };
+        joinClass(w.code);
         document.getElementById('kqpLeave').onclick = function () { if (confirm('Leave class code ' + w.code + '?')) { save(0, '', function (x) { x.code = ''; }); setTimeout(render, 40); } };
         list('k_' + w.code, document.getElementById('kqpLgList'));
       } else {
@@ -441,7 +442,7 @@
         var join = function (c) {
           c = String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
           if (c.length < 4) { toast('Codes have 4–8 letters or numbers', false); return; }
-          save(0, '', function (x) { x.code = c; }); toast('🔑 Joined ' + c, false); setTimeout(render, 40);
+          save(0, '', function (x) { x.code = c; }); toast('🔑 Joined ' + c, false); joinClass(c); setTimeout(render, 40);
         };
         document.getElementById('kqpJoin').onclick = function () { join(inp.value); };
         document.getElementById('kqpMake').onclick = function () { var ch = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', c = ''; for (var i = 0; i < 6; i++) c += ch[Math.floor(Math.random() * ch.length)]; join(c); };
@@ -483,6 +484,20 @@
       certificate({ icon: '📊', heading: 'Weekly Star Report', title: wk.total + ' quizzes & games', line: wk.quiz + ' quizzes · ' + wk.single + ' games · ' + (s0.streak || 0) + '-day streak', date: Date.now(), text: reportText() });
     };
     pushWeekly();
+  }
+
+  /* A teacher's class (classes/<code>/owner exists): list this child by first name so the
+     teacher's results sheet can show "not finished yet". Once per code per session. */
+  var joinedOnce = {};
+  function joinClass(code) {
+    if (!code || joinedOnce[code] || !window.KQ || !KQ.ready || !window.firebase) return; joinedOnce[code] = 1;
+    KQ.ready.then(function () {
+      var db = firebase.database(), u = KQ.user();
+      return db.ref('classes/' + code + '/owner').once('value').then(function (s) {
+        if (!s.exists()) return;
+        return db.ref('classes/' + code + '/members/' + u.key).set({ n: String(u.name || 'Player').split(' ')[0].slice(0, 14), at: Date.now() });
+      });
+    }).catch(function () {});
   }
 
   /* ============================================================ CERTIFICATES */

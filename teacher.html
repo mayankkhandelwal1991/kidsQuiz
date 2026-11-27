@@ -38,6 +38,16 @@
   .kids { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
   .kids span { background: #dcfce7; color: #166534; border-radius: 999px; padding: 2px 10px; font-weight: 800; font-size: 14px; }
   .empty { color: #9ca3af; font-weight: 700; }
+  .btn.wa { background: #25D366; }
+  .res { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 15px; }
+  .res th, .res td { padding: 6px 8px; border-bottom: 1px solid #ede9fe; text-align: left; } .res th { font-size: 13px; color: #6b7280; }
+  .res .y { color: #16a34a; font-weight: 800; } .res .n { color: #dc2626; font-weight: 800; }
+  .guide { position: fixed; inset: 0; z-index: 50; background: rgba(30,16,70,.78); display: flex; align-items: center; justify-content: center; padding: 14px; }
+  .guide .gc { background: #fff; border-radius: 26px; padding: 18px 16px; max-width: 440px; width: 100%; text-align: center; }
+  .guide .gs { display: flex; gap: 12px; align-items: center; text-align: left; background: #f5f3ff; border-radius: 16px; padding: 10px 12px; margin-top: 8px; }
+  .guide .gs b { display: block; font-size: 16px; } .guide .gs small { color: #4b5563; font-weight: 700; font-size: 13px; }
+  .guide .gn { width: 34px; height: 34px; flex: 0 0 auto; border-radius: 50%; background: #7c3aed; color: #fff; display: grid; place-items: center; font-weight: 800; }
+  .guide .gs img { width: 38px; height: 38px; flex: 0 0 auto; }
 </style>
 </head>
 <body>
@@ -50,7 +60,7 @@ window.isGuestUser = false;
 (function () { const a = getCachedAuth(); if (a && a.name) currentUser = a.name; else if (getCachedGuest()) { window.isGuestUser = true; currentUser = 'Guest'; } else location.href = 'quiz2.html'; })();
 window.KQ_NO_WIDGET = true;
 </script>
-<script src="games/kq-leaderboard.js?v=20261127b"></script>
+<script src="games/kq-leaderboard.js?v=20261127c"></script>
 <script>
 (function () {
   'use strict';
@@ -60,6 +70,32 @@ window.KQ_NO_WIDGET = true;
   let STORIES = [], me = null;
   const db = () => firebase.database();
   const myCodes = () => { try { return JSON.parse(localStorage.getItem('kq_teacher_codes') || '[]'); } catch (e) { return []; } };
+  const tName = () => { try { return (localStorage.getItem('kq_teacher_name') || '').trim(); } catch (e) { return ''; } };
+  const APP_LINK = 'https://play.google.com/store/apps/details?id=com.mk.kidsquiz';
+  const joinMsg = (code) => 'Join my class on Kids Quiz. Open the app, tap More > Fun zone > League, and enter code ' + code + '.\n' + APP_LINK;
+  const ev = (n) => { try { if (window.KQEvents) KQEvents.log(n); } catch (e) {} };
+  function shareWA(text) { ev('share_tapped'); const u = 'https://wa.me/?text=' + encodeURIComponent(text); if (typeof kqOpenExternal === 'function') kqOpenExternal(u); else window.open(u, '_blank'); }
+  function shareAny(text) { ev('share_tapped'); try { if (typeof Android !== 'undefined' && Android.shareText) { Android.shareText(text); return; } } catch (e) {} if (navigator.share) { navigator.share({ text }).catch(() => {}); return; } try { navigator.clipboard.writeText(text); } catch (e) {} alert(text); }
+  /* "Create your first homework in 2 minutes": shown the first time */
+  function guide(then) {
+    let seen = false; try { seen = localStorage.getItem('kq_teacher_guide') === '1'; } catch (e) {}
+    if (seen) return then();
+    const g = document.createElement('div'); g.className = 'guide';
+    const st = (n, ic, t, s) => '<div class="gs"><span class="gn">' + n + '</span><img src="images/emoji/' + ic + '.svg" alt=""><span><b>' + t + '</b><small>' + s + '</small></span></div>';
+    g.innerHTML = '<div class="gc"><h2 style="margin:0">Your first homework in 2 minutes</h2><p class="note">Four quick steps:</p>' +
+      st(1, '1f511', 'Make a class code', 'Give your class a name and tap “Make a class code”.') +
+      st(2, '1f4ac', 'Share it on WhatsApp', 'Parents get the code with simple steps to join.') +
+      st(3, '1f4dd', 'Give a quiz or a story', 'Pick the class and a topic, then “Give to the class”.') +
+      st(4, '2705', 'See who finished', 'First names and scores. Download as CSV or share as a picture.') +
+      '<input id="gName" maxlength="20" placeholder="Your name for students, e.g. Mrs Sharma" style="width:100%;margin-top:12px" value="' + esc(tName()) + '">' +
+      '<button class="btn g" id="gGo" style="width:100%;margin-top:10px;font-size:18px">Let’s start ›</button></div>';
+    document.body.appendChild(g);
+    document.getElementById('gGo').onclick = () => {
+      const n = document.getElementById('gName').value.replace(/\s+/g, ' ').trim().slice(0, 20);
+      try { if (n) localStorage.setItem('kq_teacher_name', n); localStorage.setItem('kq_teacher_guide', '1'); } catch (e) {}
+      g.remove(); then();
+    };
+  }
   const saveCodes = (a) => { try { localStorage.setItem('kq_teacher_codes', JSON.stringify(a)); } catch (e) {} };
   const bar = (t, back) => '<div class="bar"><button class="rb" id="back" aria-label="Back">' + (back ? '‹' : '🏠') + '</button><h1>' + t + '</h1></div>';
   function newCode() { const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let c = ''; for (let i = 0; i < 6; i++) c += A[Math.floor(Math.random() * A.length)]; return c; }
@@ -74,28 +110,32 @@ window.KQ_NO_WIDGET = true;
     $app.innerHTML = bar('🏫 Teacher mode') +
       '<div class="card"><h2>How it works</h2><p class="note">1. Make a class code. 2. Children enter it in <b>Fun zone → League → Class code</b>. 3. Give them a quiz or a story. 4. See who finished, with their score.</p><p class="note">Children appear by first name only.</p></div>' +
       '<div class="card"><h2>My classes</h2>' + (codes.length ? codes.map((c) => '<button class="cls" data-c="' + esc(c.code) + '"><b>' + esc(c.code) + '</b><span>' + esc(c.name || '') + '</span>›</button>').join('') : '<p class="empty">No classes yet.</p>') +
-      '<div class="row"><input id="cname" maxlength="40" placeholder="Class name, e.g. Class 3 B"><button class="btn g" id="make">+ Make a class code</button></div><p class="note" id="msg"></p></div>';
+      '<div class="row"><input id="cname" maxlength="40" placeholder="Class name, e.g. Class 3 B"><button class="btn g" id="make">+ Make a class code</button></div><p class="note" id="msg"></p></div>' +
+      '<div class="card"><h2>Your name for students</h2><p class="note">Shown with homework: “From ' + esc(tName() || 'your teacher') + '”.</p><div class="row"><input id="tname" maxlength="20" value="' + esc(tName()) + '" placeholder="e.g. Mrs Sharma"><button class="btn l" id="tsave">Save</button><button class="btn l" id="tguide">How it works</button></div></div>';
     document.getElementById('back').onclick = () => { location.href = 'quiz-home.html'; };
     $app.querySelectorAll('[data-c]').forEach((b) => b.onclick = () => openClass(b.dataset.c));
+    document.getElementById('tsave').onclick = () => { try { localStorage.setItem('kq_teacher_name', document.getElementById('tname').value.replace(/\s+/g, ' ').trim().slice(0, 20)); } catch (e) {} home(); };
+    document.getElementById('tguide').onclick = () => { try { localStorage.removeItem('kq_teacher_guide'); } catch (e) {} guide(home); };
     document.getElementById('make').onclick = () => {
       const name = document.getElementById('cname').value.trim().slice(0, 40), code = newCode(), msg = document.getElementById('msg');
       msg.textContent = 'Making…';
       // rules: the owner is written first (only once), then the owner may write the name
       db().ref('classes/' + code + '/owner').set(me.uid).then(() => db().ref('classes/' + code + '/name').set(name || '')).then(() => {
-        const a = myCodes(); a.unshift({ code, name }); saveCodes(a); openClass(code);
+        const a = myCodes(); a.unshift({ code, name }); saveCodes(a); ev('teacher_class_created'); openClass(code);
       }).catch((e) => { msg.textContent = /permission/i.test(e.message || '') ? 'Teacher mode is not switched on yet: the app owner needs to publish the new Firebase rules.' : 'Could not make the code. Check the internet and try again.'; });
     };
   }
   function openClass(code) {
     const info = myCodes().find((c) => c.code === code) || { code };
     $app.innerHTML = bar('Class ' + esc(code), true) +
-      '<div class="card"><div class="code">' + esc(code) + '</div><p class="note">' + esc(info.name || '') + '</p><div class="row"><button class="btn l" id="share">📤 Share the code</button></div></div>' +
+      '<div class="card"><div class="code">' + esc(code) + '</div><p class="note">' + esc(info.name || '') + '</p><div class="row"><button class="btn wa" id="shareWA">Share on WhatsApp</button><button class="btn l" id="share">📤 Other apps</button></div><p class="note">“' + esc(joinMsg(code).split('\n')[0]) + '”</p></div>' +
       '<div class="card"><h2>Give a task</h2><div class="row"><select id="type"><option value="quiz">🎯 Quiz</option><option value="story">📖 Story</option></select>' +
       '<select id="lv">' + LEVELS.map((l) => '<option value="' + l + '">' + classLabel(l) + '</option>').join('') + '</select><select id="what"></select></div>' +
       '<div class="row"><button class="btn g" id="give">Give to the class</button></div><p class="note" id="gmsg"></p></div>' +
       '<div class="card"><h2>Tasks</h2><div id="tasks"><p class="empty">Loading…</p></div></div>';
     document.getElementById('back').onclick = home;
-    document.getElementById('share').onclick = () => { const t = 'Join my Kids Quiz class! Open Fun zone → League → Class code and type: ' + code; if (navigator.share) navigator.share({ text: t }).catch(() => {}); else { try { navigator.clipboard.writeText(t); } catch (e) {} alert(t); } };
+    document.getElementById('shareWA').onclick = () => shareWA(joinMsg(code));
+    document.getElementById('share').onclick = () => shareAny(joinMsg(code));
     const typeEl = document.getElementById('type'), lvEl = document.getElementById('lv'), whatEl = document.getElementById('what');
     function fill() {
       const lv = +lvEl.value;
@@ -112,20 +152,60 @@ window.KQ_NO_WIDGET = true;
       const type = typeEl.value, lv = +lvEl.value, id = whatEl.value, msg = document.getElementById('gmsg'); if (!id) return;
       const title = whatEl.options[whatEl.selectedIndex].text;
       const task = { type, lv, ref: id, title: title.slice(0, 60), at: firebase.database.ServerValue.TIMESTAMP };
-      db().ref('tasks/' + code).push(task).then(() => { msg.textContent = '✅ Given: ' + title; loadTasks(code); }).catch(() => { msg.textContent = 'Could not save. Is this your class code?'; });
+      if (tName()) task.tn = tName();
+      db().ref('tasks/' + code).push(task).then(() => { msg.textContent = '✅ Given: ' + title; ev('homework_assigned'); loadTasks(code); }).catch(() => { msg.textContent = 'Could not save. Is this your class code?'; });
     };
     loadTasks(code);
   }
+  // children who joined this class code (first names), for "finished: yes / no"
+  let MEMBERS = {};
+  function resultsRows(t) {
+    const done = t.done || {}, rows = {};
+    Object.keys(MEMBERS).forEach((k) => { rows[k] = { n: (MEMBERS[k] && MEMBERS[k].n) || '?', yes: false, s: '' }; });
+    Object.keys(done).forEach((k) => { rows[k] = { n: done[k].n || (rows[k] && rows[k].n) || '?', yes: true, s: done[k].s != null ? String(done[k].s) : '' }; });
+    return Object.keys(rows).map((k) => rows[k]).sort((a, b) => (b.yes - a.yes) || a.n.localeCompare(b.n));
+  }
+  function sheet(code, t) {
+    const rows = resultsRows(t), w = document.createElement('div'); w.className = 'guide';
+    w.innerHTML = '<div class="gc" style="text-align:left;max-height:92vh;overflow:auto"><h2 style="margin:0 0 2px">' + esc(t.title) + '</h2><p class="note">' + esc(classLabel(t.lv)) + ' · Class ' + esc(code) + ' · ' + rows.filter((r) => r.yes).length + ' of ' + rows.length + ' finished</p>' +
+      '<table class="res"><tr><th>Name</th><th>Finished</th><th>Score</th></tr>' + (rows.length ? rows.map((r) => '<tr><td>' + esc(r.n) + '</td><td class="' + (r.yes ? 'y">✓ Yes' : 'n">✗ Not yet') + '</td><td>' + esc(r.s) + '</td></tr>').join('') : '<tr><td colspan="3" class="empty">Nobody yet.</td></tr>') + '</table>' +
+      '<p class="note">First names only. “Not yet” lists children who joined code ' + esc(code) + '.</p>' +
+      '<div class="row"><button class="btn g" data-x="csv">⬇ Download CSV</button><button class="btn" data-x="img">📸 Share as picture</button><button class="btn l" data-x="close">Close</button></div></div>';
+    document.body.appendChild(w);
+    w.querySelector('[data-x=close]').onclick = () => w.remove();
+    w.querySelector('[data-x=csv]').onclick = () => {
+      const q = (x) => '"' + String(x).replace(/"/g, '""') + '"';
+      const csv = [['Name', 'Finished', 'Score']].concat(rows.map((r) => [r.n, r.yes ? 'Yes' : 'No', r.s])).map((r) => r.map(q).join(',')).join('\n');
+      if (typeof Android !== 'undefined' && Android.shareText) { Android.shareText(t.title + ' (' + code + ')\n' + csv); return; }   // the app: share the table as text
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = 'kids-quiz-' + code + '-' + String(t.title).replace(/[^A-Za-z0-9]+/g, '-').slice(0, 30) + '.csv'; a.click();
+    };
+    w.querySelector('[data-x=img]').onclick = () => {
+      const W = 720, H = 150 + rows.length * 44 + 40, cv = document.createElement('canvas'); cv.width = W; cv.height = H; const g = cv.getContext('2d');
+      g.fillStyle = '#ffffff'; g.fillRect(0, 0, W, H); g.fillStyle = '#7c3aed'; g.fillRect(0, 0, W, 10);
+      g.fillStyle = '#1e1b4b'; g.font = 'bold 32px sans-serif'; g.fillText(String(t.title).slice(0, 36), 28, 58);
+      g.fillStyle = '#6b7280'; g.font = 'bold 20px sans-serif'; g.fillText(classLabel(t.lv) + ' · Class ' + code + ' · ' + rows.filter((r) => r.yes).length + ' of ' + rows.length + ' finished', 28, 92);
+      g.font = 'bold 18px sans-serif'; g.fillText('NAME', 28, 132); g.fillText('FINISHED', 360, 132); g.fillText('SCORE', 560, 132);
+      rows.forEach((r, i) => { const y = 176 + i * 44; g.fillStyle = i % 2 ? '#ffffff' : '#f5f3ff'; g.fillRect(16, y - 30, W - 32, 44); g.font = 'bold 22px sans-serif'; g.fillStyle = '#1e1b4b'; g.fillText(r.n, 28, y); g.fillStyle = r.yes ? '#16a34a' : '#dc2626'; g.fillText(r.yes ? '✓ Yes' : '✗ Not yet', 360, y); g.fillStyle = '#1e1b4b'; g.fillText(r.s, 560, y); });
+      g.fillStyle = '#9ca3af'; g.font = 'bold 16px sans-serif'; g.fillText('Kids Quiz · first names only', 28, H - 14);
+      const url = cv.toDataURL('image/png');
+      ev('share_tapped');
+      try { if (typeof Android !== 'undefined' && Android.shareImage) { Android.shareImage(url, t.title + ' — results'); return; } } catch (e) {}
+      cv.toBlob((b) => { const f = new File([b], 'results.png', { type: 'image/png' }); if (navigator.canShare && navigator.canShare({ files: [f] })) navigator.share({ files: [f] }).catch(() => {}); else { const a = document.createElement('a'); a.href = url; a.download = 'results-' + code + '.png'; a.click(); } });
+    };
+  }
   function loadTasks(code) {
     const box = document.getElementById('tasks'); if (!box) return;
-    db().ref('tasks/' + code).limitToLast(30).once('value').then((snap) => {
+    db().ref('classes/' + code + '/members').once('value').then((s) => { MEMBERS = s.val() || {}; }, () => { MEMBERS = {}; }).then(() => db().ref('tasks/' + code).limitToLast(30).once('value')).then((snap) => {
       const v = snap.val() || {}, ids = Object.keys(v).reverse();
       if (!ids.length) { box.innerHTML = '<p class="empty">No tasks yet.</p>'; return; }
       box.innerHTML = ids.map((id) => {
         const t = v[id], done = t.done || {}, kids = Object.keys(done).map((k) => done[k]);
+        const all = resultsRows(t);
         return '<div class="task"><div class="t"><span>' + (t.type === 'story' ? '📖' : '🎯') + '</span><b>' + esc(t.title) + ' · ' + esc(classLabel(t.lv)) + '</b><button class="btn r" data-del="' + esc(id) + '">Remove</button></div>' +
-          '<div class="note">' + kids.length + ' finished</div><div class="kids">' + kids.map((k) => '<span>' + esc(k.n) + (k.s != null ? ' · ' + esc(k.s) : '') + '</span>').join('') + '</div></div>';
+          '<div class="note">' + kids.length + ' of ' + all.length + ' finished</div><div class="kids">' + kids.map((k) => '<span>' + esc(k.n) + (k.s != null ? ' · ' + esc(k.s) : '') + '</span>').join('') + '</div>' +
+          '<div class="row"><button class="btn l" data-res="' + esc(id) + '">📋 Results sheet</button></div></div>';
       }).join('');
+      box.querySelectorAll('[data-res]').forEach((b) => b.onclick = () => sheet(code, v[b.dataset.res]));
       box.querySelectorAll('[data-del]').forEach((b) => b.onclick = () => { if (confirm('Remove this task?')) db().ref('tasks/' + code + '/' + b.dataset.del).remove().then(() => loadTasks(code)); });
     }).catch(() => { box.innerHTML = '<p class="empty">Could not load tasks.</p>'; });
   }
@@ -133,7 +213,7 @@ window.KQ_NO_WIDGET = true;
   fetch('data/stories.json?v=20261126c', { cache: 'no-cache' }).then((r) => r.json()).then((j) => { STORIES = j.stories || []; }).catch(() => {});
   (function wait(n) {
     if (!window.KQ || !KQ.ready) { if (n < 80) setTimeout(() => wait(n + 1), 100); return; }
-    KQ.ready.then(() => { me = KQ.user(); if (!me || me.isGuest || !me.uid) needSignIn(); else home(); });
+    KQ.ready.then(() => { me = KQ.user(); if (!me || me.isGuest || !me.uid) needSignIn(); else guide(home); });
   })(0);
 })();
 </script>

@@ -140,6 +140,7 @@
 
 <script src="../parent-gate.js?v=20261124a"></script>
 <script src="../quiz-shared.js?v=20261126d"></script>
+<script src="../games/kq-chant.js?v=20261127a"></script>
 <script>
 window.isGuestUser = false;
 (function () {
@@ -218,6 +219,7 @@ window.KQFX_NO_MUTE = true;
       timers.push(setTimeout(fin, est * 1.8 + 1500));
     } catch (e) { timed(); setTimeout(fin, est); }
   }
+  const chanting = () => !!(R && R.rhyme && window.KQChant && KQChant.playing());
   function readSentences(spans, rate, onDone) {
     stopSpeech(); const my = speechToken;
     let k = 0;
@@ -227,8 +229,14 @@ window.KQFX_NO_MUTE = true;
       $app.querySelectorAll('.w.now').forEach((w) => w.classList.remove('now'));
       if (k >= spans.length) { if (onDone) onDone(); return; }
       const ws = [...spans[k].querySelectorAll('.w')];
-      sayOne(spans[k].textContent.replace(/[“”"]/g, ''), rate, () => { k++; step(); },
-        (i) => { if (my !== speechToken) return; ws.forEach((w, j) => w.classList.toggle('now', j === i)); });
+      const line = () => {
+        if (my !== speechToken) return;
+        if (chanting()) KQChant.duck(true);
+        sayOne(spans[k].textContent.replace(/[“”"]/g, ''), rate, () => { if (chanting()) KQChant.duck(false); k++; step(); },
+          (i) => { if (my !== speechToken) return; ws.forEach((w, j) => w.classList.toggle('now', j === i)); });
+      };
+      // a rhyme with music: each line starts on the beat, like a song
+      if (chanting()) KQChant.waitBeat(line, 2); else line();
     };
     step();
   }
@@ -298,7 +306,7 @@ window.KQFX_NO_MUTE = true;
   }
   function bindSound() {
     const b = $app.querySelector('#snd'); if (!b) return;
-    b.onclick = () => { try { localStorage.setItem('kq_muted', muted() ? '0' : '1'); } catch (e) {} b.textContent = muted() ? '🔇' : '🔊'; if (muted()) stopSpeech(); };
+    b.onclick = () => { try { localStorage.setItem('kq_muted', muted() ? '0' : '1'); } catch (e) {} b.textContent = muted() ? '🔇' : '🔊'; if (muted()) { stopSpeech(); music(false); } else if (R && R.rhyme && R.auto && document.querySelector('.reader')) renderPage(); };
   }
 
   /* ---------- reader ---------- */
@@ -387,7 +395,8 @@ window.KQFX_NO_MUTE = true;
 
   /* ---------- the end: answer questions about the story, or skip ---------- */
   function theEnd() {
-    stopSpeech(); music(false); songStop();
+    stopSpeech(); songStop();
+    if (chanting()) KQChant.outro(); else music(false);
     if (!R.s.quiz || !R.s.quiz.length) return finish(true);
     $app.innerHTML = shell('<div class="end">' + emo(R.rhyme ? '🎵' : '📖', 72) + '<h2>' + (R.rhyme ? 'Well sung' : 'The End') + ', ' + esc(childName()) + '!</h2>' +
       '<p style="font-weight:700;margin:6px 0 4px">Can you answer ' + R.s.quiz.length + ' questions about the ' + (R.rhyme ? 'rhyme' : 'story') + '?</p>' +
@@ -449,9 +458,14 @@ window.KQFX_NO_MUTE = true;
     $app.querySelector('#again').onclick = () => { tap(); R.page = 0; renderPage(); };
   }
 
-  /* soft background music while a rhyme plays */
+  /* music while a rhyme plays: its own sing-along tune (games/kq-chant.js) */
   let bgm = null;
   function music(on) {
+    if (window.KQChant) {
+      if (on && !muted() && R && R.rhyme) KQChant.start({ seed: R.s.id, style: /^hi/.test(R.s.lang || '') ? 'hindi' : 'nursery' });
+      else KQChant.stop();
+      return;
+    }
     try {
       if (on && !muted()) { if (!bgm) { bgm = new Audio('../games/sounds/bgm-loop.mp3'); bgm.loop = true; bgm.volume = 0.12; } const p = bgm.play(); if (p && p.catch) p.catch(() => {}); }
       else if (bgm) bgm.pause();

@@ -18,16 +18,34 @@ const SONGS = [
 const FREQ = { C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392, A4: 440, B4: 493.88, C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99 };
 const ORDER = Object.keys(FREQ);
 const LANE_COL = ['#f472b6', '#a78bfa', '#38bdf8', '#4ade80'];
+// Speed the child picks (remembered); every finished song is the next level, a little faster.
+const SPEEDS = [{ icon: '🐢', name: 'Slow', v: 0.85, step: 0.15 }, { icon: '🐇', name: 'Medium', v: 1.25, step: 0.25 }, { icon: '🚀', name: 'Fast', v: 1.7, step: 0.35 }];
+let spIdx = 0; try { const v = +localStorage.getItem('kq_piano_speed'); if (v >= 0 && v < SPEEDS.length) spIdx = v; } catch (e) {}
+const MAX_SPEED = 4.2;
 const G = KQ3D.init({
   id: 'piano_tiles', title: 'Piano Tiles', bestKey: 'pianoBest',
   hero: ['🎹', '🎵', '⭐'], colors: ['#7c3aed', '#db2777'],
-  how: [['👆', 'Tap the coloured tiles as they reach the bottom'], ['🎵', 'Every tile plays the next note of the song'], ['❤️', 'Missing a tile or tapping empty space costs a heart'], ['🔁', 'Finish the song — it plays again, faster!']],
-  hud: [{ id: 'lives', icon: '❤️' }], scoreIcon: '🎵', stars: [30, 80, 150],
+  how: [['👆', 'Tap the coloured tiles as they reach the bottom'], ['🎵', 'Every tile plays the next note of the song'], ['❤️', 'Missing a tile or tapping empty space costs a heart'], ['🐢', 'Pick Slow, Medium or Fast'], ['⬆️', 'Finish the song to reach the next level — a little faster!']],
+  hud: [{ id: 'lives', icon: '❤️' }, { id: 'lvl', icon: '⬆️' }], scoreIcon: '🎵', stars: [30, 80, 150],
   pick: { label: 'Pick a song', options: SONGS },
   onReset: (s) => reset(s)
 });
 const C = KQ3D.canvas(G.scene), ctx = C.ctx;
-let lo = 0, hi = 11, song = G.choice || SONGS[0], notes, rows, idx, scroll, speed, score, lives, loops, flashes = [], wrongs = [], sparkle = [];
+let lo = 0, hi = 11, song = G.choice || SONGS[0], notes, rows, idx, scroll, speed, score, lives, loops, level, flashes = [], wrongs = [], sparkle = [];
+
+// "Speed" row on the start screen, under the song choice
+function speedRow() {
+  const card = document.querySelector('#k3start .k3card'), go = document.getElementById('k3play');
+  if (!card || !go || card.querySelector('.pt-speed')) return;
+  const d = document.createElement('div'); d.className = 'k3pick pt-speed';
+  d.innerHTML = '<h3>Speed</h3><div class="k3opts">' + SPEEDS.map((o, i) => '<button class="k3opt' + (i === spIdx ? ' on' : '') + '" data-sp="' + i + '"><img src="' + KQ3D.emojiFile(o.icon) + '" alt="" width="36" height="36">' + o.name + '</button>').join('') + '</div>';
+  card.insertBefore(d, go);
+  d.querySelectorAll('[data-sp]').forEach((b) => b.onclick = () => {
+    spIdx = +b.dataset.sp; try { localStorage.setItem('kq_piano_speed', spIdx); } catch (e) {}
+    d.querySelectorAll('[data-sp]').forEach((x) => x.classList.toggle('on', x === b)); KQ3D.sfx('pop');
+  });
+}
+speedRow(); new MutationObserver(speedRow).observe(document.getElementById('k3start'), { childList: true, subtree: true });
 
 // soft piano-like voice
 let AC = null;
@@ -51,8 +69,8 @@ function laneFor(n, prevLane, prevNote) {
 function reset(s) {
   song = s || SONGS[0]; notes = song.notes.split(' ');
   const ix = notes.map((n) => ORDER.indexOf(n)); lo = Math.min(...ix); hi = Math.max(...ix);
-  rows = []; idx = 0; scroll = 0; speed = 1.6; score = 0; lives = 3; loops = 0;
-  G.hudSet('lives', lives); addRows();
+  rows = []; idx = 0; scroll = 0; speed = SPEEDS[spIdx].v; score = 0; lives = 3; loops = 0; level = 1;
+  G.hudSet('lives', lives); G.hudSet('lvl', level); addRows();
 }
 function addRows() {
   let pl = -1, pn = null;
@@ -82,14 +100,15 @@ function hitRow(row, lane, cb) {
   flashes.push({ lane, y: cb - rowH(), l: 0.25 });
   for (let k = 0; k < 4; k++) sparkle.push({ x: left() + (lane + 0.5) * laneW() + (Math.random() - 0.5) * 40, y: cb - rowH() / 2, vy: -80 - Math.random() * 80, l: 0.6 });
   if (idx % notes.length === 0) {
-    loops++; speed += 0.35; KQ3D.sfx('levelup'); G.pop('Song done! 🎉 Faster!', null, C.h * 0.3, '#fde047');
+    loops++; level++; speed = Math.min(MAX_SPEED, speed + SPEEDS[spIdx].step); G.hudSet('lvl', level);
+    KQ3D.sfx('levelup'); G.pop('Level ' + level + '! 🎉 A bit faster', null, C.h * 0.3, '#fde047');
     try { if (window.KQFX) KQFX.celebrate({ power: 0.4 }); } catch (e) {}
     addRows();
   }
 }
 function loseLife() {
   lives--; G.hudSet('lives', Math.max(0, lives)); G.flash('#fecaca');
-  if (lives <= 0) G.over({ score, title: 'Nice playing! 🎹', lines: ['🎵 ' + score + ' notes', '🔁 ' + loops + ' songs'] });
+  if (lives <= 0) G.over({ score, title: 'Nice playing! 🎹', lines: ['🎵 ' + score + ' notes', '⬆️ Level ' + level + ' · ' + SPEEDS[spIdx].icon + ' ' + SPEEDS[spIdx].name] });
 }
 
 let last = performance.now();
@@ -99,10 +118,10 @@ function frame(now) {
   const playing = G.state === 'play';
   if (playing) {
     // scroll in rows per second, waiting gently until the first tap
-    if (idx > 0) scroll += (speed + score * 0.01) * dt;
+    if (idx > 0) scroll += speed * dt;
     else scroll = Math.min(scroll + dt * 1.2, 0);
     const cur = rows[idx];
-    if (cur && idx > 0 && rowBottom(idx) - rowH() > hitLine() + 4) { cur.missed = true; idx++; KQ3D.sfx('wrong'); loseLife(); if (idx % notes.length === 0) { loops++; addRows(); } }
+    if (cur && idx > 0 && rowBottom(idx) - rowH() > hitLine() + 4) { cur.missed = true; idx++; KQ3D.sfx('wrong'); loseLife(); if (idx % notes.length === 0) { loops++; level++; speed = Math.min(MAX_SPEED, speed + SPEEDS[spIdx].step); G.hudSet('lvl', level); addRows(); } }
   } else if (G.state === 'menu') { scroll = 0; }
   // keep row list short
   // draw background

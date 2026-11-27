@@ -317,6 +317,8 @@ class MainActivity : ComponentActivity() {
     // Text-to-speech for read-aloud in quizzes/games (WebView has no speechSynthesis).
     private var tts: TextToSpeech? = null
     private var ttsReady = false
+    // true while a full-screen ad is on screen: the read-aloud voice stays quiet
+    @Volatile private var adOnScreen = false
 
     // ==================================================
     // true = TEST ADS
@@ -833,7 +835,7 @@ class MainActivity : ComponentActivity() {
     // READ ALOUD (Android.speak)
     // ==================================================
     private fun speakText(text: String?, lang: String?) {
-        if (!ttsReady || text.isNullOrBlank()) return
+        if (!ttsReady || text.isNullOrBlank() || adOnScreen) return
         val locale = when (lang?.lowercase()?.take(2)) {
             "hi" -> Locale("hi", "IN")
             else -> Locale.US
@@ -1459,6 +1461,13 @@ class MainActivity : ComponentActivity() {
             runOnUiThread { speakText(text, lang) }
         }
 
+        // Stop the read-aloud voice now (stories, ads).
+        // Usage in JS:  Android.stopSpeaking();
+        @JavascriptInterface
+        fun stopSpeaking() {
+            runOnUiThread { tts?.stop() }
+        }
+
         // ==================================================
         // Call this from your web JS to show the
         // "close app?" confirmation popup on demand.
@@ -1658,9 +1667,15 @@ class MainActivity : ComponentActivity() {
             object :
                 FullScreenContentCallback() {
 
+                override fun onAdShowedFullScreenContent() {
+                    adOnScreen = true
+                    tts?.stop()
+                }
+
                 override fun
                         onAdDismissedFullScreenContent() {
 
+                    adOnScreen = false
                     interstitialAd = null
                     loadInterstitialAd()
 
@@ -1677,8 +1692,11 @@ class MainActivity : ComponentActivity() {
                         onAdFailedToShowFullScreenContent(error: AdError) {
 
                     Log.w("KidsQuizAds", "interstitial failed to show: ${error.code} ${error.message}")
+                    adOnScreen = false
                     interstitialAd = null
                     loadInterstitialAd()
+                    // the page is waiting for the ad to finish: let it carry on
+                    webView.evaluateJavascript("onAdClosed('interstitial')", null)
                 }
             }
 

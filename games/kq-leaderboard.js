@@ -112,7 +112,7 @@
   // End-of-game animations (win / game over / lose) — on every page, even ones with their own sounds.
   if (!window.KQEnd) { loadScript(SELF_BASE + "kq-endfx.js?v=20261126b").catch(function () {}); }
   // Coins + achievements (switched on/off in the admin console)
-  if (!window.KQCoins) { loadScript(SELF_BASE + "kq-coins.js?v=20261126c").catch(function () {}); }
+  if (!window.KQCoins) { loadScript(SELF_BASE + "kq-coins.js?v=20261127a").catch(function () {}); }
   // Fun zone: owl shop, daily gift, question of the day, learning path, leagues, weekly report
   if (!window.KQPlay) { loadScript(SELF_BASE + "kq-play.js?v=20261126b").catch(function () {}); }
   function prettify(id) {
@@ -651,6 +651,65 @@
     }, 2500);
   }
 
+  /* ---- Quiet while a full-screen ad is on screen ----
+     Web audio, the browser voice, the app voice and <audio>/<video> all stop when
+     an ad opens and come back when it closes (window.onAdClosed, or the page being
+     shown again). New sounds made meanwhile stay silent. */
+  var adQuiet = false, adCtxs = [], adMedia = [], adQuietTimer = null;
+  (function patchAudio() {
+    try {
+      var AN = window.AudioNode && AudioNode.prototype, conn = AN && AN.connect;
+      if (conn && !conn.__kq) {
+        AN.connect = function () {
+          var c = this.context;
+          if (c && adCtxs.indexOf(c) < 0) adCtxs.push(c);
+          if (adQuiet && c && c.state === "running") { c.__kqAd = true; try { c.suspend(); } catch (e) {} }
+          return conn.apply(this, arguments);
+        };
+        AN.connect.__kq = true;
+      }
+    } catch (e) {}
+    try {
+      var ss = window.speechSynthesis, sp = ss && ss.speak;
+      if (sp && !sp.__kq) { ss.speak = function (u) { if (adQuiet) return; return sp.call(ss, u); }; ss.speak.__kq = true; }
+    } catch (e) {}
+    try {   // the app voice (when the bridge lets us wrap it)
+      if (typeof Android !== "undefined" && Android && typeof Android.speak === "function" && !Android.speak.__kq) {
+        var as = Android.speak;
+        var w = function (t, l) { if (adQuiet) return; return as.call(Android, t, l); }; w.__kq = true;
+        Android.speak = w;
+      }
+    } catch (e) {}
+    try {
+      var MP = window.HTMLMediaElement && HTMLMediaElement.prototype, pl = MP && MP.play;
+      if (pl && !pl.__kq) {
+        MP.play = function () { if (adQuiet) { if (adMedia.indexOf(this) < 0) adMedia.push(this); return Promise.resolve(); } return pl.apply(this, arguments); };
+        MP.play.__kq = true;
+      }
+    } catch (e) {}
+  })();
+  function setAdQuiet(on) {
+    if (on === adQuiet) return;
+    adQuiet = on;
+    clearTimeout(adQuietTimer);
+    if (on) {
+      adCtxs.forEach(function (c) { if (c.state === "running") { c.__kqAd = true; try { c.suspend(); } catch (e) {} } });
+      try { window.speechSynthesis && speechSynthesis.cancel(); } catch (e) {}
+      try { if (typeof Android !== "undefined" && Android.stopSpeaking) Android.stopSpeaking(); } catch (e) {}
+      try { document.querySelectorAll("audio,video").forEach(function (m) { if (!m.paused) { m.pause(); if (adMedia.indexOf(m) < 0) adMedia.push(m); } }); } catch (e) {}
+      // the ad closing is reported by the app; this only stops sound being lost forever
+      adQuietTimer = setTimeout(function () { setAdQuiet(false); }, 90000);
+      var prev = window.onAdClosed;
+      window.onAdClosed = function (t) { window.onAdClosed = prev; setAdQuiet(false); try { if (prev) prev(t); } catch (e) {} };
+    } else {
+      adCtxs.forEach(function (c) { if (c.__kqAd) { c.__kqAd = false; try { c.resume(); } catch (e) {} } });
+      var m = adMedia; adMedia = [];
+      m.forEach(function (x) { try { var r = x.play(); if (r && r.catch) r.catch(function () {}); } catch (e) {} });
+    }
+  }
+  // the page coming back after being hidden also means the ad is gone
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && adQuiet) setTimeout(function () { setAdQuiet(false); }, 400); });
+
   function adBreakAd(reason, after) {
     var done = function (v) { if (after) { try { after(v); } catch (e) {} after = null; } };
     try {
@@ -668,6 +727,7 @@
       setTimeout(function () {
         var shown;
         try { shown = Android.showAd("interstitial"); } catch (e) { shown = false; }
+        if (shown !== false) setAdQuiet(true);
         done(shown !== false);
         // The app answers false when no ad was ready (it starts loading one).
         // Then this break doesn't count: the next finished game tries again.
@@ -1031,6 +1091,7 @@
     country: countryCode,
     gate: gate,
     adBreak: adBreak,
+    adQuiet: function (on) { if (on === undefined) return adQuiet; setAdQuiet(!!on); },
     finished: finished,
     appConfig: function () { return APP_CFG; },
     onConfig: function (fn) { if (typeof fn === "function") { cfgCbs.push(fn); try { fn(APP_CFG); } catch (e) {} } },

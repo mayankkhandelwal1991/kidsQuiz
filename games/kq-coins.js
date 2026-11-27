@@ -241,10 +241,12 @@
      simply plays — never blocked. */
   function canShowAd() { try { return typeof Android !== 'undefined' && Android && typeof Android.showAd === 'function'; } catch (e) { return false; } }
   function watchAdThenPlay(start) {
-    var done = false, appeared = false;
+    var done = false, appeared = false, wait = null;
     var prevClosed = window.onAdClosed;
     function finish() {
       if (done) return; done = true;
+      if (wait) { wait.remove(); wait = null; }
+      try { if (window.KQ && KQ.adQuiet) KQ.adQuiet(false); } catch (e) {}
       window.onAdClosed = prevClosed;
       document.removeEventListener('visibilitychange', onVis);
       window.removeEventListener('blur', onBlur); window.removeEventListener('focus', onFocus);
@@ -260,7 +262,18 @@
     try { shown = Android.showAd('interstitial'); } catch (e) { shown = false; }
     if (shown === false) { finish(); return; }            // no ad ready: play now
     try { localStorage.setItem('kq_lastAdTime', Date.now()); } catch (e) {}
-    setTimeout(function () { if (!appeared) finish(); }, 3000);  // ad never appeared: play
+    // The ad is opening: keep the page quiet and wait for it to close (the app
+    // calls onAdClosed). Don't start the paper behind the ad - its voice and
+    // sounds would play over the ad. If the ad never covers the screen, the
+    // child can tap Play after a few seconds.
+    try { if (window.KQ && KQ.adQuiet) KQ.adQuiet(true); } catch (e) {}
+    css();
+    wait = document.createElement('div'); wait.className = 'kqc-ov';
+    wait.innerHTML = '<div class="kqc-card"><div class="kqc-big">⏳</div><h3>Ad time…</h3><p>Your game starts right after the ad.</p>' +
+      '<button class="kqc-go" data-a="go" style="visibility:hidden">▶ Play</button></div>';
+    document.body.appendChild(wait);
+    wait.querySelector('[data-a=go]').onclick = finish;
+    setTimeout(function () { if (wait) wait.querySelector('[data-a=go]').style.visibility = 'visible'; }, 4000);
     setTimeout(finish, 90000);                                    // safety net
   }
   function askVideo(sec, id, p, start, onCancel) {

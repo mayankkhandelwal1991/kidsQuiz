@@ -440,7 +440,7 @@ function submitTest() {
 
 function showOlympiadCompletionAd() {
   try {
-    if (typeof Android !== "undefined" && Android.showAd) Android.showAd("interstitial");
+    if (typeof Android !== "undefined" && Android.showAd && Android.showAd("interstitial") !== false) { try { if (window.KQ && KQ.adQuiet) KQ.adQuiet(true); } catch (e) {} }
   } catch (e) {
     console.log("Olympiad ad skipped:", e);
   }

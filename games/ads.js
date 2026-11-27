@@ -47,6 +47,7 @@ function showGameAd(type) {
     if (typeof Android !== "undefined" && Android.showAd) {
       var shown = Android.showAd(type);
       if (shown === false) return false;   // no ad was ready: don't count it
+      try { if (window.KQ && KQ.adQuiet) KQ.adQuiet(true); } catch (e) {}   // quiet until the ad closes
       try { localStorage.setItem('kq_lastAdTime', Date.now()); } catch (e) {}
       return true;
     }
@@ -88,7 +89,7 @@ function onGameComplete() {
   // Load the shared leaderboard module (sits next to ads.js in /Game).
   if (!window.KQ) {
     var s = document.createElement('script');
-    s.src = ADS_BASE + 'kq-leaderboard.js?v=20261126g';
+    s.src = ADS_BASE + 'kq-leaderboard.js?v=20261127a';
     s.async = false;
     document.head.appendChild(s);
   }
